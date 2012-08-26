@@ -1,0 +1,46 @@
+/* 
+    Documento  : estilosPropios
+    Creado el  : 08-09-2012
+    Autor      : Ing. Karen Peñate
+    Descripción:
+        Esta hoja de estilo permite agregar estilos propios que el desarrollador
+estime conveniente
+*/
+div#divpagina{
+    position:absolute; 
+    width:100%;
+    left:0px; 
+    top: 0px; 
+    min-width:960px;
+}
+
+div#divcuerpo{
+    position:absolute; 
+    width:898px; 
+    left:50%; 
+    right:50%; 
+    margin-left:-450px; 
+    background-color: #FFFFFF;
+    top:150px;
+}
+
+.letraazul{
+    color:#2F589F;
+    font-weight: bold;
+    line-height: 6px;
+}
+
+.h2Titulos{
+    text-align: center;
+    color:#2F589F;
+    font-weight: bold;
+    line-height: 6px;
+    font-size: 14px;
+}
+
+.filsetParticipantes{
+    border-color: #2F589F;
+    height:40px;
+    width:300px;
+
+}
