@@ -19,49 +19,6 @@ class Autentica extends CI_Controller {
         $this->lang->load('tank_auth');
     }
 
-    public function login() {
-        if ($this->tank_auth->is_logged_in()) {         // logged in
-            redirect('');
-        } else {
-            $data['login_by_username'] = ($this->config->item('login_by_username', 'tank_auth') AND
-                    $this->config->item('use_username', 'tank_auth'));
-            $data['login_by_email'] = $this->config->item('login_by_email', 'tank_auth');
-
-            $this->form_validation->set_rules('login', 'Login', 'trim|required|xss_clean');
-            $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean');
-            $this->form_validation->set_rules('remember', 'Remember me', 'integer');
-
-            // Get login for counting attempts to login
-            if ($this->config->item('login_count_attempts', 'tank_auth') AND
-                    ($login = $this->input->post('login'))) {
-                $login = $this->security->xss_clean($login);
-            } else {
-                $login = '';
-            }
-
-            $data['errors'] = array();
-
-            if ($this->form_validation->run()) {        // validation ok
-                if ($this->tank_auth->login(
-                                $this->form_validation->set_value('login'), $this->form_validation->set_value('password'), $this->form_validation->set_value('remember'), $data['login_by_username'], $data['login_by_email'])) {        // success
-                    redirect('');
-                } else {
-                    $errors = $this->tank_auth->get_error_message();
-                    if (isset($errors['banned'])) {        // banned user
-                        $this->_show_message($this->lang->line('auth_message_banned') . ' ' . $errors['banned']);
-                    } else {             // fail
-                        foreach ($errors as $k => $v)
-                            $data['errors'][$k] = $this->lang->line($v);
-                    }
-                }
-            }
-
-            $this->load->view('login/login_view', $data);
-        }
-    }
-
-//FIN DE LOGIN
-
     function logout() {
         $this->tank_auth->logout();
     }
@@ -92,8 +49,10 @@ class Autentica extends CI_Controller {
             }
             $this->load->view('login/olvido_contrasenia_view', $data);
         }
-    }//FIN DE FORGOT_PASSWORD
-    
+    }
+
+//FIN DE FORGOT_PASSWORD
+
     function reset_password() {
         $user_id = $this->uri->segment(3);
         $new_pass_key = $this->uri->segment(4);

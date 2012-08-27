@@ -11,7 +11,7 @@ div#divpagina{
     width:100%;
     left:0px; 
     top: 0px; 
-    min-width:960px;
+    min-width:1000px;
 }
 
 div#divcuerpo{
@@ -26,6 +26,12 @@ div#divcuerpo{
 
 .letraazul{
     color:#2F589F;
+    font-weight: bold;
+    line-height: 6px;
+}
+
+.error{
+    color: #FF0000;
     font-weight: bold;
     line-height: 6px;
 }

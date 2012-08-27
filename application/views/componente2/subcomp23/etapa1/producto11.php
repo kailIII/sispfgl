@@ -10,7 +10,7 @@
         /*PARA EL DATEPICKER*/
         $( "#reu_fecha" ).datepicker({
             showOn: 'both',
-            buttonImage: '<?php echo site_url('imagenes/calendario.png'); ?>',
+            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
             dateFormat: 'dd/mm/yy'
         });

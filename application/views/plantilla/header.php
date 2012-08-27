@@ -24,7 +24,7 @@
         <div id="divpagina"> 
             <!-- Encabezado -->
             <center>
-                <img src="<?php echo base_url('resource/imagenes/banner-pfgl-g.png'); ?>" width="800px" height="100px"/>
+                <img src="<?php echo base_url('resource/imagenes/banner-pfgl-g.png'); ?>" height="100px"/>
                 
             </center>
             <div id="divcuerpo">

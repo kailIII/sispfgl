@@ -1,8 +1,8 @@
 <?php
 
-$lang['required']             = "El campo %s es obligatorio.";
+$lang['required']             = "* Obligatorio";
 $lang['isset']                = "El campo %s debe contener un valor.";
-$lang['valid_email']        = "El campo %s debe contener una direcci�n de email v�lida.";
+$lang['valid_email']        = "El campo %s debe contener una direcci�n de email válida.";
 $lang['valid_emails']         = "El campo %s debe contener todas las direcciones de email v�lidas.";
 $lang['valid_url']             = "El campo %s debe contener una URL v�lida.";
 $lang['valid_ip']             = "El campo %s debe contener una IP v�lida.";
