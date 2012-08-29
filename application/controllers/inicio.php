@@ -24,16 +24,15 @@ class Inicio extends CI_Controller {
             $informacion['titulo'] = 'Sistema de Información y Seguimiento del Programa de Fortalecimiento de
 Gobiernos Locales';
             $this->load->view('plantilla/header', $informacion);
-            $this->login();
-            $this->load->view('login/login_view');
+            $this->load->view('plantilla/menu', $informacion);
             $this->load->view('plantilla/footer', $informacion);
         } else {
             $informacion['titulo'] = 'Sistema de Información y Seguimiento del Programa de Fortalecimiento de
 Gobiernos Locales';
 
             $this->load->view('plantilla/header', $informacion);
+            $this->load->view('plantilla/menu', $informacion);
             $this->load->view('inicio/inicio_view');
-            $this->load->view('login/login_view');
             $this->load->view('plantilla/footer', $informacion);
             // $data['user_id'] = $this->tank_auth->get_user_id();
             // $data['username'] = $this->tank_auth->get_username();
@@ -78,10 +77,112 @@ Gobiernos Locales';
                     }
                 }
             }
-
-            return $this->load->view('login/login_view', $data);
+            $informacion['titulo'] = 'Iniciar Sesión en SISPFGL';
+            $this->load->view('plantilla/header', $informacion);
+            $this->load->view('plantilla/menu', $informacion);
+            $this->load->view('login/login_view', $data);
+            $this->load->view('plantilla/footer', $informacion);
         }
     }
 
 //FIN DE LOGIN
+
+    function logout() {
+        $this->tank_auth->logout();
+    }
+
+    function forgot_password() {
+        if ($this->tank_auth->is_logged_in()) {         // logged in
+            redirect('');
+        } else {
+            $this->form_validation->set_rules('login', 'Email or login', 'trim|required|xss_clean');
+
+            $data['errors'] = array();
+
+            if ($this->form_validation->run()) {        // validation ok
+                if (!is_null($data = $this->tank_auth->forgot_password(
+                                $this->form_validation->set_value('login')))) {
+
+                    $data['site_name'] = $this->config->item('website_name', 'tank_auth');
+
+                    // Send email with password activation link
+                    $this->_send_email('forgot_password', $data['email'], $data);
+                    $this->_show_message($this->lang->line('auth_message_new_password_sent'));
+                } else {
+                    $errors = $this->tank_auth->get_error_message();
+                    foreach ($errors as $k => $v)
+                        $data['errors'][$k] = $this->lang->line($v);
+                }
+            }
+            $informacion['titulo'] = 'Restauración de su contraseña de usuario';
+            $this->load->view('plantilla/header', $informacion);
+            $this->load->view('plantilla/menu', $informacion);
+            $this->load->view('login/olvido_contrasenia_view', $data);
+            $this->load->view('plantilla/footer', $informacion);
+        }
+    }
+
+//FIN DE FORGOT_PASSWORD
+
+    function reset_password() {
+        $user_id = $this->uri->segment(3);
+        $new_pass_key = $this->uri->segment(4);
+
+        $this->form_validation->set_rules('new_password', 'New Password', 'trim|required|xss_clean|min_length[' . $this->config->item('password_min_length', 'tank_auth') . ']|max_length[' . $this->config->item('password_max_length', 'tank_auth') . ']|alpha_dash');
+        $this->form_validation->set_rules('confirm_new_password', 'Confirm new Password', 'trim|required|xss_clean|matches[new_password]');
+
+        $data['errors'] = array();
+
+        if ($this->form_validation->run()) {        // validation ok
+            if (!is_null($data = $this->tank_auth->reset_password(
+                            $user_id, $new_pass_key, $this->form_validation->set_value('new_password')))) { // success
+                $data['site_name'] = $this->config->item('website_name', 'tank_auth');
+
+                // Send email with new password
+                $this->_send_email('reset_password', $data['email'], $data);
+
+                $this->_show_message($this->lang->line('auth_message_new_password_activated') . ' ' . anchor('/auth/login/', 'Login'));
+            } else {              // fail
+                $this->_show_message($this->lang->line('auth_message_new_password_failed'));
+            }
+        } else {
+            // Try to activate user by password key (if not activated yet)
+            if ($this->config->item('email_activation', 'tank_auth')) {
+                $this->tank_auth->activate_user($user_id, $new_pass_key, FALSE);
+            }
+
+            if (!$this->tank_auth->can_reset_password($user_id, $new_pass_key)) {
+                $this->_show_message($this->lang->line('auth_message_new_password_failed'));
+            }
+        }
+        $this->load->view('login/cambiar_contrasenia_view', $data);
+    }
+
+    function _show_message($message) {
+        $informacion['titulo'] = 'Restauración de su contraseña de usuario';
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->session->set_flashdata('message', $message);
+        $this->load->view('plantilla/footer', $informacion);
+        redirect(base_url());
+    }
+
+    /**
+     * Send email message of given type (activate, forgot_password, etc.)
+     *
+     * @param	string
+     * @param	string
+     * @param	array
+     * @return	void
+     */
+    function _send_email($type, $email, &$data) {
+        $this->load->library('email');
+        $this->email->from($this->config->item('webmaster_email', 'tank_auth'), $this->config->item('website_name', 'tank_auth'));
+        $this->email->reply_to($this->config->item('webmaster_email', 'tank_auth'), $this->config->item('website_name', 'tank_auth'));
+        $this->email->to($email);
+        $this->email->subject(sprintf($this->lang->line('auth_subject_' . $type), $this->config->item('website_name', 'tank_auth')));
+        $this->email->message($this->load->view('email/' . $type . '-html', $data, TRUE));
+        $this->email->send();
+    }
+
 }

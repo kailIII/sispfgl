@@ -1,41 +1,57 @@
+<script type="text/javascript">        
+    $(document).ready(function(){    
+        $("input[name='iniciar']").button();
+    });
+</script>
 <?php
 $login = array(
     'name' => 'login',
     'id' => 'login',
     'value' => set_value('login'),
     'maxlength' => 80,
-    'size' => 12
+    'size' => 20,
 );
 if ($login_by_username AND $login_by_email) {
-    $login_label = 'Email o Usuario';
+    $login_label = 'Correo o Usuario';
 } else if ($login_by_username) {
     $login_label = 'Usuario';
 } else {
-    $login_label = 'Email';
+    $login_label = 'Correo';
 }
 $password = array(
     'name' => 'password',
     'id' => 'password',
-    'size' => 12,
+    'size' => 20,
 );
 ?>
-<script type="text/javascript">
-    $(function(){ 
-        
-    });
-</script>
-<div style="position: absolute;left: 680px;top:-140px;">
-    <?php echo form_open($this->uri->uri_string()); ?>
-    <p class="letraazul"><?php echo form_label($login_label, $login['id']); ?><?php echo form_input($login); ?></p>
-    <label class="error" style="position:relative; top: -100;right: 10 " ><?php echo form_error($login['name']); ?><?php echo isset($errors[$login['name']]) ? $errors[$login['name']] : ''; ?></label>
+<?php echo form_open($this->uri->uri_string()); ?>
+<table align="center" style=" border-color: #2F589F; border-style: solid" >
+    <tr>
+        <td colspan="5" align="center">
+            <img src="<?php echo base_url("resource/imagenes/login") ?>"/>
+        </td>
+    </tr>
+    <tr>
+        <td width="50px"></td>
+        <td class="letraazul"><?php echo form_label($login_label, $login['id']); ?></td>
+        <td><?php echo form_input($login); ?></td>
+        <td class="error"><?php echo form_error($login['name']); ?><?php echo isset($errors[$login['name']]) ? $errors[$login['name']] : ''; ?></td>
+        <td width="50px"></td>
+    </tr>
+    <tr>
+        <td width="50px"></td>
+        <td class="letraazul"><?php echo form_label('Contraseña', $password['id']); ?></td>
+        <td><?php echo form_password($password); ?></td>
+        <td class="error"><?php echo form_error($password['name']); ?><?php echo isset($errors[$password['name']]) ? $errors[$password['name']] : ''; ?></td>
+        <td width="50px"></td>
+    </tr>
+    <tr>
+        <td colspan="5" align="center">
+            <?php echo anchor('/inicio/forgot_password/', 'Olvido Contraseña?'); ?>
+            <p><?php echo form_submit('iniciar', 'Iniciar Sesión'); ?></p>
+        </td>
+    </tr>
+</table>
 
-
-    <p class="letraazul"><?php echo form_label('Contraseña', $password['id']); ?><?php echo form_password($password); ?></p>
-    <label class="error"><?php echo form_error($password['name']); ?>
-        <?php echo isset($errors[$password['name']]) ? $errors[$password['name']] : ''; ?>
-    </label>
-
-<p align="center"><?php echo anchor('/autentica/forgot_password/', 'Olvido Contraseña?'); ?></p>     
-<?php echo form_submit('entrar', 'Iniciar Sesión'); ?>
 <?php echo form_close(); ?>
-</div> 
+<p></p>
