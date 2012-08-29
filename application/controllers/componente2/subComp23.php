@@ -23,7 +23,7 @@ class SubComp23 extends CI_Controller {
         $this->load->view('plantilla/footer', $informacion);
     }
 
-    public function etapa1(){
+    public function etapa1() {
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
         $this->load->view('plantilla/header', $informacion);
@@ -32,8 +32,7 @@ class SubComp23 extends CI_Controller {
         $this->load->view('plantilla/footer', $informacion);
     }
 
-
-    public function etapa1_producto1() {
+    public function registrarReunion() {
 
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
@@ -55,6 +54,18 @@ class SubComp23 extends CI_Controller {
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu');
         $this->load->view('componente2/subcomp23/etapa1/producto1_view', $lista);
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function muestraReuniones() {
+
+        $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
+            Planeación Estratégica Participativa';
+        //PARA CREAR LA LISTA DESPLEGABLE DE LA INSTITUCION
+  
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu');
+        $this->load->view('componente2/subcomp23/etapa1/reuniones_view');
         $this->load->view('plantilla/footer', $informacion);
     }
 
