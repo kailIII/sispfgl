@@ -13,7 +13,25 @@ class SubComp23 extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-     }
+    }
+
+    public function index() {
+        $informacion['titulo'] = 'Fortalecimiento de Gobiernos Locales';
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu');
+        $this->load->view('componente2/subcomp23/principal_view');
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function etapa1(){
+        $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
+            Planeación Estratégica Participativa';
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu');
+        $this->load->view('componente2/subcomp23/etapa1/etapa1_view');
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
 
     public function etapa1_producto1() {
 
@@ -35,12 +53,13 @@ class SubComp23 extends CI_Controller {
         $lista["cadena"] = $cadena;
 
         $this->load->view('plantilla/header', $informacion);
-        $this->load->view('componente2/subcomp23/etapa1/producto1', $lista);
+        $this->load->view('plantilla/menu');
+        $this->load->view('componente2/subcomp23/etapa1/producto1_view', $lista);
         $this->load->view('plantilla/footer', $informacion);
     }
 
     public function etapa1_producto11() {
-   
+
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
 
@@ -50,7 +69,8 @@ class SubComp23 extends CI_Controller {
         $datos['contrapartidas'] = $this->contrapartida->obtenerContrapartidas();
 
         $this->load->view('plantilla/header', $informacion);
-        $this->load->view('componente2/subcomp23/etapa1/producto11', $datos);
+        $this->load->view('plantilla/menu');
+        $this->load->view('componente2/subcomp23/etapa1/producto11_view', $datos);
         $this->load->view('plantilla/footer', $informacion);
     }
 
