@@ -5,7 +5,10 @@
         $("#editar").button();
         $("#eliminar").button();
         $("#guardar").button();
-        $("#cancelar").button();
+        $("#cancelar").button().click(function() {
+            document.location.href='<?php echo base_url('componente2/subComp23/muestraReuniones'); ?>';
+          });
+        
         
         /*PARA EL DATEPICKER*/
         $( "#reu_fecha" ).datepicker({
@@ -54,7 +57,7 @@
                 },
                 {name:'par_institucion',index:'par_institucion',editable:true,
                     edittype:"select",width:200,
-                    editoptions:{ value: '<?php echo $cadena; ?>' }, 
+                    editoptions:{ dataUrl:'<?php echo base_url('institucion/cargarInstituciones'); ?>'}, 
                     formoptions:{ label: "Institución",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validaInstitucion}
                 },
@@ -137,7 +140,7 @@
             
     });
 </script>
-<form>
+<form action="<?php echo base_url('componente2/subComp23/'); ?>">
     <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
     <h2 class="h2Titulos">Producto 1: Acuerdo Municipal</h2>
     <h2 class="h2Titulos">Registro de Reuniones</h2>

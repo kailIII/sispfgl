@@ -13,6 +13,16 @@ class Reunion extends CI_Model {
         return $consulta->result();
     }
 
+    public function insertarReunion() {
+/*        $data = array(
+            'titulo' => $titulo,
+            'nombre' => $nombre,
+            'fecha' => $fecha
+        );*/
+        $data =array();
+        $this->db->insert('reunion', $data);
+    }
+
 }
 
 ?>

@@ -30,6 +30,15 @@ div#divcuerpo{
     line-height: 3px;
 }
 
+.thEstandar{
+    background-color: #2F589F;
+    color:#FFFFFF;
+    font-weight: bold;
+    border-color: #2F589F;
+    border-style: solid;
+    font-size: 14px
+}
+
 .error{
     color: #FF0000;
     font-weight: bold;
