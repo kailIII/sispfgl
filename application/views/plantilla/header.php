@@ -28,5 +28,9 @@
                 
             </center>
             <div id="divcuerpo">
-
+                <?php if (isset($username)){?>
+                <p class="letraazul" >Bienvenido: <?php echo $username; ?>
+                </p>
+                <?php echo anchor('/inicio/logout/', 'Salir'); ?>
+                <?php } ?>
 

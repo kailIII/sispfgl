@@ -57,7 +57,7 @@
                 },
                 {name:'par_institucion',index:'par_institucion',editable:true,
                     edittype:"select",width:200,
-                    editoptions:{ dataUrl:'<?php echo base_url('institucion/cargarInstituciones'); ?>'}, 
+                    editoptions:{ dataUrl:'<?php echo base_url('componente2/subComp23/cargarInstituciones'); ?>'}, 
                     formoptions:{ label: "Institución",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validaInstitucion}
                 },
@@ -90,7 +90,7 @@
         $("#agregar").click(function(){
             tabla.jqGrid('editGridRow',"new",
             {closeAfterAdd:true,addCaption: "Agregar ",
-                height:200,align:'center',reloadAfterSubmit:true,width:550,
+                align:'center',reloadAfterSubmit:true,
                 processData: "Cargando...",afterSubmit:despuesAgregarEditar,
                 bottominfo:"Campos marcados con (*) son obligatorios", 
                 onclickSubmit: function(rp_ge, postdata) {
@@ -105,7 +105,7 @@
             if( gr != null )
                 tabla.jqGrid('editGridRow',gr,
             {closeAfterEdit:true,editCaption: "Editando ",
-                height:200,align:'center',reloadAfterSubmit:true,width:550,
+               align:'center',reloadAfterSubmit:true,
                 processData: "Cargando...",afterSubmit:despuesAgregarEditar,
                 bottominfo:"Campos marcados con (*) son obligatorios", 
                 onclickSubmit: function(rp_ge, postdata) {
@@ -120,7 +120,7 @@
             var grs = tabla.jqGrid('getGridParam','selrow');
             if( grs != null ) tabla.jqGrid('delGridRow',grs,
             {msg: "Desea Eliminar esta ?",caption:"Eliminando ",
-                height:100,align:'center',reloadAfterSubmit:true,width:550,
+                align:'center',reloadAfterSubmit:true,
                 processData: "Cargando...",
                 onclickSubmit: function(rp_ge, postdata) {
                     $('#mensaje').dialog('open');                            

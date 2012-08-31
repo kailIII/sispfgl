@@ -1,4 +1,4 @@
-<center>
+    <center>
     <h1>Registro de Reuniones</h1>
 </center>
 <table align="center" >

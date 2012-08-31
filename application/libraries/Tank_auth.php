@@ -124,7 +124,8 @@ class Tank_auth
 	 */
 	function is_logged_in($activated = TRUE)
 	{
-		return $this->ci->session->userdata('status') === ($activated ? STATUS_ACTIVATED : STATUS_NOT_ACTIVATED);
+			$a=$this->ci->session->userdata('status') === ($activated ? STATUS_ACTIVATED : STATUS_NOT_ACTIVATED);
+            return $a;
 	}
 
 	/**
