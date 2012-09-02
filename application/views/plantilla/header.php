@@ -25,12 +25,12 @@
             <!-- Encabezado -->
             <center>
                 <img src="<?php echo base_url('resource/imagenes/banner-pfgl-g.png'); ?>" height="100px"/>
-                
+
             </center>
             <div id="divcuerpo">
-                <?php if (isset($username)){?>
-                <p class="letraazul" >Bienvenido: <?php echo $username; ?>
-                </p>
-                <?php echo anchor('/inicio/logout/', 'Salir'); ?>
+                <?php if (isset($username)) { ?>
+                    <p class="letraazul" >Bienvenido: <?php echo $username; ?>
+                    
+                    <?php echo anchor('/auth/logout/', 'Salir'); ?>
+                        </p>
                 <?php } ?>
-

@@ -23,13 +23,6 @@ $password = array(
     'id' => 'password',
     'size' => 20,
 );
-$remember = array(
-	'name'	=> 'remember',
-	'id'	=> 'remember',
-	'value'	=> 1,
-	'checked'	=> set_value('remember'),
-	'style' => 'margin:0;padding:0',
-);
 ?>
 <?php echo form_open($this->uri->uri_string()); ?>
 <table align="center" style=" border-color: #2F589F; border-style: solid" >
@@ -55,14 +48,14 @@ $remember = array(
         <td width="50px"></td>
     </tr>
     <tr>
-        <td colspan="5" align="center">
-            <?php echo form_checkbox($remember); ?>
-	    <?php echo form_label('Remember me', $remember['id']); ?>
-            <?php echo anchor('/inicio/forgot_password/', 'Olvido Contraseña?'); ?>
-            <p><?php echo form_submit('iniciar', 'Iniciar Sesión'); ?></p>
+        <td width="50px"></td>
+        <td colspan="3" align="right">
+             <?php echo anchor('/auth/forgot_password/', 'Olvido Contraseña?'); ?>
+            <p align="center"><?php echo form_submit('iniciar', 'Iniciar Sesión'); ?></p>
+            
         </td>
+        <td width="50px"></td>
     </tr>
 </table>
 
 <?php echo form_close(); ?>
-<p></p>

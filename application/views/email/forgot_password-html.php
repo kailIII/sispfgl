@@ -10,12 +10,12 @@
                         <h2 style="font: normal 20px/23px Arial, Helvetica, sans-serif; margin: 0; padding: 0 0 18px; color: black;">Crear Nueva Contraseña</h2>
                         Si olvido su contraseña, basta con dar clic al siguiente link:<br />
                         <br />
-                        <big style="font: 16px/18px Arial, Helvetica, sans-serif;"><b><a href="<?php echo site_url('/inicio/reset_password/' . $user_id . '/' . $new_pass_key); ?>" style="color: #3366cc;">Crear Nueva Contraseña</a></b></big><br />
+                        <big style="font: 16px/18px Arial, Helvetica, sans-serif;"><b><a href="<?php echo site_url('/auth/reset_password/'.$user_id.'/'.$new_pass_key); ?>" style="color: #3366cc;">Crear Nueva Contraseña</a></b></big><br />
                         <br />
                         Si el link anterior no funciona, por favor copiar el siguiente link en la barra de 
                         direcciones de su navegador y dirijase al formulario para cambiar la contraseña:
-                        Link doesn't work? Copy the following link to your browser address bar:<br />
-                <nobr><a href="<?php echo site_url('/inicio/reset_password/' . $user_id . '/' . $new_pass_key); ?>" style="color: #3366cc;"><?php echo site_url('/inicio/reset_password/' . $user_id . '/' . $new_pass_key); ?></a></nobr><br />
+                       <br />
+                <nobr><a href="<?php echo site_url('/auth/reset_password/'.$user_id.'/'.$new_pass_key); ?>" style="color: #3366cc;"><?php echo site_url('/auth/reset_password/'.$user_id.'/'.$new_pass_key); ?></a></nobr><br />
                 <br />
                 <br />
                 Si usted no solicito el cambio de contraseña, ignore y elimine este mensaje.<br />
