@@ -8,8 +8,9 @@
 
 class Reunion extends CI_Model {
 
+    private $tabla = 'reunion';
     public function obtenerReuniones() {
-        $consulta = $this->db->get('reunion');
+        $consulta = $this->db->get($this->tabla);
         return $consulta->result();
     }
 
@@ -20,7 +21,7 @@ class Reunion extends CI_Model {
             'fecha' => $fecha
         );*/
         $data =array();
-        $this->db->insert('reunion', $data);
+        $this->db->insert($this->tabla, $data);
     }
 
 }

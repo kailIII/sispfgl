@@ -1,5 +1,12 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
+/*
+ * ***************************************
+ * @modify By:      Ing. Karen Peñate   *
+ * @date:           25/Agosto/2012      *
+ * ***************************************
+ */
+
 class Auth extends CI_Controller
 {
 	function __construct()

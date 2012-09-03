@@ -12,6 +12,15 @@ if (!defined('BASEPATH'))
  *
  * @package	Tank_auth
  * @author	Ilya Konyukhov (http://konyukhov.com/soft/)
+ * 
+ * 
+ * 
+ ****************************************
+ * @modify By:      Ing. Karen Peñate   *
+ * @date:       02/Septiembre/2012      *
+ ****************************************
+ * 
+ * 
  */
 class Users extends CI_Model {
 
@@ -379,6 +388,13 @@ class Users extends CI_Model {
     private function delete_profile($user_id) {
         $this->db->where('user_id', $user_id);
         $this->db->delete($this->profile_table_name);
+    }
+    
+    function obtenerRol($username) {
+        $this->db->select('rol_id');
+        $this->db->where('username', $username);
+        $consulta=$this->db->get($this->table_name);
+        return $consulta->result();
     }
 
 }
