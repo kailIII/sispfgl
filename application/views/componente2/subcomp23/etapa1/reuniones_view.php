@@ -3,7 +3,7 @@
 </center>
 <table align="center" >
     <tr>
-        <td align="center" ><a href="<?php echo base_url('componente2/subComp23/registrarReunion'); ?>"><img src="<?php echo base_url('resource/imagenes/add.png'); ?>"/></a></td>
+        <td align="center" ><a href="<?php echo base_url('componente2/comp23_E1/registrarReunion'); ?>"><img src="<?php echo base_url('resource/imagenes/add.png'); ?>"/></a></td>
     </tr>
     <tr>
         <td class="letraazul" align="center">Registrar Reunión</td>
