@@ -8,8 +8,10 @@
 
 class Criterio extends CI_Model {
 
+    private $tabla = 'criterio';
+    
     public function obtenerCriterios() {
-        $consulta = $this->db->get('criterio');
+        $consulta = $this->db->get($this->tabla);
         return $consulta->result();
     }
 

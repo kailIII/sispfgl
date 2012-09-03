@@ -8,8 +8,9 @@
 
 class Institucion extends CI_Model {
 
+    private $tabla = 'institucion';
     public function obtenerInstitucion() {
-        $consulta = $this->db->get('institucion');
+        $consulta = $this->db->get($this->tabla);
         return $consulta->result();
     }
 
