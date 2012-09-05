@@ -12,5 +12,8 @@
         </li>
         <li class="top"><a class="top_link"><span>Contactenos</span></a></li>
         <li class="top"><a href="<?php echo base_url("auth/login"); ?>" class="top_link"><span>Iniciar Sesión</span></a></li>
+        <?php if(isset($menu))
+                echo $menu;
+            ?>
     </ul>
 </div>

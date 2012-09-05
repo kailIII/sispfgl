@@ -13,7 +13,7 @@ class Inicio extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->helper('form');
-        $this->load->library(array('form_validation', 'security', 'tank_auth'));
+        $this->load->library(array('form_validation', 'security', 'tank_auth','librerias'));
         $this->lang->load('tank_auth');
     }
 
@@ -29,7 +29,7 @@ class Inicio extends CI_Controller {
             $informacion['titulo'] = 'Sistema de Información y Seguimiento del Programa de Fortalecimiento de Gobiernos Locales';
             $informacion['user_id'] = $this->tank_auth->get_user_id();
             $informacion['username'] = $this->tank_auth->get_username();
-
+            $informacion['menu']=  $this->librerias->creaMenu($this->tank_auth->get_username());
             //CARGAR VISTAS
             $this->load->view('plantilla/header', $informacion);
             $this->load->view('plantilla/menu', $informacion);
