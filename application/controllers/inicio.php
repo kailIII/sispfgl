@@ -25,7 +25,7 @@ class Inicio extends CI_Controller {
             $this->load->view('plantilla/menu', $informacion);
             $this->load->view('plantilla/footer', $informacion);
         } else {
-            //DATOS
+            //ESTAS LINEAS SIEMPRE DEBEN IR PARA GENERAR EL MENU Y COLOCAR EL LOGOUT
             $informacion['titulo'] = 'Sistema de Información y Seguimiento del Programa de Fortalecimiento de Gobiernos Locales';
             $informacion['user_id'] = $this->tank_auth->get_user_id();
             $informacion['username'] = $this->tank_auth->get_username();

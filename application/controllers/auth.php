@@ -24,15 +24,15 @@ class Auth extends CI_Controller
 	{
 		if ($message = $this->session->flashdata('message')) {
                     $informacion['titulo'] = 'SIS-PFGL';
-                        $this->load->view('plantilla/header', $informacion);
-                        $this->load->view('plantilla/menu', $informacion);
-                        $this->load->view('auth/general_message', array('message' => $message));
-                        $this->load->view('plantilla/footer', $informacion);
+                    $this->load->view('plantilla/header', $informacion);
+                    $this->load->view('plantilla/menu', $informacion);
+                    $this->load->view('auth/general_message', array('message' => $message));
+                    $this->load->view('plantilla/footer', $informacion);
                           
 			
-		} else {
-			redirect('/auth/login/');
-		}
+		} else 
+                    redirect('/auth/login/');
+		
 	}
 
 	/**

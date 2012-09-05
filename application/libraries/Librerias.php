@@ -30,22 +30,22 @@ class Librerias {
             $menu.='<li class="top"><a class="top_link" href="';
             $opcionesN2=  $this->ci->ros->obtenerOpcionesOtrosNiveles($rol,$rolPadre->opc_sis_id);
             if($opcionesN2->num_rows()!=0){
-                $menu.=$rolPadre->opc_sis_url.'"><span class="down">'.$rolPadre->opc_sis_nombre.'</span></a>';
+                $menu.=base_url($rolPadre->opc_sis_url).'"><span class="down">'.$rolPadre->opc_sis_nombre.'</span></a>';
                     $menu.='<ul class="sub">';
                     foreach ($opcionesN2->result() as $opcN2){
-                       $menu.='<li><a href="'.$opcN2->opc_sis_url.'"';
+                       $menu.='<li><a href="'.base_url($opcN2->opc_sis_url).'"';
                        $opcionesN3=$this->ci->ros->obtenerOpcionesOtrosNiveles($rol,$opcN2->opc_sis_id);
                        if($opcionesN3->num_rows()!=0){
                            $menu.=' class="fly">'.$opcN2->opc_sis_nombre.'</a>';
                            $menu.='<ul>';
                            foreach ($opcionesN3->result() as $opcN3){
-                               $menu.='<li><a href="'.$opcN3->opc_sis_url.'"';
+                               $menu.='<li><a href="'.base_url($opcN3->opc_sis_url).'"';
                                $opcionesN4=$this->ci->ros->obtenerOpcionesOtrosNiveles($rol,$opcN3->opc_sis_id);
                                if($opcionesN4->num_rows()!=0){
                                     $menu.=' class="fly">'.$opcN3->opc_sis_nombre.'</a>';
                                     $menu.='<ul>';
                                     foreach ($opcionesN4->result() as $opcN4)
-                                        $menu.='<li><a href="'.$opcN4->opc_sis_url.'">'.$opcN4->opc_sis_nombre.'</a></li>';
+                                        $menu.='<li><a href="'.base_url($opcN4->opc_sis_url).'">'.$opcN4->opc_sis_nombre.'</a></li>';
                                     $menu.='</ul>';
                                }else
                                    $menu.='>'.$opcN3->opc_sis_nombre.'</a></li>';
@@ -56,7 +56,7 @@ class Librerias {
                     }
                     $menu.='</ul></li>';
             }else
-                $menu.=$rolPadre->opc_sis_url.'"><span>'.$rolPadre->opc_sis_nombre.'</span></a></li>';   
+                $menu.=base_url($rolPadre->opc_sis_url).'"><span>'.$rolPadre->opc_sis_nombre.'</span></a></li>';   
         }
         return $menu;
     }

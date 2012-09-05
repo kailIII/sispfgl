@@ -22,11 +22,11 @@
     <body>
         <!-- Contenedor principal -->
         <div id="divpagina"> 
-            <!-- Encabezado -->
+            <!-- Encabezado 
             <center>
                 <img src="<?php echo base_url('resource/imagenes/banner-pfgl-g.png'); ?>" height="100px"/>
 
-            </center>
+            </center>-->
             <div id="divcuerpo">
                 <?php if (isset($username)) { ?>
                     <p class="letraazul" >Bienvenido: <?php echo $username; ?>
