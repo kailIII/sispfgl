@@ -1,0 +1,4008 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.1.5
+-- Dumped by pg_dump version 9.1.5
+-- Started on 2012-09-05 23:55:02 CST
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- TOC entry 240 (class 3079 OID 11643)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 2344 (class 0 OID 0)
+-- Dependencies: 240
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 165 (class 1259 OID 16399)
+-- Dependencies: 6
+-- Name: actividad; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE actividad (
+    act_id integer NOT NULL,
+    com_id integer NOT NULL,
+    act_act_id integer,
+    act_codigo character varying(10) NOT NULL,
+    act_descripcion text NOT NULL
+);
+
+
+ALTER TABLE public.actividad OWNER TO smpfgl;
+
+--
+-- TOC entry 166 (class 1259 OID 16405)
+-- Dependencies: 165 6
+-- Name: actividad_act_id_seq; Type: SEQUENCE; Schema: public; Owner: smpfgl
+--
+
+CREATE SEQUENCE actividad_act_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.actividad_act_id_seq OWNER TO smpfgl;
+
+--
+-- TOC entry 2345 (class 0 OID 0)
+-- Dependencies: 166
+-- Name: actividad_act_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smpfgl
+--
+
+ALTER SEQUENCE actividad_act_id_seq OWNED BY actividad.act_id;
+
+
+--
+-- TOC entry 2346 (class 0 OID 0)
+-- Dependencies: 166
+-- Name: actividad_act_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
+--
+
+SELECT pg_catalog.setval('actividad_act_id_seq', 1, false);
+
+
+--
+-- TOC entry 167 (class 1259 OID 16407)
+-- Dependencies: 6
+-- Name: acuerdo_municipal; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE acuerdo_municipal (
+    acu_mun_id integer NOT NULL,
+    acu_mun_fecha date NOT NULL,
+    acu_mun_archivo oid,
+    acu_mun_p1 boolean NOT NULL,
+    acu_mun_p2 boolean NOT NULL,
+    acu_mun_observacion text,
+    pro_pep_id integer NOT NULL
+);
+
+
+ALTER TABLE public.acuerdo_municipal OWNER TO smpfgl;
+
+--
+-- TOC entry 168 (class 1259 OID 16413)
+-- Dependencies: 167 6
+-- Name: acuerdo_municipal_acu_mun_id_seq; Type: SEQUENCE; Schema: public; Owner: smpfgl
+--
+
+CREATE SEQUENCE acuerdo_municipal_acu_mun_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.acuerdo_municipal_acu_mun_id_seq OWNER TO smpfgl;
+
+--
+-- TOC entry 2347 (class 0 OID 0)
+-- Dependencies: 168
+-- Name: acuerdo_municipal_acu_mun_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smpfgl
+--
+
+ALTER SEQUENCE acuerdo_municipal_acu_mun_id_seq OWNED BY acuerdo_municipal.acu_mun_id;
+
+
+--
+-- TOC entry 2348 (class 0 OID 0)
+-- Dependencies: 168
+-- Name: acuerdo_municipal_acu_mun_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
+--
+
+SELECT pg_catalog.setval('acuerdo_municipal_acu_mun_id_seq', 1, false);
+
+
+--
+-- TOC entry 169 (class 1259 OID 16415)
+-- Dependencies: 6
+-- Name: asesor_municipal; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE asesor_municipal (
+    ase_mun_id integer NOT NULL,
+    reg_id integer NOT NULL,
+    ase_mun_nombre character varying(50) NOT NULL,
+    ase_mun_apellido character varying(50) NOT NULL,
+    ase_mun_cargo character varying(25) NOT NULL
+);
+
+
+ALTER TABLE public.asesor_municipal OWNER TO smpfgl;
+
+--
+-- TOC entry 170 (class 1259 OID 16418)
+-- Dependencies: 6
+-- Name: capacitacion; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE capacitacion (
+    cap_id integer NOT NULL,
+    cap_fecha date NOT NULL,
+    cap_tema character varying(100) NOT NULL,
+    cap_lugar character varying(50) NOT NULL,
+    cap_facilitador character varying(100) NOT NULL,
+    cap_observacion text
+);
+
+
+ALTER TABLE public.capacitacion OWNER TO smpfgl;
+
+--
+-- TOC entry 171 (class 1259 OID 16424)
+-- Dependencies: 170 6
+-- Name: capacitacion_cap_id_seq; Type: SEQUENCE; Schema: public; Owner: smpfgl
+--
+
+CREATE SEQUENCE capacitacion_cap_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.capacitacion_cap_id_seq OWNER TO smpfgl;
+
+--
+-- TOC entry 2349 (class 0 OID 0)
+-- Dependencies: 171
+-- Name: capacitacion_cap_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smpfgl
+--
+
+ALTER SEQUENCE capacitacion_cap_id_seq OWNED BY capacitacion.cap_id;
+
+
+--
+-- TOC entry 2350 (class 0 OID 0)
+-- Dependencies: 171
+-- Name: capacitacion_cap_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
+--
+
+SELECT pg_catalog.setval('capacitacion_cap_id_seq', 1, false);
+
+
+--
+-- TOC entry 172 (class 1259 OID 16426)
+-- Dependencies: 2116 2117 2118 6
+-- Name: ci_sessions; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE ci_sessions (
+    session_id character varying(40) DEFAULT '0'::character varying NOT NULL,
+    ip_address character varying(16) DEFAULT '0'::character varying NOT NULL,
+    user_agent character varying(150) NOT NULL,
+    last_activity integer DEFAULT 0 NOT NULL,
+    user_data text NOT NULL
+);
+
+
+ALTER TABLE public.ci_sessions OWNER TO smpfgl;
+
+--
+-- TOC entry 173 (class 1259 OID 16435)
+-- Dependencies: 6
+-- Name: componente; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE componente (
+    com_id integer NOT NULL,
+    com_com_id integer,
+    pro_id integer,
+    com_codigo character varying(10),
+    com_nombre character varying(100) NOT NULL,
+    com_objetivo text,
+    com_resultado text
+);
+
+
+ALTER TABLE public.componente OWNER TO smpfgl;
+
+--
+-- TOC entry 174 (class 1259 OID 16441)
+-- Dependencies: 6 173
+-- Name: componente_com_id_seq; Type: SEQUENCE; Schema: public; Owner: smpfgl
+--
+
+CREATE SEQUENCE componente_com_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.componente_com_id_seq OWNER TO smpfgl;
+
+--
+-- TOC entry 2351 (class 0 OID 0)
+-- Dependencies: 174
+-- Name: componente_com_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smpfgl
+--
+
+ALTER SEQUENCE componente_com_id_seq OWNED BY componente.com_id;
+
+
+--
+-- TOC entry 2352 (class 0 OID 0)
+-- Dependencies: 174
+-- Name: componente_com_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
+--
+
+SELECT pg_catalog.setval('componente_com_id_seq', 1, false);
+
+
+--
+-- TOC entry 161 (class 1259 OID 16386)
+-- Dependencies: 6
+-- Name: consultor; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE consultor (
+    con_id integer NOT NULL,
+    con_nombre character varying(75) NOT NULL,
+    con_apellido character varying(75) NOT NULL,
+    con_telefono character varying(9) NOT NULL,
+    con_email character varying(100) NOT NULL,
+    pro_pep_id integer NOT NULL
+);
+
+
+ALTER TABLE public.consultor OWNER TO smpfgl;
+
+--
+-- TOC entry 162 (class 1259 OID 16389)
+-- Dependencies: 6 161
+-- Name: consultor_con_id_seq; Type: SEQUENCE; Schema: public; Owner: smpfgl
+--
+
+CREATE SEQUENCE consultor_con_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.consultor_con_id_seq OWNER TO smpfgl;
+
+--
+-- TOC entry 2353 (class 0 OID 0)
+-- Dependencies: 162
+-- Name: consultor_con_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smpfgl
+--
+
+ALTER SEQUENCE consultor_con_id_seq OWNED BY consultor.con_id;
+
+
+--
+-- TOC entry 2354 (class 0 OID 0)
+-- Dependencies: 162
+-- Name: consultor_con_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
+--
+
+SELECT pg_catalog.setval('consultor_con_id_seq', 1, false);
+
+
+--
+-- TOC entry 175 (class 1259 OID 16443)
+-- Dependencies: 6
+-- Name: contrapartida; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE contrapartida (
+    con_id integer NOT NULL,
+    con_nombre character varying(25) NOT NULL
+);
+
+
+ALTER TABLE public.contrapartida OWNER TO smpfgl;
+
+--
+-- TOC entry 176 (class 1259 OID 16446)
+-- Dependencies: 6
+-- Name: contrapartida_acuerdo; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE contrapartida_acuerdo (
+    acu_mun_id integer NOT NULL,
+    con_id integer NOT NULL,
+    con_acu_valor boolean NOT NULL
+);
+
+
+ALTER TABLE public.contrapartida_acuerdo OWNER TO smpfgl;
+
+--
+-- TOC entry 177 (class 1259 OID 16449)
+-- Dependencies: 175 6
+-- Name: contrapartida_con_id_seq; Type: SEQUENCE; Schema: public; Owner: smpfgl
+--
+
+CREATE SEQUENCE contrapartida_con_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.contrapartida_con_id_seq OWNER TO smpfgl;
+
+--
+-- TOC entry 2355 (class 0 OID 0)
+-- Dependencies: 177
+-- Name: contrapartida_con_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smpfgl
+--
+
+ALTER SEQUENCE contrapartida_con_id_seq OWNED BY contrapartida.con_id;
+
+
+--
+-- TOC entry 2356 (class 0 OID 0)
+-- Dependencies: 177
+-- Name: contrapartida_con_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
+--
+
+SELECT pg_catalog.setval('contrapartida_con_id_seq', 5, true);
+
+
+--
+-- TOC entry 178 (class 1259 OID 16451)
+-- Dependencies: 6
+-- Name: criterio; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE criterio (
+    cri_id integer NOT NULL,
+    cri_nombre character varying(25) NOT NULL
+);
+
+
+ALTER TABLE public.criterio OWNER TO smpfgl;
+
+--
+-- TOC entry 179 (class 1259 OID 16454)
+-- Dependencies: 6
+-- Name: criterio_acuerdo; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE criterio_acuerdo (
+    cri_id integer NOT NULL,
+    acu_mun_id integer NOT NULL,
+    cri_acu_valor boolean NOT NULL
+);
+
+
+ALTER TABLE public.criterio_acuerdo OWNER TO smpfgl;
+
+--
+-- TOC entry 180 (class 1259 OID 16457)
+-- Dependencies: 178 6
+-- Name: criterio_cri_id_seq; Type: SEQUENCE; Schema: public; Owner: smpfgl
+--
+
+CREATE SEQUENCE criterio_cri_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.criterio_cri_id_seq OWNER TO smpfgl;
+
+--
+-- TOC entry 2357 (class 0 OID 0)
+-- Dependencies: 180
+-- Name: criterio_cri_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smpfgl
+--
+
+ALTER SEQUENCE criterio_cri_id_seq OWNED BY criterio.cri_id;
+
+
+--
+-- TOC entry 2358 (class 0 OID 0)
+-- Dependencies: 180
+-- Name: criterio_cri_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
+--
+
+SELECT pg_catalog.setval('criterio_cri_id_seq', 4, true);
+
+
+--
+-- TOC entry 181 (class 1259 OID 16459)
+-- Dependencies: 6
+-- Name: cumplimiento_informe; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE cumplimiento_informe (
+    inf_pre_id integer NOT NULL,
+    cum_min_id integer NOT NULL,
+    cum_inf_valor boolean NOT NULL
+);
+
+
+ALTER TABLE public.cumplimiento_informe OWNER TO smpfgl;
+
+--
+-- TOC entry 182 (class 1259 OID 16462)
+-- Dependencies: 6
+-- Name: cumplimiento_minimo; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE cumplimiento_minimo (
+    cum_min_id integer NOT NULL,
+    cum_min_nombre character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.cumplimiento_minimo OWNER TO smpfgl;
+
+--
+-- TOC entry 183 (class 1259 OID 16465)
+-- Dependencies: 6 182
+-- Name: cumplimiento_minimo_cum_min_id_seq; Type: SEQUENCE; Schema: public; Owner: smpfgl
+--
+
+CREATE SEQUENCE cumplimiento_minimo_cum_min_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.cumplimiento_minimo_cum_min_id_seq OWNER TO smpfgl;
+
+--
+-- TOC entry 2359 (class 0 OID 0)
+-- Dependencies: 183
+-- Name: cumplimiento_minimo_cum_min_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smpfgl
+--
+
+ALTER SEQUENCE cumplimiento_minimo_cum_min_id_seq OWNED BY cumplimiento_minimo.cum_min_id;
+
+
+--
+-- TOC entry 2360 (class 0 OID 0)
+-- Dependencies: 183
+-- Name: cumplimiento_minimo_cum_min_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
+--
+
+SELECT pg_catalog.setval('cumplimiento_minimo_cum_min_id_seq', 1, false);
+
+
+--
+-- TOC entry 184 (class 1259 OID 16467)
+-- Dependencies: 6
+-- Name: declaracion_interes; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE declaracion_interes (
+    dec_int_id integer NOT NULL,
+    dec_int_fecha date NOT NULL,
+    dec_int_lugar character varying(100) NOT NULL,
+    dec_int_comentario text,
+    dec_int_archivo oid
+);
+
+
+ALTER TABLE public.declaracion_interes OWNER TO smpfgl;
+
+--
+-- TOC entry 185 (class 1259 OID 16473)
+-- Dependencies: 184 6
+-- Name: declaracion_interes_dec_int_id_seq; Type: SEQUENCE; Schema: public; Owner: smpfgl
+--
+
+CREATE SEQUENCE declaracion_interes_dec_int_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.declaracion_interes_dec_int_id_seq OWNER TO smpfgl;
+
+--
+-- TOC entry 2361 (class 0 OID 0)
+-- Dependencies: 185
+-- Name: declaracion_interes_dec_int_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smpfgl
+--
+
+ALTER SEQUENCE declaracion_interes_dec_int_id_seq OWNED BY declaracion_interes.dec_int_id;
+
+
+--
+-- TOC entry 2362 (class 0 OID 0)
+-- Dependencies: 185
+-- Name: declaracion_interes_dec_int_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
+--
+
+SELECT pg_catalog.setval('declaracion_interes_dec_int_id_seq', 1, false);
+
+
+--
+-- TOC entry 186 (class 1259 OID 16475)
+-- Dependencies: 6
+-- Name: departamento; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE departamento (
+    dep_id integer NOT NULL,
+    reg_id integer NOT NULL,
+    dep_nombre character varying(50) NOT NULL
+);
+
+
+ALTER TABLE public.departamento OWNER TO smpfgl;
+
+--
+-- TOC entry 187 (class 1259 OID 16478)
+-- Dependencies: 186 6
+-- Name: departamento_dep_id_seq; Type: SEQUENCE; Schema: public; Owner: smpfgl
+--
+
+CREATE SEQUENCE departamento_dep_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.departamento_dep_id_seq OWNER TO smpfgl;
+
+--
+-- TOC entry 2363 (class 0 OID 0)
+-- Dependencies: 187
+-- Name: departamento_dep_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smpfgl
+--
+
+ALTER SEQUENCE departamento_dep_id_seq OWNED BY departamento.dep_id;
+
+
+--
+-- TOC entry 2364 (class 0 OID 0)
+-- Dependencies: 187
+-- Name: departamento_dep_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
+--
+
+SELECT pg_catalog.setval('departamento_dep_id_seq', 1, false);
+
+
+--
+-- TOC entry 188 (class 1259 OID 16480)
+-- Dependencies: 6
+-- Name: email; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE email (
+    reg_id integer,
+    ase_mun_id integer,
+    ema_cuenta character varying(100),
+    ema_id integer NOT NULL
+);
+
+
+ALTER TABLE public.email OWNER TO smpfgl;
+
+--
+-- TOC entry 189 (class 1259 OID 16483)
+-- Dependencies: 6 188
+-- Name: email_ema_id_seq; Type: SEQUENCE; Schema: public; Owner: smpfgl
+--
+
+CREATE SEQUENCE email_ema_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.email_ema_id_seq OWNER TO smpfgl;
+
+--
+-- TOC entry 2365 (class 0 OID 0)
+-- Dependencies: 189
+-- Name: email_ema_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smpfgl
+--
+
+ALTER SEQUENCE email_ema_id_seq OWNED BY email.ema_id;
+
+
+--
+-- TOC entry 2366 (class 0 OID 0)
+-- Dependencies: 189
+-- Name: email_ema_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
+--
+
+SELECT pg_catalog.setval('email_ema_id_seq', 1, false);
+
+
+--
+-- TOC entry 190 (class 1259 OID 16485)
+-- Dependencies: 6
+-- Name: etapa; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE etapa (
+    eta_id integer NOT NULL,
+    eta_nombre character varying(30) NOT NULL
+);
+
+
+ALTER TABLE public.etapa OWNER TO smpfgl;
+
+--
+-- TOC entry 191 (class 1259 OID 16488)
+-- Dependencies: 6
+-- Name: fecha_recepcion_observacion_din; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE fecha_recepcion_observacion_din (
+    fec_correlativo integer NOT NULL,
+    pro_id integer,
+    fec_rec_din date,
+    fec_obs_din date
+);
+
+
+ALTER TABLE public.fecha_recepcion_observacion_din OWNER TO smpfgl;
+
+--
+-- TOC entry 192 (class 1259 OID 16491)
+-- Dependencies: 6
+-- Name: fuente_primaria; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE fuente_primaria (
+    fue_pri_id integer NOT NULL,
+    inv_inf_id integer NOT NULL,
+    fue_pri_nombre character varying(50) NOT NULL,
+    fue_pri_institucion character varying(100) NOT NULL,
+    fue_pri_cargo character varying(30) NOT NULL,
+    fue_pri_telefono character(9) NOT NULL,
+    fue_pri_nombre_doc character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.fuente_primaria OWNER TO smpfgl;
+
+--
+-- TOC entry 193 (class 1259 OID 16494)
+-- Dependencies: 6 192
+-- Name: fuente_primaria_fue_pri_id_seq; Type: SEQUENCE; Schema: public; Owner: smpfgl
+--
+
+CREATE SEQUENCE fuente_primaria_fue_pri_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.fuente_primaria_fue_pri_id_seq OWNER TO smpfgl;
+
+--
+-- TOC entry 2367 (class 0 OID 0)
+-- Dependencies: 193
+-- Name: fuente_primaria_fue_pri_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smpfgl
+--
+
+ALTER SEQUENCE fuente_primaria_fue_pri_id_seq OWNED BY fuente_primaria.fue_pri_id;
+
+
+--
+-- TOC entry 2368 (class 0 OID 0)
+-- Dependencies: 193
+-- Name: fuente_primaria_fue_pri_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
+--
+
+SELECT pg_catalog.setval('fuente_primaria_fue_pri_id_seq', 1, false);
+
+
+--
+-- TOC entry 194 (class 1259 OID 16496)
+-- Dependencies: 6
+-- Name: fuente_secundaria; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE fuente_secundaria (
+    fue_sec_id integer NOT NULL,
+    inv_inf_id integer NOT NULL,
+    fue_sec_nombre character varying(100) NOT NULL,
+    fue_sec_fuente character varying(100) NOT NULL,
+    fue_sec_disponible_en character varying(15) NOT NULL,
+    fue_sec_anio integer NOT NULL
+);
+
+
+ALTER TABLE public.fuente_secundaria OWNER TO smpfgl;
+
+--
+-- TOC entry 195 (class 1259 OID 16499)
+-- Dependencies: 6 194
+-- Name: fuente_secundaria_fue_sec_id_seq; Type: SEQUENCE; Schema: public; Owner: smpfgl
+--
+
+CREATE SEQUENCE fuente_secundaria_fue_sec_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.fuente_secundaria_fue_sec_id_seq OWNER TO smpfgl;
+
+--
+-- TOC entry 2369 (class 0 OID 0)
+-- Dependencies: 195
+-- Name: fuente_secundaria_fue_sec_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smpfgl
+--
+
+ALTER SEQUENCE fuente_secundaria_fue_sec_id_seq OWNED BY fuente_secundaria.fue_sec_id;
+
+
+--
+-- TOC entry 2370 (class 0 OID 0)
+-- Dependencies: 195
+-- Name: fuente_secundaria_fue_sec_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
+--
+
+SELECT pg_catalog.setval('fuente_secundaria_fue_sec_id_seq', 1, false);
+
+
+--
+-- TOC entry 196 (class 1259 OID 16501)
+-- Dependencies: 6
+-- Name: grupo_apoyo; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE grupo_apoyo (
+    gru_apo_id integer NOT NULL,
+    gru_apo_fecha date NOT NULL,
+    gru_apo_c3 boolean NOT NULL,
+    gru_apo_c4 boolean NOT NULL,
+    gru_apo_obs text,
+    pro_pep_id integer
+);
+
+
+ALTER TABLE public.grupo_apoyo OWNER TO smpfgl;
+
+--
+-- TOC entry 197 (class 1259 OID 16507)
+-- Dependencies: 6
+-- Name: indicador; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE indicador (
+    ind_id integer NOT NULL,
+    com_id integer NOT NULL,
+    ind_nombre text NOT NULL,
+    ind_tipo integer NOT NULL
+);
+
+
+ALTER TABLE public.indicador OWNER TO smpfgl;
+
+--
+-- TOC entry 198 (class 1259 OID 16513)
+-- Dependencies: 197 6
+-- Name: indicador_ind_id_seq; Type: SEQUENCE; Schema: public; Owner: smpfgl
+--
+
+CREATE SEQUENCE indicador_ind_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.indicador_ind_id_seq OWNER TO smpfgl;
+
+--
+-- TOC entry 2371 (class 0 OID 0)
+-- Dependencies: 198
+-- Name: indicador_ind_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smpfgl
+--
+
+ALTER SEQUENCE indicador_ind_id_seq OWNED BY indicador.ind_id;
+
+
+--
+-- TOC entry 2372 (class 0 OID 0)
+-- Dependencies: 198
+-- Name: indicador_ind_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
+--
+
+SELECT pg_catalog.setval('indicador_ind_id_seq', 1, false);
+
+
+--
+-- TOC entry 199 (class 1259 OID 16515)
+-- Dependencies: 6
+-- Name: informe_preliminar; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE informe_preliminar (
+    inf_pre_id integer NOT NULL,
+    inf_pre_fecha_borrador date,
+    inf_pre_fecha_observacion date,
+    inf_pre_aceptacion date,
+    inf_pre_aceptada boolean,
+    inf_pre_firmam boolean NOT NULL,
+    inf_pre_firmai boolean NOT NULL,
+    inf_pre_firmau boolean NOT NULL,
+    inf_pre_archivo oid,
+    inf_pre_observacion text,
+    pro_pep_id integer NOT NULL
+);
+
+
+ALTER TABLE public.informe_preliminar OWNER TO smpfgl;
+
+--
+-- TOC entry 200 (class 1259 OID 16521)
+-- Dependencies: 199 6
+-- Name: informe_preliminar_inf_pre_id_seq; Type: SEQUENCE; Schema: public; Owner: smpfgl
+--
+
+CREATE SEQUENCE informe_preliminar_inf_pre_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.informe_preliminar_inf_pre_id_seq OWNER TO smpfgl;
+
+--
+-- TOC entry 2373 (class 0 OID 0)
+-- Dependencies: 200
+-- Name: informe_preliminar_inf_pre_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smpfgl
+--
+
+ALTER SEQUENCE informe_preliminar_inf_pre_id_seq OWNED BY informe_preliminar.inf_pre_id;
+
+
+--
+-- TOC entry 2374 (class 0 OID 0)
+-- Dependencies: 200
+-- Name: informe_preliminar_inf_pre_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
+--
+
+SELECT pg_catalog.setval('informe_preliminar_inf_pre_id_seq', 1, false);
+
+
+--
+-- TOC entry 201 (class 1259 OID 16523)
+-- Dependencies: 6
+-- Name: institucion; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE institucion (
+    ins_id integer NOT NULL,
+    ins_nombre character varying(50) NOT NULL
+);
+
+
+ALTER TABLE public.institucion OWNER TO smpfgl;
+
+--
+-- TOC entry 202 (class 1259 OID 16526)
+-- Dependencies: 201 6
+-- Name: institucion_ins_id_seq; Type: SEQUENCE; Schema: public; Owner: smpfgl
+--
+
+CREATE SEQUENCE institucion_ins_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.institucion_ins_id_seq OWNER TO smpfgl;
+
+--
+-- TOC entry 2375 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: institucion_ins_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smpfgl
+--
+
+ALTER SEQUENCE institucion_ins_id_seq OWNED BY institucion.ins_id;
+
+
+--
+-- TOC entry 2376 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: institucion_ins_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
+--
+
+SELECT pg_catalog.setval('institucion_ins_id_seq', 6, true);
+
+
+--
+-- TOC entry 203 (class 1259 OID 16528)
+-- Dependencies: 6
+-- Name: inventario_informacion; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE inventario_informacion (
+    inv_inf_id integer NOT NULL,
+    inv_inf_observacion text,
+    pro_pep_id integer NOT NULL
+);
+
+
+ALTER TABLE public.inventario_informacion OWNER TO smpfgl;
+
+--
+-- TOC entry 204 (class 1259 OID 16534)
+-- Dependencies: 203 6
+-- Name: inventario_informacion_inv_inf_id_seq; Type: SEQUENCE; Schema: public; Owner: smpfgl
+--
+
+CREATE SEQUENCE inventario_informacion_inv_inf_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.inventario_informacion_inv_inf_id_seq OWNER TO smpfgl;
+
+--
+-- TOC entry 2377 (class 0 OID 0)
+-- Dependencies: 204
+-- Name: inventario_informacion_inv_inf_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smpfgl
+--
+
+ALTER SEQUENCE inventario_informacion_inv_inf_id_seq OWNED BY inventario_informacion.inv_inf_id;
+
+
+--
+-- TOC entry 2378 (class 0 OID 0)
+-- Dependencies: 204
+-- Name: inventario_informacion_inv_inf_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
+--
+
+SELECT pg_catalog.setval('inventario_informacion_inv_inf_id_seq', 1, false);
+
+
+--
+-- TOC entry 205 (class 1259 OID 16536)
+-- Dependencies: 6
+-- Name: login_attempts; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE login_attempts (
+    id integer NOT NULL,
+    ip_address character varying(40) NOT NULL,
+    login character varying(50) NOT NULL,
+    "time" timestamp without time zone
+);
+
+
+ALTER TABLE public.login_attempts OWNER TO smpfgl;
+
+--
+-- TOC entry 206 (class 1259 OID 16539)
+-- Dependencies: 6 205
+-- Name: login_attempts_id_seq; Type: SEQUENCE; Schema: public; Owner: smpfgl
+--
+
+CREATE SEQUENCE login_attempts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.login_attempts_id_seq OWNER TO smpfgl;
+
+--
+-- TOC entry 2379 (class 0 OID 0)
+-- Dependencies: 206
+-- Name: login_attempts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smpfgl
+--
+
+ALTER SEQUENCE login_attempts_id_seq OWNED BY login_attempts.id;
+
+
+--
+-- TOC entry 2380 (class 0 OID 0)
+-- Dependencies: 206
+-- Name: login_attempts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
+--
+
+SELECT pg_catalog.setval('login_attempts_id_seq', 1, true);
+
+
+--
+-- TOC entry 207 (class 1259 OID 16541)
+-- Dependencies: 6
+-- Name: mensaje_correo; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE mensaje_correo (
+    men_cor_id integer NOT NULL,
+    men_cor_asunto character varying(25) NOT NULL,
+    men_cor_cuerpo text NOT NULL
+);
+
+
+ALTER TABLE public.mensaje_correo OWNER TO smpfgl;
+
+--
+-- TOC entry 208 (class 1259 OID 16547)
+-- Dependencies: 6 207
+-- Name: mensaje_correo_men_cor_id_seq; Type: SEQUENCE; Schema: public; Owner: smpfgl
+--
+
+CREATE SEQUENCE mensaje_correo_men_cor_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.mensaje_correo_men_cor_id_seq OWNER TO smpfgl;
+
+--
+-- TOC entry 2381 (class 0 OID 0)
+-- Dependencies: 208
+-- Name: mensaje_correo_men_cor_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smpfgl
+--
+
+ALTER SEQUENCE mensaje_correo_men_cor_id_seq OWNED BY mensaje_correo.men_cor_id;
+
+
+--
+-- TOC entry 2382 (class 0 OID 0)
+-- Dependencies: 208
+-- Name: mensaje_correo_men_cor_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
+--
+
+SELECT pg_catalog.setval('mensaje_correo_men_cor_id_seq', 1, false);
+
+
+--
+-- TOC entry 209 (class 1259 OID 16549)
+-- Dependencies: 6
+-- Name: municipio; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE municipio (
+    mun_id integer NOT NULL,
+    inv_inf_id integer,
+    dep_id integer NOT NULL,
+    pro_id integer,
+    mun_nombre character varying(50) NOT NULL,
+    mun_presupuesto numeric(6,2)
+);
+
+
+ALTER TABLE public.municipio OWNER TO smpfgl;
+
+--
+-- TOC entry 210 (class 1259 OID 16552)
+-- Dependencies: 6
+-- Name: municipio_componente; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE municipio_componente (
+    com_id integer NOT NULL,
+    mun_id integer NOT NULL,
+    mun_com_asignacion numeric(6,2)
+);
+
+
+ALTER TABLE public.municipio_componente OWNER TO smpfgl;
+
+--
+-- TOC entry 211 (class 1259 OID 16555)
+-- Dependencies: 209 6
+-- Name: municipio_mun_id_seq; Type: SEQUENCE; Schema: public; Owner: smpfgl
+--
+
+CREATE SEQUENCE municipio_mun_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.municipio_mun_id_seq OWNER TO smpfgl;
+
+--
+-- TOC entry 2383 (class 0 OID 0)
+-- Dependencies: 211
+-- Name: municipio_mun_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smpfgl
+--
+
+ALTER SEQUENCE municipio_mun_id_seq OWNED BY municipio.mun_id;
+
+
+--
+-- TOC entry 2384 (class 0 OID 0)
+-- Dependencies: 211
+-- Name: municipio_mun_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
+--
+
+SELECT pg_catalog.setval('municipio_mun_id_seq', 1, false);
+
+
+--
+-- TOC entry 212 (class 1259 OID 16557)
+-- Dependencies: 6
+-- Name: opcion_sistema; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE opcion_sistema (
+    opc_sis_id integer NOT NULL,
+    opc_sis_nombre character varying(40) NOT NULL,
+    opc_sis_url character varying(100) NOT NULL,
+    opc_opc_sis_id integer
+);
+
+
+ALTER TABLE public.opcion_sistema OWNER TO smpfgl;
+
+--
+-- TOC entry 213 (class 1259 OID 16560)
+-- Dependencies: 212 6
+-- Name: opcion_sistema_opc_sis_id_seq; Type: SEQUENCE; Schema: public; Owner: smpfgl
+--
+
+CREATE SEQUENCE opcion_sistema_opc_sis_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.opcion_sistema_opc_sis_id_seq OWNER TO smpfgl;
+
+--
+-- TOC entry 2385 (class 0 OID 0)
+-- Dependencies: 213
+-- Name: opcion_sistema_opc_sis_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smpfgl
+--
+
+ALTER SEQUENCE opcion_sistema_opc_sis_id_seq OWNED BY opcion_sistema.opc_sis_id;
+
+
+--
+-- TOC entry 2386 (class 0 OID 0)
+-- Dependencies: 213
+-- Name: opcion_sistema_opc_sis_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
+--
+
+SELECT pg_catalog.setval('opcion_sistema_opc_sis_id_seq', 10, true);
+
+
+--
+-- TOC entry 214 (class 1259 OID 16562)
+-- Dependencies: 6
+-- Name: participante; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE participante (
+    par_id integer NOT NULL,
+    gru_apo_id integer,
+    reu_id integer,
+    ins_id integer,
+    dec_int_id integer,
+    inf_pre_id integer,
+    par_nombre character varying(50) NOT NULL,
+    par_apellido character varying(50) NOT NULL,
+    par_sexo character(1) NOT NULL,
+    par_cargo character varying(30),
+    par_edad integer,
+    par_nivel_esco character varying(25),
+    par_tel character(9)
+);
+
+
+ALTER TABLE public.participante OWNER TO smpfgl;
+
+--
+-- TOC entry 215 (class 1259 OID 16565)
+-- Dependencies: 6
+-- Name: participante_capacitacion; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE participante_capacitacion (
+    par_id integer NOT NULL,
+    cap_id integer NOT NULL,
+    par_cap_participa boolean
+);
+
+
+ALTER TABLE public.participante_capacitacion OWNER TO smpfgl;
+
+--
+-- TOC entry 216 (class 1259 OID 16568)
+-- Dependencies: 6 214
+-- Name: participante_par_id_seq; Type: SEQUENCE; Schema: public; Owner: smpfgl
+--
+
+CREATE SEQUENCE participante_par_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.participante_par_id_seq OWNER TO smpfgl;
+
+--
+-- TOC entry 2387 (class 0 OID 0)
+-- Dependencies: 216
+-- Name: participante_par_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smpfgl
+--
+
+ALTER SEQUENCE participante_par_id_seq OWNED BY participante.par_id;
+
+
+--
+-- TOC entry 2388 (class 0 OID 0)
+-- Dependencies: 216
+-- Name: participante_par_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
+--
+
+SELECT pg_catalog.setval('participante_par_id_seq', 1, false);
+
+
+--
+-- TOC entry 217 (class 1259 OID 16570)
+-- Dependencies: 6
+-- Name: participante_taller; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE participante_taller (
+    par_id integer NOT NULL,
+    tal_id integer NOT NULL,
+    par_tal_participa boolean
+);
+
+
+ALTER TABLE public.participante_taller OWNER TO smpfgl;
+
+--
+-- TOC entry 218 (class 1259 OID 16573)
+-- Dependencies: 6
+-- Name: personal_enlace; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE personal_enlace (
+    per_enl_id integer NOT NULL,
+    acu_mun_id integer NOT NULL,
+    per_enl_nombre character varying(50) NOT NULL,
+    per_enl_apellido character varying(50) NOT NULL,
+    per_enl_sexo character(1) NOT NULL,
+    per_enl_cargo character varying(30) NOT NULL
+);
+
+
+ALTER TABLE public.personal_enlace OWNER TO smpfgl;
+
+--
+-- TOC entry 219 (class 1259 OID 16576)
+-- Dependencies: 218 6
+-- Name: personal_enlace_per_enl_id_seq; Type: SEQUENCE; Schema: public; Owner: smpfgl
+--
+
+CREATE SEQUENCE personal_enlace_per_enl_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.personal_enlace_per_enl_id_seq OWNER TO smpfgl;
+
+--
+-- TOC entry 2389 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: personal_enlace_per_enl_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smpfgl
+--
+
+ALTER SEQUENCE personal_enlace_per_enl_id_seq OWNED BY personal_enlace.per_enl_id;
+
+
+--
+-- TOC entry 2390 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: personal_enlace_per_enl_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
+--
+
+SELECT pg_catalog.setval('personal_enlace_per_enl_id_seq', 1, false);
+
+
+--
+-- TOC entry 220 (class 1259 OID 16578)
+-- Dependencies: 6
+-- Name: presupuesto; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE presupuesto (
+    pre_id integer NOT NULL,
+    com_id integer NOT NULL,
+    pre_tipo integer NOT NULL,
+    pre_cantidad numeric(10,2) NOT NULL
+);
+
+
+ALTER TABLE public.presupuesto OWNER TO smpfgl;
+
+--
+-- TOC entry 221 (class 1259 OID 16581)
+-- Dependencies: 6 220
+-- Name: presupuesto_pre_id_seq; Type: SEQUENCE; Schema: public; Owner: smpfgl
+--
+
+CREATE SEQUENCE presupuesto_pre_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.presupuesto_pre_id_seq OWNER TO smpfgl;
+
+--
+-- TOC entry 2391 (class 0 OID 0)
+-- Dependencies: 221
+-- Name: presupuesto_pre_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smpfgl
+--
+
+ALTER SEQUENCE presupuesto_pre_id_seq OWNED BY presupuesto.pre_id;
+
+
+--
+-- TOC entry 2392 (class 0 OID 0)
+-- Dependencies: 221
+-- Name: presupuesto_pre_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
+--
+
+SELECT pg_catalog.setval('presupuesto_pre_id_seq', 1, false);
+
+
+--
+-- TOC entry 222 (class 1259 OID 16583)
+-- Dependencies: 6
+-- Name: proyecto; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE proyecto (
+    pro_id integer NOT NULL,
+    mun_id integer NOT NULL,
+    com_id integer NOT NULL,
+    pro_codigo integer,
+    pro_nombre character varying(150),
+    pro_num_ord_llegada integer,
+    pro_zona_fisdl character varying(15),
+    pro_nom_formulador character varying(50),
+    pro_nom_ref_tec_municipal character varying(50),
+    pro_email_ref_tec_municipal character varying(50),
+    pro_tel_ref_tec_municipal character varying(9),
+    pro_nom_ase_fisdl character varying(50),
+    pro_email_ase_fisdl character varying(50),
+    pro_tel_ase_fisdl character varying(9),
+    pro_fec_ent_gl_fisdl date,
+    pro_fec_ent_gop_gpr date,
+    pro_rec_gpr date,
+    pro_fec_ent_gpr_din date,
+    pro_estatus integer,
+    pro_mon_ejecucion numeric(6,2),
+    pro_fec_visita date,
+    pro_num_rev integer,
+    pro_fec_visado date,
+    pro_mon_visado numeric(6,2),
+    pro_obs_din character varying(500),
+    pro_tipologia character varying(15),
+    pro_sal_par_ciudadana character varying(100),
+    pro_sal_pue_indigenas character varying(100),
+    pro_sal_rea_involuntario character varying(100)
+);
+
+
+ALTER TABLE public.proyecto OWNER TO smpfgl;
+
+--
+-- TOC entry 163 (class 1259 OID 16391)
+-- Dependencies: 6
+-- Name: proyecto_pep; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE proyecto_pep (
+    pro_pep_id integer NOT NULL,
+    pro_pep_nombre text NOT NULL,
+    pro_pep_descripcion text,
+    mun_id integer NOT NULL,
+    acu_mun_id integer,
+    inf_pre_id integer,
+    inv_inf_id integer,
+    gru_apo_id integer,
+    con_id integer
+);
+
+
+ALTER TABLE public.proyecto_pep OWNER TO smpfgl;
+
+--
+-- TOC entry 164 (class 1259 OID 16397)
+-- Dependencies: 163 6
+-- Name: proyecto_Pep_pro_pep_id_seq; Type: SEQUENCE; Schema: public; Owner: smpfgl
+--
+
+CREATE SEQUENCE "proyecto_Pep_pro_pep_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."proyecto_Pep_pro_pep_id_seq" OWNER TO smpfgl;
+
+--
+-- TOC entry 2393 (class 0 OID 0)
+-- Dependencies: 164
+-- Name: proyecto_Pep_pro_pep_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smpfgl
+--
+
+ALTER SEQUENCE "proyecto_Pep_pro_pep_id_seq" OWNED BY proyecto_pep.pro_pep_id;
+
+
+--
+-- TOC entry 2394 (class 0 OID 0)
+-- Dependencies: 164
+-- Name: proyecto_Pep_pro_pep_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
+--
+
+SELECT pg_catalog.setval('"proyecto_Pep_pro_pep_id_seq"', 1, false);
+
+
+--
+-- TOC entry 223 (class 1259 OID 16589)
+-- Dependencies: 6
+-- Name: region; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE region (
+    reg_id integer NOT NULL,
+    reg_nombre character varying(50) NOT NULL,
+    reg_direccion character varying(100)
+);
+
+
+ALTER TABLE public.region OWNER TO smpfgl;
+
+--
+-- TOC entry 224 (class 1259 OID 16592)
+-- Dependencies: 6 223
+-- Name: region_reg_id_seq; Type: SEQUENCE; Schema: public; Owner: smpfgl
+--
+
+CREATE SEQUENCE region_reg_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.region_reg_id_seq OWNER TO smpfgl;
+
+--
+-- TOC entry 2395 (class 0 OID 0)
+-- Dependencies: 224
+-- Name: region_reg_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smpfgl
+--
+
+ALTER SEQUENCE region_reg_id_seq OWNED BY region.reg_id;
+
+
+--
+-- TOC entry 2396 (class 0 OID 0)
+-- Dependencies: 224
+-- Name: region_reg_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
+--
+
+SELECT pg_catalog.setval('region_reg_id_seq', 1, false);
+
+
+--
+-- TOC entry 225 (class 1259 OID 16594)
+-- Dependencies: 6
+-- Name: reunion; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE reunion (
+    reu_id integer NOT NULL,
+    eta_id integer NOT NULL,
+    reu_numero integer,
+    reu_fecha date NOT NULL,
+    reu_duracion_horas integer NOT NULL,
+    reu_tema character varying(200) NOT NULL,
+    reu_resultado text NOT NULL,
+    reu_observacion text,
+    pro_pep_id integer NOT NULL
+);
+
+
+ALTER TABLE public.reunion OWNER TO smpfgl;
+
+--
+-- TOC entry 226 (class 1259 OID 16600)
+-- Dependencies: 6 225
+-- Name: reunion_reu_id_seq; Type: SEQUENCE; Schema: public; Owner: smpfgl
+--
+
+CREATE SEQUENCE reunion_reu_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.reunion_reu_id_seq OWNER TO smpfgl;
+
+--
+-- TOC entry 2397 (class 0 OID 0)
+-- Dependencies: 226
+-- Name: reunion_reu_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smpfgl
+--
+
+ALTER SEQUENCE reunion_reu_id_seq OWNED BY reunion.reu_id;
+
+
+--
+-- TOC entry 2398 (class 0 OID 0)
+-- Dependencies: 226
+-- Name: reunion_reu_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
+--
+
+SELECT pg_catalog.setval('reunion_reu_id_seq', 1, false);
+
+
+--
+-- TOC entry 227 (class 1259 OID 16602)
+-- Dependencies: 6
+-- Name: rol; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE rol (
+    rol_id integer NOT NULL,
+    rol_nombre character varying(25) NOT NULL
+);
+
+
+ALTER TABLE public.rol OWNER TO smpfgl;
+
+--
+-- TOC entry 228 (class 1259 OID 16605)
+-- Dependencies: 6
+-- Name: rol_opcion_sistema; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE rol_opcion_sistema (
+    rol_id integer NOT NULL,
+    opc_sis_id integer NOT NULL,
+    rol_opc_sis_id integer NOT NULL
+);
+
+
+ALTER TABLE public.rol_opcion_sistema OWNER TO smpfgl;
+
+--
+-- TOC entry 229 (class 1259 OID 16608)
+-- Dependencies: 6 228
+-- Name: rol_opcion_sistema_rol_opc_sis_id_seq; Type: SEQUENCE; Schema: public; Owner: smpfgl
+--
+
+CREATE SEQUENCE rol_opcion_sistema_rol_opc_sis_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.rol_opcion_sistema_rol_opc_sis_id_seq OWNER TO smpfgl;
+
+--
+-- TOC entry 2399 (class 0 OID 0)
+-- Dependencies: 229
+-- Name: rol_opcion_sistema_rol_opc_sis_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smpfgl
+--
+
+ALTER SEQUENCE rol_opcion_sistema_rol_opc_sis_id_seq OWNED BY rol_opcion_sistema.rol_opc_sis_id;
+
+
+--
+-- TOC entry 2400 (class 0 OID 0)
+-- Dependencies: 229
+-- Name: rol_opcion_sistema_rol_opc_sis_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
+--
+
+SELECT pg_catalog.setval('rol_opcion_sistema_rol_opc_sis_id_seq', 8, true);
+
+
+--
+-- TOC entry 230 (class 1259 OID 16610)
+-- Dependencies: 6 227
+-- Name: rol_rol_id_seq; Type: SEQUENCE; Schema: public; Owner: smpfgl
+--
+
+CREATE SEQUENCE rol_rol_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.rol_rol_id_seq OWNER TO smpfgl;
+
+--
+-- TOC entry 2401 (class 0 OID 0)
+-- Dependencies: 230
+-- Name: rol_rol_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smpfgl
+--
+
+ALTER SEQUENCE rol_rol_id_seq OWNED BY rol.rol_id;
+
+
+--
+-- TOC entry 2402 (class 0 OID 0)
+-- Dependencies: 230
+-- Name: rol_rol_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
+--
+
+SELECT pg_catalog.setval('rol_rol_id_seq', 3, true);
+
+
+--
+-- TOC entry 231 (class 1259 OID 16612)
+-- Dependencies: 6
+-- Name: taller; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE taller (
+    tal_id integer NOT NULL,
+    tal_fecha date NOT NULL,
+    tal_facilitador character varying(100) NOT NULL,
+    tal_observacion text
+);
+
+
+ALTER TABLE public.taller OWNER TO smpfgl;
+
+--
+-- TOC entry 232 (class 1259 OID 16618)
+-- Dependencies: 6 231
+-- Name: taller_tal_id_seq; Type: SEQUENCE; Schema: public; Owner: smpfgl
+--
+
+CREATE SEQUENCE taller_tal_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.taller_tal_id_seq OWNER TO smpfgl;
+
+--
+-- TOC entry 2403 (class 0 OID 0)
+-- Dependencies: 232
+-- Name: taller_tal_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smpfgl
+--
+
+ALTER SEQUENCE taller_tal_id_seq OWNED BY taller.tal_id;
+
+
+--
+-- TOC entry 2404 (class 0 OID 0)
+-- Dependencies: 232
+-- Name: taller_tal_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
+--
+
+SELECT pg_catalog.setval('taller_tal_id_seq', 1, false);
+
+
+--
+-- TOC entry 233 (class 1259 OID 16620)
+-- Dependencies: 6
+-- Name: telefono; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE telefono (
+    reg_id integer,
+    ase_mun_id integer,
+    tel_numero character varying(9) NOT NULL,
+    tel_id integer NOT NULL
+);
+
+
+ALTER TABLE public.telefono OWNER TO smpfgl;
+
+--
+-- TOC entry 234 (class 1259 OID 16623)
+-- Dependencies: 6 233
+-- Name: telefono_tel_id_seq; Type: SEQUENCE; Schema: public; Owner: smpfgl
+--
+
+CREATE SEQUENCE telefono_tel_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.telefono_tel_id_seq OWNER TO smpfgl;
+
+--
+-- TOC entry 2405 (class 0 OID 0)
+-- Dependencies: 234
+-- Name: telefono_tel_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smpfgl
+--
+
+ALTER SEQUENCE telefono_tel_id_seq OWNED BY telefono.tel_id;
+
+
+--
+-- TOC entry 2406 (class 0 OID 0)
+-- Dependencies: 234
+-- Name: telefono_tel_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
+--
+
+SELECT pg_catalog.setval('telefono_tel_id_seq', 1, false);
+
+
+--
+-- TOC entry 235 (class 1259 OID 16625)
+-- Dependencies: 2145 6
+-- Name: user_autologin; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE user_autologin (
+    key_id character(32) NOT NULL,
+    user_id integer DEFAULT 0 NOT NULL,
+    user_agent character varying(150) NOT NULL,
+    last_ip character varying(40) NOT NULL,
+    last_login timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.user_autologin OWNER TO smpfgl;
+
+--
+-- TOC entry 236 (class 1259 OID 16629)
+-- Dependencies: 2146 2147 6
+-- Name: user_profiles; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE user_profiles (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    country character varying(20) DEFAULT NULL::character varying,
+    website character varying(255) DEFAULT NULL::character varying
+);
+
+
+ALTER TABLE public.user_profiles OWNER TO smpfgl;
+
+--
+-- TOC entry 237 (class 1259 OID 16634)
+-- Dependencies: 6 236
+-- Name: user_profiles_id_seq; Type: SEQUENCE; Schema: public; Owner: smpfgl
+--
+
+CREATE SEQUENCE user_profiles_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.user_profiles_id_seq OWNER TO smpfgl;
+
+--
+-- TOC entry 2407 (class 0 OID 0)
+-- Dependencies: 237
+-- Name: user_profiles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smpfgl
+--
+
+ALTER SEQUENCE user_profiles_id_seq OWNED BY user_profiles.id;
+
+
+--
+-- TOC entry 2408 (class 0 OID 0)
+-- Dependencies: 237
+-- Name: user_profiles_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
+--
+
+SELECT pg_catalog.setval('user_profiles_id_seq', 2, true);
+
+
+--
+-- TOC entry 238 (class 1259 OID 16636)
+-- Dependencies: 2149 2150 2151 2152 2153 2154 6
+-- Name: users; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE TABLE users (
+    id integer NOT NULL,
+    username character varying(50) NOT NULL,
+    password character varying(255) NOT NULL,
+    email character varying(100) NOT NULL,
+    activated integer DEFAULT 1 NOT NULL,
+    banned integer DEFAULT 0 NOT NULL,
+    ban_reason character varying(255) DEFAULT NULL::character varying,
+    new_password_key character varying(50) DEFAULT NULL::character varying,
+    new_password_requested date,
+    new_email character varying(100) DEFAULT NULL::character varying,
+    new_email_key character varying(50) DEFAULT NULL::character varying,
+    last_ip character varying(40) NOT NULL,
+    last_login date,
+    created date,
+    modified date,
+    rol_id integer NOT NULL
+);
+
+
+ALTER TABLE public.users OWNER TO smpfgl;
+
+--
+-- TOC entry 239 (class 1259 OID 16648)
+-- Dependencies: 238 6
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: smpfgl
+--
+
+CREATE SEQUENCE users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.users_id_seq OWNER TO smpfgl;
+
+--
+-- TOC entry 2409 (class 0 OID 0)
+-- Dependencies: 239
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smpfgl
+--
+
+ALTER SEQUENCE users_id_seq OWNED BY users.id;
+
+
+--
+-- TOC entry 2410 (class 0 OID 0)
+-- Dependencies: 239
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
+--
+
+SELECT pg_catalog.setval('users_id_seq', 2, true);
+
+
+--
+-- TOC entry 2113 (class 2604 OID 16650)
+-- Dependencies: 166 165
+-- Name: act_id; Type: DEFAULT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY actividad ALTER COLUMN act_id SET DEFAULT nextval('actividad_act_id_seq'::regclass);
+
+
+--
+-- TOC entry 2114 (class 2604 OID 16651)
+-- Dependencies: 168 167
+-- Name: acu_mun_id; Type: DEFAULT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY acuerdo_municipal ALTER COLUMN acu_mun_id SET DEFAULT nextval('acuerdo_municipal_acu_mun_id_seq'::regclass);
+
+
+--
+-- TOC entry 2115 (class 2604 OID 16652)
+-- Dependencies: 171 170
+-- Name: cap_id; Type: DEFAULT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY capacitacion ALTER COLUMN cap_id SET DEFAULT nextval('capacitacion_cap_id_seq'::regclass);
+
+
+--
+-- TOC entry 2119 (class 2604 OID 16653)
+-- Dependencies: 174 173
+-- Name: com_id; Type: DEFAULT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY componente ALTER COLUMN com_id SET DEFAULT nextval('componente_com_id_seq'::regclass);
+
+
+--
+-- TOC entry 2111 (class 2604 OID 16654)
+-- Dependencies: 162 161
+-- Name: con_id; Type: DEFAULT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY consultor ALTER COLUMN con_id SET DEFAULT nextval('consultor_con_id_seq'::regclass);
+
+
+--
+-- TOC entry 2120 (class 2604 OID 16655)
+-- Dependencies: 177 175
+-- Name: con_id; Type: DEFAULT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY contrapartida ALTER COLUMN con_id SET DEFAULT nextval('contrapartida_con_id_seq'::regclass);
+
+
+--
+-- TOC entry 2121 (class 2604 OID 16656)
+-- Dependencies: 180 178
+-- Name: cri_id; Type: DEFAULT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY criterio ALTER COLUMN cri_id SET DEFAULT nextval('criterio_cri_id_seq'::regclass);
+
+
+--
+-- TOC entry 2122 (class 2604 OID 16657)
+-- Dependencies: 183 182
+-- Name: cum_min_id; Type: DEFAULT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY cumplimiento_minimo ALTER COLUMN cum_min_id SET DEFAULT nextval('cumplimiento_minimo_cum_min_id_seq'::regclass);
+
+
+--
+-- TOC entry 2123 (class 2604 OID 16658)
+-- Dependencies: 185 184
+-- Name: dec_int_id; Type: DEFAULT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY declaracion_interes ALTER COLUMN dec_int_id SET DEFAULT nextval('declaracion_interes_dec_int_id_seq'::regclass);
+
+
+--
+-- TOC entry 2124 (class 2604 OID 16659)
+-- Dependencies: 187 186
+-- Name: dep_id; Type: DEFAULT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY departamento ALTER COLUMN dep_id SET DEFAULT nextval('departamento_dep_id_seq'::regclass);
+
+
+--
+-- TOC entry 2125 (class 2604 OID 16660)
+-- Dependencies: 189 188
+-- Name: ema_id; Type: DEFAULT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY email ALTER COLUMN ema_id SET DEFAULT nextval('email_ema_id_seq'::regclass);
+
+
+--
+-- TOC entry 2126 (class 2604 OID 16661)
+-- Dependencies: 193 192
+-- Name: fue_pri_id; Type: DEFAULT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY fuente_primaria ALTER COLUMN fue_pri_id SET DEFAULT nextval('fuente_primaria_fue_pri_id_seq'::regclass);
+
+
+--
+-- TOC entry 2127 (class 2604 OID 16662)
+-- Dependencies: 195 194
+-- Name: fue_sec_id; Type: DEFAULT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY fuente_secundaria ALTER COLUMN fue_sec_id SET DEFAULT nextval('fuente_secundaria_fue_sec_id_seq'::regclass);
+
+
+--
+-- TOC entry 2128 (class 2604 OID 16663)
+-- Dependencies: 198 197
+-- Name: ind_id; Type: DEFAULT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY indicador ALTER COLUMN ind_id SET DEFAULT nextval('indicador_ind_id_seq'::regclass);
+
+
+--
+-- TOC entry 2129 (class 2604 OID 16664)
+-- Dependencies: 200 199
+-- Name: inf_pre_id; Type: DEFAULT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY informe_preliminar ALTER COLUMN inf_pre_id SET DEFAULT nextval('informe_preliminar_inf_pre_id_seq'::regclass);
+
+
+--
+-- TOC entry 2130 (class 2604 OID 16665)
+-- Dependencies: 202 201
+-- Name: ins_id; Type: DEFAULT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY institucion ALTER COLUMN ins_id SET DEFAULT nextval('institucion_ins_id_seq'::regclass);
+
+
+--
+-- TOC entry 2131 (class 2604 OID 16666)
+-- Dependencies: 204 203
+-- Name: inv_inf_id; Type: DEFAULT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY inventario_informacion ALTER COLUMN inv_inf_id SET DEFAULT nextval('inventario_informacion_inv_inf_id_seq'::regclass);
+
+
+--
+-- TOC entry 2132 (class 2604 OID 16667)
+-- Dependencies: 206 205
+-- Name: id; Type: DEFAULT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY login_attempts ALTER COLUMN id SET DEFAULT nextval('login_attempts_id_seq'::regclass);
+
+
+--
+-- TOC entry 2133 (class 2604 OID 16668)
+-- Dependencies: 208 207
+-- Name: men_cor_id; Type: DEFAULT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY mensaje_correo ALTER COLUMN men_cor_id SET DEFAULT nextval('mensaje_correo_men_cor_id_seq'::regclass);
+
+
+--
+-- TOC entry 2134 (class 2604 OID 16669)
+-- Dependencies: 211 209
+-- Name: mun_id; Type: DEFAULT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY municipio ALTER COLUMN mun_id SET DEFAULT nextval('municipio_mun_id_seq'::regclass);
+
+
+--
+-- TOC entry 2135 (class 2604 OID 16670)
+-- Dependencies: 213 212
+-- Name: opc_sis_id; Type: DEFAULT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY opcion_sistema ALTER COLUMN opc_sis_id SET DEFAULT nextval('opcion_sistema_opc_sis_id_seq'::regclass);
+
+
+--
+-- TOC entry 2136 (class 2604 OID 16671)
+-- Dependencies: 216 214
+-- Name: par_id; Type: DEFAULT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY participante ALTER COLUMN par_id SET DEFAULT nextval('participante_par_id_seq'::regclass);
+
+
+--
+-- TOC entry 2137 (class 2604 OID 16672)
+-- Dependencies: 219 218
+-- Name: per_enl_id; Type: DEFAULT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY personal_enlace ALTER COLUMN per_enl_id SET DEFAULT nextval('personal_enlace_per_enl_id_seq'::regclass);
+
+
+--
+-- TOC entry 2138 (class 2604 OID 16673)
+-- Dependencies: 221 220
+-- Name: pre_id; Type: DEFAULT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY presupuesto ALTER COLUMN pre_id SET DEFAULT nextval('presupuesto_pre_id_seq'::regclass);
+
+
+--
+-- TOC entry 2112 (class 2604 OID 16674)
+-- Dependencies: 164 163
+-- Name: pro_pep_id; Type: DEFAULT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY proyecto_pep ALTER COLUMN pro_pep_id SET DEFAULT nextval('"proyecto_Pep_pro_pep_id_seq"'::regclass);
+
+
+--
+-- TOC entry 2139 (class 2604 OID 16675)
+-- Dependencies: 224 223
+-- Name: reg_id; Type: DEFAULT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY region ALTER COLUMN reg_id SET DEFAULT nextval('region_reg_id_seq'::regclass);
+
+
+--
+-- TOC entry 2140 (class 2604 OID 16676)
+-- Dependencies: 226 225
+-- Name: reu_id; Type: DEFAULT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY reunion ALTER COLUMN reu_id SET DEFAULT nextval('reunion_reu_id_seq'::regclass);
+
+
+--
+-- TOC entry 2141 (class 2604 OID 16677)
+-- Dependencies: 230 227
+-- Name: rol_id; Type: DEFAULT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY rol ALTER COLUMN rol_id SET DEFAULT nextval('rol_rol_id_seq'::regclass);
+
+
+--
+-- TOC entry 2142 (class 2604 OID 16678)
+-- Dependencies: 229 228
+-- Name: rol_opc_sis_id; Type: DEFAULT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY rol_opcion_sistema ALTER COLUMN rol_opc_sis_id SET DEFAULT nextval('rol_opcion_sistema_rol_opc_sis_id_seq'::regclass);
+
+
+--
+-- TOC entry 2143 (class 2604 OID 16679)
+-- Dependencies: 232 231
+-- Name: tal_id; Type: DEFAULT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY taller ALTER COLUMN tal_id SET DEFAULT nextval('taller_tal_id_seq'::regclass);
+
+
+--
+-- TOC entry 2144 (class 2604 OID 16680)
+-- Dependencies: 234 233
+-- Name: tel_id; Type: DEFAULT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY telefono ALTER COLUMN tel_id SET DEFAULT nextval('telefono_tel_id_seq'::regclass);
+
+
+--
+-- TOC entry 2148 (class 2604 OID 16681)
+-- Dependencies: 237 236
+-- Name: id; Type: DEFAULT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY user_profiles ALTER COLUMN id SET DEFAULT nextval('user_profiles_id_seq'::regclass);
+
+
+--
+-- TOC entry 2155 (class 2604 OID 16682)
+-- Dependencies: 239 238
+-- Name: id; Type: DEFAULT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+
+
+--
+-- TOC entry 2293 (class 0 OID 16399)
+-- Dependencies: 165 2337
+-- Data for Name: actividad; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY actividad (act_id, com_id, act_act_id, act_codigo, act_descripcion) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2294 (class 0 OID 16407)
+-- Dependencies: 167 2337
+-- Data for Name: acuerdo_municipal; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY acuerdo_municipal (acu_mun_id, acu_mun_fecha, acu_mun_archivo, acu_mun_p1, acu_mun_p2, acu_mun_observacion, pro_pep_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2295 (class 0 OID 16415)
+-- Dependencies: 169 2337
+-- Data for Name: asesor_municipal; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY asesor_municipal (ase_mun_id, reg_id, ase_mun_nombre, ase_mun_apellido, ase_mun_cargo) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2296 (class 0 OID 16418)
+-- Dependencies: 170 2337
+-- Data for Name: capacitacion; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY capacitacion (cap_id, cap_fecha, cap_tema, cap_lugar, cap_facilitador, cap_observacion) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2297 (class 0 OID 16426)
+-- Dependencies: 172 2337
+-- Data for Name: ci_sessions; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY ci_sessions (session_id, ip_address, user_agent, last_activity, user_data) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2298 (class 0 OID 16435)
+-- Dependencies: 173 2337
+-- Data for Name: componente; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY componente (com_id, com_com_id, pro_id, com_codigo, com_nombre, com_objetivo, com_resultado) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2291 (class 0 OID 16386)
+-- Dependencies: 161 2337
+-- Data for Name: consultor; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY consultor (con_id, con_nombre, con_apellido, con_telefono, con_email, pro_pep_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2299 (class 0 OID 16443)
+-- Dependencies: 175 2337
+-- Data for Name: contrapartida; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY contrapartida (con_id, con_nombre) FROM stdin;
+1	Locales para reuniones
+3	Alimentación
+4	Materiales y Equipo
+5	Personal
+2	Transporte
+\.
+
+
+--
+-- TOC entry 2300 (class 0 OID 16446)
+-- Dependencies: 176 2337
+-- Data for Name: contrapartida_acuerdo; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY contrapartida_acuerdo (acu_mun_id, con_id, con_acu_valor) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2301 (class 0 OID 16451)
+-- Dependencies: 178 2337
+-- Data for Name: criterio; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY criterio (cri_id, cri_nombre) FROM stdin;
+1	Representatividad
+2	Proporcionalidad
+3	Pluralidad
+4	Equidad
+\.
+
+
+--
+-- TOC entry 2302 (class 0 OID 16454)
+-- Dependencies: 179 2337
+-- Data for Name: criterio_acuerdo; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY criterio_acuerdo (cri_id, acu_mun_id, cri_acu_valor) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2303 (class 0 OID 16459)
+-- Dependencies: 181 2337
+-- Data for Name: cumplimiento_informe; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY cumplimiento_informe (inf_pre_id, cum_min_id, cum_inf_valor) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2304 (class 0 OID 16462)
+-- Dependencies: 182 2337
+-- Data for Name: cumplimiento_minimo; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY cumplimiento_minimo (cum_min_id, cum_min_nombre) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2305 (class 0 OID 16467)
+-- Dependencies: 184 2337
+-- Data for Name: declaracion_interes; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY declaracion_interes (dec_int_id, dec_int_fecha, dec_int_lugar, dec_int_comentario, dec_int_archivo) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2306 (class 0 OID 16475)
+-- Dependencies: 186 2337
+-- Data for Name: departamento; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY departamento (dep_id, reg_id, dep_nombre) FROM stdin;
+1	4	Ahuachapan
+2	2	Cabañas
+3	2	Chalatenango
+4	2	Cuscatlan
+5	1	La Libertad
+6	1	La Paz
+7	3	La Union
+8	3	Morazan
+9	3	San Miguel
+10	1	San Salvador
+11	1	San Vicente
+12	4	Santa Ana
+13	4	Sonsonate
+14	3	Usulutan
+\.
+
+
+--
+-- TOC entry 2307 (class 0 OID 16480)
+-- Dependencies: 188 2337
+-- Data for Name: email; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY email (reg_id, ase_mun_id, ema_cuenta, ema_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2308 (class 0 OID 16485)
+-- Dependencies: 190 2337
+-- Data for Name: etapa; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY etapa (eta_id, eta_nombre) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2309 (class 0 OID 16488)
+-- Dependencies: 191 2337
+-- Data for Name: fecha_recepcion_observacion_din; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY fecha_recepcion_observacion_din (fec_correlativo, pro_id, fec_rec_din, fec_obs_din) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2310 (class 0 OID 16491)
+-- Dependencies: 192 2337
+-- Data for Name: fuente_primaria; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY fuente_primaria (fue_pri_id, inv_inf_id, fue_pri_nombre, fue_pri_institucion, fue_pri_cargo, fue_pri_telefono, fue_pri_nombre_doc) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2311 (class 0 OID 16496)
+-- Dependencies: 194 2337
+-- Data for Name: fuente_secundaria; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY fuente_secundaria (fue_sec_id, inv_inf_id, fue_sec_nombre, fue_sec_fuente, fue_sec_disponible_en, fue_sec_anio) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2312 (class 0 OID 16501)
+-- Dependencies: 196 2337
+-- Data for Name: grupo_apoyo; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY grupo_apoyo (gru_apo_id, gru_apo_fecha, gru_apo_c3, gru_apo_c4, gru_apo_obs, pro_pep_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2313 (class 0 OID 16507)
+-- Dependencies: 197 2337
+-- Data for Name: indicador; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY indicador (ind_id, com_id, ind_nombre, ind_tipo) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2314 (class 0 OID 16515)
+-- Dependencies: 199 2337
+-- Data for Name: informe_preliminar; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY informe_preliminar (inf_pre_id, inf_pre_fecha_borrador, inf_pre_fecha_observacion, inf_pre_aceptacion, inf_pre_aceptada, inf_pre_firmam, inf_pre_firmai, inf_pre_firmau, inf_pre_archivo, inf_pre_observacion, pro_pep_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2315 (class 0 OID 16523)
+-- Dependencies: 201 2337
+-- Data for Name: institucion; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY institucion (ins_id, ins_nombre) FROM stdin;
+1	Consejo Municipal
+2	Empresa Consultora
+3	ISDEM
+4	FISDL
+5	UEP
+6	Otro
+\.
+
+
+--
+-- TOC entry 2316 (class 0 OID 16528)
+-- Dependencies: 203 2337
+-- Data for Name: inventario_informacion; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY inventario_informacion (inv_inf_id, inv_inf_observacion, pro_pep_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2317 (class 0 OID 16536)
+-- Dependencies: 205 2337
+-- Data for Name: login_attempts; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY login_attempts (id, ip_address, login, "time") FROM stdin;
+8	127.0.0.1	ffff	\N
+9	127.0.0.1	fff	\N
+10	127.0.0.1	ffff	\N
+11	127.0.0.1	yyyyyyyy	\N
+12	127.0.0.1	yyyyyyyy	\N
+\.
+
+
+--
+-- TOC entry 2318 (class 0 OID 16541)
+-- Dependencies: 207 2337
+-- Data for Name: mensaje_correo; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY mensaje_correo (men_cor_id, men_cor_asunto, men_cor_cuerpo) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2319 (class 0 OID 16549)
+-- Dependencies: 209 2337
+-- Data for Name: municipio; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY municipio (mun_id, inv_inf_id, dep_id, pro_id, mun_nombre, mun_presupuesto) FROM stdin;
+1	\N	1	\N	Ahuachapan	\N
+2	\N	1	\N	Jujutla	\N
+3	\N	1	\N	Atiquizaya	\N
+4	\N	1	\N	Concepcion de Ataco	\N
+5	\N	1	\N	El Refugio	\N
+6	\N	1	\N	Guaymango	\N
+7	\N	1	\N	Apaneca	\N
+8	\N	1	\N	San Francisco Menendez	\N
+9	\N	1	\N	San Lorenzo	\N
+10	\N	1	\N	San Pedro Puxtla	\N
+11	\N	1	\N	Tacuba	\N
+12	\N	1	\N	Turin	\N
+13	\N	2	\N	Cinquera	\N
+14	\N	2	\N	Villa Dolores	\N
+15	\N	2	\N	Guacotecti	\N
+16	\N	2	\N	Ilobasco	\N
+17	\N	2	\N	Jutiapa	\N
+18	\N	2	\N	San Isidro	\N
+19	\N	2	\N	Sensuntepeque	\N
+20	\N	2	\N	Ciudad de Tejutepeque	\N
+21	\N	2	\N	Victoria	\N
+22	\N	3	\N	Agua Caliente	\N
+23	\N	3	\N	Arcatao	\N
+24	\N	3	\N	Azacualpa	\N
+25	\N	3	\N	Chalatenango	\N
+26	\N	3	\N	Citala	\N
+27	\N	3	\N	Comalapa	\N
+28	\N	3	\N	Concepcion Quezaltepeque	\N
+29	\N	3	\N	Dulce Nombre de Maria	\N
+30	\N	3	\N	El Carrizal	\N
+31	\N	3	\N	El Paraiso	\N
+32	\N	3	\N	La Laguna	\N
+33	\N	3	\N	La Palma	\N
+34	\N	3	\N	La Reina	\N
+35	\N	3	\N	Las Vueltas	\N
+36	\N	3	\N	Nombre de Jesus	\N
+37	\N	3	\N	Nueva Concepcion	\N
+38	\N	3	\N	Nueva Trinidad	\N
+39	\N	3	\N	Ojos de Agua	\N
+40	\N	3	\N	Potonico	\N
+41	\N	3	\N	San Antonio de la Cruz	\N
+42	\N	3	\N	San Antonio Los Ranchos	\N
+43	\N	3	\N	San Fernando	\N
+44	\N	3	\N	San Francisco Lempa	\N
+45	\N	3	\N	San Francisco Morazan	\N
+46	\N	3	\N	San Ignacio	\N
+47	\N	3	\N	San Isidro Labrador	\N
+48	\N	3	\N	San Jose Cancasque	\N
+49	\N	3	\N	San Jose Las Flores	\N
+50	\N	3	\N	San Luis del Carmen	\N
+51	\N	3	\N	San Miguel de Mercedes	\N
+52	\N	3	\N	San Rafael	\N
+53	\N	3	\N	Santa Rita	\N
+54	\N	3	\N	Tejutla	\N
+55	\N	4	\N	Candelaria	\N
+56	\N	4	\N	Cojutepeque	\N
+57	\N	4	\N	El Carmen	\N
+58	\N	4	\N	El Rosario	\N
+59	\N	4	\N	Monte San Juan	\N
+60	\N	4	\N	Oratorio de Concepcion	\N
+61	\N	4	\N	San Bartolome Perulapia	\N
+62	\N	4	\N	San Cristobal	\N
+63	\N	4	\N	San Jose Guayabal	\N
+64	\N	4	\N	San Pedro Perulapan	\N
+65	\N	4	\N	San Rafael Cedros	\N
+66	\N	4	\N	San Ramon	\N
+67	\N	4	\N	Santa Cruz Analquito	\N
+68	\N	4	\N	Santa Cruz Michapa	\N
+69	\N	4	\N	Suchitoto	\N
+70	\N	4	\N	Tenancingo	\N
+71	\N	5	\N	Antiguo Cuscatlan	\N
+72	\N	5	\N	Chiltiupan	\N
+73	\N	5	\N	Ciudad Arce	\N
+74	\N	5	\N	Colon	\N
+75	\N	5	\N	Comasagua	\N
+76	\N	5	\N	Huizucar	\N
+77	\N	5	\N	Jayaque	\N
+78	\N	5	\N	Jicalapa	\N
+79	\N	5	\N	La Libertad	\N
+80	\N	5	\N	Nueva San Salvador	\N
+81	\N	5	\N	Nuevo Cuscatlan	\N
+82	\N	5	\N	Opico	\N
+83	\N	5	\N	Quezaltepeque	\N
+84	\N	5	\N	Sacacoyo	\N
+85	\N	5	\N	San Jose Villanueva	\N
+86	\N	5	\N	San Matias	\N
+87	\N	5	\N	San Pablo Tacachico	\N
+88	\N	5	\N	Talnique	\N
+89	\N	5	\N	Tamanique	\N
+90	\N	5	\N	Teotepeque	\N
+91	\N	5	\N	Tepecoyo	\N
+92	\N	5	\N	Zaragoza	\N
+93	\N	6	\N	Cuyultitan	\N
+94	\N	6	\N	El Rosario	\N
+95	\N	6	\N	Jerusalen	\N
+96	\N	6	\N	Mercedes La Ceiba	\N
+97	\N	6	\N	Olocuilta	\N
+98	\N	6	\N	Paraiso de Osorio	\N
+99	\N	6	\N	San Antonio Masahuat	\N
+100	\N	6	\N	San Emigdio	\N
+101	\N	6	\N	San Francisco Chinameca	\N
+102	\N	6	\N	San Juan Nonualco	\N
+103	\N	6	\N	San Juan Talpa	\N
+104	\N	6	\N	San Juan Tepezontes	\N
+105	\N	6	\N	San Luis La Herradura	\N
+106	\N	6	\N	San Luis Talpa	\N
+107	\N	6	\N	San Miguel Tepezontes	\N
+108	\N	6	\N	San Pedro Masahuat	\N
+109	\N	6	\N	San Pedro Nonualco	\N
+110	\N	6	\N	San Rafael Obrajuelo	\N
+111	\N	6	\N	Santa Maria Ostuma	\N
+112	\N	6	\N	Santiago Nonualco	\N
+113	\N	6	\N	Tapalhuaca	\N
+114	\N	6	\N	Zacatecoluca	\N
+115	\N	7	\N	Anamoros	\N
+116	\N	7	\N	Bolivar	\N
+117	\N	7	\N	Concepcion de Oriente	\N
+118	\N	7	\N	Conchagua	\N
+119	\N	7	\N	El Carmen	\N
+120	\N	7	\N	El Sauce	\N
+121	\N	7	\N	Intipuca	\N
+122	\N	7	\N	La Union	\N
+123	\N	7	\N	Lislique	\N
+124	\N	7	\N	Meanguera del Golfo	\N
+125	\N	7	\N	Nueva Esparta	\N
+126	\N	7	\N	Pasaquina	\N
+127	\N	7	\N	Poloros	\N
+128	\N	7	\N	San Alejo	\N
+129	\N	7	\N	San Jose	\N
+130	\N	7	\N	Santa Rosa de Lima	\N
+131	\N	7	\N	Yayantique	\N
+132	\N	7	\N	Yucuayquin	\N
+133	\N	8	\N	Arambala	\N
+134	\N	8	\N	Cacaopera	\N
+135	\N	8	\N	Chilanga	\N
+136	\N	8	\N	Corinto	\N
+137	\N	8	\N	Delicias de Concepcion	\N
+138	\N	8	\N	El Divisadero	\N
+139	\N	8	\N	El Rosario	\N
+140	\N	8	\N	Gualococti	\N
+141	\N	8	\N	Guatajiagua	\N
+142	\N	8	\N	Joateca	\N
+143	\N	8	\N	Jocoaitique	\N
+144	\N	8	\N	Jocoro	\N
+145	\N	8	\N	Lolotiquillo	\N
+146	\N	8	\N	Meanguera	\N
+147	\N	8	\N	Osicala	\N
+148	\N	8	\N	Perquin	\N
+149	\N	8	\N	San Carlos	\N
+150	\N	8	\N	San Fernando	\N
+151	\N	8	\N	San Francisco Gotera	\N
+152	\N	8	\N	San Isidro	\N
+153	\N	8	\N	San Simon	\N
+154	\N	8	\N	Sensembra	\N
+155	\N	8	\N	Sociedad	\N
+156	\N	8	\N	Torola	\N
+157	\N	8	\N	Yamabal	\N
+158	\N	8	\N	Yoloaiquin	\N
+159	\N	9	\N	Carolina	\N
+160	\N	9	\N	Chapeltique	\N
+161	\N	9	\N	Chinameca	\N
+162	\N	9	\N	Chirilagua	\N
+163	\N	9	\N	Ciudad Barrios	\N
+164	\N	9	\N	Comacaran	\N
+165	\N	9	\N	El Transito	\N
+166	\N	9	\N	Lolotique	\N
+167	\N	9	\N	Moncagua	\N
+168	\N	9	\N	Nueva Guadalupe	\N
+169	\N	9	\N	Nuevo Eden de San Juan	\N
+170	\N	9	\N	Quelepa	\N
+171	\N	9	\N	San Antonio	\N
+172	\N	9	\N	San Gerardo	\N
+173	\N	9	\N	San Jorge	\N
+174	\N	9	\N	San Luis de la Reina	\N
+175	\N	9	\N	San Miguel	\N
+176	\N	9	\N	San Rafael	\N
+177	\N	9	\N	Sesori	\N
+178	\N	9	\N	Uluazapa	\N
+179	\N	10	\N	Aguilares	\N
+180	\N	10	\N	Apopa	\N
+181	\N	10	\N	Ayutuxtepeque	\N
+182	\N	10	\N	Cuscatancingo	\N
+183	\N	10	\N	Delgado	\N
+184	\N	10	\N	El Paisnal	\N
+185	\N	10	\N	Guazapa	\N
+186	\N	10	\N	Ilopango	\N
+187	\N	10	\N	Mejicanos	\N
+188	\N	10	\N	Nejapa	\N
+189	\N	10	\N	Panchimalco	\N
+190	\N	10	\N	Rosario de Mora	\N
+191	\N	10	\N	San Marcos	\N
+192	\N	10	\N	San Martin	\N
+193	\N	10	\N	San Salvador	\N
+194	\N	10	\N	Santiago Texacuangos	\N
+195	\N	10	\N	Santo Tomas	\N
+196	\N	10	\N	Soyapango	\N
+197	\N	10	\N	Tonacatepeque	\N
+198	\N	11	\N	Apastepeque	\N
+199	\N	11	\N	Guadalupe	\N
+200	\N	11	\N	San Cayetano Istepeque	\N
+201	\N	11	\N	San Esteban Catarina	\N
+202	\N	11	\N	San Ildefonso	\N
+203	\N	11	\N	San Lorenzo	\N
+204	\N	11	\N	San Sebastian	\N
+205	\N	11	\N	Santa Clara	\N
+206	\N	11	\N	Santo Domingo	\N
+207	\N	11	\N	San Vicente	\N
+208	\N	11	\N	Tecoluca	\N
+209	\N	11	\N	Tepetitan	\N
+210	\N	11	\N	Verapaz	\N
+211	\N	12	\N	Candelaria de la Frontera	\N
+212	\N	12	\N	Chalchuapa	\N
+213	\N	12	\N	Coatepeque	\N
+214	\N	12	\N	El Congo	\N
+215	\N	12	\N	El Porvenir	\N
+216	\N	12	\N	Masahuat	\N
+217	\N	12	\N	Metapan	\N
+218	\N	12	\N	San Antonio Pajonal	\N
+219	\N	12	\N	San Sebastian Salitrillo	\N
+220	\N	12	\N	Santa Ana	\N
+221	\N	12	\N	Santa Rosa Guachipilin	\N
+222	\N	12	\N	Santiago de la Frontera	\N
+223	\N	12	\N	Texistepeque	\N
+224	\N	13	\N	Acajutla	\N
+225	\N	13	\N	Armenia	\N
+226	\N	13	\N	Caluco	\N
+227	\N	13	\N	Cuisnahuat	\N
+228	\N	13	\N	Izalco	\N
+229	\N	13	\N	Juayua	\N
+230	\N	13	\N	Nahuizalco	\N
+231	\N	13	\N	Nahulingo	\N
+232	\N	13	\N	Salcoatitan	\N
+233	\N	13	\N	San Antonio del Monte	\N
+234	\N	13	\N	San Julian	\N
+235	\N	13	\N	Santa Catarina Masahuat	\N
+236	\N	13	\N	Santa Isabel Ishuatan	\N
+237	\N	13	\N	Santo Domingo	\N
+238	\N	13	\N	Sonsonate	\N
+239	\N	13	\N	Sonzacate	\N
+240	\N	14	\N	Alegria	\N
+241	\N	14	\N	Berlin	\N
+242	\N	14	\N	California	\N
+243	\N	14	\N	Concepcion Batres	\N
+244	\N	14	\N	El Triunfo	\N
+245	\N	14	\N	Ereguayquin	\N
+246	\N	14	\N	Estanzuelas	\N
+247	\N	14	\N	Jiquilisco	\N
+248	\N	14	\N	Jucuapa	\N
+249	\N	14	\N	Jucuaran	\N
+250	\N	14	\N	Mercedes Umaña	\N
+251	\N	14	\N	Nueva Granada	\N
+252	\N	14	\N	Ozatlan	\N
+253	\N	14	\N	Puerto El Triunfo	\N
+254	\N	14	\N	San Agustin	\N
+255	\N	14	\N	San Buenaventura	\N
+256	\N	14	\N	San Dionisio	\N
+257	\N	14	\N	San Francisco Javier	\N
+258	\N	14	\N	Santa Elena	\N
+259	\N	14	\N	Santa Maria	\N
+260	\N	14	\N	Santiago de Maria	\N
+261	\N	14	\N	Tecapan	\N
+262	\N	14	\N	Usulutan	\N
+\.
+
+
+--
+-- TOC entry 2320 (class 0 OID 16552)
+-- Dependencies: 210 2337
+-- Data for Name: municipio_componente; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY municipio_componente (com_id, mun_id, mun_com_asignacion) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2321 (class 0 OID 16557)
+-- Dependencies: 212 2337
+-- Data for Name: opcion_sistema; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY opcion_sistema (opc_sis_id, opc_sis_nombre, opc_sis_url, opc_opc_sis_id) FROM stdin;
+1	Componente 1	componente1/componente1	\N
+2	Componente 2	componente2/componente2	\N
+4	Componente 4	componente4/componente4	\N
+3	Componente 3	componente3/componente3	\N
+6	Etapa 1	componente2/comp23_E1/	5
+7	Reuniones	componente2/comp23_E1/muestraReuniones	6
+5	Componente 2.3.	componente2/comp23/	2
+9	Componente 2.2.	componente2/comp22/	2
+8	Acuerdo Municipal	componente2/comp23_E1/acuerdoMunicipal	6
+10	Registro de Usuarios	auth/register	\N
+\.
+
+
+--
+-- TOC entry 2322 (class 0 OID 16562)
+-- Dependencies: 214 2337
+-- Data for Name: participante; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY participante (par_id, gru_apo_id, reu_id, ins_id, dec_int_id, inf_pre_id, par_nombre, par_apellido, par_sexo, par_cargo, par_edad, par_nivel_esco, par_tel) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2323 (class 0 OID 16565)
+-- Dependencies: 215 2337
+-- Data for Name: participante_capacitacion; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY participante_capacitacion (par_id, cap_id, par_cap_participa) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2324 (class 0 OID 16570)
+-- Dependencies: 217 2337
+-- Data for Name: participante_taller; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY participante_taller (par_id, tal_id, par_tal_participa) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2325 (class 0 OID 16573)
+-- Dependencies: 218 2337
+-- Data for Name: personal_enlace; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY personal_enlace (per_enl_id, acu_mun_id, per_enl_nombre, per_enl_apellido, per_enl_sexo, per_enl_cargo) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2326 (class 0 OID 16578)
+-- Dependencies: 220 2337
+-- Data for Name: presupuesto; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY presupuesto (pre_id, com_id, pre_tipo, pre_cantidad) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2327 (class 0 OID 16583)
+-- Dependencies: 222 2337
+-- Data for Name: proyecto; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY proyecto (pro_id, mun_id, com_id, pro_codigo, pro_nombre, pro_num_ord_llegada, pro_zona_fisdl, pro_nom_formulador, pro_nom_ref_tec_municipal, pro_email_ref_tec_municipal, pro_tel_ref_tec_municipal, pro_nom_ase_fisdl, pro_email_ase_fisdl, pro_tel_ase_fisdl, pro_fec_ent_gl_fisdl, pro_fec_ent_gop_gpr, pro_rec_gpr, pro_fec_ent_gpr_din, pro_estatus, pro_mon_ejecucion, pro_fec_visita, pro_num_rev, pro_fec_visado, pro_mon_visado, pro_obs_din, pro_tipologia, pro_sal_par_ciudadana, pro_sal_pue_indigenas, pro_sal_rea_involuntario) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2292 (class 0 OID 16391)
+-- Dependencies: 163 2337
+-- Data for Name: proyecto_pep; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY proyecto_pep (pro_pep_id, pro_pep_nombre, pro_pep_descripcion, mun_id, acu_mun_id, inf_pre_id, inv_inf_id, gru_apo_id, con_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2328 (class 0 OID 16589)
+-- Dependencies: 223 2337
+-- Data for Name: region; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY region (reg_id, reg_nombre, reg_direccion) FROM stdin;
+1	Central	\N
+2	Central Norte	\N
+3	Oriental	\N
+4	Occidental	\N
+\.
+
+
+--
+-- TOC entry 2329 (class 0 OID 16594)
+-- Dependencies: 225 2337
+-- Data for Name: reunion; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY reunion (reu_id, eta_id, reu_numero, reu_fecha, reu_duracion_horas, reu_tema, reu_resultado, reu_observacion, pro_pep_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2330 (class 0 OID 16602)
+-- Dependencies: 227 2337
+-- Data for Name: rol; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY rol (rol_id, rol_nombre) FROM stdin;
+1	administrador
+4	consultor
+2	karen
+\.
+
+
+--
+-- TOC entry 2331 (class 0 OID 16605)
+-- Dependencies: 228 2337
+-- Data for Name: rol_opcion_sistema; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY rol_opcion_sistema (rol_id, opc_sis_id, rol_opc_sis_id) FROM stdin;
+1	2	1
+1	5	2
+1	6	3
+1	7	4
+1	8	5
+1	1	6
+1	9	7
+1	10	8
+\.
+
+
+--
+-- TOC entry 2332 (class 0 OID 16612)
+-- Dependencies: 231 2337
+-- Data for Name: taller; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY taller (tal_id, tal_fecha, tal_facilitador, tal_observacion) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2333 (class 0 OID 16620)
+-- Dependencies: 233 2337
+-- Data for Name: telefono; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY telefono (reg_id, ase_mun_id, tel_numero, tel_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2334 (class 0 OID 16625)
+-- Dependencies: 235 2337
+-- Data for Name: user_autologin; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY user_autologin (key_id, user_id, user_agent, last_ip, last_login) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2335 (class 0 OID 16629)
+-- Dependencies: 236 2337
+-- Data for Name: user_profiles; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY user_profiles (id, user_id, country, website) FROM stdin;
+1	2	\N	\N
+\.
+
+
+--
+-- TOC entry 2336 (class 0 OID 16636)
+-- Dependencies: 238 2337
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: smpfgl
+--
+
+COPY users (id, username, password, email, activated, banned, ban_reason, new_password_key, new_password_requested, new_email, new_email_key, last_ip, last_login, created, modified, rol_id) FROM stdin;
+1	admin	$2a$08$orzZRVsYd7hePXoZ7s61De5ecu2TD9OIZMqYpA6jvHv44eH8qp31W	karensita_2410@hotmail.com	1	0	\N	\N	\N	\N	\N	127.0.0.1	2012-09-05	2012-08-19	\N	1
+\.
+
+
+--
+-- TOC entry 2170 (class 2606 OID 16684)
+-- Dependencies: 172 172 2338
+-- Name: ci_sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY ci_sessions
+    ADD CONSTRAINT ci_sessions_pkey PRIMARY KEY (session_id);
+
+
+--
+-- TOC entry 2204 (class 2606 OID 16686)
+-- Dependencies: 205 205 2338
+-- Name: login_attempts_pkey; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY login_attempts
+    ADD CONSTRAINT login_attempts_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2161 (class 2606 OID 16688)
+-- Dependencies: 165 165 2338
+-- Name: pk_actividad; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY actividad
+    ADD CONSTRAINT pk_actividad PRIMARY KEY (act_id);
+
+
+--
+-- TOC entry 2164 (class 2606 OID 16690)
+-- Dependencies: 167 167 2338
+-- Name: pk_acuerdo_municipal; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY acuerdo_municipal
+    ADD CONSTRAINT pk_acuerdo_municipal PRIMARY KEY (acu_mun_id);
+
+
+--
+-- TOC entry 2166 (class 2606 OID 16692)
+-- Dependencies: 169 169 2338
+-- Name: pk_asesor_municipal; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY asesor_municipal
+    ADD CONSTRAINT pk_asesor_municipal PRIMARY KEY (ase_mun_id);
+
+
+--
+-- TOC entry 2168 (class 2606 OID 16694)
+-- Dependencies: 170 170 2338
+-- Name: pk_capacitacion; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY capacitacion
+    ADD CONSTRAINT pk_capacitacion PRIMARY KEY (cap_id);
+
+
+--
+-- TOC entry 2172 (class 2606 OID 16696)
+-- Dependencies: 173 173 2338
+-- Name: pk_componente; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY componente
+    ADD CONSTRAINT pk_componente PRIMARY KEY (com_id);
+
+
+--
+-- TOC entry 2157 (class 2606 OID 16698)
+-- Dependencies: 161 161 2338
+-- Name: pk_con_id; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY consultor
+    ADD CONSTRAINT pk_con_id PRIMARY KEY (con_id);
+
+
+--
+-- TOC entry 2174 (class 2606 OID 16700)
+-- Dependencies: 175 175 2338
+-- Name: pk_contrapartida; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY contrapartida
+    ADD CONSTRAINT pk_contrapartida PRIMARY KEY (con_id);
+
+
+--
+-- TOC entry 2176 (class 2606 OID 16702)
+-- Dependencies: 178 178 2338
+-- Name: pk_criterio; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY criterio
+    ADD CONSTRAINT pk_criterio PRIMARY KEY (cri_id);
+
+
+--
+-- TOC entry 2178 (class 2606 OID 16704)
+-- Dependencies: 182 182 2338
+-- Name: pk_cumplimiento_minimo; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY cumplimiento_minimo
+    ADD CONSTRAINT pk_cumplimiento_minimo PRIMARY KEY (cum_min_id);
+
+
+--
+-- TOC entry 2180 (class 2606 OID 16706)
+-- Dependencies: 184 184 2338
+-- Name: pk_declaracion_interes; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY declaracion_interes
+    ADD CONSTRAINT pk_declaracion_interes PRIMARY KEY (dec_int_id);
+
+
+--
+-- TOC entry 2182 (class 2606 OID 16708)
+-- Dependencies: 186 186 2338
+-- Name: pk_departamento; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY departamento
+    ADD CONSTRAINT pk_departamento PRIMARY KEY (dep_id);
+
+
+--
+-- TOC entry 2184 (class 2606 OID 16710)
+-- Dependencies: 188 188 2338
+-- Name: pk_ema_id; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY email
+    ADD CONSTRAINT pk_ema_id PRIMARY KEY (ema_id);
+
+
+--
+-- TOC entry 2186 (class 2606 OID 16712)
+-- Dependencies: 190 190 2338
+-- Name: pk_etapa; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY etapa
+    ADD CONSTRAINT pk_etapa PRIMARY KEY (eta_id);
+
+
+--
+-- TOC entry 2188 (class 2606 OID 16714)
+-- Dependencies: 191 191 2338
+-- Name: pk_fecha_recepcion_observacion; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY fecha_recepcion_observacion_din
+    ADD CONSTRAINT pk_fecha_recepcion_observacion PRIMARY KEY (fec_correlativo);
+
+
+--
+-- TOC entry 2190 (class 2606 OID 16716)
+-- Dependencies: 192 192 2338
+-- Name: pk_fuente_primaria; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY fuente_primaria
+    ADD CONSTRAINT pk_fuente_primaria PRIMARY KEY (fue_pri_id);
+
+
+--
+-- TOC entry 2192 (class 2606 OID 16718)
+-- Dependencies: 194 194 2338
+-- Name: pk_fuente_secundaria; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY fuente_secundaria
+    ADD CONSTRAINT pk_fuente_secundaria PRIMARY KEY (fue_sec_id);
+
+
+--
+-- TOC entry 2194 (class 2606 OID 16720)
+-- Dependencies: 196 196 2338
+-- Name: pk_grupo_apoyo; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY grupo_apoyo
+    ADD CONSTRAINT pk_grupo_apoyo PRIMARY KEY (gru_apo_id);
+
+
+--
+-- TOC entry 2196 (class 2606 OID 16722)
+-- Dependencies: 197 197 2338
+-- Name: pk_indicador; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY indicador
+    ADD CONSTRAINT pk_indicador PRIMARY KEY (ind_id);
+
+
+--
+-- TOC entry 2198 (class 2606 OID 16724)
+-- Dependencies: 199 199 2338
+-- Name: pk_informe_preliminar; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY informe_preliminar
+    ADD CONSTRAINT pk_informe_preliminar PRIMARY KEY (inf_pre_id);
+
+
+--
+-- TOC entry 2200 (class 2606 OID 16726)
+-- Dependencies: 201 201 2338
+-- Name: pk_institucion; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY institucion
+    ADD CONSTRAINT pk_institucion PRIMARY KEY (ins_id);
+
+
+--
+-- TOC entry 2202 (class 2606 OID 16728)
+-- Dependencies: 203 203 2338
+-- Name: pk_inventario_informacion; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY inventario_informacion
+    ADD CONSTRAINT pk_inventario_informacion PRIMARY KEY (inv_inf_id);
+
+
+--
+-- TOC entry 2206 (class 2606 OID 16730)
+-- Dependencies: 207 207 2338
+-- Name: pk_mensaje_correo; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY mensaje_correo
+    ADD CONSTRAINT pk_mensaje_correo PRIMARY KEY (men_cor_id);
+
+
+--
+-- TOC entry 2208 (class 2606 OID 16732)
+-- Dependencies: 209 209 2338
+-- Name: pk_municipio; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY municipio
+    ADD CONSTRAINT pk_municipio PRIMARY KEY (mun_id);
+
+
+--
+-- TOC entry 2210 (class 2606 OID 16734)
+-- Dependencies: 212 212 2338
+-- Name: pk_opc_sis_id; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY opcion_sistema
+    ADD CONSTRAINT pk_opc_sis_id PRIMARY KEY (opc_sis_id);
+
+
+--
+-- TOC entry 2212 (class 2606 OID 16736)
+-- Dependencies: 214 214 2338
+-- Name: pk_participante; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY participante
+    ADD CONSTRAINT pk_participante PRIMARY KEY (par_id);
+
+
+--
+-- TOC entry 2214 (class 2606 OID 16738)
+-- Dependencies: 218 218 2338
+-- Name: pk_personal_enlace; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY personal_enlace
+    ADD CONSTRAINT pk_personal_enlace PRIMARY KEY (per_enl_id);
+
+
+--
+-- TOC entry 2216 (class 2606 OID 16740)
+-- Dependencies: 220 220 2338
+-- Name: pk_presupuesto; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY presupuesto
+    ADD CONSTRAINT pk_presupuesto PRIMARY KEY (pre_id);
+
+
+--
+-- TOC entry 2159 (class 2606 OID 16742)
+-- Dependencies: 163 163 2338
+-- Name: pk_pro_pep_id; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY proyecto_pep
+    ADD CONSTRAINT pk_pro_pep_id PRIMARY KEY (pro_pep_id);
+
+
+--
+-- TOC entry 2218 (class 2606 OID 16744)
+-- Dependencies: 222 222 2338
+-- Name: pk_proyecto; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY proyecto
+    ADD CONSTRAINT pk_proyecto PRIMARY KEY (pro_id);
+
+
+--
+-- TOC entry 2220 (class 2606 OID 16746)
+-- Dependencies: 223 223 2338
+-- Name: pk_region; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY region
+    ADD CONSTRAINT pk_region PRIMARY KEY (reg_id);
+
+
+--
+-- TOC entry 2222 (class 2606 OID 16748)
+-- Dependencies: 225 225 2338
+-- Name: pk_reunion; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY reunion
+    ADD CONSTRAINT pk_reunion PRIMARY KEY (reu_id);
+
+
+--
+-- TOC entry 2224 (class 2606 OID 16750)
+-- Dependencies: 227 227 2338
+-- Name: pk_rol_id; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY rol
+    ADD CONSTRAINT pk_rol_id PRIMARY KEY (rol_id);
+
+
+--
+-- TOC entry 2226 (class 2606 OID 16752)
+-- Dependencies: 228 228 2338
+-- Name: pk_rol_opc_sis_id; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY rol_opcion_sistema
+    ADD CONSTRAINT pk_rol_opc_sis_id PRIMARY KEY (rol_opc_sis_id);
+
+
+--
+-- TOC entry 2228 (class 2606 OID 16754)
+-- Dependencies: 231 231 2338
+-- Name: pk_taller; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY taller
+    ADD CONSTRAINT pk_taller PRIMARY KEY (tal_id);
+
+
+--
+-- TOC entry 2230 (class 2606 OID 16756)
+-- Dependencies: 233 233 2338
+-- Name: pk_tel_id; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY telefono
+    ADD CONSTRAINT pk_tel_id PRIMARY KEY (tel_id);
+
+
+--
+-- TOC entry 2232 (class 2606 OID 16758)
+-- Dependencies: 235 235 235 2338
+-- Name: user_autologin_pkey; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY user_autologin
+    ADD CONSTRAINT user_autologin_pkey PRIMARY KEY (key_id, user_id);
+
+
+--
+-- TOC entry 2234 (class 2606 OID 16760)
+-- Dependencies: 236 236 2338
+-- Name: user_profiles_pkey; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY user_profiles
+    ADD CONSTRAINT user_profiles_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2236 (class 2606 OID 16762)
+-- Dependencies: 238 238 2338
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2162 (class 1259 OID 16763)
+-- Dependencies: 167 2338
+-- Name: fki_pk_proyecto_pep_acuerdo_municipal; Type: INDEX; Schema: public; Owner: smpfgl; Tablespace: 
+--
+
+CREATE INDEX fki_pk_proyecto_pep_acuerdo_municipal ON acuerdo_municipal USING btree (pro_pep_id);
+
+
+--
+-- TOC entry 2244 (class 2606 OID 16764)
+-- Dependencies: 2160 165 165 2338
+-- Name: fk_activida_conformad_activida; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY actividad
+    ADD CONSTRAINT fk_activida_conformad_activida FOREIGN KEY (act_act_id) REFERENCES actividad(act_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2245 (class 2606 OID 16769)
+-- Dependencies: 165 2171 173 2338
+-- Name: fk_activida_posee_una_componen; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY actividad
+    ADD CONSTRAINT fk_activida_posee_una_componen FOREIGN KEY (com_id) REFERENCES componente(com_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2238 (class 2606 OID 16774)
+-- Dependencies: 2163 167 163 2338
+-- Name: fk_acuerdo_municipal_proyecto_pep; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY proyecto_pep
+    ADD CONSTRAINT fk_acuerdo_municipal_proyecto_pep FOREIGN KEY (acu_mun_id) REFERENCES acuerdo_municipal(acu_mun_id);
+
+
+--
+-- TOC entry 2247 (class 2606 OID 16779)
+-- Dependencies: 223 169 2219 2338
+-- Name: fk_asesor_m_se_asigna_region; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY asesor_municipal
+    ADD CONSTRAINT fk_asesor_m_se_asigna_region FOREIGN KEY (reg_id) REFERENCES region(reg_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2248 (class 2606 OID 16784)
+-- Dependencies: 2217 173 222 2338
+-- Name: fk_componen_programa2_proyecto; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY componente
+    ADD CONSTRAINT fk_componen_programa2_proyecto FOREIGN KEY (pro_id) REFERENCES proyecto(pro_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2249 (class 2606 OID 16789)
+-- Dependencies: 173 173 2171 2338
+-- Name: fk_componen_se_divide_componen; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY componente
+    ADD CONSTRAINT fk_componen_se_divide_componen FOREIGN KEY (com_com_id) REFERENCES componente(com_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2243 (class 2606 OID 17035)
+-- Dependencies: 161 2156 163 2338
+-- Name: fk_consultor_proyecto_pep; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY proyecto_pep
+    ADD CONSTRAINT fk_consultor_proyecto_pep FOREIGN KEY (con_id) REFERENCES consultor(con_id);
+
+
+--
+-- TOC entry 2250 (class 2606 OID 16794)
+-- Dependencies: 167 2163 176 2338
+-- Name: fk_contrapa_aporta_acuerdo_; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY contrapartida_acuerdo
+    ADD CONSTRAINT fk_contrapa_aporta_acuerdo_ FOREIGN KEY (acu_mun_id) REFERENCES acuerdo_municipal(acu_mun_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2251 (class 2606 OID 16799)
+-- Dependencies: 175 176 2173 2338
+-- Name: fk_contrapa_conformad_contrapa; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY contrapartida_acuerdo
+    ADD CONSTRAINT fk_contrapa_conformad_contrapa FOREIGN KEY (con_id) REFERENCES contrapartida(con_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2252 (class 2606 OID 16804)
+-- Dependencies: 2175 178 179 2338
+-- Name: fk_criterio_conformad_criterio; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY criterio_acuerdo
+    ADD CONSTRAINT fk_criterio_conformad_criterio FOREIGN KEY (cri_id) REFERENCES criterio(cri_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2253 (class 2606 OID 16809)
+-- Dependencies: 2163 179 167 2338
+-- Name: fk_criterio_cumple_acuerdo_; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY criterio_acuerdo
+    ADD CONSTRAINT fk_criterio_cumple_acuerdo_ FOREIGN KEY (acu_mun_id) REFERENCES acuerdo_municipal(acu_mun_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2254 (class 2606 OID 16814)
+-- Dependencies: 182 181 2177 2338
+-- Name: fk_cumplimi_cumplen_a_cumplimi; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY cumplimiento_informe
+    ADD CONSTRAINT fk_cumplimi_cumplen_a_cumplimi FOREIGN KEY (cum_min_id) REFERENCES cumplimiento_minimo(cum_min_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2255 (class 2606 OID 16819)
+-- Dependencies: 2197 181 199 2338
+-- Name: fk_cumplimi_posee_alg_informe_; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY cumplimiento_informe
+    ADD CONSTRAINT fk_cumplimi_posee_alg_informe_ FOREIGN KEY (inf_pre_id) REFERENCES informe_preliminar(inf_pre_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2256 (class 2606 OID 16824)
+-- Dependencies: 223 186 2219 2338
+-- Name: fk_departam_compuesto_region; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY departamento
+    ADD CONSTRAINT fk_departam_compuesto_region FOREIGN KEY (reg_id) REFERENCES region(reg_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2257 (class 2606 OID 16829)
+-- Dependencies: 169 188 2165 2338
+-- Name: fk_email_se_comuni_asesor_m; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY email
+    ADD CONSTRAINT fk_email_se_comuni_asesor_m FOREIGN KEY (ase_mun_id) REFERENCES asesor_municipal(ase_mun_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2258 (class 2606 OID 16834)
+-- Dependencies: 223 188 2219 2338
+-- Name: fk_email_se_contac_region; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY email
+    ADD CONSTRAINT fk_email_se_contac_region FOREIGN KEY (reg_id) REFERENCES region(reg_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2259 (class 2606 OID 16839)
+-- Dependencies: 222 191 2217 2338
+-- Name: fk_fecha_re_din_tiene_proyecto; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY fecha_recepcion_observacion_din
+    ADD CONSTRAINT fk_fecha_re_din_tiene_proyecto FOREIGN KEY (pro_id) REFERENCES proyecto(pro_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2260 (class 2606 OID 16844)
+-- Dependencies: 203 192 2201 2338
+-- Name: fk_fuente_p_formado_inventar; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY fuente_primaria
+    ADD CONSTRAINT fk_fuente_p_formado_inventar FOREIGN KEY (inv_inf_id) REFERENCES inventario_informacion(inv_inf_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2261 (class 2606 OID 16849)
+-- Dependencies: 203 194 2201 2338
+-- Name: fk_fuente_s_formado_p_inventar; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY fuente_secundaria
+    ADD CONSTRAINT fk_fuente_s_formado_p_inventar FOREIGN KEY (inv_inf_id) REFERENCES inventario_informacion(inv_inf_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2239 (class 2606 OID 16854)
+-- Dependencies: 196 163 2193 2338
+-- Name: fk_grupo_apoyo_proyecto_pep; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY proyecto_pep
+    ADD CONSTRAINT fk_grupo_apoyo_proyecto_pep FOREIGN KEY (gru_apo_id) REFERENCES grupo_apoyo(gru_apo_id);
+
+
+--
+-- TOC entry 2263 (class 2606 OID 16859)
+-- Dependencies: 173 197 2171 2338
+-- Name: fk_indicado_posee_componen; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY indicador
+    ADD CONSTRAINT fk_indicado_posee_componen FOREIGN KEY (com_id) REFERENCES componente(com_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2240 (class 2606 OID 16864)
+-- Dependencies: 199 163 2197 2338
+-- Name: fk_informe_preliminar_proyecto_pep; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY proyecto_pep
+    ADD CONSTRAINT fk_informe_preliminar_proyecto_pep FOREIGN KEY (inf_pre_id) REFERENCES informe_preliminar(inf_pre_id);
+
+
+--
+-- TOC entry 2241 (class 2606 OID 16869)
+-- Dependencies: 203 163 2201 2338
+-- Name: fk_inventario_informacion_proyecto_pep; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY proyecto_pep
+    ADD CONSTRAINT fk_inventario_informacion_proyecto_pep FOREIGN KEY (inv_inf_id) REFERENCES inventario_informacion(inv_inf_id);
+
+
+--
+-- TOC entry 2268 (class 2606 OID 16874)
+-- Dependencies: 173 210 2171 2338
+-- Name: fk_municipi_comp_cuni_componen; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY municipio_componente
+    ADD CONSTRAINT fk_municipi_comp_cuni_componen FOREIGN KEY (com_id) REFERENCES componente(com_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2269 (class 2606 OID 16879)
+-- Dependencies: 210 209 2207 2338
+-- Name: fk_municipi_comp_muni_municipi; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY municipio_componente
+    ADD CONSTRAINT fk_municipi_comp_muni_municipi FOREIGN KEY (mun_id) REFERENCES municipio(mun_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2266 (class 2606 OID 16884)
+-- Dependencies: 209 186 2181 2338
+-- Name: fk_municipi_conformad_departam; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY municipio
+    ADD CONSTRAINT fk_municipi_conformad_departam FOREIGN KEY (dep_id) REFERENCES departamento(dep_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2267 (class 2606 OID 16894)
+-- Dependencies: 2217 209 222 2338
+-- Name: fk_municipi_se_realiz_proyecto; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY municipio
+    ADD CONSTRAINT fk_municipi_se_realiz_proyecto FOREIGN KEY (pro_id) REFERENCES proyecto(pro_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2242 (class 2606 OID 16899)
+-- Dependencies: 209 163 2207 2338
+-- Name: fk_municipio_proyecto_pep; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY proyecto_pep
+    ADD CONSTRAINT fk_municipio_proyecto_pep FOREIGN KEY (mun_id) REFERENCES municipio(mun_id);
+
+
+--
+-- TOC entry 2286 (class 2606 OID 16904)
+-- Dependencies: 212 228 2209 2338
+-- Name: fk_opcion_sistema_rol_opcion_sistema; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY rol_opcion_sistema
+    ADD CONSTRAINT fk_opcion_sistema_rol_opcion_sistema FOREIGN KEY (opc_sis_id) REFERENCES opcion_sistema(opc_sis_id);
+
+
+--
+-- TOC entry 2278 (class 2606 OID 16909)
+-- Dependencies: 2227 217 231 2338
+-- Name: fk_particip_asisten_a_taller; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY participante_taller
+    ADD CONSTRAINT fk_particip_asisten_a_taller FOREIGN KEY (tal_id) REFERENCES taller(tal_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2279 (class 2606 OID 16914)
+-- Dependencies: 2211 217 214 2338
+-- Name: fk_particip_asisten_particip; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY participante_taller
+    ADD CONSTRAINT fk_particip_asisten_particip FOREIGN KEY (par_id) REFERENCES participante(par_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2271 (class 2606 OID 16919)
+-- Dependencies: 2221 225 214 2338
+-- Name: fk_particip_asistente_reunion; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY participante
+    ADD CONSTRAINT fk_particip_asistente_reunion FOREIGN KEY (reu_id) REFERENCES reunion(reu_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2272 (class 2606 OID 16924)
+-- Dependencies: 214 2197 199 2338
+-- Name: fk_particip_necesita__informe_; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY participante
+    ADD CONSTRAINT fk_particip_necesita__informe_ FOREIGN KEY (inf_pre_id) REFERENCES informe_preliminar(inf_pre_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2273 (class 2606 OID 16929)
+-- Dependencies: 184 214 2179 2338
+-- Name: fk_particip_necesita_declarac; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY participante
+    ADD CONSTRAINT fk_particip_necesita_declarac FOREIGN KEY (dec_int_id) REFERENCES declaracion_interes(dec_int_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2274 (class 2606 OID 16934)
+-- Dependencies: 2199 201 214 2338
+-- Name: fk_particip_pueden_te_instituc; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY participante
+    ADD CONSTRAINT fk_particip_pueden_te_instituc FOREIGN KEY (ins_id) REFERENCES institucion(ins_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2276 (class 2606 OID 16939)
+-- Dependencies: 2211 215 214 2338
+-- Name: fk_particip_reciben_particip; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY participante_capacitacion
+    ADD CONSTRAINT fk_particip_reciben_particip FOREIGN KEY (par_id) REFERENCES participante(par_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2277 (class 2606 OID 16944)
+-- Dependencies: 2167 215 170 2338
+-- Name: fk_particip_reciben_u_capacita; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY participante_capacitacion
+    ADD CONSTRAINT fk_particip_reciben_u_capacita FOREIGN KEY (cap_id) REFERENCES capacitacion(cap_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2275 (class 2606 OID 16949)
+-- Dependencies: 196 214 2193 2338
+-- Name: fk_particip_tiene_mie_grupo_ap; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY participante
+    ADD CONSTRAINT fk_particip_tiene_mie_grupo_ap FOREIGN KEY (gru_apo_id) REFERENCES grupo_apoyo(gru_apo_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2280 (class 2606 OID 16954)
+-- Dependencies: 218 2163 167 2338
+-- Name: fk_personal_necesita__acuerdo_; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY personal_enlace
+    ADD CONSTRAINT fk_personal_necesita__acuerdo_ FOREIGN KEY (acu_mun_id) REFERENCES acuerdo_municipal(acu_mun_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2281 (class 2606 OID 16959)
+-- Dependencies: 220 2171 173 2338
+-- Name: fk_presupue_se_asigna_componen; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY presupuesto
+    ADD CONSTRAINT fk_presupue_se_asigna_componen FOREIGN KEY (com_id) REFERENCES componente(com_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2265 (class 2606 OID 16964)
+-- Dependencies: 163 203 2158 2338
+-- Name: fk_proyecto_pep; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY inventario_informacion
+    ADD CONSTRAINT fk_proyecto_pep FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id);
+
+
+--
+-- TOC entry 2246 (class 2606 OID 16969)
+-- Dependencies: 167 2158 163 2338
+-- Name: fk_proyecto_pep_acuerdo_municipal; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY acuerdo_municipal
+    ADD CONSTRAINT fk_proyecto_pep_acuerdo_municipal FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id);
+
+
+--
+-- TOC entry 2237 (class 2606 OID 17030)
+-- Dependencies: 163 161 2158 2338
+-- Name: fk_proyecto_pep_consultor; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY consultor
+    ADD CONSTRAINT fk_proyecto_pep_consultor FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id);
+
+
+--
+-- TOC entry 2262 (class 2606 OID 16974)
+-- Dependencies: 196 163 2158 2338
+-- Name: fk_proyecto_pep_grupo_apoyo; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY grupo_apoyo
+    ADD CONSTRAINT fk_proyecto_pep_grupo_apoyo FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id);
+
+
+--
+-- TOC entry 2264 (class 2606 OID 16979)
+-- Dependencies: 199 2158 163 2338
+-- Name: fk_proyecto_pep_informe_preliminar; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY informe_preliminar
+    ADD CONSTRAINT fk_proyecto_pep_informe_preliminar FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id);
+
+
+--
+-- TOC entry 2284 (class 2606 OID 16984)
+-- Dependencies: 163 2158 225 2338
+-- Name: fk_proyecto_pep_reunion; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY reunion
+    ADD CONSTRAINT fk_proyecto_pep_reunion FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id);
+
+
+--
+-- TOC entry 2282 (class 2606 OID 16989)
+-- Dependencies: 173 222 2171 2338
+-- Name: fk_proyecto_programa_componen; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY proyecto
+    ADD CONSTRAINT fk_proyecto_programa_componen FOREIGN KEY (com_id) REFERENCES componente(com_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2283 (class 2606 OID 16994)
+-- Dependencies: 2207 209 222 2338
+-- Name: fk_proyecto_se_realiz_municipi; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY proyecto
+    ADD CONSTRAINT fk_proyecto_se_realiz_municipi FOREIGN KEY (mun_id) REFERENCES municipio(mun_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2285 (class 2606 OID 16999)
+-- Dependencies: 190 225 2185 2338
+-- Name: fk_reunion_realiza_etapa; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY reunion
+    ADD CONSTRAINT fk_reunion_realiza_etapa FOREIGN KEY (eta_id) REFERENCES etapa(eta_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2287 (class 2606 OID 17004)
+-- Dependencies: 227 228 2223 2338
+-- Name: fk_rol_rol_sistema; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY rol_opcion_sistema
+    ADD CONSTRAINT fk_rol_rol_sistema FOREIGN KEY (rol_id) REFERENCES rol(rol_id);
+
+
+--
+-- TOC entry 2290 (class 2606 OID 17009)
+-- Dependencies: 2223 227 238 2338
+-- Name: fk_rol_user; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT fk_rol_user FOREIGN KEY (rol_id) REFERENCES rol(rol_id);
+
+
+--
+-- TOC entry 2288 (class 2606 OID 17014)
+-- Dependencies: 2219 233 223 2338
+-- Name: fk_telefono_informaci_region; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY telefono
+    ADD CONSTRAINT fk_telefono_informaci_region FOREIGN KEY (reg_id) REFERENCES region(reg_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2289 (class 2606 OID 17019)
+-- Dependencies: 2165 169 233 2338
+-- Name: fk_telefono_tiene_asesor_m; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY telefono
+    ADD CONSTRAINT fk_telefono_tiene_asesor_m FOREIGN KEY (ase_mun_id) REFERENCES asesor_municipal(ase_mun_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2270 (class 2606 OID 17024)
+-- Dependencies: 212 2209 212 2338
+-- Name: pk_opcion_sistema_opcion_sistema; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+--
+
+ALTER TABLE ONLY opcion_sistema
+    ADD CONSTRAINT pk_opcion_sistema_opcion_sistema FOREIGN KEY (opc_opc_sis_id) REFERENCES opcion_sistema(opc_sis_id);
+
+
+--
+-- TOC entry 2343 (class 0 OID 0)
+-- Dependencies: 6
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+-- Completed on 2012-09-05 23:55:02 CST
+
+--
+-- PostgreSQL database dump complete
+--
+
