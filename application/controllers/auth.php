@@ -14,9 +14,6 @@ class Auth extends CI_Controller
 		parent::__construct();
 
 		$this->load->helper(array('form', 'url'));
-		$this->load->library('form_validation');
-		$this->load->library('security');
-		$this->load->library('tank_auth');
 		$this->lang->load('tank_auth');
 	}
 
@@ -117,16 +114,6 @@ class Auth extends CI_Controller
 	 */
 	function register()
 	{
-		if ($this->tank_auth->is_logged_in()) {									// logged in
-			redirect('');
-
-		} elseif ($this->tank_auth->is_logged_in(FALSE)) {						// logged in, not activated
-			redirect('/auth/send_again/');
-
-		} elseif (!$this->config->item('allow_registration', 'tank_auth')) {	// registration is off
-			$this->_show_message($this->lang->line('auth_message_registration_disabled'));
-
-		} else {
 			$use_username = $this->config->item('use_username', 'tank_auth');
 			if ($use_username) {
 				$this->form_validation->set_rules('username', 'Username', 'trim|required|xss_clean|min_length['.$this->config->item('username_min_length', 'tank_auth').']|max_length['.$this->config->item('username_max_length', 'tank_auth').']|alpha_dash');
@@ -134,16 +121,7 @@ class Auth extends CI_Controller
 			$this->form_validation->set_rules('email', 'Email', 'trim|required|xss_clean|valid_email');
 			$this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean|min_length['.$this->config->item('password_min_length', 'tank_auth').']|max_length['.$this->config->item('password_max_length', 'tank_auth').']|alpha_dash');
 			$this->form_validation->set_rules('confirm_password', 'Confirm Password', 'trim|required|xss_clean|matches[password]');
-
-			$captcha_registration	= $this->config->item('captcha_registration', 'tank_auth');
-			$use_recaptcha			= $this->config->item('use_recaptcha', 'tank_auth');
-			if ($captcha_registration) {
-				if ($use_recaptcha) {
-					$this->form_validation->set_rules('recaptcha_response_field', 'Confirmation Code', 'trim|xss_clean|required|callback__check_recaptcha');
-				} else {
-					$this->form_validation->set_rules('captcha', 'Confirmation Code', 'trim|xss_clean|required|callback__check_captcha');
-				}
-			}
+                        $this->form_validation->set_rules('rol_id', 'rol_id', 'callback_rolSeleccionado');
 			$informacion['errors'] = array();
 
 			$email_activation = $this->config->item('email_activation', 'tank_auth');
@@ -151,8 +129,10 @@ class Auth extends CI_Controller
 			if ($this->form_validation->run()) {								// validation ok
 				if (!is_null($informacion = $this->tank_auth->create_user(
 						$use_username ? $this->form_validation->set_value('username') : '',
+                                               
 						$this->form_validation->set_value('email'),
 						$this->form_validation->set_value('password'),
+                                                $this->form_validation->set_value('rol_id'),
 						$email_activation))) {									// success
 
 					$informacion['site_name'] = $this->config->item('website_name', 'tank_auth');
@@ -166,35 +146,47 @@ class Auth extends CI_Controller
 
 						$this->_show_message($this->lang->line('auth_message_registration_completed_1'));
 
-					} else {
-						if ($this->config->item('email_account_details', 'tank_auth')) {	// send "welcome" email
-
-							$this->_send_email('welcome', $informacion['email'], $informacion);
-						}
-						unset($informacion['password']); // Clear password (just for any case)
-
-						$this->_show_message($this->lang->line('auth_message_registration_completed_2').' '.anchor('/auth/login/', 'Login'));
-					}
+					} 
 				} else {
 					$errors = $this->tank_auth->get_error_message();
 					foreach ($errors as $k => $v)	$informacion['errors'][$k] = $this->lang->line($v);
 				}
 			}
-			if ($captcha_registration) {
-				if ($use_recaptcha) {
-					$informacion['recaptcha_html'] = $this->_create_recaptcha();
-				} else {
-					$informacion['captcha_html'] = $this->_create_captcha();
-				}
-			}
+			
 			$informacion['use_username'] = $use_username;
-			$informacion['captcha_registration'] = $captcha_registration;
-			$informacion['use_recaptcha'] = $use_recaptcha;
-			$this->load->view('auth/register_form', $informacion);
-		}
+			$informacion['titulo'] = 'Registrar usuario para SISPFGL';
+                        $informacion['user_id'] = $this->tank_auth->get_user_id();
+                        $informacion['username'] = $this->tank_auth->get_username();
+                        $informacion['menu']=  $this->librerias->creaMenu($this->tank_auth->get_username());
+                        /*LISTA DE ROLES*/
+                        $this->load->model('rol');
+                        $roles = $this->rol->obtenerRoles();
+                        $select = array();
+                        $select[0]="--Seleccione un rol --";
+                       foreach ($roles as $aux) 
+                            $select[$aux->rol_id]=$aux->rol_nombre;
+                            
+                        
+                        /*FIN DE LISTA DE ROLES*/
+                        $informacion['lista']=$select;
+                        $this->load->view('plantilla/header', $informacion);
+                        $this->load->view('plantilla/menu', $informacion);
+                        $this->load->view('auth/register_form', $informacion);
+                        $this->load->view('plantilla/footer', $informacion);
+			
+		
 	}
-
-	/**
+	/*PARA VALIDAR QUE SE HAYA SELECCIONADO EL ROL*/
+        function rolSeleccionado($valor){
+            if ($valor == '0'){
+                $this->form_validation->set_message('rolSeleccionado','Debe Seleccionar un rol');
+                return FALSE;
+            }
+            else
+                return TRUE;
+        }
+        
+        /**
 	 * Send activation email again, to the same or new email address
 	 *
 	 * @return void

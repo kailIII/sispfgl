@@ -13,7 +13,6 @@ class Inicio extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->helper('form');
-        $this->load->library(array('form_validation', 'security', 'tank_auth','librerias'));
         $this->lang->load('tank_auth');
     }
 
