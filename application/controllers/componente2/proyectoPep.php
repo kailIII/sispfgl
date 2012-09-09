@@ -22,7 +22,7 @@ class ProyectoPep extends CI_Controller {
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
         
         /*OBTENER REGIONES DEL PAIS*/
-        $this->load->model('region');
+        $this->load->model('pais/region');
         $informacion['regiones']=$this->region->obtenerRegiones();
         /*REGIONES*/
         
@@ -30,6 +30,19 @@ class ProyectoPep extends CI_Controller {
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('proyectopep/proyecto_pep_view',$informacion);
         $this->load->view('plantilla/footer', $informacion);
+    }
+    
+    public function cargarDepartamentos() {
+        $reg_id = $this->input->get("reg_id");
+        $this->load->model('pais/departamento', 'depto');
+        $departamentos = $this->depto->obtenerDepartamentosPorRegion($reg_id);
+        $combo = "<select name='dep_id'>";
+        $combo.= " <option value='0'> Seleccione</option>";
+        foreach ($departamentos as $aux)
+            $combo.= " <option value='" . $aux->dep_id . "'>" . $aux->dep_nombre . "</option>";
+        $combo.="</select>";
+
+        echo $combo;
     }
 
 }
