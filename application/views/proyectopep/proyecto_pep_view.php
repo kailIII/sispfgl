@@ -5,7 +5,7 @@
             if (value == 0 ) return [false,"Seleccione el municipio del proyecto"];
             else return [true,""];
         }
-        /*GRID PARTICIPANTES*/
+        /*CARGAR DEPARTAMENTOS*/
         $('#selRegion').change(function(){   
             $('#selDepto').children().remove();
             $.getJSON('<?php echo base_url('componente2/proyectoPep/cargarDepartamentos') ?>?reg_id='+$('#selRegion').val(), 
@@ -21,10 +21,27 @@
                 });
             });              
         });
-        
-        $('#selDepto').change(function(){
+        /*CARGAR MUNICIPIOS*/
+        $('#selDepto').change(function(){   
+            $('#selMun').children().remove();
+            $.getJSON('<?php echo base_url('componente2/proyectoPep/cargarMunicipios') ?>?dep_id='+$('#selDepto').val(), 
+            function(data) {
+                var i=0;
+                $.each(data, function(key, val) {
+                    if(key=='rows'){
+                        $('#selMun').append('<option value="0">--Seleccione Municipio--</option>');
+                        $.each(val, function(id, registro){
+                            $('#selMun').append('<option value="'+registro['cell'][0]+'">'+registro['cell'][1]+'</option>');
+                        });                    
+                    }
+                });
+            });              
+        });
+        /*CARGAR PROYECTOS PEP*/
+        $('#selMun').change(function(){
             $('#proPep').setGridParam({
-                url:'<?php echo base_url('componente2/proyectoPep/cargarProyectosPorRegion') ?>?dep_id='+$('#selDepto').val(),
+                url:'<?php echo base_url('componente2/proyectoPep/cargarProyectosPorMunicipio') ?>?mun_id='+$('#selMun').val(),
+                editurl:'<?php echo base_url('componente2/proyectoPep/gestionProyectoPep') ?>?mun_id='+$('select.#selMun').val(),
                 datatype:'json'
             }).trigger("reloadGrid"); 
         });
@@ -34,25 +51,18 @@
                 
         var tabla=$("#proPep");
         tabla.jqGrid({
-            url:'<?php echo base_url('componente2/proyectoPep/cargarProyectosPorRegion') ?>',
-            editurl:'<?php echo base_url('componente2/proyectoPep/gestionarProyectoPep') ?>?reg_id='+$('#selRegion').val()+'&dep_id='+$('#selDepto').val(),
+            url:'<?php echo base_url('componente2/proyectoPep/cargarProyectosPorMunicipio') ?>',
             datatype:'json',
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['pro_pep_id','Nombre Proyecto','Municipio','Etapa I','Etapa II','Etapa III','Etapa IV'],
+            colNames:['pro_pep_id','Nombre Proyecto','Etapa I','Etapa II','Etapa III','Etapa IV'],
             colModel:[
                 {name:'id',index:'id', editable:false,editoptions:{size:15} },
                 {name:'pro_pep_nombre',index:'pro_pep_nombre',editable:true,
                     edittype:"textarea",editoptions:{rows:"4",cols:"50"},width:'450', 
                     formoptions:{label: "Nombre",elmprefix:"(*)"},
                     editrules:{required:true} 
-                },
-                {name:'mun_id',index:'mun_id',editable:true,
-                    edittype:"select",
-                    editoptions:{ dataUrl:'<?php echo base_url('componente2/proyectoPep/cargarMunicipios'); ?>?dep_id='+$('#selDepto').val()},  
-                    formoptions:{ label: "Municipio",elmprefix:"(*)"},
-                    editrules:{custom:true, custom_func:validaMunicipio}
                 },
                 {name:'etapa1',index:'etapa1',editable:false,
                     edittype:"checkbox",width:60,
@@ -93,7 +103,7 @@
                                 
         //AGREGAR
         $("#agregar").click(function(){
-            if($('#selDepto').val()!='0' && $('#selRegion').val()!='0'){
+            if($('#selDepto').val()!='0' && $('#selRegion').val()!='0'&& $('#selMun').val()!='0'){
                 tabla.jqGrid('editGridRow',"new",
                 {closeAfterAdd:true,addCaption: "Agregar ",width:'500',
                     reloadAfterSubmit:true,top:'300',left:'300',
@@ -154,15 +164,19 @@
             <option value='<?php echo $region->reg_id; ?>'><?php echo $region->reg_nombre; ?></option>
         <?php } ?>
     </select>
-    </br></br></br>
+    </br></br>
     <select id='selDepto'>
         <option value='0'>--Seleccione Departamento--</option>
     </select>
-</center>
+    </br></br>
+    <select id='selMun'>
+        <option value='0'>--Seleccione Municipio--</option>
+    </select>
+
 </br></br></br>
 <table id="proPep"></table>
 <div id="pager"></div>
-<center>
+
     <input type="button" id="agregar" value="  Agregar  " />
     <input type="button" id="editar" value="   Editar   " />
 
@@ -175,7 +189,7 @@
     <p>Debe Seleccionar una fila para continuar</p>
 </div>
 <div id="mensaje3" class="mensaje" title="Recuerde:">
-    <p>Debe Seleccionar la Region y el Departamento del Proyecto para poder
-        agregar un nuevo Proyecto PEP
+    <p>Debe Seleccionar la Region, el Departamento y el Municipio 
+        para poder agregar un nuevo Proyecto PEP
     </p>
 </div>

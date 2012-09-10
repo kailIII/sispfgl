@@ -32,10 +32,10 @@ class ProyectoPep extends CI_Controller {
         $this->load->view('plantilla/footer', $informacion);
     }
 
-    public function cargarProyectosPorRegion() {
+    public function cargarProyectosPorMunicipio() {
         $this->load->model('proyectoPep/proyecto_pep', 'propep');
-        $dep_id = $this->input->get("dep_id");
-        $proyectosPep = $this->propep->obtenerProyectoPepPorDepto($dep_id);
+        $mun_id = $this->input->get("mun_id");
+        $proyectosPep = $this->propep->obtenerProyectoPepPorMun($mun_id);
         $numfilas = count($proyectosPep);
 
         $i = 0;
@@ -43,7 +43,6 @@ class ProyectoPep extends CI_Controller {
             $rows[$i]['id'] = $aux->pro_pep_id;
             $rows[$i]['cell'] = array($aux->pro_pep_id,
                 $aux->pro_pep_nombre,
-                $aux->mun_nombre,
                 'NO', 'NO', 'NO', 'NO'
             );
             $i++;
@@ -53,7 +52,7 @@ class ProyectoPep extends CI_Controller {
             array_multisort($rows, SORT_ASC);
         } else {
             $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ');
+            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ');
         }
 
         $datos = json_encode($rows);
@@ -102,38 +101,60 @@ class ProyectoPep extends CI_Controller {
         echo $jsonresponse;
     }
     
-     public function gestionArticulo() {
+     public function gestionProyectoPep() {
+        /*VARIABLES POST*/
         $id = $this->input->post("id");
-        $nombre = $this->input->post("nombre");
+        $nombre = $this->input->post("pro_pep_nombre");
         $operacion = $this->input->post('oper');
-        $this->load->model('Articulo', 'art');
-        $art = new Articulo();
+        
+        /*VARIABLE GET*/
+        $mun_id = $this->input->get("mun_id");
+        
+        $this->load->model('proyectoPep/proyecto_pep', 'propep');
         switch ($operacion) {
             case 'add':
-                $art->agregarArticulo($nombre);
+                $this->propep->agregarProyecto($mun_id,$nombre);
                 break;
             case 'edit':
-                $art->editarArticulo($id, $nombre);
-                break;
-            case 'del':
-                $art->eliminarArticulo($id);
+                $this->propep->editarProyecto($id,$nombre);
                 break;
         }
     }
-    
-     public function cargarMunicipios() {
-        $dep_id = $this->input->get("dep_id");
+    public function cargarMunicipios() {
+       $dep_id = $this->input->get("dep_id");
         $this->load->model('pais/municipio', 'mun');
         $municipios = $this->mun->obtenerMunicipioPorDepartamento($dep_id);
-        $combo = "<select name='mun_id'>";
-        $combo.= " <option value='0'>--Seleccione--</option>";
-        foreach ($municipios as $aux)
-            $combo.= " <option value='" . $aux->mun_id . "'>" . $aux->mun_nombre . "</option>";
-        $combo.="</select>";
+       
+        $numfilas = count($municipios);
 
-        echo $combo;
+        $i = 0;
+        foreach ($municipios as $aux) {
+            $rows[$i]['id'] = $aux->mun_id;
+            $rows[$i]['cell'] = array($aux->mun_id,
+                $aux->mun_nombre
+            );
+            $i++;
+        }
+
+        if ($numfilas != 0) {
+            array_multisort($rows, SORT_ASC);
+        } else {
+            $rows[0]['id'] = 0;
+            $rows[0]['cell'] = array(' ', ' ');
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
     }
-
+     
 }
 
 ?>
