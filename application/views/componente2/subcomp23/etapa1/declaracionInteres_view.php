@@ -171,9 +171,9 @@
         <fieldset class="filsetParticipantes" style="position: relative;left: 300px;">
             <legend><strong>Cantidad de Participantes</strong></legend>
             <center>
-                Hombres <input id="hombres" type="text" size="5" readonly="readonly"/>
-                Mujeres <input id="mujeres" type="text" size="5" readonly="readonly"/>
-                Total<input id="total" type="text" size="5" readonly="readonly"/>
+                Hombres: <input class="bordeNo"id="hombres" type="text" size="5" readonly="readonly"/>
+                Mujeres: <input class="bordeNo"id="mujeres" type="text" size="5" readonly="readonly"/>
+                Total: <input class="bordeNo" id="total" type="text" size="5" readonly="readonly"/>
             </center>
         </fieldset>
         <p>Comentarios :</br> <textarea id="dec_int_comentario" cols="30" rows="5"></textarea></p>

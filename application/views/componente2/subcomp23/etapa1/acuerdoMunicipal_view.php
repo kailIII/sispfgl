@@ -138,9 +138,9 @@
     <div style="position: relative;left: 70px;">
         <table>
             <tr>
-                <td  width="200"><strong>Departamento:</strong></td>
-                <td  width="200"><strong>Municipio:</strong></td>
-                <td  width="200"><strong>Fecha: </strong><input id="reu_fecha" name="reu_fecha" type="text" size="10"/></td>
+            <td  width="200"><strong>Departamento:</strong></td>
+            <td  width="200"><strong>Municipio:</strong></td>
+            <td  width="200"><strong>Fecha: </strong><input id="reu_fecha" name="reu_fecha" type="text" size="10"/></td>
             </tr>
         </table>
         <p>¿Consejo Municipal conoce el proceso de planificación? 
@@ -153,28 +153,32 @@
         </p>
         <table>
             <tr>
-                <td width="300px">
-                    <strong>Contrapartida</strong>
-                    <fieldset style="width:170px;">
-                        <legend>Aportes de la Municipalidad</legend>
-                        <?php foreach ($contrapartidas as $aux) { ?>
-                            <input type="checkbox" name="<?php echo $aux->con_id; ?>" value="<?php echo $aux->con_id; ?>" ><?php echo $aux->con_nombre; ?></input></br>
-                        <?php } ?>
-                    </fieldset>
-                    
-                </td>
-                <td>
-                    <strong>¿Se esta de acuerdo con los criterios de la participación?</strong>
-                    <fieldset style="width:200px;">
-                        <legend><strong>Criterios</strong></legend>
-                        <?php foreach ($criterios as $aux) { ?>
-                            <?php echo $aux->cri_nombre; ?>
-                            <input type="radio" name="<?php echo $aux->cri_id; ?>" value="true">SI </input>
-                            <input type="radio" name="<?php echo $aux->cri_id; ?>" value="false">NO </input>
-                            </br>
-                        <?php } ?>
-                    </fieldset>
-                </td>
+            <td width="300px">
+                <strong>Contrapartida</strong>
+            <fieldset style="width:170px;">
+                <legend>Aportes de la Municipalidad</legend>
+                <?php foreach ($contrapartidas as $aux) { ?>
+                    <input type="checkbox" name="<?php echo $aux->con_id; ?>" value="<?php echo $aux->con_id; ?>" ><?php echo $aux->con_nombre; ?></input></br>
+                <?php } ?>
+            </fieldset>
+
+            </td>
+            <td>
+                <strong>¿Se esta de acuerdo con los criterios de la participación?</strong>
+            <fieldset style="width:200px;">
+                <legend><strong>Criterios</strong></legend>
+                <table>
+                    <?php foreach ($criterios as $aux) { ?>
+                        <tr>
+                        <td><?php echo $aux->cri_nombre; ?></td>
+                        <td><input type="radio" name="<?php echo $aux->cri_id; ?>" value="true">SI </input></td>
+                        <td><input type="radio" name="<?php echo $aux->cri_id; ?>" value="false">NO </input></td>
+                        </tr>
+                    <?php } ?>
+                </table>  
+
+            </fieldset>
+            </td>
             </tr>
         </table>
         <table id="participantes"></table>
@@ -187,9 +191,9 @@
         <fieldset class="filsetParticipantes" style="position: relative;left: 300px;">
             <legend><strong>Cantidad de Participantes</strong></legend>
             <center>
-                Hombres <input id="hombres" type="text" size="5" readonly="readonly"/>
-                Mujeres <input id="mujeres" type="text" size="5" readonly="readonly"/>
-                Total<input id="total" type="text" size="5" readonly="readonly"/>
+                Hombres <input  id="hombres" type="text" size="5" readonly="readonly"/>
+                Mujeres <input  id="mujeres" type="text" size="5" readonly="readonly"/>
+                Total<input  id="total" type="text" size="5" readonly="readonly"/>
             </center>
         </fieldset>
         <p style="position: relative;top: -70px;">Observaciones:</br><textarea id="acu_mun_observacion" cols="30" rows="5"></textarea></p>

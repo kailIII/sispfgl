@@ -55,7 +55,16 @@ div#divcuerpo{
 
 .filsetParticipantes{
     border-color: #2F589F;
-    height:40px;
-    width:400px;
-
+    height:85px;
+    width:175px;
+      
 }
+/*quitar Borde a los texBox*/
+.bordeNo{
+   border-style: none;  
+   
+}
+.textD{
+    text-align: right;
+}
+
