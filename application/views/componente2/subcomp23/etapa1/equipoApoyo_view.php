@@ -30,7 +30,7 @@
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','Dui','Nombres','Apellidos','Sexo','Edad','Cargo','Teléfono'],
+            colNames:['id','Dui','Nombres','Apellidos','Sexo','Edad','Proviene R/U','Cargo','Nivel Escolar','Teléfono'],
             colModel:[
                 {name:'par_id',index:'par_id', width:40,editable:false,editoptions:{size:15} },
                 {name:'par_dui',index:'par_dui', width:100,editable:false,editoptions:{size:15} },
@@ -52,15 +52,29 @@
              
                  {name:'par_edad',index:'par_edad',width:80,editable:true,
                     editoptions:{size:25,maxlength:30}, 
-                    formoptions:{ label: "Cargo",elmprefix:"(*)"},
+                    formoptions:{ label: "Edad",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
+                
+                  {name:'par_proviene',index:'par_proviene',width:80,editable:true,
+                    editoptions:{size:25,maxlength:30}, 
+                    formoptions:{ label: "Proviene de",elmprefix:"(*)"},
+                    editrules:{required:true} 
+                },
+                   
                    
                 {name:'par_cargo',index:'par_cargo',width:100,editable:true,
                     editoptions:{size:25,maxlength:30}, 
                     formoptions:{ label: "Cargo",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
+                  {name:'par_nivel_esco',index:'par_nivel_esco',width:100,editable:true,
+                    editoptions:{size:25,maxlength:30}, 
+                    formoptions:{ label: "Nivel Escolar",elmprefix:"(*)"},
+                    editrules:{required:true} 
+                },
+                
+                
                 {name:'par_tel',index:'par_tel',width:100,editable:true,
                     editoptions:{size:10,maxlength:9}, 
                     formoptions:{ label: "Teléfono",elmprefix:"(*)"},
