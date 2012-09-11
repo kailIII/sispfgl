@@ -36,8 +36,10 @@
         $("#editar").click(function(){
             var gr = tabla.jqGrid('getGridParam','selrow');
             if( gr != null ){
-                $('#mensaje1').dialog('open');
-                return false;
+               window.location = '<?php echo base_url()?>consultor/consultoraC/editarConsultora/'+gr;
+               
+               // $('#mensaje1').dialog('open');
+                //return false;
             }
             else {
                 $('#mensaje2').dialog('open');
@@ -65,7 +67,7 @@
         <tr>
         <td align="center" ><a href="<?php echo base_url('consultor/consultoraC/registrarConsultora') ?>"><img src="<?php echo base_url('resource/imagenes/add.png'); ?>"/></a></td>
         <td width="30"></td>
-        <td align="center" ><a href="" id="editar" ><img src="<?php echo base_url('resource/imagenes/edit.png'); ?>"/></a></td>
+        <td align="center" ><a id="editar" ><img src="<?php echo base_url('resource/imagenes/edit.png'); ?>"/></a></td>
         </tr>
         <tr>
         <td class="letraazul" align="center">Registrar Consultora</td>

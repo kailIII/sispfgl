@@ -45,6 +45,12 @@ div#divcuerpo{
     line-height: 6px;
 }
 
+.exito{
+    color:#5FB404;
+    font-weight: bold;
+    line-height: 6px;
+}
+
 .h2Titulos{
     text-align: center;
     color:#2F589F;
