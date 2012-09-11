@@ -36,10 +36,7 @@
         $("#editar").click(function(){
             var gr = tabla.jqGrid('getGridParam','selrow');
             if( gr != null ){
-               window.location = '<?php echo base_url()?>consultor/consultoraC/editarConsultora/'+gr;
-               
-               // $('#mensaje1').dialog('open');
-                //return false;
+               document.location.href = '<?php echo base_url()?>consultor/consultoraC/editarConsultora/'+gr;
             }
             else {
                 $('#mensaje2').dialog('open');
@@ -83,7 +80,4 @@
 
 <div id="mensaje2" class="mensaje" title="Aviso">
     <p>Debe Seleccionar una consultora para editar</p>
-</div>
-<div id="mensaje1" class="mensaje" title="Aviso">
-    <p>Redirecciona a otra pagina</p>
 </div>

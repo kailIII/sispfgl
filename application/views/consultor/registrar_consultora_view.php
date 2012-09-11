@@ -55,7 +55,10 @@ $this->form_validation->set_rules('cons_observaciones', 'Observaciones', '');
 ?>
 <script type="text/javascript">        
     $(document).ready(function(){  
-        $('#enviar').button();
+        $('#ingresar').button();
+        $("#regresar").button().click(function() {
+            document.location.href='<?php echo base_url('consultor/consultoraC'); ?>';
+        });
 });
 </script>
     <h2 class="demoHeaders" align="Center">Registrar Consultoras</h2>
@@ -131,7 +134,9 @@ $this->form_validation->set_rules('cons_observaciones', 'Observaciones', '');
 	</tr>
         <tr>
                 <td colspan="5" align="center"></br>
-                    <input type="submit" value="Enviar" id="enviar" /></td>
+                    <input type="submit" value="Ingresar" id="ingresar" />
+                    <input type="button" value="Regresar" id="regresar" />
+                </td>
         </tr>
     </table>
     
