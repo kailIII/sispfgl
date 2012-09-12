@@ -1,41 +1,64 @@
 <?php
 $con_nombre = array(
-	'name'	=> 'con_nombre',
-	'id'	=> 'con_nombre',
-	'value'	=> set_value('con_nombre'),
-	'maxlength'	=> 75,
-	'size'	=> 35,
+    'name' => 'con_nombre',
+    'id' => 'con_nombre',
+    'value' => set_value('con_nombre'),
+    'maxlength' => 75,
+    'size' => 35,
 );
 $con_apellido = array(
-	'name'	=> 'con_apellido',
-	'id'	=> 'con_apellido',
-	'value'	=> set_value('con_apellido'),
-        'maxlength'	=> 75,
-	'size'	=> 35,
+    'name' => 'con_apellido',
+    'id' => 'con_apellido',
+    'value' => set_value('con_apellido'),
+    'maxlength' => 75,
+    'size' => 35,
 );
 $con_telefono = array(
-	'name'	=> 'con_telefono',
-	'id'	=> 'con_telefono',
-	'value'	=> set_value('con_telefono'),
-	'size'	=> 15,
-        'maxlength'=> 9,
+    'name' => 'con_telefono',
+    'id' => 'con_telefono',
+    'value' => set_value('con_telefono'),
+    'size' => 15,
+    'maxlength' => 9,
 );
 $con_email = array(
-	'name'	=> 'con_email',
-	'id'	=> 'con_email',
-	'value'	=> set_value('con_email'),
-	'size'	=> 35,
-        'maxlength'=> 100,
+    'name' => 'con_email',
+    'id' => 'con_email',
+    'value' => set_value('con_email'),
+    'size' => 35,
+    'maxlength' => 100,
+);
+$proyectoPep = array(
+    'name' => 'proyectoPep',
+    'id' => 'proyectoPep',
+    'style'=> 'visibility:hidden'
 );
 ?>
 <script type="text/javascript">        
     $(document).ready(function(){  
-        $('#ingresar').button();
+        $('#ingresar').button().click(function(){
+            if($('#selDepto').val()!='0' && $('#selRegion').val()!='0'&& $('#selMun').val()!='0'){
+                var gr = $('#proPep').jqGrid('getGridParam','selrow');
+                if( gr != null ){
+                    $('#proyectoPep').val(gr);
+                    this.form.action='<?php echo base_url('consultor/consultoraC/registrarConsultor')?>';
+                }
+                else {
+                    $('#mensaje2').dialog('open');
+                    return false;
+                }
+            }
+            else{
+                $('#mensaje3').dialog('open'); 
+                return false;
+            }
+        });
+        
+        
         $("#regresar").button().click(function() {
             document.location.href='<?php echo base_url('consultor/consultoraC/consultores'); ?>';
         });
         
-         /*CARGAR DEPARTAMENTOS*/
+        /*CARGAR DEPARTAMENTOS*/
         $('#selRegion').change(function(){   
             $('#selDepto').children().remove();
             $.getJSON('<?php echo base_url('componente2/proyectoPep/cargarDepartamentos') ?>?reg_id='+$('#selRegion').val(), 
@@ -82,29 +105,13 @@ $con_email = array(
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['pro_pep_id','Nombre Proyecto','Etapa I','Etapa II','Etapa III','Etapa IV'],
+            colNames:['pro_pep_id','Nombre Proyecto'],
             colModel:[
                 {name:'id',index:'id', editable:false,editoptions:{size:15} },
                 {name:'pro_pep_nombre',index:'pro_pep_nombre',editable:true,
                     edittype:"textarea",editoptions:{rows:"4",cols:"50"},width:'450', 
                     formoptions:{label: "Nombre",elmprefix:"(*)"},
                     editrules:{required:true} 
-                },
-                {name:'etapa1',index:'etapa1',editable:false,
-                    edittype:"checkbox",width:60,
-                    editoptions: { value:"SI:NO" }
-                },
-                {name:'etapa2',index:'etapa2',editable:false,
-                    edittype:"checkbox",width:60,
-                    editoptions: { value:"SI:NO"}
-                },
-                {name:'etapa3',index:'etapa3',editable:false,
-                    edittype:"checkbox",width:60,
-                    editoptions: { value:"SI:NO"}
-                },
-                {name:'etapa4',index:'etapa4',editable:false,
-                    edittype:"checkbox",width:60,
-                    editoptions: { value:"SI:NO"}
                 }
             ],
             multiselect: false,
@@ -121,60 +128,110 @@ $con_email = array(
             ).trigger('reloadGrid');}
         }
     ).hideCol(['id']);
-});
-</script>
-    <h2 class="demoHeaders" align="Center">Registrar Consultor</h2>
-    <center>
-    <?php echo form_open(base_url('consultor/consultoraC/registrarConsultora')); ?>
+        
+        /*DIALOGOS DE VALIDACION*/
+        $('.mensaje').dialog({
+            autoOpen: false,
+            width: 300,
+            buttons: {
+                "Ok": function() {
+                    $(this).dialog("close");
+                }
+            }
+        });
+        /*FIN DIALOGOS VALIDACION*/
     
+    });
+</script>
+<h2 class="demoHeaders" align="Center">Registrar Consultor</h2>
+<center>
+    <?php echo form_open(base_url('consultor/consultoraC/registrarConsultor')); ?>
+
     <table align="center" style=" border-color: #2F589F; border-style: solid" >
         <tr>
-                <td colspan="5"></br></td>
+        <td colspan="5"></br></td>
         </tr>
-	
+
         <tr>
-                <td width="50px"></td>
-		<td class="letraazul">Nombres del Consultor</td>
-		<td><?php echo form_input($con_nombre); ?></td>
-		<td class="error"><?php echo form_error('con_nombre'); ?></td>
-                <td width="50px"></td>
-	</tr>
+        <td width="50px"></td>
+        <td class="letraazul">Nombres del Consultor</td>
+        <td><?php echo form_input($con_nombre); ?></td>
+        <td class="error"><?php echo form_error('con_nombre'); ?></td>
+        <td width="50px"></td>
+        </tr>
         <tr>
-                <td width="50px"></td>
-		<td class="letraazul">Apellidos del Consultor</td>
-		<td><?php echo form_input($con_apellido); ?></td>
-		<td class="error"><?php echo form_error('con_apellido'); ?></td>
-                <td width="50px"></td>
-	</tr>
+        <td width="50px"></td>
+        <td class="letraazul">Apellidos del Consultor</td>
+        <td><?php echo form_input($con_apellido); ?></td>
+        <td class="error"><?php echo form_error('con_apellido'); ?></td>
+        <td width="50px"></td>
+        </tr>
         <tr>
-                <td width="50px"></td>
-		<td class="letraazul">Teléfono Personal</td>
-		<td><?php echo form_input($con_telefono); ?></td>
-		<td class="error"><?php echo form_error('con_telefono'); ?></td>
-                <td width="50px"></td>
-	</tr>
+        <td width="50px"></td>
+        <td class="letraazul">Teléfono Personal</td>
+        <td><?php echo form_input($con_telefono); ?></td>
+        <td class="error"><?php echo form_error('con_telefono'); ?></td>
+        <td width="50px"></td>
+        </tr>
         <tr>
-                <td width="50px"></td>
-		<td class="letraazul">Correo Electrónico</td>
-		<td><?php echo form_input($con_email); ?></td>
-		<td class="error"><?php echo form_error('con_email'); ?></td>
-                <td width="50px"></td>
-	</tr>
+        <td width="50px"></td>
+        <td class="letraazul">Correo Electrónico</td>
+        <td><?php echo form_input($con_email); ?></td>
+        <td class="error"><?php echo form_error('con_email'); ?></td>
+        <td width="50px"></td>
+        </tr>
         <tr>
-                <td width="50px"></td>
-		<td class="letraazul"></td>
-		<td><?php echo form_input($con_email); ?></td>
-		<td class="error"><?php echo form_error('con_email'); ?></td>
-                <td width="50px"></td>
-	</tr>
-        
+        <td width="50px"></td>
+        <td class="letraazul">Consultora (Si pertenece a uno)</td>
+        <td><select id='selConsultoras'>
+                <option value='0'>--Seleccione la Consultora--</option>
+                <?php foreach ($consultoras as $consultora) { ?>
+                    <option value='<?php echo $consultora->cons_id; ?>'><?php echo $consultora->cons_nombre; ?></option>
+                <?php } ?>
+            </select></td>
+        <td></td>
+        <td width="50px"></td>
+        </tr>
         <tr>
-                <td colspan="5" align="center"></br>
-                    <input type="submit" value="Ingresar" id="ingresar" />
-                    <input type="button" value="Regresar" id="regresar" />
-                </td>
+        <td colspan="5" align="center">
+            <select id='selRegion'>
+                <option value='0'>--Seleccione Region--</option>
+                <?php foreach ($regiones as $region) { ?>
+                    <option value='<?php echo $region->reg_id; ?>'><?php echo $region->reg_nombre; ?></option>
+                <?php } ?>
+            </select>
+            </br></br>
+            <select id='selDepto'>
+                <option value='0'>--Seleccione Departamento--</option>
+            </select>
+            </br></br>
+            <select id='selMun'>
+                <option value='0'>--Seleccione Municipio--</option>
+            </select>
+        </td>
+        </tr>
+        <tr>
+        <td colspan="5" align="center"></br>
+            <table id="proPep"></table>
+            <div id="pager"></div>
+        </td>
+        </tr>
+        <tr>
+        <td colspan="5" align="center"></br>
+            <input type="submit" value="Ingresar" id="ingresar" />
+            <input type="button" value="Regresar" id="regresar" />
+        </td>
         </tr>
     </table>
-    
-    </center>
+
+</center>
+<?php echo form_input($proyectoPep); ?>
 </form>
+<div id="mensaje2" class="mensaje" title="Aviso">
+    <p>Debe Seleccionar un Proyecto PEP para el consultor</p>
+</div>
+<div id="mensaje3" class="mensaje" title="Recuerde:">
+    <p>Debe Seleccionar la Region, el Departamento y el Municipio 
+        para poder seleccionar el Proyecto PEP al consultor
+    </p>
+</div>

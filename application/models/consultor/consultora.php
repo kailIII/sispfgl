@@ -11,6 +11,7 @@ class Consultora extends CI_Model {
     private $tabla = 'consultora';
 
     public function obtenerConsultora() {
+        $this->db->order_by('cons_id');
         $consulta = $this->db->get($this->tabla);
         return $consulta->result();
     }

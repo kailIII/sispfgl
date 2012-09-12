@@ -201,9 +201,9 @@ class ConsultoraC extends CI_Controller {
             $proyectoPep = $this->propep->obtenerNombreProyectos($aux->pro_pep_id);
             foreach ($proyectoPep as $pro_pep) {
                 $rows[$i]['cell'] = array($aux->con_id,
-                $aux->con_nombre.' '.$aux->con_apellido,
-                $pro_pep->pro_pep_nombre,
-                $pro_pep->mun_nombre
+                    $aux->con_nombre . ' ' . $aux->con_apellido,
+                    $pro_pep->pro_pep_nombre,
+                    $pro_pep->mun_nombre
                 );
             }
             $i++;
@@ -227,15 +227,16 @@ class ConsultoraC extends CI_Controller {
 
         echo $jsonresponse;
     }
-    
+
     public function registrarConsultor() {
-        
+
         /* REGLAS DE VALIDACIÒN */
         $this->form_validation->set_rules('con_nombre', 'Nombre del Consultor', 'required|max_length[75]');
         $this->form_validation->set_rules('con_apellido', 'Apellidos del Consultor', 'required|max_length[74]');
         $this->form_validation->set_rules('con_telefono', 'Teléfono', 'required|max_length[9]');
         $this->form_validation->set_rules('con_email', 'Correo Electrónico', 'required|max_length[200]|valid_email');
-        
+        $this->form_validation->set_rules('proyectoPep', '', '');
+        $this->form_validation->set_rules('consultora', '', '');
 
         if ($this->form_validation->run() == FALSE) {
 
@@ -243,25 +244,30 @@ class ConsultoraC extends CI_Controller {
             $informacion['user_id'] = $this->tank_auth->get_user_id();
             $informacion['username'] = $this->tank_auth->get_username();
             $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
-
+            /* OBTENER REGIONES DEL PAIS */
+            $this->load->model('pais/region');
+            $informacion['regiones'] = $this->region->obtenerRegiones();
+            /* REGIONES */
+            /* OBTENER CONSULTORAS */
+            $this->load->model('consultor/consultora', 'consul');
+            $informacion['consultoras'] = $this->consul->obtenerConsultora();
+            /* CONSULTORAS */
             $this->load->view('plantilla/header', $informacion);
             $this->load->view('plantilla/menu', $informacion);
             $this->load->view('consultor/registra_consultor_view', $informacion);
             $this->load->view('plantilla/footer', $informacion);
         } else {
             //SI ESTA CORRECTO
-            $cons_nombre = $this->input->post("cons_nombre");
-            $cons_direccion = $this->input->post("cons_direccion");
-            $cons_telefono = $this->input->post("cons_telefono");
-            $cons_telefono2 = $this->input->post("cons_telefono2");
-            $cons_fax = $this->input->post("cons_fax");
-            $cons_email = $this->input->post("cons_email");
-            $cons_repres_legal = $this->input->post("cons_repres_legal");
-            $cons_observaciones = $this->input->post("cons_observaciones");
-            $this->load->model('consultor/consultora', 'cons');
+            $con_nombre = $this->input->post("con_nombre");
+            $con_apellido = $this->input->post("con_apellido");
+            $con_telefono = $this->input->post("con_telefono");
+            $con_email = $this->input->post("con_email");
+            $proyectoPep = $this->input->post("proyectoPep");
+            $consultora = $this->input->post("selConsultoras");
+            $this->load->model('consultor/consultor', 'con');
 
-            $this->cons->insertarConsultora($cons_nombre, $cons_direccion, $cons_telefono, $cons_telefono2, $cons_fax, $cons_email, $cons_repres_legal, $cons_observaciones);
-            $informacion['mensaje'] = 'Se inserto correctamente';
+            $this->con->insertarConsultor($con_nombre, $con_apellido, $con_telefono, $con_email, $proyectoPep, $consultora);
+
             $informacion['titulo'] = 'Gestión de Consultores y Consultores de los Proyectos PEP';
             $informacion['user_id'] = $this->tank_auth->get_user_id();
             $informacion['username'] = $this->tank_auth->get_username();
@@ -273,7 +279,6 @@ class ConsultoraC extends CI_Controller {
             $this->load->view('plantilla/footer', $informacion);
         }
     }
-
 
 }
 
