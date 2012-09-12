@@ -11,7 +11,7 @@
         
         
         /*PARA EL DATEPICKER*/
-        $( "#reu_fecha" ).datepicker({
+        $( "#dec_int_fecha" ).datepicker({
             showOn: 'both',
             buttonImage: '<?php echo base_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
@@ -149,25 +149,27 @@
         <table>
             <tr>
             <td><strong>Departamento:</strong></td>
-            <td>San Salvador</td>
+            <td width="200px">San Salvador</td>
             <td><strong>Municipio:</strong></td>
-            <td>San Salvador</td>
+            <td width="200px">San Salvador</td>
             <td><strong>Fecha: </strong><input id="dec_int_fecha" name="dec_int_fecha" type="text" size="10"/></td>
             <td></td>   
             </tr>
         </table>
 
         <p>Lugar : <input id="dec_int_lugar" type="text" size="100"></input></p>
-        
+
         <table id="participantes"></table>
-        
         <div id="pagerParticipantes"></div>
+
         <div style="position: relative;left: 200px;">
             <input type="button" id="agregar" value="  Agregar  " />
             <input type="button" id="editar" value="   Editar   " />
             <input type="button" id="eliminar" value="  Eliminar  " />
         </div>
-        <p></p>
+
+        </br>
+
         <fieldset class="filsetParticipantes" style="position: relative;left: 300px;">
             <legend><strong>Cantidad de Participantes</strong></legend>
             <center>
@@ -176,6 +178,7 @@
                 Total: <input class="bordeNo" id="total" type="text" size="5" readonly="readonly"/>
             </center>
         </fieldset>
+
         <p>Comentarios :</br> <textarea id="dec_int_comentario" cols="30" rows="5"></textarea></p>
         <p style="position: relative;left: 200px;"><input type="submit" id="guardar" value="Guardar Declaración" />
             <input type="button" id="cancelar" value="Cancelar" />
