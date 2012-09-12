@@ -48,7 +48,7 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = '192.168.1.7';
+$db['default']['hostname'] = 'localhost';
 $db['default']['username'] = 'smpfgl';
 $db['default']['password'] = 'smpfgl';
 $db['default']['database'] = 'smpfgl';

@@ -44,7 +44,7 @@
                     formoptions:{label: "Apellidos",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
-                {name:'par_sexo',index:'par_sexo',editable:true,edittype:"select",width:30,
+                {name:'par_sexo',index:'par_sexo',editable:true,edittype:"select",width:50,
                     editoptions:{ value: '0:Seleccione;f:Femenino; m:Masculino' }, 
                     formoptions:{ label: "Sexo",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validaSexo}
@@ -153,10 +153,12 @@
         /*FIN DIALOGOS VALIDACION*/
             
     });
+    
+    
 </script>
 
 <form>
-    <div style="position: relative;left: 70px;">
+    <div style="position: relative;left: 20px;">
         <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
         <h2 class="h2Titulos">Producto 3: Equipo Local de Apoyo</h2>
 
@@ -180,68 +182,80 @@
             <input type="button" id="agregar" value="  Agregar  " />
             <input type="button" id="editar" value="   Editar   " />
             <input type="button" id="eliminar" value="  Eliminar  " />
+            <br></br>
         </div>
-        
-        <div style="position: relative;top: 15px;">
-            <div style="float: left; width: 400px;left: 70px;position: relative;top:20px;"> 
-                <p>¿Los Miembros del Equipo Local de Apoyo Reunen las Caracterìsticas Siguientes?</p>
-                <fieldset>
-                    <legend><strong>Caracterìsticas</strong></legend>
-                    <table>
-                        <tr>
-                        <td>Mayores de 15 Años </td>
-                        <td><input type="radio" name="mayor15" value="true">SI </input></td>
-                        <td><input type="radio" name="mayor15" value="false">NO </input></td>
-                        </tr>
-                        <tr>
-                        <td>El 50% de los Miembros son Mujeres </td>
-                        <td><input type="radio" name="porcenMujeres" value="true">SI </input></td>
-                        <td><input type="radio" name="porcenMujeres" value="false">NO </input></td>    
-                        </tr>
-                        <tr>
-                        <td>Conocen el Territorio </td>
-                        <td><input type="radio" name="conTerritorio" value="true">SI </input></td>
-                        <td><input type="radio" name="conTerritorio" value="false">NO </input></td> 
-                        </tr>
-                        <tr>
-                        <td>Tienen Potencial de Liderazgo </td>
-                        <td><input type="radio" name="potencialLider" value="true">SI </input></td>
-                        <td><input type="radio" name="potencialLider" value="false">NO </input></td>   
-                        </tr>
-                    </table>  
-                </fieldset>
-            </div>  
 
-            <div style="float: left;width: 250;position: relative;left:150px;top: 30px;">
-                <fieldset class="filsetParticipantes">
-                    <legend align="center"><strong>Cantidad de Participantes</strong></legend>
-                    <table>
-                        <tr>
-                        <td class="textD">Hombres: </td>
-                        <td><input class="bordeNo" id="hombres" type="text" size="5" readonly="readonly" /></td>
-                        </tr>
-                        <tr>
-                        <td class="textD">Mujeres: </td>
-                        <td><input class="bordeNo" id="mujeres" type="text" size="5" readonly="readonly" /></br></td>
-                        </tr>
-                        <tr>
-                        <td class="textD">Total: </td>
-                        <td><input class="bordeNo" id="total" type="text" size="5" readonly="readonly" /></td>
-                        </tr>
-                    </table> 
-                </fieldset>
-            </div>
-        </div>
-        
-        <div style="position:relative;top:15px;">
-            <p>Observaciones:</br>
-                <textarea id="acu_mun_observacion" cols="30" rows="5"></textarea></p>
-            <p> 
+    </div>
+    <table style="position: relative;top: 20px;border-color: 2px solid blue">
+        <tr>
+        <td>
+            <!-- <div style="float: left; width: 400px;left: 70px;position: relative;top:20px;border: 2px solid black;"> -->
+            <p>¿Los Miembros del Equipo Local de Apoyo Reunen las Caracterìsticas Siguientes?</p>
+        <fieldset style="width: 400px;border-color: #2F589F">
+            <legend><strong>Caracterìsticas</strong></legend>
+            <table>
+                <tr>
+                <td>Mayores de 15 Años </td>
+                <td><input type="radio" name="mayor15" value="true">SI </input></td>
+                <td><input type="radio" name="mayor15" value="false">NO </input></td>
+                </tr>
+                <tr>
+                <td>El 50% de los Miembros son Mujeres </td>
+                <td><input type="radio" name="porcenMujeres" value="true">SI </input></td>
+                <td><input type="radio" name="porcenMujeres" value="false">NO </input></td>    
+                </tr>
+                <tr>
+                <td>Conocen el Territorio </td>
+                <td><input type="radio" name="conTerritorio" value="true">SI </input></td>
+                <td><input type="radio" name="conTerritorio" value="false">NO </input></td> 
+                </tr>
+                <tr>
+                <td>Tienen Potencial de Liderazgo </td>
+                <td><input type="radio" name="potencialLider" value="true">SI </input></td>
+                <td><input type="radio" name="potencialLider" value="false">NO </input></td>   
+                </tr>
+            </table>  
+        </fieldset>
+        </td>
+        <td>
+            <!--   </div> --> 
+
+            <!--    <div style="float: left;width: 250;position: relative;left:150px;top: 30px;border: 2px solid black;">-->
+        <fieldset   style="border-color: #2F589F;height:85px;width:175px;position: relative;left: 50px;">
+            <legend align="center"><strong>Cantidad de Participantes</strong></legend>
+            <table>
+                <tr>
+                <td class="textD">Hombres: </td>
+                <td><input class="bordeNo" id="hombres" type="text" size="5" readonly="readonly" /></td>
+                </tr>
+                <tr>
+                <td class="textD">Mujeres: </td>
+                <td><input class="bordeNo" id="mujeres" type="text" size="5" readonly="readonly" /></br></td>
+                </tr>
+                <tr>
+                <td class="textD">Total: </td>
+                <td><input class="bordeNo" id="total" type="text" size="5" readonly="readonly" /></td>
+                </tr>
+            </table> 
+        </fieldset>
+        </td>
+        </tr>
+    </table>
+    <!--   </div>-->
+
+    <div style="position:relative;top:25px;">
+        <p>Observaciones:</br>
+            <textarea id="acu_mun_observacion" cols="48" rows="5"></textarea></p>
+    </div>
+
+    <center>
+        <div style="position:relative;width: 300px;top: 25px">
+            <p > 
                 <input type="submit" id="guardar" value="Guardar Reunión" />
                 <input type="button" id="cancelar" value="Cancelar" />
             </p>
         </div>
-    </div>
+    </center>
 </form>
 
 <div id="mensaje" class="mensaje" title="Aviso de la operación">
