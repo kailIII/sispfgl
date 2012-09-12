@@ -33,6 +33,15 @@ class Proyecto_pep extends CI_Model {
         $this->db->update($this->tabla, $datos);
     }
 
+      function obtenerNombreProyectos($pro_pep_id) {
+        $this->db->select('proyecto_pep.pro_pep_nombre, 
+                           municipio.mun_nombre');
+        $this->db->from('proyecto_pep');
+        $this->db->join('municipio', ' municipio.mun_id = proyecto_pep.mun_id');
+        $this->db->where('proyecto_pep.pro_pep_id ',$pro_pep_id);
+        $query = $this->db->get();
+        return $query->result();
+    }
 }
 
 ?>

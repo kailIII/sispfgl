@@ -129,7 +129,7 @@ class ConsultoraC extends CI_Controller {
         if ($this->form_validation->run() == FALSE) {
             $this->load->model('consultor/consultora', 'consul');
             $consultoras = $this->consul->obtenerConsultoraPorId($cons_id);
-            foreach($consultoras as $consultora) {
+            foreach ($consultoras as $consultora) {
                 $informacion["cons_id_b"] = $consultora->cons_id;
                 $informacion["cons_nombre_b"] = $consultora->cons_nombre;
                 $informacion["cons_direccion_b"] = $consultora->cons_direccion;
@@ -151,7 +151,7 @@ class ConsultoraC extends CI_Controller {
             $this->load->view('plantilla/footer', $informacion);
         } else {
             //SI ESTA CORRECTO
-            
+
             $cons_nombre = $this->input->post("cons_nombre");
             $cons_direccion = $this->input->post("cons_direccion");
             $cons_telefono = $this->input->post("cons_telefono");
@@ -162,8 +162,112 @@ class ConsultoraC extends CI_Controller {
             $cons_observaciones = $this->input->post("cons_observaciones");
             $this->load->model('consultor/consultora', 'cons');
 
-            $this->cons->editarConsultora($cons_id,$cons_nombre, $cons_direccion, $cons_telefono, $cons_telefono2, $cons_fax, $cons_email, $cons_repres_legal, $cons_observaciones);
+            $this->cons->editarConsultora($cons_id, $cons_nombre, $cons_direccion, $cons_telefono, $cons_telefono2, $cons_fax, $cons_email, $cons_repres_legal, $cons_observaciones);
             $informacion['mensaje'] = 'Se inserto correctamente';
+            $informacion['titulo'] = 'Gestión de Consultores y Consultores de los Proyectos PEP';
+            $informacion['user_id'] = $this->tank_auth->get_user_id();
+            $informacion['username'] = $this->tank_auth->get_username();
+            $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+
+            $this->load->view('plantilla/header', $informacion);
+            $this->load->view('plantilla/menu', $informacion);
+            $this->load->view('consultor/muestra_consultora_view', $informacion);
+            $this->load->view('plantilla/footer', $informacion);
+        }
+    }
+
+    public function consultores() {
+
+        $informacion['titulo'] = 'Gestión de Consultores de los Proyectos PEP';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('consultor/muestra_consultores_view');
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function cargarConsultores() {
+        $this->load->model('consultor/consultor', 'con');
+        $this->load->model('proyectoPep/proyecto_pep', 'propep');
+        $consultores = $this->con->obtenerConsultores();
+        $numfilas = count($consultores);
+
+        $i = 0;
+        foreach ($consultores as $aux) {
+            $rows[$i]['id'] = $aux->con_id;
+            $proyectoPep = $this->propep->obtenerNombreProyectos($aux->pro_pep_id);
+            foreach ($proyectoPep as $pro_pep) {
+                $rows[$i]['cell'] = array($aux->con_id,
+                    $aux->con_nombre . ' ' . $aux->con_apellido,
+                    $pro_pep->pro_pep_nombre,
+                    $pro_pep->mun_nombre
+                );
+            }
+            $i++;
+        }
+
+        if ($numfilas != 0) {
+            array_multisort($rows, SORT_ASC);
+        } else {
+            $rows[0]['id'] = 0;
+            $rows[0]['cell'] = array(' ', ' ', ' ');
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+
+    public function registrarConsultor() {
+
+        /* REGLAS DE VALIDACIÒN */
+        $this->form_validation->set_rules('con_nombre', 'Nombre del Consultor', 'required|max_length[75]');
+        $this->form_validation->set_rules('con_apellido', 'Apellidos del Consultor', 'required|max_length[74]');
+        $this->form_validation->set_rules('con_telefono', 'Teléfono', 'required|max_length[9]');
+        $this->form_validation->set_rules('con_email', 'Correo Electrónico', 'required|max_length[200]|valid_email');
+        $this->form_validation->set_rules('proyectoPep', '', '');
+        $this->form_validation->set_rules('consultora', '', '');
+
+        if ($this->form_validation->run() == FALSE) {
+
+            $informacion['titulo'] = 'Registrar Consultoras';
+            $informacion['user_id'] = $this->tank_auth->get_user_id();
+            $informacion['username'] = $this->tank_auth->get_username();
+            $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+            /* OBTENER REGIONES DEL PAIS */
+            $this->load->model('pais/region');
+            $informacion['regiones'] = $this->region->obtenerRegiones();
+            /* REGIONES */
+            /* OBTENER CONSULTORAS */
+            $this->load->model('consultor/consultora', 'consul');
+            $informacion['consultoras'] = $this->consul->obtenerConsultora();
+            /* CONSULTORAS */
+            $this->load->view('plantilla/header', $informacion);
+            $this->load->view('plantilla/menu', $informacion);
+            $this->load->view('consultor/registra_consultor_view', $informacion);
+            $this->load->view('plantilla/footer', $informacion);
+        } else {
+            //SI ESTA CORRECTO
+            $con_nombre = $this->input->post("con_nombre");
+            $con_apellido = $this->input->post("con_apellido");
+            $con_telefono = $this->input->post("con_telefono");
+            $con_email = $this->input->post("con_email");
+            $proyectoPep = $this->input->post("proyectoPep");
+            $consultora = $this->input->post("selConsultoras");
+            $this->load->model('consultor/consultor', 'con');
+
+            $this->con->insertarConsultor($con_nombre, $con_apellido, $con_telefono, $con_email, $proyectoPep, $consultora);
+
             $informacion['titulo'] = 'Gestión de Consultores y Consultores de los Proyectos PEP';
             $informacion['user_id'] = $this->tank_auth->get_user_id();
             $informacion['username'] = $this->tank_auth->get_username();
