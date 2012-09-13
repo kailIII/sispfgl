@@ -277,6 +277,7 @@ class ConsultoraC extends CI_Controller {
             $informacion2['site_name']	= 'SIS-PFGL';
             $informacion2['activation_period'] = (60 * 60 * 24 * 20) / 3600;
             $this->_enviar_correo('activate', $con_email, $informacion2);
+            $this->con->editarUsuarioConsultor($con_email,$nuevoUsuario);
             /* FIN DE CREAR USUARIO */
             $informacion['titulo'] = 'Gestión de Consultores y Consultores de los Proyectos PEP';
             $informacion['user_id'] = $this->tank_auth->get_user_id();

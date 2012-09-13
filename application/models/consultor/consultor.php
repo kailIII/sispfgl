@@ -36,6 +36,13 @@ class Consultor extends CI_Model {
         }
         $this->db->insert($this->tabla, $datos);
     }
+     public function editarUsuarioConsultor($con_email,$usuario) {
+        $datos = array(
+            "user" => $usuario
+        );
+        $this->db->where('con_email', $con_email);
+        $this->db->update($this->tabla, $datos);
+    }
 
 }
 

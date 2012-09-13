@@ -397,6 +397,14 @@ class Users extends CI_Model {
         $r=$consulta->result();
         return $r;
     }
+    
+    function obtenerDepartamentoMunicipio($username) {
+        $this->db->select('rol_id');
+        $this->db->where('username', $username);
+        $consulta=$this->db->get($this->table_name);
+        $r=$consulta->result();
+        return $r;
+    }
 
 }
 
