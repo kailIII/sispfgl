@@ -138,6 +138,25 @@ class Comp23_E1 extends CI_Controller {
         $this->load->view('componente2/subcomp23/etapa1/equipoApoyo_view');
         $this->load->view('plantilla/footer');
     }
+    
+    
+        public function inforPreMunicipio() {
+
+        $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
+            Planeación Estratégica Participativa';
+
+        $this->load->model('cumplimiento_minimo','cumm');
+        $datos['cumplimientosMinimos'] = $this->cumm->obtenerCumplimientoMinimo();
+        $this->load->model('participante');
+        $datos['participantes'] = $this->participante->obtenerParticipantes();
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/subcomp23/etapa1/inforPreMunicipio_view', $datos);
+        $this->load->view('plantilla/footer', $informacion);
+    }
 
 }
 
