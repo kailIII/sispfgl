@@ -32,6 +32,11 @@ $proyectoPep = array(
     'id' => 'proyectoPep',
     'style'=> 'visibility:hidden'
 );
+$cons_id = array(
+    'name' => 'cons_id',
+    'id' => 'cons_id',
+    'style'=> 'visibility:hidden'
+);
 ?>
 <script type="text/javascript">        
     $(document).ready(function(){  
@@ -40,6 +45,7 @@ $proyectoPep = array(
                 var gr = $('#proPep').jqGrid('getGridParam','selrow');
                 if( gr != null ){
                     $('#proyectoPep').val(gr);
+                    $('#cons_id').val($('#selConsultoras').val());
                     this.form.action='<?php echo base_url('consultor/consultoraC/registrarConsultor')?>';
                 }
                 else {
@@ -226,6 +232,7 @@ $proyectoPep = array(
 
 </center>
 <?php echo form_input($proyectoPep); ?>
+<?php echo form_input($cons_id); ?>
 </form>
 <div id="mensaje2" class="mensaje" title="Aviso">
     <p>Debe Seleccionar un Proyecto PEP para el consultor</p>

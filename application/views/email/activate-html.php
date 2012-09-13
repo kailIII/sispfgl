@@ -7,7 +7,7 @@
                 <tr>
                     <td width="5%"></td>
                     <td align="left" width="95%" style="font: 13px/18px Arial, Helvetica, sans-serif;">
-                        <h2 style="font: normal 20px/23px Arial, Helvetica, sans-serif; margin: 0; padding: 0 0 18px; color: black;">Welcome to <?php echo $site_name; ?>!</h2>
+                        <h2 style="font: normal 20px/23px Arial, Helvetica, sans-serif; margin: 0; padding: 0 0 18px; color: black;">Bienvenido al <?php echo $site_name; ?>!</h2>
                         Se ha creado un usuario asociado a esta cuenta de correo electrónico para el Sistema 
                         de Informacion y Seguimiento para el Programa de Fortalecimiento de Gobiernos Locales <?php echo $site_name; ?>.
                         De clic en el siguiente link para activar su usuario:<br />

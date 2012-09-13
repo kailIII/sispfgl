@@ -266,8 +266,19 @@ class ConsultoraC extends CI_Controller {
             $consultora = $this->input->post("selConsultoras");
             $this->load->model('consultor/consultor', 'con');
 
+            /* CREAR USUARIO EN BASE DE DATOS*/
             $this->con->insertarConsultor($con_nombre, $con_apellido, $con_telefono, $con_email, $proyectoPep, $consultora);
-
+            $posicion=strpos($con_email, '@');
+            $nuevoUsuario=  strtolower(substr($con_email, 0,$posicion));
+            $password= strtolower(substr($con_email, 0,$posicion));
+            $email_activation = $this->config->item('email_activation', 'tank_auth');
+                      
+            $informacion2=$this->tank_auth->create_user($nuevoUsuario, $con_email, $password,3, $email_activation);
+            $informacion2['site_name']	= 'SIS-PFGL';
+            $informacion2['activation_period'] = (60 * 60 * 24 * 20) / 3600;
+            $this->_enviar_correo('activate', $con_email, $informacion2);
+            $this->con->editarUsuarioConsultor($con_email,$nuevoUsuario);
+            /* FIN DE CREAR USUARIO */
             $informacion['titulo'] = 'Gestión de Consultores y Consultores de los Proyectos PEP';
             $informacion['user_id'] = $this->tank_auth->get_user_id();
             $informacion['username'] = $this->tank_auth->get_username();
@@ -275,10 +286,20 @@ class ConsultoraC extends CI_Controller {
 
             $this->load->view('plantilla/header', $informacion);
             $this->load->view('plantilla/menu', $informacion);
-            $this->load->view('consultor/muestra_consultora_view', $informacion);
+            $this->load->view('consultor/muestra_consultores_view', $informacion);
             $this->load->view('plantilla/footer', $informacion);
         }
     }
+    
+      function _enviar_correo($type, $email, &$informacion)
+	{
+		$this->load->library('email');
+		$this->email->from($this->config->item('webmaster_email', 'tank_auth'), $informacion['site_name']);
+		$this->email->to($email);
+		$this->email->subject('Bienvenido a '.$informacion['site_name']);
+		$this->email->message($this->load->view('email/'.$type.'-html', $informacion, TRUE));
+		$this->email->send();
+	}
 
 }
 
