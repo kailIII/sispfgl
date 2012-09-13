@@ -8,7 +8,20 @@
         $("#cancelar").button();
         
         /*PARA EL DATEPICKER*/
-        $( "#reu_fecha" ).datepicker({
+        $( "#inf_pre_fecha_borrador" ).datepicker({
+            showOn: 'both',
+            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+            buttonImageOnly: true, 
+            dateFormat: 'dd/mm/yy'
+        });
+        
+        $( "#inf_pre_fecha_observacion" ).datepicker({
+            showOn: 'both',
+            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+            buttonImageOnly: true, 
+            dateFormat: 'dd/mm/yy'
+        });
+        $( "#inf_pre_aceptacion" ).datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
@@ -30,16 +43,15 @@
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','Dui','Nombres','Apellidos','Sexo','Edad','Proviene R/U','Cargo','Nivel Escolar','Teléfono'],
+            colNames:['id','Nombres','Apellidos','Sexo','Cargo'],
             colModel:[
                 {name:'par_id',index:'par_id', width:40,editable:false,editoptions:{size:15} },
-                {name:'par_dui',index:'par_dui', width:100,editable:false,editoptions:{size:15} },
-                {name:'par_nombre',index:'par_nombre',width:100,editable:true,
+                {name:'par_nombre',index:'par_nombre',width:250,editable:true,
                     editoptions:{size:25,maxlength:50}, 
                     formoptions:{label: "Nombres",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
-                {name:'par_apellido',index:'par_apellido',width:100,editable:true,
+                {name:'par_apellido',index:'par_apellido',width:250,editable:true,
                     editoptions:{size:25,maxlength:50}, 
                     formoptions:{label: "Apellidos",elmprefix:"(*)"},
                     editrules:{required:true} 
@@ -50,34 +62,9 @@
                     editrules:{custom:true, custom_func:validaSexo}
                 },
              
-                {name:'par_edad',index:'par_edad',width:80,editable:true,
-                    editoptions:{size:25,maxlength:30}, 
-                    formoptions:{ label: "Edad",elmprefix:"(*)"},
-                    editrules:{required:true} 
-                },
-                
-                {name:'par_proviene',index:'par_proviene',width:80,editable:true,
-                    editoptions:{size:25,maxlength:30}, 
-                    formoptions:{ label: "Proviene de",elmprefix:"(*)"},
-                    editrules:{required:true} 
-                },
-                   
-                   
-                {name:'par_cargo',index:'par_cargo',width:100,editable:true,
+                {name:'par_cargo',index:'par_cargo',width:250,editable:true,
                     editoptions:{size:25,maxlength:30}, 
                     formoptions:{ label: "Cargo",elmprefix:"(*)"},
-                    editrules:{required:true} 
-                },
-                {name:'par_nivel_esco',index:'par_nivel_esco',width:100,editable:true,
-                    editoptions:{size:25,maxlength:30}, 
-                    formoptions:{ label: "Nivel Escolar",elmprefix:"(*)"},
-                    editrules:{required:true} 
-                },
-                
-                
-                {name:'par_tel',index:'par_tel',width:100,editable:true,
-                    editoptions:{size:10,maxlength:9}, 
-                    formoptions:{ label: "Teléfono",elmprefix:"(*)"},
                     editrules:{required:true} 
                 }
             ],
@@ -160,7 +147,7 @@
 <form>
     <div style="position: relative;left: 20px;">
         <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
-        <h2 class="h2Titulos">Producto 3: Equipo Local de Apoyo</h2>
+        <h2 class="h2Titulos">Producto 6: Informe Preliminar del Municipio</h2>
 
 
         <table>
@@ -168,12 +155,54 @@
             <td  width="200"><strong>Departamento:</strong></td>
             <td  width="200"><strong>Municipio:</strong></td>
             </tr>
-            <tr>
-            <td  width="200"><strong>Lugar:</strong></td>
-            <td  width="200"><strong>Fecha: </strong><input id="reu_fecha" name="reu_fecha" type="text" size="10"/></td>
-            </tr>
-
         </table>
+        <br>
+      
+        <table>
+            <tr>
+            <td>
+            <fieldset style="width:400px;">
+                <legend><strong>Cumplimiento de los elementos minimos del informe</strong></legend>
+                <table>
+                    <?php foreach ($cumplimientosMinimos as $aux) { ?>
+                        <tr>
+                        <td><?php echo $aux->cum_min_nombre; ?></td>
+                        <td><input type="radio" name="<?php echo $aux->cum_min_id; ?>" value="true">SI </input></td>
+                        <td><input type="radio" name="<?php echo $aux->cum_min_id; ?>" value="false">NO </input></td>
+                        </tr>
+                    <?php } ?>
+                </table>  
+
+            </fieldset>
+            </td>  
+            <td>
+
+                <table>
+                    <tr> <td  width="300"><strong>Fecha de presentación del borrador: </strong><input id="inf_pre_fecha_borrador" name="inf_pre_fecha_borrador" type="text" size="10"/></td></tr>
+                    <tr><td  width="300"><strong>Fecha de superación de observaciones: </strong><input id="inf_pre_fecha_observacion" name="inf_pre_fecha_observacion" type="text" size="10"/></td></tr>
+                    <tr> <td  width="300"><strong>Fecha de aprobacion del consejo municipal: </strong><input id="inf_pre_aceptacion" name="inf_pre_aceptacion" type="text" size="10"/></td></tr>
+                </table>
+                <table>
+                    <tr>
+                    <td>Municipalidad</td>
+                    <td><input type="radio" name="mayor15" value="true">SI </input></td>
+                    <td><input type="radio" name="mayor15" value="false">NO </input></td>
+                    </tr>
+                    <tr>
+                    <td>ISDEM </td>
+                    <td><input type="radio" name="porcenMujeres" value="true">SI </input></td>
+                    <td><input type="radio" name="porcenMujeres" value="false">NO </input></td>    
+                    </tr>
+                    <tr>
+                    <td>UEP</td>
+                    <td><input type="radio" name="conTerritorio" value="true">SI </input></td>
+                    <td><input type="radio" name="conTerritorio" value="false">NO </input></td> 
+                    </tr>
+                </table> 
+            </td>
+            </tr>
+        </table>
+        <br></br>
 
         <table id="participantes"></table>
         <div id="pagerParticipantes"></div>
@@ -186,63 +215,7 @@
         </div>
 
     </div>
-    <table style="position: relative;left: 40px;top: 20px;border-color: 2px solid blue">
-        <tr>
-        <td>
-            <!-- <div style="float: left; width: 400px;left: 70px;position: relative;top:20px;border: 2px solid black;"> -->
-            <p>¿Los Miembros del Equipo Local de Apoyo Reunen las Caracterìsticas Siguientes?</p>
-        <fieldset style="width: 400px;border-color: #2F589F">
-            <legend><strong>Caracterìsticas</strong></legend>
-            <table>
-                <tr>
-                <td>Mayores de 15 Años </td>
-                <td><input type="radio" name="mayor15" value="true">SI </input></td>
-                <td><input type="radio" name="mayor15" value="false">NO </input></td>
-                </tr>
-                <tr>
-                <td>El 50% de los Miembros son Mujeres </td>
-                <td><input type="radio" name="porcenMujeres" value="true">SI </input></td>
-                <td><input type="radio" name="porcenMujeres" value="false">NO </input></td>    
-                </tr>
-                <tr>
-                <td>Conocen el Territorio </td>
-                <td><input type="radio" name="conTerritorio" value="true">SI </input></td>
-                <td><input type="radio" name="conTerritorio" value="false">NO </input></td> 
-                </tr>
-                <tr>
-                <td>Tienen Potencial de Liderazgo </td>
-                <td><input type="radio" name="potencialLider" value="true">SI </input></td>
-                <td><input type="radio" name="potencialLider" value="false">NO </input></td>   
-                </tr>
-            </table>  
-        </fieldset>
-        </td>
-        <td>
-            <!--   </div> --> 
-
-            <!--    <div style="float: left;width: 250;position: relative;left:150px;top: 30px;border: 2px solid black;">-->
-        <fieldset   style="border-color: #2F589F;height:85px;width:175px;position: relative;left: 50px;">
-            <legend align="center"><strong>Cantidad de Participantes</strong></legend>
-            <table>
-                <tr>
-                <td class="textD">Hombres: </td>
-                <td><input class="bordeNo" id="hombres" type="text" size="5" readonly="readonly" /></td>
-                </tr>
-                <tr>
-                <td class="textD">Mujeres: </td>
-                <td><input class="bordeNo" id="mujeres" type="text" size="5" readonly="readonly" /></br></td>
-                </tr>
-                <tr>
-                <td class="textD">Total: </td>
-                <td><input class="bordeNo" id="total" type="text" size="5" readonly="readonly" /></td>
-                </tr>
-            </table> 
-        </fieldset>
-        </td>
-        </tr>
-    </table>
     <!--   </div>-->
-
     <div style="position:relative;left: 40px;top:25px;">
         <p>Observaciones y/o Recomendaciones:</br>
             <textarea id="acu_mun_observacion" cols="48" rows="5"></textarea></p>
