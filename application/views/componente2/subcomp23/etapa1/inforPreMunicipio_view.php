@@ -149,15 +149,15 @@
         <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
         <h2 class="h2Titulos">Producto 6: Informe Preliminar del Municipio</h2>
 
-
+        <br></br>
         <table>
             <tr>
             <td  width="200"><strong>Departamento:</strong></td>
             <td  width="200"><strong>Municipio:</strong></td>
             </tr>
         </table>
-        <br>
-      
+        <br></br>
+  
         <table>
             <tr>
             <td>
@@ -175,6 +175,7 @@
 
             </fieldset>
             </td>  
+            <td style="width: 80px"></td>
             <td>
 
                 <table>

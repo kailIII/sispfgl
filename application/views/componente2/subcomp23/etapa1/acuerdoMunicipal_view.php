@@ -33,22 +33,22 @@
             colNames:['id','Nombres','Apellidos','Sexo','Cargo','Teléfono'],
             colModel:[
                 {name:'par_id',index:'par_id', width:40,editable:false,editoptions:{size:15} },
-                {name:'par_nombre',index:'par_nombre',width:100,editable:true,
+                {name:'par_nombre',index:'par_nombre',width:200,editable:true,
                     editoptions:{size:25,maxlength:50}, 
                     formoptions:{label: "Nombres",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
-                {name:'par_apellido',index:'par_apellido',width:100,editable:true,
+                {name:'par_apellido',index:'par_apellido',width:200,editable:true,
                     editoptions:{size:25,maxlength:50}, 
                     formoptions:{label: "Apellidos",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
-                {name:'par_sexo',index:'par_sexo',editable:true,edittype:"select",width:30,
+                {name:'par_sexo',index:'par_sexo',editable:true,edittype:"select",width:40,
                     editoptions:{ value: '0:Seleccione;f:Femenino; m:Masculino' }, 
                     formoptions:{ label: "Sexo",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validaSexo}
                 },
-                {name:'par_cargo',index:'par_cargo',width:100,editable:true,
+                {name:'par_cargo',index:'par_cargo',width:250,editable:true,
                     editoptions:{size:25,maxlength:30}, 
                     formoptions:{ label: "Cargo",elmprefix:"(*)"},
                     editrules:{required:true} 
@@ -136,6 +136,8 @@
     <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
     <h2 class="h2Titulos">Producto 1: Acuerdo Municipal</h2>
     <div style="position: relative;left: 70px;">
+       
+        <br>
         <table>
             <tr>
             <td  width="200"><strong>Departamento:</strong></td>
@@ -151,8 +153,10 @@
             <input type="radio" name="acu_num_p2" value="true">SI </input>
             <input type="radio" name="acu_num_p2" value="false">NO </input>
         </p>
+        <br></br>
         <table>
             <tr>
+            <td style="width:80px;"></td>
             <td width="300px">
                 <strong>Contrapartida</strong>
             <fieldset style="width:170px;">
@@ -163,6 +167,7 @@
             </fieldset>
 
             </td>
+            <td style="width: 50px;"></td>
             <td>
                 <strong>¿Se esta de acuerdo con los criterios de la participación?</strong>
             <fieldset style="width:200px;">
@@ -181,25 +186,53 @@
             </td>
             </tr>
         </table>
+
+        <br></br>
+
         <table id="participantes"></table>
         <div id="pagerParticipantes"></div>
-        <div style="position: relative;left: 200px;">
+
+        <div style="position: relative;left: 275px; top: 5px;">
             <input type="button" id="agregar" value="  Agregar  " />
             <input type="button" id="editar" value="   Editar   " />
             <input type="button" id="eliminar" value="  Eliminar  " />
         </div>
-        <fieldset class="filsetParticipantes" style="position: relative;left: 300px;">
-            <legend><strong>Cantidad de Participantes</strong></legend>
-            <center>
-                Hombres <input  id="hombres" type="text" size="5" readonly="readonly"/>
-                Mujeres <input  id="mujeres" type="text" size="5" readonly="readonly"/>
-                Total<input  id="total" type="text" size="5" readonly="readonly"/>
-            </center>
-        </fieldset>
-        <p style="position: relative;top: -70px;">Observaciones:</br><textarea id="acu_mun_observacion" cols="30" rows="5"></textarea></p>
-        <p style="position: relative;top: -70px; left: 250px"><input type="submit" id="guardar" value="Guardar Reunión" />
-            <input type="button" id="cancelar" value="Cancelar" />
-        </p>
+        <table style="position: relative;top: 15px;">
+            <tr>
+            <td>
+                <p>Observaciones:</br><textarea id="acu_mun_observacion" cols="48" rows="5"></textarea></p>
+            </td>
+            <td style="width: 50px"></td>
+            <td>
+            <fieldset   style="border-color: #2F589F;height:85px;width:175px;position: relative;left: 50px;">
+                <legend align="center"><strong>Cantidad de Participantes</strong></legend>
+                <table>
+                    <tr>
+                    <td class="textD">Hombres: </td>
+                    <td><input class="bordeNo" id="hombres" type="text" size="5" readonly="readonly" /></td>
+                    </tr>
+                    <tr>
+                    <td class="textD">Mujeres: </td>
+                    <td><input class="bordeNo" id="mujeres" type="text" size="5" readonly="readonly" /></br></td>
+                    </tr>
+                    <tr>
+                    <td class="textD">Total: </td>
+                    <td><input class="bordeNo" id="total" type="text" size="5" readonly="readonly" /></td>
+                    </tr>
+                </table> 
+            </fieldset>
+            </td>
+            </tr>
+
+        </table>
+        
+        <center style="position: relative;top: 20px">
+            <div>
+                <p><input type="submit" id="guardar" value="Guardar Acuerdo" />
+                    <input type="button" id="cancelar" value="Cancelar" />
+                </p>
+            </div>
+        </center>
     </div>
 </form>
 <div id="mensaje" class="mensaje" title="Aviso de la operación">

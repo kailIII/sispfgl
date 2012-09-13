@@ -6,7 +6,7 @@
  * @author Ing. Karen Peñate
  */
 
-class departamento extends CI_Model {
+class Departamento extends CI_Model {
 
     private $tabla = 'departamento';
 

@@ -16,15 +16,15 @@
         });
         /*FIN DEL DATEPICKER*/
         /*ZONA DE VALIDACIONES*/
-        function validaSexo(value, colname) {
-            if (value == 0 ) return [false,"Seleccione el Sexo del Participante"];
+        function validar(value, colname) {
+            if (value == 0 ) return [false,"Debe Seleccionar una Opción"];
             else return [true,""];
         }
         /*FIN ZONA VALIDACIONES*/
         /*GRID PARTICIPANTES*/
         var tabla=$("#participantes");
         tabla.jqGrid({
-            //url: 'welcome/muestraArticulos',
+           url:'<?php echo base_url('componente2/comp23_E1/cargarParticipanteGA') ?>?gru_apo_id=<?php echo $gru_apo_id; ?>',
             //editurl:'welcome/gestionArticulo',
             datatype:'json',
             altRows:true,
@@ -33,7 +33,10 @@
             colNames:['id','Dui','Nombres','Apellidos','Sexo','Edad','Proviene R/U','Cargo','Nivel Escolar','Teléfono'],
             colModel:[
                 {name:'par_id',index:'par_id', width:40,editable:false,editoptions:{size:15} },
-                {name:'par_dui',index:'par_dui', width:100,editable:false,editoptions:{size:15} },
+                {name:'par_dui',index:'par_dui', width:100,editable:true,editoptions:{size:15}, 
+                formoptions:{label: "Dui",elmprefix:"(*)"},
+                    editrules:{required:true} },
+                
                 {name:'par_nombre',index:'par_nombre',width:100,editable:true,
                     editoptions:{size:25,maxlength:50}, 
                     formoptions:{label: "Nombres",elmprefix:"(*)"},
@@ -45,9 +48,10 @@
                     editrules:{required:true} 
                 },
                 {name:'par_sexo',index:'par_sexo',editable:true,edittype:"select",width:50,
-                    editoptions:{ value: '0:Seleccione;f:Femenino; m:Masculino' }, 
+                    align:"center",
+                    editoptions:{ value: '0:Seleccione;F:Femenino; M:Masculino' }, 
                     formoptions:{ label: "Sexo",elmprefix:"(*)"},
-                    editrules:{custom:true, custom_func:validaSexo}
+                    editrules:{custom:true, custom_func:validar}
                 },
              
                 {name:'par_edad',index:'par_edad',width:80,editable:true,
@@ -56,10 +60,11 @@
                     editrules:{required:true} 
                 },
                 
-                {name:'par_proviene',index:'par_proviene',width:80,editable:true,
-                    editoptions:{size:25,maxlength:30}, 
+                {name:'par_proviene',index:'par_proviene',width:80,edittype:"select",
+                    editable:true,
+                    editoptions:{ value: '0:Seleccione;u:Urbano; r:Rural' }, 
                     formoptions:{ label: "Proviene de",elmprefix:"(*)"},
-                    editrules:{required:true} 
+                    editrules:{custom:true, custom_func:validar}
                 },
                    
                    
@@ -104,7 +109,7 @@
         $("#agregar").click(function(){
             tabla.jqGrid('editGridRow',"new",
             {closeAfterAdd:true,addCaption: "Agregar ",
-                height:200,align:'center',reloadAfterSubmit:true,width:550,
+                align:'center',reloadAfterSubmit:true,width:550,
                 processData: "Cargando...",afterSubmit:despuesAgregarEditar,
                 bottominfo:"Campos marcados con (*) son obligatorios", 
                 onclickSubmit: function(rp_ge, postdata) {
@@ -119,7 +124,7 @@
             if( gr != null )
                 tabla.jqGrid('editGridRow',gr,
             {closeAfterEdit:true,editCaption: "Editando ",
-                height:200,align:'center',reloadAfterSubmit:true,width:550,
+                align:'center',reloadAfterSubmit:true,width:550,
                 processData: "Cargando...",afterSubmit:despuesAgregarEditar,
                 bottominfo:"Campos marcados con (*) son obligatorios", 
                 onclickSubmit: function(rp_ge, postdata) {
@@ -165,16 +170,16 @@
 
         <table>
             <tr>
-            <td  width="200"><strong>Departamento:</strong></td>
-            <td  width="200"><strong>Municipio:</strong></td>
+            <td  width="300"><strong>Departamento:</strong></td>
+            <td  width="300"><strong>Municipio:</strong></td>
             </tr>
             <tr>
-            <td  width="200"><strong>Lugar:</strong></td>
-            <td  width="200"><strong>Fecha: </strong><input id="reu_fecha" name="reu_fecha" type="text" size="10"/></td>
+            <td  width="300"><strong>Lugar:</strong><input id="gru_apo_lugar" name="gru_apo_lugar" type="text" size="40"/></td>
+            <td  width="100"><strong>Fecha: </strong><input id="reu_fecha" name="reu_fecha" type="text" size="10"/></td>
             </tr>
 
         </table>
-
+        <br></br>
         <table id="participantes"></table>
         <div id="pagerParticipantes"></div>
 

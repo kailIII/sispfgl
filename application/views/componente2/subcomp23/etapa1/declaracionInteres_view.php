@@ -56,7 +56,7 @@
                     editrules:{custom:true, custom_func:validaSexo}
                 },
                 {name:'par_institucion',index:'par_institucion',editable:true,
-                    edittype:"select",width:300,
+                    edittype:"select",width:250,
                     editoptions:{ dataUrl:'<?php echo base_url('componente2/subComp23/cargarInstituciones'); ?>'}, 
                     formoptions:{ label: "Institución",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validaInstitucion}
@@ -144,7 +144,7 @@
 <form action="<?php echo base_url('componente2/subComp23/'); ?>">
     <h2 class="h2Titulos">Etapa 1: Preparacion de Condiciones Previas</h2>
     <h2 class="h2Titulos">Producto 2: Declaración de Interes de la Población de Participar en el Proceso</h2>
-
+ <br>
     <div style="position: relative;left: 70px;">
         <table>
             <tr>
@@ -157,12 +157,12 @@
             </tr>
         </table>
 
-        <p>Lugar : <input id="dec_int_lugar" type="text" size="100"></input></p>
-
+        <p><strong>Lugar : </strong><input id="dec_int_lugar" type="text" size="50"></input></p>
+        <br>
         <table id="participantes"></table>
         <div id="pagerParticipantes"></div>
 
-        <div style="position: relative;left: 200px;">
+        <div style="position: relative;left: 275px;top: 5px">
             <input type="button" id="agregar" value="  Agregar  " />
             <input type="button" id="editar" value="   Editar   " />
             <input type="button" id="eliminar" value="  Eliminar  " />
@@ -170,19 +170,42 @@
 
         </br>
 
-        <fieldset class="filsetParticipantes" style="position: relative;left: 300px;">
-            <legend><strong>Cantidad de Participantes</strong></legend>
-            <center>
-                Hombres: <input class="bordeNo"id="hombres" type="text" size="5" readonly="readonly"/>
-                Mujeres: <input class="bordeNo"id="mujeres" type="text" size="5" readonly="readonly"/>
-                Total: <input class="bordeNo" id="total" type="text" size="5" readonly="readonly"/>
-            </center>
-        </fieldset>
+          <table style="position: relative;top: 15px;">
+            <tr>
+            <td>
+                <p><strong>Observaciones:</strong></br><textarea id="acu_mun_observacion" cols="48" rows="5"></textarea></p>
+            </td>
+            <td style="width: 50px"></td>
+            <td>
+            <fieldset   style="border-color: #2F589F;height:85px;width:175px;position: relative;left: 50px;">
+                <legend align="center"><strong>Cantidad de Participantes</strong></legend>
+                <table>
+                    <tr>
+                    <td class="textD">Hombres: </td>
+                    <td><input class="bordeNo" id="hombres" type="text" size="5" readonly="readonly" /></td>
+                    </tr>
+                    <tr>
+                    <td class="textD">Mujeres: </td>
+                    <td><input class="bordeNo" id="mujeres" type="text" size="5" readonly="readonly" /></br></td>
+                    </tr>
+                    <tr>
+                    <td class="textD">Total: </td>
+                    <td><input class="bordeNo" id="total" type="text" size="5" readonly="readonly" /></td>
+                    </tr>
+                </table> 
+            </fieldset>
+            </td>
+            </tr>
 
-        <p>Comentarios :</br> <textarea id="dec_int_comentario" cols="30" rows="5"></textarea></p>
-        <p style="position: relative;left: 200px;"><input type="submit" id="guardar" value="Guardar Declaración" />
-            <input type="button" id="cancelar" value="Cancelar" />
-        </p>
+        </table>
+        
+         <center style="position: relative;top: 20px">
+            
+                <p><input type="submit" id="guardar" value="Guardar Declaración" />
+                    <input type="button" id="cancelar" value="Cancelar" />
+                </p>
+            
+        </center>
     </div>
 
 </form>

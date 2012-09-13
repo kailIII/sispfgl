@@ -15,10 +15,10 @@ if (!defined('BASEPATH'))
  * 
  * 
  * 
- ****************************************
+ * ***************************************
  * @modify By:      Ing. Karen Peñate   *
  * @date:       02/Septiembre/2012      *
- ****************************************
+ * ***************************************
  * 
  * 
  */
@@ -389,13 +389,28 @@ class Users extends CI_Model {
         $this->db->where('user_id', $user_id);
         $this->db->delete($this->profile_table_name);
     }
-   
+
     function obtenerRol($username) {
         $this->db->select('rol_id');
         $this->db->where('username', $username);
-        $consulta=$this->db->get($this->table_name);
-        $r=$consulta->result();
+        $consulta = $this->db->get($this->table_name);
+        $r = $consulta->result();
         return $r;
+    }
+
+    function obtenerDepartamento($username) {
+        
+        $consulta='SELECT departamento.dep_nombre AS "Depto", municipio.mun_nombre AS "Muni",
+                            proyecto_pep.pro_pep_nombre AS "Proyecto",
+                             proyecto_pep.pro_pep_id AS "id"
+                   FROM consultor, proyecto_pep, municipio, departamento
+                   WHERE 
+                        consultor.pro_pep_id = proyecto_pep.pro_pep_id AND
+                        proyecto_pep.mun_id = municipio.mun_id AND
+                        municipio.dep_id = departamento.dep_id AND
+                        consultor."user" = ?';
+        $query = $this->db->query($consulta,array($username));
+        return $query->result();
     }
 
 }

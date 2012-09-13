@@ -6,8 +6,8 @@
         $("#eliminar").button();
         $("#guardar").button();
         $("#cancelar").button().click(function() {
-            document.location.href='<?php echo base_url('componente2/subComp23/muestraReuniones'); ?>';
-          });
+            document.location.href='<?php echo base_url('componente2/comp23_E1/muestraReunion'); ?>/'+$('#reu_id').val();
+        });
         
         
         /*PARA EL DATEPICKER*/
@@ -31,37 +31,37 @@
         /*GRID PARTICIPANTES*/
         var tabla=$("#participantes");
         tabla.jqGrid({
-            //url: 'welcome/muestraArticulos',
-            //editurl:'welcome/gestionArticulo',
+            url:'<?php echo base_url('componente2/comp23_E1/cargarParticipanteREU') ?>?reu_id=<?php echo $reu_id; ?>',
+            editurl:'<?php echo base_url('componente2/comp23_E1/gestionParticipantes') ?>/reunion/reu_id/<?php echo $reu_id; ?>',
             datatype:'json',
             altRows:true,
             height: "100%",
             hidegrid: false,
             colNames:['id','Nombres','Apellidos','Sexo','Institución','Cargo'],
             colModel:[
-                {name:'par_id',index:'par_id', width:40,editable:false,editoptions:{size:15} },
-                {name:'par_nombre',index:'par_nombre',width:100,editable:true,
+                {name:'id',index:'id', width:40,editable:false,editoptions:{size:15} },
+                {name:'par_nombre',index:'par_nombre',width:200,editable:true,
                     editoptions:{size:25,maxlength:50}, 
                     formoptions:{label: "Nombres",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
-                {name:'par_apellido',index:'par_apellido',width:100,editable:true,
+                {name:'par_apellido',index:'par_apellido',width:200,editable:true,
                     editoptions:{size:25,maxlength:50}, 
                     formoptions:{label: "Apellidos",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
-                {name:'par_sexo',index:'par_sexo',editable:true,edittype:"select",width:30,
-                    editoptions:{ value: '0:Seleccione;f:Femenino; m:Masculino' }, 
+                {name:'par_sexo',index:'par_sexo',editable:true,edittype:"select",width:50,
+                    editoptions:{ value: '0:Seleccione;F:Femenino;M:Masculino' }, 
                     formoptions:{ label: "Sexo",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validaSexo}
                 },
                 {name:'par_institucion',index:'par_institucion',editable:true,
                     edittype:"select",width:200,
-                    editoptions:{ dataUrl:'<?php echo base_url('componente2/subComp23/cargarInstituciones'); ?>'}, 
+                    editoptions:{ dataUrl:'<?php echo base_url('componente2/comp23_E1/cargarInstituciones'); ?>'}, 
                     formoptions:{ label: "Institución",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validaInstitucion}
                 },
-                {name:'par_cargo',index:'par_cargo',width:100,editable:true,
+                {name:'par_cargo',index:'par_cargo',width:120,editable:true,
                     editoptions:{size:25,maxlength:30}, 
                     formoptions:{ label: "Cargo",elmprefix:"(*)"},
                     editrules:{required:true} 
@@ -105,7 +105,7 @@
             if( gr != null )
                 tabla.jqGrid('editGridRow',gr,
             {closeAfterEdit:true,editCaption: "Editando ",
-               align:'center',reloadAfterSubmit:true,
+                align:'center',reloadAfterSubmit:true,
                 processData: "Cargando...",afterSubmit:despuesAgregarEditar,
                 bottominfo:"Campos marcados con (*) son obligatorios", 
                 onclickSubmit: function(rp_ge, postdata) {
@@ -144,42 +144,73 @@
     <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
     <h2 class="h2Titulos">Producto 1: Acuerdo Municipal</h2>
     <h2 class="h2Titulos">Registro de Reuniones</h2>
+    <br></br>
     <div style="position: relative;left: 70px;">
         <table>
             <tr>
-                <td><strong>Departamento:</strong></td>
-                <td></td>
-                <td><strong>Municipio:</strong></td>
+            <td colspan="2"><strong>Departamento:</strong><?php echo $departamento ?></td>
+            <td colspan="2"><strong>Municipio:</strong><?php echo $municipio ?></td>
             </tr>
             <tr>
-                <td width="200">No. de Reunión: <input type="text" id="reu_numero" size="5" readonly="readonly"/> </td>
-                <td width="200">Fecha: <input id="reu_fecha" name="reu_fecha" type="text" size="10"/></td>
-                <td width="200"><p>Duración en Horas:<input type="text" id="reu_duracion_horas" size="5"/></p></td>
+            
+            <td colspan="4"><strong>Proyecto PEP:</strong><?php echo $proyectoPep ?></td>
             </tr>
+            <tr>
+            <td width="200">No. de Reunión: <input type="text" value="<?php echo $reu_numero?>" id="reu_numero" size="5" readonly="readonly"/> </td>
+            <td width="200">Fecha: <input id="reu_fecha" name="reu_fecha" type="text" size="10"/></td>
+            <td width="200"><p>Duración en Horas:<input type="text" id="reu_duracion_horas" size="5"/></p></td>
+            <td>
+            </tr>
+            
         </table>
+
         <p>Tema o Agenda a Desarrollar: <textarea id="reu_tema" cols="50" rows="2"></textarea></p>
         <table id="participantes"></table>
         <div id="pagerParticipantes"></div>
-        <div style="position: relative;left: 200px;">
+        <div style="position: relative;left: 275px;top: 5px;">
             <input type="button" id="agregar" value="  Agregar  " />
             <input type="button" id="editar" value="   Editar   " />
             <input type="button" id="eliminar" value="  Eliminar  " />
         </div>
         <p></p>
-        <fieldset class="filsetParticipantes" style="position: relative;left: 300px;">
-            <legend><strong>Cantidad de Participantes</strong></legend>
-            <center>
-                Hombres <input id="hombres" type="text" size="5" readonly="readonly"/>
-                Mujeres <input id="mujeres" type="text" size="5" readonly="readonly"/>
-                Total<input id="total" type="text" size="5" readonly="readonly"/>
-            </center>
-        </fieldset>
-        <p>Resultado de la Reunión:</br> <textarea id="reu_resultado" cols="30" rows="5"></textarea></p>
-        <p style="position: absolute;left: 300px;top:300px;">Observaciones y/o Recomendaciones:</br><textarea id="reu_observacion" cols="30" rows="5"></textarea></p>
-        <p style="position: relative;left: 200px;"><input type="submit" id="guardar" value="Guardar Reunión" />
-        <input type="button" id="cancelar" value="Cancelar" />
-        </p>
+
+        <table style="position: relative;top: 15px;">
+            <tr>  
+            <td>
+                <p>Resultado de la Reunión:</br> <textarea id="reu_resultado" cols="48" rows="5"></textarea></p>
+            </td>
+            <td>
+            <fieldset   style="border-color: #2F589F;height:85px;width:175px;position: relative;left: 50px;">
+                <legend align="center"><strong>Cantidad de Participantes</strong></legend>
+                <table>
+                    <tr>
+                    <td class="textD">Hombres: </td>
+                    <td><input class="bordeNo" id="hombres" type="text" size="5" readonly="readonly" /></td>
+                    </tr>
+                    <tr>
+                    <td class="textD">Mujeres: </td>
+                    <td><input class="bordeNo" id="mujeres" type="text" size="5" readonly="readonly" /></br></td>
+                    </tr>
+                    <tr>
+                    <td class="textD">Total: </td>
+                    <td><input class="bordeNo" id="total" type="text" size="5" readonly="readonly" /></td>
+                    </tr>
+                </table> 
+            </fieldset>
+            </td>
+            </tr>
+        </table>
+        <div>
+            <p>Observaciones y/o Recomendaciones:</br><textarea id="reu_observacion" cols="48" rows="5"></textarea></p>
+            <center style="position: relative;top: 20px">
+
+                <p><input type="submit" id="guardar" value="Guardar Reunión" />
+                    <input type="button" id="cancelar" value="Cancelar" />
+                </p>
+        </div>
+        </center>
     </div>
+    <input id="reu_id" value="<?php echo $reu_id?>" style="visibility: hidden"/>
 </form>
 <div id="mensaje" class="mensaje" title="Aviso de la operación">
     <p>La acción fue realizada con satisfacción</p>
