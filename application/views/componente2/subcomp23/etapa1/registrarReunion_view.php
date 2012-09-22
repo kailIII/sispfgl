@@ -4,10 +4,14 @@
         $("#agregar").button();
         $("#editar").button();
         $("#eliminar").button();
-        $("#guardar").button();
+        
+        $("#guardar").button().click(function() {
+            this.form.action='';
+        });
         $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url('componente2/comp23_E1/muestraReunion'); ?>/'+$('#reu_id').val();
         });
+        
         
         
         /*PARA EL DATEPICKER*/
@@ -140,7 +144,7 @@
             
     });
 </script>
-<form action="<?php echo base_url('componente2/subComp23/'); ?>">
+<?php echo form_open(base_url('componente2/comp23_E1/guardarReunion')); ?>
     <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
     <h2 class="h2Titulos">Producto 1: Acuerdo Municipal</h2>
     <h2 class="h2Titulos">Registro de Reuniones</h2>
@@ -156,7 +160,7 @@
             <td colspan="4"><strong>Proyecto PEP:</strong><?php echo $proyectoPep ?></td>
             </tr>
             <tr>
-            <td width="200">No. de Reunión: <input type="text" value="<?php echo $reu_numero?>" id="reu_numero" size="5" readonly="readonly"/> </td>
+            <td width="200">No. de Reunión: <input type="text" id="reu_numero" value="<?php echo $reu_numero?>" id="reu_numero" size="5" readonly="readonly"/> </td>
             <td width="200">Fecha: <input id="reu_fecha" name="reu_fecha" type="text" size="10"/></td>
             <td width="200"><p>Duración en Horas:<input type="text" id="reu_duracion_horas" size="5"/></p></td>
             <td>

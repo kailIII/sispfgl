@@ -73,31 +73,28 @@ class Comp23_E1 extends CI_Controller {
     }
 
     public function guardarReunion() {
-
-        $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
+        /* REGLAS DE VALIDACIÒN */
+        $this->form_validation->set_rules('reu_tema', 'Tema', 'required');
+        $this->form_validation->set_rules('reu_resultado', 'Resultado Reunión', 'required|max_length[200]');
+        $this->form_validation->set_rules('reu_observacion', 'Observación', '');
+        $this->form_validation->set_rules('reu_fecha', 'Fecha', 'required');
+        $this->form_validation->set_rules('reu_duracion_horas', 'Horas', 'required');
+        
+        if ($this->form_validation->run() == FALSE) {
+            $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
-        //PARA CREAR LA LISTA DESPLEGABLE DE LA INSTITUCION
-        $this->load->model('institucion', 'institucion');
-        $institucion = $this->institucion->obtenerInstitucion();
-        $numfilas = count($institucion);
-        $cadena = "0:Seleccione;";
-        $i = 1;
-        foreach ($institucion as $aux) {
-            if ($i != $numfilas)
-                $cadena.= $aux->ins_id . ":" . $aux->ins_nombre . ";";
-            else
-                $cadena.= $aux->ins_id . ":" . $aux->ins_nombre;
-            $i++;
+            $informacion['user_id'] = $this->tank_auth->get_user_id();
+            $username = $this->tank_auth->get_username();
+            $informacion['username'] = $username;
+            $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+            $informacion['reu_id'] = $this->input->post("reu_numero");
+            $this->load->view('plantilla/header', $informacion);
+            $this->load->view('plantilla/menu', $informacion);
+            $this->load->view('componente2/subcomp23/etapa1/registrarReunion_view', $informacion);
+            $this->load->view('plantilla/footer', $informacion);
+        } else {//SI ES CORRECTO
+            redirect(base_url('componente2/comp23_E1/muestraReuniones'));
         }
-        $lista["cadena"] = $cadena;
-
-        $informacion['user_id'] = $this->tank_auth->get_user_id();
-        $informacion['username'] = $this->tank_auth->get_username();
-        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
-        $this->load->view('plantilla/header', $informacion);
-        $this->load->view('plantilla/menu', $informacion);
-        $this->load->view('componente2/subcomp23/etapa1/registrarReunion_view', $lista);
-        $this->load->view('plantilla/footer', $informacion);
     }
 
     public function muestraReuniones() {
@@ -170,9 +167,9 @@ class Comp23_E1 extends CI_Controller {
 
         echo $jsonresponse;
     }
-    
-     public function gestionParticipantes($tabla,$campo,$id_campo) {
-        /*VARIABLES POST*/
+
+    public function gestionParticipantes($tabla, $campo, $id_campo) {
+        /* VARIABLES POST */
         $id = $this->input->post("id");
         $par_nombre = $this->input->post("par_nombre");
         $par_apellido = $this->input->post("par_apellido");
@@ -180,15 +177,15 @@ class Comp23_E1 extends CI_Controller {
         $ins_id = $this->input->post("par_institucion");
         $par_cargo = $this->input->post("par_cargo");
         $operacion = $this->input->post('oper');
-        
-        /*VARIABLE GET*/
+
+        /* VARIABLE GET */
         $this->load->model('participante');
         switch ($operacion) {
             case 'add':
-                $this->participante->agregarParticipantes($campo,$id_campo,$par_nombre , $par_apellido, $par_sexo,$ins_id,$par_cargo);
+                $this->participante->agregarParticipantes($campo, $id_campo, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo);
                 break;
             case 'edit':
-                $this->participante->editarParticipantes($id,$par_nombre , $par_apellido, $par_sexo,$ins_id,$par_cargo);
+                $this->participante->editarParticipantes($id, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo);
                 break;
             case 'del':
                 $this->participante->eliminarParticipantes($id);
