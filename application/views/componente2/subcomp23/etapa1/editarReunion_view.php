@@ -44,7 +44,7 @@
             this.form.action='<?php echo base_url('componente2/comp23_E1/guardarReunion') ?>';
         });
         $("#cancelar").button().click(function() {
-            document.location.href='<?php echo base_url('componente2/comp23_E1/muestraReunion'); ?>/'+$('#reu_id').val();
+            document.location.href='<?php echo base_url('componente2/comp23_E1/muestraReuniones'); ?>';
         });
 
         /*PARA EL DATEPICKER*/
@@ -174,18 +174,20 @@
                 No. de Reunión: <input type="text" id="reu_numero" value="<?php echo $reu_numero ?>" id="reu_numero" size="5" readonly="readonly"/> </td>
             <td width="300">
                 Fecha: 
-                <input id="reu_fecha" name="reu_fecha" readonly="readonly" class="required"  size="10"/>
+                <input value="<?php echo $reu_fecha ?>" id="reu_fecha" name="reu_fecha" readonly="readonly" class="required"  size="10"/>
             </td>
             <td width="300">
                 Duración en Horas:
-                <input type="text" id="reu_duracion_horas" name="reu_duracion_horas" size="5" class="required number"/>
+                <input value="<?php echo $reu_duracion_horas ?>" type="text" id="reu_duracion_horas" name="reu_duracion_horas" size="5" class="required number"/>
             </td>
             <td>
                 </tr>
 
         </table>
 
-        <p>Tema o Agenda a Desarrollar: <textarea id="reu_tema" name="reu_tema" cols="50" rows="2" class="required" maxlength="200" ></textarea></p>
+        <p>Tema o Agenda a Desarrollar: <textarea id="reu_tema" name="reu_tema" cols="50" rows="2" class="required" maxlength="200" >
+            <?php echo $reu_tema ?>
+            </textarea></p>
         <table id="participantes"></table>
         <div id="pagerParticipantes"></div>
         <div style="position: relative;left: 275px;top: 5px;">
@@ -199,7 +201,9 @@
             <tr>  
             <td>
                 <p>Resultado de la Reunión:</br> 
-                    <textarea id="reu_resultado" name="reu_resultado" cols="48" rows="5" class="required" ></textarea></p>
+                    <textarea id="reu_resultado" name="reu_resultado" cols="48" rows="5" class="required" >
+                    <?php echo $reu_resultado ?>
+                    </textarea></p>
             </td>
             <td>
             <fieldset   style="border-color: #2F589F;height:85px;width:175px;position: relative;left: 50px;">
@@ -224,7 +228,9 @@
         </table>
         <div>
             <p>Observaciones y/o Recomendaciones:</br>
-                <textarea id="reu_observacion"  name="reu_observacion" cols="48" rows="5"></textarea></p>
+                <textarea id="reu_observacion"  name="reu_observacion" cols="48" rows="5">
+                <?php echo $reu_observacion ?>
+                </textarea></p>
             <center style="position: relative;top: 20px">
 
                 <p><input type="submit" id="guardar" value="Guardar Reunión" />
