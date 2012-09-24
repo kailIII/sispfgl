@@ -79,7 +79,7 @@ class Comp23_E1 extends CI_Controller {
         $this->form_validation->set_rules('reu_observacion', 'Observación', '');
         $this->form_validation->set_rules('reu_fecha', 'Fecha', 'required');
         $this->form_validation->set_rules('reu_duracion_horas', 'Horas', 'required');
-        
+
         if ($this->form_validation->run() == FALSE) {
             $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
@@ -251,6 +251,34 @@ class Comp23_E1 extends CI_Controller {
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/etapa1/inforPreMunicipio_view', $datos);
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function capacitacionEquipoApoyo() {
+
+        $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
+            Planeación Estratégica Participativa';
+
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/subcomp23/etapa1/capacitacionEquipoApoyo_view');
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function inventarioInformacion() {
+
+        $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
+            Planeación Estratégica Participativa';
+
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/subcomp23/etapa1/inventarioInformacion_view');
         $this->load->view('plantilla/footer', $informacion);
     }
 

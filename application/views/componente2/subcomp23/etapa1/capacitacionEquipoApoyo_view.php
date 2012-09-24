@@ -1,3 +1,4 @@
+
 <script type="text/javascript">        
     $(document).ready(function(){
         /*ZONA DE BOTONES*/
@@ -21,10 +22,10 @@
             else return [true,""];
         }
         /*FIN ZONA VALIDACIONES*/
-        /*GRID PARTICIPANTES*/
+        /*GRID AGREGAR OTROS PARTICIPANTES*/
         var tabla=$("#participantes");
         tabla.jqGrid({
-           url:'<?php echo base_url('componente2/comp23_E1/cargarParticipanteGA') ?>?gru_apo_id=<?php echo $gru_apo_id; ?>',
+            url:'<?php echo base_url('') ?>',
             //editurl:'welcome/gestionArticulo',
             datatype:'json',
             altRows:true,
@@ -34,7 +35,7 @@
             colModel:[
                 {name:'par_id',index:'par_id', width:40,editable:false,editoptions:{size:15} },
                 {name:'par_dui',index:'par_dui', width:100,editable:true,editoptions:{size:15}, 
-                formoptions:{label: "Dui",elmprefix:"(*)"},
+                    formoptions:{label: "Dui",elmprefix:"(*)"},
                     editrules:{required:true} },
                 
                 {name:'par_nombre',index:'par_nombre',width:100,editable:true,
@@ -87,7 +88,7 @@
                 }
             ],
             multiselect: false,
-            caption: "Miembros del Equipo Local de Apoyo",
+            caption: "Agregar Otros Participantes",
             rowNum:10,
             rowList:[10,20,30],
             loadonce:true,
@@ -156,7 +157,151 @@
             }
         });
         /*FIN DIALOGOS VALIDACION*/
-            
+        
+        
+        
+        
+        
+        /*GRID MIEMBROS DEL EQUIPO LOCAL DE APOYO*/
+        var tabla=$("#MiembroELA");
+        tabla.jqGrid({
+            url:'<?php echo base_url('') ?>',
+            //editurl:'welcome/gestionArticulo',
+            datatype:'json',
+            altRows:true,
+            height: "100%",
+            hidegrid: false,
+            colNames:['id','Dui','Nombres','Apellidos','Sexo','Edad','Proviene R/U','Cargo','Nivel Escolar','Teléfono'],
+            colModel:[
+                {name:'par_id',index:'par_id', width:40,editable:false,editoptions:{size:15} },
+                {name:'par_dui',index:'par_dui', width:100,editable:true,editoptions:{size:15}, 
+                    formoptions:{label: "Dui",elmprefix:"(*)"},
+                    editrules:{required:true} },
+                
+                {name:'par_nombre',index:'par_nombre',width:100,editable:true,
+                    editoptions:{size:25,maxlength:50}, 
+                    formoptions:{label: "Nombres",elmprefix:"(*)"},
+                    editrules:{required:true} 
+                },
+                {name:'par_apellido',index:'par_apellido',width:100,editable:true,
+                    editoptions:{size:25,maxlength:50}, 
+                    formoptions:{label: "Apellidos",elmprefix:"(*)"},
+                    editrules:{required:true} 
+                },
+                {name:'par_sexo',index:'par_sexo',editable:true,edittype:"select",width:50,
+                    align:"center",
+                    editoptions:{ value: '0:Seleccione;F:Femenino; M:Masculino' }, 
+                    formoptions:{ label: "Sexo",elmprefix:"(*)"},
+                    editrules:{custom:true, custom_func:validar}
+                },
+             
+                {name:'par_edad',index:'par_edad',width:80,editable:true,
+                    editoptions:{size:25,maxlength:30}, 
+                    formoptions:{ label: "Edad",elmprefix:"(*)"},
+                    editrules:{required:true} 
+                },
+                
+                {name:'par_proviene',index:'par_proviene',width:80,edittype:"select",
+                    editable:true,
+                    editoptions:{ value: '0:Seleccione;u:Urbano; r:Rural' }, 
+                    formoptions:{ label: "Proviene de",elmprefix:"(*)"},
+                    editrules:{custom:true, custom_func:validar}
+                },
+                   
+                   
+                {name:'par_cargo',index:'par_cargo',width:100,editable:true,
+                    editoptions:{size:25,maxlength:30}, 
+                    formoptions:{ label: "Cargo",elmprefix:"(*)"},
+                    editrules:{required:true} 
+                },
+                {name:'par_nivel_esco',index:'par_nivel_esco',width:100,editable:true,
+                    editoptions:{size:25,maxlength:30}, 
+                    formoptions:{ label: "Nivel Escolar",elmprefix:"(*)"},
+                    editrules:{required:true} 
+                },
+                
+                
+                {name:'par_tel',index:'par_tel',width:100,editable:true,
+                    editoptions:{size:10,maxlength:9}, 
+                    formoptions:{ label: "Teléfono",elmprefix:"(*)"},
+                    editrules:{required:true} 
+                }
+            ],
+            multiselect: false,
+            caption: "Miembros del Equipo Local de Apoyo",
+            rowNum:10,
+            rowList:[10,20,30],
+            loadonce:true,
+            pager: jQuery('#pagerMiembroEla'),
+            viewrecords: true     
+        }).jqGrid('navGrid','#pagerMiembroEla',
+        {edit:false,add:false,del:false,search:false,refresh:false,
+            beforeRefresh: function() {
+                tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
+        }
+    ).hideCol('par_id');
+        /* Funcion para regargar los JQGRID luego de agregar y editar*/
+        function despuesAgregarEditar() {
+            tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');
+            return[true,'']; //no error
+        }
+        
+        
+        
+        /*GRID FACILITADORES*/
+        var tabla=$("#Facilitadores");
+        tabla.jqGrid({
+            url:'<?php echo base_url('') ?>',
+            //editurl:'welcome/gestionArticulo',
+            datatype:'json',
+            altRows:true,
+            height: "100%",
+            hidegrid: false,
+            colNames:['id','Nombres','Apellidos','Telefono','Email'],
+            colModel:[
+                {name:'con_id',index:'con_id', width:40,editable:false,editoptions:{size:15} },
+                {name:'con_nombre',index:'con_nombre',width:100,editable:true,
+                    editoptions:{size:25,maxlength:50}, 
+                    formoptions:{label: "Nombres",elmprefix:"(*)"},
+                    editrules:{required:true} 
+                },
+                {name:'con_apellido',index:'con_apellido',width:100,editable:true,
+                    editoptions:{size:25,maxlength:50}, 
+                    formoptions:{label: "Apellidos",elmprefix:"(*)"},
+                    editrules:{required:true} 
+                },
+                {name:'con_telefono',index:'con_telefono',width:100,editable:true,
+                    editoptions:{size:25,maxlength:9}, 
+                    formoptions:{label: "Telefono",elmprefix:"(*)"},
+                    editrules:{required:true} 
+                },
+                {name:'con_email',index:'con_email',width:100,editable:true,
+                    editoptions:{size:25,maxlength:50}, 
+                    formoptions:{label: "Amail",elmprefix:"(*)"},
+                    editrules:{required:true} 
+                },
+                               
+            ],
+            multiselect: false,
+            caption: "Facilitadores",
+            rowNum:10,
+            rowList:[10,20,30],
+            loadonce:true,
+            pager: jQuery('#pagerFacilitadores'),
+            viewrecords: true     
+        }).jqGrid('navGrid','#pagerFacilitadores',
+        {edit:false,add:true,del:false,search:false,refresh:false,
+            beforeRefresh: function() {
+                tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
+        }
+    ).hideCol(['con_id','con_telefono']);
+        /* Funcion para regargar los JQGRID luego de agregar y editar*/
+        function despuesAgregarEditar() {
+            tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');
+            return[true,'']; //no error
+        }
+        
+        
     });
     
     
@@ -165,7 +310,7 @@
 <form>
     <div style="position: relative;left: 20px;">
         <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
-        <h2 class="h2Titulos">Producto 3: Equipo Local de Apoyo</h2>
+        <h2 class="h2Titulos">Producto 4: Capacitaciones Local de Apoyo</h2>
 
 
         <table>
@@ -174,11 +319,21 @@
             <td ><strong>Municipio:</strong></td>
             </tr>
             <tr>
-            <td ><strong>Lugar:</strong><input id="gru_apo_lugar" name="gru_apo_lugar" type="text" size="40"/></td>
-            <td  ><strong>Fecha: </strong><input id="gru_apo_fecha" name="gru_apo_fecha" type="text" size="10"/></td>
+            <td  ><strong>Fecha de Capacitaciòn: </strong><input id="cap_fecha" name="cap_fecha" type="text" size="10"/></td>
+            <td ><strong>Area de Capacitaciòn:</strong><input id="cap_lugar" name="cap_lugar" type="text" size="40"/></td>
             </tr>
-
+            <tr>
+            <td ><strong>Lugar:</strong><input id="cap_lugar" name="cap_lugar" type="text" size="40"/></td>
+            </tr>
         </table>
+        <br></br>
+        <center>     
+            <table id="Facilitadores" style="al"></table>
+        <div id="pagerFacilitadores"></div>
+        </center>  
+        <br></br>
+        <table id="MiembroELA"></table>
+        <div id="pagerMiembroEla"></div>
         <br></br>
         <table id="participantes"></table>
         <div id="pagerParticipantes"></div>
@@ -195,32 +350,10 @@
         <tr>
         <td>
             <!-- <div style="float: left; width: 400px;left: 70px;position: relative;top:20px;border: 2px solid black;"> -->
-            <p>¿Los Miembros del Equipo Local de Apoyo Reunen las Caracterìsticas Siguientes?</p>
-        <fieldset style="width: 400px;border-color: #2F589F">
-            <legend><strong>Caracterìsticas</strong></legend>
-            <table>
-                <tr>
-                <td>Mayores de 15 Años </td>
-                <td><input type="radio" name="mayor15" value="true">SI </input></td>
-                <td><input type="radio" name="mayor15" value="false">NO </input></td>
-                </tr>
-                <tr>
-                <td>El 50% de los Miembros son Mujeres </td>
-                <td><input type="radio" name="porcenMujeres" value="true">SI </input></td>
-                <td><input type="radio" name="porcenMujeres" value="false">NO </input></td>    
-                </tr>
-                <tr>
-                <td>Conocen el Territorio </td>
-                <td><input type="radio" name="conTerritorio" value="true">SI </input></td>
-                <td><input type="radio" name="conTerritorio" value="false">NO </input></td> 
-                </tr>
-                <tr>
-                <td>Tienen Potencial de Liderazgo </td>
-                <td><input type="radio" name="potencialLider" value="true">SI </input></td>
-                <td><input type="radio" name="potencialLider" value="false">NO </input></td>   
-                </tr>
-            </table>  
-        </fieldset>
+
+            <p>Observaciones y/o Recomendaciones:</br>
+                <textarea id="acu_mun_observacion" cols="48" rows="5"></textarea></p>
+
         </td>
         <td>
             <!--   </div> --> 
@@ -248,10 +381,7 @@
     </table>
     <!--   </div>-->
 
-    <div style="position:relative;left: 40px;top:25px;">
-        <p>Observaciones y/o Recomendaciones:</br>
-            <textarea id="acu_mun_observacion" cols="48" rows="5"></textarea></p>
-    </div>
+
 
     <center>
         <div style="position:relative;width: 300px;top: 25px">
