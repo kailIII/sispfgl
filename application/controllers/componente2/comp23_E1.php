@@ -41,7 +41,6 @@ class Comp23_E1 extends CI_Controller {
     }
 
     public function registrarReunion() {
-        /* REGLAS DE VALIDACIÒN */
 
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
@@ -71,7 +70,7 @@ class Comp23_E1 extends CI_Controller {
         $this->load->view('componente2/subcomp23/etapa1/registrarReunion_view', $informacion);
         $this->load->view('plantilla/footer', $informacion);
     }
-    
+
     public function editarReunion($reu_id) {
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
@@ -90,21 +89,21 @@ class Comp23_E1 extends CI_Controller {
         /* OBTENER DATOS DE LA REUNION  */
         $this->load->model('etapa1-sub23/reunion', 'reu');
         $datosReu = $this->reu->obtenerReunionId($reu_id);
-        $informacion['reu_id']=$reu_id;
-        $informacion['reu_numero']=$datosReu[0]->reu_numero;
-        $informacion['reu_fecha']=$datosReu[0]->reu_fecha;
-        $informacion['reu_duracion_horas']=$datosReu[0]->reu_duracion_horas;
-        $informacion['reu_tema']=$datosReu[0]->reu_tema;
-        $informacion['reu_resultado']=$datosReu[0]->reu_resultado;
-        $informacion['reu_observacion']=$datosReu[0]->reu_observacion;
-        
-        /* FIN DE OBTENER DATOS DE LA REUNION*/
+        $informacion['reu_id'] = $reu_id;
+        $informacion['reu_numero'] = $datosReu[0]->reu_numero;
+        $informacion['reu_fecha'] = $datosReu[0]->reu_fecha;
+        $informacion['reu_duracion_horas'] = $datosReu[0]->reu_duracion_horas;
+        $informacion['reu_tema'] = $datosReu[0]->reu_tema;
+        $informacion['reu_resultado'] = $datosReu[0]->reu_resultado;
+        $informacion['reu_observacion'] = $datosReu[0]->reu_observacion;
+
+        /* FIN DE OBTENER DATOS DE LA REUNION */
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/etapa1/editarReunion_view', $informacion);
         $this->load->view('plantilla/footer', $informacion);
     }
-    
+
     public function guardarReunion() {
         /* VARIABLES POST */
         $reu_fecha = $this->input->post("reu_fecha");
@@ -135,7 +134,7 @@ class Comp23_E1 extends CI_Controller {
         $this->load->view('plantilla/footer', $informacion);
     }
 
-   public function muestraReunion($reu_id) {
+    public function muestraReunion($reu_id) {
 
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
@@ -145,7 +144,7 @@ class Comp23_E1 extends CI_Controller {
         redirect('componente2/comp23_E1/muestraReuniones');
     }
 
-     public function cargarParticipantes($campo, $id_campo) {
+    public function cargarParticipantes($campo, $id_campo) {
         $this->load->model('participante');
         $participantes = $this->participante->obtenerParticipantes($campo, $id_campo);
         $numfilas = count($participantes);
@@ -182,7 +181,7 @@ class Comp23_E1 extends CI_Controller {
         echo $jsonresponse;
     }
 
-     public function gestionParticipantes($tabla, $campo, $id_campo) {
+    public function gestionParticipantes($tabla, $campo, $id_campo) {
         /* VARIABLES POST */
         $id = $this->input->post("id");
         $par_nombre = $this->input->post("par_nombre");
@@ -206,7 +205,7 @@ class Comp23_E1 extends CI_Controller {
                 break;
         }
     }
-    
+
     public function calcularTotalSexo($campo, $id_campo) {
         $this->load->model('participante');
         $totales = $this->participante->calcularSexo($campo, $id_campo);
@@ -233,18 +232,50 @@ class Comp23_E1 extends CI_Controller {
 
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
-
-        $this->load->model('criterio');
-        $datos['criterios'] = $this->criterio->obtenerCriterios();
-        $this->load->model('contrapartida');
-        $datos['contrapartidas'] = $this->contrapartida->obtenerContrapartidas();
+        
         $informacion['user_id'] = $this->tank_auth->get_user_id();
-        $informacion['username'] = $this->tank_auth->get_username();
+        $username = $this->tank_auth->get_username();
+        $informacion['username'] = $username;
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        
+        /* OBTENER DEPARTAMENTO Y MUNICIPIO DEL USUARIO */
+        $this->load->model('tank_auth/users', 'usuario');
+        $datos = $this->usuario->obtenerDepartamento($username);
+        $informacion['departamento'] = $datos[0]->Depto;
+        $informacion['municipio'] = $datos[0]->Muni;
+        //PROYECTO PEP ASOCIADO
+        $pro_pep_id = $datos[0]->id;
+        $informacion['proyectoPep'] = $datos[0]->Proyecto;
+        /* FIN OBTENER DEPARTAMENTO Y MUNICIPIO DEL USUARIO */
+        
+        /* CARGAR LOS CRITERIOS  Y CONTRAPARTIDA  */
+        $this->load->model('criterio');
+        $informacion['criterios'] = $this->criterio->obtenerCriterios();
+        $this->load->model('contrapartida');
+        $informacion['contrapartidas'] = $this->contrapartida->obtenerContrapartidas();
+        /* FIN CARGAR LOS CRITERIOS  Y CONTRAPARTIDA  */
+        /* OBTENER ACUERDO MUNICIPAL */
+        $this->load->model('etapa1-sub23/acuerdo_municipal','acumun');
+        $numAcuMun = $this->acumun->contarAcuMunPorPep($pro_pep_id);
+        if($numAcuMun==0)
+            $this->acumun->agregarAcuMun($pro_pep_id);
+        $idAcuMun=$this->acumun->obtenerIdAcuMun($pro_pep_id);
+        $informacion['acu_mun_id']=$idAcuMun[0]['acu_mun_id'];
+        /* FIN OBTENER ACUERDO MUNICIPAL */
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
-        $this->load->view('componente2/subcomp23/etapa1/acuerdoMunicipal_view', $datos);
+        $this->load->view('componente2/subcomp23/etapa1/acuerdoMunicipal_view', $informacion);
         $this->load->view('plantilla/footer', $informacion);
+    }
+    public function guardarAcuerdoMunicipal($acu_mun_id) {
+        /* VARIABLES POST */
+        $acu_mun_fecha = $this->input->post("acu_mun_fecha");
+        $acu_mun_observacion = $this->input->post("acu_mun_observacion");
+        
+
+        $this->load->model('etapa1-sub23/reunion', 'reunion');
+        $this->reunion->actualizarReunion($reu_fecha, $reu_duracion_horas, $reu_tema, $reu_resultado, $reu_observacion, $reu_id);
+        redirect('componente2/comp23_E1/muestraReuniones');
     }
 
     public function declaracionInteres() {

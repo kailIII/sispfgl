@@ -1,5 +1,7 @@
 <script type="text/javascript">        
     $(document).ready(function(){
+        /*VARIABLES*/
+        var tabla=$("#participantes");
         /*ZONA DE BOTONES*/
         $("#agregar").button().click(function(){
             tabla.jqGrid('editGridRow',"new",
@@ -68,7 +70,6 @@
         $("#reunionForm").validate();
         /*FIN ZONA VALIDACIONES*/
         /*GRID PARTICIPANTES*/
-        var tabla=$("#participantes");
         tabla.jqGrid({
             url:'<?php echo base_url('componente2/comp23_E1/cargarParticipantes') ?>/reu_id/<?php echo $reu_id; ?>',
             editurl:'<?php echo base_url('componente2/comp23_E1/gestionParticipantes') ?>/reunion/reu_id/<?php echo $reu_id; ?>',
@@ -171,7 +172,7 @@
             </tr>
             <tr>
             <td width="300">
-                No. de Reunión: <input type="text" id="reu_numero" value="<?php echo $reu_numero ?>" id="reu_numero" size="5" readonly="readonly"/> </td>
+                No. de Reunión: <input type="text" id="reu_numero" value="<?php echo $reu_numero ?>" name="reu_numero" size="5" readonly="readonly"/> </td>
             <td width="300">
                 Fecha: 
                 <input id="reu_fecha" name="reu_fecha" readonly="readonly" class="required"  size="10"/>

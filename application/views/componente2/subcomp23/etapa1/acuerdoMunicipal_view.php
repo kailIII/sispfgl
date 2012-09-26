@@ -1,14 +1,56 @@
 <script type="text/javascript">        
     $(document).ready(function(){
+        /*VARIABLES*/
+        var tabla=$("#participantes");
         /*ZONA DE BOTONES*/
-        $("#agregar").button();
-        $("#editar").button();
-        $("#eliminar").button();
-        $("#guardar").button();
-        $("#cancelar").button();
+        $("#agregar").button().click(function(){
+            tabla.jqGrid('editGridRow',"new",
+            {closeAfterAdd:true,addCaption: "Agregar ",
+                align:'center',reloadAfterSubmit:true,
+                processData: "Cargando...",afterSubmit:despuesAgregarEditar,
+                bottominfo:"Campos marcados con (*) son obligatorios", 
+                onclickSubmit: function(rp_ge, postdata) {
+                    $('#mensaje').dialog('open');
+                }
+            });
+        });
+        
+        $("#editar").button().click(function(){
+            var gr = tabla.jqGrid('getGridParam','selrow');
+            if( gr != null )
+                tabla.jqGrid('editGridRow',gr,
+            {closeAfterEdit:true,editCaption: "Editando ",
+                align:'center',reloadAfterSubmit:true,
+                processData: "Cargando...",afterSubmit:despuesAgregarEditar,
+                bottominfo:"Campos marcados con (*) son obligatorios", 
+                onclickSubmit: function(rp_ge, postdata) {
+                    $('#mensaje').dialog('open');
+                    ;}
+            });
+            else $('#mensaje2').dialog('open'); 
+        });
+        
+        $("#eliminar").button().click(function(){
+            var grs = tabla.jqGrid('getGridParam','selrow');
+            if( grs != null ) tabla.jqGrid('delGridRow',grs,
+            {msg: "Desea Eliminar esta ?",caption:"Eliminando ",
+                align:'center',reloadAfterSubmit:true,
+                processData: "Cargando...",
+                onclickSubmit: function(rp_ge, postdata) {
+                    $('#mensaje').dialog('open');                            
+                }}); 
+            else $('#mensaje2').dialog('open'); 
+        });
+        
+         $("#guardar").button().click(function() {
+            this.form.action='<?php echo base_url('componente2/comp23_E1/guardarAcuerdoMunicipal') ?>/<?php echo $acu_mun_id; ?>';
+        });
+        $("#cancelar").button().click(function() {
+            document.location.href='<?php echo base_url(); ?>';
+        });
         
         /*PARA EL DATEPICKER*/
-        $( "#reu_fecha" ).datepicker({
+        $( "#acu_mun_fecha" ).datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
@@ -22,10 +64,10 @@
         }
         /*FIN ZONA VALIDACIONES*/
         /*GRID PARTICIPANTES*/
-        var tabla=$("#participantes");
+        
         tabla.jqGrid({
-            //url: 'welcome/muestraArticulos',
-            //editurl:'welcome/gestionArticulo',
+            url:'<?php echo base_url('componente2/comp23_E1/cargarParticipantes') ?>/acu_mun_id/<?php echo $acu_mun_id; ?>',
+            editurl:'<?php echo base_url('componente2/comp23_E1/gestionParticipantes') ?>/acuerdo_municipal/acu_mun_id/<?php echo $acu_mun_id; ?>',
             datatype:'json',
             altRows:true,
             height: "100%",
@@ -65,7 +107,22 @@
             rowList:[10,20,30],
             loadonce:true,
             pager: jQuery('#pagerParticipantes'),
-            viewrecords: true     
+            viewrecords: true,
+            gridComplete: 
+                function(){
+                $.getJSON('<?php echo base_url('componente2/comp23_E1/calcularTotalSexo') ?>/acu_mun_id/<?php echo $acu_mun_id; ?>',
+                function(data) {
+                    $.each(data, function(key, val) {
+                        if(key=='rows'){
+                            $.each(val, function(id, registro){
+                                $("#total").attr('value', registro['cell'][0]);
+                                $("#mujeres").attr('value', registro['cell'][1]);
+                                $("#hombres").attr('value', registro['cell'][2]);
+                            });                    
+                        }
+                    });
+                }); 
+            }
         }).jqGrid('navGrid','#pagerParticipantes',
         {edit:false,add:false,del:false,search:false,refresh:false,
             beforeRefresh: function() {
@@ -78,46 +135,6 @@
             return[true,'']; //no error
         }
                 
-        //AGREGAR
-        $("#agregar").click(function(){
-            tabla.jqGrid('editGridRow',"new",
-            {closeAfterAdd:true,addCaption: "Agregar ",
-                height:200,align:'center',reloadAfterSubmit:true,width:550,
-                processData: "Cargando...",afterSubmit:despuesAgregarEditar,
-                bottominfo:"Campos marcados con (*) son obligatorios", 
-                onclickSubmit: function(rp_ge, postdata) {
-                    $('#mensaje').dialog('open');
-                }
-            });
-        });
-
-        //EDITAR
-        $("#editar").click(function(){
-            var gr = tabla.jqGrid('getGridParam','selrow');
-            if( gr != null )
-                tabla.jqGrid('editGridRow',gr,
-            {closeAfterEdit:true,editCaption: "Editando ",
-                height:200,align:'center',reloadAfterSubmit:true,width:550,
-                processData: "Cargando...",afterSubmit:despuesAgregarEditar,
-                bottominfo:"Campos marcados con (*) son obligatorios", 
-                onclickSubmit: function(rp_ge, postdata) {
-                    $('#mensaje').dialog('open');
-                    ;}
-            });
-            else $('#mensaje2').dialog('open'); 
-        });
-    
-        //ELIMINAR
-        $("#eliminar").click(function(){
-            var grs = tabla.jqGrid('getGridParam','selrow');
-            if( grs != null ) tabla.jqGrid('delGridRow',grs,
-            {msg: "Desea Eliminar esta ?",caption:"Eliminando ",
-                height:100,align:'center',reloadAfterSubmit:true,width:550,
-                processData: "Cargando...",
-                onclickSubmit: function(rp_ge, postdata) {
-                    $('#mensaje').dialog('open');                            
-                }}); 
-            else $('#mensaje2').dialog('open'); });
         /*DIALOGOS DE VALIDACION*/
         $('.mensaje').dialog({
             autoOpen: false,
@@ -128,30 +145,35 @@
                 }
             }
         });
+        //VALIDAR FORMULARIO
+        $("#acuerdoMunicipalForm").validate();
         /*FIN DIALOGOS VALIDACION*/
             
     });
 </script>
-<form>
+<form id="acuerdoMunicipalForm">
     <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
     <h2 class="h2Titulos">Producto 1: Acuerdo Municipal</h2>
     <div style="position: relative;left: 70px;">
-       
+
         <br>
         <table>
             <tr>
-            <td  width="200"><strong>Departamento:</strong></td>
-            <td  width="200"><strong>Municipio:</strong></td>
-            <td  width="200"><strong>Fecha: </strong><input id="reu_fecha" name="reu_fecha" type="text" size="10"/></td>
+            <td width="200"><strong>Departamento:</strong><?php echo $departamento ?></td>
+            <td width="200"><strong>Municipio:</strong><?php echo $municipio ?></td>
+            <td  width="200"><strong>Fecha: </strong><input class="required" id="acu_mun_fecha" name="acu_mun_fecha" type="text" size="10" readonly="readonly"/></td>
+            </tr>
+            <tr>
+            <td colspan="3"><strong>Proyecto PEP:  </strong><?php echo $proyectoPep ?></td>
             </tr>
         </table>
         <p>¿Consejo Municipal conoce el proceso de planificación? 
-            <input type="radio" name="acu_num_p1" value="true">SI </input>
-            <input type="radio" name="acu_num_p1" value="false">NO </input>
+            <input type="radio" name="acu_num_p1" value="true" class="required">SI </input>
+            <input type="radio" name="acu_num_p1" value="false" class="required">NO </input>
         </p>
         <p>¿Consejo Municipal apoya el proceso? 
-            <input type="radio" name="acu_num_p2" value="true">SI </input>
-            <input type="radio" name="acu_num_p2" value="false">NO </input>
+            <input type="radio" name="acu_num_p2" value="true" class="required">SI </input>
+            <input type="radio" name="acu_num_p2" value="false" class="required">NO </input>
         </p>
         <br></br>
         <table>
@@ -176,8 +198,8 @@
                     <?php foreach ($criterios as $aux) { ?>
                         <tr>
                         <td><?php echo $aux->cri_nombre; ?></td>
-                        <td><input type="radio" name="<?php echo $aux->cri_id; ?>" value="true">SI </input></td>
-                        <td><input type="radio" name="<?php echo $aux->cri_id; ?>" value="false">NO </input></td>
+                        <td><input type="radio" name="<?php echo $aux->cri_id; ?>" value="true" class="required">SI </input></td>
+                        <td><input type="radio" name="<?php echo $aux->cri_id; ?>" value="false" class="required">NO </input></td>
                         </tr>
                     <?php } ?>
                 </table>  
@@ -225,7 +247,7 @@
             </tr>
 
         </table>
-        
+
         <center style="position: relative;top: 20px">
             <div>
                 <p><input type="submit" id="guardar" value="Guardar Acuerdo" />
