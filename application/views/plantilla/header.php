@@ -15,6 +15,7 @@
         <script type="text/javascript" src="<?php echo base_url('resource/js/jquery-ui-1.8.22.custom.min.js'); ?>"></script>
         <script type="text/javascript" src="<?php echo base_url('resource/js/jquery.jqGrid.min.js'); ?>"></script>
         <script type="text/javascript" src="<?php echo base_url('resource/js/i18n/grid.locale-es.js'); ?>"></script>
+        <script type="text/javascript" src="<?php echo base_url('resource/js/i18n/jquery.ui.datepicker-es.js'); ?>"></script>
         <script type="text/javascript" src="<?php echo base_url('menu/stuHover.js'); ?>" ></script>
         <script type="text/javascript" src="<?php echo base_url('resource/js/select_replacement.1.0.0.js'); ?>"></script>
         <script type="text/javascript" src="<?php echo base_url('resource/js/jquery.validate.js'); ?>"></script>
