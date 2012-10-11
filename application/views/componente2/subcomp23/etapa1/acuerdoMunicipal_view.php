@@ -42,8 +42,8 @@
             else $('#mensaje2').dialog('open'); 
         });
         
-         $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/comp23_E1/guardarAcuerdoMunicipal') ?>/<?php echo $acu_mun_id; ?>';
+        $("#guardar").button().click(function() {
+            this.form.action='<?php echo base_url('componente2/comp23_E1/guardarAcuerdoMunicipal/'.$acu_mun_id); ?>';
         });
         $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url(); ?>';
@@ -145,13 +145,54 @@
                 }
             }
         });
-        //VALIDAR FORMULARIO
-        $("#acuerdoMunicipalForm").validate();
+ 
         /*FIN DIALOGOS VALIDACION*/
-            
+        
+        /*  PARA SUBIR EL ARCHIVO  */
+        var button = $('#btn_subir'), interval;
+        new AjaxUpload('#btn_subir', {
+            action: '<?php echo base_url('componente2/comp23_E1/subirArchivo') . '/acuerdo_municipal/' . $acu_mun_id; ?>',
+            onSubmit : function(file , ext){
+                if (! (ext && /^(pdf|doc|docx)$/.test(ext))){
+                    $('#extension').dialog('open');
+                    return false;
+                } else {
+                    $('#vinieta').val('Subiendo....');
+                    this.disable();
+                }
+            },
+            onComplete: function(file, response,ext){
+                if(response!='error'){
+                    $('#vinieta').val('Subido con Exito');
+                    this.enable();			
+                    $('#acu_mun_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO
+                    ext= (response.substring(response.lastIndexOf("."))).toLowerCase(); 
+                    if (ext=='.pdf'){
+                        $('#btn_descargar').attr({
+                            'href': '<?php echo base_url(); ?>'+response,
+                            'target':'_blank'
+                        });
+                    }
+                    else{
+                        $('#btn_descargar').attr({
+                            'href': '<?php echo base_url(); ?>'+response,
+                            'target':'_self'
+                        });
+                    }
+                }else{
+                    $('#vinieta').val('El Archivo debe ser menor a 1 MB.');
+                    this.enable();			
+                 
+                }
+                 
+            }	
+        });
+        $('#btn_descargar').click(function() {
+            $.get($(this).attr('href'));
+        });
     });
 </script>
-<form id="acuerdoMunicipalForm">
+<form id="acuerdoMunicipalForm" method="post">
     <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
     <h2 class="h2Titulos">Producto 1: Acuerdo Municipal</h2>
     <div style="position: relative;left: 70px;">
@@ -161,19 +202,19 @@
             <tr>
             <td width="200"><strong>Departamento:</strong><?php echo $departamento ?></td>
             <td width="200"><strong>Municipio:</strong><?php echo $municipio ?></td>
-            <td  width="200"><strong>Fecha: </strong><input class="required" id="acu_mun_fecha" name="acu_mun_fecha" type="text" size="10" readonly="readonly"/></td>
+            <td  width="400"><strong>Fecha: </strong><input id="acu_mun_fecha" name="acu_mun_fecha" type="text" size="10" readonly="readonly"/></td>
             </tr>
             <tr>
             <td colspan="3"><strong>Proyecto PEP:  </strong><?php echo $proyectoPep ?></td>
             </tr>
         </table>
         <p>¿Consejo Municipal conoce el proceso de planificación? 
-            <input type="radio" name="acu_num_p1" value="true" class="required">SI </input>
-            <input type="radio" name="acu_num_p1" value="false" class="required">NO </input>
+            <input type="radio" name="acu_mun_p1" value="true" >SI </input>
+            <input type="radio" name="acu_mun_p1" value="false" >NO </input>
         </p>
         <p>¿Consejo Municipal apoya el proceso? 
-            <input type="radio" name="acu_num_p2" value="true" class="required">SI </input>
-            <input type="radio" name="acu_num_p2" value="false" class="required">NO </input>
+            <input type="radio" name="acu_mun_p2" value="true" >SI </input>
+            <input type="radio" name="acu_mun_p2" value="false" >NO </input>
         </p>
         <br></br>
         <table>
@@ -184,7 +225,7 @@
             <fieldset style="width:170px;">
                 <legend>Aportes de la Municipalidad</legend>
                 <?php foreach ($contrapartidas as $aux) { ?>
-                    <input type="checkbox" name="<?php echo $aux->con_id; ?>" value="<?php echo $aux->con_id; ?>" ><?php echo $aux->con_nombre; ?></input></br>
+                    <input type="checkbox" name="con_<?php echo $aux->con_id; ?>" value="<?php echo $aux->con_id; ?>" ><?php echo $aux->con_nombre; ?></input></br>
                 <?php } ?>
             </fieldset>
 
@@ -192,14 +233,14 @@
             <td style="width: 50px;"></td>
             <td>
                 <strong>¿Se esta de acuerdo con los criterios de la participación?</strong>
-            <fieldset style="width:200px;">
+            <fieldset style="width:250px;">
                 <legend><strong>Criterios</strong></legend>
                 <table>
                     <?php foreach ($criterios as $aux) { ?>
                         <tr>
                         <td><?php echo $aux->cri_nombre; ?></td>
-                        <td><input type="radio" name="<?php echo $aux->cri_id; ?>" value="true" class="required">SI </input></td>
-                        <td><input type="radio" name="<?php echo $aux->cri_id; ?>" value="false" class="required">NO </input></td>
+                        <td><input type="radio" name="cri_<?php echo $aux->cri_id; ?>" value="true" >SI </input></td>
+                        <td><input type="radio" name="cri_<?php echo $aux->cri_id; ?>" value="false" >NO </input></td>
                         </tr>
                     <?php } ?>
                 </table>  
@@ -222,7 +263,7 @@
         <table style="position: relative;top: 15px;">
             <tr>
             <td>
-                <p>Observaciones:</br><textarea id="acu_mun_observacion" cols="48" rows="5"></textarea></p>
+                <p>Observaciones:</br><textarea id="acu_mun_observacion" name="acu_mun_observacion" cols="48" rows="5"></textarea></p>
             </td>
             <td style="width: 50px"></td>
             <td>
@@ -245,21 +286,33 @@
             </fieldset>
             </td>
             </tr>
-
         </table>
-
-        <center style="position: relative;top: 20px">
-            <div>
-                <p><input type="submit" id="guardar" value="Guardar Acuerdo" />
-                    <input type="button" id="cancelar" value="Cancelar" />
-                </p>
-            </div>
-        </center>
+        <table>
+            <tr>
+            <td><div id="btn_subir"></div></td>
+            <td><input class="letraazul" type="text" id="vinieta" value="Subir Acuerdo Municipal" size="30" style="border: none"/></td>
+            </tr>
+            <tr>
+            <td><a id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
+            <td><input class="letraazul" type="text" id="vinietaD" value="Descargar Acuerdo Municipal" size="30" style="border: none"/></td>
+            </tr>
+        </table>
     </div>
+    <center style="position: relative;top: 20px">
+        <div>
+            <p><input type="submit" id="guardar" value="Guardar Acuerdo" />
+                <input type="button" id="cancelar" value="Cancelar" />
+            </p>
+        </div>
+    </center>
+    <input id="acu_mun_ruta_archivo" name="acu_mun_ruta_archivo" type="text" size="100" readonly="readonly" style="visibility: hidden"/>
 </form>
 <div id="mensaje" class="mensaje" title="Aviso de la operación">
     <p>La acción fue realizada con satisfacción</p>
 </div>
 <div id="mensaje2" class="mensaje" title="Aviso">
     <p>Debe Seleccionar una fila para continuar</p>
+</div>
+<div id="extension" class="mensaje" title="Error">
+    <p>Solo se permiten archivos con la extensión pdf|doc|docx</p>
 </div>
