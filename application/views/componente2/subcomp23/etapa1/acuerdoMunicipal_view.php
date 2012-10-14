@@ -165,6 +165,7 @@
                 if(response!='error'){
                     $('#vinieta').val('Subido con Exito');
                     this.enable();			
+                    $('#vinietaD').val('Descargar Archivo');
                     $('#acu_mun_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO
                     ext= (response.substring(response.lastIndexOf("."))).toLowerCase(); 
                     if (ext=='.pdf'){
@@ -202,19 +203,20 @@
             <tr>
             <td width="200"><strong>Departamento:</strong><?php echo $departamento ?></td>
             <td width="200"><strong>Municipio:</strong><?php echo $municipio ?></td>
-            <td  width="400"><strong>Fecha: </strong><input id="acu_mun_fecha" name="acu_mun_fecha" type="text" size="10" readonly="readonly"/></td>
+            <td  width="400"><strong>Fecha: </strong>
+                <input <?php if (isset($acu_mun_fecha)) { ?> value='<?php echo date('d/m/y',  strtotime($acu_mun_fecha));?>'<?php }?>id="acu_mun_fecha" name="acu_mun_fecha" type="text" size="10" readonly="readonly"/></td>
             </tr>
             <tr>
             <td colspan="3"><strong>Proyecto PEP:  </strong><?php echo $proyectoPep ?></td>
             </tr>
         </table>
         <p>¿Consejo Municipal conoce el proceso de planificación? 
-            <input type="radio" name="acu_mun_p1" value="true" >SI </input>
-            <input type="radio" name="acu_mun_p1" value="false" >NO </input>
+            <input type="radio" name="acu_mun_p1" value="true"<?php if (isset($acu_mun_p1) && $acu_mun_p1=='t') { ?> checked <?php }?>>SI </input>
+            <input type="radio" name="acu_mun_p1" value="false"<?php if (isset($acu_mun_p1) && $acu_mun_p1=='f') { ?> checked <?php }?> >NO </input>
         </p>
         <p>¿Consejo Municipal apoya el proceso? 
-            <input type="radio" name="acu_mun_p2" value="true" >SI </input>
-            <input type="radio" name="acu_mun_p2" value="false" >NO </input>
+            <input type="radio" name="acu_mun_p2" value="true" <?php if (isset($acu_mun_p2) && $acu_mun_p2=='t') { ?> checked <?php }?> >SI </input>
+            <input type="radio" name="acu_mun_p2" value="false" <?php if (isset($acu_mun_p2) && $acu_mun_p2=='f') { ?> checked <?php }?>>NO </input>
         </p>
         <br></br>
         <table>
@@ -225,7 +227,7 @@
             <fieldset style="width:170px;">
                 <legend>Aportes de la Municipalidad</legend>
                 <?php foreach ($contrapartidas as $aux) { ?>
-                    <input type="checkbox" name="con_<?php echo $aux->con_id; ?>" value="<?php echo $aux->con_id; ?>" ><?php echo $aux->con_nombre; ?></input></br>
+                    <input <?php if(!strcasecmp($aux->con_acu_valor,'t')) {?>checked <?php } ?> type="checkbox" name="con_<?php echo $aux->con_id; ?>" value="<?php echo $aux->con_id; ?>" ><?php echo $aux->con_nombre; ?></input></br>
                 <?php } ?>
             </fieldset>
 
@@ -239,8 +241,8 @@
                     <?php foreach ($criterios as $aux) { ?>
                         <tr>
                         <td><?php echo $aux->cri_nombre; ?></td>
-                        <td><input type="radio" name="cri_<?php echo $aux->cri_id; ?>" value="true" >SI </input></td>
-                        <td><input type="radio" name="cri_<?php echo $aux->cri_id; ?>" value="false" >NO </input></td>
+                        <td><input type="radio" <?php if (!strcasecmp($aux->cri_acu_valor,'t')) { ?> checked <?php }?> name="cri_<?php echo $aux->cri_id; ?>" value="true" >SI </input></td>
+                        <td><input type="radio" <?php if (!strcasecmp($aux->cri_acu_valor,'f')) { ?> checked <?php }?>name="cri_<?php echo $aux->cri_id; ?>" value="false" >NO </input></td>
                         </tr>
                     <?php } ?>
                 </table>  
@@ -263,7 +265,7 @@
         <table style="position: relative;top: 15px;">
             <tr>
             <td>
-                <p>Observaciones:</br><textarea id="acu_mun_observacion" name="acu_mun_observacion" cols="48" rows="5"></textarea></p>
+                <p>Observaciones:</br><textarea id="acu_mun_observacion" name="acu_mun_observacion" cols="48" rows="5"> <?php if (isset($acu_mun_observacion))  echo$acu_mun_observacion; ?></textarea></p>
             </td>
             <td style="width: 50px"></td>
             <td>
@@ -293,8 +295,8 @@
             <td><input class="letraazul" type="text" id="vinieta" value="Subir Acuerdo Municipal" size="30" style="border: none"/></td>
             </tr>
             <tr>
-            <td><a id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
-            <td><input class="letraazul" type="text" id="vinietaD" value="Descargar Acuerdo Municipal" size="30" style="border: none"/></td>
+            <td><a <?php if(isset($acu_mun_ruta_archivo) && $acu_mun_ruta_archivo!='' ) {?> href="<?php echo base_url().$acu_mun_ruta_archivo; ?>"<?php } ?>  id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
+            <td><input class="letraazul" type="text" id="vinietaD" <?php if(isset($acu_mun_ruta_archivo) && $acu_mun_ruta_archivo!='' ) {?>value="Descargar Acuerdo Municipal"<?php } else {?> value="No Hay Acuerdo Por Descargar" <?php }?>size="30" style="border: none"/></td>
             </tr>
         </table>
     </div>
@@ -305,7 +307,7 @@
             </p>
         </div>
     </center>
-    <input id="acu_mun_ruta_archivo" name="acu_mun_ruta_archivo" type="text" size="100" readonly="readonly" style="visibility: hidden"/>
+    <input id="acu_mun_ruta_archivo" name="acu_mun_ruta_archivo" <?php if(isset($acu_mun_ruta_archivo) && $acu_mun_ruta_archivo!='' ) {?>value="<?php echo $acu_mun_ruta_archivo; ?>"<?php } ?> type="text" size="100" readonly="readonly" style="visibility: hidden"/>
 </form>
 <div id="mensaje" class="mensaje" title="Aviso de la operación">
     <p>La acción fue realizada con satisfacción</p>

@@ -269,11 +269,17 @@ class Comp23_E1 extends CI_Controller {
                 $this->contraAcuerdo->insertarContrapartidaAcuerdo($acu_mun_id, $contraAux->con_id);
             foreach ($criterios as $criteAux)
                 $this->criterioAcuerdo->insertarCriterioAcuerdo($acu_mun_id, $criteAux->cri_id);
-        }else{
+        } else {
             $idAcuMun = $this->acumun->obtenerIdAcuMun($pro_pep_id);
+            $acu_mun_id = $idAcuMun[0]['acu_mun_id'];
+            $acuerdoMun = $this->acumun->obtenerAcuMun($acu_mun_id);
+            $informacion['acu_mun_fecha'] = $acuerdoMun[0]['acu_mun_fecha'];
+            $informacion['acu_mun_p1'] = $acuerdoMun[0]['acu_mun_p1'];
+            $informacion['acu_mun_p2'] = $acuerdoMun[0]['acu_mun_p2'];
+            $informacion['acu_mun_observacion'] = $acuerdoMun[0]['acu_mun_observacion'];
+            $informacion['acu_mun_ruta_archivo'] = $acuerdoMun[0]['acu_mun_ruta_archivo'];
         }
-        
-        $acu_mun_id = $idAcuMun[0]['acu_mun_id'];
+
         $informacion['contrapartidas'] = $this->contraAcuerdo->obtenerLasContrapartidoAcuerdo($acu_mun_id);
         $informacion['criterios'] = $this->criterioAcuerdo->obtenerLosCriteriosAcuerdo($acu_mun_id);
         /* FIN OBTENER ACUERDO MUNICIPAL */
@@ -287,32 +293,50 @@ class Comp23_E1 extends CI_Controller {
     public function guardarAcuerdoMunicipal($acu_mun_id) {
         /* VARIABLES POST */
         $acu_mun_fecha = $this->input->post("acu_mun_fecha");
+        if ($acu_mun_fecha == '')
+            $acu_mun_fecha = null;
         $acu_mun_p1 = $this->input->post("acu_mun_p1");
+        if ($acu_mun_p1 == 0)
+            $acu_mun_p1 = null;
         $acu_mun_p2 = $this->input->post("acu_mun_p2");
+        if ($acu_mun_p2 == 0)
+            $acu_mun_p2 = null;
         $acu_mun_observacion = $this->input->post("acu_mun_observacion");
         $acu_mun_ruta_archivo = $this->input->post("acu_mun_ruta_archivo");
-       
+        /* OBTENIENDO VALORES DE LOS CRITERIOS */
+        $this->load->model('etapa1-sub23/criterio');
+        $this->load->model('etapa1-sub23/criterio_acuerdo', 'criAcuerdo');
+        $criterios = $this->criterio->obtenerCriterios();
+        foreach ($criterios as $criterio) {
+            if($this->input->post("cri_".$criterio->cri_id)=='0')
+                $valor=null;
+            else
+                $valor=$this->input->post("cri_".$criterio->cri_id);
+            $this->criAcuerdo->actualizarCriterioAcuerdo($valor, $acu_mun_id, $criterio->cri_id);
+        }
+        /* OBTENIENDO VALORES DE LA CONTRAPARTIDA */
+        $this->load->model('etapa1-sub23/contrapartida');
+        $this->load->model('etapa1-sub23/contrapartida_acuerdo', 'contraAcuerdo');
+        $contrapartidas = $this->contrapartida->obtenerContrapartidas();
+        foreach ($contrapartidas as $contrapartida) {
+            if($this->input->post("con_".$contrapartida->con_id)==0)
+                $valor='false';
+            else
+                $valor='true';
+            $this->contraAcuerdo->actualizarContrapartidaAcuerdo($valor, $acu_mun_id, $contrapartida->con_id);
+        }
+
+        /* ACTUALIZANDO ACUERDO MUNICIPAL */
         $this->load->model('etapa1-sub23/acuerdo_municipal', 'acuerdoMun');
         $this->acuerdoMun->actualizarAcuMun($acu_mun_id, $acu_mun_fecha, $acu_mun_p1, $acu_mun_p2, $acu_mun_observacion, $acu_mun_ruta_archivo);
+
         redirect('componente2/comp23_E1/');
     }
 
-    public function subirArchivo($tabla,$campo_id) {
-        $partes = explode(".", $_FILES['userfile']['name']); 
-        $extension = end($partes);
-        $directorio = 'documentos/'.$tabla.'/';
-        $archivoSubir = $directorio . ($tabla.$campo_id).'.'.$extension;        
-        if ($_FILES['userfile']['size'] < 1100) {
-            if (move_uploaded_file($_FILES['userfile']['tmp_name'], $archivoSubir)) {
-                echo $archivoSubir;
-            } else {
-                echo "error";
-            }
-        }else{
-                echo "error";
-        }
+    public function subirArchivo($tabla, $campo_id) {
+        echo $this->librerias->subirDocumento($tabla, $campo_id, $_FILES);
     }
-   
+
     public function declaracionInteres() {
 
         $informacion['titulo'] = 'Componente 2.3.2';

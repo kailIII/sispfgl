@@ -33,13 +33,15 @@ class Contrapartida_acuerdo extends CI_Model {
         return $consulta->result();
     }
 
-    function obtenerLasContrapartidoAcuerdo($acu_mun_id) {
+    public function obtenerLasContrapartidoAcuerdo($acu_mun_id) {
         $this->db->select('contrapartida.con_id con_id, 
-                           contrapartida.con_nombre con_nombre'
+                           contrapartida.con_nombre con_nombre,
+                           contrapartida_acuerdo.con_acu_valor con_acu_valor'
                            );
         $this->db->from($this->tabla);
         $this->db->join('contrapartida', 'contrapartida.con_id = contrapartida_acuerdo.con_id');
         $this->db->where('contrapartida_acuerdo.acu_mun_id', $acu_mun_id);
+        $this->db->order_by('con_id');
         $query = $this->db->get();
         return $query->result();
     }

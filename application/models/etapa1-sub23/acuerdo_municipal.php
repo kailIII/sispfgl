@@ -33,22 +33,28 @@ class Acuerdo_municipal extends CI_Model {
 
     public function actualizarAcuMun($acu_mun_id, $acu_mun_fecha, $acu_mun_p1, $acu_mun_p2, $acu_mun_observacion, $acu_mun_ruta_archivo) {
         $datos = array(
-        'acu_mun_fecha' => $acu_mun_fecha,
-        'acu_mun_p1' => $acu_mun_p1,
-        'acu_mun_p2' => $acu_mun_p2,
-        'acu_mun_observacion' => $acu_mun_observacion,
-        'acu_mun_ruta_archivo' => $acu_mun_ruta_archivo
-
+            'acu_mun_fecha' => $acu_mun_fecha,
+            'acu_mun_p1' => $acu_mun_p1,
+            'acu_mun_p2' => $acu_mun_p2,
+            'acu_mun_observacion' => $acu_mun_observacion,
+            'acu_mun_ruta_archivo' => $acu_mun_ruta_archivo
         );
-        $this->db->where('acu_mun_id',$acu_mun_id);
+        $this->db->where('acu_mun_id', $acu_mun_id);
         $this->db->update($this->tabla, $datos);
     }
 
     public function obtenerAcuMun($acu_mun_id) {
         $this->db->where('acu_mun_id', $acu_mun_id);
         $consulta = $this->db->get($this->tabla);
-        return $consulta->result();
+        return $consulta->result_array();
     }
+
+    public function obtenerRutaArchivo($acu_mun_id) {
+        $query = "SELECT COALESCE(acu_mun_ruta_archivo,'/.0') ruta_archivo FROM ".  $this->tabla." WHERE acu_mun_id= ".$acu_mun_id;
+        $consulta = $this->db->query($query);
+        return $consulta->result_array();
+    }
+
 }
 
 ?>
