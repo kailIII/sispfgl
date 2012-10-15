@@ -1,0 +1,79 @@
+mapserver template
+<!-- The central form the application is based on. -->
+    <form method="GET" action="/cgi-bin/mapserv">
+
+    <!-- CGI MapServer applications are server stateless in principle,
+         all information must be "stored" in the client. This includes
+         some basic settings as below.
+         The example is based on the pan and zoom test suite:
+         http://maps.dnr.state.mn.us/mapserver_demos/tests36/           -->
+      <input type="hidden" name="map" value="[map]">
+      <input type="hidden" name="imgext" value="[mapext]">
+      
+	  <input type="hidden" name="layer" value="municipios">
+	  
+
+      <!-- A table for minimal page formatting. -->
+      <table border="0" cellpadding="0">
+	  <tr valign=top>
+		  <td colspan="2">
+	      <table>
+			  <tr>
+				  <td><input type="checkbox" name="layer" value="municipios_arena"
+				  [municipios_arena_check]>ARENA</td>
+				  <td><input type="checkbox" name="layer" value="municipios_cd"
+				  [municipios_cd_check]>CD</td>
+				  <td><input type="checkbox" name="layer" value="municipios_cn"
+				  [municipios_cn_check]>CN</td>
+				  <td><input type="checkbox" name="layer" value="municipios_cn-pes"
+				  [municipios_cn-pes_check]>CN-PES</td>
+				  <td><input type="checkbox" name="layer" value="municipios_fmln"
+				  [municipios_fmln_check]>FMLN</td>
+				  <td><b>Opcion de Zoom:</b><br>
+					  <select name="zoom" size="1">
+						<option value="2" [zoom_2_select]> Zoom In 2x
+						<option value="1"  [zoom_1_select]> Desplazamiento
+						<option value="-2" [zoom_-2_select]> Zoom Out 2x
+					  </select></td>
+				  <td rowspan="2"><input type="submit" name="submit" value="Actualizar"></td>
+			  </tr>
+			  <tr>
+				  <td><input type="checkbox" name="layer" value="municipios_fmln-cd"
+				  [municipios_fmln-cd_check]>FMLN-CD</td>
+				  <td><input type="checkbox" name="layer" value="municipios_fmln-pes"
+				  [municipios_fmln-pes_check]>FMLN-PES</td>
+				  <td><input type="checkbox" name="layer" value="municipios_gana"
+				  [municipios_gana_check]>GANA</td>
+				  <td><input type="checkbox" name="layer" value="municipios_pes"
+				  [municipios_pes_check]>PES</td>
+				  <td><input type="checkbox" name="layer" value="municipios_pes-gana"
+				  [municipios_pes-gana_check]>PES-GANA</td>
+				  <td><select name="mode">
+						<option value="browse" [browse_select]>
+						  Browse </option>
+						<option value="query" [query_select]>
+						  Query Single Layer</option>
+						<option value="nquery" [nquery_select]>
+						  Query Multiple Layers</option>
+					  </select></td>
+				  <!--<td><input type="checkbox" name="layer" value="municipiosname"
+						[municipiosname_check]>Mostrar Nombres</td>-->
+			  </tr>
+		  </table>
+		  </td>
+      </tr>
+      <tr>
+        <!-- First column: Map and scale bar -->
+		<td>
+		<p>Leyenda:<br>
+			<img name="legend" src="[legend]"></p>
+		</td>
+        <td align=center>
+          <!-- The map -->
+          <input type="image" name="img" src="sispfgl[img]"
+                 style="border:0;width:675;height:405">
+        </td>
+      </tr>
+      </table>
+
+    </form>

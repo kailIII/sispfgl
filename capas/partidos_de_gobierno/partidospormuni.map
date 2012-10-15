@@ -1,0 +1,193 @@
+MAP
+  IMAGETYPE      PNG
+  EXTENT         375000.000000 240000.000000 650000.000000 350000.000000
+  SIZE           750 450
+  SHAPEPATH      "/var/www/sispfgl/capas/partidos_de_gobierno"
+  IMAGECOLOR     245 245 245
+  
+  WEB
+    TEMPLATE  'maptemplate.html'
+    IMAGEPATH '../../tmp/ms_tmp/'
+    IMAGEURL  '../../sispfgl/tmp/ms_tmp/'
+  END
+  
+  LEGEND
+    KEYSIZE 12 12
+    LABEL
+      TYPE BITMAP
+      SIZE MEDIUM
+      COLOR 0 0 89
+    END
+	TRANSPARENT ON
+    STATUS ON
+  END
+  
+  LAYER
+		NAME         municipios
+		DATA         municipios
+		STATUS       OFF
+		TYPE         POLYGON
+		LABELITEM	 MUNIC
+		TOLERANCE	 0
+		CLASS
+		   NAME 'municipios'
+		   TEMPLATE 'municipios_query.html'
+		   STYLE
+			 WIDTH 0.91 
+			 OUTLINECOLOR 0 0 0
+			 COLOR 255 255 255
+		   END
+		END
+  END
+  
+  LAYER
+		NAME         municipios_fmln
+		DATA         municipios_fmln
+		STATUS       OFF
+		TYPE         POLYGON
+
+		CLASS
+		   NAME 'fmln' 
+		   STYLE
+			 WIDTH 0.91 
+			 OUTLINECOLOR 0 0 0
+			 COLOR 255 0 0
+		   END
+		END
+  END
+  LAYER
+		NAME         municipios_arena
+		DATA         municipios_arena
+		STATUS       OFF
+		TYPE         POLYGON
+
+		CLASS
+		   NAME 'arena' 
+		   STYLE
+			 WIDTH 0.91 
+			 OUTLINECOLOR 0 0 0
+			 COLOR 135 206 250
+		   END
+		END
+  END
+  LAYER
+		NAME         municipios_cd
+		DATA         municipios_cd
+		STATUS       OFF
+		TYPE         POLYGON
+
+		CLASS
+		   NAME 'cd' 
+		   STYLE
+			 WIDTH 0.91 
+			 OUTLINECOLOR 0 0 0
+			 COLOR 255 255 0
+		   END
+		END
+  END
+  LAYER
+		NAME         municipios_cn
+		DATA         municipios_cn
+		STATUS       OFF
+		TYPE         POLYGON
+
+		CLASS
+		   NAME 'cn' 
+		   STYLE
+			 WIDTH 0.91 
+			 OUTLINECOLOR 0 0 0
+			 COLOR 0 0 128
+		   END
+		END
+  END
+  LAYER
+		NAME         municipios_pes
+		DATA         municipios_pes
+		STATUS       OFF
+		TYPE         POLYGON
+
+		CLASS
+		   NAME 'pes' 
+		   STYLE
+			 WIDTH 0.91 
+			 OUTLINECOLOR 0 0 0
+			 COLOR 34 139 34
+		   END
+		END
+  END
+  LAYER
+		NAME         municipios_gana
+		DATA         municipios_gana
+		STATUS       OFF
+		TYPE         POLYGON
+
+		CLASS
+		   NAME 'gana' 
+		   STYLE
+			 WIDTH 0.91 
+			 OUTLINECOLOR 0 0 0
+			 COLOR 255 140 0
+		   END
+		END
+  END
+  LAYER
+		NAME         municipios_pes-gana
+		DATA         municipios_pes-gana
+		STATUS       OFF
+		TYPE         POLYGON
+
+		CLASS
+		   NAME 'pes-gana' 
+		   STYLE
+			 WIDTH 0.91 
+			 OUTLINECOLOR 0 0 0
+			 COLOR 238 221 130
+		   END
+		END
+  END
+  LAYER
+		NAME         municipios_fmln-cd
+		DATA         municipios_fmln-cd
+		STATUS       OFF
+		TYPE         POLYGON
+
+		CLASS
+		   NAME 'fmln-cd' 
+		   STYLE
+			 WIDTH 0.91 
+			 OUTLINECOLOR 0 0 0
+			 COLOR 250 128 114
+		   END
+		END
+  END
+  LAYER
+		NAME         municipios_fmln-pes
+		DATA         municipios_fmln-pes
+		STATUS       OFF
+		TYPE         POLYGON
+
+		CLASS
+		   NAME 'fmln-pes'
+		   STYLE
+			 WIDTH 0.91 
+			 OUTLINECOLOR 0 0 0
+			 COLOR 160 82 45
+		   END
+		END
+  END
+  LAYER
+		NAME         municipios_cn-pes
+		DATA         municipios_cn-pes
+		STATUS       OFF
+		TYPE         POLYGON
+
+		CLASS
+		   NAME 'cn-pes'
+		   STYLE
+			 WIDTH 0.91 
+			 OUTLINECOLOR 0 0 0
+			 COLOR 218 112 214
+		   END
+		END
+  END
+END
