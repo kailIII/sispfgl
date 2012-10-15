@@ -19,8 +19,8 @@ $config['protocol']='smtp';
 $config['smtp_host']='ssl://smtp.googlemail.com';  
 $config['smtp_port']='465';  
 $config['smtp_timeout']='30';  
-$config['smtp_user']='karen.elvira.penate@gmail.com';  
-$config['smtp_pass']='t0tito224';  
+$config['smtp_user']='sis.pfgl@gmail.com';  
+$config['smtp_pass']='s1s_pfgl';  
 $config['charset']='utf-8';  
 $config['newline']="\r\n"; 
 
