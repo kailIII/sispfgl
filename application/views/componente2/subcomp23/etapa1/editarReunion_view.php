@@ -78,7 +78,7 @@
             hidegrid: false,
             colNames:['id','Nombres','Apellidos','Sexo','Institución','Cargo'],
             colModel:[
-                {name:'id',index:'id', width:40,editable:false,editoptions:{size:15} },
+                {name:'par_id',index:'id', width:40,editable:false,editoptions:{size:15} },
                 {name:'par_nombre',index:'par_nombre',width:200,editable:true,
                     editoptions:{size:25,maxlength:50}, 
                     formoptions:{label: "Nombres",elmprefix:"(*)"},

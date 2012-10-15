@@ -62,7 +62,7 @@
                 
                 {name:'par_proviene',index:'par_proviene',width:80,edittype:"select",
                     editable:true,
-                    editoptions:{ value: '0:Seleccione;u:Urbano; r:Rural' }, 
+                    editoptions:{ value: '0:Seleccione;U:Urbano;R:Rural' }, 
                     formoptions:{ label: "Proviene de",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validar}
                 },
@@ -92,7 +92,22 @@
             rowList:[10,20,30],
             loadonce:true,
             pager: jQuery('#pagerParticipantes'),
-            viewrecords: true     
+            viewrecords: true,
+            gridComplete: 
+                function(){
+                $.getJSON('<?php echo base_url('componente2/comp23_E1/calcularTotalSexo') ?>/gru_apo_id/<?php echo $gru_apo_id; ?>',
+                function(data) {
+                    $.each(data, function(key, val) {
+                        if(key=='rows'){
+                            $.each(val, function(id, registro){
+                                $("#total").attr('value', registro['cell'][0]);
+                                $("#mujeres").attr('value', registro['cell'][1]);
+                                $("#hombres").attr('value', registro['cell'][2]);
+                            });                    
+                        }
+                    });
+                }); 
+            }
         }).jqGrid('navGrid','#pagerParticipantes',
         {edit:false,add:false,del:false,search:false,refresh:false,
             beforeRefresh: function() {
