@@ -29,6 +29,15 @@
                   <li><a href="<?php echo base_url();?>index.php/carpetas_pfgl/subir_archivoxls">Subir Archivo de Excel</a></li>
              </ul>
         </li>
+        <li class="top"><a class="top_link"><span class="down">Apoyo a Politicas de Descentralizaci&oacute;n</span></a>
+             <ul class="sub">
+                  <li><a href="<?php echo base_url();?>index.php/componente3/componente3/diag_sect_anal_tran">Diagnosticos Sectoriales y Analisis Transversales</a></li>
+                  <li><a>Formaci&oacute;n de Consenso y Discuci&oacute;n</a></li>
+                  <li><a>Elaboracion del Plan de Implementaci&oacute;n</a></li>
+                  <li><a>Divulgaci&oacute;n</a></li>
+                  <li><a>Documentos Concernientes</a></li>
+             </ul>
+        </li>
         <?php
            }   
         ?>

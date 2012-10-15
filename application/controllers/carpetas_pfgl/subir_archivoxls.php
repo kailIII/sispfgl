@@ -71,3 +71,5 @@ class Subir_archivoxls extends CI_Controller {
 	}
 
 }
+
+?>
