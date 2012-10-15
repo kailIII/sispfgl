@@ -22,25 +22,31 @@ class Participante extends CI_Model {
         return $consulta->result();
     }
 
-    public function agregarParticipantes($campo, $id_campo, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo) {
+    public function agregarParticipantes($campo, $id_campo, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo,$par_tel,$par_dui,$par_edad,$par_proviene,$par_nivel_esco){
         $datos = array(
             'par_nombre' => $par_nombre,
             'par_apellido' => $par_apellido,
             'par_sexo' => $par_sexo,
             'ins_id' => $ins_id,
             'par_cargo' => $par_cargo,
+            'par_tel'=>$par_tel,
+            'par_dui'=>$par_dui,
+            'par_edad'=>$par_edad,
+            'par_proviene'=> $par_proviene,
+            'par_nivel_esco'=>$par_nivel_esco,
             $campo => $id_campo
         );
         $this->db->insert($this->tabla, $datos);
     }
 
-    public function editarParticipantes($par_id, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo) {
+    public function editarParticipantes($par_id, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo,$par_tel){
         $datos = array(
             'par_nombre' => $par_nombre,
             'par_apellido' => $par_apellido,
             'par_sexo' => $par_sexo,
             'ins_id' => $ins_id,
-            'par_cargo' => $par_cargo
+            'par_cargo' => $par_cargo,
+            'par_tel'=>$par_tel
         );
         $this->db->where('par_id', $par_id);
         $this->db->update($this->tabla, $datos);

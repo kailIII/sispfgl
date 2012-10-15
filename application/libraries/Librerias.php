@@ -60,12 +60,12 @@ class Librerias {
         return $menu;
     }
 
-    public function subirDocumento($tabla, $campo_id, $archivo) {
+    public function subirDocumento($tabla, $campo_id, $archivo,$campo) {
         $partes = explode(".", $archivo['userfile']['name']);
         $extension = end($partes);
         //OBTERNER LA EXTENSIÒN DEL ARCHIVO SI HAY UNO YA GUARDADO EN LA BASE
-        $this->ci->load->model('etapa1-sub23/' . $tabla);
-        $nombreArchivoBase = $this->ci->$tabla->obtenerRutaArchivo($campo_id);
+        $this->ci->load->model('ayuda_archivo','ayuArc');
+        $nombreArchivoBase = $this->ci->ayuArc->obtenerRutaArchivo($campo,$campo_id,$tabla);
         $extArchivoBase=end(explode(".",$nombreArchivoBase[0]['ruta_archivo']));
         if (strcasecmp($extension,$extArchivoBase) && $extArchivoBase!='0')
                 unlink($nombreArchivoBase[0]['ruta_archivo']);
@@ -73,6 +73,7 @@ class Librerias {
         $archivoSubir = $directorio . ($tabla . $campo_id) . '.' . $extension;
         if ($archivo['userfile']['size'] < 1050000) {
             if (move_uploaded_file($archivo['userfile']['tmp_name'], $archivoSubir)) {
+               $this->ci->ayuArc->actualizarArchivo($campo,$campo_id,$tabla,$archivoSubir);
                 echo $archivoSubir;
             } else {
                 echo "error";

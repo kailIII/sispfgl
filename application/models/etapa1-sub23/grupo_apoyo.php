@@ -1,15 +1,16 @@
 <?php
 
 /*
- * Contiene los metodos para acceder a la tabla ACUERDO_MUNICIPAL
+ * Contiene los metodos para acceder a la tabla GRUPO_APOYO
+ * que en pantalla es el equipo local de apoyo
  *
  * @author Ing. Karen Peñate
  */
 
-class Acuerdo_municipal extends CI_Model {
+class Grupo_apoyo extends CI_Model {
 
-    private $tabla = 'acuerdo_municipal';
-
+    private $tabla = 'grupo_apoyo';
+    
     public function contarAcuMunPorPep($pro_pep_id) {
         $this->db->where('pro_pep_id', $pro_pep_id);
         $this->db->from($this->tabla);
@@ -25,13 +26,13 @@ class Acuerdo_municipal extends CI_Model {
     }
 
     public function obtenerIdAcuMun($pro_pep_id) {
-        $this->db->select('acu_mun_id');
+        $this->db->select('gru_apo_id');
         $this->db->where('pro_pep_id', $pro_pep_id);
         $consulta = $this->db->get($this->tabla);
         return $consulta->result_array();
     }
 
-    public function actualizarAcuMun($acu_mun_id, $acu_mun_fecha, $acu_mun_p1, $acu_mun_p2, $acu_mun_observacion, $acu_mun_ruta_archivo) {
+    public function actualizarAcuMun($gru_apo_id, $acu_mun_fecha, $acu_mun_p1, $acu_mun_p2, $acu_mun_observacion, $acu_mun_ruta_archivo) {
         $datos = array(
             'acu_mun_fecha' => $acu_mun_fecha,
             'acu_mun_p1' => $acu_mun_p1,
@@ -39,16 +40,15 @@ class Acuerdo_municipal extends CI_Model {
             'acu_mun_observacion' => $acu_mun_observacion,
             'acu_mun_ruta_archivo' => $acu_mun_ruta_archivo
         );
-        $this->db->where('acu_mun_id', $acu_mun_id);
+        $this->db->where('gru_apo_id', $gru_apo_id);
         $this->db->update($this->tabla, $datos);
     }
 
-    public function obtenerAcuMun($acu_mun_id) {
-        $this->db->where('acu_mun_id', $acu_mun_id);
+    public function obtenerAcuMun($gru_apo_id) {
+        $this->db->where('gru_apo_id', $gru_apo_id);
         $consulta = $this->db->get($this->tabla);
         return $consulta->result_array();
     }
-    
 }
 
 ?>

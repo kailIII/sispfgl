@@ -66,7 +66,7 @@
         /*GRID PARTICIPANTES*/
         
         tabla.jqGrid({
-            url:'<?php echo base_url('componente2/comp23_E1/cargarParticipantes') ?>/acu_mun_id/<?php echo $acu_mun_id; ?>',
+            url:'<?php echo base_url('componente2/comp23_E1/cargarParticipantesAM') ?>/acu_mun_id/<?php echo $acu_mun_id; ?>',
             editurl:'<?php echo base_url('componente2/comp23_E1/gestionParticipantes') ?>/acuerdo_municipal/acu_mun_id/<?php echo $acu_mun_id; ?>',
             datatype:'json',
             altRows:true,
@@ -151,7 +151,7 @@
         /*  PARA SUBIR EL ARCHIVO  */
         var button = $('#btn_subir'), interval;
         new AjaxUpload('#btn_subir', {
-            action: '<?php echo base_url('componente2/comp23_E1/subirArchivo') . '/acuerdo_municipal/' . $acu_mun_id; ?>',
+            action: '<?php echo base_url('componente2/comp23_E1/subirArchivo') . '/acuerdo_municipal/' . $acu_mun_id.'/acu_mun_id'; ?>',
             onSubmit : function(file , ext){
                 if (! (ext && /^(pdf|doc|docx)$/.test(ext))){
                     $('#extension').dialog('open');
