@@ -32,10 +32,10 @@
         <li class="top"><a class="top_link"><span class="down">Apoyo a Politicas de Descentralizaci&oacute;n</span></a>
              <ul class="sub">
                   <li><a href="<?php echo base_url();?>index.php/componente3/componente3/diag_sect_anal_tran">Diagnosticos Sectoriales y Analisis Transversales</a></li>
-                  <li><a>Formaci&oacute;n de Consenso y Discuci&oacute;n</a></li>
-                  <li><a>Elaboracion del Plan de Implementaci&oacute;n</a></li>
-                  <li><a>Divulgaci&oacute;n</a></li>
-                  <li><a>Documentos Concernientes</a></li>
+                  <li><a href="<?php echo base_url();?>index.php/componente3/componente3/form_conc_disc_poli">Formaci&oacute;n de Consenso y Discuci&oacute;n</a></li>
+                  <li><a href="<?php echo base_url();?>index.php/componente3/componente3/elab_plan_imp">Elaboracion del Plan de Implementaci&oacute;n</a></li>
+                  <li><a href="<?php echo base_url();?>index.php/componente3/componente3/divu">Divulgaci&oacute;n</a></li>
+                  <li><a href="<?php echo base_url();?>index.php/componente3/componente3/docs_desc">Documentos Concernientes</a></li>
              </ul>
         </li>
         <?php

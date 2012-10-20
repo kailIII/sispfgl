@@ -21,49 +21,46 @@ class  componente3 extends CI_Controller {
         $this->load->view('plantilla/footer', $informacion);
     }
     
-    function form_dropdown_from_db($name = '', $sql, $selected = array(), $extra = '')
-    {
-        $CI =& get_instance();
-        if ( ! is_array($selected))
-        {
-            $selected = array($selected);
-        }
+    public function form_conc_disc_poli() {
 
-        // If no selected state was submitted we will attempt to set it automatically
-        if (count($selected) === 0)
-        {
-            // If the form name appears in the $_POST array we have a winner!
-            if (isset($_POST[$name]))
-            {
-                $selected = array($_POST[$name]);
-            }
-        }
-
-        if ($extra != '') $extra = ' '.$extra;
-
-        $multiple = (count($selected) > 1 && strpos($extra, 'multiple') === FALSE) ? ' multiple="multiple"' : '';
-
-        $form = '<select name="'.$name.'"'.$extra.$multiple.">\n";
-        $query=$CI->db->query($sql);
-        if ($query->num_rows() > 0)
-        {
-           foreach ($query->result_array() as $row)
-           {
-                  $values = array_values($row);
-                  if (count($values)===2){
-                    $key = (string) $values[0];
-                    $val = (string) $values[1];
-                    //$this->option($values[0], $values[1]);
-                  }
-
-                $sel = (in_array($key, $selected))?' selected="selected"':'';
-
-                $form .= '<option value="'.$key.'"'.$sel.'>'.$val."</option>\n";
-           }
-        }
-        $form .= '</select>';
-        return $form;
+        $informacion['titulo'] = '3.2.1 Formacion de Concenso y Discusion de la Politica de Descentralizacion';
+                        
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente3/ingresar_fcdp');
+        $this->load->view('plantilla/footer', $informacion);
     }
+    
+    public function elab_plan_imp() {
+
+        $informacion['titulo'] = '3.2.2 Elaboracion del Plan de Implementaci&oacute;n';
+                        
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente3/ingresar_epi');
+        $this->load->view('plantilla/footer', $informacion);
+    }
+    
+    public function divu() {
+
+        $informacion['titulo'] = '3.3 Divulgaci&oacute;n';
+                        
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente3/ingresar_divu');
+        $this->load->view('plantilla/footer', $informacion);
+    }
+    
+    public function docs_desc() {
+
+        $informacion['titulo'] = 'Documentos Concernientes a Descentralizaci&oacute;n';
+                        
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente3/ingresar_dd');
+        $this->load->view('plantilla/footer', $informacion);
+    }
+    
 
 }
 
