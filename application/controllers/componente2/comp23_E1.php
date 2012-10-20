@@ -212,7 +212,7 @@ class Comp23_E1 extends CI_Controller {
         if($par_proviene==0)
             $par_proviene=null;
         $par_nivel_esco = $this->input->post("par_nivel_esco");
-        if($par_nivel_esco==0)
+        if($par_nivel_esco=='0')
             $par_nivel_esco=null;
         
         /*FIN DE VARIABLES*/
@@ -222,7 +222,7 @@ class Comp23_E1 extends CI_Controller {
                 $this->participante->agregarParticipantes($campo, $id_campo, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo,$par_tel,$par_dui,$par_edad,$par_proviene,$par_nivel_esco);
                 break;
             case 'edit':
-                $this->participante->editarParticipantes($par_id, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo,$par_tel);
+                $this->participante->editarParticipantes($par_id, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo,$par_tel,$par_dui, $par_edad, $par_proviene, $par_nivel_esco);
                 break;
             case 'del':
                 $this->participante->eliminarParticipantes($par_id);
@@ -274,7 +274,8 @@ class Comp23_E1 extends CI_Controller {
         $rows[0]['id'] = 1;
         $rows[0]['cell'] = array($totales[0]->total,
             $totales[0]->mujeres,
-            $totales[0]->hombres
+            $totales[0]->hombres,
+            $totales[0]->mayor,
         );
 
         $datos = json_encode($rows);
@@ -419,7 +420,7 @@ class Comp23_E1 extends CI_Controller {
         $this->load->model('etapa1-sub23/declaracion_interes', 'decint');
 
         $numDecInt = $this->decint->contarDecIntPorPep($pro_pep_id);
-        if ($numDecInt == 0) {
+        if ($numDecIint == 0) {
             $this->decint->agregarDecInt($pro_pep_id);
             $idDecInt = $this->decint->obtenerIdDecInt($pro_pep_id);
             $dec_int_id = $idDecInt[0]['dec_int_id'];
@@ -457,12 +458,42 @@ class Comp23_E1 extends CI_Controller {
     }
 
     public function equipoApoyo() {
+         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
+            Planeación Estratégica Participativa';
 
-        $informacion['titulo'] = 'Componente 2.3.2';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
-        $informacion['username'] = $this->tank_auth->get_username();
+        $username = $this->tank_auth->get_username();
+        $informacion['username'] = $username;
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
-        $informacion['gru_apo_id'] = 1;
+
+        /* OBTENER DEPARTAMENTO Y MUNICIPIO DEL USUARIO */
+        $this->load->model('tank_auth/users', 'usuario');
+        $datos = $this->usuario->obtenerDepartamento($username);
+        $informacion['departamento'] = $datos[0]->Depto;
+        $informacion['municipio'] = $datos[0]->Muni;
+        //PROYECTO PEP ASOCIADO
+        $pro_pep_id = $datos[0]->id;
+        $informacion['proyectoPep'] = $datos[0]->Proyecto;
+        /* FIN OBTENER DEPARTAMENTO Y MUNICIPIO DEL USUARIO */
+        $this->load->model('etapa1-sub23/grupo_apoyo', 'gruapo');
+
+        $numGruApo = $this->gruapo->contarGruApoPorPep($pro_pep_id);
+          if ($numGruApo == 0) {
+            $this->gruapo->agregarGruApo($pro_pep_id);
+            $idGruApo = $this->gruapo->obtenerIdGruApo($pro_pep_id);
+            $gru_apo_id = $idGruApo[0]['gru_apo_id'];
+        } else {
+            $idGruApo = $this->gruapo->obtenerIdGruApo($pro_pep_id);
+            $gru_apo_id = $idGruApo[0]['gru_apo_id'];
+            $grupoApoyo = $this->gruapo->obtenerGruApo($gru_apo_id);
+            $informacion['gru_apo_fecha'] = $grupoApoyo[0]['gru_apo_fecha'];
+            $informacion['gru_apo_c3'] = $grupoApoyo[0]['gru_apo_c3'];
+            $informacion['gru_apo_c4'] = $grupoApoyo[0]['gru_apo_c4'];
+            $informacion['gru_apo_observacion'] = $grupoApoyo[0]['gru_apo_observacion'];
+            $informacion['gru_apo_lugar'] = $grupoApoyo[0]['gru_apo_lugar'];
+        }
+        $informacion['gru_apo_id'] = $gru_apo_id;
+        /* CARGA DE PLANTILLAS */
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/etapa1/equipoApoyo_view',$informacion);
@@ -524,6 +555,10 @@ class Comp23_E1 extends CI_Controller {
 
         $i = 0;
         foreach ($participantes as $aux) {
+            if(strcasecmp($aux->par_proviene,'U'))
+                    $proviene='Rural';
+            else
+                $proviene='Urbano';
             $rows[$i]['id'] = $aux->par_id;
             $rows[$i]['cell'] = array($aux->par_id,
                 $aux->par_dui,
@@ -531,7 +566,7 @@ class Comp23_E1 extends CI_Controller {
                 $aux->par_apellido,
                 strtoupper($aux->par_sexo),
                 $aux->par_edad,
-                $aux->par_proviene,
+                $proviene,
                 $aux->par_cargo,
                 $aux->par_nivel_esco,
                 $aux->par_tel

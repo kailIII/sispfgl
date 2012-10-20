@@ -1,11 +1,53 @@
 <script type="text/javascript">        
     $(document).ready(function(){
+       /*VARIABLES*/
+        var tabla=$("#participantes");
         /*ZONA DE BOTONES*/
-        $("#agregar").button();
-        $("#editar").button();
-        $("#eliminar").button();
-        $("#guardar").button();
-        $("#cancelar").button();
+        $("#agregar").button().click(function(){
+            tabla.jqGrid('editGridRow',"new",
+            {closeAfterAdd:true,addCaption: "Agregar ",
+                align:'center',reloadAfterSubmit:true,
+                processData: "Cargando...",afterSubmit:despuesAgregarEditar,
+                bottominfo:"Campos marcados con (*) son obligatorios", 
+                onclickSubmit: function(rp_ge, postdata) {
+                    $('#mensaje').dialog('open');
+                }
+            });
+        });
+        
+        $("#editar").button().click(function(){
+            var gr = tabla.jqGrid('getGridParam','selrow');
+            if( gr != null )
+                tabla.jqGrid('editGridRow',gr,
+            {closeAfterEdit:true,editCaption: "Editando ",
+                align:'center',reloadAfterSubmit:true,
+                processData: "Cargando...",afterSubmit:despuesAgregarEditar,
+                bottominfo:"Campos marcados con (*) son obligatorios", 
+                onclickSubmit: function(rp_ge, postdata) {
+                    $('#mensaje').dialog('open');
+                    ;}
+            });
+            else $('#mensaje2').dialog('open'); 
+        });
+        
+        $("#eliminar").button().click(function(){
+            var grs = tabla.jqGrid('getGridParam','selrow');
+            if( grs != null ) tabla.jqGrid('delGridRow',grs,
+            {msg: "Desea Eliminar esta ?",caption:"Eliminando ",
+                align:'center',reloadAfterSubmit:true,
+                processData: "Cargando...",
+                onclickSubmit: function(rp_ge, postdata) {
+                    $('#mensaje').dialog('open');                            
+                }}); 
+            else $('#mensaje2').dialog('open'); 
+        });
+        
+        $("#guardar").button().click(function() {
+            this.form.action='<?php echo base_url('componente2/comp23_E1/guardarGrupoApoyo/'.$gru_apo_id); ?>';
+        });
+        $("#cancelar").button().click(function() {
+            document.location.href='<?php echo base_url(); ?>';
+        });
         
         /*PARA EL DATEPICKER*/
         $( "#gru_apo_fecha" ).datepicker({
@@ -24,8 +66,8 @@
         /*GRID PARTICIPANTES*/
         var tabla=$("#participantes");
         tabla.jqGrid({
-           url:'<?php echo base_url('componente2/comp23_E1/cargarParticipanteGA') ?>?gru_apo_id=<?php echo $gru_apo_id; ?>',
-            //editurl:'welcome/gestionArticulo',
+            url:'<?php echo base_url('componente2/comp23_E1/cargarParticipanteGA') ?>?gru_apo_id=<?php echo $gru_apo_id; ?>',
+            editurl:'<?php echo base_url('componente2/comp23_E1/gestionParticipantes') ?>/grupo_apoyo/gru_apo_id/<?php echo $gru_apo_id; ?>',
             datatype:'json',
             altRows:true,
             height: "100%",
@@ -34,8 +76,8 @@
             colModel:[
                 {name:'par_id',index:'par_id', width:40,editable:false,editoptions:{size:15} },
                 {name:'par_dui',index:'par_dui', width:100,editable:true,editoptions:{size:15}, 
-                formoptions:{label: "Dui",elmprefix:"(*)"},
-                    editrules:{required:true} },
+                    formoptions:{label: "Dui"}
+                     },
                 
                 {name:'par_nombre',index:'par_nombre',width:100,editable:true,
                     editoptions:{size:25,maxlength:50}, 
@@ -49,7 +91,7 @@
                 },
                 {name:'par_sexo',index:'par_sexo',editable:true,edittype:"select",width:50,
                     align:"center",
-                    editoptions:{ value: '0:Seleccione;F:Femenino; M:Masculino' }, 
+                    editoptions:{ value: '0:Seleccione;F:Femenino;M:Masculino' }, 
                     formoptions:{ label: "Sexo",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validar}
                 },
@@ -103,6 +145,14 @@
                                 $("#total").attr('value', registro['cell'][0]);
                                 $("#mujeres").attr('value', registro['cell'][1]);
                                 $("#hombres").attr('value', registro['cell'][2]);
+                                if(registro['cell'][1]/registro['cell'][0]>=0.5)
+                                    $("#porcenMujeresSi").attr("checked", true);
+                                else
+                                    $("#porcenMujeresNo").attr("checked", true);
+                                if(registro['cell'][3]<registro['cell'][0])
+                                    $("#mayor15No").attr("checked", true);
+                                else
+                                    $("#mayor15Si").attr("checked", true);
                             });                    
                         }
                     });
@@ -120,47 +170,7 @@
             return[true,'']; //no error
         }
                 
-        //AGREGAR
-        $("#agregar").click(function(){
-            tabla.jqGrid('editGridRow',"new",
-            {closeAfterAdd:true,addCaption: "Agregar ",
-                align:'center',reloadAfterSubmit:true,width:550,
-                processData: "Cargando...",afterSubmit:despuesAgregarEditar,
-                bottominfo:"Campos marcados con (*) son obligatorios", 
-                onclickSubmit: function(rp_ge, postdata) {
-                    $('#mensaje').dialog('open');
-                }
-            });
-        });
-
-        //EDITAR
-        $("#editar").click(function(){
-            var gr = tabla.jqGrid('getGridParam','selrow');
-            if( gr != null )
-                tabla.jqGrid('editGridRow',gr,
-            {closeAfterEdit:true,editCaption: "Editando ",
-                align:'center',reloadAfterSubmit:true,width:550,
-                processData: "Cargando...",afterSubmit:despuesAgregarEditar,
-                bottominfo:"Campos marcados con (*) son obligatorios", 
-                onclickSubmit: function(rp_ge, postdata) {
-                    $('#mensaje').dialog('open');
-                    ;}
-            });
-            else $('#mensaje2').dialog('open'); 
-        });
-    
-        //ELIMINAR
-        $("#eliminar").click(function(){
-            var grs = tabla.jqGrid('getGridParam','selrow');
-            if( grs != null ) tabla.jqGrid('delGridRow',grs,
-            {msg: "Desea Eliminar esta ?",caption:"Eliminando ",
-                height:100,align:'center',reloadAfterSubmit:true,width:550,
-                processData: "Cargando...",
-                onclickSubmit: function(rp_ge, postdata) {
-                    $('#mensaje').dialog('open');                            
-                }}); 
-            else $('#mensaje2').dialog('open'); });
-        /*DIALOGOS DE VALIDACION*/
+      /*DIALOGOS DE VALIDACION*/
         $('.mensaje').dialog({
             autoOpen: false,
             width: 300,
@@ -185,12 +195,15 @@
 
         <table>
             <tr>
-            <td ><strong>Departamento:</strong></td>
-            <td ><strong>Municipio:</strong></td>
+            <td ><strong>Departamento:</strong><?php echo $departamento ?></td>
+            <td ><strong>Municipio:</strong><?php echo $municipio ?></td>
             </tr>
             <tr>
             <td ><strong>Lugar:</strong><input id="gru_apo_lugar" name="gru_apo_lugar" type="text" size="40"/></td>
-            <td  ><strong>Fecha: </strong><input id="gru_apo_fecha" name="gru_apo_fecha" type="text" size="10"/></td>
+            <td  ><strong>Fecha: </strong><input readonly="readonly" id="gru_apo_fecha" name="gru_apo_fecha" type="text" size="10"/></td>
+            </tr>
+            <tr>
+            <td colspan="2"><strong>Proyecto PEP:  </strong><?php echo $proyectoPep ?></td>
             </tr>
 
         </table>
@@ -216,13 +229,13 @@
             <table>
                 <tr>
                 <td>Mayores de 15 Años </td>
-                <td><input type="radio" name="mayor15" value="true">SI </input></td>
-                <td><input type="radio" name="mayor15" value="false">NO </input></td>
+                <td><input type="radio" id="mayor15Si" name="mayor15" value="true">SI </input></td>
+                <td><input type="radio" id="mayor15No"name="mayor15" value="false">NO </input></td>
                 </tr>
                 <tr>
                 <td>El 50% de los Miembros son Mujeres </td>
-                <td><input type="radio" name="porcenMujeres" value="true">SI </input></td>
-                <td><input type="radio" name="porcenMujeres" value="false">NO </input></td>    
+                <td><input type="radio" id="porcenMujeresSi" name="porcenMujeres" value="true">SI </input></td>
+                <td><input type="radio" id="porcenMujeresNo" name="porcenMujeres" value="false">NO </input></td>    
                 </tr>
                 <tr>
                 <td>Conocen el Territorio </td>
