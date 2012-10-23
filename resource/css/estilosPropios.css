@@ -16,12 +16,14 @@ div#divpagina{
 
 div#divcuerpo{
     position:absolute; 
-    width:898px; 
+    width:1000px; 
     left:50%; 
     right:50%; 
     margin-left:-450px; 
     background-color: #FFFFFF;
     top:150px;
+/*    border-color: #2F589F;
+    border-style: solid*/
 }
 
 .letraazul{

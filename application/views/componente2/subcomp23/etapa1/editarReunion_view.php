@@ -159,7 +159,7 @@
     <h2 class="h2Titulos">Producto 1: Acuerdo Municipal</h2>
     <h2 class="h2Titulos">Registro de Reuniones</h2>
     <br></br>
-    <div style="position: relative;left: 70px;">
+    <div style="margin-left: 150px;">
         <table>
             <tr>
             <td colspan="2"><strong>Departamento:</strong><?php echo $departamento ?></td>
@@ -185,9 +185,7 @@
 
         </table>
 
-        <p>Tema o Agenda a Desarrollar: <textarea id="reu_tema" name="reu_tema" cols="50" rows="2" class="required" maxlength="200" >
-            <?php echo $reu_tema ?>
-            </textarea></p>
+        <p>Tema o Agenda a Desarrollar: <textarea id="reu_tema" name="reu_tema" cols="50" rows="2" class="required" maxlength="200" ><?php echo $reu_tema ?></textarea></p>
         <table id="participantes"></table>
         <div id="pagerParticipantes"></div>
         <div style="position: relative;left: 275px;top: 5px;">
@@ -201,9 +199,7 @@
             <tr>  
             <td>
                 <p>Resultado de la Reunión:</br> 
-                    <textarea id="reu_resultado" name="reu_resultado" cols="48" rows="5" class="required" >
-                    <?php echo $reu_resultado ?>
-                    </textarea></p>
+                    <textarea id="reu_resultado" name="reu_resultado" cols="48" rows="5" class="required" ><?php echo $reu_resultado ?></textarea></p>
             </td>
             <td>
             <fieldset   style="border-color: #2F589F;height:85px;width:175px;position: relative;left: 50px;">
@@ -228,9 +224,7 @@
         </table>
         <div>
             <p>Observaciones y/o Recomendaciones:</br>
-                <textarea id="reu_observacion"  name="reu_observacion" cols="48" rows="5">
-                <?php echo $reu_observacion ?>
-                </textarea></p>
+                <textarea id="reu_observacion"  name="reu_observacion" cols="48" rows="5"><?php echo $reu_observacion ?></textarea></p>
             <center style="position: relative;top: 20px">
 
                 <p><input type="submit" id="guardar" value="Guardar Reunión" />

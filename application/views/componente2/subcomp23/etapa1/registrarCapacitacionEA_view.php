@@ -308,7 +308,7 @@
 </script>
 
 <form>
-    <div style="position: relative;left: 20px;">
+   <div style="margin-left: 70px;">
         <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
         <h2 class="h2Titulos">Producto 4: Capacitaciones Local de Apoyo</h2>
 

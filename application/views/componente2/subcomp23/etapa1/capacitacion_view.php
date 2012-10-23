@@ -1,13 +1,13 @@
     <div style="margin-left: 60px;">
 <center>
-    <h1>Registro de Reuniones</h1>
+    <h1>Registrar Capacitaciones del Equipo Local de Apoyo</h1>
 </center>
 <table align="center" >
     <tr>
         <td align="center" ><a href="<?php echo base_url('componente2/comp23_E1/registrarReunion'); ?>"><img src="<?php echo base_url('resource/imagenes/add.png'); ?>"/></a></td>
     </tr>
     <tr>
-        <td class="letraazul" align="center">Registrar Reunión</td>
+        <td class="letraazul" align="center">Registrar Capacitaciòn</td>
     </tr>
 </table>
 <p></p>
@@ -21,6 +21,7 @@
         </tr>
     </thead>
     <tbody>
+        <!--
         <?php foreach ($reuniones as $aux) { ?>
         <tr style="font-size: 14px">
             <td><?php echo $aux->reu_numero; ?></td>
@@ -31,6 +32,7 @@
             </td>
         </tr>
         <?php } ?>
+        -->
     </tbody>
 </table>
 </div>    

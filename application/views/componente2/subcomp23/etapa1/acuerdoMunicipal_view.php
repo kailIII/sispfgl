@@ -196,7 +196,7 @@
 <form id="acuerdoMunicipalForm" method="post">
     <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
     <h2 class="h2Titulos">Producto 1: Acuerdo Municipal</h2>
-    <div style="position: relative;left: 70px;">
+        <div style="margin-left: 150px;">
 
         <br>
         <table>
@@ -265,7 +265,7 @@
         <table style="position: relative;top: 15px;">
             <tr>
             <td>
-                <p>Observaciones:</br><textarea id="acu_mun_observacion" name="acu_mun_observacion" cols="48" rows="5"> <?php if (isset($acu_mun_observacion))  echo$acu_mun_observacion; ?></textarea></p>
+                <p>Observaciones:</br><textarea id="acu_mun_observacion" name="acu_mun_observacion" cols="48" rows="5"><?php if (isset($acu_mun_observacion))  echo$acu_mun_observacion; ?></textarea></p>
             </td>
             <td style="width: 50px"></td>
             <td>

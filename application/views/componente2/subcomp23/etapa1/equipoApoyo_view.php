@@ -43,14 +43,14 @@
         });
         
         $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/comp23_E1/guardarGrupoApoyo/'.$gru_apo_id); ?>';
+            this.form.action='<?php echo base_url('componente2/comp23_E1/guardarEquipoApoyo/'.$gru_apo_id); ?>';
         });
         $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url(); ?>';
         });
         
         /*PARA EL DATEPICKER*/
-        $( "#gru_apo_fecha" ).datepicker({
+        $("#gru_apo_fecha").datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
@@ -187,8 +187,8 @@
     
 </script>
 
-<form>
-    <div style="position: relative;left: 20px;">
+<form method="post">
+    <div style="margin-left: 60px;">
         <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
         <h2 class="h2Titulos">Producto 3: Equipo Local de Apoyo</h2>
 
@@ -199,8 +199,8 @@
             <td ><strong>Municipio:</strong><?php echo $municipio ?></td>
             </tr>
             <tr>
-            <td ><strong>Lugar:</strong><input id="gru_apo_lugar" name="gru_apo_lugar" type="text" size="40"/></td>
-            <td  ><strong>Fecha: </strong><input readonly="readonly" id="gru_apo_fecha" name="gru_apo_fecha" type="text" size="10"/></td>
+            <td ><strong>Lugar:</strong><input id="gru_apo_lugar" <?php if (isset($gru_apo_lugar)) { ?> value='<?php echo $gru_apo_lugar;?>'<?php }?> name="gru_apo_lugar" type="text" size="40"/></td>
+            <td  ><strong>Fecha: </strong><input readonly="readonly" <?php if (isset($gru_apo_fecha)) { ?> value='<?php echo date('d/m/y',  strtotime($gru_apo_fecha));?>'<?php }?>id="gru_apo_fecha" name="gru_apo_fecha" type="text" size="10"/></td>
             </tr>
             <tr>
             <td colspan="2"><strong>Proyecto PEP:  </strong><?php echo $proyectoPep ?></td>
@@ -218,11 +218,10 @@
             <br></br>
         </div>
 
-    </div>
+    
     <table style="position: relative;left: 40px;top: 20px;border-color: 2px solid blue">
         <tr>
         <td>
-            <!-- <div style="float: left; width: 400px;left: 70px;position: relative;top:20px;border: 2px solid black;"> -->
             <p>¿Los Miembros del Equipo Local de Apoyo Reunen las Caracterìsticas Siguientes?</p>
         <fieldset style="width: 400px;border-color: #2F589F">
             <legend><strong>Caracterìsticas</strong></legend>
@@ -239,22 +238,19 @@
                 </tr>
                 <tr>
                 <td>Conocen el Territorio </td>
-                <td><input type="radio" name="conTerritorio" value="true">SI </input></td>
-                <td><input type="radio" name="conTerritorio" value="false">NO </input></td> 
+                <td><input type="radio" name="gru_apo_c3" <?php if (!strcasecmp($gru_apo_c3,'t')) { ?> checked <?php }?>  value="true">SI </input></td>
+                <td><input type="radio" name="gru_apo_c3" <?php if (!strcasecmp($gru_apo_c3,'f')) { ?> checked <?php }?>value="false">NO </input></td> 
                 </tr>
                 <tr>
                 <td>Tienen Potencial de Liderazgo </td>
-                <td><input type="radio" name="potencialLider" value="true">SI </input></td>
-                <td><input type="radio" name="potencialLider" value="false">NO </input></td>   
+                <td><input type="radio" name="gru_apo_c4" <?php if (!strcasecmp($gru_apo_c4,'t')) { ?> checked <?php }?> value="true">SI </input></td>
+                <td><input type="radio" name="gru_apo_c4"<?php if (!strcasecmp($gru_apo_c4,'f')) { ?> checked <?php }?> value="false">NO </input></td>   
                 </tr>
             </table>  
         </fieldset>
         </td>
         <td>
-            <!--   </div> --> 
-
-            <!--    <div style="float: left;width: 250;position: relative;left:150px;top: 30px;border: 2px solid black;">-->
-        <fieldset   style="border-color: #2F589F;height:85px;width:175px;position: relative;left: 50px;">
+            <fieldset   style="border-color: #2F589F;height:85px;width:175px;position: relative;left: 50px;">
             <legend align="center"><strong>Cantidad de Participantes</strong></legend>
             <table>
                 <tr>
@@ -274,11 +270,9 @@
         </td>
         </tr>
     </table>
-    <!--   </div>-->
-
     <div style="position:relative;left: 40px;top:25px;">
         <p>Observaciones y/o Recomendaciones:</br>
-            <textarea id="acu_mun_observacion" cols="48" rows="5"></textarea></p>
+            <textarea name="gru_apo_observacion" cols="48" rows="5"><?php if (isset($gru_apo_observacion))  echo$gru_apo_observacion; ?></textarea></p>
     </div>
 
     <center>
@@ -289,6 +283,7 @@
             </p>
         </div>
     </center>
+        </div>
 </form>
 
 <div id="mensaje" class="mensaje" title="Aviso de la operación">
