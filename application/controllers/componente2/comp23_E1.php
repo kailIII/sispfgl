@@ -123,9 +123,14 @@ class Comp23_E1 extends CI_Controller {
             Planeación Estratégica Participativa';
 
         $this->load->model('etapa1-sub23/reunion', 'reunion');
-        $informacion['reuniones'] = $this->reunion->obtenerReuniones();
+        /* OBTENER DEPARTAMENTO Y MUNICIPIO DEL USUARIO */
+        $this->load->model('tank_auth/users', 'usuario');
+        $username = $this->tank_auth->get_username();
+        $datos = $this->usuario->obtenerDepartamento($username);
+        $pro_pep_id = $datos[0]->id;
+        $informacion['reuniones'] = $this->reunion->obtenerReuniones($pro_pep_id);
         $informacion['user_id'] = $this->tank_auth->get_user_id();
-        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['username'] = $username;
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
@@ -564,14 +569,18 @@ class Comp23_E1 extends CI_Controller {
     }
 
     public function capacitacionEquipoApoyo() {
-
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
-
+        $username = $this->tank_auth->get_username();
         $informacion['user_id'] = $this->tank_auth->get_user_id();
-        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['username'] = $username;
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
-                
+        /* OBTENER DEPARTAMENTO Y MUNICIPIO DEL USUARIO */
+        $this->load->model('tank_auth/users', 'usuario');
+        $datos = $this->usuario->obtenerDepartamento($username);
+        $pro_pep_id = $datos[0]->id;
+        $this->load->model('etapa1-sub23/capacitacion');
+        $informacion['capacitaciones'] = $this->capacitacion->obtenerCapacitaciones($pro_pep_id);
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/etapa1/capacitacion_view', $informacion);
