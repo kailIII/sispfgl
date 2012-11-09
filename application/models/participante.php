@@ -39,7 +39,7 @@ class Participante extends CI_Model {
         $this->db->insert($this->tabla, $datos);
     }
 
-    public function editarParticipantes($par_id, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo, $par_tel,$par_dui, $par_edad, $par_proviene, $par_nivel_esco) {
+    public function editarParticipantes($par_id, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo, $par_tel, $par_dui, $par_edad, $par_proviene, $par_nivel_esco) {
         $datos = array(
             'par_nombre' => $par_nombre,
             'par_apellido' => $par_apellido,
@@ -74,8 +74,37 @@ class Participante extends CI_Model {
                     WHERE " . $campo . " = ? and par_edad>=15 ) Mayor
                   FROM participante
                   WHERE " . $campo . " = ?";
-        $consulta = $this->db->query($sql, array($id_campo, $id_campo,$id_campo, $id_campo));
+        $consulta = $this->db->query($sql, array($id_campo, $id_campo, $id_campo, $id_campo));
         return $consulta->result();
+    }
+
+    public function calcularTotalParticipantes($cap_id) {
+        $sql = "SELECT  count(*) Total,
+                (SELECT  count(*)
+                 FROM participante_capacitacion, participante
+                 WHERE participante_capacitacion.par_id = participante.par_id AND
+                       participante_capacitacion.cap_id = ? AND
+                       participante.par_sexo='F' AND
+                       participante_capacitacion.par_cap_participa='Si'
+                 )Mujeres,
+                (SELECT  count(*)
+                 FROM participante_capacitacion, participante
+                 WHERE participante_capacitacion.par_id = participante.par_id AND
+                       participante_capacitacion.cap_id = ? AND
+                       participante.par_sexo='M' AND
+                       participante_capacitacion.par_cap_participa='Si'
+                )Hombres
+               FROM participante_capacitacion, participante
+               WHERE participante_capacitacion.par_id = participante.par_id AND
+                     participante_capacitacion.cap_id = ? AND
+                     participante_capacitacion.par_cap_participa='Si'";
+        $consulta = $this->db->query($sql, array($cap_id,$cap_id,$cap_id));
+        return $consulta->result();
+    }
+    
+     public function eliminaParticipanteCapacitacion($par_id) {
+        $consulta = "DELETE FROM " . $this->tabla . " CASCADE WHERE par_id=?";
+        $query = $this->db->query($consulta, array($par_id));
     }
 
 }

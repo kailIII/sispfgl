@@ -5,7 +5,7 @@
             this.form.action='<?php echo base_url('componente2/comp23_E1/guardarCapacitacion')."/".$cap_id; ?>';
         });
         $("#cancelar").button().click(function() {
-            document.location.href='<?php echo base_url('componente2/comp23_E1/cancelaCapacitacion')."/".$cap_id; ?>';
+            document.location.href='<?php echo base_url('componente2/comp23_E1/capacitacionEquipoApoyo'); ?>';
         });
         /*DIALOGOS DE VALIDACION*/
         $('.mensaje').dialog({
@@ -274,12 +274,16 @@
         function despuesAgregarEditar3() {
             tabla3.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');
             return[true,'']; 
-        } 
+        }
+        
+        
     });
+    
+    
 </script>
 
 <form method="post">
-     <div style="margin-left: 70px;">
+    <div style="margin-left: 70px;">
         <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
         <h2 class="h2Titulos">Producto 4: Capacitaciones Local de Apoyo</h2>
         <table>
@@ -288,14 +292,14 @@
             <td ><strong>Municipio:</strong><?php echo $municipio ?></td>
             </tr>
             <tr>
-            <td  ><strong>Fecha de Capacitación: </strong><input readonly="readonly" id="cap_fecha" name="cap_fecha" type="text" size="10" /></td>
-            <td ><strong>Area de Capacitación:</strong><input id="cap_area" name="cap_area" type="text" size="20"/></td>
+            <td  ><strong>Fecha de Capacitación: </strong><input value="<?php echo $cap_fecha ?>" readonly="readonly" id="cap_fecha" name="cap_fecha" type="text" size="10" /></td>
+            <td ><strong>Area de Capacitación:</strong><input value="<?php echo $cap_area ?>" id="cap_area" name="cap_area" type="text" size="20"/></td>
             </tr>
             <tr>
-            <td colspan="2"><strong>Tema:</strong><input id="cap_tema" name="cap_tema" type="text" size="40"/></td>
+            <td colspan="2"><strong>Tema:</strong><input id="cap_tema" value="<?php echo $cap_tema ?>" name="cap_tema" type="text" size="40"/></td>
             </tr>
             <tr>
-            <td colspan="2"><strong>Lugar:</strong><input id="cap_lugar" name="cap_lugar" type="text" size="40"/></td>
+            <td colspan="2"><strong>Lugar:</strong><input id="cap_lugar" value="<?php echo $cap_lugar ?>" name="cap_lugar" type="text" size="40"/></td>
             </tr>
             <tr>
             <td colspan="2"><strong>Proyecto PEP:  </strong><?php echo $proyectoPep ?></td>
@@ -317,7 +321,7 @@
         <tr>
         <td>
             <p>Observaciones y/o Recomendaciones:</br>
-                <textarea name="cap_observacion" cols="48" rows="5"></textarea></p>
+                <textarea name="cap_observacion" cols="48" rows="5"><?php echo $cap_observacion ?></textarea></p>
 
         </td>
         <td>

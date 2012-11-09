@@ -1,4 +1,3 @@
-
 <script type="text/javascript">        
     $(document).ready(function(){
         /*ZONA DE BOTONES*/
@@ -38,7 +37,6 @@
                     formoptions:{label: "Nombre",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
-                
                 {name:'fue_pri_institucion',index:'fue_pri_institucion',width:200,editable:true,
                     editoptions:{size:25,maxlength:50}, 
                     formoptions:{label: "Institucion ó Comunidad",elmprefix:"(*)"},
@@ -60,17 +58,16 @@
                     editoptions:{size:25,maxlength:30}, 
                     formoptions:{ label: "Tipo Documento",elmprefix:"(*)"},
                     editrules:{required:true} 
-                }
-                                     
+                }                   
             ],
             multiselect: false,
             caption: "Fuentes de Información Primarias",
             rowNum:10,
             rowList:[10,20,30],
             loadonce:true,
-            pager: jQuery('#pagerFuentesPrimarias'),
+            pager: jQuery('#pagerFuentesPrimaria'),
             viewrecords: true     
-        }).jqGrid('navGrid','#pagerFuentesPrimarias',
+        }).jqGrid('navGrid','#pagerFuentesPrimaria',
         {edit:false,add:false,del:false,search:false,refresh:false,
             beforeRefresh: function() {
                 tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
@@ -106,7 +103,7 @@
                 bottominfo:"Campos marcados con (*) son obligatorios", 
                 onclickSubmit: function(rp_ge, postdata) {
                     $('#mensaje').dialog('open');
-                    ;}
+                    }
             });
             else $('#mensaje2').dialog('open'); 
         });
@@ -134,13 +131,9 @@
         });
         /*FIN DIALOGOS VALIDACION*/
         
-        
-        
-        
-        
         /*GRID MIEMBROS DEL EQUIPO LOCAL DE APOYO*/
-        var tabla=$("#FuentesSecundarias");
-        tabla.jqGrid({
+        var tabla2=$("#FuentesSecundarias");
+        tabla2.jqGrid({
             url:'<?php echo base_url('') ?>',
             //editurl:'welcome/gestionArticulo',
             datatype:'json',
@@ -188,34 +181,36 @@
         }
     ).hideCol('fue_sec_id');
         /* Funcion para regargar los JQGRID luego de agregar y editar*/
-        function despuesAgregarEditar() {
-            tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');
+        function despuesAgregarEditar2() {
+            tabla2.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');
             return[true,'']; //no error
-        }
-        
-    
-        
+        } 
     });
-    
-    
 </script>
 
-<form>
-    <div style="position: relative;left: 20px;">
+<form method="post">
+     <div style="margin-left: 250px;">
         <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
         <h2 class="h2Titulos">Producto 5: Inventario de Información</h2>
-
-
+         </br></br> </br>
         <table>
             <tr>
-            <td ><strong>Departamento:</strong></td><td style="width: 200px" ></td>
-            <td ><strong>Municipio:</strong></td><td ></td>
+            <td ><strong>Departamento:</strong></td>
+            <td style="width: 200px" ></td>
             </tr>
+            <tr>
+            <td ><strong>Municipio:</strong></td>
+            <td ></td>    
+            </tr>
+            <tr>
+            <td ><strong>Proyecto Pep:</strong></td>
+            <td ></td>    
+            
         </table>
 
-        <br></br>
+        </br></br>
         <table id="FuentesPrimaria"></table>
-        <div id="pagerFuentesPrimarias"></div>
+        <div id="pagerFuentesPrimaria"></div>
         <br></br>
         <table id="FuentesSecundarias"></table>
         <div id="pagerFuentesSecundarias"></div>
@@ -227,12 +222,10 @@
             <br></br>
         </div>
 
-    </div>
+    
     <table style="position: relative;left: 40px;top: 20px;border-color: 2px solid blue">
         <tr>
         <td>
-            <!-- <div style="float: left; width: 400px;left: 70px;position: relative;top:20px;border: 2px solid black;"> -->
-
             <p>Observaciones y/o Recomendaciones:</br>
                 <textarea id="acu_mun_observacion" cols="70" rows="5"></textarea></p>
 
@@ -240,10 +233,6 @@
 
         </tr>
     </table>
-    <!--   </div>-->
-
-
-
     <center>
         <div style="position:relative;width: 300px;top: 25px">
             <p > 
@@ -252,8 +241,8 @@
             </p>
         </div>
     </center>
+        </div>
 </form>
-
 <div id="mensaje" class="mensaje" title="Aviso de la operación">
     <p>La acción fue realizada con satisfacción</p>
 </div>
