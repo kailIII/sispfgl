@@ -21,7 +21,7 @@ class Inicio extends CI_Controller {
             $informacion['titulo'] = 'Sistema de Información y Seguimiento del Programa de Fortalecimiento de Gobiernos Locales';
             //CARGAR VISTA
             $this->load->view('plantilla/header', $informacion);
-           // $this->load->view('plantilla/menu', $informacion);
+            $this->load->view('plantilla/menu', $informacion);
             $this->load->view('inicio/construccion_view');
             $this->load->view('plantilla/footer', $informacion);
         } else {

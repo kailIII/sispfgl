@@ -57,6 +57,7 @@
         /*FIN DIALOGOS VALIDACION*/
     });
 </script>
+<div style="margin-left: 250px;">
 <center>
     <h1>Gestión de Consultoras</h1>
 
@@ -73,11 +74,10 @@
         </tr>
     </table>
     </br>
-
+</center>
     <table id="consultora"></table>
     <div id="pager"></div>
-</center>
-
+</div>
 <div id="mensaje2" class="mensaje" title="Aviso">
     <p>Debe Seleccionar una consultora para editar</p>
 </div>

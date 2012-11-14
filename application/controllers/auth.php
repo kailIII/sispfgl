@@ -87,6 +87,7 @@ class Auth extends CI_Controller
 				}
 			}
 			$informacion['titulo'] = 'Iniciar Sesión en SISPFGL';
+                        $informacion['mostrar'] = false;
                         $this->load->view('plantilla/header', $informacion);
                         $this->load->view('plantilla/menu', $informacion);
                         $this->load->view('auth/login_form', $informacion);
