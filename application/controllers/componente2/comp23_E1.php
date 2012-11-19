@@ -944,7 +944,7 @@ class Comp23_E1 extends CI_Controller {
         }
     }
 
-    public function inforPreMunicipio() {
+    public function informePreliminar() {
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
 
@@ -963,7 +963,8 @@ class Comp23_E1 extends CI_Controller {
         $informacion['pro_pep_id'] = $pro_pep_id;
         /*INFORME PRELIMINAR ASPECTOS IMPORTANTES*/
         $this->load->model('cumplimiento_minimo', 'cumm');
-        $informacion['cumplimientosMinimos'] = $this->cumm->obtenerCumplimientoMinimo();
+        $cumplimientosMinimos=$this->cumm->obtenerCumplimientoMinimo();
+        $informacion['cumplimientosMinimos'] = $cumplimientosMinimos;
         $this->load->model('proyectoPep/proyecto_pep', 'proPep');
         $resultado = $this->proPep->obtenerGrupoApoyo($pro_pep_id);
         $informacion['gru_apo_id'] = $resultado[0]['gru_apo_id'];
@@ -975,9 +976,9 @@ class Comp23_E1 extends CI_Controller {
             $resultado = $this->infPre->obtenerInfPre($pro_pep_id);
             $this->load->model('proyectoPep/proyecto_pep', 'proPep');
             $this->proPep->actualizarIndices('inf_pre_id', $resultado[0]['inf_pre_id'], $pro_pep_id);
-        }else
+        }else{
             $resultado = $this->infPre->obtenerInfPre($pro_pep_id);
-        
+        }
         $informacion['inf_pre_id'] = $resultado[0]['inf_pre_id'];
         $informacion['inf_pre_observacion'] = $resultado[0]['inf_pre_observacion'];
         $informacion['inf_pre_ruta_archivo'] = $resultado[0]['inf_pre_ruta_archivo'];

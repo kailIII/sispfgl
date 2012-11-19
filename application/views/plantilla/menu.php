@@ -8,14 +8,7 @@
         });
     });
 </script>
-<?php
- if (!isset($menu) && !isset($mostrar)) {
- ?>                   
-<div style="position: relative; background: white;left: 740px; width:150px; top:-50px;" align="center">
-    <img style="position: relative;" heigth="30px" width="30px" src="<?php echo base_url('resource/imagenes/login-2.png'); ?>"/>
-    <a style="font-weight: bold; font-size: 13px; position: relative; top:-9px " href="<?php echo base_url("auth/login"); ?>" >Iniciar Sesión</a>
-</div>    
-<?php } ?>
+
     <div class="demo-container clear">
         <div class="dcjq-vertical-mega-menu">
             <ul id="mHorizontal" class="menu">

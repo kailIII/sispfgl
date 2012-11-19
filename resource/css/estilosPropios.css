@@ -96,3 +96,22 @@ em {
 	background-image:url(../imagenes/upload.png);
 	cursor: pointer;
 }
+
+.login1 A:link { color: white}
+.login1 A:visited { color: white}
+.login1 A:active { color: white}
+.login1 A:hover { color: #78cee7}
+
+/*Estilo pie de pagina*/
+footer {
+  clear: both;
+  background: #205B96;
+  color: whiteSmoke;
+  font-size:11px;
+  font-family: 'Open Sans',arial,sans-serif;
+  border-top: 1px solid #0B2161;
+  padding: 10px 15px 10px 15px;
+  position: relative;
+  bottom:0%;
+  width:97.85%; 
+}

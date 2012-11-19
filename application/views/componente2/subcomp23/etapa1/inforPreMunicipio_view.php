@@ -224,16 +224,14 @@
             </tr>
             <tr>
             <td><a <?php if (isset($inf_pre_ruta_archivo) && $inf_pre_ruta_archivo != '') { ?> href="<?php echo base_url() . $inf_pre_ruta_archivo; ?>"<?php } ?>  id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
-            <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($inf_pre_ruta_archivo) && $inf_pre_ruta_archivo != '') { ?>value="Descargar Declaración de Interés"<?php } else { ?> value="No hay ningún informe preliminar para descargar" <?php } ?>size="50" style="border: none"/></td>
+            <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($inf_pre_ruta_archivo) && $inf_pre_ruta_archivo != '') { ?>value="Descargar Informe Preliminar"<?php } else { ?> value="No hay ningún informe preliminar para descargar" <?php } ?>size="50" style="border: none"/></td>
             </tr>
         </table>
     <center>
-        <div style="position:relative;width: 300px;top: 25px">
             <p > 
-                <input type="submit" id="guardar" value="Guardar Reunión" />
+                <input type="submit" id="guardar" value="Guardar Informe Preliminar" />
                 <input type="button" id="cancelar" value="Cancelar" />
             </p>
-        </div>
     </center>
 </div>
     <input id="inf_pre_ruta_archivo" name="inf_pre_ruta_archivo" <?php if (isset($inf_pre_ruta_archivo) && $inf_pre_ruta_archivo != '') { ?>value="<?php echo $inf_pre_ruta_archivo; ?>"<?php } ?> type="text" size="100" readonly="readonly" style="visibility: hidden"/>
