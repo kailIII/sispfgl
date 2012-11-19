@@ -17,7 +17,7 @@
 <h1>3.1 Diagnosticos Sectoriales y Analisis Transversales</h1>
 <br>
 
-<?php echo form_open('componente3/guardar_dsat');?>
+<?php echo form_open('index.php/componente3/componente3/guardar_dsat');?>
 
 	<div  style="float:left;height:120px;">
 		<label>Fecha de Actividad:</label>
@@ -93,7 +93,7 @@
 		<label>Archivo de Reporte: </label>
 		<input type="file" name="archivo_reporte" size="20" /><br><br>
 		
-		<input type="submit" value="Guardar" align="right">
+		<input type="submit" value="Guardar" align="right" name="guardar">
 		
 		
 <?php echo form_close();?>
