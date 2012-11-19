@@ -1,8 +1,12 @@
 <script type="text/javascript">        
     $(document).ready(function(){
         /*ZONA DE BOTONES*/
-        $("#guardar").button();
-        $("#cancelar").button();
+       $("#guardar").button().click(function() {
+            this.form.action='<?php echo base_url('componente2/comp23_E1/guardarInformePreliminar/' . $inf_pre_id); ?>';
+        });
+        $("#cancelar").button().click(function() {
+            document.location.href='<?php echo base_url(); ?>';
+        });
         /*  PARA SUBIR EL ARCHIVO  */
         var button = $('#btn_subir'), interval;
         new AjaxUpload('#btn_subir', {
@@ -173,8 +177,8 @@
                     <?php foreach ($cumplimientosMinimos as $aux) { ?>
                         <tr>
                         <td><?php echo $aux->cum_min_nombre; ?></td>
-                        <td><input type="radio" name="<?php echo $aux->cum_min_id; ?>" value="true">SI </input></td>
-                        <td><input type="radio" name="<?php echo $aux->cum_min_id; ?>" value="false">NO </input></td>
+                        <td><input type="radio" name="cum_<?php echo $aux->cum_min_id; ?>" value="true" >SI </input></td>
+                        <td><input type="radio" name="cum_<?php echo $aux->cum_min_id; ?>" value="false">NO </input></td>
                         </tr>
                     <?php } ?>
                 </table>  
@@ -192,18 +196,18 @@
                 <table>
                     <tr>
                     <td>Municipalidad</td>
-                    <td><input type="radio" name="mayor15" value="true">SI </input></td>
-                    <td><input type="radio" name="mayor15" value="false">NO </input></td>
+                    <td><input type="radio" name="inf_pre_firmam" value="true">SI </input></td>
+                    <td><input type="radio" name="inf_pre_firmam" value="false">NO </input></td>
                     </tr>
                     <tr>
                     <td>ISDEM </td>
-                    <td><input type="radio" name="porcenMujeres" value="true">SI </input></td>
-                    <td><input type="radio" name="porcenMujeres" value="false">NO </input></td>    
+                    <td><input type="radio" name="inf_pre_firmai" value="true">SI </input></td>
+                    <td><input type="radio" name="inf_pre_firmai" value="false">NO </input></td>    
                     </tr>
                     <tr>
                     <td>UEP</td>
-                    <td><input type="radio" name="conTerritorio" value="true">SI </input></td>
-                    <td><input type="radio" name="conTerritorio" value="false">NO </input></td> 
+                    <td><input type="radio" name="inf_pre_firmau" value="true">SI </input></td>
+                    <td><input type="radio" name="inf_pre_firmau" value="false">NO </input></td> 
                     </tr>
                 </table> 
             </td>

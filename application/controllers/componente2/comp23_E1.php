@@ -226,7 +226,7 @@ class Comp23_E1 extends CI_Controller {
 
         echo $jsonresponse;
     }
-    
+
     public function gestionParticipantes($tabla, $campo, $id_campo) {
         /* VARIABLES POST */
         /* LOS COMUNES */
@@ -961,32 +961,77 @@ class Comp23_E1 extends CI_Controller {
         $pro_pep_id = $datos[0]->id;
         $informacion['proyectoPep'] = $datos[0]->Proyecto;
         $informacion['pro_pep_id'] = $pro_pep_id;
-        /*INFORME PRELIMINAR ASPECTOS IMPORTANTES*/
+        /* INFORME PRELIMINAR ASPECTOS IMPORTANTES */
         $this->load->model('cumplimiento_minimo', 'cumm');
-        $cumplimientosMinimos=$this->cumm->obtenerCumplimientoMinimo();
-        $informacion['cumplimientosMinimos'] = $cumplimientosMinimos;
+        //CUMPLIMIENTOS MINIMOS
+        $cumplimientosMinimos = $this->cumm->obtenerCumplimientoMinimo();
         $this->load->model('proyectoPep/proyecto_pep', 'proPep');
         $resultado = $this->proPep->obtenerGrupoApoyo($pro_pep_id);
         $informacion['gru_apo_id'] = $resultado[0]['gru_apo_id'];
-        /*INFORMACIÓN DEL INFORME PRELIMINAR*/
+        /* INFORMACIÓN DEL INFORME PRELIMINAR */
         $this->load->model('etapa1-sub23/informe_preliminar', 'infPre');
         $resultado = $this->infPre->contarInfPrePorPep($pro_pep_id);
+        $this->load->model('etapa1-sub23/cumplimiento_informe', 'cumInf');
         if ($resultado == '0') {
             $this->infPre->agregarInfPre($pro_pep_id);
             $resultado = $this->infPre->obtenerInfPre($pro_pep_id);
             $this->load->model('proyectoPep/proyecto_pep', 'proPep');
             $this->proPep->actualizarIndices('inf_pre_id', $resultado[0]['inf_pre_id'], $pro_pep_id);
-        }else{
+            foreach ($cumplimientosMinimos as $aux)
+                $this->cumInf->insertarCumplimientoInform($resultado[0]['inf_pre_id'], $aux->cum_min_id);
+        } else {
             $resultado = $this->infPre->obtenerInfPre($pro_pep_id);
         }
         $informacion['inf_pre_id'] = $resultado[0]['inf_pre_id'];
         $informacion['inf_pre_observacion'] = $resultado[0]['inf_pre_observacion'];
         $informacion['inf_pre_ruta_archivo'] = $resultado[0]['inf_pre_ruta_archivo'];
-        /*FIN DE INFORME PRELIMINAR*/
+        $informacion['cumplimientosMinimos'] = $this->cumInf->obtenerLosCumplimientosInforme($resultado[0]['inf_pre_id']);
+        /* FIN DE INFORME PRELIMINAR */
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/etapa1/inforPreMunicipio_view', $informacion);
         $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function guardarInformePreliminar($inf_pre_id) {
+        /* VARIABLES POST */
+        $inf_pre_fecha_borrador = $this->input->post("inf_pre_fecha_borrador");
+        if ($inf_pre_fecha_borrador == '')
+            $inf_pre_fecha_borrador = null;
+        $inf_pre_fecha_observacion = $this->input->post("inf_pre_fecha_observacion");
+        if ($inf_pre_fecha_observacion == '')
+            $inf_pre_fecha_observacion = null;
+        $inf_pre_aceptacion = $this->input->post("inf_pre_aceptacion");
+        if ($inf_pre_aceptacion == '')
+            $inf_pre_aceptacion = null;
+        $inf_pre_firmau = $this->input->post("inf_pre_firmau");
+        if ($inf_pre_firmau == 0)
+            $inf_pre_firmau = null;
+        $inf_pre_firmai = $this->input->post("inf_pre_firmai");
+        if ($inf_pre_firmai == 0)
+            $inf_pre_firmai = null;
+        $inf_pre_firmam = $this->input->post("inf_pre_firmam");
+        if ($inf_pre_firmam == 0)
+            $inf_pre_firmam = null;
+        $inf_pre_observacion = $this->input->post("inf_pre_observacion");
+        $inf_pre_ruta_archivo = $this->input->post("inf_pre_ruta_archivo");
+        /* OBTENIENDO VALORES DE LOS CRITERIOS */
+        $this->load->model('cumplimiento_minimo');
+        $this->load->model('etapa1-sub23/cumplimiento_informe', 'cumInf');
+        $cumplimientos = $this->cumplimiento_minimo->obtenerCumplimientoMinimo();
+        foreach ($cumplimientos as $cumplimiento_minimo) {
+            if ($this->input->post("cum_" . $cumplimiento_minimo->cum_min_id) == '0')
+                $valor = null;
+            else
+                $valor = $this->input->post("cum_" . $cumplimiento_minimo->cum_min_id);
+            $this->cumInf->actualizarCumplimientoInform($valor, $inf_pre_id, $cumplimiento_minimo->cum_min_id);
+        }
+
+        /* ACTUALIZANDO ACUERDO MUNICIPAL */
+        $this->load->model('etapa1-sub23/informe_preliminar', 'infPre');
+        $this->infPre->actualizarInfPre($inf_pre_id, $inf_pre_firmam, $inf_pre_firmau, $inf_pre_firmai,$inf_pre_fecha_borrador, $inf_pre_fecha_borrador, $inf_pre_fecha_observacion, $inf_pre_observacion, $inf_pre_ruta_archivo);
+
+        redirect('componente2/comp23_E1/');
     }
 
     public function inventarioInformacion() {

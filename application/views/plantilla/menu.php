@@ -21,7 +21,7 @@
                     <li><a >Avance</a> </li>                   
                     <li><a >Mapas</a>
                         <ul >
-                            <li><a href="<?php echo base_url(); ?>/mapas/showmaps">Partidos Politicos de Gobierno</a></li>
+                            <li><a href="<?php echo base_url('mapas/showmaps'); ?>">Partidos Politicos de Gobierno</a></li>
                             <li><a>Proyectos</a></li>
                             <li><a>Mapa de Pobreza</a></li>
                         </ul>

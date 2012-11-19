@@ -24,7 +24,6 @@
         <script type="text/javascript" src="<?php echo base_url('resource/js/AjaxUpload.2.0.min.js'); ?>"></script>
         <script type="text/javascript" src="<?php echo base_url('resource/js/jquery.hoverIntent.minified.js'); ?>"></script>
         <script type="text/javascript" src="<?php echo base_url('resource/js/jquery.dcverticalmegamenu.1.1.js'); ?>"></script>
-        
         <script type="text/javascript" src="<?php echo base_url('resource/js/jquery-ui-tabs-rotate.js'); ?>"></script>
         <title><?php echo $titulo ?></title>
     </head>

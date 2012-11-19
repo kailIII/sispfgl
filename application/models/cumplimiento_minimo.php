@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Contiene los metodos para acceder a la tabla CRITERIO
+ * Contiene los metodos para acceder a la tabla CUMPLIMIENTO_MINIMO
  *
  * @author Ing. Karen Peñate
  */
