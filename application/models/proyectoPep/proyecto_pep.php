@@ -24,24 +24,40 @@ class Proyecto_pep extends CI_Model {
         );
         $this->db->insert($this->tabla, $datos);
     }
-    
+
     public function editarProyecto($pro_pep_id, $pro_pep_nombre) {
         $datos = array(
             'pro_pep_nombre' => $pro_pep_nombre
         );
-        $this->db->where('pro_pep_id',$pro_pep_id);
+        $this->db->where('pro_pep_id', $pro_pep_id);
         $this->db->update($this->tabla, $datos);
     }
 
-      function obtenerNombreProyectos($pro_pep_id) {
+    public function obtenerNombreProyectos($pro_pep_id) {
         $this->db->select('proyecto_pep.pro_pep_nombre, 
                            municipio.mun_nombre');
         $this->db->from('proyecto_pep');
         $this->db->join('municipio', ' municipio.mun_id = proyecto_pep.mun_id');
-        $this->db->where('proyecto_pep.pro_pep_id ',$pro_pep_id);
+        $this->db->where('proyecto_pep.pro_pep_id ', $pro_pep_id);
         $query = $this->db->get();
         return $query->result();
     }
+    
+    public function obtenerGrupoApoyo($pro_pep_id){
+        $this->db->select('gru_apo_id');
+        $this->db->where('pro_pep_id ', $pro_pep_id);
+        $query = $this->db->get($this->tabla);
+        return $query->result_array();
+    }
+    
+    public function actualizarIndices($campo,$valor,$pro_pep_id) {
+        $datos = array(
+            $campo => $valor
+        );
+        $this->db->where('pro_pep_id', $pro_pep_id);
+        $this->db->update($this->tabla, $datos);
+    }
+    
 }
 
 ?>

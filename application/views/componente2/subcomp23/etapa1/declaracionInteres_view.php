@@ -43,7 +43,7 @@
         });
         
         $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/comp23_E1/guardarDeclaracionInteres/'.$dec_int_id); ?>';
+            this.form.action='<?php echo base_url('componente2/comp23_E1/guardarDeclaracionInteres/' . $dec_int_id); ?>';
         });
         $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url(); ?>';
@@ -154,7 +154,7 @@
         /*  PARA SUBIR EL ARCHIVO  */
         var button = $('#btn_subir'), interval;
         new AjaxUpload('#btn_subir', {
-            action: '<?php echo base_url('componente2/comp23_E1/subirArchivo') . '/declaracion_interes/' . $dec_int_id.'/dec_int_id'; ?>',
+            action: '<?php echo base_url('componente2/comp23_E1/subirArchivo') . '/declaracion_interes/' . $dec_int_id . '/dec_int_id'; ?>',
             onSubmit : function(file , ext){
                 if (! (ext && /^(pdf|doc|docx)$/.test(ext))){
                     $('#extension').dialog('open');
@@ -202,14 +202,14 @@
     <h2 class="h2Titulos">Etapa 1: Preparacion de Condiciones Previas</h2>
     <h2 class="h2Titulos">Producto 2: Declaración de Interes de la Población de Participar en el Proceso</h2>
     <br>
-    <div style="position: relative;left: 70px;">
+    <div style="margin-left: 70px;">
         <table>
             <tr>
             <td><strong>Departamento:</strong></td>
             <td width="200px"><?php echo $departamento ?></td>
             <td><strong>Municipio:</strong></td>
             <td width="200px"><?php echo $municipio ?></td>
-            <td><strong>Fecha: </strong><input <?php if (isset($dec_int_fecha)) { ?> value='<?php echo date('d/m/y',  strtotime($dec_int_fecha));?>'<?php }?> id="dec_int_fecha" name="dec_int_fecha" type="text" size="10"/></td>
+            <td><strong>Fecha: </strong><input <?php if (isset($dec_int_fecha)) { ?> value='<?php echo date('d/m/y', strtotime($dec_int_fecha)); ?>'<?php } ?> id="dec_int_fecha" name="dec_int_fecha" type="text" size="10"/></td>
             <td></td>   
             </tr>
             <tr>
@@ -233,7 +233,7 @@
         <table style="position: relative;top: 15px;">
             <tr>
             <td>
-                <p><strong>Comentarios:</strong></br><textarea id="dec_int_comentario" name="dec_int_comentario" cols="48" rows="5"><?php if (isset($dec_int_comentario))  echo$dec_int_comentario; ?></textarea></p>
+                <p><strong>Comentarios:</strong></br><textarea id="dec_int_comentario" name="dec_int_comentario" cols="48" rows="5"><?php if (isset($dec_int_comentario)) echo$dec_int_comentario; ?></textarea></p>
             </td>
             <td style="width: 50px"></td>
             <td>
@@ -277,7 +277,7 @@
         </center>
 
     </div>
-<input id="dec_int_ruta_archivo" name="dec_int_ruta_archivo" <?php if(isset($dec_int_ruta_archivo) && $dec_int_ruta_archivo!='' ) {?>value="<?php echo $dec_int_ruta_archivo; ?>"<?php } ?> type="text" size="100" readonly="readonly" style="visibility: hidden"/>
+    <input id="dec_int_ruta_archivo" name="dec_int_ruta_archivo" <?php if (isset($dec_int_ruta_archivo) && $dec_int_ruta_archivo != '') { ?>value="<?php echo $dec_int_ruta_archivo; ?>"<?php } ?> type="text" size="100" readonly="readonly" style="visibility: hidden"/>
 </form>
 <div id="mensaje" class="mensaje" title="Aviso de la operación">
     <p>La acción fue realizada con satisfacción</p>

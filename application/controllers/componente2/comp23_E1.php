@@ -83,7 +83,6 @@ class Comp23_E1 extends CI_Controller {
         $datos = $this->usuario->obtenerDepartamento($username);
         $informacion['departamento'] = $datos[0]->Depto;
         $informacion['municipio'] = $datos[0]->Muni;
-        $pro_pep_id = $datos[0]->id;
         $informacion['proyectoPep'] = $datos[0]->Proyecto;
         /* FIN OBTENER DEPARTAMENTO */
         /* OBTENER DATOS DE LA REUNION  */
@@ -124,9 +123,14 @@ class Comp23_E1 extends CI_Controller {
             Planeación Estratégica Participativa';
 
         $this->load->model('etapa1-sub23/reunion', 'reunion');
-        $informacion['reuniones'] = $this->reunion->obtenerReuniones();
+        /* OBTENER DEPARTAMENTO Y MUNICIPIO DEL USUARIO */
+        $this->load->model('tank_auth/users', 'usuario');
+        $username = $this->tank_auth->get_username();
+        $datos = $this->usuario->obtenerDepartamento($username);
+        $pro_pep_id = $datos[0]->id;
+        $informacion['reuniones'] = $this->reunion->obtenerReuniones($pro_pep_id);
         $informacion['user_id'] = $this->tank_auth->get_user_id();
-        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['username'] = $username;
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
@@ -152,10 +156,10 @@ class Comp23_E1 extends CI_Controller {
 
         $i = 0;
         foreach ($participantes as $aux) {
-            if(isset($aux->ins_id))
+            if (isset($aux->ins_id))
                 $nombreInstitucion = $this->institucion->obtenerNombreInstitucion($aux->ins_id);
             else
-                $nombreInstitucion=' ';
+                $nombreInstitucion = ' ';
             $rows[$i]['id'] = $aux->par_id;
             $rows[$i]['cell'] = array($aux->par_id,
                 $aux->par_nombre,
@@ -186,6 +190,43 @@ class Comp23_E1 extends CI_Controller {
         echo $jsonresponse;
     }
 
+    public function cargarParticipantesIP($campo, $id_campo) {
+        $this->load->model('participante');
+        $this->load->model('institucion');
+        $participantes = $this->participante->obtenerParticipantes($campo, $id_campo);
+        $numfilas = count($participantes);
+
+        $i = 0;
+        foreach ($participantes as $aux) {
+            $rows[$i]['id'] = $aux->par_id;
+            $rows[$i]['cell'] = array($aux->par_id,
+                $aux->par_nombre,
+                $aux->par_apellido,
+                strtoupper($aux->par_sexo),
+                $aux->par_cargo
+            );
+            $i++;
+        }
+
+        if ($numfilas != 0) {
+            array_multisort($rows, SORT_ASC);
+        } else {
+            $rows[0]['id'] = 0;
+            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ');
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+    
     public function gestionParticipantes($tabla, $campo, $id_campo) {
         /* VARIABLES POST */
         /* LOS COMUNES */
@@ -195,41 +236,41 @@ class Comp23_E1 extends CI_Controller {
         $par_sexo = strtoupper($this->input->post("par_sexo"));
         $par_cargo = $this->input->post("par_cargo");
         $operacion = $this->input->post('oper');
-        /*LOS VARIABLES*/
+        /* LOS VARIABLES */
         $ins_id = $this->input->post("par_institucion");
-        if($ins_id==0)
-            $ins_id=null;
+        if ($ins_id == 0)
+            $ins_id = null;
         $par_tel = $this->input->post("par_tel");
-        if($par_tel==0)
-            $par_tel=null;
+        if ($par_tel == 0)
+            $par_tel = null;
         $par_dui = $this->input->post("par_dui");
-        if($par_dui==0)
-            $par_dui=null;
+        if ($par_dui == 0)
+            $par_dui = null;
         $par_edad = $this->input->post("par_edad");
-        if($par_edad==0)
-            $par_edad=null;
+        if ($par_edad == 0)
+            $par_edad = null;
         $par_proviene = $this->input->post("par_proviene");
-        if($par_proviene==0)
-            $par_proviene=null;
+        if ($par_proviene == 0)
+            $par_proviene = null;
         $par_nivel_esco = $this->input->post("par_nivel_esco");
-        if($par_nivel_esco=='0')
-            $par_nivel_esco=null;
-        
-        /*FIN DE VARIABLES*/
+        if ($par_nivel_esco == '0')
+            $par_nivel_esco = null;
+
+        /* FIN DE VARIABLES */
         $this->load->model('participante');
         switch ($operacion) {
             case 'add':
-                $this->participante->agregarParticipantes($campo, $id_campo, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo,$par_tel,$par_dui,$par_edad,$par_proviene,$par_nivel_esco);
+                $this->participante->agregarParticipantes($campo, $id_campo, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo, $par_tel, $par_dui, $par_edad, $par_proviene, $par_nivel_esco);
                 break;
             case 'edit':
-                $this->participante->editarParticipantes($par_id, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo,$par_tel,$par_dui, $par_edad, $par_proviene, $par_nivel_esco);
+                $this->participante->editarParticipantes($par_id, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo, $par_tel, $par_dui, $par_edad, $par_proviene, $par_nivel_esco);
                 break;
             case 'del':
                 $this->participante->eliminarParticipantes($par_id);
                 break;
         }
     }
-    
+
     public function cargarParticipantesAM($campo, $id_campo) {
         $this->load->model('participante');
         $participantes = $this->participante->obtenerParticipantes($campo, $id_campo);
@@ -266,7 +307,196 @@ class Comp23_E1 extends CI_Controller {
 
         echo $jsonresponse;
     }
-    
+
+    public function cargarParticipanteGA() {
+        $this->load->model('participante');
+        $id = $this->input->get("gru_apo_id");
+        $participantes = $this->participante->obtenerParticipantesGA($id);
+        $numfilas = count($participantes);
+
+        $i = 0;
+        foreach ($participantes as $aux) {
+            if (strcasecmp($aux->par_proviene, 'U'))
+                $proviene = 'Rural';
+            else
+                $proviene = 'Urbano';
+            $rows[$i]['id'] = $aux->par_id;
+            $rows[$i]['cell'] = array($aux->par_id,
+                $aux->par_dui,
+                $aux->par_nombre,
+                $aux->par_apellido,
+                strtoupper($aux->par_sexo),
+                $aux->par_edad,
+                $proviene,
+                $aux->par_cargo,
+                $aux->par_nivel_esco,
+                $aux->par_tel
+            );
+            $i++;
+        }
+
+        if ($numfilas != 0) {
+            array_multisort($rows, SORT_ASC);
+        } else {
+            $rows[0]['id'] = 0;
+            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+
+    public function cargarParticipanteGACap() {
+        $this->load->model('participante');
+        $this->load->model('etapa1-sub23/participante_capacitacion', 'parCap');
+        $id = $this->input->get("gru_apo_id");
+        $cap_id = $this->input->get("cap_id");
+        $participantes = $this->participante->obtenerParticipantesGA($id);
+        $numfilas = count($participantes);
+
+        $i = 0;
+        foreach ($participantes as $aux) {
+
+            $resultado = $this->parCap->obtenerParticipantesCap($cap_id, $aux->par_id);
+            $rows[$i]['id'] = $aux->par_id;
+            $rows[$i]['cell'] = array($aux->par_id,
+                $aux->par_dui,
+                $aux->par_nombre . ' ' . $aux->par_apellido,
+                strtoupper($aux->par_sexo),
+                $aux->par_cargo,
+                $aux->par_tel,
+                $resultado[0]['par_cap_participa']
+            );
+            $i++;
+        }
+
+        if ($numfilas != 0) {
+            array_multisort($rows, SORT_ASC);
+        } else {
+            $rows[0]['id'] = 0;
+            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ');
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+
+    public function cargarOtrosParticipanteGA($cap_id) {
+        $this->load->model('participante');
+        $participantes = $this->participante->obtenerParticipantes('par_otros', $cap_id);
+        $numfilas = count($participantes);
+
+        $i = 0;
+        foreach ($participantes as $aux) {
+            if (strcasecmp($aux->par_proviene, 'U'))
+                $proviene = 'Rural';
+            else
+                $proviene = 'Urbano';
+            $rows[$i]['id'] = $aux->par_id;
+            $rows[$i]['cell'] = array($aux->par_id,
+                $aux->par_dui,
+                $aux->par_nombre,
+                $aux->par_apellido,
+                strtoupper($aux->par_sexo),
+                $aux->par_edad,
+                $proviene,
+                $aux->par_cargo,
+                $aux->par_nivel_esco,
+                $aux->par_tel
+            );
+            $i++;
+        }
+
+        if ($numfilas != 0) {
+            array_multisort($rows, SORT_ASC);
+        } else {
+            $rows[0]['id'] = 0;
+            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+
+    public function gestionParticipantesCap($cap_id) {
+        /* VARIABLES POST */
+        $par_id = $this->input->post("id");
+        $operacion = $this->input->post('oper');
+        $par_cap_participa = $this->input->post("par_cap_participa");
+        $par_nombre = $this->input->post("par_nombre");
+        if ($par_nombre == '0')
+            $par_nombre = null;
+        $par_apellido = $this->input->post("par_apellido");
+        if ($par_apellido == '0')
+            $par_apellido = null;
+        $par_sexo = strtoupper($this->input->post("par_sexo"));
+        if ($par_sexo == '0')
+            $par_sexo = null;
+        $par_cargo = $this->input->post("par_cargo");
+        if ($par_cargo == '0')
+            $par_cargo = null;
+        $ins_id = $this->input->post("par_institucion");
+        if ($ins_id == '0')
+            $ins_id = null;
+        $par_tel = $this->input->post("par_tel");
+        if ($par_tel == '0')
+            $par_tel = null;
+        $par_dui = $this->input->post("par_dui");
+        if ($par_dui == '0')
+            $par_dui = null;
+        $par_edad = $this->input->post("par_edad");
+        if ($par_edad == '0')
+            $par_edad = null;
+        $par_proviene = $this->input->post("par_proviene");
+        if ($par_proviene == '0')
+            $par_proviene = null;
+        $par_nivel_esco = $this->input->post("par_nivel_esco");
+        if ($par_nivel_esco == '0')
+            $par_nivel_esco = null;
+        /* FIN DE VARIABLES */
+        $this->load->model('participante');
+        $this->load->model('etapa1-sub23/participante_capacitacion', 'parCap');
+        switch ($operacion) {
+            case 'add':
+                $this->participante->agregarParticipantes('par_otros', $cap_id, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo, $par_tel, $par_dui, $par_edad, $par_proviene, $par_nivel_esco);
+                $this->parCap->insertarOtrosParticipa($cap_id, $par_dui);
+                break;
+            case 'edit':
+                if ($par_cap_participa != 0)
+                    $this->participante->editarParticipantes($par_id, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo, $par_tel, $par_dui, $par_edad, $par_proviene, $par_nivel_esco);
+                else
+                    $this->parCap->actualizaParticipa($cap_id, $par_id, $par_cap_participa);
+                break;
+            case 'del':
+                $this->participante->eliminaParticipanteCapacitacion($par_id);
+                break;
+        }
+    }
+
     public function calcularTotalSexo($campo, $id_campo) {
         $this->load->model('participante');
         $totales = $this->participante->calcularSexo($campo, $id_campo);
@@ -276,6 +506,28 @@ class Comp23_E1 extends CI_Controller {
             $totales[0]->mujeres,
             $totales[0]->hombres,
             $totales[0]->mayor,
+        );
+
+        $datos = json_encode($rows);
+        $pages = floor(1 / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . 1 . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+
+    public function calcularTotalParticipantes($cap_id) {
+        $this->load->model('participante');
+        $totales = $this->participante->calcularTotalParticipantes($cap_id);
+
+        $rows[0]['id'] = 1;
+        $rows[0]['cell'] = array($totales[0]->total,
+            $totales[0]->mujeres,
+            $totales[0]->hombres
         );
 
         $datos = json_encode($rows);
@@ -327,6 +579,8 @@ class Comp23_E1 extends CI_Controller {
             $this->acumun->agregarAcuMun($pro_pep_id);
             $idAcuMun = $this->acumun->obtenerIdAcuMun($pro_pep_id);
             $acu_mun_id = $idAcuMun[0]['acu_mun_id'];
+            $this->load->model('proyectoPep/proyecto_pep', 'proPep');
+            $this->proPep->actualizarIndices('acu_mun_id', $acu_mun_id, $pro_pep_id);
             foreach ($contrapartidas as $contraAux)
                 $this->contraAcuerdo->insertarContrapartidaAcuerdo($acu_mun_id, $contraAux->con_id);
             foreach ($criterios as $criteAux)
@@ -420,7 +674,7 @@ class Comp23_E1 extends CI_Controller {
         $this->load->model('etapa1-sub23/declaracion_interes', 'decint');
 
         $numDecInt = $this->decint->contarDecIntPorPep($pro_pep_id);
-        if ($numDecIint == 0) {
+        if ($numDecInt == 0) {
             $this->decint->agregarDecInt($pro_pep_id);
             $idDecInt = $this->decint->obtenerIdDecInt($pro_pep_id);
             $dec_int_id = $idDecInt[0]['dec_int_id'];
@@ -458,7 +712,7 @@ class Comp23_E1 extends CI_Controller {
     }
 
     public function equipoApoyo() {
-         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
+        $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
 
         $informacion['user_id'] = $this->tank_auth->get_user_id();
@@ -478,10 +732,12 @@ class Comp23_E1 extends CI_Controller {
         $this->load->model('etapa1-sub23/grupo_apoyo', 'gruapo');
 
         $numGruApo = $this->gruapo->contarGruApoPorPep($pro_pep_id);
-          if ($numGruApo == 0) {
+        if ($numGruApo == 0) {
             $this->gruapo->agregarGruApo($pro_pep_id);
             $idGruApo = $this->gruapo->obtenerIdGruApo($pro_pep_id);
             $gru_apo_id = $idGruApo[0]['gru_apo_id'];
+            $this->load->model('proyectoPep/proyecto_pep', 'proPep');
+            $this->proPep->actualizarIndices('gru_apo_id', $gru_apo_id, $pro_pep_id);
         } else {
             $idGruApo = $this->gruapo->obtenerIdGruApo($pro_pep_id);
             $gru_apo_id = $idGruApo[0]['gru_apo_id'];
@@ -496,80 +752,152 @@ class Comp23_E1 extends CI_Controller {
         /* CARGA DE PLANTILLAS */
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
-        $this->load->view('componente2/subcomp23/etapa1/equipoApoyo_view',$informacion);
+        $this->load->view('componente2/subcomp23/etapa1/equipoApoyo_view', $informacion);
         $this->load->view('plantilla/footer');
     }
 
-    public function inforPreMunicipio() {
+    public function guardarEquipoApoyo($gru_apo_id) {
+        /* VARIABLES POST */
+        $gru_apo_fecha = $this->input->post('gru_apo_fecha');
+        $gru_apo_c3 = $this->input->post('gru_apo_c3');
+        $gru_apo_c4 = $this->input->post('gru_apo_c4');
+        $gru_apo_observacion = $this->input->post('gru_apo_observacion');
+        $gru_apo_lugar = $this->input->post('gru_apo_lugar');
 
-        $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
-            Planeación Estratégica Participativa';
+        if ($gru_apo_fecha == '')
+            $gru_apo_fecha = null;
 
-        $this->load->model('cumplimiento_minimo', 'cumm');
-        $datos['cumplimientosMinimos'] = $this->cumm->obtenerCumplimientoMinimo();
-        $this->load->model('participante');
-        $datos['participantes'] = $this->participante->obtenerParticipantes();
-        $informacion['user_id'] = $this->tank_auth->get_user_id();
-        $informacion['username'] = $this->tank_auth->get_username();
-        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
-        $this->load->view('plantilla/header', $informacion);
-        $this->load->view('plantilla/menu', $informacion);
-        $this->load->view('componente2/subcomp23/etapa1/inforPreMunicipio_view', $datos);
-        $this->load->view('plantilla/footer', $informacion);
+        /* ACTUALIZANDO DECLARACIÒN DE INTERÈS */
+        $this->load->model('etapa1-sub23/grupo_apoyo', 'gruApo');
+        $this->gruApo->actualizarGruApo($gru_apo_id, $gru_apo_fecha, $gru_apo_c3, $gru_apo_c4, $gru_apo_observacion, $gru_apo_lugar);
+
+        redirect('componente2/comp23_E1/');
     }
 
     public function capacitacionEquipoApoyo() {
-
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
-
+        $username = $this->tank_auth->get_username();
         $informacion['user_id'] = $this->tank_auth->get_user_id();
-        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['username'] = $username;
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        /* OBTENER DEPARTAMENTO Y MUNICIPIO DEL USUARIO */
+        $this->load->model('tank_auth/users', 'usuario');
+        $datos = $this->usuario->obtenerDepartamento($username);
+        $pro_pep_id = $datos[0]->id;
+        $this->load->model('etapa1-sub23/capacitacion');
+        $informacion['capacitaciones'] = $this->capacitacion->obtenerCapacitaciones($pro_pep_id);
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
-        $this->load->view('componente2/subcomp23/etapa1/capacitacionEquipoApoyo_view');
+        $this->load->view('componente2/subcomp23/etapa1/capacitacion_view', $informacion);
         $this->load->view('plantilla/footer', $informacion);
     }
 
-    public function inventarioInformacion() {
+    public function registrarCapacitacion() {
 
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
-
         $informacion['user_id'] = $this->tank_auth->get_user_id();
-        $informacion['username'] = $this->tank_auth->get_username();
-        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
-        $this->load->view('plantilla/header', $informacion);
-        $this->load->view('plantilla/menu', $informacion);
-        $this->load->view('componente2/subcomp23/etapa1/inventarioInformacion_view');
-        $this->load->view('plantilla/footer', $informacion);
-    }
-
-    //TENGO QUE QUITAR ESTE PARTICIPANTE
-    public function cargarParticipanteGA() {
+        $username = $this->tank_auth->get_username();
+        $informacion['username'] = $username;
+        $informacion['menu'] = $this->librerias->creaMenu($username);
+        /* OBTENER DEPARTAMENTO Y MUNICIPIO DEL USUARIO */
+        $this->load->model('tank_auth/users', 'usuario');
+        $datos = $this->usuario->obtenerDepartamento($username);
+        $informacion['departamento'] = $datos[0]->Depto;
+        $informacion['municipio'] = $datos[0]->Muni;
+        $pro_pep_id = $datos[0]->id;
+        $informacion['proyectoPep'] = $datos[0]->Proyecto;
+        $this->load->model('proyectoPep/proyecto_pep', 'proPep');
+        $resultado = $this->proPep->obtenerGrupoApoyo($pro_pep_id);
+        $gru_apo_id = $resultado[0]['gru_apo_id'];
+        $informacion['gru_apo_id'] = $gru_apo_id;
+        /* CREAR MODELO PARA CAPACITACIÓN */
+        $this->load->model('etapa1-sub23/capacitacion');
+        $this->capacitacion->agregarCapacitacion($pro_pep_id);
+        $resultado = $this->capacitacion->obtenerIdCapacitacion($pro_pep_id);
+        $cap_id = $resultado[0]['cap_id'];
+        /* OBTENER EL GRUPO LOCAL DE APOYO */
         $this->load->model('participante');
-        $id = $this->input->get("gru_apo_id");
-        $participantes = $this->participante->obtenerParticipantesGA($id);
-        $numfilas = count($participantes);
+        $this->load->model('etapa1-sub23/participante_capacitacion', 'parCap');
+        $participantes = $this->participante->obtenerParticipantesGA($gru_apo_id);
+        foreach ($participantes as $aux)
+            $resultado = $this->parCap->insertarParticipa($cap_id, $aux->par_id);
+        /**/
+        $informacion['cap_id'] = $cap_id;
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/subcomp23/etapa1/registrarCapacitacionEA_view', $informacion);
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function editarCapacitacion($cap_id) {
+        $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
+            Planeación Estratégica Participativa';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $username = $this->tank_auth->get_username();
+        $informacion['username'] = $username;
+        $informacion['menu'] = $this->librerias->creaMenu($username);
+        /* OBTENER DEPARTAMENTO Y MUNICIPIO DEL USUARIO */
+        $this->load->model('tank_auth/users', 'usuario');
+        $datos = $this->usuario->obtenerDepartamento($username);
+        $informacion['departamento'] = $datos[0]->Depto;
+        $informacion['municipio'] = $datos[0]->Muni;
+        $pro_pep_id = $datos[0]->id;
+        $informacion['proyectoPep'] = $datos[0]->Proyecto;
+        $this->load->model('proyectoPep/proyecto_pep', 'proPep');
+        $resultado = $this->proPep->obtenerGrupoApoyo($pro_pep_id);
+        $informacion['gru_apo_id'] = $resultado[0]['gru_apo_id'];
+
+        /* CREAR MODELO PARA CAPACITACIÒN */
+        $this->load->model('etapa1-sub23/capacitacion');
+        $resultado = $this->capacitacion->obtenerCapacitacion($cap_id);
+        $informacion['cap_id'] = $resultado[0]['cap_id'];
+        $informacion['cap_fecha'] = $resultado[0]['cap_fecha'];
+        $informacion['cap_tema'] = $resultado[0]['cap_tema'];
+        $informacion['cap_lugar'] = $resultado[0]['cap_lugar'];
+        $informacion['cap_observacion'] = $resultado[0]['cap_observacion'];
+        $informacion['cap_area'] = $resultado[0]['cap_area'];
+
+        /* FIN DE OBTENER DATOS DE CAPACITACIÒN */
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/subcomp23/etapa1/editarCapacitacionEA_view', $informacion);
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function guardarCapacitacion($cap_id) {
+        /* VARIABLES POST */
+        $cap_fecha = $this->input->post("cap_fecha");
+        $cap_lugar = $this->input->post("cap_lugar");
+        $cap_area = $this->input->post("cap_area");
+        $cap_observacion = $this->input->post("cap_observacion");
+        $cap_tema = $this->input->post("cap_tema");
+
+        $this->load->model('etapa1-sub23/capacitacion');
+        $this->capacitacion->editarCapacitacion($cap_fecha, $cap_lugar, $cap_id, $cap_area, $cap_observacion, $cap_tema);
+        redirect('componente2/comp23_E1/capacitacionEquipoApoyo');
+    }
+
+    public function cancelaCapacitacion($cap_id) {
+        $this->load->model('etapa1-sub23/capacitacion');
+        $this->capacitacion->eliminaCapacitacion($cap_id);
+        redirect('componente2/comp23_E1/capacitacionEquipoApoyo');
+    }
+
+    public function cargarFacilitadores($cap_id) {
+        $this->load->model('etapa1-sub23/facilitador');
+        $facilitadores = $this->facilitador->obtenerFacilitadores($cap_id);
+        $numfilas = count($facilitadores);
 
         $i = 0;
-        foreach ($participantes as $aux) {
-            if(strcasecmp($aux->par_proviene,'U'))
-                    $proviene='Rural';
-            else
-                $proviene='Urbano';
-            $rows[$i]['id'] = $aux->par_id;
-            $rows[$i]['cell'] = array($aux->par_id,
-                $aux->par_dui,
-                $aux->par_nombre,
-                $aux->par_apellido,
-                strtoupper($aux->par_sexo),
-                $aux->par_edad,
-                $proviene,
-                $aux->par_cargo,
-                $aux->par_nivel_esco,
-                $aux->par_tel
+        foreach ($facilitadores as $aux) {
+            $rows[$i]['id'] = $aux->fac_id;
+            $rows[$i]['cell'] = array($aux->fac_id,
+                $aux->fac_nombre,
+                $aux->fac_apellido,
+                $aux->fac_telefono,
+                $aux->fac_email
             );
             $i++;
         }
@@ -578,7 +906,7 @@ class Comp23_E1 extends CI_Controller {
             array_multisort($rows, SORT_ASC);
         } else {
             $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+            $rows[0]['cell'] = array(' ', ' ', ' ');
         }
 
         $datos = json_encode($rows);
@@ -591,6 +919,219 @@ class Comp23_E1 extends CI_Controller {
                "rows":' . $datos . '}';
 
         echo $jsonresponse;
+    }
+
+    public function gestionFacilitadores($cap_id) {
+        /* OBTENIENDO LAS VARIABLES */
+        $fac_id = $this->input->post("id");
+        $fac_nombre = $this->input->post("fac_nombre");
+        $fac_apellido = $this->input->post("fac_apellido");
+        $fac_email = $this->input->post("fac_email");
+        $fac_telefono = $this->input->post("fac_telefono");
+        $operacion = $this->input->post('oper');
+        /* FIN DE VARIABLES */
+        $this->load->model('etapa1-sub23/facilitador');
+        switch ($operacion) {
+            case 'add':
+                $this->facilitador->agregarFacilitador($fac_nombre, $fac_apellido, $fac_email, $cap_id, $fac_telefono);
+                break;
+            case 'edit':
+                $this->facilitador->modificarFacilitador($fac_id, $fac_nombre, $fac_apellido, $fac_email, $fac_telefono);
+                break;
+            case 'del':
+                $this->facilitador->eliminarFacilitador($fac_id);
+                break;
+        }
+    }
+
+    public function inforPreMunicipio() {
+        $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
+            Planeación Estratégica Participativa';
+
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $username = $this->tank_auth->get_username();
+        $informacion['username'] = $username;
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        /* OBTENER DEPARTAMENTO Y MUNICIPIO DEL USUARIO */
+        $this->load->model('tank_auth/users', 'usuario');
+        $datos = $this->usuario->obtenerDepartamento($username);
+        $informacion['departamento'] = $datos[0]->Depto;
+        $informacion['municipio'] = $datos[0]->Muni;
+        //PROYECTO PEP ASOCIADO
+        $pro_pep_id = $datos[0]->id;
+        $informacion['proyectoPep'] = $datos[0]->Proyecto;
+        $informacion['pro_pep_id'] = $pro_pep_id;
+        /*INFORME PRELIMINAR ASPECTOS IMPORTANTES*/
+        $this->load->model('cumplimiento_minimo', 'cumm');
+        $informacion['cumplimientosMinimos'] = $this->cumm->obtenerCumplimientoMinimo();
+        $this->load->model('proyectoPep/proyecto_pep', 'proPep');
+        $resultado = $this->proPep->obtenerGrupoApoyo($pro_pep_id);
+        $informacion['gru_apo_id'] = $resultado[0]['gru_apo_id'];
+        /*INFORMACIÓN DEL INFORME PRELIMINAR*/
+        $this->load->model('etapa1-sub23/informe_preliminar', 'infPre');
+        $resultado = $this->infPre->contarInfPrePorPep($pro_pep_id);
+        if ($resultado == '0') {
+            $this->infPre->agregarInfPre($pro_pep_id);
+            $resultado = $this->infPre->obtenerInfPre($pro_pep_id);
+            $this->load->model('proyectoPep/proyecto_pep', 'proPep');
+            $this->proPep->actualizarIndices('inf_pre_id', $resultado[0]['inf_pre_id'], $pro_pep_id);
+        }else
+            $resultado = $this->infPre->obtenerInfPre($pro_pep_id);
+        
+        $informacion['inf_pre_id'] = $resultado[0]['inf_pre_id'];
+        $informacion['inf_pre_observacion'] = $resultado[0]['inf_pre_observacion'];
+        $informacion['inf_pre_ruta_archivo'] = $resultado[0]['inf_pre_ruta_archivo'];
+        /*FIN DE INFORME PRELIMINAR*/
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/subcomp23/etapa1/inforPreMunicipio_view', $informacion);
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function inventarioInformacion() {
+
+        $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
+            Planeación Estratégica Participativa';
+
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $username = $this->tank_auth->get_username();
+        $informacion['username'] = $username;
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+
+        /* OBTENER DEPARTAMENTO Y MUNICIPIO DEL USUARIO */
+        $this->load->model('tank_auth/users', 'usuario');
+        $datos = $this->usuario->obtenerDepartamento($username);
+        $informacion['departamento'] = $datos[0]->Depto;
+        $informacion['municipio'] = $datos[0]->Muni;
+        //PROYECTO PEP ASOCIADO
+        $pro_pep_id = $datos[0]->id;
+        $informacion['proyectoPep'] = $datos[0]->Proyecto;
+        $informacion['pro_pep_id'] = $pro_pep_id;
+        /* VERIFICAR SI ESTA CREADO EL INVENTARIO DE INFORMACIÒN */
+        $this->load->model('etapa1-sub23/inventario_informacion', 'invInf');
+        $resultado = $this->invInf->contarInvInfPorPep($pro_pep_id);
+        if ($resultado == '0') {
+            $this->invInf->agregarInvInf($pro_pep_id);
+            $resultado = $this->invInf->obtenerInvInf($pro_pep_id);
+            $this->load->model('proyectoPep/proyecto_pep', 'proPep');
+            $this->proPep->actualizarIndices('inv_inf_id', $resultado[0]['inv_inf_id'], $pro_pep_id);
+        }else
+            $resultado = $this->invInf->obtenerInvInf($pro_pep_id);
+        $informacion['inv_inf_id'] = $resultado[0]['inv_inf_id'];
+        $informacion['inv_inf_observacion'] = $resultado[0]['inv_inf_observacion'];
+
+        /* FIN DE VERIFICACIÒN */
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/subcomp23/etapa1/inventarioInformacion_view', $informacion);
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function guardarInventarioInformacion($inv_inf_id) {
+        /* VARIABLES POST */
+        $inv_inf_observacion = $this->input->post("inv_inf_observacion");
+
+
+        $this->load->model('etapa1-sub23/inventario_informacion');
+        $this->inventario_informacion->editarInventarioInformacion($inv_inf_id, $inv_inf_observacion);
+        redirect(base_url());
+    }
+
+    public function cargarFuentes($inv_inf_id, $tipo) {
+        if (!strcasecmp($tipo, 'p')) {
+            $this->load->model('etapa1-sub23/fuente_primaria', 'fuePri');
+            $fuentes = $this->fuePri->obtenerFuePri($inv_inf_id);
+            $numfilas = count($fuentes);
+
+            $i = 0;
+            foreach ($fuentes as $aux) {
+                $rows[$i]['id'] = $aux->fue_pri_id;
+                $rows[$i]['cell'] = array($aux->fue_pri_id,
+                    $aux->fue_pri_nombre,
+                    $aux->fue_pri_institucion,
+                    $aux->fue_pri_cargo,
+                    $aux->fue_pri_telefono,
+                    $aux->fue_pri_tipo_info
+                );
+                $i++;
+            }
+        } else {
+            $this->load->model('etapa1-sub23/fuente_secundaria', 'fueSec');
+            $fuentes = $this->fueSec->obtenerFueSec($inv_inf_id);
+            $numfilas = count($fuentes);
+
+            $i = 0;
+            foreach ($fuentes as $aux) {
+                $rows[$i]['id'] = $aux->fue_sec_id;
+                $rows[$i]['cell'] = array($aux->fue_sec_id,
+                    $aux->fue_sec_nombre,
+                    $aux->fue_sec_fuente,
+                    $aux->fue_sec_disponible_en,
+                    $aux->fue_sec_anio
+                );
+                $i++;
+            }
+        }
+        if ($numfilas != 0) {
+            array_multisort($rows, SORT_ASC);
+        } else {
+            $rows[0]['id'] = 0;
+            if (!strcasecmp($tipo, 'p'))
+                $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ');
+            else
+                $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ');
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+
+    public function gestionarFuentes($inv_inf_id, $tipo) {
+        if (!strcasecmp($tipo, 'p')) {
+            $fue_pri_id = $this->input->post("id");
+            $fue_pri_nombre = $this->input->post("fue_pri_nombre");
+            $fue_pri_institucion = $this->input->post("fue_pri_institucion");
+            $fue_pri_cargo = $this->input->post("fue_pri_cargo");
+            $fue_pri_telefono = $this->input->post("fue_pri_telefono");
+            $fue_pri_tipo_info = $this->input->post("fue_pri_tipo_info");
+            $this->load->model('etapa1-sub23/fuente_primaria', 'fuePri');
+        } else {
+            $fue_sec_id = $this->input->post("id");
+            $fue_sec_nombre = $this->input->post("fue_sec_nombre");
+            $fue_sec_fuente = $this->input->post("fue_sec_fuente");
+            $fue_sec_disponible_en = $this->input->post("fue_sec_disponible_en");
+            $fue_sec_anio = $this->input->post("fue_sec_anio");
+            $this->load->model('etapa1-sub23/fuente_secundaria', 'fueSec');
+        }
+        $operacion = $this->input->post("oper");
+        switch ($operacion) {
+            case 'add':
+                if (!strcasecmp($tipo, 'p'))
+                    $this->fuePri->agregarReunion($fue_pri_nombre, $fue_pri_institucion, $fue_pri_cargo, $fue_pri_telefono, $fue_pri_tipo_info, $inv_inf_id);
+                else
+                    $this->fueSec->agregarFuenteSecundaria($fue_sec_nombre, $fue_sec_fuente, $fue_sec_disponible_en, $fue_sec_anio, $inv_inf_id);
+                break;
+            case 'edit':
+                if (!strcasecmp($tipo, 'p'))
+                    $this->fuePri->editarFuentePrimaria($fue_pri_id, $fue_pri_nombre, $fue_pri_institucion, $fue_pri_cargo, $fue_pri_telefono, $fue_pri_tipo_info);
+                else
+                    $this->fueSec->editarFuenteSecundaria($fue_sec_id, $fue_sec_nombre, $fue_sec_fuente, $fue_sec_disponible_en, $fue_sec_anio);
+                break;
+            case 'del':
+                if (!strcasecmp($tipo, 'p'))
+                    $this->fuePri->eliminarFuentePrimaria($fue_pri_id);
+                else
+                    $this->fueSec->eliminarFuenteSecundaria($fue_sec_id);
+                break;
+        }
     }
 
 }

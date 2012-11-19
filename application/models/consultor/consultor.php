@@ -31,18 +31,26 @@ class Consultor extends CI_Model {
                 "con_telefono" => $con_telefono,
                 "con_email" => $con_email,
                 "pro_pep_id" => $pro_pep_id,
-                "cons_id"=> $cons_id
+                "cons_id" => $cons_id
             );
         }
         $this->db->insert($this->tabla, $datos);
     }
-     public function editarUsuarioConsultor($con_email,$usuario) {
+
+    public function editarUsuarioConsultor($con_email, $usuario) {
         $datos = array(
             "user" => $usuario
         );
         $this->db->where('con_email', $con_email);
         $this->db->update($this->tabla, $datos);
     }
+    public function obtenerIdConsultor($pro_pep_id) {
+        $this->db->select('con_id');
+        $this->db->where('pro_pep_id', $pro_pep_id);
+        $consulta = $this->db->get($this->tabla);
+        return $consulta->result_array();
+    }
+    
 
 }
 

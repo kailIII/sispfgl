@@ -1,4 +1,5 @@
-    <center>
+    <div style="margin-left: 60px;">
+<center>
     <h1>Registro de Reuniones</h1>
 </center>
 <table align="center" >
@@ -32,5 +33,5 @@
         <?php } ?>
     </tbody>
 </table>
-
+</div>    
 

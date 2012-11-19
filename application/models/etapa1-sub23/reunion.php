@@ -27,7 +27,8 @@ class Reunion extends CI_Model {
         return $query->result_array();
     }
 
-    public function obtenerReuniones() {
+    public function obtenerReuniones($pro_pep_id) {
+        $this->db->where('pro_pep_id',$pro_pep_id);
         $consulta = $this->db->get($this->tabla);
         return $consulta->result();
     }

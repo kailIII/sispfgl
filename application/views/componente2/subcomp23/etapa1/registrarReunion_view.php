@@ -160,7 +160,7 @@
     <h2 class="h2Titulos">Producto 1: Acuerdo Municipal</h2>
     <h2 class="h2Titulos">Registro de Reuniones</h2>
     <br></br>
-    <div style="position: relative;left: 70px;">
+    <div style="margin-left: 150px;">
         <table>
             <tr>
             <td colspan="2"><strong>Departamento:</strong><?php echo $departamento ?></td>

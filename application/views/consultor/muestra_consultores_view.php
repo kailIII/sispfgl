@@ -22,7 +22,7 @@
                 }
             ],
             multiselect: false,
-            caption: "Proyectos PEP",
+            caption: "Consultores Asignados",
             rowNum:10,
             rowList:[10,20,30],
             loadonce:true,
@@ -60,6 +60,7 @@
         /*FIN DIALOGOS VALIDACION*/
     });
 </script>
+<div style="margin-left: 250px;">
 <center>
     <h1>Gestión de Consultores para Proyectos PEP</h1>
 
@@ -79,7 +80,7 @@
     <table id="consultores"></table>
     <div id="pager"></div>
 </center>
-
+</div>
 <div id="mensaje2" class="mensaje" title="Aviso">
     <p>Debe Seleccionar una consultora para editar</p>
 </div>
