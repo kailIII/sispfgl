@@ -61,6 +61,14 @@ class  componente3 extends CI_Controller {
         $this->load->view('plantilla/footer', $informacion);
     }
     
+    public function guardar_dsat() {
+
+        $datos_dsat = $_POST;
+		unset($datos_dsat["guardar"]);
+    }
+    
+    
+    
 
 }
 
