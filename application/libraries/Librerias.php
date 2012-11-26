@@ -16,7 +16,7 @@ class Librerias {
     }
 
     public function creaMenu($username) {
-        $this->ci->load->model('rol_opcion_sistema', 'ros');
+        $this->ci->load->model('admin/rol_opcion_sistema', 'ros');
         $this->ci->load->model('tank_auth/users', 'usuarios');
         $rolConsulta = $this->ci->usuarios->obtenerRol($username);
         $menu = '';

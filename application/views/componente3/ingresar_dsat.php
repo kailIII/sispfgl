@@ -15,16 +15,16 @@
 ?>
 
 <h1>3.1 Diagnosticos Sectoriales y Analisis Transversales</h1>
-<br>
+<br/>
 
 <?php echo form_open('index.php/componente3/componente3/guardar_dsat');?>
 
 	<div  style="float:left;height:120px;">
 		<label>Fecha de Actividad:</label>
-		<input readonly="readonly"  type="text" name="fecha_act" id="fecha_act"  size="10" align="left"><br><br>
+		<input readonly="readonly"  type="text" name="fecha_act" id="fecha_act"  size="10" align="left"><br/><br/>
 
 		<label>Nombre Actividad:&nbsp;</label>
-		<input type="text" name="nombre_act" id="nombre_act"  size="35" align="left"><br><br>
+		<input type="text" name="nombre_act" id="nombre_act"  size="35" align="left"><br/><br/>
 
 		<label>Departamento: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 		<?php echo form_dropdown_from_db('dep_id', "SELECT dep_id,dep_nombre FROM departamento");?>
@@ -35,7 +35,7 @@
 		
 	</div>
 	<div style="height:120px;">
-		<label>Sector:</label><br>
+		<label>Sector:</label><br/>
 		<table>
 			<tr>
 				<td>&nbsp;&nbsp;<input type="radio" name="sector_act" value="1" <?php echo set_radio('sector_act', '1'); ?> /></td>
@@ -64,7 +64,7 @@
 		</table>
 	</div>
 	
-		<br><br><br>
+		<br/><br/><br/>
 		<p align="center"><b>Asistentes</b></p>
 		
 		<label>Nombre Asistente: </label>
@@ -83,15 +83,15 @@
 		<label>Cargo: </label>
 		<input type="text" name="cargo_asis" id="cargo_asis"  size="10" align="left">
 		
-		<input type="button" value="Agregar" name="agregar" id="agregar" align="left"><br>
+		<input type="button" value="Agregar" name="agregar" id="agregar" align="left"><br/>
 		
 		<h2>Aqui va el qgrid</h2>
 		
-		<label>Observaciones: </label><br>
-		<textarea rows="5" cols="80" maxlength="500" name="observaciones" id="observaciones" align="center"></textarea><br><br>
+		<label>Observaciones: </label><br/>
+		<textarea rows="5" cols="80" maxlength="500" name="observaciones" id="observaciones" align="center"></textarea><br/><br/>
 		
 		<label>Archivo de Reporte: </label>
-		<input type="file" name="archivo_reporte" size="20" /><br><br>
+		<input type="file" name="archivo_reporte" size="20" /><br/><br/>
 		
 		<input type="submit" value="Guardar" align="right" name="guardar">
 		

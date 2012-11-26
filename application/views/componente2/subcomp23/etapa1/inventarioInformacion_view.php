@@ -2,7 +2,7 @@
     $(document).ready(function(){
         /*ZONA DE BOTONES*/
         $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/comp23_E1/guardarInventarioInformacion')."/".$inv_inf_id; ?>';
+            this.form.action='<?php echo base_url('componente2/comp23_E1/guardarInventarioInformacion') . "/" . $inv_inf_id; ?>';
         });
         $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url(); ?>';
@@ -50,8 +50,8 @@
                     editrules:{required:true} 
                 },
                 {name:'fue_pri_telefono',index:'fue_pri_telefono',width:80,editable:true,
-                    editoptions:{size:25,maxlength:9}, 
-                    formoptions:{ label: "Telefono",elmprefix:"(*)"},
+                    editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}, 
+                    formoptions:{ label: "Teléfono",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
                 {name:'fue_pri_tipo_info',index:'fue_pri_tipo_info',width:150,editable:true,
@@ -121,7 +121,7 @@
         var tabla2=$("#FuentesSecundarias");
         tabla2.jqGrid({
             url:'<?php echo base_url('componente2/comp23_E1/cargarFuentes') . '/' . $inv_inf_id . '/s' ?>',
-           editurl:'<?php echo base_url('componente2/comp23_E1/gestionarFuentes') . '/' . $inv_inf_id . '/s' ?>',
+            editurl:'<?php echo base_url('componente2/comp23_E1/gestionarFuentes') . '/' . $inv_inf_id . '/s' ?>',
             datatype:'json',
             altRows:true,
             height: "100%",
@@ -194,45 +194,43 @@
 </script>
 
 <form method="post">
-    <div style="margin-left: 250px;">
-        <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
-        <h2 class="h2Titulos">Producto 5: Inventario de Información</h2>
-        </br></br> </br>
-        <table>
-            <tr>
-            <td ><strong>Departamento:</strong></td>
-            <td><?php echo $departamento ?></td>
-            </tr>
-            <tr>
-            <td ><strong>Municipio:</strong></td>
-            <td ><?php echo $municipio ?></td>    
-            </tr>
-            <tr>
-            <td ><strong>Proyecto Pep:</strong></td>
-            <td ><?php echo $proyectoPep ?></td>    
-            </tr>
-        </table>
-        </br></br>
-        <table id="FuentesPrimaria"></table>
-        <div id="pagerFuentesPrimaria"></div>
-        <br></br>
-        <table id="FuentesSecundarias"></table>
-        <div id="pagerFuentesSecundarias"></div>
-        <table style="position: relative;left: 40px;top: 20px">
-            <tr>
-            <td>
-                <p>Observaciones y/o Recomendaciones:</br>
-                    <textarea name="inv_inf_observacion" cols="70" rows="5"><?php echo $inv_inf_observacion; ?></textarea></p>
-            </td>
-            </tr>
-        </table>
-        <center>
-            <div style="position:relative;width: 500px;top: 25px">
-                    <input type="submit" id="guardar" value="Guardar Inventario Información" />
-                    <input type="button" id="cancelar" value="Cancelar" />
-            </div>
-        </center>
-    </div>
+    <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
+    <h2 class="h2Titulos">Producto 5: Inventario de Información</h2>
+    <br/><br/> <br/>
+    <table>
+        <tr>
+        <td ><strong>Departamento:</strong></td>
+        <td><?php echo $departamento ?></td>
+        </tr>
+        <tr>
+        <td ><strong>Municipio:</strong></td>
+        <td ><?php echo $municipio ?></td>    
+        </tr>
+        <tr>
+        <td ><strong>Proyecto Pep:</strong></td>
+        <td ><?php echo $proyectoPep ?></td>    
+        </tr>
+    </table>
+    <br/><br/>
+    <table id="FuentesPrimaria"></table>
+    <div id="pagerFuentesPrimaria"></div>
+    <br/><br/>
+    <table id="FuentesSecundarias"></table>
+    <div id="pagerFuentesSecundarias"></div>
+    <table style="position: relative;left: 40px;top: 20px">
+        <tr>
+        <td>
+            <p>Observaciones y/o Recomendaciones:<br/>
+                <textarea name="inv_inf_observacion" cols="70" rows="5"><?php echo $inv_inf_observacion; ?></textarea></p>
+        </td>
+        </tr>
+    </table>
+    <center>
+        <div style="position:relative;width: 500px;top: 25px">
+            <input type="submit" id="guardar" value="Guardar Inventario Información" />
+            <input type="button" id="cancelar" value="Cancelar" />
+        </div>
+    </center>
 </form>
 <div id="mensaje" class="mensaje" title="Aviso de la operación">
     <p>La acción fue realizada con satisfacción</p>

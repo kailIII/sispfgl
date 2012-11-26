@@ -152,7 +152,7 @@
      
     });
 </script>
-<div style="margin-left: 200px;">
+
 <h2 class="demoHeaders" align="Center">Proyectos PEP</h2>
 <p>En las siguientes pestañas se muestran los proyectos PEP que actualmente estan 
     desarrollandose en el Programa de Fortalecimiento de Gobiernos Locales. Estos proyectos
@@ -165,24 +165,24 @@
             <option value='<?php echo $region->reg_id; ?>'><?php echo $region->reg_nombre; ?></option>
         <?php } ?>
     </select>
-    </br></br>
+    <br/><br/>
     <select id='selDepto'>
         <option value='0'>--Seleccione Departamento--</option>
     </select>
-    </br></br>
+    <br/><br/>
     <select id='selMun'>
         <option value='0'>--Seleccione Municipio--</option>
     </select>
 
-</br></br></br>
+<br/><br/><br/>
 <table id="proPep"></table>
 <div id="pager"></div>
-</br></br>
+<br/><br/>
     <input type="button" id="agregar" value="  Agregar  " />
     <input type="button" id="editar" value="   Editar   " />
 
 </center>
-</div>
+
 <!-- SON LOS MENSAJES DE VALIDACION DE CAMPOS -->
 <div id="mensaje" class="mensaje" title="Aviso de la operación">
     <p>La acción fue realizada con satisfacción</p>

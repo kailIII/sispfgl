@@ -15,12 +15,12 @@
 ?>
 
 <h1>3.1 Diagnosticos Sectoriales y Analisis Transversales</h1>
-<br>
+<br/>
 
 <?php echo form_open('componente3/guardar_dsat');?>
 
 	<label>Nombre Actividad: </label>
-	<input type="text" name="nombre_act_div" id="nombre_act_div"  size="45" align="left"><br><br>
+	<input type="text" name="nombre_act_div" id="nombre_act_div"  size="45" align="left"><br/><br/>
 	
 	<label>Fecha de Actividad:</label>
 	<input readonly="readonly"  type="text" name="fecha_act_div" id="fecha_act_div"  size="10" align="left">
@@ -31,7 +31,7 @@
 	</select>
 	
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Responsable: </label>
-	<input type="text" name="res_act_div" id="res_act_div"  size="22" align="left"><br><br>
+	<input type="text" name="res_act_div" id="res_act_div"  size="22" align="left"><br/><br/>
 	
 	<label>Departamento: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 	<?php echo form_dropdown_from_db('dep_id', "SELECT dep_id,dep_nombre FROM departamento");?>
@@ -41,13 +41,13 @@
 				//podrian presentarse solo los del depto seleccionado, por el momento estan todos?>
 	
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<input type="button" value="Agregar" name="agregar_div" id="agregar_div" align="left"><br>
+	<input type="button" value="Agregar" name="agregar_div" id="agregar_div" align="left"><br/>
 	
-	<br><br>
+	<br/><br/>
 	
 	<h2>Aqui va el qgrid</h2>
 	
-	<br>
+	<br/>
 		
 		<label>Nombre: </label>
 		<input type="text" name="nombre_div" id="nombre_div"  size="22" align="left">
@@ -65,7 +65,7 @@
 		<label>Cargo: </label>
 		<input type="text" name="cargo_div" id="cargo_div"  size="10" align="left">
 		
-		<input type="button" value="Agregar" name="agregar_persona" id="agregar_persona" align="left"><br>
+		<input type="button" value="Agregar" name="agregar_persona" id="agregar_persona" align="left"><br/>
 		
 		<h2>Aqui va el qgrid</h2>
 		

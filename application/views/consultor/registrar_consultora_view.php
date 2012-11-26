@@ -67,14 +67,14 @@ $this->form_validation->set_rules('cons_observaciones', 'Observaciones', '');
     
     <table align="center" style=" border-color: #2F589F; border-style: solid" >
         <tr>
-                <td colspan="5"></br></td>
+                <td colspan="5"><br/></td>
         </tr>
 	<tr>
                 <td align="center" colspan="5"  class="letraazul">Codigo: <?php echo $ultimoCodigo; ?></td>
 		
 	</tr>
         <tr>
-                <td colspan="5"></br></td>
+                <td colspan="5"><br/></td>
         </tr>
         <tr>
                 <td width="50px"></td>
@@ -133,7 +133,7 @@ $this->form_validation->set_rules('cons_observaciones', 'Observaciones', '');
                 <td width="50px"></td>
 	</tr>
         <tr>
-                <td colspan="5" align="center"></br>
+                <td colspan="5" align="center"><br/>
                     <input type="submit" value="Ingresar" id="ingresar" />
                     <input type="button" value="Regresar" id="regresar" />
                 </td>

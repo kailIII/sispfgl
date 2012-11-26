@@ -1,4 +1,4 @@
-    <div style="margin-left: 60px;">
+
 <center>
     <h1>Registro de Reuniones</h1>
 </center>
@@ -33,5 +33,5 @@
         <?php } ?>
     </tbody>
 </table>
-</div>    
+  
 

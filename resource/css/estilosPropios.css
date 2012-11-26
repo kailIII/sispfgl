@@ -1,4 +1,20 @@
 /* 
+    Documento  : demo-page
+    Creado el  : 08-09-2012
+    Autor      : Ing. Karen Peñate
+    Descripción:
+        Esta hoja de estilo permite delimitar el tamaño de los elementos para
+        el Jquery
+*/
+
+body{ font-size: 70%;font-family: "Tahoma", "Geneva", sans-serif; margin: 50px; background: url(../imagenes/background.png) repeat;}
+.demoHeaders { color: #2F589F; margin-top: 2em; }
+#dialog_link {padding: .4em 1em .4em 20px;text-decoration: none;position: relative;}
+#dialog_link span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
+ul#icons {margin: 0; padding: 0;}
+ul#icons li {margin: 2px; position: relative; padding: 4px 0; cursor: pointer; float: left;  list-style: none;}
+ul#icons span.ui-icon {float: left; margin: 0 4px;}
+/* 
     Documento  : estilosPropios
     Creado el  : 08-09-2012
     Autor      : Ing. Karen Peñate
@@ -16,14 +32,20 @@ div#divpagina{
 
 div#divcuerpo{
     position:absolute; 
-    width:1000px; 
+    width:960px; 
     left:50%; 
     right:50%; 
-    margin-left:-450px; 
+    margin-left:-470px; 
     background-color: #FFFFFF;
-    top:150px;
+    top:120px;
+    border-style: solid;
+    border-width: 3px;
+    border-radius:20px;
+    -moz-border-radius: 20px;
+    box-shadow: 15px 10px 15px grey;
+   -webkit-box-shadow: 15px 10px 15px grey;
+   -moz-box-shadow: 15px 10px 15px grey;
 }
-
 .letraazul{
     color:#2F589F;
     font-weight: bold;
@@ -66,8 +88,8 @@ div#divcuerpo{
 }
 /*quitar Borde a los texBox*/
 .bordeNo{
-   border-style: none;  
-   
+    border-style: none;  
+
 }
 .textD{
     text-align: right;
@@ -75,7 +97,7 @@ div#divcuerpo{
 
 label.error { 
     float: none; 
-   /* color: red; */
+    /* color: red; */
     padding-left: .5em; 
     vertical-align: center; 
 }
@@ -91,27 +113,33 @@ em {
 }
 
 #btn_subir {
-	width:32px;
-	height:32px;
-	background-image:url(../imagenes/upload.png);
-	cursor: pointer;
+    width:32px;
+    height:32px;
+    background-image:url(../imagenes/upload.png);
+    cursor: pointer;
 }
 
-.login1 A:link { color: white}
-.login1 A:visited { color: white}
-.login1 A:active { color: white}
+.login1 A:link { color: #0061aa}
+.login1 A:visited { color: #0061aa}
+.login1 A:active { color: #0061aa}
 .login1 A:hover { color: #78cee7}
 
 /*Estilo pie de pagina*/
-footer {
-  clear: both;
-  background: #205B96;
-  color: whiteSmoke;
-  font-size:11px;
-  font-family: 'Open Sans',arial,sans-serif;
-  border-top: 1px solid #0B2161;
-  padding: 10px 15px 10px 15px;
-  position: relative;
-  bottom:0%;
-  width:97.85%; 
+.footer {
+    clear: both;
+    background: #205B96;
+    color: whiteSmoke;
+    font-size:11px;
+    font-family: 'Open Sans',arial,sans-serif;
+    border-top: 1px solid #0B2161;
+    padding: 10px 15px 10px 15px;
+    position: relative;
+    bottom:0%;
+    border-radius: 0px 0px 15px 15px;
+    -moz-border-radius-bottomleft: 15px;
+    -moz-border-radius-bottomright: 15px;
+}
+
+img{
+    border-style: none;
 }

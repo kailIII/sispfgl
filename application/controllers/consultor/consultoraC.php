@@ -266,19 +266,19 @@ class ConsultoraC extends CI_Controller {
             $consultora = $this->input->post("selConsultoras");
             $this->load->model('consultor/consultor', 'con');
 
-            /* CREAR USUARIO EN BASE DE DATOS*/
+            /* CREAR USUARIO EN BASE DE DATOS */
             $this->con->insertarConsultor($con_nombre, $con_apellido, $con_telefono, $con_email, $proyectoPep, $consultora);
-            $posicion=strpos($con_email, '@');
-            $nuevoUsuario=  strtolower(substr($con_email, 0,$posicion));
-            $password= strtolower(substr($con_email, 0,$posicion));
+            $posicion = strpos($con_email, '@');
+            $nuevoUsuario = strtolower(substr($con_email, 0, $posicion));
+            $password = strtolower(substr($con_email, 0, $posicion));
             $email_activation = $this->config->item('email_activation', 'tank_auth');
-                      
-            $informacion2=$this->tank_auth->create_user($nuevoUsuario, $con_email, $password,3, $email_activation);
-            $informacion2['site_name']	= 'SIS-PFGL';
+
+            $informacion2 = $this->tank_auth->create_user($nuevoUsuario, $con_email, $password, 3, $email_activation);
+            $informacion2['site_name'] = 'SIS-PFGL';
             $informacion2['activation_period'] = (60 * 60 * 24 * 20) / 3600;
             $this->_enviar_correo('activate', $con_email, $informacion2);
-            $this->con->editarUsuarioConsultor($con_email,$nuevoUsuario);
-            $resultado=$this->con->obtenerIdConsultor($proyectoPep);
+            $this->con->editarUsuarioConsultor($con_email, $nuevoUsuario);
+            $resultado = $this->con->obtenerIdConsultor($proyectoPep);
             $this->load->model('proyectoPep/proyecto_pep', 'proPep');
             $this->proPep->actualizarIndices('inv_inf_id', $resultado[0]['inv_inf_id'], $proyectoPep);
             /* FIN DE CREAR USUARIO */
@@ -293,16 +293,65 @@ class ConsultoraC extends CI_Controller {
             $this->load->view('plantilla/footer', $informacion);
         }
     }
-    
-      function _enviar_correo($type, $email, &$informacion)
-	{
-		$this->load->library('email');
-		$this->email->from($this->config->item('webmaster_email', 'tank_auth'), $informacion['site_name']);
-		$this->email->to($email);
-		$this->email->subject('Bienvenido a '.$informacion['site_name']);
-		$this->email->message($this->load->view('email/'.$type.'-html', $informacion, TRUE));
-		$this->email->send();
-	}
+
+    public function editarConsultor($con_id) {
+
+        $informacion['titulo'] = 'Editar Consultor';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        /* OBTENER REGIONES DEL PAIS */
+        $this->load->model('pais/region');
+        $informacion['regiones'] = $this->region->obtenerRegiones();
+        /* REGIONES */
+        /* OBTENER CONSULTORAS */
+        $this->load->model('consultor/consultora', 'consul');
+        $informacion['consultoras'] = $this->consul->obtenerConsultora();
+        $this->load->model('consultor/consultor');
+        $respuesta = $this->consultor->obtenerConsultor($con_id);
+        $informacion['con_nombre'] = $respuesta[0]['con_nombre'];
+        $informacion['con_apellido'] = $respuesta[0]['con_apellido'];
+        $informacion['con_telefono'] = $respuesta[0]['con_telefono'];
+        $informacion['con_email'] = $respuesta[0]['con_email'];
+        $informacion['cons_id'] = $respuesta[0]['cons_id'];
+        $pro_pep_id = $respuesta[0]['pro_pep_id'];
+        $informacion['pro_pep_id'] = $pro_pep_id;
+        $respuesta = $this->consultor->obtenerIdDepartamento($pro_pep_id);
+        $informacion['reg_id'] = $respuesta[0]['Region'];
+        $informacion['dep_id'] = $respuesta[0]['Depto'];
+        $informacion['mun_id'] = $respuesta[0]['Muni'];
+        $informacion['pro_pep_nombre'] = $respuesta[0]['Nombre'];
+        $informacion['con_id'] = $con_id;
+        /* CONSULTORAS */
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('consultor/editar_consultor_view', $informacion);
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function guardarConsultor($con_id) {
+        $con_nombre = $this->input->post("con_nombre");
+        $con_apellido = $this->input->post("con_apellido");
+        $con_telefono = $this->input->post("con_telefono");
+        $con_email = $this->input->post("con_email");
+        $cons_id = $this->input->post("cons_id");
+         if ($cons_id == 0)
+            $cons_id = null;
+        
+        $this->load->model('consultor/consultor');
+        $this->consultor->editarConsultor($con_email, $con_nombre, $con_apellido, $con_telefono,$cons_id,$con_id);
+        
+        redirect(base_url('consultor/consultoraC/consultores'));
+    }
+
+    function _enviar_correo($type, $email, &$informacion) {
+        $this->load->library('email');
+        $this->email->from($this->config->item('webmaster_email', 'tank_auth'), $informacion['site_name']);
+        $this->email->to($email);
+        $this->email->subject('Bienvenido a ' . $informacion['site_name']);
+        $this->email->message($this->load->view('email/' . $type . '-html', $informacion, TRUE));
+        $this->email->send();
+    }
 
 }
 

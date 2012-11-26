@@ -201,82 +201,80 @@
 <form method="post">
     <h2 class="h2Titulos">Etapa 1: Preparacion de Condiciones Previas</h2>
     <h2 class="h2Titulos">Producto 2: Declaración de Interes de la Población de Participar en el Proceso</h2>
-    <br>
-    <div style="margin-left: 70px;">
-        <table>
-            <tr>
-            <td><strong>Departamento:</strong></td>
-            <td width="200px"><?php echo $departamento ?></td>
-            <td><strong>Municipio:</strong></td>
-            <td width="200px"><?php echo $municipio ?></td>
-            <td><strong>Fecha: </strong><input <?php if (isset($dec_int_fecha)) { ?> value='<?php echo date('d/m/y', strtotime($dec_int_fecha)); ?>'<?php } ?> id="dec_int_fecha" name="dec_int_fecha" type="text" size="10"/></td>
-            <td></td>   
-            </tr>
-            <tr>
-            <td colspan="6"><strong>Proyecto PEP:  </strong><?php echo $proyectoPep ?></td>
-            </tr>
-        </table>
+    <br/>
 
-        <p><strong>Lugar : </strong><input id="dec_int_lugar" name="dec_int_lugar" type="text" size="50"></input></p>
-        <br>
-        <table id="participantes"></table>
-        <div id="pagerParticipantes"></div>
+    <table>
+        <tr>
+        <td><strong>Departamento:</strong></td>
+        <td width="200px"><?php echo $departamento ?></td>
+        <td><strong>Municipio:</strong></td>
+        <td width="200px"><?php echo $municipio ?></td>
+        <td><strong>Fecha: </strong><input <?php if (isset($dec_int_fecha)) { ?> value='<?php echo date('d/m/y', strtotime($dec_int_fecha)); ?>'<?php } ?> id="dec_int_fecha" name="dec_int_fecha" type="text" size="10"/></td>
+        <td></td>   
+        </tr>
+        <tr>
+        <td colspan="6"><strong>Proyecto PEP:  </strong><?php echo $proyectoPep ?></td>
+        </tr>
+    </table>
 
-        <div style="position: relative;left: 275px;top: 5px">
-            <input type="button" id="agregar" value="  Agregar  " />
-            <input type="button" id="editar" value="   Editar   " />
-            <input type="button" id="eliminar" value="  Eliminar  " />
-        </div>
+    <p><strong>Lugar : </strong><input id="dec_int_lugar" name="dec_int_lugar" type="text" size="50"></input></p>
+    <br/>
+    <table id="participantes"></table>
+    <div id="pagerParticipantes"></div>
 
-        </br>
-
-        <table style="position: relative;top: 15px;">
-            <tr>
-            <td>
-                <p><strong>Comentarios:</strong></br><textarea id="dec_int_comentario" name="dec_int_comentario" cols="48" rows="5"><?php if (isset($dec_int_comentario)) echo$dec_int_comentario; ?></textarea></p>
-            </td>
-            <td style="width: 50px"></td>
-            <td>
-            <fieldset   style="border-color: #2F589F;height:85px;width:175px;position: relative;left: 50px;">
-                <legend align="center"><strong>Cantidad de Participantes</strong></legend>
-                <table>
-                    <tr>
-                    <td class="textD">Hombres: </td>
-                    <td><input class="bordeNo" id="hombres" type="text" size="5" readonly="readonly" /></td>
-                    </tr>
-                    <tr>
-                    <td class="textD">Mujeres: </td>
-                    <td><input class="bordeNo" id="mujeres" type="text" size="5" readonly="readonly" /></br></td>
-                    </tr>
-                    <tr>
-                    <td class="textD">Total: </td>
-                    <td><input class="bordeNo" id="total" type="text" size="5" readonly="readonly" /></td>
-                    </tr>
-                </table> 
-            </fieldset>
-            </td>
-            </tr>
-
-        </table>
-        <table>
-            <tr>
-            <td><div id="btn_subir"></div></td>
-            <td><input class="letraazul" type="text" id="vinieta" value="Subir Declaración de Interés" size="30" style="border: none"/></td>
-            </tr>
-            <tr>
-            <td><a <?php if (isset($dec_int_ruta_archivo) && $dec_int_ruta_archivo != '') { ?> href="<?php echo base_url() . $dec_int_ruta_archivo; ?>"<?php } ?>  id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
-            <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($dec_int_ruta_archivo) && $dec_int_ruta_archivo != '') { ?>value="Descargar Declaración de Interés"<?php } else { ?> value="No Hay Ninguna Declaración Para Descargar" <?php } ?>size="50" style="border: none"/></td>
-            </tr>
-        </table>
-        <center style="position: relative;top: 20px">
-
-            <p><input type="submit" id="guardar" value="Guardar Declaración" />
-                <input type="button" id="cancelar" value="Cancelar" />
-            </p>
-
-        </center>
-
+    <div style="position: relative;left: 275px;top: 5px">
+        <input type="button" id="agregar" value="  Agregar  " />
+        <input type="button" id="editar" value="   Editar   " />
+        <input type="button" id="eliminar" value="  Eliminar  " />
     </div>
+
+    <br/>
+
+    <table style="position: relative;top: 15px;">
+        <tr>
+        <td>
+            <p><strong>Comentarios:</strong><br/><textarea id="dec_int_comentario" name="dec_int_comentario" cols="48" rows="5"><?php if (isset($dec_int_comentario)) echo$dec_int_comentario; ?></textarea></p>
+        </td>
+        <td style="width: 50px"></td>
+        <td>
+        <fieldset   style="border-color: #2F589F;height:85px;width:175px;position: relative;left: 50px;">
+            <legend align="center"><strong>Cantidad de Participantes</strong></legend>
+            <table>
+                <tr>
+                <td class="textD">Hombres: </td>
+                <td><input class="bordeNo" id="hombres" type="text" size="5" readonly="readonly" /></td>
+                </tr>
+                <tr>
+                <td class="textD">Mujeres: </td>
+                <td><input class="bordeNo" id="mujeres" type="text" size="5" readonly="readonly" /><br/></td>
+                </tr>
+                <tr>
+                <td class="textD">Total: </td>
+                <td><input class="bordeNo" id="total" type="text" size="5" readonly="readonly" /></td>
+                </tr>
+            </table> 
+        </fieldset>
+        </td>
+        </tr>
+
+    </table>
+    <table>
+        <tr>
+        <td><div id="btn_subir"></div></td>
+        <td><input class="letraazul" type="text" id="vinieta" value="Subir Declaración de Interés" size="30" style="border: none"/></td>
+        </tr>
+        <tr>
+        <td><a <?php if (isset($dec_int_ruta_archivo) && $dec_int_ruta_archivo != '') { ?> href="<?php echo base_url() . $dec_int_ruta_archivo; ?>"<?php } ?>  id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
+        <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($dec_int_ruta_archivo) && $dec_int_ruta_archivo != '') { ?>value="Descargar Declaración de Interés"<?php } else { ?> value="No Hay Ninguna Declaración Para Descargar" <?php } ?>size="50" style="border: none"/></td>
+        </tr>
+    </table>
+    <center style="position: relative;top: 20px">
+
+        <p><input type="submit" id="guardar" value="Guardar Declaración" />
+            <input type="button" id="cancelar" value="Cancelar" />
+        </p>
+
+    </center>
     <input id="dec_int_ruta_archivo" name="dec_int_ruta_archivo" <?php if (isset($dec_int_ruta_archivo) && $dec_int_ruta_archivo != '') { ?>value="<?php echo $dec_int_ruta_archivo; ?>"<?php } ?> type="text" size="100" readonly="readonly" style="visibility: hidden"/>
 </form>
 <div id="mensaje" class="mensaje" title="Aviso de la operación">

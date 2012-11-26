@@ -160,7 +160,7 @@ class Auth extends CI_Controller
                         $informacion['username'] = $this->tank_auth->get_username();
                         $informacion['menu']=  $this->librerias->creaMenu($this->tank_auth->get_username());
                         /*LISTA DE ROLES*/
-                        $this->load->model('rol');
+                        $this->load->model('admin/rol');
                         $roles = $this->rol->obtenerRoles();
                         $select = array();
                         $select[0]="--Seleccione un rol --";

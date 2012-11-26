@@ -389,7 +389,7 @@ class Users extends CI_Model {
         $this->db->where('user_id', $user_id);
         $this->db->delete($this->profile_table_name);
     }
-
+/*AGREGADAS POR ING. KAREN PEÑATE PARA OBTENER INFORMACIÒN DEL USUARIO*/
     function obtenerRol($username) {
         $this->db->select('rol_id');
         $this->db->where('username', $username);

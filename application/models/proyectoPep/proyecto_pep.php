@@ -42,22 +42,22 @@ class Proyecto_pep extends CI_Model {
         $query = $this->db->get();
         return $query->result();
     }
-    
-    public function obtenerGrupoApoyo($pro_pep_id){
+
+    public function obtenerGrupoApoyo($pro_pep_id) {
         $this->db->select('gru_apo_id');
         $this->db->where('pro_pep_id ', $pro_pep_id);
         $query = $this->db->get($this->tabla);
         return $query->result_array();
     }
-    
-    public function actualizarIndices($campo,$valor,$pro_pep_id) {
+
+    public function actualizarIndices($campo, $valor, $pro_pep_id) {
         $datos = array(
             $campo => $valor
         );
         $this->db->where('pro_pep_id', $pro_pep_id);
         $this->db->update($this->tabla, $datos);
     }
-    
+
 }
 
 ?>

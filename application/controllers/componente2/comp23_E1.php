@@ -646,7 +646,7 @@ class Comp23_E1 extends CI_Controller {
         $this->load->model('etapa1-sub23/acuerdo_municipal', 'acuerdoMun');
         $this->acuerdoMun->actualizarAcuMun($acu_mun_id, $acu_mun_fecha, $acu_mun_p1, $acu_mun_p2, $acu_mun_observacion, $acu_mun_ruta_archivo);
 
-        redirect('componente2/comp23_E1/');
+        redirect('componente2/comp23_E1/acuerdoMunicipal');
     }
 
     public function subirArchivo($tabla, $campo_id, $campo) {
@@ -708,7 +708,7 @@ class Comp23_E1 extends CI_Controller {
         $this->load->model('etapa1-sub23/declaracion_interes', 'decInt');
         $this->decInt->actualizarDecInt($dec_int_id, $dec_int_fecha, $dec_int_lugar, $dec_int_comentario, $dec_int_ruta_archivo);
 
-        redirect('componente2/comp23_E1/');
+        redirect('componente2/comp23_E1/declaracionInteres');
     }
 
     public function equipoApoyo() {
@@ -771,7 +771,7 @@ class Comp23_E1 extends CI_Controller {
         $this->load->model('etapa1-sub23/grupo_apoyo', 'gruApo');
         $this->gruApo->actualizarGruApo($gru_apo_id, $gru_apo_fecha, $gru_apo_c3, $gru_apo_c4, $gru_apo_observacion, $gru_apo_lugar);
 
-        redirect('componente2/comp23_E1/');
+        redirect('componente2/comp23_E1/equipoApoyo');
     }
 
     public function capacitacionEquipoApoyo() {
@@ -983,6 +983,12 @@ class Comp23_E1 extends CI_Controller {
             $resultado = $this->infPre->obtenerInfPre($pro_pep_id);
         }
         $informacion['inf_pre_id'] = $resultado[0]['inf_pre_id'];
+        $informacion['inf_pre_firmam'] = $resultado[0]['inf_pre_firmam'];
+        $informacion['inf_pre_firmai'] = $resultado[0]['inf_pre_firmai'];
+        $informacion['inf_pre_firmau'] = $resultado[0]['inf_pre_firmau'];
+        $informacion['inf_pre_aceptacion'] = $resultado[0]['inf_pre_aceptacion'];
+        $informacion['inf_pre_fecha_borrador'] = $resultado[0]['inf_pre_fecha_borrador'];
+        $informacion['inf_pre_fecha_observacion'] = $resultado[0]['inf_pre_fecha_observacion'];
         $informacion['inf_pre_observacion'] = $resultado[0]['inf_pre_observacion'];
         $informacion['inf_pre_ruta_archivo'] = $resultado[0]['inf_pre_ruta_archivo'];
         $informacion['cumplimientosMinimos'] = $this->cumInf->obtenerLosCumplimientosInforme($resultado[0]['inf_pre_id']);
@@ -1004,14 +1010,16 @@ class Comp23_E1 extends CI_Controller {
         $inf_pre_aceptacion = $this->input->post("inf_pre_aceptacion");
         if ($inf_pre_aceptacion == '')
             $inf_pre_aceptacion = null;
+        else             
+            $inf_pre_aceptada='true';
         $inf_pre_firmau = $this->input->post("inf_pre_firmau");
-        if ($inf_pre_firmau == 0)
+        if ($inf_pre_firmau == '0')
             $inf_pre_firmau = null;
         $inf_pre_firmai = $this->input->post("inf_pre_firmai");
-        if ($inf_pre_firmai == 0)
+        if ($inf_pre_firmai == '0')
             $inf_pre_firmai = null;
         $inf_pre_firmam = $this->input->post("inf_pre_firmam");
-        if ($inf_pre_firmam == 0)
+        if ($inf_pre_firmam == '0')
             $inf_pre_firmam = null;
         $inf_pre_observacion = $this->input->post("inf_pre_observacion");
         $inf_pre_ruta_archivo = $this->input->post("inf_pre_ruta_archivo");
@@ -1029,9 +1037,9 @@ class Comp23_E1 extends CI_Controller {
 
         /* ACTUALIZANDO ACUERDO MUNICIPAL */
         $this->load->model('etapa1-sub23/informe_preliminar', 'infPre');
-        $this->infPre->actualizarInfPre($inf_pre_id, $inf_pre_firmam, $inf_pre_firmau, $inf_pre_firmai,$inf_pre_fecha_borrador, $inf_pre_fecha_borrador, $inf_pre_fecha_observacion, $inf_pre_observacion, $inf_pre_ruta_archivo);
+        $this->infPre->actualizarInfPre($inf_pre_id, $inf_pre_firmam, $inf_pre_firmau, $inf_pre_firmai, $inf_pre_fecha_borrador, $inf_pre_aceptacion, $inf_pre_fecha_observacion, $inf_pre_observacion, $inf_pre_ruta_archivo,$inf_pre_aceptada);
 
-        redirect('componente2/comp23_E1/');
+         redirect(base_url());
     }
 
     public function inventarioInformacion() {
@@ -1080,7 +1088,7 @@ class Comp23_E1 extends CI_Controller {
 
         $this->load->model('etapa1-sub23/inventario_informacion');
         $this->inventario_informacion->editarInventarioInformacion($inv_inf_id, $inv_inf_observacion);
-        redirect(base_url());
+        redirect('componente2/comp23_E1/inventarioInformacion');
     }
 
     public function cargarFuentes($inv_inf_id, $tipo) {

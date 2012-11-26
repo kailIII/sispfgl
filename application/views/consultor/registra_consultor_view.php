@@ -155,7 +155,7 @@ $cons_id = array(
 
     <table align="center" style=" border-color: #2F589F; border-style: solid" >
         <tr>
-        <td colspan="5"></br></td>
+        <td colspan="5"><br/></td>
         </tr>
 
         <tr>
@@ -206,24 +206,24 @@ $cons_id = array(
                     <option value='<?php echo $region->reg_id; ?>'><?php echo $region->reg_nombre; ?></option>
                 <?php } ?>
             </select>
-            </br></br>
+            <br/><br/>
             <select id='selDepto'>
                 <option value='0'>--Seleccione Departamento--</option>
             </select>
-            </br></br>
+            <br/><br/>
             <select id='selMun'>
                 <option value='0'>--Seleccione Municipio--</option>
             </select>
         </td>
         </tr>
         <tr>
-        <td colspan="5" align="center"></br>
+        <td colspan="5" align="center"><br/>
             <table id="proPep"></table>
             <div id="pager"></div>
         </td>
         </tr>
         <tr>
-        <td colspan="5" align="center"></br>
+        <td colspan="5" align="center"><br/>
             <input type="submit" value="Ingresar" id="ingresar" />
             <input type="button" value="Regresar" id="regresar" />
         </td>

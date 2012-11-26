@@ -45,8 +45,8 @@
             colModel:[
                 {name:'par_id',index:'par_id', width:40,editable:false,editoptions:{size:15} },
                 {name:'par_dui',index:'par_dui', width:100,editable:true,
-                    editoptions:{size:15,maxlength:10}, 
-                    editrules:{text:true},formoptions:{label: "Dui"}
+                    editoptions:{size:25,maxlength: 10,dataInit:function(el){$(el).mask("99999999-9",{placeholder:" "});}},
+                    formoptions:{label: "DUI"}
                 },
                 {name:'par_nombre',index:'par_nombre',width:100,editable:true,
                     editoptions:{size:25,maxlength:50}, 
@@ -86,7 +86,7 @@
                     editrules:{required:true} 
                 },
                 {name:'par_tel',index:'par_tel',width:100,editable:true,
-                    editoptions:{size:10,maxlength:9}, 
+                    editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}, 
                     formoptions:{ label: "Teléfono",elmprefix:"(*)"},
                     editrules:{required:true} 
                 }
@@ -226,8 +226,8 @@
                     editrules:{required:true} 
                 },
                 {name:'fac_telefono',index:'fac_telefono',width:100,editable:true,
-                    editoptions:{size:25,maxlength:9}, 
-                    formoptions:{label: "Telefono",elmprefix:"(*)"},
+                   editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}, 
+                    formoptions:{ label: "Teléfono",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
                 {name:'fac_email',index:'fac_email',width:200,editable:true,
@@ -279,7 +279,7 @@
 </script>
 
 <form method="post">
-     <div style="margin-left: 70px;">
+     
         <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
         <h2 class="h2Titulos">Producto 4: Capacitaciones Local de Apoyo</h2>
         <table>
@@ -301,22 +301,21 @@
             <td colspan="2"><strong>Proyecto PEP:  </strong><?php echo $proyectoPep ?></td>
             </tr>
         </table>
-        <br></br>
+        <br/><br/>
         <center>     
             <table id="Facilitadores"></table>
             <div id="pagerFacilitadores"></div>
         </center>  
-        <br></br>
+        <br/><br/>
         <table id="MiembroELA"></table>
         <div id="pagerMiembroEla"></div>
-        <br></br>
+        <br/><br/>
         <table id="participantes"></table>
         <div id="pagerParticipantes"></div>
-    </div>
     <table style="position: relative;left: 40px;top: 20px;border-color: 2px solid blue">
         <tr>
         <td>
-            <p>Observaciones y/o Recomendaciones:</br>
+            <p>Observaciones y/o Recomendaciones:<br/>
                 <textarea name="cap_observacion" cols="48" rows="5"></textarea></p>
 
         </td>
@@ -330,7 +329,7 @@
                 </tr>
                 <tr>
                 <td class="textD">Mujeres: </td>
-                <td><input class="bordeNo" id="mujeres" type="text" size="5" readonly="readonly" /></br></td>
+                <td><input class="bordeNo" id="mujeres" type="text" size="5" readonly="readonly" /><br/></td>
                 </tr>
                 <tr>
                 <td class="textD">Total: </td>

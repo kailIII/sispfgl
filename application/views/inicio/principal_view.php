@@ -31,9 +31,8 @@
     });
 </script>
 <!-- FIN PARA LA CSS DE LA FICHA -->
-<div style="margin-left: 250px;">
+<center>
     <div id="featured" >
-
         <ul class="ui-tabs-nav">
             <li class="ui-tabs-nav-item ui-tabs-selected" id="nav-fragment-1"><a href="#fragment-1"><img src="<?php echo base_url('resource/imagenes/comp01_peque.jpg'); ?>" alt="" /><span>Promoción de prestación de Servicios Desentralizados</span></a></li>
             <li class="ui-tabs-nav-item" id="nav-fragment-2"><a href="#fragment-2"><img src="<?php echo base_url('resource/imagenes/comp02_peque.jpg'); ?>" alt="" /><span>Fortalecimiento de Gobiernos Locales</span></a></li>
@@ -82,11 +81,12 @@
         </div>
 
     </div>
-    </br>
-    <hr size=3 width= 50% align=center/>
-    <hr size=2 width=80% noshade=“noshade” align= center />
-    
-    <h3  class="h2Titulos">Zonas de influencia</h3>
 
-    <a href="<?php echo base_url(); ?>mapas/showmaps"> <img src="<?php echo base_url('resource/imagenes/mapa.png'); ?>" Align="middle" /></a>
-</div>
+<br/>
+<hr size=3 width= 50% align=center/>
+<hr size=2 width=80% noshade=“noshade” align= center />
+
+<h3  class="h2Titulos">Zonas de influencia</h3>
+
+<a href="<?php echo base_url(); ?>mapas/showmaps"> <img src="<?php echo base_url('resource/imagenes/mapa.png'); ?>" Align="middle" /></a>
+</center>
