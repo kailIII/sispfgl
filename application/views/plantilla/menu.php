@@ -16,6 +16,7 @@
             </li>
             <li><a>Productos</a></li>
             <li><a>Contáctenos</a></li>
+            <li><a href="http://localhost/limesurvey">Encuestas</a></li>
             <?php
         }
         ?>

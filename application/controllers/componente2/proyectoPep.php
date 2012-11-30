@@ -154,6 +154,24 @@ class ProyectoPep extends CI_Controller {
 
         echo $jsonresponse;
     }
+     public function cuantosPepMuni($mun_id) {
+        $this->load->model('proyectoPep/proyecto_pep','proPep');
+        $totales = $this->proPep->cuantosPep($mun_id);
+
+        $rows[0]['id'] = 1;
+        $rows[0]['cell'] = array($totales);
+
+        $datos = json_encode($rows);
+        $pages = floor(1 / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . 1 . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
      
 }
 
