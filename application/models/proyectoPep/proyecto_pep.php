@@ -57,6 +57,13 @@ class Proyecto_pep extends CI_Model {
         $this->db->where('pro_pep_id', $pro_pep_id);
         $this->db->update($this->tabla, $datos);
     }
+    
+    public function cuantosPep($mun_id) {
+        $this->db->from($this->tabla);
+        $this->db->where('mun_id',$mun_id);
+        $consulta = $this->db->count_all_results();
+        return $consulta;
+    }
 
 }
 
