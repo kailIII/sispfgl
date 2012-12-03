@@ -176,9 +176,9 @@ class ConsultoraC extends CI_Controller {
         }
     }
 
-    public function consultores() {
+    public function coordinadores() {
 
-        $informacion['titulo'] = 'Gestión de Consultores de los Proyectos PEP';
+        $informacion['titulo'] = 'Gestión de Coordinadores de los Proyectos PEP';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
@@ -228,7 +228,7 @@ class ConsultoraC extends CI_Controller {
         echo $jsonresponse;
     }
 
-    public function registrarConsultor() {
+    public function registrarCoordinador() {
 
         /* REGLAS DE VALIDACIÒN */
         $this->form_validation->set_rules('con_nombre', 'Nombre del Consultor', 'required|max_length[75]');
@@ -240,7 +240,7 @@ class ConsultoraC extends CI_Controller {
 
         if ($this->form_validation->run() == FALSE) {
 
-            $informacion['titulo'] = 'Registrar Consultoras';
+            $informacion['titulo'] = 'Registrar Coordinador';
             $informacion['user_id'] = $this->tank_auth->get_user_id();
             $informacion['username'] = $this->tank_auth->get_username();
             $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
@@ -282,7 +282,7 @@ class ConsultoraC extends CI_Controller {
             $this->load->model('proyectoPep/proyecto_pep', 'proPep');
             $this->proPep->actualizarIndices('inv_inf_id', $resultado[0]['inv_inf_id'], $proyectoPep);
             /* FIN DE CREAR USUARIO */
-            $informacion['titulo'] = 'Gestión de Consultores y Consultores de los Proyectos PEP';
+            $informacion['titulo'] = 'Gestión de Consultoras y Coordinadores de los Proyectos PEP';
             $informacion['user_id'] = $this->tank_auth->get_user_id();
             $informacion['username'] = $this->tank_auth->get_username();
             $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
@@ -294,9 +294,9 @@ class ConsultoraC extends CI_Controller {
         }
     }
 
-    public function editarConsultor($con_id) {
+    public function editarCoordinador($con_id) {
 
-        $informacion['titulo'] = 'Editar Consultor';
+        $informacion['titulo'] = 'Editar Coordinador';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
@@ -329,7 +329,7 @@ class ConsultoraC extends CI_Controller {
         $this->load->view('plantilla/footer', $informacion);
     }
 
-    public function guardarConsultor($con_id) {
+    public function guardarCoordinador($con_id) {
         $con_nombre = $this->input->post("con_nombre");
         $con_apellido = $this->input->post("con_apellido");
         $con_telefono = $this->input->post("con_telefono");
@@ -341,7 +341,7 @@ class ConsultoraC extends CI_Controller {
         $this->load->model('consultor/consultor');
         $this->consultor->editarConsultor($con_email, $con_nombre, $con_apellido, $con_telefono,$cons_id,$con_id);
         
-        redirect(base_url('consultor/consultoraC/consultores'));
+        redirect(base_url('consultor/consultoraC/coordinadores'));
     }
 
     function _enviar_correo($type, $email, &$informacion) {

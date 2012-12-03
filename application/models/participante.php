@@ -15,6 +15,12 @@ class Participante extends CI_Model {
         $consulta = $this->db->get($this->tabla);
         return $consulta->result();
     }
+    
+    public function obtenerParticipantesGG($gru_ges_id) {
+        $this->db->where('gru_ges_id', $gru_ges_id);
+        $consulta = $this->db->get($this->tabla);
+        return $consulta->result();
+    }
 
     public function obtenerParticipantes($campo, $id_campo) {
         $this->db->where($campo, $id_campo);
@@ -51,6 +57,46 @@ class Participante extends CI_Model {
             'par_edad' => $par_edad,
             'par_proviene' => $par_proviene,
             'par_nivel_esco' => $par_nivel_esco
+        );
+        $this->db->where('par_id', $par_id);
+        $this->db->update($this->tabla, $datos);
+    }
+    
+        public function agregarParticipantes2($campo, $id_campo, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo, $par_tel, $par_dui, $par_edad, $par_proviene, $par_nivel_esco,$par_direccion,$par_email,$par_tipo) {
+        $datos = array(
+            'par_nombre' => $par_nombre,
+            'par_apellido' => $par_apellido,
+            'par_sexo' => $par_sexo,
+            'ins_id' => $ins_id,
+            'par_cargo' => $par_cargo,
+            'par_tel' => $par_tel,
+            'par_dui' => $par_dui,
+            'par_edad' => $par_edad,
+            'par_proviene' => $par_proviene,
+            'par_nivel_esco' => $par_nivel_esco,
+            'par_direccion'=>$par_direccion,
+            'par_email'=>$par_email,
+            'par_tipo'=>$par_tipo,
+            $campo => $id_campo
+        );
+        $this->db->insert($this->tabla, $datos);
+    }
+
+    public function editarParticipantes2($par_id, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo, $par_tel, $par_dui, $par_edad, $par_proviene, $par_nivel_esco,$par_direccion,$par_email,$par_tipo) {
+        $datos = array(
+            'par_nombre' => $par_nombre,
+            'par_apellido' => $par_apellido,
+            'par_sexo' => $par_sexo,
+            'ins_id' => $ins_id,
+            'par_cargo' => $par_cargo,
+            'par_tel' => $par_tel,
+            'par_dui' => $par_dui,
+            'par_edad' => $par_edad,
+            'par_proviene' => $par_proviene,
+            'par_nivel_esco' => $par_nivel_esco,
+            'par_direccion'=>$par_direccion,
+            'par_email'=>$par_email,
+            'par_tipo'=>$par_tipo
         );
         $this->db->where('par_id', $par_id);
         $this->db->update($this->tabla, $datos);

@@ -41,7 +41,7 @@ $cons_id = array(
 <script type="text/javascript">        
     $(document).ready(function(){  
         $('#ingresar').button().click(function(){
-            if($('#selDepto').val()!='0' && $('#selRegion').val()!='0'&& $('#selMun').val()!='0'){
+            if($('#selDepto').val()!='0' && $('#selRegion').val()!='0'&& $('#selMun').val()!='0'&& $('#selConsultoras').val()!='0'){
                 var gr = $('#proPep').jqGrid('getGridParam','selrow');
                 if( gr != null ){
                     $('#proyectoPep').val(gr);
@@ -61,7 +61,7 @@ $cons_id = array(
         
         
         $("#regresar").button().click(function() {
-            document.location.href='<?php echo base_url('consultor/consultoraC/consultores'); ?>';
+            document.location.href='<?php echo base_url('consultor/consultoraC/coordinadores'); ?>';
         });
         
         /*CARGAR DEPARTAMENTOS*/
@@ -134,6 +134,7 @@ $cons_id = array(
             ).trigger('reloadGrid');}
         }
     ).hideCol(['id']);
+     $("#con_telefono").mask("9999-9999");
         
         /*DIALOGOS DE VALIDACION*/
         $('.mensaje').dialog({
@@ -149,9 +150,9 @@ $cons_id = array(
     
     });
 </script>
-<h2 class="demoHeaders" align="Center">Registrar Consultor</h2>
+<h2 class="demoHeaders" align="Center">Registrar Coordinador</h2>
 <center>
-    <?php echo form_open(base_url('consultor/consultoraC/registrarConsultor')); ?>
+    <?php echo form_open(base_url('consultor/consultoraC/registrarCoordinador')); ?>
 
     <table align="center" style=" border-color: #2F589F; border-style: solid" >
         <tr>
@@ -160,14 +161,14 @@ $cons_id = array(
 
         <tr>
         <td width="50px"></td>
-        <td class="letraazul">Nombres del Consultor</td>
+        <td class="letraazul">Nombres del Coordinador</td>
         <td><?php echo form_input($con_nombre); ?></td>
         <td class="error"><?php echo form_error('con_nombre'); ?></td>
         <td width="50px"></td>
         </tr>
         <tr>
         <td width="50px"></td>
-        <td class="letraazul">Apellidos del Consultor</td>
+        <td class="letraazul">Apellidos del Coordinador</td>
         <td><?php echo form_input($con_apellido); ?></td>
         <td class="error"><?php echo form_error('con_apellido'); ?></td>
         <td width="50px"></td>
@@ -188,7 +189,7 @@ $cons_id = array(
         </tr>
         <tr>
         <td width="50px"></td>
-        <td class="letraazul">Consultora (Si pertenece a uno)</td>
+        <td class="letraazul">Consultora</td>
         <td><select id='selConsultoras'>
                 <option value='0'>--Seleccione la Consultora--</option>
                 <?php foreach ($consultoras as $consultora) { ?>
@@ -235,10 +236,10 @@ $cons_id = array(
 <?php echo form_input($cons_id); ?>
 </form>
 <div id="mensaje2" class="mensaje" title="Aviso">
-    <p>Debe Seleccionar un Proyecto PEP para el consultor</p>
+    <p>Debe Seleccionar un Proyecto PEP para el coordinador</p>
 </div>
 <div id="mensaje3" class="mensaje" title="Recuerde:">
-    <p>Debe Seleccionar la Region, el Departamento y el Municipio 
-        para poder seleccionar el Proyecto PEP al consultor
+    <p>Debe Seleccionar la Consultora, la Region, el Departamento y el Municipio 
+        para poder seleccionar el Proyecto PEP al Coordinador
     </p>
 </div>

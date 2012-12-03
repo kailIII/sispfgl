@@ -98,7 +98,7 @@
                 {name:'par_edad',index:'par_edad',width:80,editable:true,
                     editoptions:{size:25,maxlength:30}, 
                     formoptions:{ label: "Edad",elmprefix:"(*)"},
-                    editrules:{required:true} 
+                    editrules:{required:true,minvalue:12,number:true} 
                 },
                 {name:'par_proviene',index:'par_proviene',width:80,edittype:"select",
                     editable:true,

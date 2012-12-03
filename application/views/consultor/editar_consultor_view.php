@@ -1,11 +1,18 @@
 <script type="text/javascript">        
-    $(document).ready(function(){  
-        $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('consultor/consultoraC/guardarConsultor').'/'.$con_id; ?>';
+    $(document).ready(function(){
+        
+        $("#guardar").button().click(function(){
+            if($('#selConsultoras').val()!='0'){
+                $('#cons_id').val($('#selConsultoras').val());
+                this.form.action='<?php echo base_url('consultor/consultoraC/guardarCoordinador') . '/' . $con_id; ?>';
+            }else{
+                $('#mensaje3').dialog('open'); 
+                return false;
+            }
         });
        
         $("#regresar").button().click(function() {
-            document.location.href='<?php echo base_url('consultor/consultoraC/consultores'); ?>';
+            document.location.href='<?php echo base_url('consultor/consultoraC/coordinadores'); ?>';
         });
         $("#formConsultor").validate({
             rules: {
@@ -17,6 +24,16 @@
         });
         
         $("#con_telefono").mask("9999-9999");
+        /*DIALOGOS DE VALIDACION*/
+        $('.mensaje').dialog({
+            autoOpen: false,
+            width: 300,
+            buttons: {
+                "Ok": function() {
+                    $(this).dialog("close");
+                }
+            }
+        });
         /*FIN DIALOGOS VALIDACION*/
     
     });
@@ -52,7 +69,7 @@
             </tr>
             <tr>
             <td width="50px"></td>
-            <td class="letraazul">Consultora (Si pertenece a uno)</td>
+            <td class="letraazul">Consultora:</td>
             <td><select id='selConsultoras'>
                     <option value='0'>--Seleccione la Consultora--</option>
                     <?php
@@ -60,15 +77,16 @@
                         if ($consultora->cons_id == $cons_id) {
                             ?>
                             <option selected=selected value='<?php echo $consultora->cons_id; ?>'><?php echo $consultora->cons_nombre; ?></option>
-                            <?php } else {
+                        <?php } else {
                             ?>
                             <option value='<?php echo $consultora->cons_id; ?>'><?php echo $consultora->cons_nombre; ?></option>
-                        <?php }
+                            <?php
+                        }
                     }
                     ?>
                 </select></td>
             <td></td>
-           </tr>
+            </tr>
             <tr>
             <td width="50px"></td>
             <td class="letraazul">Región</td>
@@ -101,3 +119,7 @@
 <input id="pro_pep_id" name="pro_pep_id" value="<?php echo $pro_pep_id ?>"  style="visibility: hidden"/>
 <input id="cons_id" name="cons_id" value="<?php echo $cons_id ?>"  style="visibility: hidden"/>
 </form>
+<div id="mensaje3" class="mensaje" title="Recuerde:">
+    <p>Debe Seleccionar la Consultora del Coordinador
+    </p>
+</div>

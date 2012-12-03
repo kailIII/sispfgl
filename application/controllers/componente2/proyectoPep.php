@@ -42,8 +42,8 @@ class ProyectoPep extends CI_Controller {
         foreach ($proyectosPep as $aux) {
             $rows[$i]['id'] = $aux->pro_pep_id;
             $rows[$i]['cell'] = array($aux->pro_pep_id,
-                $aux->pro_pep_nombre,
-                'NO', 'NO', 'NO', 'NO'
+                $aux->pro_pep_nombre/*,
+                'NO', 'NO', 'NO', 'NO'*/
             );
             $i++;
         }
@@ -52,7 +52,7 @@ class ProyectoPep extends CI_Controller {
             array_multisort($rows, SORT_ASC);
         } else {
             $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ');
+            $rows[0]['cell'] = array(' ', ' ');
         }
 
         $datos = json_encode($rows);

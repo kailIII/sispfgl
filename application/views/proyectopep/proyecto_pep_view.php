@@ -45,10 +45,7 @@
                 datatype:'json'
             }).trigger("reloadGrid"); 
         });
-        
-        $("#agregar").button();
-        $("#editar").button();
-                
+                        
         var tabla=$("#proPep");
         tabla.jqGrid({
             url:'<?php echo base_url('componente2/proyectoPep/cargarProyectosPorMunicipio') ?>',
@@ -56,14 +53,14 @@
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['pro_pep_id','Nombre Proyecto','Etapa I','Etapa II','Etapa III','Etapa IV'],
+            colNames:['pro_pep_id','Nombre Proyecto'],//,'Etapa I','Etapa II','Etapa III','Etapa IV'],
             colModel:[
                 {name:'id',index:'id', editable:false,editoptions:{size:15} },
                 {name:'pro_pep_nombre',index:'pro_pep_nombre',editable:true,
                     edittype:"textarea",editoptions:{rows:"4",cols:"50"},width:'450', 
                     formoptions:{label: "Nombre",elmprefix:"(*)"},
                     editrules:{required:true} 
-                },
+                }/*,
                 {name:'etapa1',index:'etapa1',editable:false,
                     edittype:"checkbox",width:60,
                     editoptions: { value:"SI:NO" }
@@ -79,7 +76,7 @@
                 {name:'etapa4',index:'etapa4',editable:false,
                     edittype:"checkbox",width:60,
                     editoptions: { value:"SI:NO"}
-                }
+                }*/
             ],
             multiselect: false,
             caption: "Proyectos PEP",
@@ -87,7 +84,25 @@
             rowList:[10,20,30],
             loadonce:true,
             pager: jQuery('#pager'),
-            viewrecords: true     
+            viewrecords: true,
+            gridComplete: 
+                function(){
+                $.getJSON('<?php echo base_url('componente2/proyectoPep/cuantosPepMuni') . '/'; ?>'+$('select.#selMun').val(),
+                function(data) {
+                    $.each(data, function(key, val) {
+                        if(key=='rows'){
+                            $.each(val, function(id, registro){
+                                if(registro['cell'][0]!=0){
+                                    $('#agregar').hide();;
+                                }
+                                else{
+                                    $('#agregar').show();
+                                }
+                            });                    
+                        }
+                    });
+                }); 
+            }
         }).jqGrid('navGrid','#pager',
         {edit:false,add:false,del:false,search:false,refresh:false,
             beforeRefresh: function() {
@@ -102,7 +117,7 @@
         }
                                 
         //AGREGAR
-        $("#agregar").click(function(){
+        $("#agregar").button().click(function(){
             if($('#selDepto').val()!='0' && $('#selRegion').val()!='0'&& $('#selMun').val()!='0'){
                 tabla.jqGrid('editGridRow',"new",
                 {closeAfterAdd:true,addCaption: "Agregar ",width:'500',
@@ -120,8 +135,7 @@
         });
 
         //EDITAR
-        $("#editar").click(function(){
-        
+        $("#editar").button().click(function(){
             var gr = tabla.jqGrid('getGridParam','selrow');
             if( gr != null )
                 tabla.jqGrid('editGridRow',gr,
@@ -174,10 +188,10 @@
         <option value='0'>--Seleccione Municipio--</option>
     </select>
 
-<br/><br/><br/>
-<table id="proPep"></table>
-<div id="pager"></div>
-<br/><br/>
+    <br/><br/><br/>
+    <table id="proPep"></table>
+    <div id="pager"></div>
+    <br/><br/>
     <input type="button" id="agregar" value="  Agregar  " />
     <input type="button" id="editar" value="   Editar   " />
 

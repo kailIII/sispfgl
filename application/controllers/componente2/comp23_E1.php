@@ -128,7 +128,7 @@ class Comp23_E1 extends CI_Controller {
         $username = $this->tank_auth->get_username();
         $datos = $this->usuario->obtenerDepartamento($username);
         $pro_pep_id = $datos[0]->id;
-        $informacion['reuniones'] = $this->reunion->obtenerReuniones($pro_pep_id);
+        $informacion['reuniones'] = $this->reunion->obtenerReuniones($pro_pep_id,1);
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $username;
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
@@ -786,7 +786,7 @@ class Comp23_E1 extends CI_Controller {
         $datos = $this->usuario->obtenerDepartamento($username);
         $pro_pep_id = $datos[0]->id;
         $this->load->model('etapa1-sub23/capacitacion');
-        $informacion['capacitaciones'] = $this->capacitacion->obtenerCapacitaciones($pro_pep_id);
+        $informacion['capacitaciones'] = $this->capacitacion->obtenerCapacitaciones($pro_pep_id,1);
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/etapa1/capacitacion_view', $informacion);
@@ -814,8 +814,8 @@ class Comp23_E1 extends CI_Controller {
         $informacion['gru_apo_id'] = $gru_apo_id;
         /* CREAR MODELO PARA CAPACITACIÓN */
         $this->load->model('etapa1-sub23/capacitacion');
-        $this->capacitacion->agregarCapacitacion($pro_pep_id);
-        $resultado = $this->capacitacion->obtenerIdCapacitacion($pro_pep_id);
+        $this->capacitacion->agregarCapacitacion($pro_pep_id,1);
+        $resultado = $this->capacitacion->obtenerIdCapacitacion($pro_pep_id,1);
         $cap_id = $resultado[0]['cap_id'];
         /* OBTENER EL GRUPO LOCAL DE APOYO */
         $this->load->model('participante');

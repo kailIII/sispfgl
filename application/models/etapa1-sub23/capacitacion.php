@@ -10,16 +10,18 @@ class Capacitacion extends CI_Model {
 
     private $tabla = 'capacitacion';
     
-    public function obtenerCapacitaciones($pro_pep_id) {
+    public function obtenerCapacitaciones($pro_pep_id,$eta_id) {
         $this->db->where('pro_pep_id',$pro_pep_id);
+        $this->db->where('eta_id',$eta_id);
         $this->db->order_by("cap_fecha", "asc");
         $consulta = $this->db->get($this->tabla);
         return $consulta->result();
     }
     
-    public function agregarCapacitacion($pro_pep_id) {
+    public function agregarCapacitacion($pro_pep_id,$eta_id) {
         $datos = array(
-            'pro_pep_id' => $pro_pep_id
+            'pro_pep_id' => $pro_pep_id,
+            'eta_id' => $eta_id
         );
         $this->db->insert($this->tabla, $datos);
     }
@@ -43,9 +45,10 @@ class Capacitacion extends CI_Model {
         $query = $this->db->query($consulta, array($cap_id));
     }
     
-    public function obtenerIdCapacitacion($pro_pep_id) {
+    public function obtenerIdCapacitacion($pro_pep_id,$eta_id) {
         $this->db->Select_max('cap_id');
         $this->db->where('pro_pep_id',$pro_pep_id);
+        $this->db->where('eta_id',$eta_id);
         $consulta = $this->db->get($this->tabla);
         return $consulta->result_array();
     }   

@@ -2,10 +2,10 @@
     $(document).ready(function(){
         /*ZONA DE BOTONES*/
         $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/comp23_E1/guardarCapacitacion') . "/" . $cap_id; ?>';
+            this.form.action='<?php echo base_url('componente2/comp23_E2/guardarCapacitacion') . "/" . $cap_id; ?>';
         });
         $("#cancelar").button().click(function() {
-            document.location.href='<?php echo base_url('componente2/comp23_E1/capacitacionEquipoApoyo'); ?>';
+            document.location.href='<?php echo base_url('componente2/comp23_E2/cancelaCapacitacion') . "/" . $cap_id; ?>';
         });
         /*DIALOGOS DE VALIDACION*/
         $('.mensaje').dialog({
@@ -150,7 +150,7 @@
         /*GRID MIEMBROS DEL EQUIPO LOCAL DE APOYO*/
         var tabla2=$("#MiembroELA");
         tabla2.jqGrid({
-            url:'<?php echo base_url('componente2/comp23_E1/cargarParticipanteGACap') ?>?gru_apo_id=<?php echo $gru_apo_id; ?>&cap_id=<?php echo $cap_id; ?>',
+            url:'<?php echo base_url('componente2/comp23_E2/cargarParticipanteGGCap') . '/' . $gru_ges_id . '/' . $cap_id; ?>',
             editurl:'<?php echo base_url('componente2/comp23_E1/gestionParticipantesCap') ?>/<?php echo $cap_id; ?>',
             datatype:'json',
             altRows:true,
@@ -171,7 +171,7 @@
                 }
             ],
             multiselect: false,
-            caption: "Miembros del Equipo Local de Apoyo",
+            caption: "Miembros del Grupo Gestor",
             rowNum:10,
             rowList:[10,20,30],
             loadonce:true,
@@ -274,8 +274,9 @@
         function despuesAgregarEditar3() {
             tabla3.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');
             return[true,'']; 
-        }
+        } 
         
+        //Validar formulario
         $("#capacitacionForm").validate({
             rules: {
                 cap_fecha: {
@@ -294,28 +295,28 @@
                     maxlength: 200
                 }
             }
-        });   
-        
+        });    
     });
 </script>
 
 <form method="post" id="capacitacionForm">
-    <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
-    <h2 class="h2Titulos">Producto 4: Capacitaciones Local de Apoyo</h2>
+
+    <h2 class="h2Titulos">Etapa 2: Diagnóstico del Municipio</h2>
+    <h2 class="h2Titulos">Producto 4: Capacitaciones al Grupo Gestor</h2>
     <table>
         <tr>
         <td ><strong>Departamento:</strong><?php echo $departamento ?></td>
         <td ><strong>Municipio:</strong><?php echo $municipio ?></td>
         </tr>
         <tr>
-        <td  ><strong>Fecha de Capacitación: </strong><input value='<?php echo date('d/m/y', strtotime($cap_fecha)); ?>' readonly="readonly" id="cap_fecha" name="cap_fecha" type="text" size="10" /></td>
-        <td ><strong>Area de Capacitación:</strong><input value="<?php echo $cap_area ?>" id="cap_area" name="cap_area" type="text" size="20"/></td>
+        <td  ><strong>Fecha de Capacitación: </strong><input readonly="readonly" id="cap_fecha" name="cap_fecha" type="text" size="10" /></td>
+        <td ><strong>Area de Capacitación:</strong><input id="cap_area" name="cap_area" type="text" size="20"/></td>
         </tr>
         <tr>
-        <td colspan="2"><strong>Tema:</strong><input id="cap_tema" value="<?php echo $cap_tema ?>" name="cap_tema" type="text" size="40"/></td>
+        <td colspan="2"><strong>Tema:</strong><input id="cap_tema" name="cap_tema" type="text" size="40"/></td>
         </tr>
         <tr>
-        <td colspan="2"><strong>Lugar:</strong><input id="cap_lugar" value="<?php echo $cap_lugar ?>" name="cap_lugar" type="text" size="40"/></td>
+        <td colspan="2"><strong>Lugar:</strong><input id="cap_lugar" name="cap_lugar" type="text" size="40"/></td>
         </tr>
         <tr>
         <td colspan="2"><strong>Proyecto PEP:  </strong><?php echo $proyectoPep ?></td>
@@ -332,43 +333,42 @@
     <br/><br/>
     <table id="participantes"></table>
     <div id="pagerParticipantes"></div>
+    <table style="position: relative;left: 40px;top: 20px;border-color: 2px solid blue">
+        <tr>
+        <td>
+            <p>Observaciones y/o Recomendaciones:<br/>
+                <textarea name="cap_observacion" cols="48" rows="5"></textarea></p>
 
-<table style="position: relative;left: 40px;top: 20px;border-color: 2px solid blue">
-    <tr>
-    <td>
-        <p>Observaciones y/o Recomendaciones:<br/>
-            <textarea name="cap_observacion" cols="48" rows="5"><?php echo $cap_observacion ?></textarea></p>
-
-    </td>
-    <td>
-    <fieldset   style="border-color: #2F589F;height:85px;width:175px;position: relative;left: 50px;">
-        <legend align="center"><strong>Cantidad de Participantes</strong></legend>
-        <table>
-            <tr>
-            <td class="textD">Hombres: </td>
-            <td><input class="bordeNo" id="hombres" type="text" size="5" readonly="readonly" /></td>
-            </tr>
-            <tr>
-            <td class="textD">Mujeres: </td>
-            <td><input class="bordeNo" id="mujeres" type="text" size="5" readonly="readonly" /><br/></td>
-            </tr>
-            <tr>
-            <td class="textD">Total: </td>
-            <td><input class="bordeNo" id="total" type="text" size="5" readonly="readonly" /></td>
-            </tr>
-        </table> 
-    </fieldset>
-    </td>
-    </tr>
-</table>
-<center>
-    <div style="position:relative;width: 300px;top: 25px">
-        <p > 
-            <input type="submit" id="guardar" value="Guardar Capacitación" />
-            <input type="button" id="cancelar" value="Cancelar" />
-        </p>
-    </div>
-</center>
+        </td>
+        <td>
+        <fieldset   style="border-color: #2F589F;height:85px;width:175px;position: relative;left: 50px;">
+            <legend align="center"><strong>Cantidad de Participantes</strong></legend>
+            <table>
+                <tr>
+                <td class="textD">Hombres: </td>
+                <td><input class="bordeNo" id="hombres" type="text" size="5" readonly="readonly" /></td>
+                </tr>
+                <tr>
+                <td class="textD">Mujeres: </td>
+                <td><input class="bordeNo" id="mujeres" type="text" size="5" readonly="readonly" /><br/></td>
+                </tr>
+                <tr>
+                <td class="textD">Total: </td>
+                <td><input class="bordeNo" id="total" type="text" size="5" readonly="readonly" /></td>
+                </tr>
+            </table> 
+        </fieldset>
+        </td>
+        </tr>
+    </table>
+    <center>
+        <div style="position:relative;width: 300px;top: 25px">
+            <p > 
+                <input type="submit" id="guardar" value="Guardar Capacitación" />
+                <input type="button" id="cancelar" value="Cancelar" />
+            </p>
+        </div>
+    </center>
 </form>
 <div id="mensaje" class="mensaje" title="Aviso de la operación">
     <p>La acción fue realizada con satisfacción</p>
