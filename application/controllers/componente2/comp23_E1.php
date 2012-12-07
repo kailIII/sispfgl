@@ -128,7 +128,7 @@ class Comp23_E1 extends CI_Controller {
         $username = $this->tank_auth->get_username();
         $datos = $this->usuario->obtenerDepartamento($username);
         $pro_pep_id = $datos[0]->id;
-        $informacion['reuniones'] = $this->reunion->obtenerReuniones($pro_pep_id,1);
+        $informacion['reuniones'] = $this->reunion->obtenerReuniones($pro_pep_id, 1);
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $username;
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
@@ -786,7 +786,7 @@ class Comp23_E1 extends CI_Controller {
         $datos = $this->usuario->obtenerDepartamento($username);
         $pro_pep_id = $datos[0]->id;
         $this->load->model('etapa1-sub23/capacitacion');
-        $informacion['capacitaciones'] = $this->capacitacion->obtenerCapacitaciones($pro_pep_id,1);
+        $informacion['capacitaciones'] = $this->capacitacion->obtenerCapacitaciones($pro_pep_id, 1);
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/etapa1/capacitacion_view', $informacion);
@@ -814,8 +814,8 @@ class Comp23_E1 extends CI_Controller {
         $informacion['gru_apo_id'] = $gru_apo_id;
         /* CREAR MODELO PARA CAPACITACIÓN */
         $this->load->model('etapa1-sub23/capacitacion');
-        $this->capacitacion->agregarCapacitacion($pro_pep_id,1);
-        $resultado = $this->capacitacion->obtenerIdCapacitacion($pro_pep_id,1);
+        $this->capacitacion->agregarCapacitacion($pro_pep_id, 1);
+        $resultado = $this->capacitacion->obtenerIdCapacitacion($pro_pep_id, 1);
         $cap_id = $resultado[0]['cap_id'];
         /* OBTENER EL GRUPO LOCAL DE APOYO */
         $this->load->model('participante');
@@ -964,7 +964,7 @@ class Comp23_E1 extends CI_Controller {
         /* INFORME PRELIMINAR ASPECTOS IMPORTANTES */
         $this->load->model('cumplimiento_minimo', 'cumm');
         //CUMPLIMIENTOS MINIMOS
-        $cumplimientosMinimos = $this->cumm->obtenerCumplimientoMinimo();
+        $cumplimientosMinimos = $this->cumm->obtenerCumplimientoMinimo(1);
         $this->load->model('proyectoPep/proyecto_pep', 'proPep');
         $resultado = $this->proPep->obtenerGrupoApoyo($pro_pep_id);
         $informacion['gru_apo_id'] = $resultado[0]['gru_apo_id'];
@@ -1010,8 +1010,8 @@ class Comp23_E1 extends CI_Controller {
         $inf_pre_aceptacion = $this->input->post("inf_pre_aceptacion");
         if ($inf_pre_aceptacion == '')
             $inf_pre_aceptacion = null;
-        else             
-            $inf_pre_aceptada='true';
+        else
+            $inf_pre_aceptada = 'true';
         $inf_pre_firmau = $this->input->post("inf_pre_firmau");
         if ($inf_pre_firmau == '0')
             $inf_pre_firmau = null;
@@ -1026,7 +1026,7 @@ class Comp23_E1 extends CI_Controller {
         /* OBTENIENDO VALORES DE LOS CRITERIOS */
         $this->load->model('cumplimiento_minimo');
         $this->load->model('etapa1-sub23/cumplimiento_informe', 'cumInf');
-        $cumplimientos = $this->cumplimiento_minimo->obtenerCumplimientoMinimo();
+        $cumplimientos = $this->cumplimiento_minimo->obtenerCumplimientoMinimo(1);
         foreach ($cumplimientos as $cumplimiento_minimo) {
             if ($this->input->post("cum_" . $cumplimiento_minimo->cum_min_id) == '0')
                 $valor = null;
@@ -1037,9 +1037,9 @@ class Comp23_E1 extends CI_Controller {
 
         /* ACTUALIZANDO ACUERDO MUNICIPAL */
         $this->load->model('etapa1-sub23/informe_preliminar', 'infPre');
-        $this->infPre->actualizarInfPre($inf_pre_id, $inf_pre_firmam, $inf_pre_firmau, $inf_pre_firmai, $inf_pre_fecha_borrador, $inf_pre_aceptacion, $inf_pre_fecha_observacion, $inf_pre_observacion, $inf_pre_ruta_archivo,$inf_pre_aceptada);
+        $this->infPre->actualizarInfPre($inf_pre_id, $inf_pre_firmam, $inf_pre_firmau, $inf_pre_firmai, $inf_pre_fecha_borrador, $inf_pre_aceptacion, $inf_pre_fecha_observacion, $inf_pre_observacion, $inf_pre_ruta_archivo, $inf_pre_aceptada);
 
-         redirect(base_url());
+        redirect(base_url());
     }
 
     public function inventarioInformacion() {

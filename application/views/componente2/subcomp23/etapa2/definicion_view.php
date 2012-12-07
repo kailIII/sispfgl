@@ -210,7 +210,7 @@
 <form method="post" id="definicionForm">
 
     <h2 class="h2Titulos">Etapa 2: Diagnóstico del Municipio</h2>
-    <h2 class="h2Titulos">Producto 5: Definición de temas, problemas y ejes principales</h2>
+    <h2 class="h2Titulos">Producto 4: Definición de temas, problemas y ejes principales</h2>
     <table>
         <tr>
         <td ><strong>Departamento:</strong><?php echo $departamento ?></td>

@@ -10,7 +10,8 @@ class Cumplimiento_Minimo extends CI_Model {
 
     private $tabla = 'cumplimiento_minimo';
     
-    public function obtenerCumplimientoMinimo() {
+    public function obtenerCumplimientoMinimo($eta_id) {
+        $this->db->where('eta_id',$eta_id);
         $consulta = $this->db->get($this->tabla);
         return $consulta->result();
     }

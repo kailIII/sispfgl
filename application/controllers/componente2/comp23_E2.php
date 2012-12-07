@@ -1,8 +1,7 @@
 <?php
 
 /**
- * Contendrá todos los metodos utilizados para definir las pantallas de la Etapa 1
- * Del PEP por los consultores asignados.
+ * Contendrá todos los metodos utilizados para definir las pantallas de la Etapa 2
  *
  * @author Ing. Karen Peñate
  */
@@ -819,6 +818,7 @@ class Comp23_E2 extends CI_Controller {
 
         echo $jsonresponse;
     }
+
     public function gestionParticipantesDef($def_id) {
         /* VARIABLES POST */
         $par_id = $this->input->post("id");
@@ -828,8 +828,8 @@ class Comp23_E2 extends CI_Controller {
 
         $this->parDef->actualizaParticipa($def_id, $par_id, $par_def_participa);
     }
-    
-     public function gestionParticipantesPri($pri_id) {
+
+    public function gestionParticipantesPri($pri_id) {
         /* VARIABLES POST */
         $par_id = $this->input->post("id");
         $par_pri_participa = $this->input->post("par_pri_participa");
@@ -838,8 +838,7 @@ class Comp23_E2 extends CI_Controller {
 
         $this->parPri->actualizaParticipa($pri_id, $par_id, $par_pri_participa);
     }
-    
-    
+
     public function registrarCapacitacion() {
 
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
@@ -992,6 +991,7 @@ class Comp23_E2 extends CI_Controller {
         $this->definicion->actualizarDef($def_id, $def_fecha, $def_ruta_archivo);
         redirect('componente2/comp23_E2/definicionTema');
     }
+
     public function priorizacion() {
 
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
@@ -1040,15 +1040,195 @@ class Comp23_E2 extends CI_Controller {
         $this->load->view('componente2/subcomp23/etapa2/priorizacion_view', $informacion);
         $this->load->view('plantilla/footer', $informacion);
     }
-    
+
     public function guardarPriorizacion($pri_id) {
         /* VARIABLES POST */
         $pri_fecha = $this->input->post("pri_fecha");
         $pri_observacion = $this->input->post("pri_observacion");
-        
+
         $this->load->model('etapa2-sub23/priorizacion');
         $this->priorizacion->actualizarPri($pri_id, $pri_fecha, $pri_observacion);
         redirect('componente2/comp23_E2/priorizacion');
+    }
+
+    public function cargarProyectosIdentificados($pri_id) {
+        $this->load->model('etapa2-sub23/proyecto_identificado', 'proIden');
+        $proyectos = $this->proIden->obtenerProIde($pri_id);
+        $numfilas = count($proyectos);
+
+        $i = 0;
+        if ($numfilas != 0) {
+            foreach ($proyectos as $aux) {
+                switch ($aux->pro_ide_ff) {
+                    case 'GL':
+                        $ff = 'Gobierno Local';
+                        break;
+                    case 'GC':
+                        $ff = 'Gobierno Central';
+                        break;
+                }
+                switch ($aux->pro_ide_estado) {
+                    case 'I':
+                        $estado = 'Identificado';
+                        break;
+                    case 'P':
+                        $estado = 'Perfil';
+                        break;
+                    case 'G':
+                        $estado = 'Gestión';
+                        break;
+                    case 'E':
+                        $estado = 'En Ejecución';
+                        break;
+                    case 'F':
+                        $estado = 'Finalizado';
+                        break;
+                }
+                $rows[$i]['id'] = $aux->pro_ide_id;
+                $rows[$i]['cell'] = array($aux->pro_ide_id,
+                    $aux->pro_ide_nombre,
+                    $aux->pro_ide_ubicacion,
+                    $ff,
+                    $aux->pro_ide_monto,
+                    $aux->pro_ide_plazoejec,
+                    $aux->pro_ide_pbh,
+                    $aux->pro_ide_pbm,
+                    $aux->pro_ide_prioridad,
+                    $estado
+                );
+                $i++;
+            }
+        } else {
+            $rows[0]['id'] = 0;
+            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+
+    public function gestionarProyectosIdentificados($pri_id) {
+
+        $pro_ide_id = $this->input->post("id");
+        $pro_ide_nombre = $this->input->post("pro_ide_nombre");
+        $pro_ide_ubicacion = $this->input->post("pro_ide_ubicacion");
+        $pro_ide_ff = $this->input->post("pro_ide_ff");
+        $pro_ide_monto = $this->input->post("pro_ide_monto");
+        $pro_ide_plazoejec = $this->input->post("pro_ide_plazoejec");
+        $pro_ide_pbh = $this->input->post("pro_ide_pbh");
+        $pro_ide_pbm = $this->input->post("pro_ide_pbm");
+        $pro_ide_prioridad = $this->input->post("pro_ide_prioridad");
+        $pro_ide_estado = $this->input->post("pro_ide_estado");
+        $pro_ide_ruta_archivo = $this->input->post("pro_ide_ruta_archivo");
+
+        $operacion = $this->input->post('oper');
+
+        /* FIN DE VARIABLES */
+        $this->load->model('etapa2-sub23/proyecto_identificado', 'proIden');
+        switch ($operacion) {
+            case 'add':
+                $this->proIden->agregarProIde($pro_ide_nombre, $pro_ide_ubicacion, $pro_ide_ff, $pro_ide_monto, $pro_ide_plazoejec, $pro_ide_pbh, $pro_ide_pbm, $pro_ide_prioridad, $pro_ide_estado, $pro_ide_ruta_archivo, $pri_id);
+                break;
+            case 'edit':
+                $this->proIden->editarProIde($pro_ide_id, $pro_ide_nombre, $pro_ide_ubicacion, $pro_ide_ff, $pro_ide_monto, $pro_ide_plazoejec, $pro_ide_pbh, $pro_ide_pbm, $pro_ide_prioridad, $pro_ide_estado, $pro_ide_ruta_archivo);
+                break;
+            case 'del':
+                $this->proIden->eliminarProIden($pro_ide_id);
+                break;
+        }
+    }
+
+    public function diagnostico() {
+        $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
+            Planeación Estratégica Participativa';
+
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $username = $this->tank_auth->get_username();
+        $informacion['username'] = $username;
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        /* OBTENER DEPARTAMENTO Y MUNICIPIO DEL USUARIO */
+        $this->load->model('tank_auth/users', 'usuario');
+        $datos = $this->usuario->obtenerDepartamento($username);
+        $informacion['departamento'] = $datos[0]->Depto;
+        $informacion['municipio'] = $datos[0]->Muni;
+        //PROYECTO PEP ASOCIADO
+        $pro_pep_id = $datos[0]->id;
+        $informacion['proyectoPep'] = $datos[0]->Proyecto;
+        $informacion['pro_pep_id'] = $pro_pep_id;
+        /* INFORME PRELIMINAR ASPECTOS IMPORTANTES */
+        $this->load->model('cumplimiento_minimo', 'cumm');
+        $this->load->model('proyectoPep/proyecto_pep', 'proPep');
+        //CUMPLIMIENTOS MINIMOS
+        $cumplimientosMinimos = $this->cumm->obtenerCumplimientoMinimo(2);
+        /* INFORMACIÓN DEL INFORME PRELIMINAR */
+        $this->load->model('etapa2-sub23/diagnostico', 'Dia');
+        $resultado = $this->Dia->contarDiaPorPep($pro_pep_id);
+        $this->load->model('etapa2-sub23/cumplimiento_diagnostico', 'cumDia');
+        if ($resultado == '0') {
+            $this->Dia->agregarDia($pro_pep_id);
+            $resultado = $this->Dia->obtenerDia($pro_pep_id);
+            $this->load->model('proyectoPep/proyecto_pep', 'proPep');
+            $this->proPep->actualizarIndices('dia_id', $resultado[0]['dia_id'], $pro_pep_id);
+            foreach ($cumplimientosMinimos as $aux)
+                $this->cumDia->insertarCumplimientoDiag($resultado[0]['dia_id'], $aux->cum_min_id);
+        } else {
+            $resultado = $this->Dia->obtenerDia($pro_pep_id);
+        }
+        $informacion['dia_id'] = $resultado[0]['dia_id'];
+        $informacion['dia_fecha_borrador'] = $resultado[0]['dia_fecha_borrador'];
+        $informacion['dia_fecha_observacion'] = $resultado[0]['dia_fecha_observacion'];
+        $informacion['dia_fecha_concejo_muni'] = $resultado[0]['dia_fecha_concejo_muni'];
+        $informacion['dia_vision'] = $resultado[0]['dia_vision'];
+        $informacion['dia_observacion'] = $resultado[0]['dia_observacion'];
+        $informacion['dia_ruta_archivo'] = $resultado[0]['dia_ruta_archivo'];
+        $informacion['cumplimientosMinimos'] = $this->cumDia->obtenerLosCumplimientosDiagnostico($resultado[0]['dia_id']);
+        /* FIN DE INFORME PRELIMINAR */
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/subcomp23/etapa2/diagnostico_view', $informacion);
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function guardarDiagnostico($dia_id) {
+        /* VARIABLES POST */
+        $dia_fecha_borrador = $this->input->post("dia_fecha_borrador");
+        if ($dia_fecha_borrador == '')
+            $dia_fecha_borrador = null;
+        $dia_fecha_observacion = $this->input->post("dia_fecha_observacion");
+        if ($dia_fecha_observacion == '')
+            $dia_fecha_observacion = null;
+        $dia_fecha_concejo_muni = $this->input->post("dia_fecha_concejo_muni");
+        if ($dia_fecha_concejo_muni == '')
+            $dia_fecha_concejo_muni = null;
+        $dia_vision = $this->input->post("dia_vision");
+        if ($dia_vision == '0')
+            $dia_vision = null;
+        $dia_observacion = $this->input->post("dia_observacion");
+        $dia_ruta_archivo = $this->input->post("dia_ruta_archivo");
+        /* OBTENIENDO VALORES DE LOS CRITERIOS */
+        $this->load->model('etapa2-sub23/cumplimiento_diagnostico', 'cumDia');
+        $cumplimientos = $this->cumDia->obtenerLosCumplimientosDiagnostico($dia_id);
+        foreach ($cumplimientos as $cumplimiento_minimo) {
+            if ($this->input->post("cum_" . $cumplimiento_minimo->cum_min_id) == '0')
+                $valor = null;
+            else
+                $valor = $this->input->post("cum_" . $cumplimiento_minimo->cum_min_id);
+            $this->cumDia->actualizarCumplimientoDiag($valor, $dia_id, $cumplimiento_minimo->cum_min_id);
+        }
+
+        /* ACTUALIZANDO ACUERDO MUNICIPAL */
+        $this->load->model('etapa2-sub23/diagnostico', 'Dia');
+        $this->Dia->actualizarDia($dia_id, $dia_fecha_borrador, $dia_fecha_concejo_muni, $dia_fecha_observacion, $dia_observacion, $dia_ruta_archivo,$dia_vision);
+
+        redirect(base_url('componente2/comp23_E2/diagnostico'));
     }
 
 }
