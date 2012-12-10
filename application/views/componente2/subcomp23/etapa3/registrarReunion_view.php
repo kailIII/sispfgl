@@ -1,10 +1,10 @@
 <script type="text/javascript">        
     $(document).ready(function(){
         $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/comp23_E2/guardarReunion') ?>';
+            this.form.action='<?php echo base_url('componente2/comp23_E3/guardarReunion') ?>';
         });
         $("#cancelar").button().click(function() {
-            document.location.href='<?php echo base_url('componente2/comp23_E2/muestraReunion'); ?>/'+$('#reu_id').val();
+            document.location.href='<?php echo base_url('componente2/comp23_E3/muestraReunion'); ?>/'+$('#reu_id').val();
         });
 
         /*PARA EL DATEPICKER*/
@@ -17,10 +17,10 @@
         /*FIN DEL DATEPICKER*/
         /*ZONA DE VALIDACIONES*/
         /*GRID MIEMBROS DEL EQUIPO LOCAL DE APOYO*/
-        var tabla2=$("#MiembroELA");
+        var tabla2=$("#participantes");
         tabla2.jqGrid({
-            url:'<?php echo base_url('componente2/comp23_E2/cargarParticipanteGGPri') . '/' . $gru_ges_id . '/' . $pri_id; ?>',
-            editurl:'<?php echo base_url('componente2/comp23_E2/gestionParticipantesPri') ?>/<?php echo $pri_id; ?>',
+            url:'<?php echo base_url('componente2/comp23_E3/cargarParticipanteGGReu') . '/' . $gru_ges_id . '/' . $reu_id; ?>',
+            editurl:'<?php echo base_url('componente2/comp23_E3/gestionParticipantesReu') ?>/<?php echo $reu_id; ?>',
             datatype:'json',
             altRows:true,
             height: "100%",
@@ -33,7 +33,7 @@
                 {name:'par_sexo',index:'par_sexo',width:50,editable:false},
                 {name:'par_cargo',index:'par_cargo',width:100,editable:false},
                 {name:'par_tel',index:'par_tel',width:100,editable:false},
-                {name:'par_pri_participa',index:'par_pri_participa',width:60,align:'center',editable:true,edittype:"checkbox",editoptions:{value:"Si:No"}},
+                {name:'par_reu_participa',index:'par_reu_participa',width:60,align:'center',editable:true,edittype:"checkbox",editoptions:{value:"Si:No"}},
                 {name:'actions',formatter:"actions",editable:false,fixed:true,width:60,
                     formatoptions:{"keys":true,delbutton: false,
                         onSuccess:despuesAgregarEditar2}
@@ -44,11 +44,11 @@
             rowNum:10,
             rowList:[10,20,30],
             loadonce:true,
-            pager: jQuery('#pagerMiembroEla'),
+            pager: jQuery('#pagerParticipantes'),
             viewrecords: true,
             gridComplete: 
                 function(){
-                $.getJSON('<?php echo base_url('componente2/comp23_E1/calcularTotalSexo') ?>/reu_id/<?php echo $reu_id; ?>',
+                $.getJSON('<?php echo base_url('componente2/comp23_E1/calcularTotalParticipantes') ?>/<?php echo 'reunion/' . $reu_id . "/reu_id"; ?>',
                 function(data) {
                     $.each(data, function(key, val) {
                         if(key=='rows'){
@@ -61,7 +61,7 @@
                     });
                 }); 
             }
-        }).jqGrid('navGrid','#pagerMiembroEla',
+        }).jqGrid('navGrid','#pagerParticipantes',
         {edit:false,add:false,del:false,search:false,refresh:false,
             beforeRefresh: function() {
                 tabla2.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
@@ -101,34 +101,36 @@
         <td colspan="4"><strong>Proyecto PEP:</strong><?php echo $proyectoPep ?></td>
         </tr>
         <tr>
-        <td colspan="3">
-            <p><strong>Nombre de la actividad:</strong><textarea id="reu_resultado" name="reu_resultado" cols="50" rows="1" class="required" ></textarea></p>
-        </td>
-        <td width="300">
+        <td><input type="text" id="reu_numero" value="<?php echo $reu_numero ?>" name="reu_numero" size="5" readonly="readonly"/> </td>
+        <td colspan="2">
             Fecha: 
             <input id="reu_fecha" name="reu_fecha" readonly="readonly" class="required"  size="10"/>
+        </td>
+        <td>Duración en Horas:
+            <input type="text" id="reu_duracion_horas" name="reu_duracion_horas" size="5" class="required number"/>
         </td>
         </tr>
     </table>
 
-    <p>Tema o Agenda a Desarrollar: <textarea id="reu_tema" name="reu_tema" cols="50" rows="2" class="required" maxlength="200" ></textarea></p>
-    <p><input type="checkbox" name="pob_comunidad" value="1" >Comunidad</input>
-        <input type="checkbox" name="pob_sector" value="1" >Sector</input>
-        <input type="checkbox" name="pob_institucion" value="1" >Institución</input>
-    </p>
+    <p>Agenda a Desarrollar: <textarea id="reu_tema" name="reu_tema" cols="50" rows="2" class="required" maxlength="200" ></textarea></p>
+
     <table id="participantes"></table>
     <div id="pagerParticipantes"></div>
-    <div style="position: relative;left: 275px;top: 5px;">
-        <input type="button" id="agregar" value="  Agregar  " />
-        <input type="button" id="editar" value="   Editar   " />
-        <input type="button" id="eliminar" value="  Eliminar  " />
-    </div>
-    <p></p>
-
-  <table style="position: relative;top: 15px;">
+    <table style="position: relative;top: 15px;">
         <tr>
         <td>
-           AQUI IRAN LOS CRITERIOS
+        <fieldset style="width:450px;">
+            <legend><strong>Resultados alcanzados en la reunión</strong></legend>
+            <table>
+                <?php foreach ($resultados as $aux) { ?>
+                    <tr>
+                    <td>
+                        <input <?php if (!strcasecmp($aux->res_reu_valor, 't')) { ?>checked <?php } ?> type="checkbox" name="res_<?php echo $aux->res_id; ?>" value="<?php echo $aux->res_id; ?>" ><?php echo $aux->res_nombre; ?></input><br/>
+                    </td>
+                    </tr>
+                <?php } ?>
+            </table>  
+        </fieldset>
         </td>
         <td style="width: 50px"></td>
         <td>
@@ -152,15 +154,14 @@
         </td>
         </tr>
     </table>
-     <p>Observaciones:<br/><textarea id="reu_observacion" name="reu_observacion" cols="48" rows="5"><?php if (isset($reu_observacion)) echo$reu_observacion; ?></textarea></p>
+    <br/>
+    <p>Observaciones:<br/><textarea id="reu_observacion" name="reu_observacion" cols="48" rows="5"><?php if (isset($reu_observacion)) echo$reu_observacion; ?></textarea></p>
     <center>  <p><input type="submit" id="guardar" value="Guardar Reunión" />
             <input type="button" id="cancelar" value="Cancelar" />
         </p>
 
     </center>
     <input id="reu_id" name="reu_id" value="<?php echo $reu_id ?>" style="visibility: hidden"/>
-    <input id="pob_id" name="pob_id" value="<?php echo $pob_id ?>" style="visibility: hidden"/>
-    <input type="text" style="visibility: hidden" id="reu_numero" value="<?php echo $reu_numero ?>" name="reu_numero" size="5" readonly="readonly"/> 
 </form>
 <div id="mensaje" class="mensaje" title="Aviso de la operación">
     <p>La acción fue realizada con satisfacción</p>

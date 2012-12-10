@@ -100,7 +100,7 @@
             viewrecords: true,
             gridComplete: 
                 function(){
-                $.getJSON('<?php echo base_url('componente2/comp23_E1/calcularTotalParticipantes') ?>/<?php echo $cap_id; ?>',
+                $.getJSON('<?php echo base_url('componente2/comp23_E1/calcularTotalParticipantes') ?>/<?php echo 'capacitacion/'. $cap_id."/cap_id"; ?>',
                 function(data) {
                     $.each(data, function(key, val) {
                         if(key=='rows'){
@@ -180,7 +180,7 @@
             viewrecords: true,
             gridComplete: 
                 function(){
-                $.getJSON('<?php echo base_url('componente2/comp23_E1/calcularTotalParticipantes') ?>/<?php echo $cap_id; ?>',
+                $.getJSON('<?php echo base_url('componente2/comp23_E1/calcularTotalParticipantes') ?>/<?php echo 'capacitacion/'. $cap_id."/cap_id"; ?>',
                 function(data) {
                     $.each(data, function(key, val) {
                         if(key=='rows'){

@@ -65,7 +65,7 @@
             viewrecords: true,
             gridComplete: 
                 function(){
-                $.getJSON('<?php echo base_url('componente2/comp23_E1/calcularTotalParticipantes') ?>/<?php echo $def_id; ?>',
+                $.getJSON('<?php echo base_url('componente2/comp23_E1/calcularTotalParticipantes') ?>/<?php echo 'definicion/'. $def_id."/def_id"; ?>',
                 function(data) {
                     $.each(data, function(key, val) {
                         if(key=='rows'){

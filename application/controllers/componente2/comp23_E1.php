@@ -58,7 +58,7 @@ class Comp23_E1 extends CI_Controller {
 
         /* REGISTRAR REUNION */
         $this->load->model('etapa1-sub23/reunion', 'reu');
-        $ultima = $this->reu->ultimaReunion($pro_pep_id);
+        $ultima = $this->reu->ultimaReunion($pro_pep_id,1);
         $reu_numero = (int) $ultima[0]['ultima'] + 1;
         $informacion['reu_numero'] = $reu_numero;
         $this->reu->agregarReunion(1, $pro_pep_id, $reu_numero);
@@ -520,9 +520,9 @@ class Comp23_E1 extends CI_Controller {
         echo $jsonresponse;
     }
 
-    public function calcularTotalParticipantes($cap_id) {
+    public function calcularTotalParticipantes($tabla,$campo_id,$campo) {
         $this->load->model('participante');
-        $totales = $this->participante->calcularTotalParticipantes($cap_id);
+        $totales = $this->participante->calcularTotalParticipantes($tabla,$campo_id,$campo);
 
         $rows[0]['id'] = 1;
         $rows[0]['cell'] = array($totales[0]->total,
@@ -1039,7 +1039,7 @@ class Comp23_E1 extends CI_Controller {
         $this->load->model('etapa1-sub23/informe_preliminar', 'infPre');
         $this->infPre->actualizarInfPre($inf_pre_id, $inf_pre_firmam, $inf_pre_firmau, $inf_pre_firmai, $inf_pre_fecha_borrador, $inf_pre_aceptacion, $inf_pre_fecha_observacion, $inf_pre_observacion, $inf_pre_ruta_archivo, $inf_pre_aceptada);
 
-        redirect(base_url());
+        redirect(base_url('componente2/comp23_E1/InformePreliminar'));
     }
 
     public function inventarioInformacion() {

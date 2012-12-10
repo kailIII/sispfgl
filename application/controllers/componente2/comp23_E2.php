@@ -75,7 +75,7 @@ class Comp23_E2 extends CI_Controller {
 
         /* REGISTRAR REUNION */
         $this->load->model('etapa1-sub23/reunion', 'reu');
-        $ultima = $this->reu->ultimaReunion($pro_pep_id);
+        $ultima = $this->reu->ultimaReunion($pro_pep_id,2);
         $reu_numero = (int) $ultima[0]['ultima'] + 1;
         $informacion['reu_numero'] = $reu_numero;
         $this->reu->agregarReunion(2, $pro_pep_id, $reu_numero);

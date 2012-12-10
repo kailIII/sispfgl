@@ -19,11 +19,11 @@ class Reunion extends CI_Model {
         $this->db->insert($this->tabla, $datos);
     }
 
-    public function ultimaReunion($pro_pep_id) {
+    public function ultimaReunion($pro_pep_id,$eta_id) {
         $consulta = "SELECT COALESCE(max (reu_numero),0) ultima
                    FROM reunion
-                   Where pro_pep_id=?";
-        $query = $this->db->query($consulta, array($pro_pep_id));
+                   Where pro_pep_id=? AND eta_id=?";
+        $query = $this->db->query($consulta, array($pro_pep_id,$eta_id));
         return $query->result_array();
     }
 

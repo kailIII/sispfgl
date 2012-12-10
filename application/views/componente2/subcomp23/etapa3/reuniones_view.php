@@ -1,6 +1,6 @@
 
 <center>
-    <h1>Registro de Reuniones</h1>
+    <h1>Gestión de Reuniones para Grupo Gestor</h1>
 </center>
 <table align="center" >
     <tr>

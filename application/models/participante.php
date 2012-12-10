@@ -124,27 +124,27 @@ class Participante extends CI_Model {
         return $consulta->result();
     }
 
-    public function calcularTotalParticipantes($cap_id) {
+    public function calcularTotalParticipantes($tabla,$campo_id,$campo) {
         $sql = "SELECT  count(*) Total,
                 (SELECT  count(*)
-                 FROM participante_capacitacion, participante
-                 WHERE participante_capacitacion.par_id = participante.par_id AND
-                       participante_capacitacion.cap_id = ? AND
+                 FROM participante_".$tabla.", participante
+                 WHERE participante_".$tabla.".par_id = participante.par_id AND
+                       participante_".$tabla.".".$campo." = ? AND
                        participante.par_sexo='F' AND
-                       participante_capacitacion.par_cap_participa='Si'
+                       participante_".$tabla.".par_".substr($campo,0,3)."_participa='Si'
                  )Mujeres,
                 (SELECT  count(*)
-                 FROM participante_capacitacion, participante
-                 WHERE participante_capacitacion.par_id = participante.par_id AND
-                       participante_capacitacion.cap_id = ? AND
+                 FROM participante_".$tabla.", participante
+                 WHERE participante_".$tabla.".par_id = participante.par_id AND
+                       participante_".$tabla.".".$campo." = ? AND
                        participante.par_sexo='M' AND
-                       participante_capacitacion.par_cap_participa='Si'
+                       participante_".$tabla.".par_".substr($campo,0,3)."_participa='Si'
                 )Hombres
-               FROM participante_capacitacion, participante
-               WHERE participante_capacitacion.par_id = participante.par_id AND
-                     participante_capacitacion.cap_id = ? AND
-                     participante_capacitacion.par_cap_participa='Si'";
-        $consulta = $this->db->query($sql, array($cap_id,$cap_id,$cap_id));
+               FROM participante_".$tabla.", participante
+               WHERE participante_".$tabla.".par_id = participante.par_id AND
+                     participante_".$tabla.".".$campo." = ? AND
+                     participante_".$tabla.".par_".substr($campo,0,3)."_participa='Si'";
+        $consulta = $this->db->query($sql, array($campo_id,$campo_id,$campo_id));
         return $consulta->result();
     }
     
