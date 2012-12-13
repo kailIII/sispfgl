@@ -58,7 +58,7 @@ class Comp23_E1 extends CI_Controller {
 
         /* REGISTRAR REUNION */
         $this->load->model('etapa1-sub23/reunion', 'reu');
-        $ultima = $this->reu->ultimaReunion($pro_pep_id);
+        $ultima = $this->reu->ultimaReunion($pro_pep_id,1);
         $reu_numero = (int) $ultima[0]['ultima'] + 1;
         $informacion['reu_numero'] = $reu_numero;
         $this->reu->agregarReunion(1, $pro_pep_id, $reu_numero);
@@ -128,7 +128,7 @@ class Comp23_E1 extends CI_Controller {
         $username = $this->tank_auth->get_username();
         $datos = $this->usuario->obtenerDepartamento($username);
         $pro_pep_id = $datos[0]->id;
-        $informacion['reuniones'] = $this->reunion->obtenerReuniones($pro_pep_id);
+        $informacion['reuniones'] = $this->reunion->obtenerReuniones($pro_pep_id, 1);
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $username;
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
@@ -226,7 +226,7 @@ class Comp23_E1 extends CI_Controller {
 
         echo $jsonresponse;
     }
-    
+
     public function gestionParticipantes($tabla, $campo, $id_campo) {
         /* VARIABLES POST */
         /* LOS COMUNES */
@@ -520,9 +520,9 @@ class Comp23_E1 extends CI_Controller {
         echo $jsonresponse;
     }
 
-    public function calcularTotalParticipantes($cap_id) {
+    public function calcularTotalParticipantes($tabla,$campo_id,$campo) {
         $this->load->model('participante');
-        $totales = $this->participante->calcularTotalParticipantes($cap_id);
+        $totales = $this->participante->calcularTotalParticipantes($tabla,$campo_id,$campo);
 
         $rows[0]['id'] = 1;
         $rows[0]['cell'] = array($totales[0]->total,
@@ -646,7 +646,7 @@ class Comp23_E1 extends CI_Controller {
         $this->load->model('etapa1-sub23/acuerdo_municipal', 'acuerdoMun');
         $this->acuerdoMun->actualizarAcuMun($acu_mun_id, $acu_mun_fecha, $acu_mun_p1, $acu_mun_p2, $acu_mun_observacion, $acu_mun_ruta_archivo);
 
-        redirect('componente2/comp23_E1/');
+        redirect('componente2/comp23_E1/acuerdoMunicipal');
     }
 
     public function subirArchivo($tabla, $campo_id, $campo) {
@@ -708,7 +708,7 @@ class Comp23_E1 extends CI_Controller {
         $this->load->model('etapa1-sub23/declaracion_interes', 'decInt');
         $this->decInt->actualizarDecInt($dec_int_id, $dec_int_fecha, $dec_int_lugar, $dec_int_comentario, $dec_int_ruta_archivo);
 
-        redirect('componente2/comp23_E1/');
+        redirect('componente2/comp23_E1/declaracionInteres');
     }
 
     public function equipoApoyo() {
@@ -771,7 +771,7 @@ class Comp23_E1 extends CI_Controller {
         $this->load->model('etapa1-sub23/grupo_apoyo', 'gruApo');
         $this->gruApo->actualizarGruApo($gru_apo_id, $gru_apo_fecha, $gru_apo_c3, $gru_apo_c4, $gru_apo_observacion, $gru_apo_lugar);
 
-        redirect('componente2/comp23_E1/');
+        redirect('componente2/comp23_E1/equipoApoyo');
     }
 
     public function capacitacionEquipoApoyo() {
@@ -786,7 +786,7 @@ class Comp23_E1 extends CI_Controller {
         $datos = $this->usuario->obtenerDepartamento($username);
         $pro_pep_id = $datos[0]->id;
         $this->load->model('etapa1-sub23/capacitacion');
-        $informacion['capacitaciones'] = $this->capacitacion->obtenerCapacitaciones($pro_pep_id);
+        $informacion['capacitaciones'] = $this->capacitacion->obtenerCapacitaciones($pro_pep_id, 1);
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/etapa1/capacitacion_view', $informacion);
@@ -814,8 +814,8 @@ class Comp23_E1 extends CI_Controller {
         $informacion['gru_apo_id'] = $gru_apo_id;
         /* CREAR MODELO PARA CAPACITACIÓN */
         $this->load->model('etapa1-sub23/capacitacion');
-        $this->capacitacion->agregarCapacitacion($pro_pep_id);
-        $resultado = $this->capacitacion->obtenerIdCapacitacion($pro_pep_id);
+        $this->capacitacion->agregarCapacitacion($pro_pep_id, 1);
+        $resultado = $this->capacitacion->obtenerIdCapacitacion($pro_pep_id, 1);
         $cap_id = $resultado[0]['cap_id'];
         /* OBTENER EL GRUPO LOCAL DE APOYO */
         $this->load->model('participante');
@@ -944,7 +944,7 @@ class Comp23_E1 extends CI_Controller {
         }
     }
 
-    public function inforPreMunicipio() {
+    public function informePreliminar() {
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
 
@@ -961,31 +961,85 @@ class Comp23_E1 extends CI_Controller {
         $pro_pep_id = $datos[0]->id;
         $informacion['proyectoPep'] = $datos[0]->Proyecto;
         $informacion['pro_pep_id'] = $pro_pep_id;
-        /*INFORME PRELIMINAR ASPECTOS IMPORTANTES*/
+        /* INFORME PRELIMINAR ASPECTOS IMPORTANTES */
         $this->load->model('cumplimiento_minimo', 'cumm');
-        $informacion['cumplimientosMinimos'] = $this->cumm->obtenerCumplimientoMinimo();
+        //CUMPLIMIENTOS MINIMOS
+        $cumplimientosMinimos = $this->cumm->obtenerCumplimientoMinimo(1);
         $this->load->model('proyectoPep/proyecto_pep', 'proPep');
         $resultado = $this->proPep->obtenerGrupoApoyo($pro_pep_id);
         $informacion['gru_apo_id'] = $resultado[0]['gru_apo_id'];
-        /*INFORMACIÓN DEL INFORME PRELIMINAR*/
+        /* INFORMACIÓN DEL INFORME PRELIMINAR */
         $this->load->model('etapa1-sub23/informe_preliminar', 'infPre');
         $resultado = $this->infPre->contarInfPrePorPep($pro_pep_id);
+        $this->load->model('etapa1-sub23/cumplimiento_informe', 'cumInf');
         if ($resultado == '0') {
             $this->infPre->agregarInfPre($pro_pep_id);
             $resultado = $this->infPre->obtenerInfPre($pro_pep_id);
             $this->load->model('proyectoPep/proyecto_pep', 'proPep');
             $this->proPep->actualizarIndices('inf_pre_id', $resultado[0]['inf_pre_id'], $pro_pep_id);
-        }else
+            foreach ($cumplimientosMinimos as $aux)
+                $this->cumInf->insertarCumplimientoInform($resultado[0]['inf_pre_id'], $aux->cum_min_id);
+        } else {
             $resultado = $this->infPre->obtenerInfPre($pro_pep_id);
-        
+        }
         $informacion['inf_pre_id'] = $resultado[0]['inf_pre_id'];
+        $informacion['inf_pre_firmam'] = $resultado[0]['inf_pre_firmam'];
+        $informacion['inf_pre_firmai'] = $resultado[0]['inf_pre_firmai'];
+        $informacion['inf_pre_firmau'] = $resultado[0]['inf_pre_firmau'];
+        $informacion['inf_pre_aceptacion'] = $resultado[0]['inf_pre_aceptacion'];
+        $informacion['inf_pre_fecha_borrador'] = $resultado[0]['inf_pre_fecha_borrador'];
+        $informacion['inf_pre_fecha_observacion'] = $resultado[0]['inf_pre_fecha_observacion'];
         $informacion['inf_pre_observacion'] = $resultado[0]['inf_pre_observacion'];
         $informacion['inf_pre_ruta_archivo'] = $resultado[0]['inf_pre_ruta_archivo'];
-        /*FIN DE INFORME PRELIMINAR*/
+        $informacion['cumplimientosMinimos'] = $this->cumInf->obtenerLosCumplimientosInforme($resultado[0]['inf_pre_id']);
+        /* FIN DE INFORME PRELIMINAR */
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/etapa1/inforPreMunicipio_view', $informacion);
         $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function guardarInformePreliminar($inf_pre_id) {
+        /* VARIABLES POST */
+        $inf_pre_fecha_borrador = $this->input->post("inf_pre_fecha_borrador");
+        if ($inf_pre_fecha_borrador == '')
+            $inf_pre_fecha_borrador = null;
+        $inf_pre_fecha_observacion = $this->input->post("inf_pre_fecha_observacion");
+        if ($inf_pre_fecha_observacion == '')
+            $inf_pre_fecha_observacion = null;
+        $inf_pre_aceptacion = $this->input->post("inf_pre_aceptacion");
+        if ($inf_pre_aceptacion == '')
+            $inf_pre_aceptacion = null;
+        else
+            $inf_pre_aceptada = 'true';
+        $inf_pre_firmau = $this->input->post("inf_pre_firmau");
+        if ($inf_pre_firmau == '0')
+            $inf_pre_firmau = null;
+        $inf_pre_firmai = $this->input->post("inf_pre_firmai");
+        if ($inf_pre_firmai == '0')
+            $inf_pre_firmai = null;
+        $inf_pre_firmam = $this->input->post("inf_pre_firmam");
+        if ($inf_pre_firmam == '0')
+            $inf_pre_firmam = null;
+        $inf_pre_observacion = $this->input->post("inf_pre_observacion");
+        $inf_pre_ruta_archivo = $this->input->post("inf_pre_ruta_archivo");
+        /* OBTENIENDO VALORES DE LOS CRITERIOS */
+        $this->load->model('cumplimiento_minimo');
+        $this->load->model('etapa1-sub23/cumplimiento_informe', 'cumInf');
+        $cumplimientos = $this->cumplimiento_minimo->obtenerCumplimientoMinimo(1);
+        foreach ($cumplimientos as $cumplimiento_minimo) {
+            if ($this->input->post("cum_" . $cumplimiento_minimo->cum_min_id) == '0')
+                $valor = null;
+            else
+                $valor = $this->input->post("cum_" . $cumplimiento_minimo->cum_min_id);
+            $this->cumInf->actualizarCumplimientoInform($valor, $inf_pre_id, $cumplimiento_minimo->cum_min_id);
+        }
+
+        /* ACTUALIZANDO ACUERDO MUNICIPAL */
+        $this->load->model('etapa1-sub23/informe_preliminar', 'infPre');
+        $this->infPre->actualizarInfPre($inf_pre_id, $inf_pre_firmam, $inf_pre_firmau, $inf_pre_firmai, $inf_pre_fecha_borrador, $inf_pre_aceptacion, $inf_pre_fecha_observacion, $inf_pre_observacion, $inf_pre_ruta_archivo, $inf_pre_aceptada);
+
+        redirect(base_url('componente2/comp23_E1/InformePreliminar'));
     }
 
     public function inventarioInformacion() {
@@ -1034,7 +1088,7 @@ class Comp23_E1 extends CI_Controller {
 
         $this->load->model('etapa1-sub23/inventario_informacion');
         $this->inventario_informacion->editarInventarioInformacion($inv_inf_id, $inv_inf_observacion);
-        redirect(base_url());
+        redirect('componente2/comp23_E1/inventarioInformacion');
     }
 
     public function cargarFuentes($inv_inf_id, $tipo) {

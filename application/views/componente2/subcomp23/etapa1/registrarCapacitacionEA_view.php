@@ -2,10 +2,10 @@
     $(document).ready(function(){
         /*ZONA DE BOTONES*/
         $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/comp23_E1/guardarCapacitacion')."/".$cap_id; ?>';
+            this.form.action='<?php echo base_url('componente2/comp23_E1/guardarCapacitacion') . "/" . $cap_id; ?>';
         });
         $("#cancelar").button().click(function() {
-            document.location.href='<?php echo base_url('componente2/comp23_E1/cancelaCapacitacion')."/".$cap_id; ?>';
+            document.location.href='<?php echo base_url('componente2/comp23_E1/cancelaCapacitacion') . "/" . $cap_id; ?>';
         });
         /*DIALOGOS DE VALIDACION*/
         $('.mensaje').dialog({
@@ -45,8 +45,8 @@
             colModel:[
                 {name:'par_id',index:'par_id', width:40,editable:false,editoptions:{size:15} },
                 {name:'par_dui',index:'par_dui', width:100,editable:true,
-                    editoptions:{size:15,maxlength:10}, 
-                    editrules:{text:true},formoptions:{label: "Dui"}
+                    editoptions:{size:25,maxlength: 10,dataInit:function(el){$(el).mask("99999999-9",{placeholder:" "});}},
+                    formoptions:{label: "DUI"}
                 },
                 {name:'par_nombre',index:'par_nombre',width:100,editable:true,
                     editoptions:{size:25,maxlength:50}, 
@@ -67,7 +67,7 @@
                 {name:'par_edad',index:'par_edad',width:80,editable:true,
                     editoptions:{size:25,maxlength:30}, 
                     formoptions:{ label: "Edad",elmprefix:"(*)"},
-                    editrules:{required:true,number:true} 
+                    editrules:{required:true,number:true,minvalue:12} 
                 },
                 {name:'par_proviene',index:'par_proviene',width:80,edittype:"select",
                     editable:true,
@@ -86,7 +86,7 @@
                     editrules:{required:true} 
                 },
                 {name:'par_tel',index:'par_tel',width:100,editable:true,
-                    editoptions:{size:10,maxlength:9}, 
+                    editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}, 
                     formoptions:{ label: "Teléfono",elmprefix:"(*)"},
                     editrules:{required:true} 
                 }
@@ -98,9 +98,9 @@
             loadonce:true,
             pager: jQuery('#pagerParticipantes'),
             viewrecords: true,
-             gridComplete: 
+            gridComplete: 
                 function(){
-                $.getJSON('<?php echo base_url('componente2/comp23_E1/calcularTotalParticipantes') ?>/<?php echo $cap_id; ?>',
+                $.getJSON('<?php echo base_url('componente2/comp23_E1/calcularTotalParticipantes') ?>/<?php echo 'capacitacion/'. $cap_id."/cap_id"; ?>',
                 function(data) {
                     $.each(data, function(key, val) {
                         if(key=='rows'){
@@ -179,7 +179,7 @@
             viewrecords: true,
             gridComplete: 
                 function(){
-                $.getJSON('<?php echo base_url('componente2/comp23_E1/calcularTotalParticipantes') ?>/<?php echo $cap_id; ?>',
+                $.getJSON('<?php echo base_url('componente2/comp23_E1/calcularTotalParticipantes') ?>/<?php echo 'capacitacion/'. $cap_id."/cap_id"; ?>',
                 function(data) {
                     $.each(data, function(key, val) {
                         if(key=='rows'){
@@ -226,8 +226,8 @@
                     editrules:{required:true} 
                 },
                 {name:'fac_telefono',index:'fac_telefono',width:100,editable:true,
-                    editoptions:{size:25,maxlength:9}, 
-                    formoptions:{label: "Telefono",elmprefix:"(*)"},
+                    editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}, 
+                    formoptions:{ label: "Teléfono",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
                 {name:'fac_email',index:'fac_email',width:200,editable:true,
@@ -274,49 +274,67 @@
         function despuesAgregarEditar3() {
             tabla3.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');
             return[true,'']; 
-        } 
+        }
+        $("#capacitacionForm").validate({
+            rules: {
+                cap_fecha: {
+                    required: true
+                },
+                cap_tema: {
+                    required: true,
+                    maxlength: 100
+                },
+                cap_lugar: {
+                    required: true,
+                    maxlength: 50
+                },
+                cap_area: {
+                    required: true,
+                    maxlength: 200
+                }
+            }
+        });   
     });
 </script>
 
-<form method="post">
-     <div style="margin-left: 70px;">
-        <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
-        <h2 class="h2Titulos">Producto 4: Capacitaciones Local de Apoyo</h2>
-        <table>
-            <tr>
-            <td ><strong>Departamento:</strong><?php echo $departamento ?></td>
-            <td ><strong>Municipio:</strong><?php echo $municipio ?></td>
-            </tr>
-            <tr>
-            <td  ><strong>Fecha de Capacitación: </strong><input readonly="readonly" id="cap_fecha" name="cap_fecha" type="text" size="10" /></td>
-            <td ><strong>Area de Capacitación:</strong><input id="cap_area" name="cap_area" type="text" size="20"/></td>
-            </tr>
-            <tr>
-            <td colspan="2"><strong>Tema:</strong><input id="cap_tema" name="cap_tema" type="text" size="40"/></td>
-            </tr>
-            <tr>
-            <td colspan="2"><strong>Lugar:</strong><input id="cap_lugar" name="cap_lugar" type="text" size="40"/></td>
-            </tr>
-            <tr>
-            <td colspan="2"><strong>Proyecto PEP:  </strong><?php echo $proyectoPep ?></td>
-            </tr>
-        </table>
-        <br></br>
-        <center>     
-            <table id="Facilitadores"></table>
-            <div id="pagerFacilitadores"></div>
-        </center>  
-        <br></br>
-        <table id="MiembroELA"></table>
-        <div id="pagerMiembroEla"></div>
-        <br></br>
-        <table id="participantes"></table>
-        <div id="pagerParticipantes"></div>
-    </div>
+<form method="post" id="capacitacionForm">
+
+    <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
+    <h2 class="h2Titulos">Producto 4: Capacitaciones Local de Apoyo</h2>
+    <table>
+        <tr>
+        <td ><strong>Departamento:</strong><?php echo $departamento ?></td>
+        <td ><strong>Municipio:</strong><?php echo $municipio ?></td>
+        </tr>
+        <tr>
+        <td  ><strong>Fecha de Capacitación: </strong><input readonly="readonly" id="cap_fecha" name="cap_fecha" type="text" size="10" /></td>
+        <td ><strong>Area de Capacitación:</strong><input id="cap_area" name="cap_area" type="text" size="20"/></td>
+        </tr>
+        <tr>
+        <td colspan="2"><strong>Tema:</strong><input id="cap_tema" name="cap_tema" type="text" size="40"/></td>
+        </tr>
+        <tr>
+        <td colspan="2"><strong>Lugar:</strong><input id="cap_lugar" name="cap_lugar" type="text" size="40"/></td>
+        </tr>
+        <tr>
+        <td colspan="2"><strong>Proyecto PEP:  </strong><?php echo $proyectoPep ?></td>
+        </tr>
+    </table>
+    <br/><br/>
+    <center>     
+        <table id="Facilitadores"></table>
+        <div id="pagerFacilitadores"></div>
+    </center>  
+    <br/><br/>
+    <table id="MiembroELA"></table>
+    <div id="pagerMiembroEla"></div>
+    <br/><br/>
+    <table id="participantes"></table>
+    <div id="pagerParticipantes"></div>
     <table style="position: relative;left: 40px;top: 20px;border-color: 2px solid blue">
         <tr>
         <td>
-            <p>Observaciones y/o Recomendaciones:</br>
+            <p>Observaciones y/o Recomendaciones:<br/>
                 <textarea name="cap_observacion" cols="48" rows="5"></textarea></p>
 
         </td>
@@ -330,7 +348,7 @@
                 </tr>
                 <tr>
                 <td class="textD">Mujeres: </td>
-                <td><input class="bordeNo" id="mujeres" type="text" size="5" readonly="readonly" /></br></td>
+                <td><input class="bordeNo" id="mujeres" type="text" size="5" readonly="readonly" /><br/></td>
                 </tr>
                 <tr>
                 <td class="textD">Total: </td>

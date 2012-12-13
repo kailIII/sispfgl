@@ -29,6 +29,23 @@ class Informe_preliminar extends CI_Model {
         $consulta = $this->db->get($this->tabla);
         return $consulta->result_array();
     }
+    
+     public function actualizarInfPre($inf_pre_id, $inf_pre_firmam, $inf_pre_firmau, $inf_pre_firmai,$inf_pre_fecha_borrador, $inf_pre_aceptacion, $inf_pre_fecha_observacion, $inf_pre_observacion, $inf_pre_ruta_archivo,$inf_pre_aceptado) {
+        $datos = array(
+            'inf_pre_firmam' => $inf_pre_firmam,
+            'inf_pre_firmai' => $inf_pre_firmai,
+            'inf_pre_firmau' => $inf_pre_firmau,
+            'inf_pre_fecha_borrador' => $inf_pre_fecha_borrador,
+            'inf_pre_aceptacion' => $inf_pre_aceptacion,
+            'inf_pre_fecha_observacion' => $inf_pre_fecha_observacion,
+            'inf_pre_observacion' => $inf_pre_observacion,
+            'inf_pre_fecha_borrador' => $inf_pre_fecha_borrador,
+            'inf_pre_ruta_archivo' => $inf_pre_ruta_archivo,
+            'inf_pre_aceptada' => $inf_pre_aceptado
+        );
+        $this->db->where('inf_pre_id', $inf_pre_id);
+        $this->db->update($this->tabla, $datos);
+    }
 }
 
 ?>

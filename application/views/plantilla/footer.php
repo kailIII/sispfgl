@@ -1,9 +1,10 @@
-</br></br></br>
-<footer>
-    <div class="aux-space">
-        Copyright 2012. Todos los derechos reservados. PFGL.
-    </div>
-</footer>
+<br/><br/>
+</div>
+
+<div class="footer">
+    Copyright 2012. Todos los derechos reservados. PFGL.
+</div>
+
 </div><!-- fin del cuerpo de la pagina -->
 
 </div><!-- fin del contenedor principal -->

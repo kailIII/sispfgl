@@ -1,8 +1,12 @@
 <script type="text/javascript">        
     $(document).ready(function(){
         /*ZONA DE BOTONES*/
-        $("#guardar").button();
-        $("#cancelar").button();
+       $("#guardar").button().click(function() {
+            this.form.action='<?php echo base_url('componente2/comp23_E1/guardarInformePreliminar/' . $inf_pre_id); ?>';
+        });
+        $("#cancelar").button().click(function() {
+            document.location.href='<?php echo base_url(); ?>';
+        });
         /*  PARA SUBIR EL ARCHIVO  */
         var button = $('#btn_subir'), interval;
         new AjaxUpload('#btn_subir', {
@@ -143,11 +147,10 @@
 </script>
 
 <form method="post">
-    <div style="margin-left: 200px;">
-        <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
+         <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
         <h2 class="h2Titulos">Producto 6: Informe Preliminar del Municipio</h2>
 
-        <br></br>
+        <br/><br/>
         <table>
             <tr>
             <td ><strong>Departamento:</strong></td>
@@ -162,7 +165,7 @@
             <td ><?php echo $proyectoPep ?></td>    
             </tr>
         </table>
-        <br></br>
+        <br/><br/>
   
         <table>
             <tr>
@@ -173,8 +176,8 @@
                     <?php foreach ($cumplimientosMinimos as $aux) { ?>
                         <tr>
                         <td><?php echo $aux->cum_min_nombre; ?></td>
-                        <td><input type="radio" name="<?php echo $aux->cum_min_id; ?>" value="true">SI </input></td>
-                        <td><input type="radio" name="<?php echo $aux->cum_min_id; ?>" value="false">NO </input></td>
+                        <td><input type="radio" name="cum_<?php echo $aux->cum_min_id; ?>" value="true" <?php if(!strcasecmp($aux->cum_inf_valor,'t')) {?>checked <?php } ?> >SI </input></td>
+                        <td><input type="radio" name="cum_<?php echo $aux->cum_min_id; ?>" value="false"<?php if(!strcasecmp($aux->cum_inf_valor,'f')) {?>checked <?php } ?>>NO </input></td>
                         </tr>
                     <?php } ?>
                 </table>  
@@ -184,37 +187,37 @@
             <td style="width: 20px"></td>
             <td>
                 <table>
-                    <tr style="width: 300px"> <td ><strong>Fecha de presentación del borrador: </strong><input id="inf_pre_fecha_borrador" name="inf_pre_fecha_borrador" type="text" size="10"/></td></tr>
-                    <tr><td><strong>Fecha de superación de observaciones: </strong><input id="inf_pre_fecha_observacion" name="inf_pre_fecha_observacion" type="text" size="10"/></td></tr>
-                    <tr> <td><strong>Fecha de aprobacion del consejo municipal: </strong><input id="inf_pre_aceptacion" name="inf_pre_aceptacion" type="text" size="10"/></td></tr>
+                    <tr style="width: 300px"> <td ><strong>Fecha de presentación del borrador: </strong><input id="inf_pre_fecha_borrador" <?php if (isset($inf_pre_fecha_borrador)){?>  value="<?php echo date('d/m/y',  strtotime($inf_pre_fecha_borrador));?>" <?php } ?> name="inf_pre_fecha_borrador" type="text" size="10" /></td></tr>
+                    <tr><td><strong>Fecha de superación de observaciones: </strong><input id="inf_pre_fecha_observacion" <?php if (isset($inf_pre_fecha_observacion)){?>value="<?php echo date('d/m/y',  strtotime($inf_pre_fecha_observacion));?>"<?php } ?>  name="inf_pre_fecha_observacion" type="text" size="10"/></td></tr>
+                    <tr> <td><strong>Fecha de aprobacion del consejo municipal: </strong><input id="inf_pre_aceptacion" <?php if (isset($inf_pre_aceptacion)){?> value="<?php echo date('d/m/y',  strtotime($inf_pre_aceptacion));?>"<?php } ?>  name="inf_pre_aceptacion" type="text" size="10"/></td></tr>
                 </table>
                 <p><strong>¿Acta de aceptación contiene firmas?</strong></p>
                 <table>
                     <tr>
                     <td>Municipalidad</td>
-                    <td><input type="radio" name="mayor15" value="true">SI </input></td>
-                    <td><input type="radio" name="mayor15" value="false">NO </input></td>
+                    <td><input type="radio" name="inf_pre_firmam" value="true" <?php if(!strcasecmp($inf_pre_firmam,'t')) {?>checked <?php } ?>>SI </input></td>
+                    <td><input type="radio" name="inf_pre_firmam" value="false" <?php if(!strcasecmp($inf_pre_firmam,'f')) {?>checked <?php } ?>>NO </input></td>
                     </tr>
                     <tr>
                     <td>ISDEM </td>
-                    <td><input type="radio" name="porcenMujeres" value="true">SI </input></td>
-                    <td><input type="radio" name="porcenMujeres" value="false">NO </input></td>    
+                    <td><input type="radio" name="inf_pre_firmai" value="true" <?php if(!strcasecmp($inf_pre_firmai,'t')) {?>checked <?php } ?>>SI </input></td>
+                    <td><input type="radio" name="inf_pre_firmai" value="false"<?php if(!strcasecmp($inf_pre_firmai,'f')) {?>checked <?php } ?>>NO </input></td>    
                     </tr>
                     <tr>
                     <td>UEP</td>
-                    <td><input type="radio" name="conTerritorio" value="true">SI </input></td>
-                    <td><input type="radio" name="conTerritorio" value="false">NO </input></td> 
+                    <td><input type="radio" name="inf_pre_firmau" value="true" <?php if(!strcasecmp($inf_pre_firmau,'t')) {?>checked <?php } ?>>SI </input></td>
+                    <td><input type="radio" name="inf_pre_firmau" value="false" <?php if(!strcasecmp($inf_pre_firmau,'f')) {?>checked <?php } ?>>NO </input></td> 
                     </tr>
                 </table> 
             </td>
             </tr>
         </table>
-        <br></br>
+        <br/><br/>
 
         <table id="participantes"></table>
         <div id="pagerParticipantes"></div>
 
-        <p>Observaciones y/o Recomendaciones:</br>
+        <p>Observaciones y/o Recomendaciones:<br/>
             <textarea name="inf_pre_observacion" cols="48" rows="5"><?php echo $inf_pre_observacion; ?></textarea></p>
         
       <table>
@@ -224,18 +227,16 @@
             </tr>
             <tr>
             <td><a <?php if (isset($inf_pre_ruta_archivo) && $inf_pre_ruta_archivo != '') { ?> href="<?php echo base_url() . $inf_pre_ruta_archivo; ?>"<?php } ?>  id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
-            <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($inf_pre_ruta_archivo) && $inf_pre_ruta_archivo != '') { ?>value="Descargar Declaración de Interés"<?php } else { ?> value="No hay ningún informe preliminar para descargar" <?php } ?>size="50" style="border: none"/></td>
+            <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($inf_pre_ruta_archivo) && $inf_pre_ruta_archivo != '') { ?>value="Descargar Informe Preliminar"<?php } else { ?> value="No hay ningún informe preliminar para descargar" <?php } ?>size="50" style="border: none"/></td>
             </tr>
         </table>
+        
     <center>
-        <div style="position:relative;width: 300px;top: 25px">
             <p > 
-                <input type="submit" id="guardar" value="Guardar Reunión" />
+                <input type="submit" id="guardar" value="Guardar Informe Preliminar" />
                 <input type="button" id="cancelar" value="Cancelar" />
             </p>
-        </div>
     </center>
-</div>
     <input id="inf_pre_ruta_archivo" name="inf_pre_ruta_archivo" <?php if (isset($inf_pre_ruta_archivo) && $inf_pre_ruta_archivo != '') { ?>value="<?php echo $inf_pre_ruta_archivo; ?>"<?php } ?> type="text" size="100" readonly="readonly" style="visibility: hidden"/>
 </form>
 

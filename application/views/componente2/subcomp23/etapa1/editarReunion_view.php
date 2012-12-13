@@ -158,9 +158,8 @@
     <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
     <h2 class="h2Titulos">Producto 1: Acuerdo Municipal</h2>
     <h2 class="h2Titulos">Registro de Reuniones</h2>
-    <br></br>
-    <div style="margin-left: 150px;">
-        <table>
+    <br/><br/>
+       <table>
             <tr>
             <td colspan="2"><strong>Departamento:</strong><?php echo $departamento ?></td>
             <td colspan="2"><strong>Municipio:</strong><?php echo $municipio ?></td>
@@ -174,7 +173,7 @@
                 No. de Reunión: <input type="text" id="reu_numero" value="<?php echo $reu_numero ?>" id="reu_numero" size="5" readonly="readonly"/> </td>
             <td width="300">
                 Fecha: 
-                <input value="<?php echo $reu_fecha ?>" id="reu_fecha" name="reu_fecha" readonly="readonly" class="required"  size="10"/>
+                <input value="<?php echo date_format(date_create($reu_fecha),"d-m-Y") ?>" id="reu_fecha" name="reu_fecha" readonly="readonly" class="required"  size="10"/>
             </td>
             <td width="300">
                 Duración en Horas:
@@ -198,7 +197,7 @@
         <table style="position: relative;top: 15px;">
             <tr>  
             <td>
-                <p>Resultado de la Reunión:</br> 
+                <p>Resultado de la Reunión:<br/> 
                     <textarea id="reu_resultado" name="reu_resultado" cols="48" rows="5" class="required" ><?php echo $reu_resultado ?></textarea></p>
             </td>
             <td>
@@ -211,7 +210,7 @@
                     </tr>
                     <tr>
                     <td class="textD">Mujeres: </td>
-                    <td><input class="bordeNo" id="mujeres" type="text" size="5" readonly="readonly" /></br></td>
+                    <td><input class="bordeNo" id="mujeres" type="text" size="5" readonly="readonly" /><br/></td>
                     </tr>
                     <tr>
                     <td class="textD">Total: </td>
@@ -223,7 +222,7 @@
             </tr>
         </table>
         <div>
-            <p>Observaciones y/o Recomendaciones:</br>
+            <p>Observaciones y/o Recomendaciones:<br/>
                 <textarea id="reu_observacion"  name="reu_observacion" cols="48" rows="5"><?php echo $reu_observacion ?></textarea></p>
             <center style="position: relative;top: 20px">
 
@@ -232,7 +231,6 @@
                 </p>
         </div>
         </center>
-    </div>
     <input id="reu_id" name="reu_id" value="<?php echo $reu_id ?>" style="visibility: hidden"/>
 </form>
 <div id="mensaje" class="mensaje" title="Aviso de la operación">

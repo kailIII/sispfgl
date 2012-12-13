@@ -19,16 +19,17 @@ class Reunion extends CI_Model {
         $this->db->insert($this->tabla, $datos);
     }
 
-    public function ultimaReunion($pro_pep_id) {
+    public function ultimaReunion($pro_pep_id,$eta_id) {
         $consulta = "SELECT COALESCE(max (reu_numero),0) ultima
                    FROM reunion
-                   Where pro_pep_id=?";
-        $query = $this->db->query($consulta, array($pro_pep_id));
+                   Where pro_pep_id=? AND eta_id=?";
+        $query = $this->db->query($consulta, array($pro_pep_id,$eta_id));
         return $query->result_array();
     }
 
-    public function obtenerReuniones($pro_pep_id) {
+    public function obtenerReuniones($pro_pep_id,$eta_id) {
         $this->db->where('pro_pep_id',$pro_pep_id);
+        $this->db->where('eta_id',$eta_id);
         $consulta = $this->db->get($this->tabla);
         return $consulta->result();
     }
@@ -62,7 +63,7 @@ class Reunion extends CI_Model {
 
     public function eliminaReunion($reu_id) {
         $consulta = "DELETE FROM " . $this->tabla . " CASCADE WHERE reu_id=?";
-        $query = $this->db->query($consulta, array($reu_id));
+        $this->db->query($consulta, array($reu_id));
     }
 
 }

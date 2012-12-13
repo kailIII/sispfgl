@@ -75,10 +75,10 @@
             colNames:['id','Dui','Nombres','Apellidos','Sexo','Edad','Proviene R/U','Cargo','Nivel Escolar','Teléfono'],
             colModel:[
                 {name:'par_id',index:'par_id', width:40,editable:false,editoptions:{size:15} },
-                {name:'par_dui',index:'par_dui', width:100,editable:true,editoptions:{size:15}, 
-                    formoptions:{label: "Dui"}
-                     },
-                
+                {name:'par_dui',index:'par_dui', width:100,editable:true,
+                    editoptions:{size:25,maxlength: 10,dataInit:function(el){$(el).mask("99999999-9",{placeholder:" "});}},
+                    formoptions:{label: "DUI"}
+                },
                 {name:'par_nombre',index:'par_nombre',width:100,editable:true,
                     editoptions:{size:25,maxlength:50}, 
                     formoptions:{label: "Nombres",elmprefix:"(*)"},
@@ -95,21 +95,17 @@
                     formoptions:{ label: "Sexo",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validar}
                 },
-             
                 {name:'par_edad',index:'par_edad',width:80,editable:true,
                     editoptions:{size:25,maxlength:30}, 
                     formoptions:{ label: "Edad",elmprefix:"(*)"},
-                    editrules:{required:true} 
+                    editrules:{required:true,minvalue:12,number:true} 
                 },
-                
                 {name:'par_proviene',index:'par_proviene',width:80,edittype:"select",
                     editable:true,
                     editoptions:{ value: '0:Seleccione;U:Urbano;R:Rural' }, 
                     formoptions:{ label: "Proviene de",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validar}
                 },
-                   
-                   
                 {name:'par_cargo',index:'par_cargo',width:100,editable:true,
                     editoptions:{size:25,maxlength:30}, 
                     formoptions:{ label: "Cargo",elmprefix:"(*)"},
@@ -120,10 +116,8 @@
                     formoptions:{ label: "Nivel Escolar",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
-                
-                
                 {name:'par_tel',index:'par_tel',width:100,editable:true,
-                    editoptions:{size:10,maxlength:9}, 
+                    editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}, 
                     formoptions:{ label: "Teléfono",elmprefix:"(*)"},
                     editrules:{required:true} 
                 }
@@ -188,7 +182,7 @@
 </script>
 
 <form method="post">
-    <div style="margin-left: 60px;">
+    
         <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
         <h2 class="h2Titulos">Producto 3: Equipo Local de Apoyo</h2>
 
@@ -207,7 +201,7 @@
             </tr>
 
         </table>
-        <br></br>
+        <br/><br/>
         <table id="participantes"></table>
         <div id="pagerParticipantes"></div>
 
@@ -215,7 +209,7 @@
             <input type="button" id="agregar" value="  Agregar  " />
             <input type="button" id="editar" value="   Editar   " />
             <input type="button" id="eliminar" value="  Eliminar  " />
-            <br></br>
+            <br/><br/>
         </div>
 
     
@@ -259,7 +253,7 @@
                 </tr>
                 <tr>
                 <td class="textD">Mujeres: </td>
-                <td><input class="bordeNo" id="mujeres" type="text" size="5" readonly="readonly" /></br></td>
+                <td><input class="bordeNo" id="mujeres" type="text" size="5" readonly="readonly" /><br/></td>
                 </tr>
                 <tr>
                 <td class="textD">Total: </td>
@@ -271,19 +265,18 @@
         </tr>
     </table>
     <div style="position:relative;left: 40px;top:25px;">
-        <p>Observaciones y/o Recomendaciones:</br>
+        <p>Observaciones y/o Recomendaciones:<br/>
             <textarea name="gru_apo_observacion" cols="48" rows="5"><?php if (isset($gru_apo_observacion))  echo$gru_apo_observacion; ?></textarea></p>
     </div>
 
     <center>
-        <div style="position:relative;width: 300px;top: 25px">
-            <p > 
-                <input type="submit" id="guardar" value="Guardar Reunión" />
+        <br/>
+            <p> 
+                <input type="submit" id="guardar" value="Guardar Equipo de Apoyo" />
                 <input type="button" id="cancelar" value="Cancelar" />
             </p>
-        </div>
     </center>
-        </div>
+   
 </form>
 
 <div id="mensaje" class="mensaje" title="Aviso de la operación">

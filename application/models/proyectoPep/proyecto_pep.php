@@ -10,6 +10,12 @@ class Proyecto_pep extends CI_Model {
 
     private $tabla = 'proyecto_pep';
 
+    public function obtenerProyectoPep($pro_pep_id) {
+        $this->db->where('pro_pep_id', $pro_pep_id);
+        $consulta = $this->db->get($this->tabla);
+        return $consulta->result();
+    }
+
     public function obtenerProyectoPepPorMun($mun_id) {
 
         $this->db->where('mun_id', $mun_id);
@@ -42,22 +48,45 @@ class Proyecto_pep extends CI_Model {
         $query = $this->db->get();
         return $query->result();
     }
-    
-    public function obtenerGrupoApoyo($pro_pep_id){
+
+    public function obtenerGrupoApoyo($pro_pep_id) {
         $this->db->select('gru_apo_id');
+        $this->db->select('gru_ges_id');
         $this->db->where('pro_pep_id ', $pro_pep_id);
         $query = $this->db->get($this->tabla);
         return $query->result_array();
     }
-    
-    public function actualizarIndices($campo,$valor,$pro_pep_id) {
+
+    public function actualizarIndices($campo, $valor, $pro_pep_id) {
         $datos = array(
             $campo => $valor
         );
         $this->db->where('pro_pep_id', $pro_pep_id);
         $this->db->update($this->tabla, $datos);
     }
-    
+
+    public function cuantosPep($mun_id) {
+        $this->db->from($this->tabla);
+        $this->db->where('mun_id', $mun_id);
+        $consulta = $this->db->count_all_results();
+        return $consulta;
+    }
+
+    public function actualizarProyectoPep($pro_pep_id, $pro_pep_firmacm, $pro_pep_firmais,$pro_pep_firmaue,$pro_pep_fecha_borrador,$pro_pep_fecha_observacion,$pro_pep_fecha_aprobacion,$pro_pep_ruta_archivo,$pro_pep_observacion) {
+        $datos = array(
+            'pro_pep_firmacm' => $pro_pep_firmacm,
+            'pro_pep_firmais' => $pro_pep_firmais,
+            'pro_pep_firmaue'=> $pro_pep_firmaue,
+            'pro_pep_fecha_borrador'=>$pro_pep_fecha_borrador,
+            'pro_pep_fecha_observacion'=>$pro_pep_fecha_observacion,
+            'pro_pep_fecha_aprobacion'=>$pro_pep_fecha_aprobacion,
+            'pro_pep_ruta_archivo'=>$pro_pep_ruta_archivo,
+            'pro_pep_observacion'=>$pro_pep_observacion
+        );
+        $this->db->where('pro_pep_id', $pro_pep_id);
+        $this->db->update($this->tabla, $datos);
+    }
+
 }
 
 ?>

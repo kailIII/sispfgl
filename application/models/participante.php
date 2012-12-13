@@ -15,6 +15,12 @@ class Participante extends CI_Model {
         $consulta = $this->db->get($this->tabla);
         return $consulta->result();
     }
+    
+    public function obtenerParticipantesGG($gru_ges_id) {
+        $this->db->where('gru_ges_id', $gru_ges_id);
+        $consulta = $this->db->get($this->tabla);
+        return $consulta->result();
+    }
 
     public function obtenerParticipantes($campo, $id_campo) {
         $this->db->where($campo, $id_campo);
@@ -55,6 +61,46 @@ class Participante extends CI_Model {
         $this->db->where('par_id', $par_id);
         $this->db->update($this->tabla, $datos);
     }
+    
+        public function agregarParticipantes2($campo, $id_campo, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo, $par_tel, $par_dui, $par_edad, $par_proviene, $par_nivel_esco,$par_direccion,$par_email,$par_tipo) {
+        $datos = array(
+            'par_nombre' => $par_nombre,
+            'par_apellido' => $par_apellido,
+            'par_sexo' => $par_sexo,
+            'ins_id' => $ins_id,
+            'par_cargo' => $par_cargo,
+            'par_tel' => $par_tel,
+            'par_dui' => $par_dui,
+            'par_edad' => $par_edad,
+            'par_proviene' => $par_proviene,
+            'par_nivel_esco' => $par_nivel_esco,
+            'par_direccion'=>$par_direccion,
+            'par_email'=>$par_email,
+            'par_tipo'=>$par_tipo,
+            $campo => $id_campo
+        );
+        $this->db->insert($this->tabla, $datos);
+    }
+
+    public function editarParticipantes2($par_id, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo, $par_tel, $par_dui, $par_edad, $par_proviene, $par_nivel_esco,$par_direccion,$par_email,$par_tipo) {
+        $datos = array(
+            'par_nombre' => $par_nombre,
+            'par_apellido' => $par_apellido,
+            'par_sexo' => $par_sexo,
+            'ins_id' => $ins_id,
+            'par_cargo' => $par_cargo,
+            'par_tel' => $par_tel,
+            'par_dui' => $par_dui,
+            'par_edad' => $par_edad,
+            'par_proviene' => $par_proviene,
+            'par_nivel_esco' => $par_nivel_esco,
+            'par_direccion'=>$par_direccion,
+            'par_email'=>$par_email,
+            'par_tipo'=>$par_tipo
+        );
+        $this->db->where('par_id', $par_id);
+        $this->db->update($this->tabla, $datos);
+    }
 
     public function eliminarParticipantes($par_id) {
         $this->db->where('par_id', $par_id);
@@ -78,27 +124,27 @@ class Participante extends CI_Model {
         return $consulta->result();
     }
 
-    public function calcularTotalParticipantes($cap_id) {
+    public function calcularTotalParticipantes($tabla,$campo_id,$campo) {
         $sql = "SELECT  count(*) Total,
                 (SELECT  count(*)
-                 FROM participante_capacitacion, participante
-                 WHERE participante_capacitacion.par_id = participante.par_id AND
-                       participante_capacitacion.cap_id = ? AND
+                 FROM participante_".$tabla.", participante
+                 WHERE participante_".$tabla.".par_id = participante.par_id AND
+                       participante_".$tabla.".".$campo." = ? AND
                        participante.par_sexo='F' AND
-                       participante_capacitacion.par_cap_participa='Si'
+                       participante_".$tabla.".par_".substr($campo,0,3)."_participa='Si'
                  )Mujeres,
                 (SELECT  count(*)
-                 FROM participante_capacitacion, participante
-                 WHERE participante_capacitacion.par_id = participante.par_id AND
-                       participante_capacitacion.cap_id = ? AND
+                 FROM participante_".$tabla.", participante
+                 WHERE participante_".$tabla.".par_id = participante.par_id AND
+                       participante_".$tabla.".".$campo." = ? AND
                        participante.par_sexo='M' AND
-                       participante_capacitacion.par_cap_participa='Si'
+                       participante_".$tabla.".par_".substr($campo,0,3)."_participa='Si'
                 )Hombres
-               FROM participante_capacitacion, participante
-               WHERE participante_capacitacion.par_id = participante.par_id AND
-                     participante_capacitacion.cap_id = ? AND
-                     participante_capacitacion.par_cap_participa='Si'";
-        $consulta = $this->db->query($sql, array($cap_id,$cap_id,$cap_id));
+               FROM participante_".$tabla.", participante
+               WHERE participante_".$tabla.".par_id = participante.par_id AND
+                     participante_".$tabla.".".$campo." = ? AND
+                     participante_".$tabla.".par_".substr($campo,0,3)."_participa='Si'";
+        $consulta = $this->db->query($sql, array($campo_id,$campo_id,$campo_id));
         return $consulta->result();
     }
     

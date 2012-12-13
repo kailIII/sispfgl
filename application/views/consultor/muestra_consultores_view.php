@@ -8,7 +8,7 @@
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','Nombre Consultor','Proyecto PEP asignado','Municipio'],
+            colNames:['id','Nombre Coordinador','Proyecto PEP asignado','Municipio'],
             colModel:[
                 {name:'id',index:'id', editable:false,editoptions:{size:15} },
                 {name:'con_nombre',index:'con_nombre',editable:true,
@@ -22,7 +22,7 @@
                 }
             ],
             multiselect: false,
-            caption: "Consultores Asignados",
+            caption: "Coordinadores Asignados",
             rowNum:10,
             rowList:[10,20,30],
             loadonce:true,
@@ -39,7 +39,7 @@
         $("#editar").click(function(){
             var gr = tabla.jqGrid('getGridParam','selrow');
             if( gr != null ){
-                document.location.href = '<?php echo base_url() ?>consultor/consultoraC/editarConsultor/'+gr;
+                document.location.href = '<?php echo base_url() ?>consultor/consultoraC/editarCoordinador/'+gr;
             }
             else {
                 $('#mensaje2').dialog('open');
@@ -60,27 +60,25 @@
         /*FIN DIALOGOS VALIDACION*/
     });
 </script>
-<div style="margin-left: 250px;">
 <center>
-    <h1>Gestión de Consultores para Proyectos PEP</h1>
+    <h1>Gestión de Coordinadores para Proyectos PEP</h1>
 
     <table align="center" >
         <tr>
-        <td align="center" ><a href="<?php echo base_url('consultor/consultoraC/registrarConsultor') ?>"><img src="<?php echo base_url('resource/imagenes/add.png'); ?>"/></a></td>
+        <td align="center" ><a href="<?php echo base_url('consultor/consultoraC/registrarCoordinador') ?>"><img src="<?php echo base_url('resource/imagenes/add.png'); ?>"/></a></td>
         <td width="30"></td>
         <td align="center" ><a id="editar" ><img src="<?php echo base_url('resource/imagenes/edit.png'); ?>"/></a></td>
         </tr>
         <tr>
-        <td class="letraazul" align="center">Registrar Consultor</td>
+        <td class="letraazul" align="center">Registrar Coordinador</td>
         <td width="30"></td>
-        <td class="letraazul" align="center">Editar Consultor</td>
+        <td class="letraazul" align="center">Editar Coordinador</td>
         </tr>
     </table>
     <p></p>
     <table id="consultores"></table>
     <div id="pager"></div>
 </center>
-</div>
 <div id="mensaje2" class="mensaje" title="Aviso">
-    <p>Debe Seleccionar una consultora para editar</p>
+    <p>Debe Seleccionar un colsultor para editar</p>
 </div>

@@ -159,8 +159,7 @@
     <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
     <h2 class="h2Titulos">Producto 1: Acuerdo Municipal</h2>
     <h2 class="h2Titulos">Registro de Reuniones</h2>
-    <br></br>
-    <div style="margin-left: 150px;">
+    <br/><br/>
         <table>
             <tr>
             <td colspan="2"><strong>Departamento:</strong><?php echo $departamento ?></td>
@@ -199,7 +198,7 @@
         <table style="position: relative;top: 15px;">
             <tr>  
             <td>
-                <p>Resultado de la Reunión:</br> 
+                <p>Resultado de la Reunión:<br/> 
                     <textarea id="reu_resultado" name="reu_resultado" cols="48" rows="5" class="required" ></textarea></p>
             </td>
             <td>
@@ -212,7 +211,7 @@
                     </tr>
                     <tr>
                     <td class="textD">Mujeres: </td>
-                    <td><input class="bordeNo" id="mujeres" type="text" size="5" readonly="readonly" /></br></td>
+                    <td><input class="bordeNo" id="mujeres" type="text" size="5" readonly="readonly" /><br/></td>
                     </tr>
                     <tr>
                     <td class="textD">Total: </td>
@@ -224,7 +223,7 @@
             </tr>
         </table>
         <div>
-            <p>Observaciones y/o Recomendaciones:</br>
+            <p>Observaciones y/o Recomendaciones:<br/>
                 <textarea id="reu_observacion"  name="reu_observacion" cols="48" rows="5"></textarea></p>
             <center style="position: relative;top: 20px">
 
@@ -233,7 +232,6 @@
                 </p>
         </div>
         </center>
-    </div>
     <input id="reu_id" name="reu_id" value="<?php echo $reu_id ?>" style="visibility: hidden"/>
 </form>
 <div id="mensaje" class="mensaje" title="Aviso de la operación">

@@ -42,8 +42,8 @@ class ProyectoPep extends CI_Controller {
         foreach ($proyectosPep as $aux) {
             $rows[$i]['id'] = $aux->pro_pep_id;
             $rows[$i]['cell'] = array($aux->pro_pep_id,
-                $aux->pro_pep_nombre,
-                'NO', 'NO', 'NO', 'NO'
+                $aux->pro_pep_nombre/*,
+                'NO', 'NO', 'NO', 'NO'*/
             );
             $i++;
         }
@@ -52,7 +52,7 @@ class ProyectoPep extends CI_Controller {
             array_multisort($rows, SORT_ASC);
         } else {
             $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ');
+            $rows[0]['cell'] = array(' ', ' ');
         }
 
         $datos = json_encode($rows);
@@ -150,6 +150,24 @@ class ProyectoPep extends CI_Controller {
                "page":"1",
                "total":"' . $pages . '",
                "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+     public function cuantosPepMuni($mun_id) {
+        $this->load->model('proyectoPep/proyecto_pep','proPep');
+        $totales = $this->proPep->cuantosPep($mun_id);
+
+        $rows[0]['id'] = 1;
+        $rows[0]['cell'] = array($totales);
+
+        $datos = json_encode($rows);
+        $pages = floor(1 / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . 1 . '", 
                "rows":' . $datos . '}';
 
         echo $jsonresponse;
