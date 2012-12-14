@@ -43,10 +43,8 @@
                     }
                 }else{
                     $('#vinieta').val('El Archivo debe ser menor a 1 MB.');
-                    this.enable();			
-                 
+                    this.enable();
                 }
-                 
             }	
         });
         $('#btn_descargar').click(function() {

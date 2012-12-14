@@ -86,7 +86,7 @@
                     editrules:{required:true} 
                 },
                 {name:'par_sexo',index:'par_sexo',editable:true,edittype:"select",width:40,
-                    editoptions:{ value: '0:Seleccione;f:Femenino; m:Masculino' }, 
+                    editoptions:{ value: '0:Seleccione;f:Femenino;m:Masculino' }, 
                     formoptions:{ label: "Sexo",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validaSexo}
                 },

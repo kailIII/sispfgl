@@ -574,10 +574,10 @@ class Comp23_E1 extends CI_Controller {
         /* OBTENER ACUERDO MUNICIPAL */
         $this->load->model('etapa1-sub23/acuerdo_municipal', 'acumun');
 
-        $numAcuMun = $this->acumun->contarAcuMunPorPep($pro_pep_id);
+        $numAcuMun = $this->acumun->contarAcuMunPorPep($pro_pep_id,1);
         if ($numAcuMun == 0) {
-            $this->acumun->agregarAcuMun($pro_pep_id);
-            $idAcuMun = $this->acumun->obtenerIdAcuMun($pro_pep_id);
+            $this->acumun->agregarAcuMun($pro_pep_id,1);
+            $idAcuMun = $this->acumun->obtenerIdAcuMun($pro_pep_id,1);
             $acu_mun_id = $idAcuMun[0]['acu_mun_id'];
             $this->load->model('proyectoPep/proyecto_pep', 'proPep');
             $this->proPep->actualizarIndices('acu_mun_id', $acu_mun_id, $pro_pep_id);
@@ -586,7 +586,7 @@ class Comp23_E1 extends CI_Controller {
             foreach ($criterios as $criteAux)
                 $this->criterioAcuerdo->insertarCriterioAcuerdo($acu_mun_id, $criteAux->cri_id);
         } else {
-            $idAcuMun = $this->acumun->obtenerIdAcuMun($pro_pep_id);
+            $idAcuMun = $this->acumun->obtenerIdAcuMun($pro_pep_id,1);
             $acu_mun_id = $idAcuMun[0]['acu_mun_id'];
             $acuerdoMun = $this->acumun->obtenerAcuMun($acu_mun_id);
             $informacion['acu_mun_fecha'] = $acuerdoMun[0]['acu_mun_fecha'];
