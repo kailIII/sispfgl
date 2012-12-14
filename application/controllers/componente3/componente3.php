@@ -11,6 +11,10 @@ if (!defined('BASEPATH'))
 
 class  componente3 extends CI_Controller {
 	
+	public function index() {
+
+    }
+	
     public function diag_sect_anal_tran() {
 
         $informacion['titulo'] = '3.1 Diagnostico Sectorial y Analisis Transversales';
