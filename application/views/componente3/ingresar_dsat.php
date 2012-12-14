@@ -7,32 +7,7 @@
            dateFormat: 'dd/mm/yy'
        })
 	});
-
-var posicionCampo=2;
-	
-	function agregarFila(){
-	var nuevaFila = document.getElementById("cargo_asis").insertRow(-1);
-	nuevaFila.id=posicionCampo;
-	var nuevaCelda=nuevaFila.insertCell(-1);
-	nuevaCelda=nuevaFila.insertCell(-1);
-	nuevaFila.innerHTML="<tr><td>Nombre:</td>"
-		+"<td><input type='text' size='10' name='nombre_caracteristica["+posicionCampo+"]'></td></tr>";
-	nuevaCelda=nuevaFila.insertCell(-1);
-	nuevaCelda.innerHTML="<td><input type='button' class='button-submit' value='Eliminar' onclick='eliminar(this)'></td>";
-	posicionCampo++;
-	}
-	
-	function eliminar(obj){
-
-		var oTr = obj;
-		while(oTr.nodeName.toLowerCase()!='tr'){
-		oTr=oTr.parentNode;
-		}
-		var root = oTr.parentNode;
-		root.removeChild(oTr);
-		}
-	
-
+   
 </script>
 <?php 
 	$this->load->helper('form'); 
@@ -108,12 +83,7 @@ var posicionCampo=2;
 		<label>Cargo: </label>
 		<input type="text" name="cargo_asis" id="cargo_asis"  size="10" align="left">
 		
-<<<<<<< HEAD
-		<input type="button" value="Agregar" name="agregar" id="agregar" align="left" onClick="agregarFila();"><br>
-		
-=======
 		<input type="button" value="Agregar" name="agregar" id="agregar" align="left"><br/>
->>>>>>> 4a38cca24803fcac4b445f1452594b1262fbbfcd
 		
 		<h2>Aqui va el qgrid</h2>
 		
