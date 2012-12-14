@@ -1,2 +1,3 @@
 #se ignorara todos los archivos de configuracíon
 application/config/
+application/views/plantilla/menu.php
