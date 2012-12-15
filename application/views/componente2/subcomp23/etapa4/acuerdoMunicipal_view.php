@@ -2,26 +2,26 @@
     $(document).ready(function(){
         
         $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url(); ?>';
+            this.form.action='<?php echo base_url('componente2/comp23_E4/guardarAcuerdoMunicipal').'/'.$acu_mun_id; ?>';
         });
         $("#cancelar").button().click(function() {
-            document.location.href='<?php echo base_url(); ?>';
+            document.location.href='<?php echo base_url('componente2/comp23_E4/'); ?>';
         });
         /*PARA EL DATEPICKER*/
-        $( "#pro_pep_fecha_borrador" ).datepicker({
+        $( "#acu_mun_fecha_borrador").datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
             dateFormat: 'dd/mm/yy'
         });
         
-        $( "#pro_pep_fecha_observacion" ).datepicker({
+        $( "#acu_mun_fecha_observacion" ).datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
             dateFormat: 'dd/mm/yy'
         });
-        $( "#pro_pep_fecha_aprobacion" ).datepicker({
+        $( "#acu_mun_fecha_aceptacion" ).datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
@@ -40,8 +40,8 @@
         
         var tabla=$("#participantes");
         tabla.jqGrid({
-            url:'<?php echo base_url() ?>',
-            editurl:'<?php echo base_url() ?>',
+            url:'<?php echo base_url('componente2/comp23_E4/cargarParticipantes').'/acu_mun_id/'.$acu_mun_id; ?>',
+            editurl:'<?php echo base_url('componente2/comp23_E2/gestionParticipantes').'/acu_mun_id/'.$acu_mun_id; ?>',
             datatype:'json',
             altRows:true,
             height: "100%",
@@ -60,7 +60,7 @@
                     editrules:{required:true} 
                 },
                 {name:'par_sexo',index:'par_sexo',editable:true,edittype:"select",width:40,
-                    editoptions:{ value: '0:Seleccione;f:Femenino;m:Masculino' }, 
+                    editoptions:{ value: '0:Seleccione;F:Femenino;M:Masculino' }, 
                     formoptions:{ label: "Sexo",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validaSexo}
                 },
@@ -69,7 +69,7 @@
                     formoptions:{ label: "Cargo",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
-                {name:'par_pertenece',index:'par_pertenece',editable:true,edittype:"select",width:125,
+                {name:'par_tipo',index:'par_tipo',editable:true,edittype:"select",width:125,
                     editoptions:{ value: '0:Seleccione;gg:Grupo Gestor;gl:Gobierno Local' }, 
                     formoptions:{ label: "Sexo",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validaPerteneceA}
@@ -134,7 +134,7 @@
         /*  PARA SUBIR EL ARCHIVO  */
         var button = $('#btn_subir'), interval;
         new AjaxUpload('#btn_subir', {
-            action: '<?php echo base_url('componente2/comp23_E1/subirArchivo') . '/acuerdo_municipal/' . '1' . '/acu_mun_id'; ?>',
+            action: '<?php echo base_url('componente2/comp23_E1/subirArchivo') . '/acuerdo_municipal/' . $acu_mun_id . '/acu_mun_id'; ?>',
             onSubmit : function(file , ext){
                 if (! (ext && /^(pdf|doc|docx)$/.test(ext))){
                     $('#extension').dialog('open');
@@ -212,16 +212,16 @@
         <table>
             <tr>
             <td width="350 px">Existe comprimiso de asignar y gestionar recursos para la divulgación e implementaciòn del PEP</td>
-            <td><input type="radio" name="acu_mun_min" value="true">SI </input>
-                <input type="radio" name="acu_mun_min" value="false">NO </input></td>
+            <td><input type="radio" name="acu_mun_p1" value="true" <?php if (isset($acu_mun_p1) && $acu_mun_p1 == 't') { ?> checked <?php } ?>>SI </input>
+                <input type="radio" name="acu_mun_p1" value="false"<?php if (isset($acu_mun_p1) && $acu_mun_p1 == 'f') { ?> checked <?php } ?>>NO </input></td>
             </tr>
         </table>
     </fieldset>
     <br/>
     <table>
-        <tr> <td><strong>Fecha de presentación del borrador: </strong></td><td><input id="pro_pep_fecha_borrador" name="pro_pep_fecha_borrador" type="text" size="10" /></td></tr>
-        <tr><td><strong>Fecha de superación de observaciones: </strong></td><td><input id="pro_pep_fecha_observacion" name="pro_pep_fecha_observacion" type="text" size="10"/></td></tr>
-        <tr> <td><strong>Fecha de aprobacion del consejo municipal: </td><td></strong><input id="pro_pep_fecha_aprobacion" name="pro_pep_fecha_aprobacion" type="text" size="10"/></td></tr>
+        <tr> <td><strong>Fecha de presentación del borrador: </strong></td><td><input <?php if (isset($acu_mun_fecha_borrador)) { ?> value='<?php echo date('d/m/y', strtotime($acu_mun_fecha_borrador)); ?>'<?php } ?> id="acu_mun_fecha_borrador" name="acu_mun_fecha_borrador" type="text" size="10" /></td></tr>
+        <tr><td><strong>Fecha de superación de observaciones: </strong></td><td><input <?php if (isset($acu_mun_fecha_observacion)) { ?> value='<?php echo date('d/m/y', strtotime($acu_mun_fecha_observacion)); ?>'<?php } ?> id="acu_mun_fecha_observacion" name="acu_mun_fecha_observacion" type="text" size="10"/></td></tr>
+        <tr> <td><strong>Fecha de aprobacion del consejo municipal: </td><td></strong><input <?php if (isset($acu_mun_fecha_aceptacion)) { ?> value='<?php echo date('d/m/y', strtotime($acu_mun_fecha_aceptacion)); ?>'<?php } ?> id="acu_mun_fecha_aceptacion" name="acu_mun_fecha_aceptacion" type="text" size="10"/></td></tr>
     </table>
     <br/>
     <table id="participantes"></table>
@@ -234,7 +234,7 @@
     </div>
     <br/><br/>
     <p>Observaciones:<br/>
-        <textarea name="pro_pep_observacion" cols="48" rows="5"></textarea></p>
+        <textarea name="acu_mun_observacion" cols="48" rows="5"><?php echo$acu_mun_observacion; ?></textarea></p>
     <table>
         <tr>
         <td><div id="btn_subir"></div></td>
