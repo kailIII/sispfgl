@@ -207,8 +207,8 @@
         /*GRID FACILITADORES*/
         var tabla3=$("#Facilitadores");
         tabla3.jqGrid({
-            url:'<?php echo base_url('componente2/comp23_E1/cargarFacilitadores') ?>/<?php echo $cap_id; ?>',
-            editurl:'<?php echo base_url('componente2/comp23_E1/gestionFacilitadores') ?>/<?php echo $cap_id; ?>',
+            url:'<?php echo base_url('componente2/comp23_E1/cargarFacilitadores') .'/cap_id/'. $cap_id; ?>',
+            editurl:'<?php echo base_url('componente2/comp23_E1/gestionFacilitadores').'/cap_id/'. $cap_id; ?>',
             datatype:'json',
             altRows:true,
             height: "100%",

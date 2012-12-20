@@ -52,6 +52,7 @@ class Proyecto_pep extends CI_Model {
     public function obtenerGrupoApoyo($pro_pep_id) {
         $this->db->select('gru_apo_id');
         $this->db->select('gru_ges_id');
+        $this->db->select('int_ins_id');
         $this->db->where('pro_pep_id ', $pro_pep_id);
         $query = $this->db->get($this->tabla);
         return $query->result_array();
