@@ -1,6 +1,22 @@
 mapserver template
 <!-- The central form the application is based on. -->
-    <form method="GET" action="/cgi-bin/mapserv">
+	<script>
+		function mostrarOcultarTablas(id){
+		mostrado=0;
+		elem = document.getElementById(id);
+		if(elem.style.display=='block')mostrado=1;
+		elem.style.display='none';
+		if(mostrado!=1)elem.style.display='block';
+		}
+	</script>
+	<script LANGUAGE='JavaScript'>
+		if (document.getElementById('arena').checked)
+		var status_pp='block';
+		else
+		var status_pp='none';
+	</script>
+
+    <form method="GET" name="mapform" id="mapform" action="/cgi-bin/mapserv">
 
     <!-- CGI MapServer applications are server stateless in principle,
          all information must be "stored" in the client. This includes
@@ -17,38 +33,24 @@ mapserver template
       <table border="0" cellpadding="0">
 	  <tr valign=top>
 		  <td colspan="2">
-	      <table>
+	      
+		  </td>
+      </tr>
+      <tr> 
+		<td valign=top>
+			
+			<table>
 			  <tr>
-				  <td><input type="checkbox" name="layer" value="municipios_arena"
-				  [municipios_arena_check]>ARENA</td>
-				  <td><input type="checkbox" name="layer" value="municipios_cd"
-				  [municipios_cd_check]>CD</td>
-				  <td><input type="checkbox" name="layer" value="municipios_cn"
-				  [municipios_cn_check]>CN</td>
-				  <td><input type="checkbox" name="layer" value="municipios_cn-pes"
-				  [municipios_cn-pes_check]>CN-PES</td>
-				  <td><input type="checkbox" name="layer" value="municipios_fmln"
-				  [municipios_fmln_check]>FMLN</td>
 				  <td><b>Opcion de Zoom:</b><br/>
 					  <select name="zoom" size="1">
 						<option value="2" [zoom_2_select]> Zoom In 2x
 						<option value="1"  [zoom_1_select]> Desplazamiento
 						<option value="-2" [zoom_-2_select]> Zoom Out 2x
 					  </select></td>
-				  <td rowspan="2"><input type="submit" name="submit" value="Actualizar"></td>
 			  </tr>
 			  <tr>
-				  <td><input type="checkbox" name="layer" value="municipios_fmln-cd"
-				  [municipios_fmln-cd_check]>FMLN-CD</td>
-				  <td><input type="checkbox" name="layer" value="municipios_fmln-pes"
-				  [municipios_fmln-pes_check]>FMLN-PES</td>
-				  <td><input type="checkbox" name="layer" value="municipios_gana"
-				  [municipios_gana_check]>GANA</td>
-				  <td><input type="checkbox" name="layer" value="municipios_pes"
-				  [municipios_pes_check]>PES</td>
-				  <td><input type="checkbox" name="layer" value="municipios_pes-gana"
-				  [municipios_pes-gana_check]>PES-GANA</td>
-				  <td><select name="mode">
+				  <td><b>Acci&oacute;n:</b><br/>
+					  <select name="mode">
 						<option value="browse" [browse_select]>
 						  Browse </option>
 						<option value="query" [query_select]>
@@ -59,14 +61,67 @@ mapserver template
 				  <!--<td><input type="checkbox" name="layer" value="municipiosname"
 						[municipiosname_check]>Mostrar Nombres</td>-->
 			  </tr>
+			</table>
+			<b>Capas</b><br/>
+			
+			<input type="checkbox" onClick="javascript:mostrarOcultarTablas('div_tabla_partidos')" name="layer" value="">Partidos de Gobierno
+			
+			<!--<div id="div_tabla_partidos" style="display: none">-->
+			<script LANGUAGE='JavaScript'>
+				document.write('<div id=\"div_tabla_partidos\" style=\"display: '+status_pp+'\">');
+			</script>
+			
+			<table>
+			  <!--<tr>
+				  <br/><br/>
+				  <td><input type="submit" name="submit1" value="Actualizar"></td>
+			  </tr>-->
+			  <tr>
+				  <td><input id="arena" onClick="document.getElementById('mapform').submit();" type="checkbox" name="layer" value="municipios_arena"
+				  [municipios_arena_check]>ARENA</td>
+			  </tr>
+			  <tr>
+				  <td><input onClick="document.getElementById('mapform').submit();" type="checkbox" name="layer" value="municipios_cd"
+				  [municipios_cd_check]>CD</td>
+			  </tr>
+			  <tr>
+				  <td><input onClick="document.getElementById('mapform').submit();" type="checkbox" name="layer" value="municipios_cn"
+				  [municipios_cn_check]>CN</td>
+			  </tr>
+			  <tr>
+				  <td><input onClick="document.getElementById('mapform').submit();" type="checkbox" name="layer" value="municipios_cn-pes"
+				  [municipios_cn-pes_check]>CN-PES</td>
+			  </tr>
+			  <tr>
+				  <td><input onClick ="document.getElementById('mapform').submit();"type="checkbox" name="layer" value="municipios_fmln"
+				  [municipios_fmln_check]>FMLN</td>
+			  </tr>
+			  <tr>
+				  <td><input onClick="document.getElementById('mapform').submit();" type="checkbox" name="layer" value="municipios_fmln-cd"
+				  [municipios_fmln-cd_check]>FMLN-CD</td>
+			  </tr>
+			  <tr>
+				  <td><input onClick="document.getElementById('mapform').submit();" type="checkbox" name="layer" value="municipios_fmln-pes"
+				  [municipios_fmln-pes_check]>FMLN-PES</td>
+			  </tr>
+			  <tr>
+				  <td><input onClick="document.getElementById('mapform').submit();" type="checkbox" name="layer" value="municipios_gana"
+				  [municipios_gana_check]>GANA</td>
+			  </tr>
+			  <tr>
+				  <td><input onClick="document.getElementById('mapform').submit();" type="checkbox" name="layer" value="municipios_pes"
+				  [municipios_pes_check]>PES</td>
+			  </tr>
+			  <tr>
+				  <td><input onClick="document.getElementById('mapform').submit();" type="checkbox" name="layer" value="municipios_pes-gana"
+				  [municipios_pes-gana_check]>PES-GANA</td>
+			  </tr>
+			  
 		  </table>
-		  </td>
-      </tr>
-      <tr>
-        <!-- First column: Map and scale bar -->
-		<td>
-		<p>Leyenda:<br/>
-			<img name="legend" src="[legend]"></p>
+		  </div>
+		  
+		<!--<p>Leyenda:<br/>
+			<img name="legend" src="[legend]"></p>-->
 		</td>
         <td align=center>
           <!-- The map -->

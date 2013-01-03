@@ -14,7 +14,7 @@
                     <li><a>Mapa de Pobreza</a></li>
                 </ul>
             </li>
-            <li><a>Productos</a></li>
+            <li><a>Reportes</a></li>
             <li><a>Contáctenos</a></li>
             <li><a href="http://localhost/limesurvey">Encuestas</a></li>
             <?php
