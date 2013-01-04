@@ -270,27 +270,26 @@ class Administracion extends CI_Controller {
         $opc_sis_id = $this->input->post('id');
         $opc_opc_sis_id = $this->input->post('opcpadre');
         if ($opc_opc_sis_id == 0)
-            $opc_opc_sis_id=null;
+            $opc_opc_sis_id = null;
         $opc_sis_orden = $this->input->post('orden');
         if ($opc_sis_orden == 0)
-            $opc_sis_orden=null;
+            $opc_sis_orden = null;
         $operacion = $this->input->post('oper');
-        
+
         $this->load->model('admin/opcion_sistema', 'opcSis');
         switch ($operacion) {
             case 'add':
-                $this->opcSis->insertarOpcSis($opc_sis_nombre, $opc_sis_url,$opc_opc_sis_id,$opc_sis_orden );
+                $this->opcSis->insertarOpcSis($opc_sis_nombre, $opc_sis_url, $opc_opc_sis_id, $opc_sis_orden);
                 break;
             case 'edit':
-                $this->opcSis->editarOpcSis($opc_sis_nombre, $opc_sis_url,$opc_opc_sis_id,$opc_sis_orden, $opc_sis_id);
+                $this->opcSis->editarOpcSis($opc_sis_nombre, $opc_sis_url, $opc_opc_sis_id, $opc_sis_orden, $opc_sis_id);
                 break;
             case 'del':
                 $this->opcSis->eliminarOpcSis($opc_sis_id);
                 break;
         }
-
     }
 
-}
+   }
 
 ?>
