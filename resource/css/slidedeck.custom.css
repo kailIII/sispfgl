@@ -1,15 +1,3 @@
-/*
-Skin Name: SlideDeck Website Skin
-Skin URI: http://www.slidedeck.com/
-Description: The skin used at slidedeck.com
-Version: 1.1
-Author: digital-telepathy
-Author URI: http://www.dtelepathy.com/
-Tags: flexible, white, black, multi-color
-*/
-
-
-
 #slidedeck_frame {
 	background: url('imagenes/back2.png') 0 0 no-repeat;
 	width: 600px;

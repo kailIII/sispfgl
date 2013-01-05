@@ -289,17 +289,13 @@ class Comp23_E3 extends CI_Controller {
 
         /* ACTUALIZANDO ACUERDO MUNICIPAL */
         $this->load->model('proyectoPep/proyecto_pep', 'proPep');
-        $this->proPep->actualizarProyectoPep($pro_pep_id, $pro_pep_firmacm, $pro_pep_firmais,$pro_pep_firmaue,$pro_pep_fecha_borrador,$pro_pep_fecha_observacion,$pro_pep_fecha_aprobacion,$pro_pep_ruta_archivo,$pro_pep_observacion);
+        $this->proPep->actualizarProyectoPep($pro_pep_id, $pro_pep_firmacm, $pro_pep_firmais, $pro_pep_firmaue, $pro_pep_fecha_borrador, $pro_pep_fecha_observacion, $pro_pep_fecha_aprobacion, $pro_pep_ruta_archivo, $pro_pep_observacion);
 
         redirect(base_url('componente2/comp23_E3/cumplimientosMinimos'));
     }
-    
-    
-    
-    
-    
-    
-    /*desde aqui*/
+
+    /* desde aqui */
+
     public function mostrarPortafolioProyecto() {
 
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
@@ -311,7 +307,7 @@ class Comp23_E3 extends CI_Controller {
         $username = $this->tank_auth->get_username();
         $datos = $this->usuario->obtenerDepartamento($username);
         $pro_pep_id = $datos[0]->id;
-        $informacion['portafolios'] = $this->portafolio->obtenerPortafolios($pro_pep_id) ;
+        $informacion['portafolios'] = $this->portafolio->obtenerPortafolios($pro_pep_id);
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $username;
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
@@ -321,8 +317,6 @@ class Comp23_E3 extends CI_Controller {
         $this->load->view('plantilla/footer', $informacion);
     }
 
-    
-    
     public function registrarPortafolio() {
 
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
@@ -338,11 +332,10 @@ class Comp23_E3 extends CI_Controller {
         $informacion['municipio'] = $datos[0]->Muni;
         $pro_pep_id = $datos[0]->id;
         $informacion['proyectoPep'] = $datos[0]->Proyecto;
-
         /* REGISTRAR PORTAFOLIO */
         $this->load->model('etapa3-sub23/portafolio_proyecto', 'porta');
         $this->porta->agregarPortafolio($pro_pep_id);
-        $resultado=$this->porta->obtenerId($pro_pep_id);
+        $resultado = $this->porta->obtenerId($pro_pep_id);
         $informacion['por_pro_id'] = $resultado[0]['por_pro_id'];
         /**/
         $this->load->view('plantilla/header', $informacion);
@@ -350,12 +343,15 @@ class Comp23_E3 extends CI_Controller {
         $this->load->view('componente2/subcomp23/etapa3/registrarPortafolio_view', $informacion);
         $this->load->view('plantilla/footer', $informacion);
     }
-    
-    
-    
-    
-    
-    
+
+    public function muestraPortafolio($por_pro_id) {
+        $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
+            Planeación Estratégica Participativa';
+
+        $this->load->model('etapa3-sub23/portafolio_proyecto', 'porta');
+        $this->porta->eliminaPortafolioProyecto($por_pro_id);
+        redirect('componente2/comp23_E3/mostrarPortafolioProyecto');
+    }
 
 }
 

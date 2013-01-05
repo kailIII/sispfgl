@@ -280,17 +280,9 @@ class ConsultoraC extends CI_Controller {
             $this->con->editarUsuarioConsultor($con_email, $nuevoUsuario);
             $resultado = $this->con->obtenerIdConsultor($proyectoPep);
             $this->load->model('proyectoPep/proyecto_pep', 'proPep');
-            $this->proPep->actualizarIndices('inv_inf_id', $resultado[0]['inv_inf_id'], $proyectoPep);
+            $this->proPep->actualizarIndices('con_id', $resultado[0]['con_id'], $proyectoPep);
             /* FIN DE CREAR USUARIO */
-            $informacion['titulo'] = 'Gestión de Consultoras y Coordinadores de los Proyectos PEP';
-            $informacion['user_id'] = $this->tank_auth->get_user_id();
-            $informacion['username'] = $this->tank_auth->get_username();
-            $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
-
-            $this->load->view('plantilla/header', $informacion);
-            $this->load->view('plantilla/menu', $informacion);
-            $this->load->view('consultor/muestra_consultores_view', $informacion);
-            $this->load->view('plantilla/footer', $informacion);
+            redirect('consultor/consultoraC/coordinadores');
         }
     }
 
