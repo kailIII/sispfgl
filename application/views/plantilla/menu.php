@@ -8,13 +8,13 @@
             ?>
             <li><a >Avance</a> </li>                   
             <li><a >Mapas</a>
-                <ul >
+                <ul style="position:absolute; z-index:1;" >
                     <li><a href="<?php echo base_url('mapas/showmaps'); ?>">Partidos Politicos de Gobierno</a></li>
                     <li><a>Proyectos</a></li>
                     <li><a>Mapa de Pobreza</a></li>
                 </ul>
             </li>
-            <li><a>Productos</a></li>
+            <li><a>Reporte</a></li>
             <li><a>Contáctenos</a></li>
             <li><a href="http://localhost/limesurvey">Encuestas</a></li>
             <?php
@@ -43,4 +43,3 @@ if (!isset($menu) && !isset($mostrar)) {
 <?php } ?>
 <br/>
 <div style="margin-left: 3%; margin-right: 3%">
-

@@ -9,6 +9,7 @@
         <link type="text/css" href="<?php echo base_url('resource/css/ui.jqgrid.css'); ?>" rel="stylesheet" />
         <link type="text/css" href="<?php echo base_url('resource/css/menuHorizontal.css'); ?>" rel="stylesheet" />
         <link type="text/css" href="<?php echo base_url('resource/css/slidedeck.custom.css'); ?>" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="redondear.css"/>
         <?php if (!isset($principal)) { ?>
             <link type="text/css" href="<?php echo base_url('resource/css/redmond/jquery-ui-1.8.22.custom.css'); ?>" rel="stylesheet" />
         <?php } ?>
