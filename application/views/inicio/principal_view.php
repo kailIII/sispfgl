@@ -1,9 +1,9 @@
 <style  type="text/css">
-    #slidedeck_frame{
-        width:500px;
-        height:300px;
-        margin-left: 90px;
-    }
+#slidedeck_frame{
+width:500px;
+height:300px;
+margin-left: 90px;
+}
 </style>
 <!-- FIN PARA LA CSS DE LA FICHA -->
 <style type="text/css">
@@ -72,7 +72,6 @@
                 <li>Asistir en la implementación de la Carrera Administrativa Municipal</li>
                 <li>Fortalecer procesos y sistemas para incrementar la capacidad de los Gobiernos Locales en le planeamiento participativo para el desarrollo local.</li>
                 <li>Fortalecer sistemas administrativos procesos de contrataciones y adquisiciones, gestión financiera transparente de los Gobiernos Locales.</li>
-
             </ul>
             </p>
         </div>

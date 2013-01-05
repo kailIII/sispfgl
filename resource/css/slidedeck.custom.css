@@ -53,7 +53,7 @@
 .slidedeck dt.active .index { color: #ffffff; }
 .slidedeck .activeCorner {
 	margin-left: -6px;
-	background-image: url('../imagenes/corner.png');
+	background-image: url('imagenes/corner.png');
 	width: 12px;
 	height: 25px;
 }
