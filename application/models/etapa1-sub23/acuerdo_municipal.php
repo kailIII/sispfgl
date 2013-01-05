@@ -45,6 +45,19 @@ class Acuerdo_municipal extends CI_Model {
         $this->db->where('acu_mun_id', $acu_mun_id);
         $this->db->update($this->tabla, $datos);
     }
+    
+    public function actualizarAcuMun2($acu_mun_id, $acu_mun_fecha_observacion,$acu_mun_fecha_borrador,$acu_mun_fecha_aceptacion, $acu_mun_p1, $acu_mun_observacion, $acu_mun_ruta_archivo) {
+        $datos = array(
+            'acu_mun_fecha_observacion' => $acu_mun_fecha_observacion,
+            'acu_mun_fecha_borrador' => $acu_mun_fecha_borrador,
+            'acu_mun_fecha_aceptacion' => $acu_mun_fecha_aceptacion,
+            'acu_mun_p1' => $acu_mun_p1,
+            'acu_mun_observacion' => $acu_mun_observacion,
+            'acu_mun_ruta_archivo' => $acu_mun_ruta_archivo
+        );
+        $this->db->where('acu_mun_id', $acu_mun_id);
+        $this->db->update($this->tabla, $datos);
+    }
 
     public function obtenerAcuMun($acu_mun_id) {
         $this->db->where('acu_mun_id', $acu_mun_id);

@@ -16,6 +16,12 @@ class Participante extends CI_Model {
         return $consulta->result();
     }
     
+    public function obtenerParticipantesParametrizado($campo,$campo_id) {
+        $this->db->where($campo, $campo_id);
+        $consulta = $this->db->get($this->tabla);
+        return $consulta->result();
+    }
+    
     public function obtenerParticipantesGG($gru_ges_id) {
         $this->db->where('gru_ges_id', $gru_ges_id);
         $consulta = $this->db->get($this->tabla);

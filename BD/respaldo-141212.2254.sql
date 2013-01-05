@@ -112,7 +112,7 @@ SELECT pg_catalog.setval('actividad_act_id_seq', 1, false);
 
 
 --
--- Name: acuerdo_municipal; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
+-- Name: acuerdo_municipal; Type: TABLE; Schema: public; Owner: sispfgl; Tablespace: 
 --
 
 CREATE TABLE acuerdo_municipal (
@@ -122,14 +122,18 @@ CREATE TABLE acuerdo_municipal (
     acu_mun_p2 boolean,
     acu_mun_observacion text,
     pro_pep_id integer NOT NULL,
-    acu_mun_ruta_archivo character varying(200)
+    acu_mun_ruta_archivo character varying(200),
+    eta_id integer,
+    acu_mun_fecha_observacion date,
+    acu_mun_fecha_borrador date,
+    acu_mun_fecha_aceptacion date
 );
 
 
-ALTER TABLE public.acuerdo_municipal OWNER TO smpfgl;
+ALTER TABLE public.acuerdo_municipal OWNER TO sispfgl;
 
 --
--- Name: acuerdo_municipal_acu_mun_id_seq; Type: SEQUENCE; Schema: public; Owner: smpfgl
+-- Name: acuerdo_municipal_acu_mun_id_seq; Type: SEQUENCE; Schema: public; Owner: sispfgl
 --
 
 CREATE SEQUENCE acuerdo_municipal_acu_mun_id_seq
@@ -140,20 +144,20 @@ CREATE SEQUENCE acuerdo_municipal_acu_mun_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.acuerdo_municipal_acu_mun_id_seq OWNER TO smpfgl;
+ALTER TABLE public.acuerdo_municipal_acu_mun_id_seq OWNER TO sispfgl;
 
 --
--- Name: acuerdo_municipal_acu_mun_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smpfgl
+-- Name: acuerdo_municipal_acu_mun_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: sispfgl
 --
 
 ALTER SEQUENCE acuerdo_municipal_acu_mun_id_seq OWNED BY acuerdo_municipal.acu_mun_id;
 
 
 --
--- Name: acuerdo_municipal_acu_mun_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
+-- Name: acuerdo_municipal_acu_mun_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('acuerdo_municipal_acu_mun_id_seq', 13, true);
+SELECT pg_catalog.setval('acuerdo_municipal_acu_mun_id_seq', 15, true);
 
 
 --
@@ -940,6 +944,49 @@ CREATE TABLE fecha_recepcion_observacion_din (
 ALTER TABLE public.fecha_recepcion_observacion_din OWNER TO smpfgl;
 
 --
+-- Name: fuente_financiamiento; Type: TABLE; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+CREATE TABLE fuente_financiamiento (
+    fue_fin_id integer NOT NULL,
+    fue_fin_nombre character varying(100),
+    fue_fin_monto numeric(10,2),
+    fue_fin_descripcion character varying(300),
+    por_pro_id integer
+);
+
+
+ALTER TABLE public.fuente_financiamiento OWNER TO sispfgl;
+
+--
+-- Name: fuente_financiamiento_fue_fin_id_seq; Type: SEQUENCE; Schema: public; Owner: sispfgl
+--
+
+CREATE SEQUENCE fuente_financiamiento_fue_fin_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.fuente_financiamiento_fue_fin_id_seq OWNER TO sispfgl;
+
+--
+-- Name: fuente_financiamiento_fue_fin_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: sispfgl
+--
+
+ALTER SEQUENCE fuente_financiamiento_fue_fin_id_seq OWNED BY fuente_financiamiento.fue_fin_id;
+
+
+--
+-- Name: fuente_financiamiento_fue_fin_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
+--
+
+SELECT pg_catalog.setval('fuente_financiamiento_fue_fin_id_seq', 1, false);
+
+
+--
 -- Name: fuente_primaria; Type: TABLE; Schema: public; Owner: smpfgl; Tablespace: 
 --
 
@@ -1369,7 +1416,7 @@ ALTER SEQUENCE login_attempts_id_seq OWNED BY login_attempts.id;
 -- Name: login_attempts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
 --
 
-SELECT pg_catalog.setval('login_attempts_id_seq', 8, true);
+SELECT pg_catalog.setval('login_attempts_id_seq', 9, true);
 
 
 --
@@ -1467,7 +1514,7 @@ ALTER SEQUENCE opcion_sistema_opc_sis_id_seq OWNED BY opcion_sistema.opc_sis_id;
 -- Name: opcion_sistema_opc_sis_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
 --
 
-SELECT pg_catalog.setval('opcion_sistema_opc_sis_id_seq', 39, true);
+SELECT pg_catalog.setval('opcion_sistema_opc_sis_id_seq', 42, true);
 
 
 --
@@ -1489,14 +1536,14 @@ CREATE TABLE participante (
     par_nivel_esco character varying(25),
     par_tel character(9),
     par_dui character(10),
-    par_proviene character(1),
+    par_proviene character varying(1),
     acu_mun_id integer,
     par_otros integer,
     aso_id integer,
     par_direccion character varying(250),
     par_email character varying(250),
     gru_ges_id integer,
-    par_tipo character varying(1)
+    par_tipo character varying(2)
 );
 
 
@@ -1553,7 +1600,7 @@ ALTER SEQUENCE participante_par_id_seq OWNED BY participante.par_id;
 -- Name: participante_par_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smpfgl
 --
 
-SELECT pg_catalog.setval('participante_par_id_seq', 50, true);
+SELECT pg_catalog.setval('participante_par_id_seq', 55, true);
 
 
 --
@@ -1666,7 +1713,59 @@ ALTER SEQUENCE poblacion_pro_id_seq OWNED BY poblacion_reunion.pob_id;
 -- Name: poblacion_pro_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('poblacion_pro_id_seq', 12, true);
+SELECT pg_catalog.setval('poblacion_pro_id_seq', 17, true);
+
+
+--
+-- Name: portafolio_proyecto; Type: TABLE; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+CREATE TABLE portafolio_proyecto (
+    por_pro_id integer NOT NULL,
+    por_pro_area character varying(300),
+    por_pro_tema character varying(300),
+    por_pro_nombre character varying(300),
+    por_pro_descripcion text,
+    por_pro_ubicacion character varying(300),
+    por_pro_costo_estimado numeric(12,2),
+    por_pro_fecha_desde date,
+    por_pro_fecha_hasta date,
+    por_pro_beneficiario_h integer,
+    por_pro_beneficiario_m integer,
+    por_pro_observacion text,
+    por_pro_ruta_archivo text,
+    pro_pep_id integer
+);
+
+
+ALTER TABLE public.portafolio_proyecto OWNER TO sispfgl;
+
+--
+-- Name: portafolio_proyecto_por_pro_id_seq; Type: SEQUENCE; Schema: public; Owner: sispfgl
+--
+
+CREATE SEQUENCE portafolio_proyecto_por_pro_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.portafolio_proyecto_por_pro_id_seq OWNER TO sispfgl;
+
+--
+-- Name: portafolio_proyecto_por_pro_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: sispfgl
+--
+
+ALTER SEQUENCE portafolio_proyecto_por_pro_id_seq OWNED BY portafolio_proyecto.por_pro_id;
+
+
+--
+-- Name: portafolio_proyecto_por_pro_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
+--
+
+SELECT pg_catalog.setval('portafolio_proyecto_por_pro_id_seq', 3, true);
 
 
 --
@@ -2050,7 +2149,7 @@ ALTER SEQUENCE reunion_reu_id_seq OWNED BY reunion.reu_id;
 -- Name: reunion_reu_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('reunion_reu_id_seq', 199, true);
+SELECT pg_catalog.setval('reunion_reu_id_seq', 206, true);
 
 
 --
@@ -2277,7 +2376,7 @@ ALTER TABLE ONLY actividad ALTER COLUMN act_id SET DEFAULT nextval('actividad_ac
 
 
 --
--- Name: acu_mun_id; Type: DEFAULT; Schema: public; Owner: smpfgl
+-- Name: acu_mun_id; Type: DEFAULT; Schema: public; Owner: sispfgl
 --
 
 ALTER TABLE ONLY acuerdo_municipal ALTER COLUMN acu_mun_id SET DEFAULT nextval('acuerdo_municipal_acu_mun_id_seq'::regclass);
@@ -2379,6 +2478,13 @@ ALTER TABLE ONLY diagnostico ALTER COLUMN dia_id SET DEFAULT nextval('diagnostic
 --
 
 ALTER TABLE ONLY facilitador ALTER COLUMN fac_id SET DEFAULT nextval('facilitador_fac_id_seq'::regclass);
+
+
+--
+-- Name: fue_fin_id; Type: DEFAULT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY fuente_financiamiento ALTER COLUMN fue_fin_id SET DEFAULT nextval('fuente_financiamiento_fue_fin_id_seq'::regclass);
 
 
 --
@@ -2487,6 +2593,13 @@ ALTER TABLE ONLY poblacion_reunion ALTER COLUMN pob_id SET DEFAULT nextval('pobl
 
 
 --
+-- Name: por_pro_id; Type: DEFAULT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY portafolio_proyecto ALTER COLUMN por_pro_id SET DEFAULT nextval('portafolio_proyecto_por_pro_id_seq'::regclass);
+
+
+--
 -- Name: pre_id; Type: DEFAULT; Schema: public; Owner: smpfgl
 --
 
@@ -2579,11 +2692,12 @@ COPY actividad (act_id, com_id, act_act_id, act_codigo, act_descripcion) FROM st
 
 
 --
--- Data for Name: acuerdo_municipal; Type: TABLE DATA; Schema: public; Owner: smpfgl
+-- Data for Name: acuerdo_municipal; Type: TABLE DATA; Schema: public; Owner: sispfgl
 --
 
-COPY acuerdo_municipal (acu_mun_id, acu_mun_fecha, acu_mun_p1, acu_mun_p2, acu_mun_observacion, pro_pep_id, acu_mun_ruta_archivo) FROM stdin;
-13	\N	\N	\N		7	documentos/acuerdo_municipal/acuerdo_municipal13.pdf
+COPY acuerdo_municipal (acu_mun_id, acu_mun_fecha, acu_mun_p1, acu_mun_p2, acu_mun_observacion, pro_pep_id, acu_mun_ruta_archivo, eta_id, acu_mun_fecha_observacion, acu_mun_fecha_borrador, acu_mun_fecha_aceptacion) FROM stdin;
+13	\N	\N	\N		7	documentos/acuerdo_municipal/acuerdo_municipal13.pdf	1	\N	\N	\N
+15	\N	f	\N		7	documentos/acuerdo_municipal/acuerdo_municipal15.doc	4	2012-12-12	2012-12-05	2012-12-19
 \.
 
 
@@ -2633,10 +2747,8 @@ COPY capacitacion (cap_id, cap_fecha, cap_tema, cap_lugar, cap_observacion, pro_
 --
 
 COPY ci_sessions (session_id, ip_address, user_agent, last_activity, user_data) FROM stdin;
-73a4ed016ccc72a2bb2778e28d967f87	127.0.0.3	Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11	1354984168	a:4:{s:9:"user_data";s:0:"";s:7:"user_id";s:1:"9";s:8:"username";s:11:"cfuentes_86";s:6:"status";s:1:"1";}
-4950a7513266cd1164ccdb8bed03772c	127.0.0.3	Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11	1354992770	
-bff48b058d635bda0dab7fb5736665e7	127.0.0.3	Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11	1355097699	a:3:{s:7:"user_id";s:1:"9";s:8:"username";s:11:"cfuentes_86";s:6:"status";s:1:"1";}
-33cda0fa24a59542aeef26260fa32286	127.0.0.3	Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11	1355116452	a:3:{s:7:"user_id";s:1:"9";s:8:"username";s:11:"cfuentes_86";s:6:"status";s:1:"1";}
+0d723f734a573e76931b539b99933554	127.0.0.3	Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20100101 Firefox/17.0 Iceweasel/17.0.1	1355546596	a:4:{s:9:"user_data";s:0:"";s:7:"user_id";s:1:"9";s:8:"username";s:11:"cfuentes_86";s:6:"status";s:1:"1";}
+0814bd6b530f360e71a1cd720d6816af	127.0.0.3	Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.97 Safari/537.11	1355547085	
 \.
 
 
@@ -2901,6 +3013,7 @@ COPY etapa (eta_id, eta_nombre) FROM stdin;
 1	Etapa 1
 2	Etapa 2
 3	Etapa 3
+4	Etapa 4
 \.
 
 
@@ -2919,6 +3032,14 @@ COPY facilitador (fac_id, fac_nombre, fac_apellido, cap_id, fac_email, fac_telef
 --
 
 COPY fecha_recepcion_observacion_din (fec_correlativo, pro_id, fec_rec_din, fec_obs_din) FROM stdin;
+\.
+
+
+--
+-- Data for Name: fuente_financiamiento; Type: TABLE DATA; Schema: public; Owner: sispfgl
+--
+
+COPY fuente_financiamiento (fue_fin_id, fue_fin_nombre, fue_fin_monto, fue_fin_descripcion, por_pro_id) FROM stdin;
 \.
 
 
@@ -3336,6 +3457,9 @@ COPY opcion_sistema (opc_sis_id, opc_sis_nombre, opc_sis_url, opc_opc_sis_id, op
 37	Etapa 3	componente2/comp23_E3	5	3
 38	Cumplimientos Mínimos PEP	componente2/comp23_E3/cumplimientosMinimos	37	6
 39	Reuniones	/componente2/comp23_E3/muestraReuniones	37	1
+40	Etapa 4	componente2/comp23_E4	5	4
+41	Acuerdo Municipal	componente2/comp23_E4/acuerdoMunicipal	40	1
+42	Portafolio Proyectos	componente2/comp23_E3/mostrarPortafolioProyecto	37	2
 \.
 
 
@@ -3351,6 +3475,7 @@ COPY participante (par_id, gru_apo_id, reu_id, ins_id, dec_int_id, inf_pre_id, p
 46	\N	\N	\N	\N	\N	Karen	Elvira	F	Jefe	18	\N	7841-5236	14759662-2	\N	\N	\N	\N	\N	\N	1	C
 49	\N	\N	\N	\N	\N	fdafda	dafdf	M	ddfd	19	fdfdf	1896-3255	17789665-2	u	\N	45	\N	\N	\N	\N	\N
 50	\N	\N	\N	\N	\N	gggg	jjjjj	F	afda	14	fadf	7432-2222	          	u	\N	46	\N	\N	\N	\N	\N
+55	\N	\N	\N	\N	\N	fff	ffff	M	fff	\N	\N	\N	\N	\N	15	\N	\N	\N	\N	\N	gg
 \.
 
 
@@ -3405,6 +3530,7 @@ COPY participante_reunion (par_id, reu_id, par_reu_participa) FROM stdin;
 46	197	\N
 46	198	Si
 46	199	\N
+46	205	\N
 \.
 
 
@@ -3422,6 +3548,17 @@ COPY personal_enlace (per_enl_id, acu_mun_id, per_enl_nombre, per_enl_apellido, 
 
 COPY poblacion_reunion (pob_id, pob_comunidad, pob_sector, pob_institucion, reu_id) FROM stdin;
 9	t	t	f	170
+\.
+
+
+--
+-- Data for Name: portafolio_proyecto; Type: TABLE DATA; Schema: public; Owner: sispfgl
+--
+
+COPY portafolio_proyecto (por_pro_id, por_pro_area, por_pro_tema, por_pro_nombre, por_pro_descripcion, por_pro_ubicacion, por_pro_costo_estimado, por_pro_fecha_desde, por_pro_fecha_hasta, por_pro_beneficiario_h, por_pro_beneficiario_m, por_pro_observacion, por_pro_ruta_archivo, pro_pep_id) FROM stdin;
+1	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	7
+2	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	7
+3	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	7
 \.
 
 
@@ -3474,7 +3611,7 @@ COPY proyecto_identificado (pro_ide_id, pro_ide_nombre, pro_ide_ubicacion, pro_i
 
 COPY proyecto_pep (pro_pep_id, pro_pep_nombre, mun_id, acu_mun_id, inf_pre_id, inv_inf_id, gru_apo_id, con_id, gru_ges_id, def_id, pri_id, dia_id, pro_pep_firmacm, pro_pep_firmais, pro_pep_firmaue, pro_pep_fecha_borrador, pro_pep_fecha_observacion, pro_pep_fecha_aprobacion, pro_pep_ruta_archivo, pro_pep_observacion) FROM stdin;
 1	Proyecto de Arreglo de Acera en la colonia Atlacatl	193	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
-7	Proyecto de arreglo de una calle empedrada	192	13	4	2	1	7	1	4	2	1	t	t	\N	2012-12-04	2012-12-12	2012-12-19	documentos/proyecto_pep/proyecto_pep7.docx	
+7	Proyecto de arreglo de una calle empedrada	192	15	4	2	1	7	1	4	2	1	t	t	\N	2012-12-04	2012-12-12	2012-12-19	documentos/proyecto_pep/proyecto_pep7.docx	
 \.
 
 
@@ -3611,6 +3748,12 @@ COPY resultado_reunion (res_id, reu_id, res_reu_valor) FROM stdin;
 4	198	f
 5	198	f
 6	198	f
+1	205	\N
+2	205	\N
+3	205	\N
+4	205	\N
+5	205	\N
+6	205	\N
 \.
 
 
@@ -3620,6 +3763,8 @@ COPY resultado_reunion (res_id, reu_id, res_reu_valor) FROM stdin;
 
 COPY reunion (reu_id, eta_id, reu_numero, reu_fecha, reu_duracion_horas, reu_tema, reu_resultado, reu_observacion, pro_pep_id) FROM stdin;
 198	3	1	2012-12-12	15	Nuevo Tema	0		7
+205	3	2	\N	\N	\N	\N	\N	7
+206	1	1	\N	\N	\N	\N	\N	7
 170	2	1	2012-12-08	0	Definición de Problemática	Hola		7
 \.
 
@@ -3667,6 +3812,9 @@ COPY rol_opcion_sistema (rol_id, opc_sis_id) FROM stdin;
 3	37
 3	38
 3	39
+3	41
+3	40
+3	42
 \.
 
 
@@ -3713,8 +3861,8 @@ COPY user_profiles (id, user_id, country, website) FROM stdin;
 --
 
 COPY users (id, username, password, email, activated, banned, ban_reason, new_password_key, new_password_requested, new_email, new_email_key, last_ip, last_login, created, modified, rol_id) FROM stdin;
-1	admin	$2a$08$orzZRVsYd7hePXoZ7s61De5ecu2TD9OIZMqYpA6jvHv44eH8qp31W	karensita_2410@hotmail.com	1	0	\N	\N	\N	\N	\N	127.0.0.3	2012-12-06	2012-08-19	\N	1
-9	cfuentes_86	$2a$08$E8ttuLm0U2cD5lHo8/bzxuPeOJw/8/8nXH912APeL12wCUl4hNbNO	cfuentes_86@hotmail.com	1	0	\N	\N	\N	\N	\N	127.0.0.3	2012-12-09	2012-09-12	\N	3
+1	admin	$2a$08$orzZRVsYd7hePXoZ7s61De5ecu2TD9OIZMqYpA6jvHv44eH8qp31W	karensita_2410@hotmail.com	1	0	\N	\N	\N	\N	\N	127.0.0.3	2012-12-13	2012-08-19	\N	1
+9	cfuentes_86	$2a$08$E8ttuLm0U2cD5lHo8/bzxuPeOJw/8/8nXH912APeL12wCUl4hNbNO	cfuentes_86@hotmail.com	1	0	\N	\N	\N	\N	\N	127.0.0.3	2012-12-14	2012-09-12	\N	3
 \.
 
 
@@ -3743,7 +3891,7 @@ ALTER TABLE ONLY actividad
 
 
 --
--- Name: pk_acuerdo_municipal; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
+-- Name: pk_acuerdo_municipal; Type: CONSTRAINT; Schema: public; Owner: sispfgl; Tablespace: 
 --
 
 ALTER TABLE ONLY acuerdo_municipal
@@ -3927,6 +4075,14 @@ ALTER TABLE ONLY fecha_recepcion_observacion_din
 
 
 --
+-- Name: pk_fue_fin_id; Type: CONSTRAINT; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY fuente_financiamiento
+    ADD CONSTRAINT pk_fue_fin_id PRIMARY KEY (fue_fin_id);
+
+
+--
 -- Name: pk_fuente_primaria; Type: CONSTRAINT; Schema: public; Owner: smpfgl; Tablespace: 
 --
 
@@ -4076,6 +4232,14 @@ ALTER TABLE ONLY participante_reunion
 
 ALTER TABLE ONLY personal_enlace
     ADD CONSTRAINT pk_personal_enlace PRIMARY KEY (per_enl_id);
+
+
+--
+-- Name: pk_por_pro_id; Type: CONSTRAINT; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY portafolio_proyecto
+    ADD CONSTRAINT pk_por_pro_id PRIMARY KEY (por_pro_id);
 
 
 --
@@ -4286,7 +4450,7 @@ CREATE INDEX fki_participante_capacitacion ON participante_capacitacion USING bt
 
 
 --
--- Name: fki_pk_proyecto_pep_acuerdo_municipal; Type: INDEX; Schema: public; Owner: smpfgl; Tablespace: 
+-- Name: fki_pk_proyecto_pep_acuerdo_municipal; Type: INDEX; Schema: public; Owner: sispfgl; Tablespace: 
 --
 
 CREATE INDEX fki_pk_proyecto_pep_acuerdo_municipal ON acuerdo_municipal USING btree (pro_pep_id);
@@ -4772,6 +4936,14 @@ ALTER TABLE ONLY personal_enlace
 
 
 --
+-- Name: fk_por_pro_id; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY fuente_financiamiento
+    ADD CONSTRAINT fk_por_pro_id FOREIGN KEY (por_pro_id) REFERENCES portafolio_proyecto(por_pro_id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
 -- Name: fk_presupue_se_asigna_componen; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
 --
 
@@ -4804,7 +4976,7 @@ ALTER TABLE ONLY inventario_informacion
 
 
 --
--- Name: fk_proyecto_pep_acuerdo_municipal; Type: FK CONSTRAINT; Schema: public; Owner: smpfgl
+-- Name: fk_proyecto_pep_acuerdo_municipal; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
 --
 
 ALTER TABLE ONLY acuerdo_municipal
@@ -4881,6 +5053,14 @@ ALTER TABLE ONLY grupo_gestor
 
 ALTER TABLE ONLY informe_preliminar
     ADD CONSTRAINT fk_proyecto_pep_informe_preliminar FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id);
+
+
+--
+-- Name: fk_proyecto_pep_portafolio_proyecto; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY portafolio_proyecto
+    ADD CONSTRAINT fk_proyecto_pep_portafolio_proyecto FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -4977,6 +5157,14 @@ ALTER TABLE ONLY users
 
 ALTER TABLE ONLY asociatividad
     ADD CONSTRAINT fk_tipo_asociatividad FOREIGN KEY (tip_id) REFERENCES tipo(tip_id);
+
+
+--
+-- Name: pk_etapa_acuerdo_municipal; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY acuerdo_municipal
+    ADD CONSTRAINT pk_etapa_acuerdo_municipal FOREIGN KEY (eta_id) REFERENCES etapa(eta_id);
 
 
 --

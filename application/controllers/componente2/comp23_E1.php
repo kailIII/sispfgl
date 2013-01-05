@@ -580,7 +580,6 @@ class Comp23_E1 extends CI_Controller {
             $idAcuMun = $this->acumun->obtenerIdAcuMun($pro_pep_id,1);
             $acu_mun_id = $idAcuMun[0]['acu_mun_id'];
             $this->load->model('proyectoPep/proyecto_pep', 'proPep');
-            $this->proPep->actualizarIndices('acu_mun_id', $acu_mun_id, $pro_pep_id);
             foreach ($contrapartidas as $contraAux)
                 $this->contraAcuerdo->insertarContrapartidaAcuerdo($acu_mun_id, $contraAux->con_id);
             foreach ($criterios as $criteAux)
@@ -885,9 +884,9 @@ class Comp23_E1 extends CI_Controller {
         redirect('componente2/comp23_E1/capacitacionEquipoApoyo');
     }
 
-    public function cargarFacilitadores($cap_id) {
+    public function cargarFacilitadores($campo,$campo_id) {
         $this->load->model('etapa1-sub23/facilitador');
-        $facilitadores = $this->facilitador->obtenerFacilitadores($cap_id);
+        $facilitadores = $this->facilitador->obtenerFacilitadores($campo,$campo_id);
         $numfilas = count($facilitadores);
 
         $i = 0;
@@ -921,7 +920,7 @@ class Comp23_E1 extends CI_Controller {
         echo $jsonresponse;
     }
 
-    public function gestionFacilitadores($cap_id) {
+    public function gestionFacilitadores($campo,$campo_id) {
         /* OBTENIENDO LAS VARIABLES */
         $fac_id = $this->input->post("id");
         $fac_nombre = $this->input->post("fac_nombre");
@@ -933,7 +932,7 @@ class Comp23_E1 extends CI_Controller {
         $this->load->model('etapa1-sub23/facilitador');
         switch ($operacion) {
             case 'add':
-                $this->facilitador->agregarFacilitador($fac_nombre, $fac_apellido, $fac_email, $cap_id, $fac_telefono);
+                $this->facilitador->agregarFacilitador($fac_nombre, $fac_apellido, $fac_email,$campo,$campo_id,$fac_telefono);
                 break;
             case 'edit':
                 $this->facilitador->modificarFacilitador($fac_id, $fac_nombre, $fac_apellido, $fac_email, $fac_telefono);

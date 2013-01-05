@@ -293,6 +293,69 @@ class Comp23_E3 extends CI_Controller {
 
         redirect(base_url('componente2/comp23_E3/cumplimientosMinimos'));
     }
+    
+    
+    
+    
+    
+    
+    /*desde aqui*/
+    public function mostrarPortafolioProyecto() {
+
+        $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
+            Planeación Estratégica Participativa';
+
+        $this->load->model('etapa3-sub23/portafolio_proyecto', 'portafolio');
+        /* OBTENER DEPARTAMENTO Y MUNICIPIO DEL USUARIO */
+        $this->load->model('tank_auth/users', 'usuario');
+        $username = $this->tank_auth->get_username();
+        $datos = $this->usuario->obtenerDepartamento($username);
+        $pro_pep_id = $datos[0]->id;
+        $informacion['portafolios'] = $this->portafolio->obtenerPortafolios($pro_pep_id) ;
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $username;
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/subcomp23/etapa3/portafolios_view', $informacion);
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    
+    
+    public function registrarPortafolio() {
+
+        $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
+            Planeación Estratégica Participativa';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $username = $this->tank_auth->get_username();
+        $informacion['username'] = $username;
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        /* OBTENER DEPARTAMENTO Y MUNICIPIO DEL USUARIO */
+        $this->load->model('tank_auth/users', 'usuario');
+        $datos = $this->usuario->obtenerDepartamento($username);
+        $informacion['departamento'] = $datos[0]->Depto;
+        $informacion['municipio'] = $datos[0]->Muni;
+        $pro_pep_id = $datos[0]->id;
+        $informacion['proyectoPep'] = $datos[0]->Proyecto;
+
+        /* REGISTRAR PORTAFOLIO */
+        $this->load->model('etapa3-sub23/portafolio_proyecto', 'porta');
+        $this->porta->agregarPortafolio($pro_pep_id);
+        $resultado=$this->porta->obtenerId($pro_pep_id);
+        $informacion['por_pro_id'] = $resultado[0]['por_pro_id'];
+        /**/
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/subcomp23/etapa3/registrarPortafolio_view', $informacion);
+        $this->load->view('plantilla/footer', $informacion);
+    }
+    
+    
+    
+    
+    
+    
 
 }
 

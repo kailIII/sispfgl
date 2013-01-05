@@ -26,7 +26,7 @@
             <td><?php echo $aux->reu_numero; ?></td>
             <td><?php echo $aux->reu_tema; ?></td>
             <td><?php if (!is_null($aux->reu_fecha)) echo date_format(date_create($aux->reu_fecha), "d-m-Y") ?></td>
-            <td><a href="<?php echo base_url('componente2/comp23_E2/editarReunion').'/'.$aux->reu_id; ?>"><img src="<?php echo base_url('resource/imagenes/edit.png'); ?>"/></a>
+            <td><a href="<?php echo base_url('componente2/comp23_E1/editarReunion').'/'.$aux->reu_id; ?>"><img src="<?php echo base_url('resource/imagenes/edit.png'); ?>"/></a>
                 <!--<a href="#"><img src="<?php echo base_url('resource/imagenes/pdf.png'); ?>"/></a>-->
             </td>
             </tr>

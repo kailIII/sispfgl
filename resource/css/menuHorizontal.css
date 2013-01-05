@@ -1,3 +1,11 @@
+/* 
+    Documento  : menuHorizontal
+    Creado el  : 10-2012
+    Autor      : Ing. Karen Peñate
+    Descripción:
+        Esta hoja de estilo contiene todos los estilos para el menu horizontal del 
+sitio.
+*/
 .jquerycssmenu{
     font: bold 12px Verdana;
     border-bottom: 1px solid black;

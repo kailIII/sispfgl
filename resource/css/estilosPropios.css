@@ -1,10 +1,10 @@
 /* 
-    Documento  : demo-page
+    Documento  : estilosPropios
     Creado el  : 08-09-2012
     Autor      : Ing. Karen Peñate
     Descripción:
-        Esta hoja de estilo permite delimitar el tamaño de los elementos para
-        el Jquery
+        Esta hoja de estilo permite agregar estilos propios que el desarrollador
+estime conveniente
 */
 
 body{ font-size: 70%;font-family: "Tahoma", "Geneva", sans-serif; margin: 50px; background: url(../imagenes/background.png) repeat;}
@@ -14,14 +14,6 @@ body{ font-size: 70%;font-family: "Tahoma", "Geneva", sans-serif; margin: 50px; 
 ul#icons {margin: 0; padding: 0;}
 ul#icons li {margin: 2px; position: relative; padding: 4px 0; cursor: pointer; float: left;  list-style: none;}
 ul#icons span.ui-icon {float: left; margin: 0 4px;}
-/* 
-    Documento  : estilosPropios
-    Creado el  : 08-09-2012
-    Autor      : Ing. Karen Peñate
-    Descripción:
-        Esta hoja de estilo permite agregar estilos propios que el desarrollador
-estime conveniente
-*/
 div#divpagina{
     position:absolute; 
     width:100%;
@@ -38,6 +30,7 @@ div#divcuerpo{
     margin-left:-470px; 
     background-color: #FFFFFF;
     top:120px;
+    min-height: 360px;
     border-style: solid;
     border-width: 3px;
     border-radius:20px;
@@ -133,8 +126,9 @@ em {
     font-family: 'Open Sans',arial,sans-serif;
     border-top: 1px solid #0B2161;
     padding: 10px 15px 10px 15px;
-    position: relative;
-    bottom:0%;
+    position: absolute;
+    width: 930px;
+    bottom: 0%;
     border-radius: 0px 0px 15px 15px;
     -moz-border-radius-bottomleft: 15px;
     -moz-border-radius-bottomright: 15px;
