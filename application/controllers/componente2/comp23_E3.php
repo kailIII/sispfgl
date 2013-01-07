@@ -294,8 +294,6 @@ class Comp23_E3 extends CI_Controller {
         redirect(base_url('componente2/comp23_E3/cumplimientosMinimos'));
     }
 
-    /* desde aqui */
-
     public function mostrarPortafolioProyecto() {
 
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
@@ -344,13 +342,170 @@ class Comp23_E3 extends CI_Controller {
         $this->load->view('plantilla/footer', $informacion);
     }
 
+    public function editarPortafolio($por_pro_id) {
+        $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
+            Planeación Estratégica Participativa';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $username = $this->tank_auth->get_username();
+        $informacion['username'] = $username;
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        /* OBTENER DEPARTAMENTO Y MUNICIPIO DEL USUARIO */
+        $this->load->model('tank_auth/users', 'usuario');
+        $datos = $this->usuario->obtenerDepartamento($username);
+        $informacion['departamento'] = $datos[0]->Depto;
+        $informacion['municipio'] = $datos[0]->Muni;
+        $informacion['proyectoPep'] = $datos[0]->Proyecto;
+        /* OBTENER EL PORTAFOLIO */
+        $this->load->model('etapa3-sub23/portafolio_proyecto', 'porPro');
+        $datosPorta = $this->porPro->obtenerPortafolioId($por_pro_id);
+        $informacion['por_pro_id'] = $por_pro_id;
+        $informacion['por_pro_area'] = $datosPorta[0]->por_pro_area;
+        $informacion['por_pro_tema'] = $datosPorta[0]->por_pro_tema;
+        $informacion['por_pro_nombre'] = $datosPorta[0]->por_pro_nombre;
+        $informacion['por_pro_descripcion'] = $datosPorta[0]->por_pro_descripcion;
+        $informacion['por_pro_ubicacion'] = $datosPorta[0]->por_pro_ubicacion;
+        $informacion['por_pro_costo_estimado'] = $datosPorta[0]->por_pro_costo_estimado;
+        $informacion['por_pro_fecha_desde'] = $datosPorta[0]->por_pro_fecha_desde;
+        $informacion['por_pro_fecha_hasta'] = $datosPorta[0]->por_pro_fecha_hasta;
+        $informacion['por_pro_beneficiario_h'] = $datosPorta[0]->por_pro_beneficiario_h;
+        $informacion['por_pro_beneficiario_m'] = $datosPorta[0]->por_pro_beneficiario_m;
+        $informacion['por_pro_observacion'] = $datosPorta[0]->por_pro_observacion;
+        $informacion['por_pro_ruta_archivo'] = $datosPorta[0]->por_pro_ruta_archivo;
+        /**/
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/subcomp23/etapa3/editarPortafolio_view', $informacion);
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
     public function muestraPortafolio($por_pro_id) {
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
 
         $this->load->model('etapa3-sub23/portafolio_proyecto', 'porta');
+        $portafolio = $this->porta->obtenerPortafolioId($por_pro_id);
+        if ($portafolio[0]->por_pro_ruta_archivo != NULL)
+            unlink($portafolio[0]->por_pro_ruta_archivo);
         $this->porta->eliminaPortafolioProyecto($por_pro_id);
         redirect('componente2/comp23_E3/mostrarPortafolioProyecto');
+    }
+
+    public function guardarPortafolio($por_pro_id) {
+        /* VARIABLES POST */
+        $por_pro_area = $this->input->post("por_pro_area");
+        $por_pro_tema = $this->input->post("por_pro_tema");
+        $por_pro_nombre = $this->input->post("por_pro_nombre");
+        $por_pro_descripcion = $this->input->post("por_pro_descripcion");
+        $por_pro_ubicacion = $this->input->post("por_pro_ubicacion");
+        $por_pro_costo_estimado = $this->input->post("por_pro_costo_estimado");
+        $por_pro_fecha_desde = $this->input->post("por_pro_fecha_desde");
+        $por_pro_fecha_hasta = $this->input->post("por_pro_fecha_hasta");
+        $por_pro_beneficiario_h = $this->input->post("por_pro_beneficiario_h");
+        $por_pro_beneficiario_m = $this->input->post("por_pro_beneficiario_m");
+        $por_pro_observacion = $this->input->post("por_pro_observacion");
+        $por_pro_ruta_archivo = $this->input->post("por_pro_ruta_archivo");
+        /* OBTENIENDO VALORES DE LOS CRITERIOS */
+        $this->load->model('etapa3-sub23/portafolio_proyecto', 'porPro');
+        $this->porPro->actualizarPortafolioProyecto($por_pro_area, $por_pro_tema, $por_pro_nombre, $por_pro_descripcion, $por_pro_ubicacion, $por_pro_costo_estimado, $por_pro_fecha_desde, $por_pro_fecha_hasta, $por_pro_beneficiario_h, $por_pro_beneficiario_m, $por_pro_observacion, $por_pro_ruta_archivo, $por_pro_id);
+
+        redirect(base_url('componente2/comp23_E3/mostrarPortafolioProyecto'));
+    }
+
+    public function cargarFuentesFinancimiento($por_pro_id) {
+        $this->load->model('etapa3-sub23/fuente_financiamiento', 'fueFin');
+        $fuentesFinanciamiento = $this->fueFin->obtenerFueFin($por_pro_id);
+        $numfilas = count($fuentesFinanciamiento);
+
+        $i = 0;
+        if ($numfilas != 0) {
+            foreach ($fuentesFinanciamiento as $aux) {
+                $rows[$i]['id'] = $aux->fue_fin_id;
+                $rows[$i]['cell'] = array($aux->fue_fin_id,
+                    $aux->fue_fin_nombre,
+                    $aux->fue_fin_monto,
+                    $aux->fue_fin_descripcion
+                );
+                $i++;
+            }
+            array_multisort($rows, SORT_ASC);
+        } else {
+            $rows[0]['id'] = 0;
+            $rows[0]['cell'] = array(' ', ' ', ' ', ' ');
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+
+    public function gestionarFuentesFinanciamiento($por_pro_id) {
+        $fue_fin_id = $this->input->post("id");
+        $fue_fin_nombre = $this->input->post("fue_fin_nombre");
+        $fue_fin_monto = $this->input->post("fue_fin_monto");
+        $fue_fin_descripcion = $this->input->post("fue_fin_descripcion");
+
+        $this->load->model('etapa3-sub23/fuente_financiamiento', 'fueFin');
+        $operacion = $this->input->post("oper");
+        switch ($operacion) {
+            case 'add':
+                $this->fueFin->agregarFuenteFinanciamiento($fue_fin_nombre, $fue_fin_monto, $fue_fin_descripcion, $por_pro_id);
+                break;
+            case 'edit':
+                $this->fueFin->editarFuenteFinanciamiento($fue_fin_id, $fue_fin_nombre, $fue_fin_monto, $fue_fin_descripcion);
+                break;
+            case 'del':
+                $this->fueFin->eliminarFuenteFinanciamiento($fue_fin_id);
+                break;
+        }
+    }
+
+    public function mostrarProyeccionIngresos() {
+
+        $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
+            Planeación Estratégica Participativa';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $username = $this->tank_auth->get_username();
+        $informacion['username'] = $username;
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        /* OBTENER DEPARTAMENTO Y MUNICIPIO DEL USUARIO */
+        $this->load->model('tank_auth/users', 'usuario');
+        $datos = $this->usuario->obtenerDepartamento($username);
+        $pro_pep_id = $datos[0]->id;
+        $informacion['departamento'] = $datos[0]->Depto;
+        $informacion['municipio'] = $datos[0]->Muni;
+        $informacion['proyectoPep'] = $datos[0]->Proyecto;
+        /* FIN DE USUARIO */
+        $this->load->model('etapa3-sub23/proyeccion_ingreso', 'proIng');
+        $this->load->model('etapa3-sub23/monto_proyeccion', 'monPro');
+        $resultado = $this->proIng->contarProIngPorPep($pro_pep_id);
+        if ($resultado == '0') {
+            $this->proIng->agregarProIng($pro_pep_id);
+            $resultado = $this->proIng->obtenerProIng($pro_pep_id);
+            $this->load->model('proyectoPep/proyecto_pep', 'proPep');
+            $this->proPep->actualizarIndices('pro_ing_id', $resultado[0]['pro_ing_id'], $pro_pep_id);
+            $this->monPro->agregarMontoProyeccion($resultado[0]['pro_ing_id'],'FODES');
+            $this->monPro->agregarMontoProyeccion($resultado[0]['pro_ing_id'],'Ingresos Propios');
+            $this->monPro->agregarMontoProyeccion($resultado[0]['pro_ing_id'],'Donaciones');
+            $this->monPro->agregarMontoProyeccion($resultado[0]['pro_ing_id'],'Créditos');
+        }
+        $resultado = $this->proIng->obtenerProIng($pro_pep_id);
+        $pro_ing_id=$resultado[0]['pro_ing_id'];
+        $informacion['pro_ing_id'] = $pro_ing_id;
+        $informacion['pro_ing_observacion'] = $resultado[0]['pro_ing_observacion'];
+        $resultado=  $this->monPro->obtenerMontoProyeccion($pro_ing_id);
+        $informacion['montos'] = $resultado;
+        //OBTENER LOS MONTOS DE PROYECCIÓN
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/subcomp23/etapa3/proyeccionIngresos_view', $informacion);
+        $this->load->view('plantilla/footer', $informacion);
     }
 
 }

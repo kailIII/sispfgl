@@ -191,20 +191,16 @@
     <h2 class="h2Titulos">Producto 1: Acuerdo Municipal</h2>
 
     <br/><br/>
-    <table>
+   <table>
         <tr>
-        <td ><strong>Departamento:</strong></td>
+        <td class="tdLugar" ><strong>Departamento:</strong></td>
         <td><?php echo $departamento ?></td>
-        </tr>
-        <tr>
-        <td ><strong>Municipio:</strong></td>
+        <td class="tdEspacio"></td>
+        <td class="tdLugar"><strong>Municipio:</strong></td>
         <td ><?php echo $municipio ?></td>    
         </tr>
-        <tr>
-        <td ><strong>Proyecto Pep:</strong></td>
-        <td ><?php echo $proyectoPep ?></td>    
-        </tr>
     </table>
+    
     <br/><br/>
 
     <fieldset style="width:450px;">

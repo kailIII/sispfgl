@@ -78,18 +78,13 @@
     <h2 class="h2Titulos">Cumplimientos de los elementos mínimos del PEP</h2>
 
     <br/><br/>
-    <table>
+   <table>
         <tr>
-        <td ><strong>Departamento:</strong></td>
+        <td class="tdLugar" ><strong>Departamento:</strong></td>
         <td><?php echo $departamento ?></td>
-        </tr>
-        <tr>
-        <td ><strong>Municipio:</strong></td>
+        <td class="tdEspacio"></td>
+        <td class="tdLugar"><strong>Municipio:</strong></td>
         <td ><?php echo $municipio ?></td>    
-        </tr>
-        <tr>
-        <td ><strong>Proyecto Pep:</strong></td>
-        <td ><?php echo $proyectoPep ?></td>    
         </tr>
     </table>
     <br/><br/>
@@ -113,9 +108,9 @@
         <td style="width: 20px"></td>
         <td>
             <table>
-                <tr style="width: 300px"> <td ><strong>Fecha de presentación del borrador: </strong><input id="pro_pep_fecha_borrador" <?php if (isset($pro_pep_fecha_borrador)) { ?>  value="<?php echo date('d/m/y', strtotime($pro_pep_fecha_borrador)); ?>" <?php } ?> name="pro_pep_fecha_borrador" type="text" size="10" /></td></tr>
-                <tr><td><strong>Fecha de superación de observaciones: </strong><input id="pro_pep_fecha_observacion" <?php if (isset($pro_pep_fecha_observacion)) { ?>value="<?php echo date('d/m/y', strtotime($pro_pep_fecha_observacion)); ?>"<?php } ?>  name="pro_pep_fecha_observacion" type="text" size="10"/></td></tr>
-                <tr> <td><strong>Fecha de aprobacion del consejo municipal: </strong><input id="pro_pep_fecha_aprobacion" <?php if (isset($pro_pep_fecha_aprobacion)) { ?> value="<?php echo date('d/m/y', strtotime($pro_pep_fecha_aprobacion)); ?>"<?php } ?>  name="pro_pep_fecha_aprobacion" type="text" size="10"/></td></tr>
+                <tr style="width: 300px"> <td ><strong>Fecha de presentación del borrador: </strong><input id="pro_pep_fecha_borrador" <?php if (isset($pro_pep_fecha_borrador)) { ?>  value="<?php echo date('d/m/y', strtotime($pro_pep_fecha_borrador)); ?>" <?php } ?> name="pro_pep_fecha_borrador" type="text" size="5" /></td></tr>
+                <tr><td><strong>Fecha de superación de observaciones: </strong><input id="pro_pep_fecha_observacion" <?php if (isset($pro_pep_fecha_observacion)) { ?>value="<?php echo date('d/m/y', strtotime($pro_pep_fecha_observacion)); ?>"<?php } ?>  name="pro_pep_fecha_observacion" type="text" size="5" /></td></tr>
+                <tr> <td><strong>Fecha de aprobacion del consejo municipal: </strong><input id="pro_pep_fecha_aprobacion" <?php if (isset($pro_pep_fecha_aprobacion)) { ?> value="<?php echo date('d/m/y', strtotime($pro_pep_fecha_aprobacion)); ?>"<?php } ?>  name="pro_pep_fecha_aprobacion" type="text" size="5" /></td></tr>
             </table>
             <p><strong>¿Acta de aceptación contiene firmas?</strong></p>
             <table>
@@ -153,7 +148,7 @@
 
     <center>
         <p > 
-            <input type="submit" id="guardar" value="Guardar Cumplimientos Mìnimos" />
+            <input type="submit" id="guardar" value="Guardar Cumplimientos Mínimos" />
             <input type="button" id="cancelar" value="Cancelar" />
         </p>
     </center>

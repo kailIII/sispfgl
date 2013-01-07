@@ -243,7 +243,7 @@
         </tr>
         <tr>
 
-        <td colspan="4"><strong>Proyecto PEP:</strong><?php echo $proyectoPep ?></td>
+        <td colspan="4"></td>
         </tr>
         <tr>
         <td colspan="3">
@@ -277,7 +277,7 @@
                 <textarea id="reu_observacion"  name="reu_observacion" cols="48" rows="5"></textarea></p>
         </td>
         <td>
-        <fieldset   style="border-color: #2F589F;height:85px;width:175px;position: relative;left: 50px;">
+        <fieldset   style="border-color: #2F589F;height:85px;width:225px;position: relative;left: 50px;">
             <legend align="center"><strong>Cantidad de Participantes</strong></legend>
             <table>
                 <tr>

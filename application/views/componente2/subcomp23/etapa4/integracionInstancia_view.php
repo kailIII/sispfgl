@@ -193,17 +193,14 @@
     <br/><br/>
     <table>
         <tr>
-        <td ><strong>Departamento:</strong></td>
+        <td class="tdLugar" ><strong>Departamento:</strong></td>
         <td><?php echo $departamento ?></td>
-        </tr>
-        <tr>
-        <td ><strong>Municipio:</strong></td>
+        <td class="tdEspacio"></td>
+        <td class="tdLugar"><strong>Municipio:</strong></td>
         <td ><?php echo $municipio ?></td>    
         </tr>
-        <tr>
-        <td ><strong>Proyecto Pep:</strong></td>
-        <td ><?php echo $proyectoPep ?></td>    
-        </tr>
+    </table>
+    <table>
         <tr>  <td ><strong>Fecha: </strong></td>
         <td><input <?php if (isset($int_ins_fecha)) { ?> value='<?php echo date('d/m/y', strtotime($int_ins_fecha)); ?>'<?php } ?>id="int_ins_fecha" name="int_ins_fecha" type="text" size="10" readonly="readonly"/></td>
         </tr>

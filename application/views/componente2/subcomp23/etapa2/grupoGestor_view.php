@@ -66,8 +66,8 @@
         /*GRID PARTICIPANTES*/
         var tabla=$("#participantes");
         tabla.jqGrid({
-            url:'<?php echo base_url('componente2/comp23_E2/cargarParticipanteGG').'/gru_ges_id/'. $gru_ges_id; ?>',
-            editurl:'<?php echo base_url('componente2/comp23_E2/gestionParticipantes').'/gru_ges_id/'.$gru_ges_id; ?>',
+            url:'<?php echo base_url('componente2/comp23_E2/cargarParticipanteGG') . '/gru_ges_id/' . $gru_ges_id; ?>',
+            editurl:'<?php echo base_url('componente2/comp23_E2/gestionParticipantes') . '/gru_ges_id/' . $gru_ges_id; ?>',
             datatype:'json',
             altRows:true,
             height: "100%",
@@ -161,15 +161,21 @@
 
     <table>
         <tr>
-        <td ><strong>Departamento:</strong><?php echo $departamento ?></td>
-        <td ><strong>Municipio:</strong><?php echo $municipio ?></td>
+        <td class="tdLugar" ><strong>Departamento:</strong></td>
+        <td><?php echo $departamento ?></td>
+        <td class="tdEspacio"></td>
+        <td class="tdLugar"><strong>Municipio:</strong></td>
+        <td ><?php echo $municipio ?></td>    
         </tr>
+    </table>
+    <table>
         <tr>
         <td ><strong>Lugar:</strong><input id="gru_ges_lugar" <?php if (isset($gru_ges_lugar)) { ?> value='<?php echo $gru_ges_lugar; ?>'<?php } ?> name="gru_ges_lugar" type="text" size="40"/></td>
+         <td style="width: 150px"></td>
         <td  ><strong>Fecha: </strong><input readonly="readonly" <?php if (isset($gru_ges_fecha)) { ?> value='<?php echo date('d/m/y', strtotime($gru_ges_fecha)); ?>'<?php } ?>id="gru_ges_fecha" name="gru_ges_fecha" type="text" size="10"/></td>
         </tr>
         <tr>
-        <td colspan="2"><strong>Proyecto PEP:  </strong><?php echo $proyectoPep ?></td>
+        <td colspan="2"></td>
         </tr>
 
     </table>
@@ -214,7 +220,7 @@
             <input type="button" id="cancelar" value="Cancelar" />
         </p>
     </center>
-<input id="gru_ges_id" name="gru_ges_id" value="<?php echo $gru_ges_id ?>" style="visibility: hidden"/>
+    <input id="gru_ges_id" name="gru_ges_id" value="<?php echo $gru_ges_id ?>" style="visibility: hidden"/>
 </form>
 
 <div id="mensaje" class="mensaje" title="Aviso de la operación">

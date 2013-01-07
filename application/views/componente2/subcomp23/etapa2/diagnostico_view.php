@@ -93,16 +93,11 @@
     <br/><br/>
     <table>
         <tr>
-        <td ><strong>Departamento:</strong></td>
+        <td class="tdLugar" ><strong>Departamento:</strong></td>
         <td><?php echo $departamento ?></td>
-        </tr>
-        <tr>
-        <td ><strong>Municipio:</strong></td>
+        <td class="tdEspacio"></td>
+        <td class="tdLugar"><strong>Municipio:</strong></td>
         <td ><?php echo $municipio ?></td>    
-        </tr>
-        <tr>
-        <td ><strong>Proyecto Pep:</strong></td>
-        <td ><?php echo $proyectoPep ?></td>    
         </tr>
     </table>
     <br/><br/>
@@ -124,12 +119,11 @@
 
         </fieldset>
         </td>  
-        <td style="width: 20px"></td>
         <td>
             <table>
-                <tr style="width: 300px"> <td ><strong>Fecha de presentación del borrador: </strong><input id="dia_fecha_borrador" <?php if (isset($dia_fecha_borrador)) { ?>  value="<?php echo date('d/m/y', strtotime($dia_fecha_borrador)); ?>" <?php } ?> name="dia_fecha_borrador" type="text" size="10" /></td></tr>
-                <tr><td><strong>Fecha de superación de observaciones: </strong><input id="dia_fecha_observacion" <?php if (isset($dia_fecha_observacion)) { ?>value="<?php echo date('d/m/y', strtotime($dia_fecha_observacion)); ?>"<?php } ?>  name="dia_fecha_observacion" type="text" size="10"/></td></tr>
-                <tr> <td><strong>Fecha de aprobacion del Consejo Municipal: </strong><input id="dia_fecha_concejo_muni" <?php if (isset($dia_fecha_concejo_muni)) { ?> value="<?php echo date('d/m/y', strtotime($dia_fecha_concejo_muni)); ?>"<?php } ?>  name="dia_fecha_concejo_muni" type="text" size="10"/></td></tr>
+                <tr> <td ><strong>Fecha de presentación del borrador: </strong><input id="dia_fecha_borrador" <?php if (isset($dia_fecha_borrador)) { ?>  value="<?php echo date('d/m/y', strtotime($dia_fecha_borrador)); ?>" <?php } ?> name="dia_fecha_borrador" type="text" size="5" /></td></tr>
+                <tr><td><strong>Fecha de superación de observaciones: </strong><input id="dia_fecha_observacion" <?php if (isset($dia_fecha_observacion)) { ?>value="<?php echo date('d/m/y', strtotime($dia_fecha_observacion)); ?>"<?php } ?>  name="dia_fecha_observacion" type="text" size="5" /></td></tr>
+                <tr> <td><strong>Fecha de aprobacion del Consejo Municipal: </strong><input id="dia_fecha_concejo_muni" <?php if (isset($dia_fecha_concejo_muni)) { ?> value="<?php echo date('d/m/y', strtotime($dia_fecha_concejo_muni)); ?>"<?php } ?>  name="dia_fecha_concejo_muni" type="text" size="5" /></td></tr>
             </table>
             </tr>
     </table>

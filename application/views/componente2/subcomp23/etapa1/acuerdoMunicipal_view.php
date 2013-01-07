@@ -200,13 +200,16 @@
     <br/>
     <table>
         <tr>
-        <td width="200"><strong>Departamento:</strong><?php echo $departamento ?></td>
-        <td width="200"><strong>Municipio:</strong><?php echo $municipio ?></td>
+        <td class="tdLugar" ><strong>Departamento:</strong></td>
+        <td><?php echo $departamento ?></td>
+        <td class="tdEspacio"></td>
+        <td class="tdLugar"><strong>Municipio:</strong></td>
+        <td ><?php echo $municipio ?></td>    
+        </tr>
+    </table>
+    <table>
         <td  width="400"><strong>Fecha: </strong>
             <input <?php if (isset($acu_mun_fecha)) { ?> value='<?php echo date('d/m/y', strtotime($acu_mun_fecha)); ?>'<?php } ?>id="acu_mun_fecha" name="acu_mun_fecha" type="text" size="10" readonly="readonly"/></td>
-        </tr>
-        <tr>
-        <td colspan="3"><strong>Proyecto PEP:  </strong><?php echo $proyectoPep ?></td>
         </tr>
     </table>
     <p>¿Consejo Municipal conoce el proceso de planificación? 
@@ -268,7 +271,7 @@
         </td>
         <td style="width: 50px"></td>
         <td>
-        <fieldset   style="border-color: #2F589F;height:85px;width:175px;position: relative;left: 50px;">
+        <fieldset   style="border-color: #2F589F;height:85px;width:225px;position: relative;left: 50px;">
             <legend align="center"><strong>Cantidad de Participantes</strong></legend>
             <table>
                 <tr>

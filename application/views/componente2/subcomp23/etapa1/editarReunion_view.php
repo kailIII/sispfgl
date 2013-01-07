@@ -159,15 +159,16 @@
     <h2 class="h2Titulos">Producto 1: Acuerdo Municipal</h2>
     <h2 class="h2Titulos">Registro de Reuniones</h2>
     <br/><br/>
-       <table>
-            <tr>
-            <td colspan="2"><strong>Departamento:</strong><?php echo $departamento ?></td>
-            <td colspan="2"><strong>Municipio:</strong><?php echo $municipio ?></td>
-            </tr>
-            <tr>
-
-            <td colspan="4"><strong>Proyecto PEP:</strong><?php echo $proyectoPep ?></td>
-            </tr>
+      <table>
+        <tr>
+        <td class="tdLugar" ><strong>Departamento:</strong></td>
+        <td><?php echo $departamento ?></td>
+        <td class="tdEspacio"></td>
+        <td class="tdLugar"><strong>Municipio:</strong></td>
+        <td ><?php echo $municipio ?></td>    
+        </tr>
+     </table>
+            <table>
             <tr>
             <td width="300">
                 No. de Reunión: <input type="text" id="reu_numero" value="<?php echo $reu_numero ?>" id="reu_numero" size="5" readonly="readonly"/> </td>
@@ -201,7 +202,7 @@
                     <textarea id="reu_resultado" name="reu_resultado" cols="48" rows="5" class="required" ><?php echo $reu_resultado ?></textarea></p>
             </td>
             <td>
-            <fieldset   style="border-color: #2F589F;height:85px;width:175px;position: relative;left: 50px;">
+            <fieldset   style="border-color: #2F589F;height:85px;width:225px;position: relative;left: 50px;">
                 <legend align="center"><strong>Cantidad de Participantes</strong></legend>
                 <table>
                     <tr>

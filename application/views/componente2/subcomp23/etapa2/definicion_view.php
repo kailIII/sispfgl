@@ -2,7 +2,7 @@
     $(document).ready(function(){
         /*ZONA DE BOTONES*/
         $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/comp23_E2/guardarDefinicionTema').'/'.$def_id; ?>';
+            this.form.action='<?php echo base_url('componente2/comp23_E2/guardarDefinicionTema') . '/' . $def_id; ?>';
         });
         $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url('componente2/comp23_E2'); ?>';
@@ -65,7 +65,7 @@
             viewrecords: true,
             gridComplete: 
                 function(){
-                $.getJSON('<?php echo base_url('componente2/comp23_E1/calcularTotalParticipantes') ?>/<?php echo 'definicion/'. $def_id."/def_id"; ?>',
+                $.getJSON('<?php echo base_url('componente2/comp23_E1/calcularTotalParticipantes') ?>/<?php echo 'definicion/' . $def_id . "/def_id"; ?>',
                 function(data) {
                     $.each(data, function(key, val) {
                         if(key=='rows'){
@@ -213,14 +213,19 @@
     <h2 class="h2Titulos">Producto 4: Definición de temas, problemas y ejes principales</h2>
     <table>
         <tr>
-        <td ><strong>Departamento:</strong><?php echo $departamento ?></td>
-        <td ><strong>Municipio:</strong><?php echo $municipio ?></td>
+        <td class="tdLugar" ><strong>Departamento:</strong></td>
+        <td><?php echo $departamento ?></td>
+        <td class="tdEspacio"></td>
+        <td class="tdLugar"><strong>Municipio:</strong></td>
+        <td ><?php echo $municipio ?></td>    
         </tr>
+    </table>
+    <table>
         <tr>
         <td  ><strong>Fecha reunión: </strong><input readonly="readonly" id="def_fecha" name="def_fecha" type="text"<?php if (isset($def_fecha)) { ?> value='<?php echo date('d/m/y', strtotime($def_fecha)); ?>'<?php } ?> size="10" /></td>
         </tr>
         <tr>
-        <td colspan="2"><strong>Proyecto PEP:  </strong><?php echo $proyectoPep ?></td>
+        <td colspan="2"></td>
         </tr>
     </table>
     <br/><br/>
@@ -244,14 +249,14 @@
     <p>Observaciones:<br/>
         <textarea id="def_observacion"  name="def_observacion" cols="48" rows="5"><?php if (isset($def_observacion)) echo $def_observacion; ?></textarea></p>
     <center>
-        <div style="position:relative;width: 300px;top: 25px">
+        <div style="position:relative;top: 25px">
             <p > 
                 <input type="submit" id="guardar" value="Guardar Definición" />
                 <input type="button" id="cancelar" value="Cancelar" />
             </p>
         </div>
     </center>
-     <input id="def_ruta_archivo" name="def_ruta_archivo" <?php if (isset($def_ruta_archivo) && $def_ruta_archivo != '') { ?>value="<?php echo $def_ruta_archivo; ?>"<?php } ?> type="text" size="100" readonly="readonly" style="visibility: hidden"/>
+    <input id="def_ruta_archivo" name="def_ruta_archivo" <?php if (isset($def_ruta_archivo) && $def_ruta_archivo != '') { ?>value="<?php echo $def_ruta_archivo; ?>"<?php } ?> type="text" size="100" readonly="readonly" style="visibility: hidden"/>
 </form>
 <div id="mensaje" class="mensaje" title="Aviso de la operación">
     <p>La acción fue realizada con satisfacción</p>

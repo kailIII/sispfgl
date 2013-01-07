@@ -4,9 +4,8 @@
             this.form.action='<?php echo base_url('componente2/comp23_E3/guardarPortafolio') ?>/'+$('#por_pro_id').val();
         });
         $("#cancelar").button().click(function() {
-            document.location.href='<?php echo base_url('componente2/comp23_E3/muestraPortafolio'); ?>/'+$('#por_pro_id').val();
+            document.location.href='<?php echo base_url('componente2/comp23_E3/mostrarPortafolioProyecto'); ?>';
         });
-
         /*PARA EL DATEPICKER*/
         $( "#por_pro_fecha_desde" ).datepicker({
             showOn: 'both',
@@ -220,40 +219,41 @@
         <td ><?php echo $municipio ?></td>    
         </tr>
     </table>
+
     <table>             
         <tr>
         <td class="textD"><strong>Área:</strong></td>
-        <td><input name="por_pro_area" type="text" size="50"/></td>
+        <td><input name="por_pro_area" type="text" value="<?php echo $por_pro_area ?>" size="50"/></td>
         </tr>
         <tr>
         <td class="textD"><strong>Tema: </td>
-        <td><textarea name="por_pro_tema" cols="57" rows="3"></textarea></td>
+        <td><textarea name="por_pro_tema" cols="57" rows="3"><?php echo $por_pro_tema ?></textarea></td>
         </tr>
         <tr>
         <td class="textD"><strong>Nombre del Proyecto: </td>
-        <td><input name="por_pro_nombre" type="text" size="50"/></td>
+        <td><input name="por_pro_nombre" value="<?php echo $por_pro_nombre ?>" type="text" size="50"/></td>
         </tr>
         </tr>
         <tr>
         <td class="textD"><strong>Descripción: </td>
-        <td><textarea name="por_pro_descripcion" cols="57" rows="3"></textarea></td>
+        <td><textarea name="por_pro_descripcion" cols="57" rows="3"><?php echo $por_pro_descripcion ?></textarea></td>
         </tr>
         </tr>
         <tr>
         <td class="textD"><strong>Ubicación: </td>
-        <td><input name="por_pro_ubicacion" type="text" size="50"/></td>
+        <td><input name="por_pro_ubicacion" type="text" size="50" value="<?php echo $por_pro_ubicacion ?>"/></td>
         </tr>
         <tr>
         <td class="textD"><strong>Costo Estimado: </td>
-        <td><input name="por_pro_costo_estimado" type="text" size="10"/></td>
+        <td><input name="por_pro_costo_estimado" type="text" size="10" value="<?php echo $por_pro_costo_estimado ?>"/></td>
         </tr>
     </table> 
     <fieldset style="border-color: #2F589F;position: relative;width: 400px;left:200px;"
               <legend align="center"><strong>Período de Ejecución</strong></legend>
         <table>
             <tr>
-            <td colspan="2">Desde:<input id="por_pro_fecha_desde" name="por_pro_fecha_desde" readonly="readonly" size="10"/></td>
-            <td colspan="2">Hasta:<input id="por_pro_fecha_hasta" name="por_pro_fecha_hasta" readonly="readonly" size="10"/></td>
+            <td colspan="2">Desde:<input value="<?php echo date_format(date_create($por_pro_fecha_desde), "d-m-Y"); ?>"  id="por_pro_fecha_desde" name="por_pro_fecha_desde" readonly="readonly" size="10"/></td>
+            <td colspan="2">Hasta:<input value="<?php echo date_format(date_create($por_pro_fecha_hasta), "d-m-Y"); ?>" id="por_pro_fecha_hasta" name="por_pro_fecha_hasta" readonly="readonly" size="10"/></td>
             </tr>
         </table> 
     </fieldset>
@@ -270,12 +270,12 @@
               <legend align="center"><strong>Beneficiarios</strong></legend>
         <table>
             <tr>
-            <td colspan="2">Hombres:<input id="por_pro_beneficiario_h" name="por_pro_beneficiario_h"  size="10"/></td>
-            <td colspan="2">Mujeres:<input id="por_pro_beneficiario_m" name="por_pro_beneficiario_m" size="10"/></td>
+            <td colspan="2">Hombres:<input value="<?php echo $por_pro_beneficiario_h ?>" id="por_pro_beneficiario_h" name="por_pro_beneficiario_h"  size="10"/></td>
+            <td colspan="2">Mujeres:<input value="<?php echo $por_pro_beneficiario_m ?>" id="por_pro_beneficiario_m" name="por_pro_beneficiario_m" size="10"/></td>
             </tr>
         </table> 
     </fieldset>
-    <p>Observaciones y/o recomendaciones:<br/><textarea id="por_pro_observacion" name="por_pro_observacion" cols="48" rows="5"></textarea></p>
+    <p>Observaciones y/o recomendaciones:<br/><textarea id="por_pro_observacion" name="por_pro_observacion" cols="48" rows="5"><?php echo $por_pro_observacion ?></textarea></p>
     <table>
         <tr>
         <td><div id="btn_subir"></div></td>
@@ -292,7 +292,7 @@
 
     </center>
     <input id="por_pro_id" name="por_pro_id" value="<?php echo $por_pro_id ?>" style="visibility: hidden"/>
-    <input id="por_pro_ruta_archivo" name="por_pro_ruta_archivo" type="text" size="100" style="visibility: hidden"/>
+    <input id="por_pro_ruta_archivo" name="por_pro_ruta_archivo" value="<?php echo $por_pro_ruta_archivo ?>" type="text" size="100" style="visibility: hidden"/>
 </form>
 
 <div id="mensaje" class="mensaje" title="Aviso de la operación">

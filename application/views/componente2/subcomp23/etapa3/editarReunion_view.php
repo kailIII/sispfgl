@@ -91,28 +91,29 @@
     <h2 class="h2Titulos">Etapa 2: Diagnóstico del Municipio</h2>
     <h2 class="h2Titulos">Producto 1: Reuniones del Diagnóstico</h2>
     <br/><br/>
+     <table>
+        <tr>
+        <td class="tdLugar" ><strong>Departamento:</strong></td>
+        <td><?php echo $departamento ?></td>
+        <td class="tdEspacio"></td>
+        <td class="tdLugar"><strong>Municipio:</strong></td>
+        <td ><?php echo $municipio ?></td>    
+        </tr>
+    </table>
     <table>
         <tr>
-        <td colspan="2"><strong>Departamento:</strong><?php echo $departamento ?></td>
-        <td colspan="2"><strong>Municipio:</strong><?php echo $municipio ?></td>
-        </tr>
-        <tr>
-
-        <td colspan="4"><strong>Proyecto PEP:</strong><?php echo $proyectoPep ?></td>
-        </tr>
-        <tr>
-        <td><input type="text" id="reu_numero" value="<?php echo $reu_numero ?>" name="reu_numero" size="5" readonly="readonly"/> </td>
-        <td colspan="2">
-            Fecha: 
+        <td style="width: 200px"><strong>No.</strong><input type="text" id="reu_numero" value="<?php echo $reu_numero ?>" name="reu_numero" size="5" readonly="readonly"/> </td>
+        <td colspan="2" style="width: 300px">
+            <strong>Fecha:</strong>
             <input id="reu_fecha" name="reu_fecha" value="<?php echo date_format(date_create($reu_fecha),"d-m-Y") ;?>" readonly="readonly" class="required"  size="10"/>
         </td>
-        <td>Duración en Horas:
+        <td><strong>Duración en Horas:</strong>
             <input type="text" id="reu_duracion_horas" value="<?php echo $reu_duracion_horas ?>" name="reu_duracion_horas" size="5" class="required number"/>
         </td>
         </tr>
     </table>
 
-    <p>Agenda a Desarrollar: <textarea id="reu_tema" name="reu_tema" cols="50" rows="2" class="required" maxlength="200" ><?php echo $reu_tema ?></textarea></p>
+    <p><strong>Agenda a Desarrollar:</strong> <textarea id="reu_tema" name="reu_tema" cols="50" rows="2" class="required" maxlength="200" ><?php echo $reu_tema ?></textarea></p>
 
     <table id="participantes"></table>
     <div id="pagerParticipantes"></div>
@@ -134,7 +135,7 @@
         </td>
         <td style="width: 50px"></td>
         <td>
-        <fieldset   style="border-color: #2F589F;height:85px;width:175px;position: relative;left: 50px;">
+        <fieldset   style="border-color: #2F589F;height:85px;width:225px;position: relative;left: 50px;">
             <legend align="center"><strong>Cantidad de Participantes</strong></legend>
             <table>
                 <tr>
