@@ -1,19 +1,24 @@
 mapserver template
 <!-- The central form the application is based on. -->
-	<script>
-		function mostrarOcultarTablas(id){
-		mostrado=0;
-		elem = document.getElementById(id);
-		if(elem.style.display=='block')mostrado=1;
-		elem.style.display='none';
-		if(mostrado!=1)elem.style.display='block';
-		}
-	</script>
-	<script LANGUAGE='JavaScript'>
-		if (document.getElementById('arena').checked)
-		var status_pp='block';
-		else
-		var status_pp='none';
+	
+	<script type="text/javascript" src="http://localhost/sispfgl/resource/js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript">        
+     $(document).ready(function(){
+		 
+        $("#cb_partidos").click( function() {
+			if(!$("#cb_partidos").is(":checked")){
+				$("#div_tabla_partidos").hide();
+				this.removeAttr("checked");
+			}
+			else {
+				$("#cb_partidos").attr("checked","checked");
+				$("#div_tabla_partidos").show();
+			}
+			
+			
+		});
+		
+      });
 	</script>
 
     <form method="GET" name="mapform" id="mapform" action="/cgi-bin/mapserv">
@@ -64,12 +69,12 @@ mapserver template
 			</table>
 			<b>Capas</b><br/>
 			
-			<input type="checkbox" onClick="javascript:mostrarOcultarTablas('div_tabla_partidos')" name="layer" value="">Partidos de Gobierno
+			<input type="checkbox" id="cb_partidos" name="layer">Partidos de Gobierno
 			
-			<!--<div id="div_tabla_partidos" style="display: none">-->
-			<script LANGUAGE='JavaScript'>
+			<div id="div_tabla_partidos" style="display:none;">
+			<!--<script LANGUAGE='JavaScript'>
 				document.write('<div id=\"div_tabla_partidos\" style=\"display: '+status_pp+'\">');
-			</script>
+			</script>-->
 			
 			<table>
 			  <!--<tr>

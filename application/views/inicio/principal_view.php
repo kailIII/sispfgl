@@ -9,6 +9,7 @@
     ).vertical();
     });
 </script>
+
 <style  type="text/css">
 #slidedeck_frame{
 width:500px;
