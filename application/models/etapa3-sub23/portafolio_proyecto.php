@@ -37,7 +37,7 @@ private $tabla = 'portafolio_proyecto';
         return $consulta->result_array();
     }
 
-    public function actualizarReunion($por_pro_area, $por_pro_tema, $por_pro_nombre,
+    public function actualizarPortafolioProyecto($por_pro_area, $por_pro_tema, $por_pro_nombre,
             $por_pro_descripcion, $por_pro_ubicacion,$por_pro_costo_estimado,
             $por_pro_fecha_desde ,$por_pro_fecha_hasta ,$por_pro_beneficiario_h,
             $por_pro_beneficiario_m,$por_pro_observacion,$por_pro_ruta_archivo,$por_pro_id) {
@@ -59,7 +59,7 @@ private $tabla = 'portafolio_proyecto';
         $this->db->update($this->tabla, $datos);
     }
 
-    public function eliminaReunion($por_pro_id) {
+    public function eliminaPortafolioProyecto($por_pro_id) {
         $consulta = "DELETE FROM " . $this->tabla . " CASCADE WHERE por_pro_id=?";
         $this->db->query($consulta, array($por_pro_id));
     }

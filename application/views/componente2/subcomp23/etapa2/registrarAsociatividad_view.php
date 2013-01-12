@@ -208,16 +208,16 @@
     <h2 class="h2Titulos">Etapa 2: Diagnóstico del Municipio</h2>
     <h2 class="h2Titulos">Asociatividad del Municipio</h2>
     <br/><br/>
-    <table width="850">
+    <table>
         <tr>
-        <td ><strong>Departamento:</strong><?php echo $departamento ?></td>
-        <td ><strong>Municipio:</strong><?php echo $municipio ?></td>
-        </tr>
-        <tr>
-        <td colspan="2"><strong>Proyecto PEP:</strong><?php echo $proyectoPep ?></td>
+        <td class="tdLugar" ><strong>Departamento:</strong></td>
+        <td><?php echo $departamento ?></td>
+        <td class="tdEspacio"></td>
+        <td class="tdLugar"><strong>Municipio:</strong></td>
+        <td ><?php echo $municipio ?></td>    
         </tr>
     </table>
-    <br/><br/>
+    <br/>
     <h1 class="h2Titulos" >Contexto</strong></h1>
     <br/>
     <p><strong>Nombre:</strong><input type="text" id="aso_nombre" name="aso_nombre" size="60" class="required" /></p>
@@ -228,7 +228,7 @@
             <div id="pagerIntegrado"></div>
         </td>
         <td width="300">
-            Tipo:<select id='selTipo' name="selTipo">
+            <strong> Tipo:</strong><select id='selTipo' name="selTipo">
                 <option value='0'>--Seleccione Tipo--</option>
                 <?php foreach ($tipos as $tipo) { ?>
                     <option value='<?php echo $tipo->tip_id; ?>'><?php echo $tipo->tip_nombre; ?></option>
@@ -238,7 +238,7 @@
         </tr>
         <tr>
         <td width="300">
-            Fecha Constitución: 
+            <strong>Fecha Constitución: </strong>
             <input id="aso_fecha_constitucion" name="aso_fecha_constitucion" readonly="readonly" class="required"  size="10"/>
         </td>
         </tr>

@@ -3,7 +3,7 @@
 </center>
 <br/>
 <h2 class="demoHeaders">Objetivo General</h2>
-<p>Mejorar los procesos y sistemas administrativos, financieros y técnicos de los Gobiernos Locales, asì
+<p>Mejorar los procesos y sistemas administrativos, financieros y técnicos de los Gobiernos Locales, así
     como su capacidad para prestar servicios básicos priorizados por las comunidades locales y el desarrollo
     de procesos sostenibles, en el mediano y largo plazo.</p>
 <h2 class="demoHeaders">Objetivos Específicos</h2>

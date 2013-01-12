@@ -98,7 +98,7 @@
         </tr>
         <tr>
 
-        <td colspan="4"><strong>Proyecto PEP:</strong><?php echo $proyectoPep ?></td>
+        <td colspan="4"></td>
         </tr>
         <tr>
         <td><input type="text" id="reu_numero" value="<?php echo $reu_numero ?>" name="reu_numero" size="5" readonly="readonly"/> </td>
@@ -134,7 +134,7 @@
         </td>
         <td style="width: 50px"></td>
         <td>
-        <fieldset   style="border-color: #2F589F;height:85px;width:175px;position: relative;left: 50px;">
+        <fieldset   style="border-color: #2F589F;height:85px;width:225px;position: relative;left: 50px;">
             <legend align="center"><strong>Cantidad de Participantes</strong></legend>
             <table>
                 <tr>

@@ -93,7 +93,7 @@
                         if(key=='rows'){
                             $.each(val, function(id, registro){
                                 if(registro['cell'][0]!=0){
-                                    $('#agregar').hide();;
+                                    $('#agregar').hide();
                                 }
                                 else{
                                     $('#agregar').show();

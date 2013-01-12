@@ -46,7 +46,7 @@ $cons_id = array(
                 if( gr != null ){
                     $('#proyectoPep').val(gr);
                     $('#cons_id').val($('#selConsultoras').val());
-                    this.form.action='<?php echo base_url('consultor/consultoraC/registrarConsultor')?>';
+                    this.form.action='<?php echo base_url('consultor/consultoraC/registrarCoordinador')?>';
                 }
                 else {
                     $('#mensaje2').dialog('open');
