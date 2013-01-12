@@ -1,4 +1,4 @@
 #se ignorara todos los archivos de configuracíon
-application/config/*
+application/config/
 application/views/plantilla/menu.php
-BD/respaldo-02-Dic.0534.sql
+tmp/

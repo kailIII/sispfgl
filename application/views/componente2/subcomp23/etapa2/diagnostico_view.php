@@ -105,7 +105,7 @@
     <table>
         <tr>
         <td>
-        <fieldset style="width:400px;">
+        <fieldset style="width:420px;">
             <legend><strong>¿ Contiene el diagnóstico del municipio los elementos mínimos siguientes?</strong></legend>
             <table>
                 <?php foreach ($cumplimientosMinimos as $aux) { ?>

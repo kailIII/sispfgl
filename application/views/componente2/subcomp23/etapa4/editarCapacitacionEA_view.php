@@ -128,15 +128,15 @@
                 tabla3.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');
             }
         },//OPCIONES
-        {closeAfterEdit:true,editCaption: "Editando ",align:'center',reloadAfterSubmit:true,
-            processData: "Cargando...",afterSubmit:despuesAgregarEditar3,
+        {closeAfterEdit:true,editCaption: "Editar facilitador",align:'center',reloadAfterSubmit:true,
+            processData: "Cargando...",afterSubmit:despuesAgregarEditar3,width:350,
             bottominfo:"Campos marcados con (*) son obligatorios", 
             onclickSubmit: function(rp_ge, postdata) {
                 $('#mensaje').dialog('open');
             }    
         },//EDITAR
-        {closeAfterAdd:true,addCaption: "Agregar ", align:'center',reloadAfterSubmit:true,
-            processData: "Cargando...",afterSubmit:despuesAgregarEditar3,
+        {closeAfterAdd:true,addCaption: "Agregar facilitador ", align:'center',reloadAfterSubmit:true,
+            processData: "Cargando...",afterSubmit:despuesAgregarEditar3,width:350,
             bottominfo:"Campos marcados con (*) son obligatorios", 
             onclickSubmit: function(rp_ge, postdata) {
                 $('#mensaje').dialog('open');

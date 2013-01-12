@@ -118,7 +118,7 @@
             beforeRefresh: function() {
                 tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
         },//OPCIONES
-        {closeAfterEdit:true,editCaption: "Editando Otros Participantes ",
+        {closeAfterEdit:true,editCaption: "Editando Otros Participantes ",width:350,
             align:'center',reloadAfterSubmit:true,
             processData: "Cargando...",afterSubmit:despuesAgregarEditar,
             bottominfo:"Campos marcados con (*) son obligatorios", 
@@ -126,7 +126,7 @@
                 $('#mensaje').dialog('open');
             }    
         },//EDITAR
-        {closeAfterAdd:true,addCaption: "Agregar Nuevos Participantes ",
+        {closeAfterAdd:true,addCaption: "Agregar Nuevos Participantes ",width:350,
             align:'center',reloadAfterSubmit:true,
             processData: "Cargando...",afterSubmit:despuesAgregarEditar,
             bottominfo:"Campos marcados con (*) son obligatorios", 
@@ -134,7 +134,7 @@
                 $('#mensaje').dialog('open');
             }
         },//AGREGAR
-        {msg: "Desea Eliminar a este Participante?",caption:"Eliminando....",
+        {msg: "¿Desea Eliminar a este Participante?",caption:"Eliminando....",
             align:'center',reloadAfterSubmit:true,processData: "Cargando...",
             onclickSubmit: function(rp_ge, postdata) {
                 $('#mensaje').dialog('open');                            
@@ -249,21 +249,21 @@
                 tabla3.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');
             }
         },//OPCIONES
-        {closeAfterEdit:true,editCaption: "Editando ",align:'center',reloadAfterSubmit:true,
-            processData: "Cargando...",afterSubmit:despuesAgregarEditar3,
+        {closeAfterEdit:true,editCaption: "Editando Facilitador",align:'center',reloadAfterSubmit:true,
+            processData: "Cargando...",afterSubmit:despuesAgregarEditar3,width:350,
             bottominfo:"Campos marcados con (*) son obligatorios", 
             onclickSubmit: function(rp_ge, postdata) {
                 $('#mensaje').dialog('open');
             }    
         },//EDITAR
-        {closeAfterAdd:true,addCaption: "Agregar ", align:'center',reloadAfterSubmit:true,
-            processData: "Cargando...",afterSubmit:despuesAgregarEditar3,
+        {closeAfterAdd:true,addCaption: "Agregar Facilitador", align:'center',reloadAfterSubmit:true,
+            processData: "Cargando...",afterSubmit:despuesAgregarEditar3,width:350,
             bottominfo:"Campos marcados con (*) son obligatorios", 
             onclickSubmit: function(rp_ge, postdata) {
                 $('#mensaje').dialog('open');
             }
         },//AGREGAR
-        {msg: "Desea Eliminar a este Facilitador?",caption:"Eliminando....",
+        {msg: "¿Desea Eliminar a este Facilitador?",caption:"Eliminando....",
             align:'center',reloadAfterSubmit:true,processData: "Cargando...",
             onclickSubmit: function(rp_ge, postdata) {
                 $('#mensaje').dialog('open');                            

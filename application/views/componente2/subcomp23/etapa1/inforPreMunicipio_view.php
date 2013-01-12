@@ -77,58 +77,6 @@
             else return [true,""];
         }
         /*FIN ZONA VALIDACIONES*/
-        /*GRID PARTICIPANTES*/
-        var tabla=$("#participantes");
-        tabla.jqGrid({
-            url:'<?php echo base_url('componente2/comp23_E1/cargarParticipantesIP') . '/gru_apo_id/' . $gru_apo_id ?>',
-            //editurl:'welcome/gestionArticulo',
-            datatype:'json',
-            altRows:true,
-            height: "100%",
-            hidegrid: false,
-            colNames:['id','Nombres','Apellidos','Sexo','Cargo'],
-            colModel:[
-                {name:'par_id',index:'par_id', width:40,editable:false,editoptions:{size:15} },
-                {name:'par_nombre',index:'par_nombre',width:250,editable:true,
-                    editoptions:{size:25,maxlength:50}, 
-                    formoptions:{label: "Nombres",elmprefix:"(*)"},
-                    editrules:{required:true} 
-                },
-                {name:'par_apellido',index:'par_apellido',width:250,editable:true,
-                    editoptions:{size:25,maxlength:50}, 
-                    formoptions:{label: "Apellidos",elmprefix:"(*)"},
-                    editrules:{required:true} 
-                },
-                {name:'par_sexo',index:'par_sexo',editable:true,edittype:"select",width:50,
-                    editoptions:{ value: '0:Seleccione;f:Femenino; m:Masculino' }, 
-                    formoptions:{ label: "Sexo",elmprefix:"(*)"},
-                    editrules:{custom:true, custom_func:validaSexo}
-                },
-             
-                {name:'par_cargo',index:'par_cargo',width:250,editable:true,
-                    editoptions:{size:25,maxlength:30}, 
-                    formoptions:{ label: "Cargo",elmprefix:"(*)"},
-                    editrules:{required:true} 
-                }
-            ],
-            multiselect: false,
-            caption: "Miembros del Equipo Local de Apoyo",
-            rowNum:10,
-            rowList:[10,20,30],
-            loadonce:true,
-            pager: jQuery('#pagerParticipantes'),
-            viewrecords: true     
-        }).jqGrid('navGrid','#pagerParticipantes',
-        {edit:false,add:false,del:false,search:false,refresh:false,
-            beforeRefresh: function() {
-                tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
-        }
-    ).hideCol('par_id');
-        /* Funcion para regargar los JQGRID luego de agregar y editar*/
-        function despuesAgregarEditar() {
-            tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');
-            return[true,'']; //no error
-        }
         /*DIALOGOS DE VALIDACION*/
         $('.mensaje').dialog({
             autoOpen: false,
@@ -207,10 +155,6 @@
         </tr>
     </table>
     <br/><br/>
-
-    <table id="participantes"></table>
-    <div id="pagerParticipantes"></div>
-
     <p>Observaciones y/o Recomendaciones:<br/>
         <textarea name="inf_pre_observacion" cols="48" rows="5"><?php echo $inf_pre_observacion; ?></textarea></p>
 

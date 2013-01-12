@@ -490,22 +490,61 @@ class Comp23_E3 extends CI_Controller {
             $resultado = $this->proIng->obtenerProIng($pro_pep_id);
             $this->load->model('proyectoPep/proyecto_pep', 'proPep');
             $this->proPep->actualizarIndices('pro_ing_id', $resultado[0]['pro_ing_id'], $pro_pep_id);
-            $this->monPro->agregarMontoProyeccion($resultado[0]['pro_ing_id'],'FODES');
-            $this->monPro->agregarMontoProyeccion($resultado[0]['pro_ing_id'],'Ingresos Propios');
-            $this->monPro->agregarMontoProyeccion($resultado[0]['pro_ing_id'],'Donaciones');
-            $this->monPro->agregarMontoProyeccion($resultado[0]['pro_ing_id'],'Créditos');
+            $this->monPro->agregarMontoProyeccion($resultado[0]['pro_ing_id'], 'FODES');
+            $this->monPro->agregarMontoProyeccion($resultado[0]['pro_ing_id'], 'Ingresos Propios');
+            $this->monPro->agregarMontoProyeccion($resultado[0]['pro_ing_id'], 'Donaciones');
+            $this->monPro->agregarMontoProyeccion($resultado[0]['pro_ing_id'], 'Créditos');
         }
         $resultado = $this->proIng->obtenerProIng($pro_pep_id);
-        $pro_ing_id=$resultado[0]['pro_ing_id'];
+        $pro_ing_id = $resultado[0]['pro_ing_id'];
         $informacion['pro_ing_id'] = $pro_ing_id;
         $informacion['pro_ing_observacion'] = $resultado[0]['pro_ing_observacion'];
-        $resultado=  $this->monPro->obtenerMontoProyeccion($pro_ing_id);
+        $resultado = $this->monPro->obtenerAnio($pro_ing_id);
+        if ($resultado[0]->mon_pro_anio != 0)
+            $informacion['mon_pro_anio'] = $resultado[0]->mon_pro_anio;
+        $resultado = $this->monPro->obtenerMontoProyeccion($pro_ing_id);
         $informacion['montos'] = $resultado;
         //OBTENER LOS MONTOS DE PROYECCIÓN
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/etapa3/proyeccionIngresos_view', $informacion);
         $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function habilitarAnio($pro_ing_id, $mon_pro_anio) {
+        $this->load->model('etapa3-sub23/monto_proyeccion', 'monPro');
+        $this->monPro->editarAnio($pro_ing_id, $mon_pro_anio);
+        $this->load->model('etapa3-sub23/detmonto_proyeccion', 'dmonPro');
+        $montos = $this->monPro->obtenerMontoProyeccion($pro_ing_id);
+        foreach ($montos as $monto) {
+            $resultado = $this->dmonPro->insertadoAnio($monto->mon_pro_id);
+            if ($resultado == 0) {
+                $this->dmonPro->agregarDetMontoProyeccion($monto->mon_pro_id, $monto->mon_pro_anio + 1, 1);
+                $this->dmonPro->agregarDetMontoProyeccion($monto->mon_pro_id, $monto->mon_pro_anio + 2, 2);
+                $this->dmonPro->agregarDetMontoProyeccion($monto->mon_pro_id, $monto->mon_pro_anio + 3, 3);
+                $this->dmonPro->agregarDetMontoProyeccion($monto->mon_pro_id, $monto->mon_pro_anio + 4, 4);
+            } else {
+                $this->dmonPro->editarDetMontoProyeccion($monto->mon_pro_id, $monto->mon_pro_anio + 1, 1);
+                $this->dmonPro->editarDetMontoProyeccion($monto->mon_pro_id, $monto->mon_pro_anio + 2, 2);
+                $this->dmonPro->editarDetMontoProyeccion($monto->mon_pro_id, $monto->mon_pro_anio + 3, 3);
+                $this->dmonPro->editarDetMontoProyeccion($monto->mon_pro_id, $monto->mon_pro_anio + 4, 4);
+            }
+        }
+
+        $rows[0]['id'] = 1;
+        $rows[0]['cell'] = array('prueba');
+
+        $datos = json_encode($rows);
+        $pages = floor(1 / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . 1 . '", 
+               "rows":' . $datos . '}';
+
+
+        echo $jsonresponse;
     }
 
 }
