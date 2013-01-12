@@ -2,3 +2,4 @@
 application/config/*.php
 application/views/plantilla/menu.php
 tmp/*
+/application/config/
