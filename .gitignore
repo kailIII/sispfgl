@@ -1,4 +1,4 @@
 #se ignorara todos los archivos de configuracíon
 application/config/*.php
 application/views/plantilla/menu.php
-tmp/
+tmp/*
