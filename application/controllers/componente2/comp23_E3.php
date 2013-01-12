@@ -484,16 +484,45 @@ class Comp23_E3 extends CI_Controller {
         /* FIN DE USUARIO */
         $this->load->model('etapa3-sub23/proyeccion_ingreso', 'proIng');
         $this->load->model('etapa3-sub23/monto_proyeccion', 'monPro');
+        $this->load->model('etapa3-sub23/detmonto_proyeccion', 'dmonPro');
         $resultado = $this->proIng->contarProIngPorPep($pro_pep_id);
         if ($resultado == '0') {
             $this->proIng->agregarProIng($pro_pep_id);
             $resultado = $this->proIng->obtenerProIng($pro_pep_id);
             $this->load->model('proyectoPep/proyecto_pep', 'proPep');
             $this->proPep->actualizarIndices('pro_ing_id', $resultado[0]['pro_ing_id'], $pro_pep_id);
-            $this->monPro->agregarMontoProyeccion($resultado[0]['pro_ing_id'], 'FODES');
-            $this->monPro->agregarMontoProyeccion($resultado[0]['pro_ing_id'], 'Ingresos Propios');
-            $this->monPro->agregarMontoProyeccion($resultado[0]['pro_ing_id'], 'Donaciones');
-            $this->monPro->agregarMontoProyeccion($resultado[0]['pro_ing_id'], 'Créditos');
+            $this->monPro->agregarMontoProyeccion($resultado[0]['pro_ing_id'], 'FODES', 'FODES');
+            /* AGREGAR SUS DETALLES */
+            $resultado2 = $this->monPro->obtenerUltimoId();
+            $this->dmonPro->agregarDetMontoProyeccion($resultado2[0]->mon_pro_id, 1);
+            $this->dmonPro->agregarDetMontoProyeccion($resultado2[0]->mon_pro_id, 2);
+            $this->dmonPro->agregarDetMontoProyeccion($resultado2[0]->mon_pro_id, 3);
+            $this->dmonPro->agregarDetMontoProyeccion($resultado2[0]->mon_pro_id, 4);
+            /* TERMINAR SU DETALLE */
+            $this->monPro->agregarMontoProyeccion($resultado[0]['pro_ing_id'], 'Ingresos Propios', 'IngresosPropios');
+            /* AGREGAR SUS DETALLES */
+            $resultado2 = $this->monPro->obtenerUltimoId();
+            $this->dmonPro->agregarDetMontoProyeccion($resultado2[0]->mon_pro_id, 1);
+            $this->dmonPro->agregarDetMontoProyeccion($resultado2[0]->mon_pro_id, 2);
+            $this->dmonPro->agregarDetMontoProyeccion($resultado2[0]->mon_pro_id, 3);
+            $this->dmonPro->agregarDetMontoProyeccion($resultado2[0]->mon_pro_id, 4);
+            /* TERMINAR SU DETALLE */
+            $this->monPro->agregarMontoProyeccion($resultado[0]['pro_ing_id'], 'Donaciones', 'Donaciones');
+            /* AGREGAR SUS DETALLES */
+            $resultado2 = $this->monPro->obtenerUltimoId();
+            $this->dmonPro->agregarDetMontoProyeccion($resultado2[0]->mon_pro_id, 1);
+            $this->dmonPro->agregarDetMontoProyeccion($resultado2[0]->mon_pro_id, 2);
+            $this->dmonPro->agregarDetMontoProyeccion($resultado2[0]->mon_pro_id, 3);
+            $this->dmonPro->agregarDetMontoProyeccion($resultado2[0]->mon_pro_id, 4);
+            /* TERMINAR SU DETALLE */
+            $this->monPro->agregarMontoProyeccion($resultado[0]['pro_ing_id'], 'Créditos', 'Creditos');
+            /* AGREGAR SUS DETALLES */
+            $resultado2 = $this->monPro->obtenerUltimoId();
+            $this->dmonPro->agregarDetMontoProyeccion($resultado2[0]->mon_pro_id, 1);
+            $this->dmonPro->agregarDetMontoProyeccion($resultado2[0]->mon_pro_id, 2);
+            $this->dmonPro->agregarDetMontoProyeccion($resultado2[0]->mon_pro_id, 3);
+            $this->dmonPro->agregarDetMontoProyeccion($resultado2[0]->mon_pro_id, 4);
+            /* TERMINAR SU DETALLE */
         }
         $resultado = $this->proIng->obtenerProIng($pro_pep_id);
         $pro_ing_id = $resultado[0]['pro_ing_id'];
@@ -504,6 +533,9 @@ class Comp23_E3 extends CI_Controller {
             $informacion['mon_pro_anio'] = $resultado[0]->mon_pro_anio;
         $resultado = $this->monPro->obtenerMontoProyeccion($pro_ing_id);
         $informacion['montos'] = $resultado;
+        $resultado = $this->monPro->consultarPorProIngIdNombre($pro_ing_id, 'FODES');
+        $resultado=$this->dmonPro->obtenerDetMontoProyec($resultado[0]->mon_pro_id);
+        $informacion['fodes'] = $resultado;
         //OBTENER LOS MONTOS DE PROYECCIÓN
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
@@ -517,18 +549,10 @@ class Comp23_E3 extends CI_Controller {
         $this->load->model('etapa3-sub23/detmonto_proyeccion', 'dmonPro');
         $montos = $this->monPro->obtenerMontoProyeccion($pro_ing_id);
         foreach ($montos as $monto) {
-            $resultado = $this->dmonPro->insertadoAnio($monto->mon_pro_id);
-            if ($resultado == 0) {
-                $this->dmonPro->agregarDetMontoProyeccion($monto->mon_pro_id, $monto->mon_pro_anio + 1, 1);
-                $this->dmonPro->agregarDetMontoProyeccion($monto->mon_pro_id, $monto->mon_pro_anio + 2, 2);
-                $this->dmonPro->agregarDetMontoProyeccion($monto->mon_pro_id, $monto->mon_pro_anio + 3, 3);
-                $this->dmonPro->agregarDetMontoProyeccion($monto->mon_pro_id, $monto->mon_pro_anio + 4, 4);
-            } else {
-                $this->dmonPro->editarDetMontoProyeccion($monto->mon_pro_id, $monto->mon_pro_anio + 1, 1);
-                $this->dmonPro->editarDetMontoProyeccion($monto->mon_pro_id, $monto->mon_pro_anio + 2, 2);
-                $this->dmonPro->editarDetMontoProyeccion($monto->mon_pro_id, $monto->mon_pro_anio + 3, 3);
-                $this->dmonPro->editarDetMontoProyeccion($monto->mon_pro_id, $monto->mon_pro_anio + 4, 4);
-            }
+            $this->dmonPro->editarDetMontoProyeccion($monto->mon_pro_id, $monto->mon_pro_anio + 1, 1);
+            $this->dmonPro->editarDetMontoProyeccion($monto->mon_pro_id, $monto->mon_pro_anio + 2, 2);
+            $this->dmonPro->editarDetMontoProyeccion($monto->mon_pro_id, $monto->mon_pro_anio + 3, 3);
+            $this->dmonPro->editarDetMontoProyeccion($monto->mon_pro_id, $monto->mon_pro_anio + 4, 4);
         }
 
         $rows[0]['id'] = 1;

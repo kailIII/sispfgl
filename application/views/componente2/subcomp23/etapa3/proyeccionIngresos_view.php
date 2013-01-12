@@ -9,10 +9,13 @@
             document.location.href='<?php echo base_url(); ?>';
         });
 <?php
-if (isset($mon_pro_anio))
+if (isset($mon_pro_anio)) {
     echo "$('#tabla1').show();";
-else
+    echo "$('#tabla2').show();";
+} else {
     echo "$('#tabla1').hide();";
+    echo "$('#tabla2').hide();";
+}
 ?>
         $('#agregarAnio').css({'background':'white','border':'none'});
         /*DIALOGOS DE VALIDACION*/
@@ -25,7 +28,6 @@ else
                 }
             }
         });
-        $('#tabla2').hide();
         /*FIN DIALOGOS VALIDACION*/
         $('#agregarAnio').button().click(function(){
             if($('#pro_ing_anio').val()!=''){
@@ -49,8 +51,8 @@ else
 <?php
 $validacion = "";
 foreach ($montos as $monto) {
-    $validacion.='mon_pro_dispo_financiera_' . $monto->mon_pro_idnombre . ":{number:true},";
-    $validacion.='mon_pro_ingresos_' . $monto->mon_pro_idnombre . ":{number:true},";
+    $validacion.='disponibilidad_financiera_' . $monto->mon_pro_idnombre . ":{number:true},";
+    $validacion.='ingresos_' . $monto->mon_pro_idnombre . ":{number:true},";
 }
 ?>
         $("#proyeccionIngresosForm").validate({
@@ -64,9 +66,6 @@ foreach ($montos as $monto) {
 <?php echo trim($validacion, ','); ?>
             }
         });   
-        
-        
-        
     });
 </script>
 <form class="cmxform" id="proyeccionIngresosForm" method="post">
@@ -101,19 +100,25 @@ foreach ($montos as $monto) {
         <?php foreach ($montos as $monto) { ?>
             <tr>
             <td><strong><?php echo $monto->mon_pro_nombre ?></strong></td>
-            <td align="center"><input id="mon_pro_dispo_financiera_<?php echo $monto->mon_pro_idnombre ?>" name="mon_pro_dispo_financiera_<?php echo $monto->mon_pro_idnombre ?>" type="text" size="10"/></td>
+            <td align="center"><input id="disponibilidad_financiera_<?php echo $monto->mon_pro_idnombre ?>" name="disponibilidad_financiera_<?php echo $monto->mon_pro_idnombre ?>" type="text" size="10"/></td>
             <td style="width: 80px"></td>
-            <td align="center"><input id="mon_pro_ingresos_<?php echo $monto->mon_pro_idnombre ?>" name="mon_pro_ingresos_<?php echo $monto->mon_pro_idnombre ?>" type="text" size="10"/></td>
+            <td align="center"><input id="ingresos_<?php echo $monto->mon_pro_idnombre ?>" name="ingresos_<?php echo $monto->mon_pro_idnombre ?>" type="text" size="10"/></td>
             </tr>
         <?php } ?>
     </table >
+    <br/><br/>
     <table id="tabla2" align="center">
         <tr>
-        <td>
-            <h2 class="h2Titulos">Proyección de los años siguientes</h2>
-        </td>
+        <td colspan="9"><h2 class="h2Titulos">Proyección de los años siguientes</h2></td>
         </tr>
+        <tr>
+        <td><strong>FODES</strong></td>
+        <?php foreach ($fodes as $aux) { ?>
+            <td align="center"><input id="<?php echo $aux->mon_pro_nombre . ' ' . $aux->dmon_pro_id ?>" name="disponibilidad_financiera_<?php echo $monto->mon_pro_idnombre ?>" type="text" size="10"/></td>
+            <td style="width: 30px"></td>
 
+        <?php } ?>
+        </tr>
     </table>
     <center>
         <p>Observaciones y/o Recomendaciones:<br/>
