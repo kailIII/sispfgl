@@ -5,8 +5,8 @@
            showOn: 'both',
            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
            buttonImageOnly: true, 
-           dateFormat: 'dd/mm/yy'
-       })
+           dateFormat: 'yy/mm/dd'
+       });
                 
         /*botones*/
         /*$("#agregar").button().click(function(){
@@ -99,7 +99,7 @@
         
         var tabla=$("#asistentes");
         tabla.jqGrid({
-            //url:'<?php echo base_url('index.php/componente3/componente3/cargarAsistentes_dsat') ?>',
+            //url:'<?php echo base_url('componente3/componente3/cargarAsistentes_dsat') ?>',
             //editurl: 'clientArray',
             datatype:'clientSide',
             altRows:true,
@@ -167,7 +167,7 @@
         
         
         
-        $("#ed1").click( function() { 
+        /*$("#ed1").click( function() { 
 			var selected=$('#asistentes').jqGrid('getGridParam','selrow');
 			$("#asistentes").jqGrid('editRow',""+selected);
 			$("#sv1").attr("disabled",false); 
@@ -179,7 +179,39 @@
 			$("#asistentes").jqGrid('saveRow',""+selected); 
 			$("#ed1").attr("disabled",false);
 			this.disabled = 'true';
+		});*/
+		
+		$('#myform').submit(function() {
+				
+			var numberOfRecords = $("#asistentes").getGridParam("records");
+			for(i=0;i<numberOfRecords;i++)
+			{
+				
+				var rowId = $("#asistentes").getRowData(i);
+						  
+						  //put all rows for your grid
+				 
+						  
+				$('<input type="hidden" />').attr('name', 'par_nombre'+i).attr('value',rowId['par_nombre']).appendTo('#divpost');
+				$('<input type="hidden" />').attr('name', 'par_sexo'+i).attr('value',rowId['par_sexo']).appendTo('#divpost');
+				$('<input type="hidden" />').attr('name', 'par_cargo'+i).attr('value',rowId['par_cargo']).appendTo('#divpost');
+				$('<input type="hidden" />').attr('name', 'par_sector'+i).attr('value',rowId['par_sector']).appendTo('#divpost');
+			}
+			$('<input type="hidden" />').attr('name', 'cant_asis').attr('value',numberOfRecords).appendTo('#divpost');
+			return true;
+			
 		});
+		
+		$('#archivo_reporte').change(function() {
+			var archivo = $('#archivo_reporte').val();
+			var ext = archivo.substring(archivo.lastIndexOf("."), archivo.length);
+			if(ext!='.doc'&&ext!='.docx'&&ext!='.pdf'&&ext!='.xls'&&ext!='.rtf'){
+				//$("#notvalid").text("Archivo no valido! Extenciones permitidas: .pdf | .doc | .docx | .rtf").show().fadeOut(10000);
+				$('#mensaje3').dialog('open');
+				$('#archivo_reporte').val('');
+			}
+		});
+		
         
   });
 </script>
@@ -189,11 +221,13 @@
 	$this->load->helper('form'); 
 	include("select_generator.php"); 
 ?>
-
+<?php if(isset($aviso))
+	echo $aviso;?>
 <h1>3.1 Diagnosticos Sectoriales y Analisis Transversales</h1>
 <br/>
 
-<?php echo form_open('componente3/componente3/guardar_dsat');?>
+<?php $attributes = array('id' => 'myform');
+echo form_open_multipart('componente3/componente3/guardar_dsat', $attributes);?>
 
 	<div  style="float:left;height:120px;">
 		<label>Fecha de Actividad:</label>
@@ -281,17 +315,22 @@
 		<textarea rows="5" cols="80" maxlength="500" name="observaciones" id="observaciones" align="center"></textarea><br/><br/>
 		
 		<label>Archivo de Reporte: </label>
-		<input type="file" name="archivo_reporte" size="20" /><br/><br/>
+		<input type="file" name="archivo_reporte" size="20" id="archivo_reporte"/><span style="color:blue"; id="notvalid"></span><br/><br/>
+		
 		
 		<input type="submit" id="guardar" value="Guardar" align="right" name="guardar">
 		
-		
+		<div id="divpost" ></div>
 <?php echo form_close();?>
 
 
+
 <div id="mensaje1" class="mensaje" title="Aviso">
-    <p>Debe Seleccionar una fila para continuar</p>
+    <p>Debe Seleccionar una fila para realizar esta acci&oacute;n</p>
 </div>
 <div id="mensaje2" class="mensaje" title="Aviso">
     <p>Debe completar los datos del asistente para continuar</p>
+</div>
+<div id="mensaje3" class="mensaje" title="Aviso">
+    <p>Archivo no valido! Extenciones permitidas: .pdf | .doc | .docx | .rtf</p>
 </div>

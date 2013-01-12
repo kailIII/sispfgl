@@ -4,8 +4,20 @@
            showOn: 'both',
            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
            buttonImageOnly: true, 
-           dateFormat: 'dd/mm/yy'
-       })
+           dateFormat: 'yy/mm/dd'
+       });
+       
+       $('.mensaje').dialog({
+            autoOpen: false,
+            width: 300,
+            buttons: {
+                "Ok": function() {
+                    $(this).dialog("close");
+                }
+            }
+        });
+       
+       
 	});
    
 </script>
@@ -13,11 +25,12 @@
 	$this->load->helper('form'); 
 	include("select_generator.php"); 
 ?>
-
-<h1>3.1 Diagnosticos Sectoriales y Analisis Transversales</h1>
+<?php if(isset($aviso))
+	echo $aviso;?>
+<h1>3.3 Divulgaci&oacute;n</h1>
 <br/>
-
-<?php echo form_open('componente3/guardar_dsat');?>
+<?php $attributes = array('id' => 'myform');
+echo form_open('componente3/componente3/guardar_dsat',$attributes);?>
 
 	<label>Nombre Actividad: </label>
 	<input type="text" name="nombre_act_div" id="nombre_act_div"  size="45" align="left"><br/><br/>
@@ -70,6 +83,12 @@
 		<h2>Aqui va el qgrid</h2>
 		
 <?php echo form_close();?>
-
-
-
+<div id="mensaje1" class="mensaje" title="Aviso">
+    <p>Debe Seleccionar una fila para realizar esta acci&oacute;n.</p>
+</div>
+<div id="mensaje2" class="mensaje" title="Aviso">
+    <p>Debe completar los datos de la actividad para continuar.</p>
+</div>
+<div id="mensaje3" class="mensaje" title="Aviso">
+    <p>No ha ingresado ninguna actividad.</p>
+</div>
