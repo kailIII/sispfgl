@@ -7,7 +7,7 @@
 estime conveniente
 */
 
-body{ font-size: 70%;font-family: "Tahoma", "Geneva", sans-serif; margin: 50px; background: url(../imagenes/background.png) repeat;}
+body{ font-size: 80%;font-family: "Tahoma", "Geneva", sans-serif; margin: 50px; background: url(../imagenes/background.png) repeat;}
 .demoHeaders { color: #2F589F; margin-top: 2em; }
 #dialog_link {padding: .4em 1em .4em 20px;text-decoration: none;position: relative;}
 #dialog_link span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
@@ -79,6 +79,15 @@ div#divcuerpo{
     height:85px;
     width:175px;  
 }
+
+.tdLugar{
+    width:120px;  
+}
+
+.tdEspacio{
+    width:300px;  
+}
+
 /*quitar Borde a los texBox*/
 .bordeNo{
     border-style: none;  

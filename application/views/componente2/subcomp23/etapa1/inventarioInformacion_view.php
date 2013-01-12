@@ -72,7 +72,7 @@
             beforeRefresh: function() {
                 tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
         },//OPCIONES
-        {closeAfterEdit:true,editCaption: "Editando Fuentes Primarias ",
+        {closeAfterEdit:true,editCaption: "Editando Fuentes Primarias ",width:450,
             align:'center',reloadAfterSubmit:true,
             processData: "Cargando...",afterSubmit:despuesAgregarEditar,
             bottominfo:"Campos marcados con (*) son obligatorios", 
@@ -80,8 +80,8 @@
                 $('#mensaje').dialog('open');
             }    
         },//EDITAR
-        {closeAfterAdd:true,addCaption: "Agregar Nuevas Fuentes Primarias ",
-            align:'center',reloadAfterSubmit:true,width:350,
+        {closeAfterAdd:true,addCaption: "Agregar Nuevas Fuentes Primarias ",width:450,
+            align:'center',reloadAfterSubmit:true,
             processData: "Cargando...",afterSubmit:despuesAgregarEditar,
             bottominfo:"Campos marcados con (*) son obligatorios", 
             onclickSubmit: function(rp_ge, postdata) {
@@ -164,14 +164,14 @@
         },//OPCIONES
         {closeAfterEdit:true,editCaption: "Editando Fuentes Secundarias ",
             align:'center',reloadAfterSubmit:true,
-            processData: "Cargando...",afterSubmit:despuesAgregarEditar2,
+            processData: "Cargando...",afterSubmit:despuesAgregarEditar2,width:450,
             bottominfo:"Campos marcados con (*) son obligatorios", 
             onclickSubmit: function(rp_ge, postdata) {
                 $('#mensaje').dialog('open');
             }    
         },//EDITAR
         {closeAfterAdd:true,addCaption: "Agregar Nuevas Fuentes Secundarias ",
-            align:'center',reloadAfterSubmit:true,width:350,
+            align:'center',reloadAfterSubmit:true,width:450,
             processData: "Cargando...",afterSubmit:despuesAgregarEditar2,
             bottominfo:"Campos marcados con (*) son obligatorios", 
             onclickSubmit: function(rp_ge, postdata) {
@@ -199,19 +199,14 @@
     <br/><br/> <br/>
     <table>
         <tr>
-        <td ><strong>Departamento:</strong></td>
+        <td class="tdLugar" ><strong>Departamento:</strong></td>
         <td><?php echo $departamento ?></td>
-        </tr>
-        <tr>
-        <td ><strong>Municipio:</strong></td>
+        <td class="tdEspacio"></td>
+        <td class="tdLugar"><strong>Municipio:</strong></td>
         <td ><?php echo $municipio ?></td>    
         </tr>
-        <tr>
-        <td ><strong>Proyecto Pep:</strong></td>
-        <td ><?php echo $proyectoPep ?></td>    
-        </tr>
-    </table>
-    <br/><br/>
+     </table>
+    <br/><br/><br/><br/>
     <table id="FuentesPrimaria"></table>
     <div id="pagerFuentesPrimaria"></div>
     <br/><br/>

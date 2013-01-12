@@ -5,7 +5,7 @@
         /*ZONA DE BOTONES*/
         $("#agregar").button().click(function(){
             tabla.jqGrid('editGridRow',"new",
-            {closeAfterAdd:true,addCaption: "Agregar ",
+            {closeAfterAdd:true,addCaption: "Agregar Participante",width:350,
                 align:'center',reloadAfterSubmit:true,
                 processData: "Cargando...",afterSubmit:despuesAgregarEditar,
                 bottominfo:"Campos marcados con (*) son obligatorios", 
@@ -19,7 +19,7 @@
             var gr = tabla.jqGrid('getGridParam','selrow');
             if( gr != null )
                 tabla.jqGrid('editGridRow',gr,
-            {closeAfterEdit:true,editCaption: "Editando ",
+            {closeAfterEdit:true,editCaption: "Editar Participante ",width:350,
                 align:'center',reloadAfterSubmit:true,
                 processData: "Cargando...",afterSubmit:despuesAgregarEditar,
                 bottominfo:"Campos marcados con (*) son obligatorios", 
@@ -33,7 +33,7 @@
         $("#eliminar").button().click(function(){
             var grs = tabla.jqGrid('getGridParam','selrow');
             if( grs != null ) tabla.jqGrid('delGridRow',grs,
-            {msg: "Desea Eliminar esta ?",caption:"Eliminando ",
+            {msg: "¿Desea Eliminar este participante?",caption:"Eliminando ",
                 align:'center',reloadAfterSubmit:true,
                 processData: "Cargando...",
                 onclickSubmit: function(rp_ge, postdata) {
@@ -146,8 +146,8 @@
         /*GRID FACILITADORES*/
         var tabla3=$("#problemas");
         tabla3.jqGrid({
-            url:'<?php echo base_url('componente2/comp23_E2/cargarProblemasIdentificados'). '/' . $reu_id . '/reu_id';  ?>',
-            editurl:'<?php echo base_url('componente2/comp23_E2/gestionarProblemasIdentificados').'/'.$reu_id.'/reu_id'; ?>',
+            url:'<?php echo base_url('componente2/comp23_E2/cargarProblemasIdentificados') . '/' . $reu_id . '/reu_id'; ?>',
+            editurl:'<?php echo base_url('componente2/comp23_E2/gestionarProblemasIdentificados') . '/' . $reu_id . '/reu_id'; ?>',
             datatype:'json',
             altRows:true,
             height: "100%",
@@ -238,18 +238,19 @@
     <br/><br/>
     <table>
         <tr>
-        <td colspan="2"><strong>Departamento:</strong><?php echo $departamento ?></td>
-        <td colspan="2"><strong>Municipio:</strong><?php echo $municipio ?></td>
+        <td class="tdLugar" ><strong>Departamento:</strong></td>
+        <td><?php echo $departamento ?></td>
+        <td class="tdEspacio"></td>
+        <td class="tdLugar"><strong>Municipio:</strong></td>
+        <td ><?php echo $municipio ?></td>    
         </tr>
+    </table>
+    <table>
         <tr>
-
-        <td colspan="4"><strong>Proyecto PEP:</strong><?php echo $proyectoPep ?></td>
-        </tr>
-        <tr>
-        <td colspan="3">
+        <td>
             <p><strong>Nombre de la actividad:</strong><textarea id="reu_resultado" name="reu_resultado" cols="50" rows="1" class="required" ></textarea></p>
         </td>
-        <td width="300">
+        <td>
             Fecha: 
             <input id="reu_fecha" name="reu_fecha" readonly="readonly" class="required"  size="10"/>
         </td>
@@ -277,7 +278,7 @@
                 <textarea id="reu_observacion"  name="reu_observacion" cols="48" rows="5"></textarea></p>
         </td>
         <td>
-        <fieldset   style="border-color: #2F589F;height:85px;width:175px;position: relative;left: 50px;">
+        <fieldset   style="border-color: #2F589F;height:85px;width:225px;position: relative;left: 50px;">
             <legend align="center"><strong>Cantidad de Participantes</strong></legend>
             <table>
                 <tr>

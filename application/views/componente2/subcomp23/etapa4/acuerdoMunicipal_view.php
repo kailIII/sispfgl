@@ -94,7 +94,7 @@
         }
         $("#agregar").button().click(function(){
             tabla.jqGrid('editGridRow',"new",
-            {closeAfterAdd:true,addCaption: "Agregar ",
+            {closeAfterAdd:true,addCaption: "Agregar participante",width:350,
                 align:'center',reloadAfterSubmit:true,
                 processData: "Cargando...",afterSubmit:despuesAgregarEditar,
                 bottominfo:"Campos marcados con (*) son obligatorios", 
@@ -108,7 +108,7 @@
             var gr = tabla.jqGrid('getGridParam','selrow');
             if( gr != null )
                 tabla.jqGrid('editGridRow',gr,
-            {closeAfterEdit:true,editCaption: "Editando ",
+            {closeAfterEdit:true,editCaption: "Editar participante ",width:350,
                 align:'center',reloadAfterSubmit:true,
                 processData: "Cargando...",afterSubmit:despuesAgregarEditar,
                 bottominfo:"Campos marcados con (*) son obligatorios", 
@@ -122,7 +122,7 @@
         $("#eliminar").button().click(function(){
             var grs = tabla.jqGrid('getGridParam','selrow');
             if( grs != null ) tabla.jqGrid('delGridRow',grs,
-            {msg: "Desea Eliminar esta ?",caption:"Eliminando ",
+            {msg: "¿Desea Eliminar este participante?",caption:"Eliminando ",
                 align:'center',reloadAfterSubmit:true,
                 processData: "Cargando...",
                 onclickSubmit: function(rp_ge, postdata) {
@@ -191,20 +191,16 @@
     <h2 class="h2Titulos">Producto 1: Acuerdo Municipal</h2>
 
     <br/><br/>
-    <table>
+   <table>
         <tr>
-        <td ><strong>Departamento:</strong></td>
+        <td class="tdLugar" ><strong>Departamento:</strong></td>
         <td><?php echo $departamento ?></td>
-        </tr>
-        <tr>
-        <td ><strong>Municipio:</strong></td>
+        <td class="tdEspacio"></td>
+        <td class="tdLugar"><strong>Municipio:</strong></td>
         <td ><?php echo $municipio ?></td>    
         </tr>
-        <tr>
-        <td ><strong>Proyecto Pep:</strong></td>
-        <td ><?php echo $proyectoPep ?></td>    
-        </tr>
     </table>
+    
     <br/><br/>
 
     <fieldset style="width:450px;">

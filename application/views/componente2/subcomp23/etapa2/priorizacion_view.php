@@ -77,8 +77,8 @@
         
         var tabla=$("#problemas");
         tabla.jqGrid({
-            url:'<?php echo base_url('componente2/comp23_E2/cargarProyectosIdentificados').'/'.$pri_id; ?>',
-            editurl:'<?php echo base_url('componente2/comp23_E2/gestionarProyectosIdentificados').'/'.$pri_id; ?>',
+            url:'<?php echo base_url('componente2/comp23_E2/cargarProyectosIdentificados') . '/' . $pri_id; ?>',
+            editurl:'<?php echo base_url('componente2/comp23_E2/gestionarProyectosIdentificados') . '/' . $pri_id; ?>',
             datatype:'json',
             altRows:true,
             height: "100%",
@@ -182,14 +182,19 @@
     <br/><br/><br/>
     <table>
         <tr>
-        <td width="500px"><strong>Departamento:</strong><?php echo $departamento ?></td>
-        <td ><strong>Municipio:</strong><?php echo $municipio ?></td>
+        <td class="tdLugar" ><strong>Departamento:</strong></td>
+        <td><?php echo $departamento ?></td>
+        <td class="tdEspacio"></td>
+        <td class="tdLugar"><strong>Municipio:</strong></td>
+        <td ><?php echo $municipio ?></td>    
         </tr>
+    </table>
+    <table>
         <tr>
         <td  ><strong>Fecha reunión: </strong><input readonly="readonly" id="pri_fecha" name="pri_fecha" type="text"<?php if (isset($pri_fecha)) { ?> value='<?php echo date('d/m/y', strtotime($pri_fecha)); ?>'<?php } ?> size="10" /></td>
         </tr>
         <tr>
-        <td colspan="2"><strong>Proyecto PEP:  </strong><?php echo $proyectoPep ?></td>
+        <td colspan="2"></td>
         </tr>
     </table>
     <br/><br/>
@@ -206,7 +211,7 @@
     <p>Observaciones:<br/>
         <textarea id="pri_observacion"  name="pri_observacion" cols="48" rows="5"><?php if (isset($pri_observacion)) echo $pri_observacion; ?></textarea></p>
     <center>
-        <div style="position:relative;width: 300px;top: 25px">
+        <div style="position:relative;top: 25px">
             <p > 
                 <input type="submit" id="guardar" value="Guardar Definición" />
                 <input type="button" id="cancelar" value="Cancelar" />

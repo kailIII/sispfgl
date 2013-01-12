@@ -1,11 +1,11 @@
 <script type="text/javascript">        
     $(document).ready(function(){
-       /*VARIABLES*/
+        /*VARIABLES*/
         var tabla=$("#participantes");
         /*ZONA DE BOTONES*/
         $("#agregar").button().click(function(){
             tabla.jqGrid('editGridRow',"new",
-            {closeAfterAdd:true,addCaption: "Agregar ",
+            {closeAfterAdd:true,addCaption: "Agregar participantes",width:350,
                 align:'center',reloadAfterSubmit:true,
                 processData: "Cargando...",afterSubmit:despuesAgregarEditar,
                 bottominfo:"Campos marcados con (*) son obligatorios", 
@@ -19,7 +19,7 @@
             var gr = tabla.jqGrid('getGridParam','selrow');
             if( gr != null )
                 tabla.jqGrid('editGridRow',gr,
-            {closeAfterEdit:true,editCaption: "Editando ",
+            {closeAfterEdit:true,editCaption: "Editar participante",width:350,
                 align:'center',reloadAfterSubmit:true,
                 processData: "Cargando...",afterSubmit:despuesAgregarEditar,
                 bottominfo:"Campos marcados con (*) son obligatorios", 
@@ -33,7 +33,7 @@
         $("#eliminar").button().click(function(){
             var grs = tabla.jqGrid('getGridParam','selrow');
             if( grs != null ) tabla.jqGrid('delGridRow',grs,
-            {msg: "Desea Eliminar esta ?",caption:"Eliminando ",
+            {msg: "¿Desea Eliminar este participante?",caption:"Eliminando ",
                 align:'center',reloadAfterSubmit:true,
                 processData: "Cargando...",
                 onclickSubmit: function(rp_ge, postdata) {
@@ -43,7 +43,7 @@
         });
         
         $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/comp23_E1/guardarEquipoApoyo/'.$gru_apo_id); ?>';
+            this.form.action='<?php echo base_url('componente2/comp23_E1/guardarEquipoApoyo/' . $gru_apo_id); ?>';
         });
         $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url(); ?>';
@@ -144,7 +144,7 @@
                                 else
                                     $("#porcenMujeresNo").attr("checked", true);
                                 if(registro['cell'][3]<registro['cell'][0])
-                                    $("#mayor15No").attr("checked", true);
+                                $("#mayor15No").attr("checked", true);
                                 else
                                     $("#mayor15Si").attr("checked", true);
                             });                    
@@ -164,7 +164,7 @@
             return[true,'']; //no error
         }
                 
-      /*DIALOGOS DE VALIDACION*/
+        /*DIALOGOS DE VALIDACION*/
         $('.mensaje').dialog({
             autoOpen: false,
             width: 300,
@@ -182,43 +182,44 @@
 </script>
 
 <form method="post">
-    
-        <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
-        <h2 class="h2Titulos">Producto 3: Equipo Local de Apoyo</h2>
+
+    <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
+    <h2 class="h2Titulos">Producto 3: Equipo Local de Apoyo</h2>
 
 
-        <table>
-            <tr>
-            <td ><strong>Departamento:</strong><?php echo $departamento ?></td>
-            <td ><strong>Municipio:</strong><?php echo $municipio ?></td>
-            </tr>
-            <tr>
-            <td ><strong>Lugar:</strong><input id="gru_apo_lugar" <?php if (isset($gru_apo_lugar)) { ?> value='<?php echo $gru_apo_lugar;?>'<?php }?> name="gru_apo_lugar" type="text" size="40"/></td>
-            <td  ><strong>Fecha: </strong><input readonly="readonly" <?php if (isset($gru_apo_fecha)) { ?> value='<?php echo date('d/m/y',  strtotime($gru_apo_fecha));?>'<?php }?>id="gru_apo_fecha" name="gru_apo_fecha" type="text" size="10"/></td>
-            </tr>
-            <tr>
-            <td colspan="2"><strong>Proyecto PEP:  </strong><?php echo $proyectoPep ?></td>
-            </tr>
+    <table>
+        <tr>
+        <td class="tdLugar" ><strong>Departamento:</strong></td>
+        <td><?php echo $departamento ?></td>
+        <td class="tdEspacio"></td>
+        <td class="tdLugar"><strong>Municipio:</strong></td>
+        <td ><?php echo $municipio ?></td>    
+        </tr>
+    </table>
+    <table>
+        <tr>
+        <td ><strong>Lugar:</strong><input id="gru_apo_lugar" <?php if (isset($gru_apo_lugar)) { ?> value='<?php echo $gru_apo_lugar; ?>'<?php } ?> name="gru_apo_lugar" type="text" size="40"/></td>
+        <td  ><strong>Fecha: </strong><input readonly="readonly" <?php if (isset($gru_apo_fecha)) { ?> value='<?php echo date('d/m/y', strtotime($gru_apo_fecha)); ?>'<?php } ?>id="gru_apo_fecha" name="gru_apo_fecha" type="text" size="10"/></td>
+        </tr>
+    </table>
+    <br/><br/>
+    <table id="participantes"></table>
+    <div id="pagerParticipantes"></div>
 
-        </table>
+    <div style="position: relative;left: 200px;top: 5px">
+        <input type="button" id="agregar" value="  Agregar  " />
+        <input type="button" id="editar" value="   Editar   " />
+        <input type="button" id="eliminar" value="  Eliminar  " />
         <br/><br/>
-        <table id="participantes"></table>
-        <div id="pagerParticipantes"></div>
+    </div>
 
-        <div style="position: relative;left: 200px;top: 5px">
-            <input type="button" id="agregar" value="  Agregar  " />
-            <input type="button" id="editar" value="   Editar   " />
-            <input type="button" id="eliminar" value="  Eliminar  " />
-            <br/><br/>
-        </div>
 
-    
     <table style="position: relative;left: 40px;top: 20px;border-color: 2px solid blue">
         <tr>
         <td>
-            <p>¿Los Miembros del Equipo Local de Apoyo Reunen las Caracterìsticas Siguientes?</p>
+            <p>¿Los Miembros del Equipo Local de Apoyo Reunen las Características Siguientes?</p>
         <fieldset style="width: 400px;border-color: #2F589F">
-            <legend><strong>Caracterìsticas</strong></legend>
+            <legend><strong>Características</strong></legend>
             <table>
                 <tr>
                 <td>Mayores de 15 Años </td>
@@ -232,19 +233,19 @@
                 </tr>
                 <tr>
                 <td>Conocen el Territorio </td>
-                <td><input type="radio" name="gru_apo_c3" <?php if (!strcasecmp($gru_apo_c3,'t')) { ?> checked <?php }?>  value="true">SI </input></td>
-                <td><input type="radio" name="gru_apo_c3" <?php if (!strcasecmp($gru_apo_c3,'f')) { ?> checked <?php }?>value="false">NO </input></td> 
+                <td><input type="radio" name="gru_apo_c3" <?php if (!strcasecmp($gru_apo_c3, 't')) { ?> checked <?php } ?>  value="true">SI </input></td>
+                <td><input type="radio" name="gru_apo_c3" <?php if (!strcasecmp($gru_apo_c3, 'f')) { ?> checked <?php } ?>value="false">NO </input></td> 
                 </tr>
                 <tr>
                 <td>Tienen Potencial de Liderazgo </td>
-                <td><input type="radio" name="gru_apo_c4" <?php if (!strcasecmp($gru_apo_c4,'t')) { ?> checked <?php }?> value="true">SI </input></td>
-                <td><input type="radio" name="gru_apo_c4"<?php if (!strcasecmp($gru_apo_c4,'f')) { ?> checked <?php }?> value="false">NO </input></td>   
+                <td><input type="radio" name="gru_apo_c4" <?php if (!strcasecmp($gru_apo_c4, 't')) { ?> checked <?php } ?> value="true">SI </input></td>
+                <td><input type="radio" name="gru_apo_c4"<?php if (!strcasecmp($gru_apo_c4, 'f')) { ?> checked <?php } ?> value="false">NO </input></td>   
                 </tr>
             </table>  
         </fieldset>
         </td>
         <td>
-            <fieldset   style="border-color: #2F589F;height:85px;width:175px;position: relative;left: 50px;">
+        <fieldset   style="border-color: #2F589F;height:85px;width:225px;position: relative;left: 50px;">
             <legend align="center"><strong>Cantidad de Participantes</strong></legend>
             <table>
                 <tr>
@@ -266,17 +267,17 @@
     </table>
     <div style="position:relative;left: 40px;top:25px;">
         <p>Observaciones y/o Recomendaciones:<br/>
-            <textarea name="gru_apo_observacion" cols="48" rows="5"><?php if (isset($gru_apo_observacion))  echo$gru_apo_observacion; ?></textarea></p>
+            <textarea name="gru_apo_observacion" cols="48" rows="5"><?php if (isset($gru_apo_observacion)) echo$gru_apo_observacion; ?></textarea></p>
     </div>
 
     <center>
         <br/>
-            <p> 
-                <input type="submit" id="guardar" value="Guardar Equipo de Apoyo" />
-                <input type="button" id="cancelar" value="Cancelar" />
-            </p>
+        <p> 
+            <input type="submit" id="guardar" value="Guardar Equipo de Apoyo" />
+            <input type="button" id="cancelar" value="Cancelar" />
+        </p>
     </center>
-   
+
 </form>
 
 <div id="mensaje" class="mensaje" title="Aviso de la operación">

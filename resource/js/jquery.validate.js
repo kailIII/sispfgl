@@ -275,8 +275,8 @@ $.extend($.validator, {
 		minlength: $.validator.format("No se aceptan menos de {0} caracteres"),
 		rangelength: $.validator.format("Please enter a value between {0} and {1} characters long."),
 		range: $.validator.format("Please enter a value between {0} and {1}."),
-		max: $.validator.format("No se aceptan mas de {0} caracteres"),
-		min: $.validator.format("No se aceptan menos de {0} caracteres")
+		max: $.validator.format("No se aceptan valores mayores de {0}"),
+		min: $.validator.format("No se aceptan valores menores de {0}")
 	},
 
 	autoCreateRanges: false,

@@ -5,7 +5,7 @@
         /*ZONA DE BOTONES*/
         $("#agregar").button().click(function(){
             tabla.jqGrid('editGridRow',"new",
-            {closeAfterAdd:true,addCaption: "Agregar ",
+            {closeAfterAdd:true,addCaption: "Agregar Participante",width:350,
                 align:'center',reloadAfterSubmit:true,
                 processData: "Cargando...",afterSubmit:despuesAgregarEditar,
                 bottominfo:"Campos marcados con (*) son obligatorios", 
@@ -19,7 +19,7 @@
             var gr = tabla.jqGrid('getGridParam','selrow');
             if( gr != null )
                 tabla.jqGrid('editGridRow',gr,
-            {closeAfterEdit:true,editCaption: "Editando ",
+            {closeAfterEdit:true,editCaption: "Editando Participante",width:350,
                 align:'center',reloadAfterSubmit:true,
                 processData: "Cargando...",afterSubmit:despuesAgregarEditar,
                 bottominfo:"Campos marcados con (*) son obligatorios", 
@@ -33,7 +33,7 @@
         $("#eliminar").button().click(function(){
             var grs = tabla.jqGrid('getGridParam','selrow');
             if( grs != null ) tabla.jqGrid('delGridRow',grs,
-            {msg: "Desea Eliminar esta ?",caption:"Eliminando ",
+            {msg: "¿Desea Eliminar este Participante?",caption:"Eliminando ",
                 align:'center',reloadAfterSubmit:true,
                 processData: "Cargando...",
                 onclickSubmit: function(rp_ge, postdata) {
@@ -160,79 +160,80 @@
     <h2 class="h2Titulos">Producto 1: Acuerdo Municipal</h2>
     <h2 class="h2Titulos">Registro de Reuniones</h2>
     <br/><br/>
-        <table>
-            <tr>
-            <td colspan="2"><strong>Departamento:</strong><?php echo $departamento ?></td>
-            <td colspan="2"><strong>Municipio:</strong><?php echo $municipio ?></td>
+    <table>
+        <tr>
+        <td class="tdLugar" ><strong>Departamento:</strong></td>
+        <td><?php echo $departamento ?></td>
+        <td class="tdEspacio"></td>
+        <td class="tdLugar"><strong>Municipio:</strong></td>
+        <td ><?php echo $municipio ?></td>    
+        </tr>
+    </table>
+    <table>
+        <tr>
+        <td width="300">
+            No. de Reunión: <input type="text" id="reu_numero" value="<?php echo $reu_numero ?>" name="reu_numero" size="5" readonly="readonly"/> </td>
+        <td width="300">
+            Fecha: 
+            <input id="reu_fecha" name="reu_fecha" readonly="readonly" class="required"  size="10"/>
+        </td>
+        <td width="300">
+            Duración en Horas:
+            <input type="text" id="reu_duracion_horas" name="reu_duracion_horas" size="5" class="required number"/>
+        </td>
+        <td>
             </tr>
-            <tr>
 
-            <td colspan="4"><strong>Proyecto PEP:</strong><?php echo $proyectoPep ?></td>
-            </tr>
-            <tr>
-            <td width="300">
-                No. de Reunión: <input type="text" id="reu_numero" value="<?php echo $reu_numero ?>" name="reu_numero" size="5" readonly="readonly"/> </td>
-            <td width="300">
-                Fecha: 
-                <input id="reu_fecha" name="reu_fecha" readonly="readonly" class="required"  size="10"/>
-            </td>
-            <td width="300">
-                Duración en Horas:
-                <input type="text" id="reu_duracion_horas" name="reu_duracion_horas" size="5" class="required number"/>
-            </td>
-            <td>
+    </table>
+
+    <p>Tema o Agenda a Desarrollar: <textarea id="reu_tema" name="reu_tema" cols="50" rows="2" class="required" maxlength="200" ></textarea></p>
+    <table id="participantes"></table>
+    <div id="pagerParticipantes"></div>
+    <div style="position: relative;left: 275px;top: 5px;">
+        <input type="button" id="agregar" value="  Agregar  " />
+        <input type="button" id="editar" value="   Editar   " />
+        <input type="button" id="eliminar" value="  Eliminar  " />
+    </div>
+    <p></p>
+
+    <table style="position: relative;top: 15px;">
+        <tr>  
+        <td>
+            <p>Resultado de la Reunión:<br/> 
+                <textarea id="reu_resultado" name="reu_resultado" cols="48" rows="5" class="required" ></textarea></p>
+        </td>
+        <td>
+        <fieldset   style="border-color: #2F589F;height:85px;width:225px;position: relative;left: 50px;">
+            <legend align="center"><strong>Cantidad de Participantes</strong></legend>
+            <table>
+                <tr>
+                <td class="textD">Hombres: </td>
+                <td><input class="bordeNo" id="hombres" type="text" size="5" readonly="readonly" /></td>
                 </tr>
+                <tr>
+                <td class="textD">Mujeres: </td>
+                <td><input class="bordeNo" id="mujeres" type="text" size="5" readonly="readonly" /><br/></td>
+                </tr>
+                <tr>
+                <td class="textD">Total: </td>
+                <td><input class="bordeNo" id="total" type="text" size="5" readonly="readonly" /></td>
+                </tr>
+            </table> 
+        </fieldset>
+        </td>
+        </tr>
+    </table>
+    <div>
+        <p>Observaciones y/o Recomendaciones:<br/>
+            <textarea id="reu_observacion"  name="reu_observacion" cols="48" rows="5"></textarea></p>
+        <center style="position: relative;top: 20px">
 
-        </table>
-
-        <p>Tema o Agenda a Desarrollar: <textarea id="reu_tema" name="reu_tema" cols="50" rows="2" class="required" maxlength="200" ></textarea></p>
-        <table id="participantes"></table>
-        <div id="pagerParticipantes"></div>
-        <div style="position: relative;left: 275px;top: 5px;">
-            <input type="button" id="agregar" value="  Agregar  " />
-            <input type="button" id="editar" value="   Editar   " />
-            <input type="button" id="eliminar" value="  Eliminar  " />
-        </div>
-        <p></p>
-
-        <table style="position: relative;top: 15px;">
-            <tr>  
-            <td>
-                <p>Resultado de la Reunión:<br/> 
-                    <textarea id="reu_resultado" name="reu_resultado" cols="48" rows="5" class="required" ></textarea></p>
-            </td>
-            <td>
-            <fieldset   style="border-color: #2F589F;height:85px;width:175px;position: relative;left: 50px;">
-                <legend align="center"><strong>Cantidad de Participantes</strong></legend>
-                <table>
-                    <tr>
-                    <td class="textD">Hombres: </td>
-                    <td><input class="bordeNo" id="hombres" type="text" size="5" readonly="readonly" /></td>
-                    </tr>
-                    <tr>
-                    <td class="textD">Mujeres: </td>
-                    <td><input class="bordeNo" id="mujeres" type="text" size="5" readonly="readonly" /><br/></td>
-                    </tr>
-                    <tr>
-                    <td class="textD">Total: </td>
-                    <td><input class="bordeNo" id="total" type="text" size="5" readonly="readonly" /></td>
-                    </tr>
-                </table> 
-            </fieldset>
-            </td>
-            </tr>
-        </table>
-        <div>
-            <p>Observaciones y/o Recomendaciones:<br/>
-                <textarea id="reu_observacion"  name="reu_observacion" cols="48" rows="5"></textarea></p>
-            <center style="position: relative;top: 20px">
-
-                <p><input type="submit" id="guardar" value="Guardar Reunión" />
-                    <input type="button" id="cancelar" value="Cancelar" />
-                </p>
-        </div>
-        </center>
-    <input id="reu_id" name="reu_id" value="<?php echo $reu_id ?>" style="visibility: hidden"/>
+            <p><input type="submit" id="guardar" value="Guardar Reunión" />
+                <input type="button" id="cancelar" value="Cancelar" />
+            </p>
+    </div>
+</center>
+<input id="reu_id" name="reu_id" value="<?php echo $reu_id ?>" style="visibility: hidden"/>
 </form>
 <div id="mensaje" class="mensaje" title="Aviso de la operación">
     <p>La acción fue realizada con satisfacción</p>

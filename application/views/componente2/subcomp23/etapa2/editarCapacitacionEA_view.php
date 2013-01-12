@@ -100,7 +100,7 @@
             viewrecords: true,
             gridComplete: 
                 function(){
-                $.getJSON('<?php echo base_url('componente2/comp23_E1/calcularTotalParticipantes') ?>/<?php echo 'capacitacion/'. $cap_id."/cap_id"; ?>',
+                $.getJSON('<?php echo base_url('componente2/comp23_E1/calcularTotalParticipantes') ?>/<?php echo 'capacitacion/' . $cap_id . "/cap_id"; ?>',
                 function(data) {
                     $.each(data, function(key, val) {
                         if(key=='rows'){
@@ -180,7 +180,7 @@
             viewrecords: true,
             gridComplete: 
                 function(){
-                $.getJSON('<?php echo base_url('componente2/comp23_E1/calcularTotalParticipantes') ?>/<?php echo 'capacitacion/'. $cap_id."/cap_id"; ?>',
+                $.getJSON('<?php echo base_url('componente2/comp23_E1/calcularTotalParticipantes') ?>/<?php echo 'capacitacion/' . $cap_id . "/cap_id"; ?>',
                 function(data) {
                     $.each(data, function(key, val) {
                         if(key=='rows'){
@@ -207,8 +207,8 @@
         /*GRID FACILITADORES*/
         var tabla3=$("#Facilitadores");
         tabla3.jqGrid({
-            url:'<?php echo base_url('componente2/comp23_E1/cargarFacilitadores') .'/cap_id/'. $cap_id; ?>',
-            editurl:'<?php echo base_url('componente2/comp23_E1/gestionFacilitadores').'/cap_id/'. $cap_id; ?>',
+            url:'<?php echo base_url('componente2/comp23_E1/cargarFacilitadores') . '/cap_id/' . $cap_id; ?>',
+            editurl:'<?php echo base_url('componente2/comp23_E1/gestionFacilitadores') . '/cap_id/' . $cap_id; ?>',
             datatype:'json',
             altRows:true,
             height: "100%",
@@ -306,11 +306,18 @@
     <h2 class="h2Titulos">Producto 3: Capacitaciones al Grupo Gestor</h2>
     <table>
         <tr>
-        <td ><strong>Departamento:</strong><?php echo $departamento ?></td>
-        <td ><strong>Municipio:</strong><?php echo $municipio ?></td>
+        <td class="tdLugar" ><strong>Departamento:</strong></td>
+        <td><?php echo $departamento ?></td>
+        <td class="tdEspacio"></td>
+        <td class="tdLugar"><strong>Municipio:</strong></td>
+        <td ><?php echo $municipio ?></td>    
+        </tr>
+    </table>
+    <table>
+        <tr>
+        <td> <strong>Fecha de Capacitación: </strong><input value='<?php echo date('d/m/y', strtotime($cap_fecha)); ?>' readonly="readonly" id="cap_fecha" name="cap_fecha" type="text" size="10" /></td>
         </tr>
         <tr>
-        <td  ><strong>Fecha de Capacitación: </strong><input value='<?php echo date('d/m/y', strtotime($cap_fecha)); ?>' readonly="readonly" id="cap_fecha" name="cap_fecha" type="text" size="10" /></td>
         <td ><strong>Area de Capacitación:</strong><input value="<?php echo $cap_area ?>" id="cap_area" name="cap_area" type="text" size="20"/></td>
         </tr>
         <tr>
@@ -320,7 +327,7 @@
         <td colspan="2"><strong>Lugar:</strong><input id="cap_lugar" value="<?php echo $cap_lugar ?>" name="cap_lugar" type="text" size="40"/></td>
         </tr>
         <tr>
-        <td colspan="2"><strong>Proyecto PEP:  </strong><?php echo $proyectoPep ?></td>
+        <td colspan="2"></td>
         </tr>
     </table>
     <br/><br/>
@@ -343,7 +350,7 @@
 
         </td>
         <td>
-        <fieldset   style="border-color: #2F589F;height:85px;width:175px;position: relative;left: 50px;">
+        <fieldset   style="border-color: #2F589F;height:85px;width:225px;position: relative;left: 50px;">
             <legend align="center"><strong>Cantidad de Participantes</strong></legend>
             <table>
                 <tr>
@@ -364,7 +371,7 @@
         </tr>
     </table>
     <center>
-        <div style="position:relative;width: 300px;top: 25px">
+        <div style="position:relative;top: 25px">
             <p > 
                 <input type="submit" id="guardar" value="Guardar Capacitación" />
                 <input type="button" id="cancelar" value="Cancelar" />

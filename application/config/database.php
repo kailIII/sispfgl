@@ -48,7 +48,7 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = 'karencita.dyndns-wiki.com';
+$db['default']['hostname'] = 'localhost';
 $db['default']['username'] = 'sispfgl';
 $db['default']['password'] = 'sispfgl';
 $db['default']['database'] = 'sispfgl';

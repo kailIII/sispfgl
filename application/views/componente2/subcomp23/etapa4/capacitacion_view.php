@@ -11,7 +11,7 @@
 </tr>
 </table>
 <p></p>
-<table align="center" >
+<table align="center">
     <thead>
         <tr >
         <th class="thEstandar"> Fecha</th>

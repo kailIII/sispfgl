@@ -128,15 +128,15 @@
                 tabla3.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');
             }
         },//OPCIONES
-        {closeAfterEdit:true,editCaption: "Editando ",align:'center',reloadAfterSubmit:true,
-            processData: "Cargando...",afterSubmit:despuesAgregarEditar3,
+        {closeAfterEdit:true,editCaption: "Editar facilitador",align:'center',reloadAfterSubmit:true,
+            processData: "Cargando...",afterSubmit:despuesAgregarEditar3,width:350,
             bottominfo:"Campos marcados con (*) son obligatorios", 
             onclickSubmit: function(rp_ge, postdata) {
                 $('#mensaje').dialog('open');
             }    
         },//EDITAR
-        {closeAfterAdd:true,addCaption: "Agregar ", align:'center',reloadAfterSubmit:true,
-            processData: "Cargando...",afterSubmit:despuesAgregarEditar3,
+        {closeAfterAdd:true,addCaption: "Agregar facilitador ", align:'center',reloadAfterSubmit:true,
+            processData: "Cargando...",afterSubmit:despuesAgregarEditar3,width:350,
             bottominfo:"Campos marcados con (*) son obligatorios", 
             onclickSubmit: function(rp_ge, postdata) {
                 $('#mensaje').dialog('open');
@@ -179,9 +179,14 @@
     <h2 class="h2Titulos">Producto 4: Capacitaciones Local de Apoyo</h2>
     <table>
         <tr>
-        <td ><strong>Departamento:</strong><?php echo $departamento ?></td>
-        <td ><strong>Municipio:</strong><?php echo $municipio ?></td>
+        <td class="tdLugar" ><strong>Departamento:</strong></td>
+        <td><?php echo $departamento ?></td>
+        <td class="tdEspacio"></td>
+        <td class="tdLugar"><strong>Municipio:</strong></td>
+        <td ><?php echo $municipio ?></td>    
         </tr>
+    </table>
+    <table>
         <tr>
         <td  ><strong>Fecha de Capacitación: </strong><input value='<?php echo date('d/m/y', strtotime($cap_fecha)); ?>' readonly="readonly" id="cap_fecha" name="cap_fecha" type="text" size="10" /></td>
         </tr>
@@ -190,9 +195,6 @@
         </tr>
         <tr>
         <td colspan="2"><strong>Lugar:</strong><input id="cap_lugar" value="<?php echo $cap_lugar ?>" name="cap_lugar" type="text" size="40"/></td>
-        </tr>
-        <tr>
-        <td colspan="2"><strong>Proyecto PEP:  </strong><?php echo $proyectoPep ?></td>
         </tr>
     </table>
     <br/><br/>
@@ -212,7 +214,7 @@
 
         </td>
         <td>
-        <fieldset   style="border-color: #2F589F;height:85px;width:175px;position: relative;left: 50px;">
+        <fieldset   style="border-color: #2F589F;height:85px;width:225px;position: relative;left: 50px;">
             <legend align="center"><strong>Cantidad de Participantes</strong></legend>
             <table>
                 <tr>
@@ -233,7 +235,7 @@
         </tr>
     </table>
     <center>
-        <div style="position:relative;width: 300px;top: 25px">
+        <div style="position:relative;top: 25px">
             <p > 
                 <input type="submit" id="guardar" value="Guardar Capacitación" />
                 <input type="button" id="cancelar" value="Cancelar" />
