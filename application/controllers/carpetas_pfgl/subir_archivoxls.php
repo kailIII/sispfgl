@@ -30,7 +30,7 @@ class Subir_archivoxls extends CI_Controller {
     
     function do_upload()
 	{
-		$config['upload_path'] = './uploads/';
+		$config['upload_path'] = 'uploads/';
 		$config['allowed_types'] = 'xls';
 		$config['max_size']	= '1024';
 		$config['file_name'] = 'carpetas_pfgl';
@@ -53,9 +53,9 @@ class Subir_archivoxls extends CI_Controller {
 			$data2 = $this->upload->data();
 			//$this->load->view('upload_success', $data);
 			include("excel_reader2.php"); 
-			$excel = new Spreadsheet_Excel_Reader("./uploads/".$data2['file_name']."");
+			$excel = new Spreadsheet_Excel_Reader("uploads/".$data2['file_name']."");
 			
-			$this->excel_todb($data2['file_name']);
+			//$this->excel_todb($data2['file_name']);
 			
 			$informacion['titulo'] = 'Subida de Archivo: '.$data2['file_name'].' name: '.$excel->val(10,'A');
 			$this->load->view('plantilla/header', $informacion);

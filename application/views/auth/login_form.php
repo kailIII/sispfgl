@@ -24,7 +24,8 @@ $password = array(
     'size' => 20,
 );
 ?>
-<?php echo form_open($this->uri->uri_string()); ?>
+<!-- Esto arreglalooo antes de actualziar va dentro de form_open en vez de lo q esta $this->uri->uri_string()-->
+<?php echo form_open('auth/login'); ?>
 <table align="center" style=" border-color: #2F589F; border-style: solid" >
     <tr>
         <td colspan="5" align="center">

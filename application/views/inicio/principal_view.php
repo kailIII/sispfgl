@@ -1,8 +1,21 @@
+
+<script type="text/javascript">
+    $(document).ready(function(){  
+        $('.slidedeck').slidedeck({
+            speed: 1000,
+            autoplay:true,
+            index:['1','2','3','4'],
+            transition: 'linear',
+            key: false}
+    ).vertical();
+    });
+</script>
 <style  type="text/css">
 #slidedeck_frame{
 width:500px;
 height:300px;
-margin-left: 90px;
+z-index:0;
+position:relative;
 }
 </style>
 <!-- FIN PARA LA CSS DE LA FICHA -->
