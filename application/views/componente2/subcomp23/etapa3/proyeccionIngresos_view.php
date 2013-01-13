@@ -3,7 +3,7 @@
 
         /*ZONA DE BOTONES*/
         $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/comp23_E3/guardarProyeccionIngresos') ?>';
+            this.form.action='<?php echo base_url('componente2/comp23_E3/guardarProyeccion') ?>';
         });
         $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url(); ?>';
@@ -36,7 +36,11 @@ if (isset($mon_pro_anio)) {
                     var i=0;
                     $.each(data, function(key, val) {
                         if(key=='rows'){
-                            $('#tabla1').show();   
+                            $('#tabla1').show();
+                            $('#tabla2').show();
+                            for(i=1;i<=4;i++){
+                                $('#anio_'+i.toString()).val(parseInt($('#pro_ing_anio').val())+i);
+                            }
                         }
                     });
                 });    
@@ -54,6 +58,17 @@ foreach ($montos as $monto) {
     $validacion.='disponibilidad_financiera_' . $monto->mon_pro_idnombre . ":{number:true},";
     $validacion.='ingresos_' . $monto->mon_pro_idnombre . ":{number:true},";
 }
+foreach ($fodes as $aux)
+    $validacion.=$aux->mon_pro_nombre . '_' . $aux->dmon_pro_id . ":{number:true},";
+
+foreach ($ingresosPropios as $aux)
+    $validacion.=$aux->mon_pro_nombre . '_' . $aux->dmon_pro_id . ":{number:true},";
+
+foreach ($donaciones as $aux)
+    $validacion.=$aux->mon_pro_nombre . '_' . $aux->dmon_pro_id . ":{number:true},";
+
+foreach ($creditos as $aux)
+    $validacion.=$aux->mon_pro_nombre . '_' . $aux->dmon_pro_id . ":{number:true},";
 ?>
         $("#proyeccionIngresosForm").validate({
             rules: {
@@ -100,9 +115,9 @@ foreach ($montos as $monto) {
         <?php foreach ($montos as $monto) { ?>
             <tr>
             <td><strong><?php echo $monto->mon_pro_nombre ?></strong></td>
-            <td align="center"><input id="disponibilidad_financiera_<?php echo $monto->mon_pro_idnombre ?>" name="disponibilidad_financiera_<?php echo $monto->mon_pro_idnombre ?>" type="text" size="10"/></td>
+            <td align="center"><input id="disponibilidad_financiera_<?php echo $monto->mon_pro_idnombre ?>" name="disponibilidad_financiera_<?php echo $monto->mon_pro_idnombre ?>" value="<?php echo $monto->mon_pro_dispo_financiera ?>" type="text" size="10"/></td>
             <td style="width: 80px"></td>
-            <td align="center"><input id="ingresos_<?php echo $monto->mon_pro_idnombre ?>" name="ingresos_<?php echo $monto->mon_pro_idnombre ?>" type="text" size="10"/></td>
+            <td align="center"><input id="ingresos_<?php echo $monto->mon_pro_idnombre ?>" name="ingresos_<?php echo $monto->mon_pro_idnombre ?>" value="<?php echo $monto->mon_pro_ingresos ?>" type="text" size="10"/></td>
             </tr>
         <?php } ?>
     </table >
@@ -112,11 +127,53 @@ foreach ($montos as $monto) {
         <td colspan="9"><h2 class="h2Titulos">Proyección de los años siguientes</h2></td>
         </tr>
         <tr>
+        <td></td>
+        <?php
+        if (isset($anios)) {
+            $i = 1;
+            foreach ($anios as $aux) {
+                ?>
+                <td align="center"><strong><input value='<?php echo $aux->dmon_pro_anio; ?>' id="anio_<?php echo $i; ?>" size="2" style=" border: none; font-weight: bold"/></strong></td>
+                <td style="width: 30px"></td>
+
+                <?php
+                $i++;
+            }
+        } else {
+            for($i=1;$i<=4;$i++){
+            ?>
+            <td align="center"><strong><input value='0' id="anio_<?php echo $i; ?>" size="2" style=" border: none; font-weight: bold"/></strong></td>
+            <td style="width: 30px"></td>
+            <?php }
+        }
+        ?>   
+        </tr>
+        <tr>
         <td><strong>FODES</strong></td>
         <?php foreach ($fodes as $aux) { ?>
-            <td align="center"><input id="<?php echo $aux->mon_pro_nombre . ' ' . $aux->dmon_pro_id ?>" name="disponibilidad_financiera_<?php echo $monto->mon_pro_idnombre ?>" type="text" size="10"/></td>
+            <td align="center"><input id="<?php echo $aux->mon_pro_nombre . '_' . $aux->dmon_pro_id ?>" name="<?php echo $aux->mon_pro_nombre . '_' . $aux->dmon_pro_id ?>" value="<?php echo $aux->dmon_pro_ingreso; ?>" type="text" size="10"/></td>
             <td style="width: 30px"></td>
-
+        <?php } ?>
+        </tr>
+        <tr>
+        <td><strong>Ingresos Propios</strong></td>
+        <?php foreach ($ingresosPropios as $aux) { ?>
+            <td align="center"><input id="<?php echo $aux->mon_pro_nombre . '_' . $aux->dmon_pro_id ?>" name="<?php echo $aux->mon_pro_nombre . '_' . $aux->dmon_pro_id ?>" value="<?php echo $aux->dmon_pro_ingreso; ?>" type="text" size="10"/></td>
+            <td style="width: 30px"></td>
+        <?php } ?>
+        </tr>
+        <tr>
+        <td><strong>Donaciones</strong></td>
+        <?php foreach ($donaciones as $aux) { ?>
+            <td align="center"><input id="<?php echo $aux->mon_pro_nombre . '_' . $aux->dmon_pro_id ?>" name="<?php echo $aux->mon_pro_nombre . '_' . $aux->dmon_pro_id ?>" value="<?php echo $aux->dmon_pro_ingreso; ?>" type="text" size="10"/></td>
+            <td style="width: 30px"></td>
+        <?php } ?>
+        </tr>
+        <tr>
+        <td><strong>Créditos</strong></td>
+        <?php foreach ($creditos as $aux) { ?>
+            <td align="center"><input id="<?php echo $aux->mon_pro_nombre . '_' . $aux->dmon_pro_id ?>" name="<?php echo $aux->mon_pro_nombre . '_' . $aux->dmon_pro_id ?>" value="<?php echo $aux->dmon_pro_ingreso; ?>" type="text" size="10"/></td>
+            <td style="width: 30px"></td>
         <?php } ?>
         </tr>
     </table>
@@ -128,6 +185,7 @@ foreach ($montos as $monto) {
             <input type="button" id="cancelar" value="Cancelar" />
         </p>
     </center>
+    <input id="pro_ing_id" name="pro_ing_id" value="<?php echo $pro_ing_id; ?>" style="visibility:hidden"/>
 </form>
 <div id="mensaje" class="mensaje" title="Aviso:">
     <p><img src="<?php echo base_url('resource/imagenes/cancel.png'); ?>" heigth="25px" width="25px"/>Debe de llenar el año de proyección para continuar

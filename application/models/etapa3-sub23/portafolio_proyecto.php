@@ -20,6 +20,7 @@ private $tabla = 'portafolio_proyecto';
 
      public function obtenerPortafolios($pro_pep_id) {
         $this->db->where('pro_pep_id',$pro_pep_id);
+        $this->db->order_by('por_pro_id');
         $consulta = $this->db->get($this->tabla);
         return $consulta->result();
     }
@@ -62,6 +63,19 @@ private $tabla = 'portafolio_proyecto';
     public function eliminaPortafolioProyecto($por_pro_id) {
         $consulta = "DELETE FROM " . $this->tabla . " CASCADE WHERE por_pro_id=?";
         $this->db->query($consulta, array($por_pro_id));
+    }
+    
+    public function actualizarAnios($por_pro_anio1,$por_pro_anio2,$por_pro_anio3,$por_pro_anio4,$por_pro_anio5,$por_pro_id) {
+        $datos = array(
+            'por_pro_anio1' => $por_pro_anio1,
+            'por_pro_anio2' => $por_pro_anio2,
+            'por_pro_anio3' => $por_pro_anio3,
+            'por_pro_anio4' => $por_pro_anio4,
+            'por_pro_anio5' => $por_pro_anio5
+            
+            );
+        $this->db->where('por_pro_id', $por_pro_id);
+        $this->db->update($this->tabla, $datos);
     }
 
     

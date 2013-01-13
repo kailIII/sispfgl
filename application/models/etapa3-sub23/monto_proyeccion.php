@@ -22,6 +22,7 @@ class Monto_proyeccion extends CI_Model {
     public function consultarPorProIngIdNombre($pro_ing_id, $mon_pro_idnombre) {
         $this->db->where('pro_ing_id', $pro_ing_id);
         $this->db->where('mon_pro_idnombre', $mon_pro_idnombre);
+        $this->db->order_by('mon_pro_id');
         $consulta= $this->db->get($this->tabla);
         return $consulta->result();
     }
@@ -30,13 +31,20 @@ class Monto_proyeccion extends CI_Model {
         $datos = array(
             'mon_pro_anio' => $mon_pro_anio
         );
-        $this->db->where('mon_pro_nombre' . $mon_pro_nombre);
+        $this->db->where('mon_pro_nombre' , $mon_pro_nombre);
         $this->db->where('pro_ing_id', $pro_ing_id);
         $this->db->update($this->tabla, $datos);
     }
 
     public function obtenerMontoProyeccion($pro_ing_id) {
         $this->db->where('pro_ing_id', $pro_ing_id);
+        $this->db->order_by('mon_pro_id');
+        $consulta = $this->db->get($this->tabla);
+        return $consulta->result();
+    }
+    
+    public function obtenerMontoProyeccionId($mon_pro_id) {
+        $this->db->where('mon_pro_id', $mon_pro_id);
         $consulta = $this->db->get($this->tabla);
         return $consulta->result();
     }
@@ -61,6 +69,16 @@ class Monto_proyeccion extends CI_Model {
         $this->db->select_max('mon_pro_id');
         $consulta = $this->db->get($this->tabla);
         return $consulta->result();
+    }
+    
+    public function editarIngresos($pro_ing_id, $mon_pro_idnombre, $mon_pro_ingresos,$mon_pro_dispo_financiera) {
+        $datos = array(
+            'mon_pro_ingresos'=>$mon_pro_ingresos,
+            'mon_pro_dispo_financiera'=>$mon_pro_dispo_financiera
+        );
+        $this->db->where('mon_pro_idnombre' , $mon_pro_idnombre);
+        $this->db->where('pro_ing_id', $pro_ing_id);
+        $this->db->update($this->tabla, $datos);
     }
 
 }

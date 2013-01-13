@@ -533,10 +533,26 @@ class Comp23_E3 extends CI_Controller {
             $informacion['mon_pro_anio'] = $resultado[0]->mon_pro_anio;
         $resultado = $this->monPro->obtenerMontoProyeccion($pro_ing_id);
         $informacion['montos'] = $resultado;
+        //OBTENER LOS AÑOS
+        $resultado = $this->dmonPro->obtenerAnioDetMontoProyec($pro_ing_id);
+        if (count($resultado) != 1)
+            $informacion['anios'] = $resultado;
+        //OBTENER CAMPOS DEL FODES
         $resultado = $this->monPro->consultarPorProIngIdNombre($pro_ing_id, 'FODES');
-        $resultado=$this->dmonPro->obtenerDetMontoProyec($resultado[0]->mon_pro_id);
+        $resultado = $this->dmonPro->obtenerDetMontoProyec($resultado[0]->mon_pro_id);
         $informacion['fodes'] = $resultado;
-        //OBTENER LOS MONTOS DE PROYECCIÓN
+        //OBTENER CAMPOS DEL INGRESOS PROPIOS
+        $resultado = $this->monPro->consultarPorProIngIdNombre($pro_ing_id, 'IngresosPropios');
+        $resultado = $this->dmonPro->obtenerDetMontoProyec($resultado[0]->mon_pro_id);
+        $informacion['ingresosPropios'] = $resultado;
+        //OBTENER CAMPOS DEL DONACIONES
+        $resultado = $this->monPro->consultarPorProIngIdNombre($pro_ing_id, 'Donaciones');
+        $resultado = $this->dmonPro->obtenerDetMontoProyec($resultado[0]->mon_pro_id);
+        $informacion['donaciones'] = $resultado;
+        //OBTENER CAMPOS DEL CREDITOS
+        $resultado = $this->monPro->consultarPorProIngIdNombre($pro_ing_id, 'Creditos');
+        $resultado = $this->dmonPro->obtenerDetMontoProyec($resultado[0]->mon_pro_id);
+        $informacion['creditos'] = $resultado;
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/etapa3/proyeccionIngresos_view', $informacion);
@@ -571,6 +587,260 @@ class Comp23_E3 extends CI_Controller {
         echo $jsonresponse;
     }
 
+    public function guardarProyeccion() {
+        /* OBTENIENDO MODELOES */
+        $this->load->model('etapa3-sub23/monto_proyeccion', 'monPro');
+        $this->load->model('etapa3-sub23/detmonto_proyeccion', 'dmonPro');
+        $this->load->model('etapa3-sub23/proyeccion_ingreso', 'proIng');
+        /* VARIABLES PROYECCION_INGRESO */
+        $pro_ing_id = $this->input->post("pro_ing_id");
+        $pro_ing_observacion = $this->input->post("pro_ing_observacion");
+        if ($pro_ing_observacion == "")
+            $pro_ing_observacion = null;
+        $this->proIng->editarProyeccionIngreso($pro_ing_id, $pro_ing_observacion);
+        /* VARIABLES MONTO_PROYECCION */
+        $mon_pro_dispo_financiera = $this->input->post("disponibilidad_financiera_FODES");
+        $mon_pro_ingresos = $this->input->post("ingresos_FODES");
+        if ($mon_pro_dispo_financiera == "")
+            $mon_pro_dispo_financiera = null;
+        if ($mon_pro_ingresos == "")
+            $mon_pro_ingresos = null;
+        $this->monPro->editarIngresos($pro_ing_id, 'FODES', $mon_pro_ingresos, $mon_pro_dispo_financiera);
+        $mon_pro_dispo_financiera = $this->input->post("disponibilidad_financiera_IngresosPropios");
+        $mon_pro_ingresos = $this->input->post("ingresos_IngresosPropios");
+        if ($mon_pro_dispo_financiera == "")
+            $mon_pro_dispo_financiera = null;
+        if ($mon_pro_ingresos == "")
+            $mon_pro_ingresos = null;
+        $this->monPro->editarIngresos($pro_ing_id, 'IngresosPropios', $mon_pro_ingresos, $mon_pro_dispo_financiera);
+        $mon_pro_dispo_financiera = $this->input->post("disponibilidad_financiera_Donaciones");
+        $mon_pro_ingresos = $this->input->post("ingresos_Donaciones");
+        if ($mon_pro_dispo_financiera == "")
+            $mon_pro_dispo_financiera = null;
+        if ($mon_pro_ingresos == "")
+            $mon_pro_ingresos = null;
+        $this->monPro->editarIngresos($pro_ing_id, 'Donaciones', $mon_pro_ingresos, $mon_pro_dispo_financiera);
+        $mon_pro_dispo_financiera = $this->input->post("disponibilidad_financiera_Creditos");
+        $mon_pro_ingresos = $this->input->post("ingresos_Creditos");
+        if ($mon_pro_dispo_financiera == "")
+            $mon_pro_dispo_financiera = null;
+        if ($mon_pro_ingresos == "")
+            $mon_pro_ingresos = null;
+        $this->monPro->editarIngresos($pro_ing_id, 'Creditos', $mon_pro_ingresos, $mon_pro_dispo_financiera);
+        /* VARIABLES DETMONTO_PROYECCION */
+        //OBTENER CAMPOS DEL FODES
+        $resultado = $this->monPro->consultarPorProIngIdNombre($pro_ing_id, 'FODES');
+        $valores = $this->dmonPro->obtenerDetMontoProyec($resultado[0]->mon_pro_id);
+        foreach ($valores as $aux) {
+            $ingreso = $this->input->post($aux->mon_pro_nombre . '_' . $aux->dmon_pro_id);
+            if ($ingreso == "")
+                $ingreso = null;
+            $this->dmonPro->editarIngresos($aux->dmon_pro_id, $ingreso);
+        }
+        //OBTENER CAMPOS DEL INGRESOS PROPIOS
+        $resultado = $this->monPro->consultarPorProIngIdNombre($pro_ing_id, 'IngresosPropios');
+        $valores = $this->dmonPro->obtenerDetMontoProyec($resultado[0]->mon_pro_id);
+        foreach ($valores as $aux) {
+            $ingreso = $this->input->post($aux->mon_pro_nombre . '_' . $aux->dmon_pro_id);
+            if ($ingreso == "")
+                $ingreso = null;
+            $this->dmonPro->editarIngresos($aux->dmon_pro_id, $ingreso);
+        }
+        //OBTENER CAMPOS DEL DONACIONES
+        $resultado = $this->monPro->consultarPorProIngIdNombre($pro_ing_id, 'Donaciones');
+        $valores = $this->dmonPro->obtenerDetMontoProyec($resultado[0]->mon_pro_id);
+        foreach ($valores as $aux) {
+            $ingreso = $this->input->post($aux->mon_pro_nombre . '_' . $aux->dmon_pro_id);
+            if ($ingreso == "")
+                $ingreso = null;
+            $this->dmonPro->editarIngresos($aux->dmon_pro_id, $ingreso);
+        }
+        //OBTENER CAMPOS DEL CREDITOS
+        $resultado = $this->monPro->consultarPorProIngIdNombre($pro_ing_id, 'Creditos');
+        $valores = $this->dmonPro->obtenerDetMontoProyec($resultado[0]->mon_pro_id);
+        foreach ($valores as $aux) {
+            $ingreso = $this->input->post($aux->mon_pro_nombre . '_' . $aux->dmon_pro_id);
+            if ($ingreso == "")
+                $ingreso = null;
+            $this->dmonPro->editarIngresos($aux->dmon_pro_id, $ingreso);
+        }
+
+
+        redirect(base_url('componente2/comp23_E3/mostrarProyeccionIngresos'));
+    }
+
+    public function planInversion() {
+        $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
+            Planeación Estratégica Participativa';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $username = $this->tank_auth->get_username();
+        $informacion['username'] = $username;
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        /* OBTENER DEPARTAMENTO Y MUNICIPIO DEL USUARIO */
+        $this->load->model('tank_auth/users', 'usuario');
+        $datos = $this->usuario->obtenerDepartamento($username);
+        $informacion['departamento'] = $datos[0]->Depto;
+        $informacion['municipio'] = $datos[0]->Muni;
+        $pro_pep_id = $datos[0]->id;
+        $informacion['proyectoPep'] = $datos[0]->Proyecto;
+
+        $this->load->model('etapa3-sub23/plan_inversion', 'plaInv');
+        $resultado = $this->plaInv->contarPlaIvePorPep($pro_pep_id);
+        if ($resultado == '0') {
+            $this->plaInv->agregarPlaIve($pro_pep_id);
+            $resultado = $this->plaInv->obtenerPlaIve($pro_pep_id);
+            $this->load->model('proyectoPep/proyecto_pep', 'proPep');
+            $this->proPep->actualizarIndices('pla_inv_id', $resultado[0]['pla_inv_id'], $pro_pep_id);
+        }
+        /* OBTENER MONTOS PROYECCION */
+        $this->load->model('etapa3-sub23/monto_proyeccion', 'monPro');
+        $this->load->model('proyectoPep/proyecto_pep', 'proPep');
+        $this->load->model('etapa3-sub23/portafolio_proyecto', 'porPro');
+        $informacion['portafolios'] = $this->porPro->obtenerPortafolios($pro_pep_id);
+        $datos = $this->proPep->obtenerProyectoPep($pro_pep_id);
+        $pro_ing_id = $datos[0]->pro_ing_id;
+        $montos = $this->monPro->obtenerMontoProyeccion($pro_ing_id);
+        $informacion['montos'] = $montos;
+        $informacion['pro_ing_id'] = $pro_ing_id;
+        $datos = $this->plaInv->obtenerPlaIve($pro_pep_id);
+        $informacion['pla_inv_id'] = $datos[0]['pla_inv_id'];
+        $informacion['pla_inv_observacion'] = $datos[0]['pla_inv_observacion'];
+        $informacion['pro_pep_id'] = $pro_pep_id;
+        /* FIN DE MONTOS PROYECCION */
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/subcomp23/etapa3/planInversion_view', $informacion);
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function guardarPlanInversion() {
+        $this->load->model('etapa3-sub23/portafolio_proyecto', 'porPro');
+        $this->load->model('etapa3-sub23/plan_inversion', 'plaInv');
+        $pro_pep_id = $this->input->post("pro_pep_id");
+        $pla_inv_id = $this->input->post("pla_inv_id");
+        $pla_inv_observacion = $this->input->post("pla_inv_observacion");
+        if ($pla_inv_observacion == "")
+            $pla_inv_observacion = null;
+        $portafolios = $this->porPro->obtenerPortafolios($pro_pep_id);
+        foreach ($portafolios as $porta) {
+            $por_pro_anio1 = $this->input->post("anio1_" . $porta->por_pro_id);
+            $por_pro_anio2 = $this->input->post("anio2_" . $porta->por_pro_id);
+            $por_pro_anio3 = $this->input->post("anio3_" . $porta->por_pro_id);
+            $por_pro_anio4 = $this->input->post("anio4_" . $porta->por_pro_id);
+            $por_pro_anio5 = $this->input->post("anio5_" . $porta->por_pro_id);
+            $this->porPro->actualizarAnios($por_pro_anio1, $por_pro_anio2, $por_pro_anio3, $por_pro_anio4, $por_pro_anio5, $porta->por_pro_id);
+        }
+
+        $this->plaInv->editarPlanInversion($pla_inv_id, $pla_inv_observacion);
+        redirect('componente2/comp23_E3/planInversion');
+    }
+
+    public function estrategiaComunicacion() {
+        $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
+            Planeación Estratégica Participativa';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $username = $this->tank_auth->get_username();
+        $informacion['username'] = $username;
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        /* OBTENER DEPARTAMENTO Y MUNICIPIO DEL USUARIO */
+        $this->load->model('tank_auth/users', 'usuario');
+        $datos = $this->usuario->obtenerDepartamento($username);
+        $informacion['departamento'] = $datos[0]->Depto;
+        $informacion['municipio'] = $datos[0]->Muni;
+        $pro_pep_id = $datos[0]->id;
+        $informacion['proyectoPep'] = $datos[0]->Proyecto;
+        //PARA AGREGAR DATOS
+        $this->load->model('etapa3-sub23/estrategia_comunicacion', 'estCom');
+        $resultado = $this->estCom->contarEstComPorPep($pro_pep_id);
+        if ($resultado == '0') {
+            $this->estCom->agregarEstCom($pro_pep_id);
+            $resultado = $this->estCom->agregarEstCom($pro_pep_id);
+            $this->load->model('proyectoPep/proyecto_pep', 'proPep');
+            $this->proPep->actualizarIndices('est_com_id', $resultado[0]['est_com_id'], $pro_pep_id);
+        }
+        $datos = $this->estCom->obtenerEstCom($pro_pep_id);
+        $informacion['est_com_id'] = $datos[0]['est_com_id'];
+        $informacion['est_com_observacion'] = $datos[0]['est_com_observacion'];
+        $informacion['pro_pep_id'] = $pro_pep_id;
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/subcomp23/etapa3/estrategiaComunicacion_view', $informacion);
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function cargarActores($est_com_id) {
+        $this->load->model('etapa3-sub23/autor_estrategia', 'autEst');
+        $this->load->model('etapa3-sub23/tipo_actor', 'tipAct');
+        $actores = $this->autEst->obtenerActores($est_com_id);
+        $numfilas = count($actores);
+
+        if ($numfilas != 0) {
+            $i = 0;
+            foreach ($actores as $aux) {
+                $tipo = $this->tipAct->obtenerNombreTiposActor($aux->tip_act_id);
+                $rows[$i]['id'] = $aux->aut_est_id;
+                $rows[$i]['cell'] = array($aux->aut_est_id,
+                    $aux->aut_est_nombre,
+                    $aux->aut_est_fecha,
+                    $tipo[0]['tip_act_nombre'],
+                    $aux->aut_est_cantidadm,
+                    $aux->aut_est_cantidadh
+                );
+                $i++;
+            }
+            array_multisort($rows, SORT_ASC);
+        } else {
+            $rows[0]['id'] = 0;
+            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ');
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+
+    public function cargarTiposActores() {
+        $this->load->model('etapa3-sub23/tipo_actor', 'tipAct');
+        $tiposActores = $this->tipAct->obtenerTiposActor();
+        $combo = "<select name='tip_act_id'>";
+        $combo.= " <option value='0'> Seleccione</option>";
+        foreach ($tiposActores as $aux)
+            $combo.= " <option value='" . $aux->tip_act_id . "'>" . $aux->tip_act_nombre . "</option>";
+        $combo.="</select>";
+
+        echo $combo;
+    }
+
+    public function gestionarActores($est_com_id) {
+        $aut_est_id = $this->input->post("id");
+        $aut_est_nombre = $this->input->post("aut_est_nombre");
+        $aut_est_fecha = $this->input->post("aut_est_fecha");
+        $aut_est_cantidadm = $this->input->post("aut_est_cantidadm");
+        $aut_est_cantidadh = $this->input->post("aut_est_cantidadh");
+        $tip_act_id = $this->input->post("tip_act_id");
+        $operacion = $this->input->post("oper");
+
+        $this->load->model('etapa3-sub23/autor_estrategia', 'autEst');
+        
+        switch ($operacion) {
+            case 'add':
+                $this->autEst->agregarActores($aut_est_nombre,$aut_est_fecha,$aut_est_cantidadm,$aut_est_cantidadh,$est_com_id,$tip_act_id);
+                break;
+            case 'edit':
+                $this->autEst->editarActores($aut_est_id,$aut_est_nombre,$aut_est_fecha,$aut_est_cantidadm,$aut_est_cantidadh,$tip_act_id);
+                break;
+            case 'del':
+                $this->autEst->eliminarActores($aut_est_id);
+                break;
+        }
+    }
 }
 
 ?>
