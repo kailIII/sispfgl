@@ -22,6 +22,10 @@ class Departamento extends CI_Model {
         $consulta = $this->db->get($this->tabla);
         return $consulta->result() ;
     }
+  public function obtenerDepartamentos() {
+           $consulta = $this->db->get($this->tabla);
+        return $consulta->result();
+    }
 
 }
 

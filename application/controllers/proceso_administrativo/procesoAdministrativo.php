@@ -15,6 +15,18 @@ class ProcesoAdministrativo extends CI_Controller {
         parent::__construct();
     }
 
+    
+        public function gestion_criterios() {
+        $informacion['titulo'] = 'Proceso de Adquisicion y Contrataciones';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('proceso_administrativo/seleccionConsultoraporGrupo_view');
+        $this->load->view('plantilla/footer', $informacion);
+    }
+    
     public function seleccion_consultora() {
         $informacion['titulo'] = 'Proceso de Adquisicion y Contrataciones';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
@@ -25,6 +37,9 @@ class ProcesoAdministrativo extends CI_Controller {
         $this->load->view('proceso_administrativo/seleccionConsultoraporGrupo_view');
         $this->load->view('plantilla/footer', $informacion);
     }
+    
+  
+    
 
     
 
