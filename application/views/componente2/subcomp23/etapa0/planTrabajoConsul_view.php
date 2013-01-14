@@ -80,14 +80,14 @@
 
 
 
-<form id="planTrabajoConsul" method="post">
+<form id="planTrabajoConsulForm" method="post">
 
     <h2 class="h2Titulos">Etapa 0: Seleccion de Municipios</h2>
     <h2 class="h2Titulos">Plan de trabajo de las consultoras</h2>
     <br/>
 
     <table>
-        <tr>
+        <tr><td style="width: 150px"> 
         <td class="textD"><strong>Departamento:</strong></td>
         <td>
             <select id='selDepto'>
@@ -98,7 +98,7 @@
             </select>
         </td>
         </tr>
-        <tr>
+        <tr><td style="width: 150px"> 
         <td class="textD"><strong>Municipio:</strong></td>
         <td >
             <select id='selMun'>
@@ -107,7 +107,7 @@
         </td>    
         </tr>
     </table>
-
+    <br/>
 
     <table>
         <tr><td style="width: 100px"> 
@@ -163,6 +163,11 @@
             <input type="radio" name="municipalidad" value="true"<?php if (isset($municipalidad) && $municipalidad == 't') { ?> checked <?php } ?>>SI </input>
             <input type="radio" name="municipalidad" value="false"<?php if (isset($municipalidad) && $municipalidad == 'f') { ?> checked <?php } ?> >NO </input>
         </td>
+        <td style="width: 150px"> </td>
+        <td><div id="btn_subir"></div></td>
+        <td><input class="letraazul" type="text" id="vinieta" value="Subir Acta" size="30" style="border: none"/></td>
+
+
         </tr>
 
         <tr><td style="width: 100px"> 
@@ -171,6 +176,12 @@
             <input type="radio" name="isdem" value="true" <?php if (isset($isdem) && $isdem == 't') { ?> checked <?php } ?> >SI </input>
             <input type="radio" name="isdem" value="false" <?php if (isset($isdem) && $isdem == 'f') { ?> checked <?php } ?>>NO </input>
         </td>
+        <td style="width: 150px"> </td>
+        <td><a <?php if (isset($acu_mun_ruta_archivo) && $acu_mun_ruta_archivo != '') { ?> href="<?php echo base_url() . $acu_mun_ruta_archivo; ?>"<?php } ?>  id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
+        <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($acu_mun_ruta_archivo) && $acu_mun_ruta_archivo != '') { ?>value="Descargar Acta"<?php } else { ?> value="No Hay Actas Por Descargar" <?php } ?>size="35" style="border: none"/></td>
+
+
+
         </tr>
         <tr><td style="width: 100px"> 
         <td>UEP</td>
@@ -178,34 +189,27 @@
             <input type="radio" name="uep" value="true" <?php if (isset($uep) && $uep == 't') { ?> checked <?php } ?> >SI </input>
             <input type="radio" name="uep" value="false" <?php if (isset($uep) && $uep == 'f') { ?> checked <?php } ?>>NO </input>
         </td>
+        <td style="width: 150px"> </td>
+        <td>
+
+        </td>
+
+
         </tr>
     </table>
 
-
-    <table style="position: relative;top: 15px;">
-        <tr>
-        <td>
-            <p>Comentarios:<br/><textarea id="comentarios" name="comentarios" cols="48" rows="5"><?php if (isset($comentarios)) echo$comentarios; ?></textarea></p>
-        </td>
-        <td style="width: 50px"></td>
-
-
-        <td>
-            <table>
-                <tr>
-                <td><div id="btn_subir"></div></td>
-                <td><input class="letraazul" type="text" id="vinieta" value="Subir Acta" size="30" style="border: none"/></td>
-                </tr>
-                <tr>
-                <td><a <?php if (isset($acu_mun_ruta_archivo) && $acu_mun_ruta_archivo != '') { ?> href="<?php echo base_url() . $acu_mun_ruta_archivo; ?>"<?php } ?>  id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
-                <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($acu_mun_ruta_archivo) && $acu_mun_ruta_archivo != '') { ?>value="Descargar Acta"<?php } else { ?> value="No Hay Actas Por Descargar" <?php } ?>size="35" style="border: none"/></td>
-                </tr>
-            </table> 
+    <center>
+        <table style="position: relative;top: 15px;">
+            <tr>
+            <td>
+                <p>Comentarios:<br/><textarea id="comentarios" name="comentarios" cols="60" rows="5"><?php if (isset($comentarios)) echo$comentarios; ?></textarea></p>
+            </td>
+            <td style="width: 50px"></td>
 
 
-        </td>
-        </tr>
-    </table>
+            </tr>
+        </table>
+    </center>
 
 
 

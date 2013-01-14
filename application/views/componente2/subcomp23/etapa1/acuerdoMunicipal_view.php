@@ -226,7 +226,7 @@
         <td style="width:80px;"></td>
         <td width="300px">
             <strong>Contrapartida</strong>
-        <fieldset style="width:170px;">
+        <fieldset style="width:210px;">
             <legend>Aportes de la Municipalidad</legend>
             <?php foreach ($contrapartidas as $aux) { ?>
                 <input <?php if (!strcasecmp($aux->con_acu_valor, 't')) { ?>checked <?php } ?> type="checkbox" name="con_<?php echo $aux->con_id; ?>" value="<?php echo $aux->con_id; ?>" ><?php echo $aux->con_nombre; ?></input><br/>

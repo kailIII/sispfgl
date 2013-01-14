@@ -15,6 +15,9 @@ class Comp23_E0 extends CI_Controller {
         parent::__construct();
     }
 
+    /*Gestion de Criterios*/
+    
+    
     public function cargarCriterios() {
         $this->load->model('etapa0-sub23/criterio_e0', 'criterio');
         $criterios = $this->criterio->obtenerCriterios();
@@ -60,7 +63,7 @@ class Comp23_E0 extends CI_Controller {
 
     public function gestionarCriterios() {
         /* VARIABLES POST */
-    
+
         $criterio_id = $this->input->post("id");
         $criterio_nombre = $this->input->post("criterio_nombre");
         $operacion = $this->input->post('oper');
@@ -79,6 +82,9 @@ class Comp23_E0 extends CI_Controller {
         }
     }
 
+    /*Solicitud de asitencia tecnica*/
+    
+    
     public function solicitudAsistenciaTecnica() {
         $informacion['titulo'] = 'Solicitud de Asistencia Técnica';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
@@ -93,22 +99,22 @@ class Comp23_E0 extends CI_Controller {
         $this->load->view('plantilla/footer', $informacion);
     }
 
-    /* Guarda la Solicitud de asistencia tecnica */
+  
 
     public function guardarsolicitud() {
-       /* VARIABLES POST */
+        /* VARIABLES POST */
         $leido_cri = $this->input->post("leido_cri");
         $cumple_cri = $this->input->post("cumple_cri");
-        
+
         $solicitud_fecha = $this->input->post("solicitud_fecha");
         if ($acu_mun_fecha == '')
             $acu_mun_fecha = null;
         $acu_mun_p2 = $this->input->post("acu_mun_p2");
         $acu_mun_observacion = $this->input->post("acu_mun_observacion");
         $acu_mun_ruta_archivo = $this->input->post("acu_mun_ruta_archivo");
-
-     
     }
+
+    /* Plan de Trabajo de Consultora */
 
     public function planTrabajoConsultora() {
         $informacion['titulo'] = 'Solicitud de Asistencia Técnica';
@@ -123,13 +129,12 @@ class Comp23_E0 extends CI_Controller {
         $this->load->view('componente2/subcomp23/etapa0/planTrabajoConsul_view');
         $this->load->view('plantilla/footer', $informacion);
     }
-    
-    
+
     public function guardarPlanTrabajo() {
-    /* VARIABLES POST */
+        /* VARIABLES POST */
         $leido_cri = $this->input->post("leido_cri");
         $cumple_cri = $this->input->post("cumple_cri");
-        
+
         $solicitud_fecha = $this->input->post("solicitud_fecha");
         if ($acu_mun_fecha == '')
             $acu_mun_fecha = null;
@@ -137,7 +142,61 @@ class Comp23_E0 extends CI_Controller {
         $acu_mun_observacion = $this->input->post("acu_mun_observacion");
         $acu_mun_ruta_archivo = $this->input->post("acu_mun_ruta_archivo");
     }
+
+    /* Registro de aporte de la Municipalidad */
+
+    public function registroAporteMunicipal() {
+        $informacion['titulo'] = 'Registro de Aporte a la Municipalidad';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $this->load->model('pais/departamento', 'depar');
+        $departamentos = $this->depar->obtenerDepartamentos();
+        $informacion['departamentos'] = $departamentos;
+
+        $this->load->model('etapa', 'eta');
+        $etapas = $this->eta->obtenerEtapas();
+        $informacion['etapas'] = $etapas;
+
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/subcomp23/etapa0/registroAporteMunicipal_view');
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function guardarResgitrodeAporte() {
+        /* VARIABLES POST */
+        $leido_cri = $this->input->post("leido_cri");
+        $cumple_cri = $this->input->post("cumple_cri");
+
+        $solicitud_fecha = $this->input->post("solicitud_fecha");
+        if ($acu_mun_fecha == '')
+            $acu_mun_fecha = null;
+        $acu_mun_p2 = $this->input->post("acu_mun_p2");
+        $acu_mun_observacion = $this->input->post("acu_mun_observacion");
+        $acu_mun_ruta_archivo = $this->input->post("acu_mun_ruta_archivo");
+    }
+
+    /* Seleccion de municipios por el comite interinstitucional */
+
+    public function comiteInterinstitucional() {
+        $informacion['titulo'] = 'Seleccion de Municipios por el Comite Interinstitucional';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/subcomp23/etapa0/comiteInterinstitucional_view');
+        $this->load->view('plantilla/footer', $informacion);
+    }
     
+    
+    
+    
+    
+    
+
 }
 
 ?>
