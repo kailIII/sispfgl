@@ -39,7 +39,7 @@
         $("#agregarOpcionesButton").button().click(function(){
             myGrid.jqGrid('editGridRow',"new",
             {closeAfterAdd:true,addCaption: "Agregar Opciones del Sistema",
-                align:'center',reloadAfterSubmit:true,  width: 650,height:200,
+                align:'center',reloadAfterSubmit:true,width: 700,height:200,
                 processData: "Cargando...",afterSubmit:despuesAgregarEditar,
                 bottominfo:"Campos marcados con (*) son obligatorios", 
                 onclickSubmit: function(rp_ge, postdata) {
@@ -52,7 +52,7 @@
             if( gr != null )
                 myGrid.jqGrid('editGridRow',gr,
             {closeAfterEdit:true,editCaption: "Editando ",
-                align:'center',reloadAfterSubmit:true,width: 750,height:200,
+                align:'center',reloadAfterSubmit:true,width: 700,height:200,
                 processData: "Cargando...",afterSubmit:despuesAgregarEditar,
                 bottominfo:"Campos marcados con (*) son obligatorios", 
                 onclickSubmit: function(rp_ge, postdata) {
