@@ -25,6 +25,7 @@
         <script type="text/javascript" src="<?php echo base_url('resource/js/jquery.hoverIntent.minified.js'); ?>"></script>
         <script type="text/javascript" src="<?php echo base_url('resource/js/jquery.jqGrid.min.js'); ?>"></script>
         <script type="text/javascript" src="<?php echo base_url('resource/js/jquery.maskedinput.js'); ?>"></script>
+        <script type="text/javascript" src="<?php echo base_url('resource/js/jquery.numeric.js'); ?>"></script>
         <script type="text/javascript" src="<?php echo base_url('resource/js/jquery.validate.js'); ?>"></script>
         <script type="text/javascript" src="<?php echo base_url('resource/js/menuHorizontal.js'); ?>"></script>
         <script type="text/javascript" src="<?php echo base_url('resource/js/i18n/grid.locale-es.js'); ?>"></script>

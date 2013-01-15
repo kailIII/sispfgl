@@ -282,7 +282,7 @@
         <td><input class="letraazul" type="text" id="vinieta" value="Subir Perfil del Proyecto" size="30" style="border: none"/></td>
         </tr>
         <tr>
-        <td><a id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
+        <td><a id="btn_descargar"  <?php if (isset($por_pro_ruta_archivo) && $por_pro_ruta_archivo != '') { ?> href="<?php echo base_url() . $por_pro_ruta_archivo; ?>"<?php } ?> ><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
         <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($por_pro_ruta_archivo) && $por_pro_ruta_archivo != '') { ?>value="Descargar Perfil del Proyecto"<?php } else { ?> value="No hay perfil para ser descargado" <?php } ?>size="40" style="border: none"/></td>
         </tr>
     </table>

@@ -35,12 +35,12 @@ class Librerias {
                         foreach ($opcionesN3->result() as $opcN3)
                             $menu.='<li><a href="' . base_url($opcN3->opc_sis_url) . '">' . $opcN3->opc_sis_nombre . '</a></li>';
                         $menu.='</ul></li>';
-                    }else 
+                    }else
                         $menu.='</li>';//FIN NIVEL 3
                 }
                 $menu.='</ul></li>';
             }else
-              $menu.='</li>';  ////FIN NIVEL 2
+                $menu.='</li>';  ////FIN NIVEL 2
         }
         return $menu;
     }
@@ -59,6 +59,29 @@ class Librerias {
         if ($archivo['userfile']['size'] < 1050000) {
             if (move_uploaded_file($archivo['userfile']['tmp_name'], $archivoSubir)) {
                 $this->ci->ayuArc->actualizarArchivo($campo, $campo_id, $tabla, $archivoSubir);
+                echo $archivoSubir;
+            } else {
+                echo "error";
+            }
+        } else {
+            echo "error";
+        }
+    }
+    
+     public function subirDocumento2($tabla, $campo_id, $archivo, $campo,$ext) {
+        $partes = explode(".", $archivo['userfile']['name']);
+        $extension = end($partes);
+        //OBTERNER LA EXTENSIÒN DEL ARCHIVO SI HAY UNO YA GUARDADO EN LA BASE
+        $this->ci->load->model('ayuda_archivo', 'ayuArc');
+        $nombreArchivoBase = $this->ci->ayuArc->obtenerRutaArchivo2($campo, $campo_id, $tabla,$ext);
+        $extArchivoBase = end(explode(".", $nombreArchivoBase[0]['ruta_archivo']));
+        if (strcasecmp($extension, $extArchivoBase) && $extArchivoBase != '0')
+            unlink($nombreArchivoBase[0]['ruta_archivo']);
+        $directorio = 'documentos/' . $tabla . '/';
+        $archivoSubir = $directorio . ($tabla . $campo_id.substr($ext,3,4)) . '.' . $extension;
+        if ($archivo['userfile']['size'] < 1050000) {
+            if (move_uploaded_file($archivo['userfile']['tmp_name'], $archivoSubir)) {
+                $this->ci->ayuArc->actualizarArchivo2($campo, $campo_id, $tabla, $archivoSubir,$ext);
                 echo $archivoSubir;
             } else {
                 echo "error";
