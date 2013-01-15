@@ -4,7 +4,8 @@
            showOn: 'both',
            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
            buttonImageOnly: true, 
-           dateFormat: 'yy/mm/dd'
+           dateFormat: 'yy/mm/dd',
+           minDate: (new Date(2013, 0, 1))
        });
        
         $("#agregar").button().click(function() {
