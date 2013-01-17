@@ -1,5 +1,5 @@
 <?php
-function form_dropdown_from_db($name = '', $sql, $selected = array(), $extra = '')
+function form_dropdown_from_db($name = '', $ids='', $sql, $selected = array(), $extra = '')
     {
         $CI =& get_instance();
         if ( ! is_array($selected))
@@ -21,7 +21,7 @@ function form_dropdown_from_db($name = '', $sql, $selected = array(), $extra = '
 
         $multiple = (count($selected) > 1 && strpos($extra, 'multiple') === FALSE) ? ' multiple="multiple"' : '';
 
-        $form = '<select name="'.$name.'"'.$extra.$multiple.">\n";
+        $form = '<select name="'.$name.'"'.'id="'.$ids.'"'.''.$extra.$multiple.">\n";
         $query=$CI->db->query($sql);
         if ($query->num_rows() > 0)
         {

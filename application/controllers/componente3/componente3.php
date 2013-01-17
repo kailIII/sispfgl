@@ -274,6 +274,41 @@ class  componente3 extends CI_Controller {
 		
     }
     
+    public function cargarMunicipios() {
+       $dep_id = $this->input->get("dep_id");
+        $this->load->model('pais/municipio', 'mun');
+        $municipios = $this->mun->obtenerMunicipioPorDepartamento($dep_id);
+       
+        $numfilas = count($municipios);
+
+        $i = 0;
+        foreach ($municipios as $aux) {
+            $rows[$i]['id'] = $aux->mun_id;
+            $rows[$i]['cell'] = array($aux->mun_id,
+                $aux->mun_nombre
+            );
+            $i++;
+        }
+
+        if ($numfilas != 0) {
+            array_multisort($rows, SORT_ASC);
+        } else {
+            $rows[0]['id'] = 0;
+            $rows[0]['cell'] = array(' ', ' ');
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+    
     
     public function cargarAsistentes_dsat() {
         $numfilas=0;

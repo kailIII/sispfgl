@@ -181,6 +181,42 @@ ALTER SEQUENCE acuerdo_municipal_acu_mun_id_seq OWNED BY acuerdo_municipal.acu_m
 
 
 --
+-- Name: aporte_municipal; Type: TABLE; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+CREATE TABLE aporte_municipal (
+    aporte_municipal_id integer NOT NULL,
+    aporte_estimado numeric(12,2) DEFAULT 0.0,
+    fecha_aporte date NOT NULL,
+    observaciones character varying(250),
+    mun_id integer
+);
+
+
+ALTER TABLE public.aporte_municipal OWNER TO sispfgl;
+
+--
+-- Name: aporte_municipal_aporte_municipal_id_seq; Type: SEQUENCE; Schema: public; Owner: sispfgl
+--
+
+CREATE SEQUENCE aporte_municipal_aporte_municipal_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.aporte_municipal_aporte_municipal_id_seq OWNER TO sispfgl;
+
+--
+-- Name: aporte_municipal_aporte_municipal_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: sispfgl
+--
+
+ALTER SEQUENCE aporte_municipal_aporte_municipal_id_seq OWNED BY aporte_municipal.aporte_municipal_id;
+
+
+--
 -- Name: area_dimension; Type: TABLE; Schema: public; Owner: sispfgl; Tablespace: 
 --
 
@@ -280,6 +316,44 @@ ALTER TABLE public.asociatividad_aso_id_seq OWNER TO sispfgl;
 --
 
 ALTER SEQUENCE asociatividad_aso_id_seq OWNED BY asociatividad.aso_id;
+
+
+--
+-- Name: autor_estrategia; Type: TABLE; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+CREATE TABLE autor_estrategia (
+    aut_est_id integer NOT NULL,
+    aut_est_nombre character varying(200) NOT NULL,
+    aut_est_fecha date NOT NULL,
+    aut_est_cantidadm integer NOT NULL,
+    aut_est_cantidadh integer,
+    est_com_id integer,
+    tip_act_id integer
+);
+
+
+ALTER TABLE public.autor_estrategia OWNER TO sispfgl;
+
+--
+-- Name: autor_estrategia_aut_est_id_seq; Type: SEQUENCE; Schema: public; Owner: sispfgl
+--
+
+CREATE SEQUENCE autor_estrategia_aut_est_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.autor_estrategia_aut_est_id_seq OWNER TO sispfgl;
+
+--
+-- Name: autor_estrategia_aut_est_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: sispfgl
+--
+
+ALTER SEQUENCE autor_estrategia_aut_est_id_seq OWNED BY autor_estrategia.aut_est_id;
 
 
 --
@@ -454,6 +528,43 @@ ALTER SEQUENCE consultor_con_id_seq OWNED BY consultor.con_id;
 
 
 --
+-- Name: consultores_interes; Type: TABLE; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+CREATE TABLE consultores_interes (
+    con_int_id integer NOT NULL,
+    con_int_nombre character varying(250),
+    con_int_tipo character varying(15),
+    con_int_aplica character varying(6),
+    con_int_seleccionada character varying(6),
+    pro_id integer
+);
+
+
+ALTER TABLE public.consultores_interes OWNER TO sispfgl;
+
+--
+-- Name: consultores_interes_con_int_id_seq; Type: SEQUENCE; Schema: public; Owner: sispfgl
+--
+
+CREATE SEQUENCE consultores_interes_con_int_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.consultores_interes_con_int_id_seq OWNER TO sispfgl;
+
+--
+-- Name: consultores_interes_con_int_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: sispfgl
+--
+
+ALTER SEQUENCE consultores_interes_con_int_id_seq OWNED BY consultores_interes.con_int_id;
+
+
+--
 -- Name: contrapartida; Type: TABLE; Schema: public; Owner: sispfgl; Tablespace: 
 --
 
@@ -477,6 +588,19 @@ CREATE TABLE contrapartida_acuerdo (
 
 
 ALTER TABLE public.contrapartida_acuerdo OWNER TO sispfgl;
+
+--
+-- Name: contrapartida_aporte; Type: TABLE; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+CREATE TABLE contrapartida_aporte (
+    con_id integer NOT NULL,
+    aporte_municipal_id integer NOT NULL,
+    valor_hubo_aporte boolean NOT NULL
+);
+
+
+ALTER TABLE public.contrapartida_aporte OWNER TO sispfgl;
 
 --
 -- Name: contrapartida_con_id_seq; Type: SEQUENCE; Schema: public; Owner: sispfgl
@@ -843,7 +967,7 @@ ALTER SEQUENCE departamento_dep_id_seq OWNED BY departamento.dep_id;
 
 CREATE TABLE detmonto_proyeccion (
     dmon_pro_id integer NOT NULL,
-    dmon_pro_ingresos numeric(12,2),
+    dmon_pro_ingresos numeric(12,2) DEFAULT 0,
     dmon_pro_anio integer,
     dmon_pro_correlativo integer NOT NULL,
     mon_pro_id integer NOT NULL
@@ -979,6 +1103,40 @@ CREATE SEQUENCE epi_seq
 
 
 ALTER TABLE public.epi_seq OWNER TO sispfgl;
+
+--
+-- Name: estrategia_comunicacion; Type: TABLE; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+CREATE TABLE estrategia_comunicacion (
+    est_com_id integer NOT NULL,
+    est_com_observacion text,
+    pro_pep_id integer NOT NULL
+);
+
+
+ALTER TABLE public.estrategia_comunicacion OWNER TO sispfgl;
+
+--
+-- Name: estrategia_inversion_est_inv_id_seq; Type: SEQUENCE; Schema: public; Owner: sispfgl
+--
+
+CREATE SEQUENCE estrategia_inversion_est_inv_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.estrategia_inversion_est_inv_id_seq OWNER TO sispfgl;
+
+--
+-- Name: estrategia_inversion_est_inv_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: sispfgl
+--
+
+ALTER SEQUENCE estrategia_inversion_est_inv_id_seq OWNED BY estrategia_comunicacion.est_com_id;
+
 
 --
 -- Name: etapa; Type: TABLE; Schema: public; Owner: sispfgl; Tablespace: 
@@ -1518,8 +1676,8 @@ ALTER SEQUENCE login_attempts_id_seq OWNED BY login_attempts.id;
 CREATE TABLE monto_proyeccion (
     mon_pro_id integer NOT NULL,
     mon_pro_nombre character varying(25) NOT NULL,
-    mon_pro_dispo_financiera numeric(12,2),
-    mon_pro_ingresos numeric(12,2),
+    mon_pro_dispo_financiera numeric(12,2) DEFAULT 0,
+    mon_pro_ingresos numeric(12,2) DEFAULT 0,
     mon_pro_anio integer,
     pro_ing_id integer NOT NULL,
     mon_pro_idnombre character varying(25)
@@ -1557,7 +1715,8 @@ CREATE TABLE municipio (
     mun_id integer NOT NULL,
     dep_id integer NOT NULL,
     mun_nombre character varying(50) NOT NULL,
-    mun_presupuesto numeric(6,2)
+    mun_presupuesto numeric(6,2),
+    cons_id integer
 );
 
 
@@ -1595,6 +1754,74 @@ ALTER TABLE public.municipio_mun_id_seq OWNER TO sispfgl;
 --
 
 ALTER SEQUENCE municipio_mun_id_seq OWNED BY municipio.mun_id;
+
+
+--
+-- Name: nombre_fecha_aprobacion; Type: TABLE; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+CREATE TABLE nombre_fecha_aprobacion (
+    nom_fec_apr_id integer NOT NULL,
+    nom_fec_apro_nombre character varying(150)
+);
+
+
+ALTER TABLE public.nombre_fecha_aprobacion OWNER TO sispfgl;
+
+--
+-- Name: nombre_fecha_aprobacion_nom_fec_apr_id_seq; Type: SEQUENCE; Schema: public; Owner: sispfgl
+--
+
+CREATE SEQUENCE nombre_fecha_aprobacion_nom_fec_apr_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.nombre_fecha_aprobacion_nom_fec_apr_id_seq OWNER TO sispfgl;
+
+--
+-- Name: nombre_fecha_aprobacion_nom_fec_apr_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: sispfgl
+--
+
+ALTER SEQUENCE nombre_fecha_aprobacion_nom_fec_apr_id_seq OWNED BY nombre_fecha_aprobacion.nom_fec_apr_id;
+
+
+--
+-- Name: nombrefecha_procesoetapa; Type: TABLE; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+CREATE TABLE nombrefecha_procesoetapa (
+    nom_pro_valor date,
+    pro_eta_id integer,
+    nom_fec_apro_id integer,
+    nom_pro_id integer NOT NULL
+);
+
+
+ALTER TABLE public.nombrefecha_procesoetapa OWNER TO sispfgl;
+
+--
+-- Name: nombrefecha_procesoetapa_nom_pro_id_seq; Type: SEQUENCE; Schema: public; Owner: sispfgl
+--
+
+CREATE SEQUENCE nombrefecha_procesoetapa_nom_pro_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.nombrefecha_procesoetapa_nom_pro_id_seq OWNER TO sispfgl;
+
+--
+-- Name: nombrefecha_procesoetapa_nom_pro_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: sispfgl
+--
+
+ALTER SEQUENCE nombrefecha_procesoetapa_nom_pro_id_seq OWNED BY nombrefecha_procesoetapa.nom_pro_id;
 
 
 --
@@ -1777,6 +2004,118 @@ ALTER SEQUENCE personal_enlace_per_enl_id_seq OWNED BY personal_enlace.per_enl_i
 
 
 --
+-- Name: pestania_proceso; Type: TABLE; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+CREATE TABLE pestania_proceso (
+    pes_pro_id integer NOT NULL,
+    pes_pro_nombre character varying(150)
+);
+
+
+ALTER TABLE public.pestania_proceso OWNER TO sispfgl;
+
+--
+-- Name: pestania_proceso_pes_pro_id_seq; Type: SEQUENCE; Schema: public; Owner: sispfgl
+--
+
+CREATE SEQUENCE pestania_proceso_pes_pro_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.pestania_proceso_pes_pro_id_seq OWNER TO sispfgl;
+
+--
+-- Name: pestania_proceso_pes_pro_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: sispfgl
+--
+
+ALTER SEQUENCE pestania_proceso_pes_pro_id_seq OWNED BY pestania_proceso.pes_pro_id;
+
+
+--
+-- Name: plan_inversion; Type: TABLE; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+CREATE TABLE plan_inversion (
+    pla_inv_id integer NOT NULL,
+    pla_inv_observacion text,
+    pro_pep_id integer NOT NULL
+);
+
+
+ALTER TABLE public.plan_inversion OWNER TO sispfgl;
+
+--
+-- Name: plan_inversion_pla_inv_id_seq; Type: SEQUENCE; Schema: public; Owner: sispfgl
+--
+
+CREATE SEQUENCE plan_inversion_pla_inv_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.plan_inversion_pla_inv_id_seq OWNER TO sispfgl;
+
+--
+-- Name: plan_inversion_pla_inv_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: sispfgl
+--
+
+ALTER SEQUENCE plan_inversion_pla_inv_id_seq OWNED BY plan_inversion.pla_inv_id;
+
+
+--
+-- Name: plan_trabajo; Type: TABLE; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+CREATE TABLE plan_trabajo (
+    plan_trab_id integer NOT NULL,
+    forden_inicio date NOT NULL,
+    fentrega_plan date NOT NULL,
+    frecepcion_obs date NOT NULL,
+    fsuperacion_obs date NOT NULL,
+    fvisto_bueno date NOT NULL,
+    fpresentacion_con_mun date NOT NULL,
+    frecepcion_pro_fin date NOT NULL,
+    acta_mun_firmada boolean NOT NULL,
+    acta_isdem_firmada boolean NOT NULL,
+    acta_uep_firmada boolean NOT NULL,
+    mun_id integer NOT NULL,
+    pla_tra_ruta_archivo character varying(250),
+    observaciones character varying(255)
+);
+
+
+ALTER TABLE public.plan_trabajo OWNER TO sispfgl;
+
+--
+-- Name: plan_trabajo_plan_trab_id_seq; Type: SEQUENCE; Schema: public; Owner: sispfgl
+--
+
+CREATE SEQUENCE plan_trabajo_plan_trab_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.plan_trabajo_plan_trab_id_seq OWNER TO sispfgl;
+
+--
+-- Name: plan_trabajo_plan_trab_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: sispfgl
+--
+
+ALTER SEQUENCE plan_trabajo_plan_trab_id_seq OWNED BY plan_trabajo.plan_trab_id;
+
+
+--
 -- Name: poblacion_reunion; Type: TABLE; Schema: public; Owner: sispfgl; Tablespace: 
 --
 
@@ -1830,7 +2169,12 @@ CREATE TABLE portafolio_proyecto (
     por_pro_beneficiario_m integer,
     por_pro_observacion text,
     por_pro_ruta_archivo text,
-    pro_pep_id integer
+    pro_pep_id integer,
+    por_pro_anio1 numeric(12,2) DEFAULT 0,
+    por_pro_anio2 numeric(12,2) DEFAULT 0,
+    por_pro_anio3 numeric(12,2) DEFAULT 0,
+    por_pro_anio4 numeric(12,2) DEFAULT 0,
+    por_pro_anio5 numeric(12,2) DEFAULT 0
 );
 
 
@@ -1966,6 +2310,90 @@ ALTER SEQUENCE problema_identificado_pro_ide_id_seq OWNED BY problema_identifica
 
 
 --
+-- Name: proceso; Type: TABLE; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+CREATE TABLE proceso (
+    pro_id integer NOT NULL,
+    pro_numero character varying(150),
+    pro_fpublicacion date,
+    pro_faclara_dudas date,
+    pro_fexpresion_interes date,
+    pro_observacion1 text,
+    pro_pub_ruta_archivo character varying(250),
+    pro_exp_ruta_archivo character varying(250),
+    pro_finicio date,
+    pro_ffinalizacion date,
+    pro_fenvio_informacion date,
+    pro_flimite_recepcion date,
+    pro_fsolicitud date,
+    pro_frecepcion date,
+    pro_fcierre_negociacion date,
+    pro_ffirma_contrato date,
+    pro_observacion2 date,
+    mun_id integer NOT NULL
+);
+
+
+ALTER TABLE public.proceso OWNER TO sispfgl;
+
+--
+-- Name: proceso_etapa; Type: TABLE; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+CREATE TABLE proceso_etapa (
+    pro_eta_id integer NOT NULL,
+    pro_eta_observacion text,
+    pes_pro_id integer,
+    mun_id integer
+);
+
+
+ALTER TABLE public.proceso_etapa OWNER TO sispfgl;
+
+--
+-- Name: proceso_etapa_pro_eta_id_seq; Type: SEQUENCE; Schema: public; Owner: sispfgl
+--
+
+CREATE SEQUENCE proceso_etapa_pro_eta_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.proceso_etapa_pro_eta_id_seq OWNER TO sispfgl;
+
+--
+-- Name: proceso_etapa_pro_eta_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: sispfgl
+--
+
+ALTER SEQUENCE proceso_etapa_pro_eta_id_seq OWNED BY proceso_etapa.pro_eta_id;
+
+
+--
+-- Name: proceso_pro_id_seq; Type: SEQUENCE; Schema: public; Owner: sispfgl
+--
+
+CREATE SEQUENCE proceso_pro_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.proceso_pro_id_seq OWNER TO sispfgl;
+
+--
+-- Name: proceso_pro_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: sispfgl
+--
+
+ALTER SEQUENCE proceso_pro_id_seq OWNED BY proceso.pro_id;
+
+
+--
 -- Name: proyeccion_ingreso; Type: TABLE; Schema: public; Owner: sispfgl; Tablespace: 
 --
 
@@ -2063,7 +2491,9 @@ CREATE TABLE proyecto_pep (
     pro_pep_ruta_archivo text,
     pro_pep_observacion text,
     int_ins_id integer,
-    pro_ing_id integer
+    pro_ing_id integer,
+    pla_inv_id integer,
+    est_com_id integer
 );
 
 
@@ -2286,6 +2716,84 @@ CREATE TABLE sector (
 ALTER TABLE public.sector OWNER TO sispfgl;
 
 --
+-- Name: seleccion_comite; Type: TABLE; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+CREATE TABLE seleccion_comite (
+    seleccion_comite_id integer NOT NULL,
+    fecha_sel_mun date NOT NULL,
+    fecha_verificacion date NOT NULL,
+    seleccionado boolean NOT NULL,
+    sel_com_ruta_archivo character varying(255),
+    observacion character varying(255),
+    sol_asis_id integer NOT NULL
+);
+
+
+ALTER TABLE public.seleccion_comite OWNER TO sispfgl;
+
+--
+-- Name: seleccion_comite_seleccion_comite_id_seq; Type: SEQUENCE; Schema: public; Owner: sispfgl
+--
+
+CREATE SEQUENCE seleccion_comite_seleccion_comite_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.seleccion_comite_seleccion_comite_id_seq OWNER TO sispfgl;
+
+--
+-- Name: seleccion_comite_seleccion_comite_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: sispfgl
+--
+
+ALTER SEQUENCE seleccion_comite_seleccion_comite_id_seq OWNED BY seleccion_comite.seleccion_comite_id;
+
+
+--
+-- Name: solicitud_asistencia; Type: TABLE; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+CREATE TABLE solicitud_asistencia (
+    sol_asis_id integer NOT NULL,
+    nombre_solicitante character varying(50) NOT NULL,
+    cargo character varying(50) NOT NULL,
+    telefono character varying(9),
+    pla_tra_ruta_archivo character varying(250),
+    mun_id integer,
+    c1 boolean,
+    c2 boolean,
+    seleccion_comite_id integer
+);
+
+
+ALTER TABLE public.solicitud_asistencia OWNER TO sispfgl;
+
+--
+-- Name: solicitud_asistencia_sol_asis_id_seq; Type: SEQUENCE; Schema: public; Owner: sispfgl
+--
+
+CREATE SEQUENCE solicitud_asistencia_sol_asis_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.solicitud_asistencia_sol_asis_id_seq OWNER TO sispfgl;
+
+--
+-- Name: solicitud_asistencia_sol_asis_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: sispfgl
+--
+
+ALTER SEQUENCE solicitud_asistencia_sol_asis_id_seq OWNED BY solicitud_asistencia.sol_asis_id;
+
+
+--
 -- Name: tipo; Type: TABLE; Schema: public; Owner: sispfgl; Tablespace: 
 --
 
@@ -2296,6 +2804,39 @@ CREATE TABLE tipo (
 
 
 ALTER TABLE public.tipo OWNER TO sispfgl;
+
+--
+-- Name: tipo_actor; Type: TABLE; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+CREATE TABLE tipo_actor (
+    tip_act_id integer NOT NULL,
+    tip_act_nombre character varying(250)
+);
+
+
+ALTER TABLE public.tipo_actor OWNER TO sispfgl;
+
+--
+-- Name: tipo_actor_tip_act_id_seq; Type: SEQUENCE; Schema: public; Owner: sispfgl
+--
+
+CREATE SEQUENCE tipo_actor_tip_act_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tipo_actor_tip_act_id_seq OWNER TO sispfgl;
+
+--
+-- Name: tipo_actor_tip_act_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: sispfgl
+--
+
+ALTER SEQUENCE tipo_actor_tip_act_id_seq OWNED BY tipo_actor.tip_act_id;
+
 
 --
 -- Name: tipo_tip_id_seq; Type: SEQUENCE; Schema: public; Owner: sispfgl
@@ -2437,6 +2978,13 @@ ALTER TABLE ONLY acuerdo_municipal ALTER COLUMN acu_mun_id SET DEFAULT nextval('
 
 
 --
+-- Name: aporte_municipal_id; Type: DEFAULT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY aporte_municipal ALTER COLUMN aporte_municipal_id SET DEFAULT nextval('aporte_municipal_aporte_municipal_id_seq'::regclass);
+
+
+--
 -- Name: are_dim_id; Type: DEFAULT; Schema: public; Owner: sispfgl
 --
 
@@ -2448,6 +2996,13 @@ ALTER TABLE ONLY area_dimension ALTER COLUMN are_dim_id SET DEFAULT nextval('are
 --
 
 ALTER TABLE ONLY asociatividad ALTER COLUMN aso_id SET DEFAULT nextval('asociatividad_aso_id_seq'::regclass);
+
+
+--
+-- Name: aut_est_id; Type: DEFAULT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY autor_estrategia ALTER COLUMN aut_est_id SET DEFAULT nextval('autor_estrategia_aut_est_id_seq'::regclass);
 
 
 --
@@ -2476,6 +3031,13 @@ ALTER TABLE ONLY consultor ALTER COLUMN con_id SET DEFAULT nextval('consultor_co
 --
 
 ALTER TABLE ONLY consultora ALTER COLUMN cons_id SET DEFAULT nextval('consulta_cons_id_seq'::regclass);
+
+
+--
+-- Name: con_int_id; Type: DEFAULT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY consultores_interes ALTER COLUMN con_int_id SET DEFAULT nextval('consultores_interes_con_int_id_seq'::regclass);
 
 
 --
@@ -2539,6 +3101,13 @@ ALTER TABLE ONLY detmonto_proyeccion ALTER COLUMN dmon_pro_id SET DEFAULT nextva
 --
 
 ALTER TABLE ONLY diagnostico ALTER COLUMN dia_id SET DEFAULT nextval('diagnostico_dia_id_seq'::regclass);
+
+
+--
+-- Name: est_com_id; Type: DEFAULT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY estrategia_comunicacion ALTER COLUMN est_com_id SET DEFAULT nextval('estrategia_inversion_est_inv_id_seq'::regclass);
 
 
 --
@@ -2647,6 +3216,20 @@ ALTER TABLE ONLY municipio ALTER COLUMN mun_id SET DEFAULT nextval('municipio_mu
 
 
 --
+-- Name: nom_fec_apr_id; Type: DEFAULT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY nombre_fecha_aprobacion ALTER COLUMN nom_fec_apr_id SET DEFAULT nextval('nombre_fecha_aprobacion_nom_fec_apr_id_seq'::regclass);
+
+
+--
+-- Name: nom_pro_id; Type: DEFAULT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY nombrefecha_procesoetapa ALTER COLUMN nom_pro_id SET DEFAULT nextval('nombrefecha_procesoetapa_nom_pro_id_seq'::regclass);
+
+
+--
 -- Name: opc_sis_id; Type: DEFAULT; Schema: public; Owner: sispfgl
 --
 
@@ -2665,6 +3248,27 @@ ALTER TABLE ONLY participante ALTER COLUMN par_id SET DEFAULT nextval('participa
 --
 
 ALTER TABLE ONLY personal_enlace ALTER COLUMN per_enl_id SET DEFAULT nextval('personal_enlace_per_enl_id_seq'::regclass);
+
+
+--
+-- Name: pes_pro_id; Type: DEFAULT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY pestania_proceso ALTER COLUMN pes_pro_id SET DEFAULT nextval('pestania_proceso_pes_pro_id_seq'::regclass);
+
+
+--
+-- Name: pla_inv_id; Type: DEFAULT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY plan_inversion ALTER COLUMN pla_inv_id SET DEFAULT nextval('plan_inversion_pla_inv_id_seq'::regclass);
+
+
+--
+-- Name: plan_trab_id; Type: DEFAULT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY plan_trabajo ALTER COLUMN plan_trab_id SET DEFAULT nextval('plan_trabajo_plan_trab_id_seq'::regclass);
 
 
 --
@@ -2700,6 +3304,20 @@ ALTER TABLE ONLY priorizacion ALTER COLUMN pri_id SET DEFAULT nextval('priorizac
 --
 
 ALTER TABLE ONLY problema_identificado ALTER COLUMN pro_ide_id SET DEFAULT nextval('problema_identificado_pro_ide_id_seq'::regclass);
+
+
+--
+-- Name: pro_id; Type: DEFAULT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY proceso ALTER COLUMN pro_id SET DEFAULT nextval('proceso_pro_id_seq'::regclass);
+
+
+--
+-- Name: pro_eta_id; Type: DEFAULT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY proceso_etapa ALTER COLUMN pro_eta_id SET DEFAULT nextval('proceso_etapa_pro_eta_id_seq'::regclass);
 
 
 --
@@ -2752,10 +3370,31 @@ ALTER TABLE ONLY rol ALTER COLUMN rol_id SET DEFAULT nextval('rol_rol_id_seq'::r
 
 
 --
+-- Name: seleccion_comite_id; Type: DEFAULT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY seleccion_comite ALTER COLUMN seleccion_comite_id SET DEFAULT nextval('seleccion_comite_seleccion_comite_id_seq'::regclass);
+
+
+--
+-- Name: sol_asis_id; Type: DEFAULT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY solicitud_asistencia ALTER COLUMN sol_asis_id SET DEFAULT nextval('solicitud_asistencia_sol_asis_id_seq'::regclass);
+
+
+--
 -- Name: tip_id; Type: DEFAULT; Schema: public; Owner: sispfgl
 --
 
 ALTER TABLE ONLY tipo ALTER COLUMN tip_id SET DEFAULT nextval('tipo_tip_id_seq'::regclass);
+
+
+--
+-- Name: tip_act_id; Type: DEFAULT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY tipo_actor ALTER COLUMN tip_act_id SET DEFAULT nextval('tipo_actor_tip_act_id_seq'::regclass);
 
 
 --
@@ -2815,8 +3454,8 @@ SELECT pg_catalog.setval('actividades_epi_act_id_seq', 1, true);
 --
 
 COPY acuerdo_municipal (acu_mun_id, acu_mun_fecha, acu_mun_p1, acu_mun_p2, acu_mun_observacion, pro_pep_id, acu_mun_ruta_archivo, eta_id, acu_mun_fecha_observacion, acu_mun_fecha_borrador, acu_mun_fecha_aceptacion) FROM stdin;
-13	\N	\N	\N		7	documentos/acuerdo_municipal/acuerdo_municipal13.pdf	1	\N	\N	\N
 15	\N	f	\N		7	documentos/acuerdo_municipal/acuerdo_municipal15.doc	4	2012-12-12	2012-12-05	2012-12-19
+13	\N	\N	\N		7	documentos/acuerdo_municipal/acuerdo_municipal13.pdf	1	\N	\N	\N
 \.
 
 
@@ -2825,6 +3464,21 @@ COPY acuerdo_municipal (acu_mun_id, acu_mun_fecha, acu_mun_p1, acu_mun_p2, acu_m
 --
 
 SELECT pg_catalog.setval('acuerdo_municipal_acu_mun_id_seq', 15, true);
+
+
+--
+-- Data for Name: aporte_municipal; Type: TABLE DATA; Schema: public; Owner: sispfgl
+--
+
+COPY aporte_municipal (aporte_municipal_id, aporte_estimado, fecha_aporte, observaciones, mun_id) FROM stdin;
+\.
+
+
+--
+-- Name: aporte_municipal_aporte_municipal_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
+--
+
+SELECT pg_catalog.setval('aporte_municipal_aporte_municipal_id_seq', 1, false);
 
 
 --
@@ -2881,6 +3535,21 @@ SELECT pg_catalog.setval('asociatividad_aso_id_seq', 30, true);
 
 
 --
+-- Data for Name: autor_estrategia; Type: TABLE DATA; Schema: public; Owner: sispfgl
+--
+
+COPY autor_estrategia (aut_est_id, aut_est_nombre, aut_est_fecha, aut_est_cantidadm, aut_est_cantidadh, est_com_id, tip_act_id) FROM stdin;
+\.
+
+
+--
+-- Name: autor_estrategia_aut_est_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
+--
+
+SELECT pg_catalog.setval('autor_estrategia_aut_est_id_seq', 1, true);
+
+
+--
 -- Data for Name: capacitacion; Type: TABLE DATA; Schema: public; Owner: sispfgl
 --
 
@@ -2904,9 +3573,8 @@ SELECT pg_catalog.setval('capacitacion_cap_id_seq', 67, true);
 --
 
 COPY ci_sessions (session_id, ip_address, user_agent, last_activity, user_data) FROM stdin;
-1bf4dd09771e4688d674c9045962ab6c	::1	Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.97 Safari/537.11	1357972867	a:4:{s:9:"user_data";s:0:"";s:7:"user_id";s:1:"9";s:8:"username";s:11:"cfuentes_86";s:6:"status";s:1:"1";}
-50fc387645fb70c43e094dafa3b24dca	127.0.0.1	Mozilla/5.0 (X11; Linux x86_64; rv:10.0.11) Gecko/20100101 Firefox/10.0.11 Iceweasel/10.0.11	1357971925	a:3:{s:7:"user_id";s:1:"9";s:8:"username";s:11:"cfuentes_86";s:6:"status";s:1:"1";}
-edcb337136e7399dd50eb0fd8d1fb898	127.0.0.1	Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:11.0) Gecko/20100101 Firefox/11.0	1357975964	
+f4a321a20a98a28fd6a7a42e80352ddc	127.0.0.1	Mozilla/5.0 (X11; Linux x86_64; rv:10.0.11) Gecko/20100101 Firefox/10.0.11 Iceweasel/10.0.11	1358143473	a:4:{s:9:"user_data";s:0:"";s:7:"user_id";s:2:"14";s:8:"username";s:7:"kpenate";s:6:"status";s:1:"1";}
+939814348251bf1ea9d552925c2bc947	::1	Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.97 Safari/537.11	1358144170	
 \.
 
 
@@ -2960,6 +3628,23 @@ COPY consultora (cons_id, cons_nombre, cons_direccion, cons_telefono, cons_telef
 
 
 --
+-- Data for Name: consultores_interes; Type: TABLE DATA; Schema: public; Owner: sispfgl
+--
+
+COPY consultores_interes (con_int_id, con_int_nombre, con_int_tipo, con_int_aplica, con_int_seleccionada, pro_id) FROM stdin;
+2	Consultora A	ONG	Si	\N	1
+3	Consultora B	Empresa	No	\N	1
+\.
+
+
+--
+-- Name: consultores_interes_con_int_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
+--
+
+SELECT pg_catalog.setval('consultores_interes_con_int_id_seq', 3, true);
+
+
+--
 -- Data for Name: contrapartida; Type: TABLE DATA; Schema: public; Owner: sispfgl
 --
 
@@ -2977,11 +3662,19 @@ COPY contrapartida (con_id, con_nombre) FROM stdin;
 --
 
 COPY contrapartida_acuerdo (acu_mun_id, con_id, con_acu_valor) FROM stdin;
-13	1	t
+13	1	f
 13	3	f
 13	4	f
 13	5	f
-13	2	t
+13	2	f
+\.
+
+
+--
+-- Data for Name: contrapartida_aporte; Type: TABLE DATA; Schema: public; Owner: sispfgl
+--
+
+COPY contrapartida_aporte (con_id, aporte_municipal_id, valor_hubo_aporte) FROM stdin;
 \.
 
 
@@ -3008,7 +3701,7 @@ COPY criterio (cri_id, cri_nombre) FROM stdin;
 -- Name: criterio_E0_criterio_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('"criterio_E0_criterio_id_seq"', 7, true);
+SELECT pg_catalog.setval('"criterio_E0_criterio_id_seq"', 8, true);
 
 
 --
@@ -3037,7 +3730,8 @@ SELECT pg_catalog.setval('criterio_cri_id_seq', 4, true);
 COPY criterio_e0 (criterio_id, criterio_nombre) FROM stdin;
 1	Criterio 1
 2	Criterio 2
-7	esto no funciona bien si no se pueden inngresar ma
+7	xxooxxooxxooxxooxxooxx
+8	ss
 \.
 
 
@@ -3262,22 +3956,22 @@ SELECT pg_catalog.setval('departamento_dep_id_seq', 1, false);
 --
 
 COPY detmonto_proyeccion (dmon_pro_id, dmon_pro_ingresos, dmon_pro_anio, dmon_pro_correlativo, mon_pro_id) FROM stdin;
-23	\N	2014	1	21
-24	\N	2015	2	21
-25	\N	2016	3	21
-26	\N	2017	4	21
-27	\N	2014	1	22
-28	\N	2015	2	22
-29	\N	2016	3	22
-30	\N	2017	4	22
-31	\N	2014	1	23
-32	\N	2015	2	23
-33	\N	2016	3	23
-34	\N	2017	4	23
-35	\N	2014	1	24
-36	\N	2015	2	24
-37	\N	2016	3	24
-38	\N	2017	4	24
+103	1000.00	2013	1	41
+104	1000.00	2014	2	41
+105	1000.00	2015	3	41
+106	1000.00	2016	4	41
+107	2000.00	2013	1	42
+108	2000.00	2014	2	42
+109	2000.00	2015	3	42
+110	2000.00	2016	4	42
+111	3000.00	2013	1	43
+112	3000.00	2014	2	43
+113	3000.00	2015	3	43
+114	3000.00	2016	4	43
+115	4000.00	2013	1	44
+116	4000.00	2014	2	44
+117	4000.00	2015	3	44
+118	4000.00	2016	4	44
 \.
 
 
@@ -3285,7 +3979,7 @@ COPY detmonto_proyeccion (dmon_pro_id, dmon_pro_ingresos, dmon_pro_anio, dmon_pr
 -- Name: detmonto_proyeccion_dmon_pro_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('detmonto_proyeccion_dmon_pro_id_seq', 38, true);
+SELECT pg_catalog.setval('detmonto_proyeccion_dmon_pro_id_seq', 118, true);
 
 
 --
@@ -3344,6 +4038,23 @@ COPY epi (epi_id, epi_nombre) FROM stdin;
 --
 
 SELECT pg_catalog.setval('epi_seq', 6, true);
+
+
+--
+-- Data for Name: estrategia_comunicacion; Type: TABLE DATA; Schema: public; Owner: sispfgl
+--
+
+COPY estrategia_comunicacion (est_com_id, est_com_observacion, pro_pep_id) FROM stdin;
+2	\N	7
+3	\N	7
+\.
+
+
+--
+-- Name: estrategia_inversion_est_inv_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
+--
+
+SELECT pg_catalog.setval('estrategia_inversion_est_inv_id_seq', 3, true);
 
 
 --
@@ -3594,7 +4305,7 @@ COPY login_attempts (id, ip_address, login, "time") FROM stdin;
 -- Name: login_attempts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('login_attempts_id_seq', 15, true);
+SELECT pg_catalog.setval('login_attempts_id_seq', 21, true);
 
 
 --
@@ -3602,10 +4313,10 @@ SELECT pg_catalog.setval('login_attempts_id_seq', 15, true);
 --
 
 COPY monto_proyeccion (mon_pro_id, mon_pro_nombre, mon_pro_dispo_financiera, mon_pro_ingresos, mon_pro_anio, pro_ing_id, mon_pro_idnombre) FROM stdin;
-21	FODES	\N	\N	2013	11	FODES
-22	Ingresos Propios	\N	\N	2013	11	IngresosPropios
-23	Donaciones	\N	\N	2013	11	Donaciones
-24	Créditos	\N	\N	2013	11	Creditos
+41	FODES	12000.00	2000.00	2012	16	FODES
+42	Ingresos Propios	13000.00	3000.00	2012	16	IngresosPropios
+43	Donaciones	14000.00	4000.00	2012	16	Donaciones
+44	Créditos	15000.00	5000.00	2012	16	Creditos
 \.
 
 
@@ -3613,276 +4324,276 @@ COPY monto_proyeccion (mon_pro_id, mon_pro_nombre, mon_pro_dispo_financiera, mon
 -- Name: monto_proyeccion_mon_pro_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('monto_proyeccion_mon_pro_id_seq', 24, true);
+SELECT pg_catalog.setval('monto_proyeccion_mon_pro_id_seq', 44, true);
 
 
 --
 -- Data for Name: municipio; Type: TABLE DATA; Schema: public; Owner: sispfgl
 --
 
-COPY municipio (mun_id, dep_id, mun_nombre, mun_presupuesto) FROM stdin;
-1	1	Ahuachapan	\N
-2	1	Jujutla	\N
-3	1	Atiquizaya	\N
-4	1	Concepcion de Ataco	\N
-5	1	El Refugio	\N
-6	1	Guaymango	\N
-7	1	Apaneca	\N
-8	1	San Francisco Menendez	\N
-9	1	San Lorenzo	\N
-10	1	San Pedro Puxtla	\N
-11	1	Tacuba	\N
-12	1	Turin	\N
-13	2	Cinquera	\N
-14	2	Villa Dolores	\N
-15	2	Guacotecti	\N
-16	2	Ilobasco	\N
-17	2	Jutiapa	\N
-18	2	San Isidro	\N
-19	2	Sensuntepeque	\N
-20	2	Ciudad de Tejutepeque	\N
-21	2	Victoria	\N
-22	3	Agua Caliente	\N
-23	3	Arcatao	\N
-24	3	Azacualpa	\N
-25	3	Chalatenango	\N
-26	3	Citala	\N
-27	3	Comalapa	\N
-28	3	Concepcion Quezaltepeque	\N
-29	3	Dulce Nombre de Maria	\N
-30	3	El Carrizal	\N
-31	3	El Paraiso	\N
-32	3	La Laguna	\N
-33	3	La Palma	\N
-34	3	La Reina	\N
-35	3	Las Vueltas	\N
-36	3	Nombre de Jesus	\N
-37	3	Nueva Concepcion	\N
-38	3	Nueva Trinidad	\N
-39	3	Ojos de Agua	\N
-40	3	Potonico	\N
-41	3	San Antonio de la Cruz	\N
-42	3	San Antonio Los Ranchos	\N
-43	3	San Fernando	\N
-44	3	San Francisco Lempa	\N
-45	3	San Francisco Morazan	\N
-46	3	San Ignacio	\N
-47	3	San Isidro Labrador	\N
-48	3	San Jose Cancasque	\N
-49	3	San Jose Las Flores	\N
-50	3	San Luis del Carmen	\N
-51	3	San Miguel de Mercedes	\N
-52	3	San Rafael	\N
-53	3	Santa Rita	\N
-54	3	Tejutla	\N
-55	4	Candelaria	\N
-56	4	Cojutepeque	\N
-57	4	El Carmen	\N
-58	4	El Rosario	\N
-59	4	Monte San Juan	\N
-60	4	Oratorio de Concepcion	\N
-61	4	San Bartolome Perulapia	\N
-62	4	San Cristobal	\N
-63	4	San Jose Guayabal	\N
-64	4	San Pedro Perulapan	\N
-65	4	San Rafael Cedros	\N
-66	4	San Ramon	\N
-67	4	Santa Cruz Analquito	\N
-68	4	Santa Cruz Michapa	\N
-69	4	Suchitoto	\N
-70	4	Tenancingo	\N
-71	5	Antiguo Cuscatlan	\N
-72	5	Chiltiupan	\N
-73	5	Ciudad Arce	\N
-74	5	Colon	\N
-75	5	Comasagua	\N
-76	5	Huizucar	\N
-77	5	Jayaque	\N
-78	5	Jicalapa	\N
-79	5	La Libertad	\N
-80	5	Nueva San Salvador	\N
-81	5	Nuevo Cuscatlan	\N
-82	5	Opico	\N
-83	5	Quezaltepeque	\N
-84	5	Sacacoyo	\N
-85	5	San Jose Villanueva	\N
-86	5	San Matias	\N
-87	5	San Pablo Tacachico	\N
-88	5	Talnique	\N
-89	5	Tamanique	\N
-90	5	Teotepeque	\N
-91	5	Tepecoyo	\N
-92	5	Zaragoza	\N
-93	6	Cuyultitan	\N
-94	6	El Rosario	\N
-95	6	Jerusalen	\N
-96	6	Mercedes La Ceiba	\N
-97	6	Olocuilta	\N
-98	6	Paraiso de Osorio	\N
-99	6	San Antonio Masahuat	\N
-100	6	San Emigdio	\N
-101	6	San Francisco Chinameca	\N
-102	6	San Juan Nonualco	\N
-103	6	San Juan Talpa	\N
-104	6	San Juan Tepezontes	\N
-105	6	San Luis La Herradura	\N
-106	6	San Luis Talpa	\N
-107	6	San Miguel Tepezontes	\N
-108	6	San Pedro Masahuat	\N
-109	6	San Pedro Nonualco	\N
-110	6	San Rafael Obrajuelo	\N
-111	6	Santa Maria Ostuma	\N
-112	6	Santiago Nonualco	\N
-113	6	Tapalhuaca	\N
-114	6	Zacatecoluca	\N
-115	7	Anamoros	\N
-116	7	Bolivar	\N
-117	7	Concepcion de Oriente	\N
-118	7	Conchagua	\N
-119	7	El Carmen	\N
-120	7	El Sauce	\N
-121	7	Intipuca	\N
-122	7	La Union	\N
-123	7	Lislique	\N
-124	7	Meanguera del Golfo	\N
-125	7	Nueva Esparta	\N
-126	7	Pasaquina	\N
-127	7	Poloros	\N
-128	7	San Alejo	\N
-129	7	San Jose	\N
-130	7	Santa Rosa de Lima	\N
-131	7	Yayantique	\N
-132	7	Yucuayquin	\N
-133	8	Arambala	\N
-134	8	Cacaopera	\N
-135	8	Chilanga	\N
-136	8	Corinto	\N
-137	8	Delicias de Concepcion	\N
-138	8	El Divisadero	\N
-139	8	El Rosario	\N
-140	8	Gualococti	\N
-141	8	Guatajiagua	\N
-142	8	Joateca	\N
-143	8	Jocoaitique	\N
-144	8	Jocoro	\N
-145	8	Lolotiquillo	\N
-146	8	Meanguera	\N
-147	8	Osicala	\N
-148	8	Perquin	\N
-149	8	San Carlos	\N
-150	8	San Fernando	\N
-151	8	San Francisco Gotera	\N
-152	8	San Isidro	\N
-153	8	San Simon	\N
-154	8	Sensembra	\N
-155	8	Sociedad	\N
-156	8	Torola	\N
-157	8	Yamabal	\N
-158	8	Yoloaiquin	\N
-159	9	Carolina	\N
-160	9	Chapeltique	\N
-161	9	Chinameca	\N
-162	9	Chirilagua	\N
-163	9	Ciudad Barrios	\N
-164	9	Comacaran	\N
-165	9	El Transito	\N
-166	9	Lolotique	\N
-167	9	Moncagua	\N
-168	9	Nueva Guadalupe	\N
-169	9	Nuevo Eden de San Juan	\N
-170	9	Quelepa	\N
-171	9	San Antonio	\N
-172	9	San Gerardo	\N
-173	9	San Jorge	\N
-174	9	San Luis de la Reina	\N
-175	9	San Miguel	\N
-176	9	San Rafael	\N
-177	9	Sesori	\N
-178	9	Uluazapa	\N
-179	10	Aguilares	\N
-180	10	Apopa	\N
-181	10	Ayutuxtepeque	\N
-182	10	Cuscatancingo	\N
-183	10	Delgado	\N
-184	10	El Paisnal	\N
-185	10	Guazapa	\N
-186	10	Ilopango	\N
-187	10	Mejicanos	\N
-188	10	Nejapa	\N
-189	10	Panchimalco	\N
-190	10	Rosario de Mora	\N
-191	10	San Marcos	\N
-192	10	San Martin	\N
-193	10	San Salvador	\N
-194	10	Santiago Texacuangos	\N
-195	10	Santo Tomas	\N
-196	10	Soyapango	\N
-197	10	Tonacatepeque	\N
-198	11	Apastepeque	\N
-199	11	Guadalupe	\N
-200	11	San Cayetano Istepeque	\N
-201	11	San Esteban Catarina	\N
-202	11	San Ildefonso	\N
-203	11	San Lorenzo	\N
-204	11	San Sebastian	\N
-205	11	Santa Clara	\N
-206	11	Santo Domingo	\N
-207	11	San Vicente	\N
-208	11	Tecoluca	\N
-209	11	Tepetitan	\N
-210	11	Verapaz	\N
-211	12	Candelaria de la Frontera	\N
-212	12	Chalchuapa	\N
-213	12	Coatepeque	\N
-214	12	El Congo	\N
-215	12	El Porvenir	\N
-216	12	Masahuat	\N
-217	12	Metapan	\N
-218	12	San Antonio Pajonal	\N
-219	12	San Sebastian Salitrillo	\N
-220	12	Santa Ana	\N
-221	12	Santa Rosa Guachipilin	\N
-222	12	Santiago de la Frontera	\N
-223	12	Texistepeque	\N
-224	13	Acajutla	\N
-225	13	Armenia	\N
-226	13	Caluco	\N
-227	13	Cuisnahuat	\N
-228	13	Izalco	\N
-229	13	Juayua	\N
-230	13	Nahuizalco	\N
-231	13	Nahulingo	\N
-232	13	Salcoatitan	\N
-233	13	San Antonio del Monte	\N
-234	13	San Julian	\N
-235	13	Santa Catarina Masahuat	\N
-236	13	Santa Isabel Ishuatan	\N
-237	13	Santo Domingo	\N
-238	13	Sonsonate	\N
-239	13	Sonzacate	\N
-240	14	Alegria	\N
-241	14	Berlin	\N
-242	14	California	\N
-243	14	Concepcion Batres	\N
-244	14	El Triunfo	\N
-245	14	Ereguayquin	\N
-246	14	Estanzuelas	\N
-247	14	Jiquilisco	\N
-248	14	Jucuapa	\N
-249	14	Jucuaran	\N
-250	14	Mercedes Umaña	\N
-251	14	Nueva Granada	\N
-252	14	Ozatlan	\N
-253	14	Puerto El Triunfo	\N
-254	14	San Agustin	\N
-255	14	San Buenaventura	\N
-256	14	San Dionisio	\N
-257	14	San Francisco Javier	\N
-258	14	Santa Elena	\N
-259	14	Santa Maria	\N
-260	14	Santiago de Maria	\N
-261	14	Tecapan	\N
-262	14	Usulutan	\N
+COPY municipio (mun_id, dep_id, mun_nombre, mun_presupuesto, cons_id) FROM stdin;
+1	1	Ahuachapan	\N	\N
+2	1	Jujutla	\N	\N
+3	1	Atiquizaya	\N	\N
+4	1	Concepcion de Ataco	\N	\N
+5	1	El Refugio	\N	\N
+6	1	Guaymango	\N	\N
+7	1	Apaneca	\N	\N
+8	1	San Francisco Menendez	\N	\N
+9	1	San Lorenzo	\N	\N
+10	1	San Pedro Puxtla	\N	\N
+11	1	Tacuba	\N	\N
+12	1	Turin	\N	\N
+13	2	Cinquera	\N	\N
+14	2	Villa Dolores	\N	\N
+15	2	Guacotecti	\N	\N
+16	2	Ilobasco	\N	\N
+17	2	Jutiapa	\N	\N
+18	2	San Isidro	\N	\N
+19	2	Sensuntepeque	\N	\N
+20	2	Ciudad de Tejutepeque	\N	\N
+21	2	Victoria	\N	\N
+22	3	Agua Caliente	\N	\N
+23	3	Arcatao	\N	\N
+24	3	Azacualpa	\N	\N
+25	3	Chalatenango	\N	\N
+26	3	Citala	\N	\N
+27	3	Comalapa	\N	\N
+28	3	Concepcion Quezaltepeque	\N	\N
+29	3	Dulce Nombre de Maria	\N	\N
+30	3	El Carrizal	\N	\N
+31	3	El Paraiso	\N	\N
+32	3	La Laguna	\N	\N
+33	3	La Palma	\N	\N
+34	3	La Reina	\N	\N
+35	3	Las Vueltas	\N	\N
+36	3	Nombre de Jesus	\N	\N
+37	3	Nueva Concepcion	\N	\N
+38	3	Nueva Trinidad	\N	\N
+39	3	Ojos de Agua	\N	\N
+40	3	Potonico	\N	\N
+41	3	San Antonio de la Cruz	\N	\N
+42	3	San Antonio Los Ranchos	\N	\N
+43	3	San Fernando	\N	\N
+44	3	San Francisco Lempa	\N	\N
+45	3	San Francisco Morazan	\N	\N
+46	3	San Ignacio	\N	\N
+47	3	San Isidro Labrador	\N	\N
+48	3	San Jose Cancasque	\N	\N
+49	3	San Jose Las Flores	\N	\N
+50	3	San Luis del Carmen	\N	\N
+51	3	San Miguel de Mercedes	\N	\N
+52	3	San Rafael	\N	\N
+53	3	Santa Rita	\N	\N
+54	3	Tejutla	\N	\N
+55	4	Candelaria	\N	\N
+56	4	Cojutepeque	\N	\N
+57	4	El Carmen	\N	\N
+58	4	El Rosario	\N	\N
+59	4	Monte San Juan	\N	\N
+60	4	Oratorio de Concepcion	\N	\N
+61	4	San Bartolome Perulapia	\N	\N
+62	4	San Cristobal	\N	\N
+63	4	San Jose Guayabal	\N	\N
+64	4	San Pedro Perulapan	\N	\N
+65	4	San Rafael Cedros	\N	\N
+66	4	San Ramon	\N	\N
+67	4	Santa Cruz Analquito	\N	\N
+68	4	Santa Cruz Michapa	\N	\N
+69	4	Suchitoto	\N	\N
+70	4	Tenancingo	\N	\N
+71	5	Antiguo Cuscatlan	\N	\N
+72	5	Chiltiupan	\N	\N
+73	5	Ciudad Arce	\N	\N
+74	5	Colon	\N	\N
+75	5	Comasagua	\N	\N
+76	5	Huizucar	\N	\N
+77	5	Jayaque	\N	\N
+78	5	Jicalapa	\N	\N
+79	5	La Libertad	\N	\N
+80	5	Nueva San Salvador	\N	\N
+81	5	Nuevo Cuscatlan	\N	\N
+82	5	Opico	\N	\N
+83	5	Quezaltepeque	\N	\N
+84	5	Sacacoyo	\N	\N
+85	5	San Jose Villanueva	\N	\N
+86	5	San Matias	\N	\N
+87	5	San Pablo Tacachico	\N	\N
+88	5	Talnique	\N	\N
+89	5	Tamanique	\N	\N
+90	5	Teotepeque	\N	\N
+91	5	Tepecoyo	\N	\N
+92	5	Zaragoza	\N	\N
+93	6	Cuyultitan	\N	\N
+94	6	El Rosario	\N	\N
+95	6	Jerusalen	\N	\N
+96	6	Mercedes La Ceiba	\N	\N
+97	6	Olocuilta	\N	\N
+98	6	Paraiso de Osorio	\N	\N
+99	6	San Antonio Masahuat	\N	\N
+100	6	San Emigdio	\N	\N
+101	6	San Francisco Chinameca	\N	\N
+102	6	San Juan Nonualco	\N	\N
+103	6	San Juan Talpa	\N	\N
+104	6	San Juan Tepezontes	\N	\N
+105	6	San Luis La Herradura	\N	\N
+106	6	San Luis Talpa	\N	\N
+107	6	San Miguel Tepezontes	\N	\N
+108	6	San Pedro Masahuat	\N	\N
+109	6	San Pedro Nonualco	\N	\N
+110	6	San Rafael Obrajuelo	\N	\N
+111	6	Santa Maria Ostuma	\N	\N
+112	6	Santiago Nonualco	\N	\N
+113	6	Tapalhuaca	\N	\N
+114	6	Zacatecoluca	\N	\N
+115	7	Anamoros	\N	\N
+116	7	Bolivar	\N	\N
+117	7	Concepcion de Oriente	\N	\N
+118	7	Conchagua	\N	\N
+119	7	El Carmen	\N	\N
+120	7	El Sauce	\N	\N
+121	7	Intipuca	\N	\N
+122	7	La Union	\N	\N
+123	7	Lislique	\N	\N
+124	7	Meanguera del Golfo	\N	\N
+125	7	Nueva Esparta	\N	\N
+126	7	Pasaquina	\N	\N
+127	7	Poloros	\N	\N
+128	7	San Alejo	\N	\N
+129	7	San Jose	\N	\N
+130	7	Santa Rosa de Lima	\N	\N
+131	7	Yayantique	\N	\N
+132	7	Yucuayquin	\N	\N
+133	8	Arambala	\N	\N
+134	8	Cacaopera	\N	\N
+135	8	Chilanga	\N	\N
+136	8	Corinto	\N	\N
+137	8	Delicias de Concepcion	\N	\N
+138	8	El Divisadero	\N	\N
+139	8	El Rosario	\N	\N
+140	8	Gualococti	\N	\N
+141	8	Guatajiagua	\N	\N
+142	8	Joateca	\N	\N
+143	8	Jocoaitique	\N	\N
+144	8	Jocoro	\N	\N
+145	8	Lolotiquillo	\N	\N
+146	8	Meanguera	\N	\N
+147	8	Osicala	\N	\N
+148	8	Perquin	\N	\N
+149	8	San Carlos	\N	\N
+150	8	San Fernando	\N	\N
+151	8	San Francisco Gotera	\N	\N
+152	8	San Isidro	\N	\N
+153	8	San Simon	\N	\N
+154	8	Sensembra	\N	\N
+155	8	Sociedad	\N	\N
+156	8	Torola	\N	\N
+157	8	Yamabal	\N	\N
+158	8	Yoloaiquin	\N	\N
+159	9	Carolina	\N	\N
+160	9	Chapeltique	\N	\N
+161	9	Chinameca	\N	\N
+162	9	Chirilagua	\N	\N
+163	9	Ciudad Barrios	\N	\N
+164	9	Comacaran	\N	\N
+165	9	El Transito	\N	\N
+166	9	Lolotique	\N	\N
+167	9	Moncagua	\N	\N
+168	9	Nueva Guadalupe	\N	\N
+169	9	Nuevo Eden de San Juan	\N	\N
+170	9	Quelepa	\N	\N
+171	9	San Antonio	\N	\N
+172	9	San Gerardo	\N	\N
+173	9	San Jorge	\N	\N
+174	9	San Luis de la Reina	\N	\N
+175	9	San Miguel	\N	\N
+176	9	San Rafael	\N	\N
+177	9	Sesori	\N	\N
+178	9	Uluazapa	\N	\N
+179	10	Aguilares	\N	\N
+180	10	Apopa	\N	\N
+181	10	Ayutuxtepeque	\N	\N
+182	10	Cuscatancingo	\N	\N
+183	10	Delgado	\N	\N
+184	10	El Paisnal	\N	\N
+185	10	Guazapa	\N	\N
+186	10	Ilopango	\N	\N
+187	10	Mejicanos	\N	\N
+188	10	Nejapa	\N	\N
+189	10	Panchimalco	\N	\N
+190	10	Rosario de Mora	\N	\N
+191	10	San Marcos	\N	\N
+192	10	San Martin	\N	\N
+193	10	San Salvador	\N	\N
+194	10	Santiago Texacuangos	\N	\N
+195	10	Santo Tomas	\N	\N
+196	10	Soyapango	\N	\N
+197	10	Tonacatepeque	\N	\N
+198	11	Apastepeque	\N	\N
+199	11	Guadalupe	\N	\N
+200	11	San Cayetano Istepeque	\N	\N
+201	11	San Esteban Catarina	\N	\N
+202	11	San Ildefonso	\N	\N
+203	11	San Lorenzo	\N	\N
+204	11	San Sebastian	\N	\N
+205	11	Santa Clara	\N	\N
+206	11	Santo Domingo	\N	\N
+207	11	San Vicente	\N	\N
+208	11	Tecoluca	\N	\N
+209	11	Tepetitan	\N	\N
+210	11	Verapaz	\N	\N
+211	12	Candelaria de la Frontera	\N	\N
+212	12	Chalchuapa	\N	\N
+213	12	Coatepeque	\N	\N
+214	12	El Congo	\N	\N
+215	12	El Porvenir	\N	\N
+216	12	Masahuat	\N	\N
+217	12	Metapan	\N	\N
+218	12	San Antonio Pajonal	\N	\N
+219	12	San Sebastian Salitrillo	\N	\N
+220	12	Santa Ana	\N	\N
+221	12	Santa Rosa Guachipilin	\N	\N
+222	12	Santiago de la Frontera	\N	\N
+223	12	Texistepeque	\N	\N
+224	13	Acajutla	\N	\N
+225	13	Armenia	\N	\N
+226	13	Caluco	\N	\N
+227	13	Cuisnahuat	\N	\N
+228	13	Izalco	\N	\N
+229	13	Juayua	\N	\N
+230	13	Nahuizalco	\N	\N
+231	13	Nahulingo	\N	\N
+232	13	Salcoatitan	\N	\N
+233	13	San Antonio del Monte	\N	\N
+234	13	San Julian	\N	\N
+235	13	Santa Catarina Masahuat	\N	\N
+236	13	Santa Isabel Ishuatan	\N	\N
+237	13	Santo Domingo	\N	\N
+238	13	Sonsonate	\N	\N
+239	13	Sonzacate	\N	\N
+240	14	Alegria	\N	\N
+241	14	Berlin	\N	\N
+242	14	California	\N	\N
+243	14	Concepcion Batres	\N	\N
+244	14	El Triunfo	\N	\N
+245	14	Ereguayquin	\N	\N
+246	14	Estanzuelas	\N	\N
+247	14	Jiquilisco	\N	\N
+248	14	Jucuapa	\N	\N
+249	14	Jucuaran	\N	\N
+250	14	Mercedes Umaña	\N	\N
+251	14	Nueva Granada	\N	\N
+252	14	Ozatlan	\N	\N
+253	14	Puerto El Triunfo	\N	\N
+254	14	San Agustin	\N	\N
+255	14	San Buenaventura	\N	\N
+256	14	San Dionisio	\N	\N
+257	14	San Francisco Javier	\N	\N
+258	14	Santa Elena	\N	\N
+259	14	Santa Maria	\N	\N
+260	14	Santiago de Maria	\N	\N
+261	14	Tecapan	\N	\N
+262	14	Usulutan	\N	\N
 \.
 
 
@@ -3899,6 +4610,41 @@ COPY municipio_componente (com_id, mun_id, mun_com_asignacion) FROM stdin;
 --
 
 SELECT pg_catalog.setval('municipio_mun_id_seq', 1, false);
+
+
+--
+-- Data for Name: nombre_fecha_aprobacion; Type: TABLE DATA; Schema: public; Owner: sispfgl
+--
+
+COPY nombre_fecha_aprobacion (nom_fec_apr_id, nom_fec_apro_nombre) FROM stdin;
+1	Fecha de entrega de productos
+2	Fecha de observaciones para ETS
+3	Fecha de observaciones superadas para consultora
+4	Fecha de visto bueno para ETS
+5	Fecha de acta de recepción
+\.
+
+
+--
+-- Name: nombre_fecha_aprobacion_nom_fec_apr_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
+--
+
+SELECT pg_catalog.setval('nombre_fecha_aprobacion_nom_fec_apr_id_seq', 5, true);
+
+
+--
+-- Data for Name: nombrefecha_procesoetapa; Type: TABLE DATA; Schema: public; Owner: sispfgl
+--
+
+COPY nombrefecha_procesoetapa (nom_pro_valor, pro_eta_id, nom_fec_apro_id, nom_pro_id) FROM stdin;
+\.
+
+
+--
+-- Name: nombrefecha_procesoetapa_nom_pro_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
+--
+
+SELECT pg_catalog.setval('nombrefecha_procesoetapa_nom_pro_id_seq', 1, false);
 
 
 --
@@ -3951,6 +4697,11 @@ COPY opcion_sistema (opc_sis_id, opc_sis_nombre, opc_sis_url, opc_opc_sis_id, op
 49	Divulgacion	componente3/componente3/divu	45	\N
 50	Documentos de Descentralizacion	componente3/componente3/docs_desc	45	\N
 51	Proyecciones	componente2/comp23_E3/mostrarProyeccionIngresos	37	3
+52	Plan Inversión	componente2/comp23_E3/planInversion	37	4
+53	Estrategia Comunicación	componente2/comp23_E3/estrategiaComunicacion	37	5
+54	Proceso Administrativo PEP	componente2/procesoAdministrativo	\N	1
+55	Adquisición y Contratación	componente2/procesoAdministrativo/adquisicionContrataciones	54	1
+56	Evaluación	componente2/procesoAdministrativo/evaluacionExpresionInteres	54	2
 \.
 
 
@@ -3958,7 +4709,7 @@ COPY opcion_sistema (opc_sis_id, opc_sis_nombre, opc_sis_url, opc_opc_sis_id, op
 -- Name: opcion_sistema_opc_sis_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('opcion_sistema_opc_sis_id_seq', 51, true);
+SELECT pg_catalog.setval('opcion_sistema_opc_sis_id_seq', 56, true);
 
 
 --
@@ -3989,10 +4740,10 @@ COPY participante_capacitacion (par_id, cap_id, par_cap_participa) FROM stdin;
 46	46	Si
 50	46	Si
 46	45	Si
-1	20	No
 2	20	Si
 58	60	Si
 57	60	Si
+1	20	Si
 \.
 
 
@@ -4065,10 +4816,56 @@ SELECT pg_catalog.setval('personal_enlace_per_enl_id_seq', 1, false);
 
 
 --
+-- Data for Name: pestania_proceso; Type: TABLE DATA; Schema: public; Owner: sispfgl
+--
+
+COPY pestania_proceso (pes_pro_id, pes_pro_nombre) FROM stdin;
+\.
+
+
+--
+-- Name: pestania_proceso_pes_pro_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
+--
+
+SELECT pg_catalog.setval('pestania_proceso_pes_pro_id_seq', 1, false);
+
+
+--
+-- Data for Name: plan_inversion; Type: TABLE DATA; Schema: public; Owner: sispfgl
+--
+
+COPY plan_inversion (pla_inv_id, pla_inv_observacion, pro_pep_id) FROM stdin;
+2	\N	7
+\.
+
+
+--
+-- Name: plan_inversion_pla_inv_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
+--
+
+SELECT pg_catalog.setval('plan_inversion_pla_inv_id_seq', 2, true);
+
+
+--
+-- Data for Name: plan_trabajo; Type: TABLE DATA; Schema: public; Owner: sispfgl
+--
+
+COPY plan_trabajo (plan_trab_id, forden_inicio, fentrega_plan, frecepcion_obs, fsuperacion_obs, fvisto_bueno, fpresentacion_con_mun, frecepcion_pro_fin, acta_mun_firmada, acta_isdem_firmada, acta_uep_firmada, mun_id, pla_tra_ruta_archivo, observaciones) FROM stdin;
+\.
+
+
+--
+-- Name: plan_trabajo_plan_trab_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
+--
+
+SELECT pg_catalog.setval('plan_trabajo_plan_trab_id_seq', 1, false);
+
+
+--
 -- Name: poblacion_pro_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('poblacion_pro_id_seq', 23, true);
+SELECT pg_catalog.setval('poblacion_pro_id_seq', 24, true);
 
 
 --
@@ -4084,8 +4881,9 @@ COPY poblacion_reunion (pob_id, pob_comunidad, pob_sector, pob_institucion, reu_
 -- Data for Name: portafolio_proyecto; Type: TABLE DATA; Schema: public; Owner: sispfgl
 --
 
-COPY portafolio_proyecto (por_pro_id, por_pro_area, por_pro_tema, por_pro_nombre, por_pro_descripcion, por_pro_ubicacion, por_pro_costo_estimado, por_pro_fecha_desde, por_pro_fecha_hasta, por_pro_beneficiario_h, por_pro_beneficiario_m, por_pro_observacion, por_pro_ruta_archivo, pro_pep_id) FROM stdin;
-62	Para cambiar	dfafd	fadfd	fdafd	fdafd	14526.05	2013-01-01	2013-01-31	1475962	1479632	fadfdf	documentos/portafolio_proyecto/portafolio_proyecto62.doc	7
+COPY portafolio_proyecto (por_pro_id, por_pro_area, por_pro_tema, por_pro_nombre, por_pro_descripcion, por_pro_ubicacion, por_pro_costo_estimado, por_pro_fecha_desde, por_pro_fecha_hasta, por_pro_beneficiario_h, por_pro_beneficiario_m, por_pro_observacion, por_pro_ruta_archivo, pro_pep_id, por_pro_anio1, por_pro_anio2, por_pro_anio3, por_pro_anio4, por_pro_anio5) FROM stdin;
+62	Para cambiar	Para analizar1	Proyecto 1	Es un proyecto de Prueba	Col. Las Palmas	14526.05	2013-01-01	2013-01-31	1475962	1479632	fadfdf	documentos/portafolio_proyecto/portafolio_proyecto62.doc	7	9000.00	100.00	150.00	200.00	300.00
+72	Area 2	Tema 2	Proyecto 2	Para proyecto 2	Col. Las Margaritas	1236.00	2013-01-01	2013-04-20	145696	145963		documentos/portafolio_proyecto/portafolio_proyecto72.pdf	7	2000.00	200.00	250.00	400.00	500.00
 \.
 
 
@@ -4093,7 +4891,7 @@ COPY portafolio_proyecto (por_pro_id, por_pro_area, por_pro_tema, por_pro_nombre
 -- Name: portafolio_proyecto_por_pro_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('portafolio_proyecto_por_pro_id_seq', 69, true);
+SELECT pg_catalog.setval('portafolio_proyecto_por_pro_id_seq', 72, true);
 
 
 --
@@ -4144,11 +4942,42 @@ SELECT pg_catalog.setval('problema_identificado_pro_ide_id_seq', 17, true);
 
 
 --
+-- Data for Name: proceso; Type: TABLE DATA; Schema: public; Owner: sispfgl
+--
+
+COPY proceso (pro_id, pro_numero, pro_fpublicacion, pro_faclara_dudas, pro_fexpresion_interes, pro_observacion1, pro_pub_ruta_archivo, pro_exp_ruta_archivo, pro_finicio, pro_ffinalizacion, pro_fenvio_informacion, pro_flimite_recepcion, pro_fsolicitud, pro_frecepcion, pro_fcierre_negociacion, pro_ffirma_contrato, pro_observacion2, mun_id) FROM stdin;
+1	123456	2013-01-01	2013-01-08	2013-01-22		documentos/proceso/proceso1_pub.pdf	documentos/proceso/proceso1_exp.pdf	2013-01-15	2013-01-30	\N	\N	\N	\N	\N	\N	\N	193
+\.
+
+
+--
+-- Data for Name: proceso_etapa; Type: TABLE DATA; Schema: public; Owner: sispfgl
+--
+
+COPY proceso_etapa (pro_eta_id, pro_eta_observacion, pes_pro_id, mun_id) FROM stdin;
+\.
+
+
+--
+-- Name: proceso_etapa_pro_eta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
+--
+
+SELECT pg_catalog.setval('proceso_etapa_pro_eta_id_seq', 1, false);
+
+
+--
+-- Name: proceso_pro_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
+--
+
+SELECT pg_catalog.setval('proceso_pro_id_seq', 5, true);
+
+
+--
 -- Data for Name: proyeccion_ingreso; Type: TABLE DATA; Schema: public; Owner: sispfgl
 --
 
 COPY proyeccion_ingreso (pro_ing_id, pro_ing_observacion, pro_pep_id) FROM stdin;
-11	\N	7
+16	\N	7
 \.
 
 
@@ -4156,7 +4985,7 @@ COPY proyeccion_ingreso (pro_ing_id, pro_ing_observacion, pro_pep_id) FROM stdin
 -- Name: proyeccion_ingreso_pro_ing_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('proyeccion_ingreso_pro_ing_id_seq', 11, true);
+SELECT pg_catalog.setval('proyeccion_ingreso_pro_ing_id_seq', 16, true);
 
 
 --
@@ -4194,9 +5023,9 @@ SELECT pg_catalog.setval('proyecto_identificado_pro_ide_id_seq', 2, true);
 -- Data for Name: proyecto_pep; Type: TABLE DATA; Schema: public; Owner: sispfgl
 --
 
-COPY proyecto_pep (pro_pep_id, pro_pep_nombre, mun_id, inf_pre_id, inv_inf_id, gru_apo_id, con_id, gru_ges_id, def_id, pri_id, dia_id, pro_pep_firmacm, pro_pep_firmais, pro_pep_firmaue, pro_pep_fecha_borrador, pro_pep_fecha_observacion, pro_pep_fecha_aprobacion, pro_pep_ruta_archivo, pro_pep_observacion, int_ins_id, pro_ing_id) FROM stdin;
-1	Proyecto de Arreglo de Acera en la colonia Atlacatl	193	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
-7	Proyecto de arreglo de una calle empedrada	192	4	2	1	7	1	4	2	1	t	t	\N	2012-12-04	2012-12-12	2012-12-19	documentos/proyecto_pep/proyecto_pep7.docx		2	11
+COPY proyecto_pep (pro_pep_id, pro_pep_nombre, mun_id, inf_pre_id, inv_inf_id, gru_apo_id, con_id, gru_ges_id, def_id, pri_id, dia_id, pro_pep_firmacm, pro_pep_firmais, pro_pep_firmaue, pro_pep_fecha_borrador, pro_pep_fecha_observacion, pro_pep_fecha_aprobacion, pro_pep_ruta_archivo, pro_pep_observacion, int_ins_id, pro_ing_id, pla_inv_id, est_com_id) FROM stdin;
+1	Proyecto de Arreglo de Acera en la colonia Atlacatl	193	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+7	Proyecto de arreglo de una calle empedrada	192	4	2	1	7	1	4	2	1	t	t	\N	2012-12-04	2012-12-12	2012-12-19	documentos/proyecto_pep/proyecto_pep7.docx		2	16	2	\N
 \.
 
 
@@ -4394,7 +5223,7 @@ COPY reunion (reu_id, eta_id, reu_numero, reu_fecha, reu_duracion_horas, reu_tem
 -- Name: reunion_reu_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('reunion_reu_id_seq', 227, true);
+SELECT pg_catalog.setval('reunion_reu_id_seq', 228, true);
 
 
 --
@@ -4405,6 +5234,7 @@ COPY rol (rol_id, rol_nombre, rol_descripcion) FROM stdin;
 3	consultor	Este rol representa al consultor
 1	administrador	Este rol representa al administrador del sistema
 30	subsecretaria	Rol para la subsecretaria de desarrollo territorial.
+31	uep	Rol para la Unidad Ejecutora del proyecto
 \.
 
 
@@ -4453,6 +5283,11 @@ COPY rol_opcion_sistema (rol_id, opc_sis_id) FROM stdin;
 30	49
 30	50
 3	51
+3	52
+3	53
+31	55
+31	54
+31	56
 \.
 
 
@@ -4460,7 +5295,7 @@ COPY rol_opcion_sistema (rol_id, opc_sis_id) FROM stdin;
 -- Name: rol_rol_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('rol_rol_id_seq', 30, true);
+SELECT pg_catalog.setval('rol_rol_id_seq', 31, true);
 
 
 --
@@ -4478,6 +5313,36 @@ COPY sector (sec_id, sec_nombre) FROM stdin;
 
 
 --
+-- Data for Name: seleccion_comite; Type: TABLE DATA; Schema: public; Owner: sispfgl
+--
+
+COPY seleccion_comite (seleccion_comite_id, fecha_sel_mun, fecha_verificacion, seleccionado, sel_com_ruta_archivo, observacion, sol_asis_id) FROM stdin;
+\.
+
+
+--
+-- Name: seleccion_comite_seleccion_comite_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
+--
+
+SELECT pg_catalog.setval('seleccion_comite_seleccion_comite_id_seq', 1, false);
+
+
+--
+-- Data for Name: solicitud_asistencia; Type: TABLE DATA; Schema: public; Owner: sispfgl
+--
+
+COPY solicitud_asistencia (sol_asis_id, nombre_solicitante, cargo, telefono, pla_tra_ruta_archivo, mun_id, c1, c2, seleccion_comite_id) FROM stdin;
+\.
+
+
+--
+-- Name: solicitud_asistencia_sol_asis_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
+--
+
+SELECT pg_catalog.setval('solicitud_asistencia_sol_asis_id_seq', 1, false);
+
+
+--
 -- Data for Name: tipo; Type: TABLE DATA; Schema: public; Owner: sispfgl
 --
 
@@ -4486,6 +5351,28 @@ COPY tipo (tip_id, tip_nombre) FROM stdin;
 3	Microregion
 1	Asociación
 \.
+
+
+--
+-- Data for Name: tipo_actor; Type: TABLE DATA; Schema: public; Owner: sispfgl
+--
+
+COPY tipo_actor (tip_act_id, tip_act_nombre) FROM stdin;
+1	Concejo Municipal
+2	Funcionarios y empleados municipales
+3	Instituciones públicas presentes en el municipio
+4	Instituciones privadas
+5	Organizaciones no gubernamentales
+6	Líderes locales
+7	Sectores organizados
+\.
+
+
+--
+-- Name: tipo_actor_tip_act_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
+--
+
+SELECT pg_catalog.setval('tipo_actor_tip_act_id_seq', 7, true);
 
 
 --
@@ -4513,6 +5400,7 @@ COPY user_profiles (id, user_id, country, website) FROM stdin;
 5	9	\N	\N
 6	12	\N	\N
 7	13	\N	\N
+8	14	\N	\N
 \.
 
 
@@ -4520,7 +5408,7 @@ COPY user_profiles (id, user_id, country, website) FROM stdin;
 -- Name: user_profiles_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('user_profiles_id_seq', 7, true);
+SELECT pg_catalog.setval('user_profiles_id_seq', 8, true);
 
 
 --
@@ -4528,10 +5416,10 @@ SELECT pg_catalog.setval('user_profiles_id_seq', 7, true);
 --
 
 COPY users (id, username, password, email, activated, banned, ban_reason, new_password_key, new_password_requested, new_email, new_email_key, last_ip, last_login, created, modified, rol_id) FROM stdin;
-12	kpenate	$2a$08$mdi/rPkxCvgIX9g8Fa6qNONUM8DkkPs.NhmvQKYJF0cHg3eIc5Klu	kpenate@salud.gob.sv	1	0	\N	\N	\N	\N	\N	127.0.0.1	2013-01-05	2013-01-05	\N	3
-1	admin	$2a$08$orzZRVsYd7hePXoZ7s61De5ecu2TD9OIZMqYpA6jvHv44eH8qp31W	karensita_2410@hotmail.com	1	0	\N	\N	\N	\N	\N	127.0.0.1	2013-01-09	2012-08-19	\N	1
+1	admin	$2a$08$orzZRVsYd7hePXoZ7s61De5ecu2TD9OIZMqYpA6jvHv44eH8qp31W	karensita_2410@hotmail.com	1	0	\N	\N	\N	\N	\N	127.0.0.1	2013-01-13	2012-08-19	\N	1
+14	kpenate	$2a$08$xaEcqXMfRlC76rwrP6zus.j/PvgZ13mFhGGO39EFstPyaODtwpskC	kpenate@salud.gob.sv	1	0	\N	\N	\N	\N	\N	127.0.0.1	2013-01-13	2013-01-13	\N	31
+9	cfuentes_86	$2a$08$E8ttuLm0U2cD5lHo8/bzxuPeOJw/8/8nXH912APeL12wCUl4hNbNO	cfuentes_86@hotmail.com	1	0	\N	\N	\N	\N	\N	::1	2013-01-14	2012-09-12	\N	3
 13	aaron	$2a$08$jRJBfFknSld2/iE2RO.Vb.tQ.rWFSWGKwHbsMzWp0FXDEX2wQHZ5q	carlos.aaromero@gmail.com	1	0	\N	\N	\N	\N	\N	127.0.0.1	2013-01-11	2013-01-05	\N	30
-9	cfuentes_86	$2a$08$E8ttuLm0U2cD5lHo8/bzxuPeOJw/8/8nXH912APeL12wCUl4hNbNO	cfuentes_86@hotmail.com	1	0	\N	\N	\N	\N	\N	::1	2013-01-11	2012-09-12	\N	3
 \.
 
 
@@ -4539,7 +5427,7 @@ COPY users (id, username, password, email, activated, banned, ban_reason, new_pa
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('users_id_seq', 13, true);
+SELECT pg_catalog.setval('users_id_seq', 14, true);
 
 
 --
@@ -4583,6 +5471,14 @@ ALTER TABLE ONLY acuerdo_municipal
 
 
 --
+-- Name: pk_aporte_municipal_id; Type: CONSTRAINT; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY aporte_municipal
+    ADD CONSTRAINT pk_aporte_municipal_id PRIMARY KEY (aporte_municipal_id);
+
+
+--
 -- Name: pk_are_dim_id; Type: CONSTRAINT; Schema: public; Owner: sispfgl; Tablespace: 
 --
 
@@ -4596,6 +5492,14 @@ ALTER TABLE ONLY area_dimension
 
 ALTER TABLE ONLY asociatividad
     ADD CONSTRAINT pk_aso_id PRIMARY KEY (aso_id);
+
+
+--
+-- Name: pk_aut_est_id; Type: CONSTRAINT; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY autor_estrategia
+    ADD CONSTRAINT pk_aut_est_id PRIMARY KEY (aut_est_id);
 
 
 --
@@ -4631,6 +5535,14 @@ ALTER TABLE ONLY contrapartida_acuerdo
 
 
 --
+-- Name: pk_con_int_id; Type: CONSTRAINT; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY consultores_interes
+    ADD CONSTRAINT pk_con_int_id PRIMARY KEY (con_int_id);
+
+
+--
 -- Name: pk_cons_id; Type: CONSTRAINT; Schema: public; Owner: sispfgl; Tablespace: 
 --
 
@@ -4644,6 +5556,14 @@ ALTER TABLE ONLY consultora
 
 ALTER TABLE ONLY contrapartida
     ADD CONSTRAINT pk_contrapartida PRIMARY KEY (con_id);
+
+
+--
+-- Name: pk_contrapartida_id_con_id; Type: CONSTRAINT; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY contrapartida_aporte
+    ADD CONSTRAINT pk_contrapartida_id_con_id PRIMARY KEY (con_id, aporte_municipal_id);
 
 
 --
@@ -4772,6 +5692,14 @@ ALTER TABLE ONLY dsat
 
 ALTER TABLE ONLY epi
     ADD CONSTRAINT pk_epi PRIMARY KEY (epi_id);
+
+
+--
+-- Name: pk_est_comu_id; Type: CONSTRAINT; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY estrategia_comunicacion
+    ADD CONSTRAINT pk_est_comu_id PRIMARY KEY (est_com_id);
 
 
 --
@@ -4919,6 +5847,22 @@ ALTER TABLE ONLY municipio
 
 
 --
+-- Name: pk_nom_fec_apro; Type: CONSTRAINT; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY nombre_fecha_aprobacion
+    ADD CONSTRAINT pk_nom_fec_apro PRIMARY KEY (nom_fec_apr_id);
+
+
+--
+-- Name: pk_nom_pro_id; Type: CONSTRAINT; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY nombrefecha_procesoetapa
+    ADD CONSTRAINT pk_nom_pro_id PRIMARY KEY (nom_pro_id);
+
+
+--
 -- Name: pk_opc_sis_id; Type: CONSTRAINT; Schema: public; Owner: sispfgl; Tablespace: 
 --
 
@@ -4983,6 +5927,30 @@ ALTER TABLE ONLY personal_enlace
 
 
 --
+-- Name: pk_pes_pro_id; Type: CONSTRAINT; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY pestania_proceso
+    ADD CONSTRAINT pk_pes_pro_id PRIMARY KEY (pes_pro_id);
+
+
+--
+-- Name: pk_pla_inv_id; Type: CONSTRAINT; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY plan_inversion
+    ADD CONSTRAINT pk_pla_inv_id PRIMARY KEY (pla_inv_id);
+
+
+--
+-- Name: pk_plan_trab; Type: CONSTRAINT; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY plan_trabajo
+    ADD CONSTRAINT pk_plan_trab PRIMARY KEY (plan_trab_id);
+
+
+--
 -- Name: pk_por_pro_id; Type: CONSTRAINT; Schema: public; Owner: sispfgl; Tablespace: 
 --
 
@@ -5004,6 +5972,14 @@ ALTER TABLE ONLY presupuesto
 
 ALTER TABLE ONLY priorizacion
     ADD CONSTRAINT pk_pri_id PRIMARY KEY (pri_id);
+
+
+--
+-- Name: pk_pro_eta_id; Type: CONSTRAINT; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY proceso_etapa
+    ADD CONSTRAINT pk_pro_eta_id PRIMARY KEY (pro_eta_id);
 
 
 --
@@ -5044,6 +6020,14 @@ ALTER TABLE ONLY proyecto_pep
 
 ALTER TABLE ONLY cumplimiento_proyecto
     ADD CONSTRAINT pk_pro_pep_id_cum_min_id PRIMARY KEY (pro_pep_id, cum_min_id);
+
+
+--
+-- Name: pk_proceso_id; Type: CONSTRAINT; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY proceso
+    ADD CONSTRAINT pk_proceso_id PRIMARY KEY (pro_id);
 
 
 --
@@ -5108,6 +6092,30 @@ ALTER TABLE ONLY rol
 
 ALTER TABLE ONLY sector
     ADD CONSTRAINT pk_sector PRIMARY KEY (sec_id);
+
+
+--
+-- Name: pk_seleccion_comite_id; Type: CONSTRAINT; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY seleccion_comite
+    ADD CONSTRAINT pk_seleccion_comite_id PRIMARY KEY (seleccion_comite_id);
+
+
+--
+-- Name: pk_sol_asis_id; Type: CONSTRAINT; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY solicitud_asistencia
+    ADD CONSTRAINT pk_sol_asis_id PRIMARY KEY (sol_asis_id);
+
+
+--
+-- Name: pk_tip_act_id; Type: CONSTRAINT; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY tipo_actor
+    ADD CONSTRAINT pk_tip_act_id PRIMARY KEY (tip_act_id);
 
 
 --
@@ -5245,6 +6253,14 @@ ALTER TABLE ONLY participante
 
 
 --
+-- Name: fk_aporte_muni_mun_id; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY aporte_municipal
+    ADD CONSTRAINT fk_aporte_muni_mun_id FOREIGN KEY (mun_id) REFERENCES municipio(mun_id);
+
+
+--
 -- Name: fk_area_dimension_problema_identificado; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
 --
 
@@ -5322,6 +6338,22 @@ ALTER TABLE ONLY proyecto_pep
 
 ALTER TABLE ONLY consultor
     ADD CONSTRAINT fk_consultora_consultor FOREIGN KEY (cons_id) REFERENCES consultora(cons_id);
+
+
+--
+-- Name: fk_cont_aport_contrapartida; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY contrapartida_aporte
+    ADD CONSTRAINT fk_cont_aport_contrapartida FOREIGN KEY (con_id) REFERENCES contrapartida(con_id);
+
+
+--
+-- Name: fk_contra_aporte_aporte_mun; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY contrapartida_aporte
+    ADD CONSTRAINT fk_contra_aporte_aporte_mun FOREIGN KEY (aporte_municipal_id) REFERENCES aporte_municipal(aporte_municipal_id);
 
 
 --
@@ -5509,6 +6541,22 @@ ALTER TABLE ONLY dsat_sector
 
 
 --
+-- Name: fk_estrategia_comunicacion_actor_estrategia; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY autor_estrategia
+    ADD CONSTRAINT fk_estrategia_comunicacion_actor_estrategia FOREIGN KEY (est_com_id) REFERENCES estrategia_comunicacion(est_com_id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: fk_estrategia_comunicacion_proyecto_pep; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY proyecto_pep
+    ADD CONSTRAINT fk_estrategia_comunicacion_proyecto_pep FOREIGN KEY (est_com_id) REFERENCES estrategia_comunicacion(est_com_id);
+
+
+--
 -- Name: fk_etapa_capacitacion; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
 --
 
@@ -5645,6 +6693,30 @@ ALTER TABLE ONLY municipio
 
 
 --
+-- Name: fk_municipio_consultora; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY municipio
+    ADD CONSTRAINT fk_municipio_consultora FOREIGN KEY (cons_id) REFERENCES consultora(cons_id);
+
+
+--
+-- Name: fk_municipio_proceso; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY proceso
+    ADD CONSTRAINT fk_municipio_proceso FOREIGN KEY (mun_id) REFERENCES municipio(mun_id);
+
+
+--
+-- Name: fk_municipio_proceso_etapa; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY proceso_etapa
+    ADD CONSTRAINT fk_municipio_proceso_etapa FOREIGN KEY (mun_id) REFERENCES municipio(mun_id);
+
+
+--
 -- Name: fk_municipio_proyecto_pep; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
 --
 
@@ -5749,6 +6821,30 @@ ALTER TABLE ONLY personal_enlace
 
 
 --
+-- Name: fk_pestania_proceso_etapa; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY proceso_etapa
+    ADD CONSTRAINT fk_pestania_proceso_etapa FOREIGN KEY (pes_pro_id) REFERENCES pestania_proceso(pes_pro_id);
+
+
+--
+-- Name: fk_plan_inversion_proyecto_pep; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY proyecto_pep
+    ADD CONSTRAINT fk_plan_inversion_proyecto_pep FOREIGN KEY (pla_inv_id) REFERENCES plan_inversion(pla_inv_id);
+
+
+--
+-- Name: fk_plan_trabajo_municipio; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY plan_trabajo
+    ADD CONSTRAINT fk_plan_trabajo_municipio FOREIGN KEY (mun_id) REFERENCES municipio(mun_id);
+
+
+--
 -- Name: fk_por_pro_id; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
 --
 
@@ -5778,6 +6874,22 @@ ALTER TABLE ONLY proyecto_pep
 
 ALTER TABLE ONLY proyecto_identificado
     ADD CONSTRAINT fk_priorizacion_proyectos_identificados FOREIGN KEY (pri_id) REFERENCES priorizacion(pri_id);
+
+
+--
+-- Name: fk_proceso_consultora_interes; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY consultores_interes
+    ADD CONSTRAINT fk_proceso_consultora_interes FOREIGN KEY (pro_id) REFERENCES proceso(pro_id);
+
+
+--
+-- Name: fk_proceso_etapa_detalle; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY nombrefecha_procesoetapa
+    ADD CONSTRAINT fk_proceso_etapa_detalle FOREIGN KEY (pro_eta_id) REFERENCES proceso_etapa(pro_eta_id);
 
 
 --
@@ -5853,6 +6965,14 @@ ALTER TABLE ONLY diagnostico
 
 
 --
+-- Name: fk_proyecto_pep_estrategia_inversion; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY estrategia_comunicacion
+    ADD CONSTRAINT fk_proyecto_pep_estrategia_inversion FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id);
+
+
+--
 -- Name: fk_proyecto_pep_grupo_apoyo; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
 --
 
@@ -5890,6 +7010,14 @@ ALTER TABLE ONLY informe_preliminar
 
 ALTER TABLE ONLY integracion_instancia
     ADD CONSTRAINT fk_proyecto_pep_integracion_instancia FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id);
+
+
+--
+-- Name: fk_proyecto_pep_plan_inversion; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY plan_inversion
+    ADD CONSTRAINT fk_proyecto_pep_plan_inversion FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id);
 
 
 --
@@ -5997,11 +7125,51 @@ ALTER TABLE ONLY users
 
 
 --
+-- Name: fk_seleccion_comite_solicitud_asistencia; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY seleccion_comite
+    ADD CONSTRAINT fk_seleccion_comite_solicitud_asistencia FOREIGN KEY (sol_asis_id) REFERENCES solicitud_asistencia(sol_asis_id);
+
+
+--
+-- Name: fk_solicitud_asistencia_municipio; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY solicitud_asistencia
+    ADD CONSTRAINT fk_solicitud_asistencia_municipio FOREIGN KEY (mun_id) REFERENCES municipio(mun_id);
+
+
+--
+-- Name: fk_solicitud_asistencia_seleccion_comite; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY solicitud_asistencia
+    ADD CONSTRAINT fk_solicitud_asistencia_seleccion_comite FOREIGN KEY (seleccion_comite_id) REFERENCES seleccion_comite(seleccion_comite_id);
+
+
+--
+-- Name: fk_tipo_actor; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY autor_estrategia
+    ADD CONSTRAINT fk_tipo_actor FOREIGN KEY (tip_act_id) REFERENCES tipo_actor(tip_act_id);
+
+
+--
 -- Name: fk_tipo_asociatividad; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
 --
 
 ALTER TABLE ONLY asociatividad
     ADD CONSTRAINT fk_tipo_asociatividad FOREIGN KEY (tip_id) REFERENCES tipo(tip_id);
+
+
+--
+-- Name: kf_nombre_fecha_detalle; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY nombrefecha_procesoetapa
+    ADD CONSTRAINT kf_nombre_fecha_detalle FOREIGN KEY (nom_fec_apro_id) REFERENCES nombre_fecha_aprobacion(nom_fec_apr_id);
 
 
 --

@@ -4,7 +4,8 @@
            showOn: 'both',
            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
            buttonImageOnly: true, 
-           dateFormat: 'yy/mm/dd'
+           dateFormat: 'yy/mm/dd',
+           minDate: (new Date(2013, 0, 1))
        });
        
        $('.mensaje').dialog({
@@ -15,6 +16,23 @@
                     $(this).dialog("close");
                 }
             }
+        });
+        
+        /*CARGAR MUNICIPIOS*/
+        $('#selDepto').change(function(){   
+            $('#selMun').children().remove();
+            $.getJSON('<?php echo base_url('index.php/componente3/componente3/cargarMunicipios');?>'+'?dep_id='+$('#selDepto').val(), 
+            function(data) {
+                var i=0;
+                $.each(data, function(key, val) {
+                    if(key=='rows'){
+                        $('#selMun').append('<option value="0">--Seleccione Municipio--</option>');
+                        $.each(val, function(id, registro){
+                            $('#selMun').append('<option value="'+registro['cell'][0]+'">'+registro['cell'][1]+'</option>');
+                        });                    
+                    }
+                });
+            });              
         });
        
        
@@ -47,11 +65,12 @@ echo form_open('componente3/componente3/guardar_dsat',$attributes);?>
 	<input type="text" name="res_act_div" id="res_act_div"  size="22" align="left"><br/><br/>
 	
 	<label>Departamento: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-	<?php echo form_dropdown_from_db('dep_id', "SELECT dep_id,dep_nombre FROM departamento");?>
+	<?php echo form_dropdown_from_db('dep_id','selDepto' ,"SELECT dep_id,dep_nombre FROM departamento");?>
 		
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Municipio: </label>
-	<?php echo form_dropdown_from_db('mun_id', "SELECT mun_id,mun_nombre FROM municipio order by mun_nombre");
-				//podrian presentarse solo los del depto seleccionado, por el momento estan todos?>
+	<select id='selMun' name='mun_id'>
+                <option value='0'>--Seleccione--</option>
+    </select>
 	
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<input type="button" value="Agregar" name="agregar_div" id="agregar_div" align="left"><br/>
