@@ -75,7 +75,7 @@ class Comp23_E2 extends CI_Controller {
 
         /* REGISTRAR REUNION */
         $this->load->model('etapa1-sub23/reunion', 'reu');
-        $ultima = $this->reu->ultimaReunion($pro_pep_id,2);
+        $ultima = $this->reu->ultimaReunion($pro_pep_id, 2);
         $reu_numero = (int) $ultima[0]['ultima'] + 1;
         $informacion['reu_numero'] = $reu_numero;
         $this->reu->agregarReunion(2, $pro_pep_id, $reu_numero);
@@ -203,8 +203,7 @@ class Comp23_E2 extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ');
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -238,8 +237,7 @@ class Comp23_E2 extends CI_Controller {
                 $i++;
             }
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ');
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -419,8 +417,7 @@ class Comp23_E2 extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ');
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -472,8 +469,7 @@ class Comp23_E2 extends CI_Controller {
             }
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -563,8 +559,7 @@ class Comp23_E2 extends CI_Controller {
             }
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ');
+             $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -723,8 +718,7 @@ class Comp23_E2 extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ');
+             $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -763,8 +757,7 @@ class Comp23_E2 extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ');
+             $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -803,8 +796,7 @@ class Comp23_E2 extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ');
+             $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -1099,8 +1091,7 @@ class Comp23_E2 extends CI_Controller {
                 $i++;
             }
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+             $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -1226,7 +1217,7 @@ class Comp23_E2 extends CI_Controller {
 
         /* ACTUALIZANDO ACUERDO MUNICIPAL */
         $this->load->model('etapa2-sub23/diagnostico', 'Dia');
-        $this->Dia->actualizarDia($dia_id, $dia_fecha_borrador, $dia_fecha_concejo_muni, $dia_fecha_observacion, $dia_observacion, $dia_ruta_archivo,$dia_vision);
+        $this->Dia->actualizarDia($dia_id, $dia_fecha_borrador, $dia_fecha_concejo_muni, $dia_fecha_observacion, $dia_observacion, $dia_ruta_archivo, $dia_vision);
 
         redirect(base_url('componente2/comp23_E2/diagnostico'));
     }

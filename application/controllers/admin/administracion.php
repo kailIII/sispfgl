@@ -56,7 +56,7 @@ class Administracion extends CI_Controller {
             array_multisort($rows, SORT_ASC);
         } else {
             $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ');
+             $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -126,8 +126,7 @@ class Administracion extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ');
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -158,8 +157,7 @@ class Administracion extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ');
+             $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -190,8 +188,7 @@ class Administracion extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ');
+             $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -248,8 +245,7 @@ class Administracion extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ');
+            $rows = array();
         }
 
         $datos = json_encode($rows);

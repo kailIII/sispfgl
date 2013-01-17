@@ -52,6 +52,14 @@ class Proceso extends CI_Model {
         $this->db->where('pro_id',$pro_id);
         $this->db->update($this->tabla, $datos);
     }
+     public function editarPro3($pro_id, $pro_fenvio_informacion,$pro_flimite_recepcion) {
+        $datos = array(            
+            'pro_fenvio_informacion' => $pro_fenvio_informacion,
+            'pro_flimite_recepcion' => $pro_flimite_recepcion
+        );        
+        $this->db->where('pro_id',$pro_id);
+        $this->db->update($this->tabla, $datos);
+    }
 
 }
 

@@ -174,8 +174,7 @@ class Comp23_E1 extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ');
+             $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -211,8 +210,7 @@ class Comp23_E1 extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ');
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -292,8 +290,7 @@ class Comp23_E1 extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ');
+             $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -338,8 +335,7 @@ class Comp23_E1 extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+             $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -381,8 +377,7 @@ class Comp23_E1 extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ');
+          $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -426,8 +421,7 @@ class Comp23_E1 extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+             $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -904,8 +898,7 @@ class Comp23_E1 extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ');
+         $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -1130,9 +1123,9 @@ class Comp23_E1 extends CI_Controller {
         } else {
             $rows[0]['id'] = 0;
             if (!strcasecmp($tipo, 'p'))
-                $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ');
+                $rows = array();
             else
-                $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ');
+                $rows = array();
         }
 
         $datos = json_encode($rows);

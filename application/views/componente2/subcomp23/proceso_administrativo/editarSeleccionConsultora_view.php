@@ -3,7 +3,7 @@
         /*GRID PARTICIPANTES*/
        
         /*PARA EL DATEPICKER*/
-        $( "#pro_finicio" ).datepicker({
+        $( "#pro_fenvio_informacion" ).datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
@@ -13,7 +13,7 @@
         /*FIN DEL DATEPICKER*/
         
         /*PARA EL DATEPICKER*/
-        $( "#pro_ffinalizacion" ).datepicker({
+        $( "#pro_flimite_recepcion" ).datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
@@ -24,10 +24,10 @@
         
         /*ZONA DE BOTONES*/
         $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/procesoAdministrativo/guardarProceso')."/2" ?>';
+            this.form.action='<?php echo base_url('componente2/procesoAdministrativo/guardarProceso')."/3" ?>';
         });
         $("#cancelar").button().click(function() {
-            document.location.href='<?php echo base_url('componente2/procesoAdministrativo/evaluacionExpresionInteres'); ?>';
+            document.location.href='<?php echo base_url('componente2/procesoAdministrativo/seleccionConsultoras'); ?>';
         });
         
       
@@ -46,13 +46,13 @@
         /*VARIABLES*/
         var tabla=$("#consultoresInteres");
         tabla.jqGrid({
-            url:'<?php echo base_url('componente2/procesoAdministrativo/cargarConsultoraInteres2') . '/' . $pro_id ?>',
+            url:'<?php echo base_url('componente2/procesoAdministrativo/cargarConsultoraInteres3') . '/' . $pro_id ?>',
             editurl:'<?php echo base_url('componente2/procesoAdministrativo/gestionarConsultoresInteres') . '/' . $pro_id ?>',
             datatype:'json',
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','Nombre','Tipo','Aplica',''],
+            colNames:['id','Nombre','Tipo','Seleccionada',''],
             colModel:[
                 {name:'con_int_id',index:'con_int_id', width:40,editable:false,editoptions:{size:15} },
                 {name:'con_int_nombre',index:'con_int_nombre',width:200,editable:false,
@@ -64,13 +64,12 @@
                     editoptions:{ value: '0:Seleccione;Empresa:Empresa;ONG:ONG' }, 
                     formoptions:{ label: "Tipo:",elmprefix:"(*)"}
                 },
-                {name:'con_int_aplica',index:'con_int_aplica',width:60,align:'center',editable:true,edittype:"checkbox",editoptions:{value:"Si:No"}},
+                {name:'con_int_seleccionada',index:'con_int_seleccionada',width:80,align:'center',editable:true,edittype:"checkbox",editoptions:{value:"Si:No"}},
                 {name:'actions',formatter:"actions",editable:false,fixed:true,width:60,
                     formatoptions:{"keys":true,delbutton: false}
                 }
             ],
             multiselect: false,
-            caption: "Consultoras que han manifestado interés",
             rowNum:10,
             rowList:[10,20,30],
             loadonce:true,
@@ -93,8 +92,7 @@
 
 <form id="AdquisicionyContratacionForm" method="post" style="left: 70px;position: relative;">
 
-    <h2 class="h2Titulos">Evaluación de expresión de interés</h2>
-    <h2 class="h2Titulos">Proceso de evaluación</h2>
+    <h2 class="h2Titulos">Selección de consultoras por municipio</h2>
     <br/>
 
     <table>
@@ -104,11 +102,11 @@
         </tr>
         <tr>
         <td class="textD"><strong>Fecha de inicio: </strong></td> 
-        <td><input value="<?php if ($pro_finicio != "") echo date('d/m/y', strtotime($pro_finicio)); ?>" id="pro_finicio" name="pro_finicio" type="text" size="10" readonly="readonly"/></td>
+        <td><input value="<?php if ($pro_fenvio_informacion != "") echo date('d/m/y', strtotime($pro_fenvio_informacion)); ?>" id="pro_fenvio_informacion" name="pro_fenvio_informacion" type="text" size="10" readonly="readonly"/></td>
         </tr>
         <tr>
         <td class="textD"> <strong>Fecha de finalización: </strong></td>
-        <td><input value="<?php if ($pro_ffinalizacion != "") echo date('d/m/y', strtotime($pro_ffinalizacion)); ?>" id="pro_ffinalizacion" name="pro_ffinalizacion" type="text" size="10" readonly="readonly"/></td>
+        <td><input value="<?php if ($pro_flimite_recepcion != "") echo date('d/m/y', strtotime($pro_flimite_recepcion)); ?>" id="pro_flimite_recepcion" name="pro_flimite_recepcion" type="text" size="10" readonly="readonly"/></td>
         </tr>
     </table>
     <br/><br/>
@@ -119,7 +117,7 @@
     </center>
     <center style="position: relative;top: 20px">
         <div>
-            <p><input type="submit" id="guardar" value="Guardar Evaluación" />
+            <p><input type="submit" id="guardar" value="Guardar Selección" />
                 <input type="button" id="cancelar" value="Cancelar" />
             </p>
         </div>
@@ -128,10 +126,4 @@
 </form>
 <div id="mensaje" class="mensaje" title="Aviso de la operación">
     <p>La acción fue realizada con satisfacción</p>
-</div>
-<div id="mensaje2" class="mensaje" title="Aviso">
-    <p>Debe Seleccionar una fila para continuar</p>
-</div>
-<div id="extension" class="mensaje" title="Error">
-    <p>Solo se permiten archivos con la extensión pdf|doc|docx</p>
 </div>

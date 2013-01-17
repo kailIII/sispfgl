@@ -32,7 +32,7 @@
         
         /*ZONA DE BOTONES*/
         $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/procesoAdministrativo/guardarAdquisicionContrataciones') ?>';
+            this.form.action='<?php echo base_url('componente2/procesoAdministrativo/guardarProceso') . "/1" ?>';
         });
         $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url('componente2/procesoAdministrativo/adquisicionContrataciones'); ?>';
@@ -227,12 +227,18 @@
                 
     });
 </script>
-
 <form id="AdquisicionyContratacionForm" method="post" style="left: 70px;position: relative;">
-
     <h2 class="h2Titulos">Proceso de Adquisición y Contrataciones</h2>
     <br/>
-
+    <table>
+        <tr>
+        <td class="tdLugar" ><strong>Departamento:</strong></td>
+        <td><?php echo $departamento ?></td>
+        <td class="tdEspacio"></td>
+        <td class="tdLugar"><strong>Municipio:</strong></td>
+        <td ><?php echo $municipio ?></td>    
+        </tr>
+    </table>
     <br/><br/>
     <strong>No. Proceso </strong><input value="<?php echo $pro_numero ?>" id="pro_numero" name="pro_numero" type="text" size="10"/>
     <br/>
@@ -241,15 +247,15 @@
     <table>
         <tr>
         <td class="textD"><strong>Fecha de publicación: </strong></td> 
-        <td><input value="<?php  if ($pro_fpublicacion!="") echo date('d/m/y', strtotime($pro_fpublicacion)); ?>" id="pro_fpublicacion" name="pro_fpublicacion" type="text" size="10" readonly="readonly"/></td>
+        <td><input value="<?php if ($pro_fpublicacion != "") echo date('d/m/y', strtotime($pro_fpublicacion)); ?>" id="pro_fpublicacion" name="pro_fpublicacion" type="text" size="10" readonly="readonly"/></td>
         </tr>
         <tr>
         <td class="textD"> <strong>Fecha de aclaración de dudas: </strong></td>
-        <td><input value="<?php  if ($pro_faclara_dudas!="")  echo date('d/m/y', strtotime($pro_faclara_dudas)); ?>" id="pro_faclara_dudas" name="pro_faclara_dudas" type="text" size="10" readonly="readonly"/></td>
+        <td><input value="<?php if ($pro_faclara_dudas != "") echo date('d/m/y', strtotime($pro_faclara_dudas)); ?>" id="pro_faclara_dudas" name="pro_faclara_dudas" type="text" size="10" readonly="readonly"/></td>
         </tr>
         <tr>
         <td class="textD"><strong>Fecha limite de expresión de interes: </strong></td>
-        <td><input value="<?php  if ($pro_fexpresion_interes!="")  echo date('d/m/y', strtotime($pro_fexpresion_interes)); ?>" id="pro_fexpresion_interes" name="pro_fexpresion_interes" type="text" size="10" readonly="readonly"/></td>
+        <td><input value="<?php if ($pro_fexpresion_interes != "") echo date('d/m/y', strtotime($pro_fexpresion_interes)); ?>" id="pro_fexpresion_interes" name="pro_fexpresion_interes" type="text" size="10" readonly="readonly"/></td>
         </tr>
     </table>
     <br/><br/>
@@ -262,7 +268,7 @@
         <input type="button" id="agregar" value="  Agregar  " />
         <input type="button" id="editar" value="   Editar   " />
         <input type="button" id="eliminar" value="  Eliminar  " />
-        
+
     </div>
     <br/><br/>
     <table>

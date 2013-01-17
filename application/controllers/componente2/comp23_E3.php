@@ -188,8 +188,7 @@ class Comp23_E3 extends CI_Controller {
 
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ');
+             $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -429,8 +428,7 @@ class Comp23_E3 extends CI_Controller {
             }
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ');
+             $rows = array();
         }
 
         $datos = json_encode($rows);
