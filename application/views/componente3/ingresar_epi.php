@@ -4,14 +4,16 @@
            showOn: 'both',
            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
            buttonImageOnly: true, 
-           dateFormat: 'yy/mm/dd'
+           dateFormat: 'yy/mm/dd',
+           minDate: (new Date(2013, 0, 1))
        });
 	
 	   $( "#fecha_fin" ).datepicker({
            showOn: 'both',
            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
            buttonImageOnly: true, 
-           dateFormat: 'yy/mm/dd'
+           dateFormat: 'yy/mm/dd',
+           minDate: (new Date(2013, 0, 1))
        });
        
        $("#agregar").button().click(function() {
@@ -148,6 +150,13 @@
         
 		
 		$('#myform').submit(function() {
+			
+			var fi = new Date($('#fecha_ini').val());
+			var ff = new Date($('#fecha_fin').val());
+			if(ff<fi){
+				$('#mensaje4').dialog('open');
+				return false;
+			}
 				
 			var numberOfRecords = $("#actividades").getGridParam("records");
 			if(numberOfRecords>0){
@@ -247,6 +256,9 @@ echo form_open('componente3/componente3/guardar_epi',$attributes);?>
 </div>
 <div id="mensaje3" class="mensaje" title="Aviso">
     <p>No ha ingresado ninguna actividad.</p>
+</div>
+<div id="mensaje4" class="mensaje" title="Aviso">
+    <p>La fecha de finalizaci&oacute;n no puede ser menor a la fecha inicial de la actividad.</p>
 </div>
 
 

@@ -20,6 +20,15 @@ class Municipio extends CI_Model {
        $consulta=  $this->db->get($cadena);  
        return $consulta->result();
     }
+    
+   function obtenerNomMunDep($mun_id) {
+        $this->db->select('departamento.dep_nombre depto,municipio.mun_nombre muni');
+        $this->db->from($this->tabla);
+        $this->db->join('departamento', 'departamento.dep_id = municipio.dep_id');
+        $this->db->where('municipio.mun_id', $mun_id);
+        $query = $this->db->get();
+        return $query->result();
+    }
  
     
 }
