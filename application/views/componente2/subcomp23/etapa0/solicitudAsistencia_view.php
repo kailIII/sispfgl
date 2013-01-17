@@ -103,7 +103,15 @@
     <h2 class="h2Titulos">Solicitud de asistencia técnica para la elaboración de planes estratégicos participadtivos</h2>
     <br/>
     <br/>
-
+    <table>
+        <tr>
+        <td class="tdLugar" ><strong>Departamento:</strong></td>
+        <td><?php echo $departamento ?></td> 
+        <td class="tdEspacio"></td>
+        <td class="tdLugar"><strong>Municipio:</strong></td>
+        <td ><?php echo $municipio ?></td>    
+        </tr>
+    </table>
     <table>
         <tr><td style="width: 100px"></td>
         <td>
@@ -136,25 +144,7 @@
     <br/>
     <br/>
     <table>
-        <tr>
-        <td class="textD"><strong>Departamento:</strong></td>
-        <td>
-            <select id='selDepto'>
-                <option value='0'>--Seleccione Departamento--</option>
-                <?php foreach ($departamentos as $depar) { ?>
-                    <option value='<?php echo $depar->dep_id; ?>'><?php echo $depar->dep_nombre; ?></option>
-                <?php } ?>
-            </select>
-        </td>
-        </tr>
-        <tr>
-        <td class="textD"><strong>Municipio:</strong></td>
-        <td >
-            <select id='selMun'>
-                <option value='0'>--Seleccione Municipio--</option>
-            </select>
-        </td>    
-        </tr>
+   
         <tr>
         <td class="textD"><strong>Fecha de solicitud: </strong> </td>
         <td>
@@ -163,15 +153,15 @@
         </tr>
         <tr>
         <td class="textD"><strong>Nombre del solicitante: </strong></td>
-        <td><input id="nom_solicitante" type="text" size="70" /></td>
+        <td><input id="nombre_solicitante" name="nombre_solicitante" type="text" size="70" value="" /></td>
         </tr>
         <tr>
         <td class="textD"><strong>Cargo: </strong></td>
-        <td><input id="cargo" type="text" size="70" /><br/></td>
+        <td><input id="cargo" name="cargo" type="text" size="70" value=""/><br/></td>
         </tr>
         <tr>
         <td class="textD"><strong>Telefono:</strong> </td>
-        <td><input id="telefono" type="text" size="9"/></td>
+        <td><input id="telefono" name="telefono"type="text" size="9" value=""/></td>
         </tr>
     </table> 
 
@@ -196,7 +186,7 @@
         </tr>
     </table>
 
-
+<input id="selMun" type="text" name="selMun" value="<?php echo $selMun?>" style="visibility: hidden"/>
 
 
     <center style="position: relative;top: 20px">
