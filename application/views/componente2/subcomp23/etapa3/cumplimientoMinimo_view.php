@@ -108,8 +108,8 @@
         <td style="width: 20px"></td>
         <td>
             <table>
-                <tr style="width: 300px"> <td ><strong>Fecha de presentación del borrador: </strong><input id="pro_pep_fecha_borrador" <?php if (isset($pro_pep_fecha_borrador)) { ?>  value="<?php echo date('d/m/y', strtotime($pro_pep_fecha_borrador)); ?>" <?php } ?> name="pro_pep_fecha_borrador" type="text" size="5" /></td></tr>
-                <tr><td><strong>Fecha de superación de observaciones: </strong><input id="pro_pep_fecha_observacion" <?php if (isset($pro_pep_fecha_observacion)) { ?>value="<?php echo date('d/m/y', strtotime($pro_pep_fecha_observacion)); ?>"<?php } ?>  name="pro_pep_fecha_observacion" type="text" size="5" /></td></tr>
+                <tr style="width: 300px"> <td ><strong>Fecha de entrega de producto: </strong><input id="pro_pep_fecha_borrador" <?php if (isset($pro_pep_fecha_borrador)) { ?>  value="<?php echo date('d/m/y', strtotime($pro_pep_fecha_borrador)); ?>" <?php } ?> name="pro_pep_fecha_borrador" type="text" size="5" /></td></tr>
+                <tr><td><strong>Fecha de visto bueno: </strong><input id="pro_pep_fecha_observacion" <?php if (isset($pro_pep_fecha_observacion)) { ?>value="<?php echo date('d/m/y', strtotime($pro_pep_fecha_observacion)); ?>"<?php } ?>  name="pro_pep_fecha_observacion" type="text" size="5" /></td></tr>
                 <tr> <td><strong>Fecha de aprobacion del consejo municipal: </strong><input id="pro_pep_fecha_aprobacion" <?php if (isset($pro_pep_fecha_aprobacion)) { ?> value="<?php echo date('d/m/y', strtotime($pro_pep_fecha_aprobacion)); ?>"<?php } ?>  name="pro_pep_fecha_aprobacion" type="text" size="5" /></td></tr>
             </table>
             <p><strong>¿Acta de aceptación contiene firmas?</strong></p>

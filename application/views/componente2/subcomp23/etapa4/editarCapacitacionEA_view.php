@@ -35,7 +35,7 @@
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','Dui','Nombre Completo','Sexo','Cargo','Teléfono','Participa',''],
+            colNames:['id','Dui','Nombre Completo','Sexo','Cargo','Teléfono','Asistencia',''],
             colModel:[
                 {name:'par_id',index:'par_id', width:40,editable:false,editoptions:{size:15} },
                 {name:'par_dui',index:'par_dui', width:100,editable:false},
@@ -106,8 +106,7 @@
                 },
                 {name:'fac_telefono',index:'fac_telefono',width:100,editable:true,
                     editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}, 
-                    formoptions:{ label: "Teléfono",elmprefix:"(*)"},
-                    editrules:{required:true} 
+                    formoptions:{ label: "Teléfono"} 
                 },
                 {name:'fac_email',index:'fac_email',width:200,editable:true,
                     editoptions:{size:25,maxlength:50}, 

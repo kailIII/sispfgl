@@ -345,7 +345,8 @@ class Comp23_E2 extends CI_Controller {
         $informacion['municipio'] = $datos[0]->Muni;
         $pro_pep_id = $datos[0]->id;
         $informacion['proyectoPep'] = $datos[0]->Proyecto;
-
+        $this->load->model('pais/departamento');
+        $informacion['dep_id'] = $this->departamento->obtenerIdPorNombre($datos[0]->Depto);
         /* REGISTRAR ASOCIATIVIDAD */
         $this->load->model('etapa2-sub23/asociatividad');
         $this->asociatividad->agregarAsociatividad($pro_pep_id);
@@ -375,7 +376,8 @@ class Comp23_E2 extends CI_Controller {
         $informacion['departamento'] = $datos[0]->Depto;
         $informacion['municipio'] = $datos[0]->Muni;
         $informacion['proyectoPep'] = $datos[0]->Proyecto;
-
+        $this->load->model('pais/departamento');
+        $informacion['dep_id'] = $this->departamento->obtenerIdPorNombre($datos[0]->Depto);
         /* REGISTRAR ASOCIATIVIDAD */
         $this->load->model('etapa2-sub23/asociatividad');
         $resultado = $this->asociatividad->obtenerAsociatividadId($aso_id);
@@ -543,6 +545,19 @@ class Comp23_E2 extends CI_Controller {
         }
     }
 
+    public function cargarMunicipio($dep_id) {
+        //PARA CREAR LA LISTA DESPLEGABLE DE LA INSTITUCION
+        $this->load->model('pais/municipio');
+        $municipios = $this->municipio->obtenerMunicipioPorDepartamento($dep_id);
+        $combo = "<select name='int_aso_nombre'>";
+        $combo.= " <option value='0'> Seleccione</option>";
+        foreach ($municipios as $aux)
+            $combo.= " <option value='" . $aux->mun_nombre . "'>" . $aux->mun_nombre . "</option>";
+        $combo.="</select>";
+
+        echo $combo;
+    }
+
     public function cargarIntegradores($aso_id) {
         $this->load->model('etapa2-sub23/integrante_asociatividad', 'integrante');
         $integradores = $this->integrante->obtenerIntegranteAsociatividades($aso_id);
@@ -559,7 +574,7 @@ class Comp23_E2 extends CI_Controller {
             }
             array_multisort($rows, SORT_ASC);
         } else {
-             $rows = array();
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -718,7 +733,7 @@ class Comp23_E2 extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-             $rows = array();
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -757,7 +772,7 @@ class Comp23_E2 extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-             $rows = array();
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -796,7 +811,7 @@ class Comp23_E2 extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-             $rows = array();
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -1091,7 +1106,7 @@ class Comp23_E2 extends CI_Controller {
                 $i++;
             }
         } else {
-             $rows = array();
+            $rows = array();
         }
 
         $datos = json_encode($rows);

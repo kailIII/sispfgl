@@ -66,45 +66,61 @@
             if (value == 0 ) return [false,"Seleccione la institucion del Participante"];
             else return [true,""];
         }
+        
+        function validar(value, colname) {
+            if (value == 0 ) return [false,"Debe Seleccionar una Opción"];
+            else return [true,""];
+        }
         /*FIN ZONA VALIDACIONES*/
         /*GRID PARTICIPANTES*/
         var tabla=$("#participantes");
         tabla.jqGrid({
-            url:'<?php echo base_url('componente2/comp23_E1/cargarParticipantes') ?>/dec_int_id/<?php echo $dec_int_id; ?>',
+            url:'<?php echo base_url('componente2/comp23_E1/cargarParticipantes4') ?>/dec_int_id/<?php echo $dec_int_id; ?>',
             editurl:'<?php echo base_url('componente2/comp23_E1/gestionParticipantes') ?>/declaracion_interes/dec_int_id/<?php echo $dec_int_id; ?>',
             datatype:'json',
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','Nombres','Apellidos','Sexo','Institución','Cargo'],
+            colNames:['id','Nombres','Apellidos','Edad','Sexo','Nombre','Cargo','Tipo'],
             colModel:[
                 {name:'par_id',index:'par_id', width:40,editable:false,editoptions:{size:15} },
-                {name:'par_nombre',index:'par_nombre',width:200,editable:true,
+                {name:'par_nombre',index:'par_nombre',width:100,editable:true,
                     editoptions:{size:25,maxlength:50}, 
                     formoptions:{label: "Nombres",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
-                {name:'par_apellido',index:'par_apellido',width:200,editable:true,
+                {name:'par_apellido',index:'par_apellido',width:100,editable:true,
                     editoptions:{size:25,maxlength:50}, 
                     formoptions:{label: "Apellidos",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
+                {name:'par_edad',index:'par_edad',width:80,editable:true,
+                    editoptions:{size:25,maxlength:30}, 
+                    formoptions:{ label: "Edad",elmprefix:"(*)"},
+                    editrules:{required:true,minvalue:12,number:true} 
+                },
                 {name:'par_sexo',index:'par_sexo',editable:true,edittype:"select",width:50,
-                    editoptions:{ value: '0:Seleccione;F:Femenino;M:Masculino' }, 
+                    editoptions:{ value: '0:Seleccione;M:Mujer;H:Hombre' }, 
                     formoptions:{ label: "Sexo",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validaSexo}
                 },
                 {name:'par_institucion',index:'par_institucion',editable:true,
                     edittype:"select",width:250,
                     editoptions:{ dataUrl:'<?php echo base_url('componente2/comp23_E1/cargarInstituciones'); ?>'}, 
-                    formoptions:{ label: "Institución",elmprefix:"(*)"},
+                    formoptions:{ label: "Nombre:",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validaInstitucion}
                 },
                 {name:'par_cargo',index:'par_cargo',width:120,editable:true,
                     editoptions:{size:25,maxlength:30}, 
                     formoptions:{ label: "Cargo",elmprefix:"(*)"},
                     editrules:{required:true} 
-                }
+                },
+                {name:'par_tipo',index:'par_tipo',width:80,edittype:"select",
+                    editable:true,
+                    editoptions:{ value: '0:Seleccione;C:Comunidad;S:Sector;I:Institución' }, 
+                    formoptions:{ label: "Tipo",elmprefix:"(*)"},
+                    editrules:{custom:true, custom_func:validar}
+                },
             ],
             multiselect: false,
             caption: "Participantes en la Asamblea",

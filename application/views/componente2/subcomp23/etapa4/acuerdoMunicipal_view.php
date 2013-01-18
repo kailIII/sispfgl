@@ -46,21 +46,21 @@
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','Nombres','Apellidos','Sexo','Cargo','Pertenece A'],
+            colNames:['id','Nombres','Apellidos','Sexo','Cargo','Teléfono','Pertenece A'],
             colModel:[
                 {name:'par_id',index:'par_id', width:40,editable:false,editoptions:{size:15} },
-                {name:'par_nombre',index:'par_nombre',width:200,editable:true,
+                {name:'par_nombre',index:'par_nombre',width:100,editable:true,
                     editoptions:{size:25,maxlength:50}, 
                     formoptions:{label: "Nombres",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
-                {name:'par_apellido',index:'par_apellido',width:200,editable:true,
+                {name:'par_apellido',index:'par_apellido',width:100,editable:true,
                     editoptions:{size:25,maxlength:50}, 
                     formoptions:{label: "Apellidos",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
                 {name:'par_sexo',index:'par_sexo',editable:true,edittype:"select",width:40,
-                    editoptions:{ value: '0:Seleccione;F:Femenino;M:Masculino' }, 
+                    editoptions:{ value: '0:Seleccione;M:Mujer;H:Hombre' }, 
                     formoptions:{ label: "Sexo",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validaSexo}
                 },
@@ -69,9 +69,13 @@
                     formoptions:{ label: "Cargo",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
+                {name:'par_tel',index:'par_tel',width:100,editable:true,
+                    editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}, 
+                    formoptions:{ label: "Teléfono"} 
+                },
                 {name:'par_tipo',index:'par_tipo',editable:true,edittype:"select",width:125,
                     editoptions:{ value: '0:Seleccione;gg:Grupo Gestor;gl:Gobierno Local' }, 
-                    formoptions:{ label: "Sexo",elmprefix:"(*)"},
+                    formoptions:{ label: "Pertenece A:",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validaPerteneceA}
                 }
             ],
@@ -215,8 +219,8 @@
     </fieldset>
     <br/>
     <table>
-        <tr> <td><strong>Fecha de presentación del borrador: </strong></td><td><input <?php if (isset($acu_mun_fecha_borrador)) { ?> value='<?php echo date('d/m/y', strtotime($acu_mun_fecha_borrador)); ?>'<?php } ?> id="acu_mun_fecha_borrador" name="acu_mun_fecha_borrador" type="text" size="10" /></td></tr>
-        <tr><td><strong>Fecha de superación de observaciones: </strong></td><td><input <?php if (isset($acu_mun_fecha_observacion)) { ?> value='<?php echo date('d/m/y', strtotime($acu_mun_fecha_observacion)); ?>'<?php } ?> id="acu_mun_fecha_observacion" name="acu_mun_fecha_observacion" type="text" size="10"/></td></tr>
+        <tr> <td><strong>Fecha de entrega de producto: </strong></td><td><input <?php if (isset($acu_mun_fecha_borrador)) { ?> value='<?php echo date('d/m/y', strtotime($acu_mun_fecha_borrador)); ?>'<?php } ?> id="acu_mun_fecha_borrador" name="acu_mun_fecha_borrador" type="text" size="10" /></td></tr>
+        <tr><td><strong>Fecha de visto bueno: </strong></td><td><input <?php if (isset($acu_mun_fecha_observacion)) { ?> value='<?php echo date('d/m/y', strtotime($acu_mun_fecha_observacion)); ?>'<?php } ?> id="acu_mun_fecha_observacion" name="acu_mun_fecha_observacion" type="text" size="10"/></td></tr>
         <tr> <td><strong>Fecha de aprobacion del consejo municipal: </td><td></strong><input <?php if (isset($acu_mun_fecha_aceptacion)) { ?> value='<?php echo date('d/m/y', strtotime($acu_mun_fecha_aceptacion)); ?>'<?php } ?> id="acu_mun_fecha_aceptacion" name="acu_mun_fecha_aceptacion" type="text" size="10"/></td></tr>
     </table>
     <br/>

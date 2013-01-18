@@ -97,8 +97,7 @@
                 },
                 {name:'par_tel',index:'par_tel',width:100,editable:true,
                     editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}, 
-                    formoptions:{ label: "Teléfono",elmprefix:"(*)"},
-                    editrules:{required:true} 
+                    formoptions:{ label: "Teléfono"} 
                 }
             ],
             multiselect: false,
@@ -191,7 +190,29 @@
         $('#btn_descargar').click(function() {
             $.get($(this).attr('href'));
         });
-    });
+       
+<?php
+foreach ($contrapartidas as $aux) {
+    if (!strcasecmp($aux->con_nombre, 'Otro')) {
+        if (!strcasecmp($aux->con_acu_valor, 'f')){
+        ?>
+   $('#especifique_<?php echo $aux->con_id; ?>').hide();
+   $('#lespecifique').hide();
+   <?php } ?>
+   $("#con_<?php  echo $aux->con_id; ?>").click(function() { 
+       if ($("#con_<?php echo $aux->con_id; ?>").is(':checked')) {  
+          $('#especifique_<?php echo $aux->con_id; ?>').show();
+          $('#lespecifique').show();
+      }else{
+         $('#especifique_<?php echo $aux->con_id; ?>').hide();
+         $('#lespecifique').hide();
+         $('#lespecifique').val("");
+      }
+   });
+    <?php }
+}
+?>
+             });
 </script>
 <form id="acuerdoMunicipalForm" method="post">
 
@@ -229,8 +250,13 @@
         <fieldset style="width:210px;">
             <legend>Aportes de la Municipalidad</legend>
             <?php foreach ($contrapartidas as $aux) { ?>
-                <input <?php if (!strcasecmp($aux->con_acu_valor, 't')) { ?>checked <?php } ?> type="checkbox" name="con_<?php echo $aux->con_id; ?>" value="<?php echo $aux->con_id; ?>" ><?php echo $aux->con_nombre; ?></input><br/>
-            <?php } ?>
+                <input <?php if (!strcasecmp($aux->con_acu_valor, 't')) { ?>checked <?php } ?> type="checkbox" name="con_<?php echo $aux->con_id; ?>" id="con_<?php echo $aux->con_id; ?>" value="<?php echo $aux->con_id; ?>" ><?php echo $aux->con_nombre; ?></input><br/>
+                <?php if(!strcasecmp($aux->con_nombre, 'Otro')) {?>
+                   <input value="Especifique:"type="text" name="lespecifique" id="lespecifique" size="15" style="border:none;background: white;" readonly="readonly"/>
+                   <input <?php if (isset($aux->con_especifique)) {?> value="<?php echo $aux->con_especifique; }?>"type="text" name="especifique_<?php echo $aux->con_id; ?>" id="especifique_<?php echo $aux->con_id; ?>" size="15"/>
+<?php } 
+
+}?>
         </fieldset>
 
         </td>
@@ -240,13 +266,13 @@
         <fieldset style="width:250px;">
             <legend><strong>Criterios</strong></legend>
             <table>
-                <?php foreach ($criterios as $aux) { ?>
+<?php foreach ($criterios as $aux) { ?>
                     <tr>
                     <td><?php echo $aux->cri_nombre; ?></td>
                     <td><input type="radio" <?php if (!strcasecmp($aux->cri_acu_valor, 't')) { ?> checked <?php } ?> name="cri_<?php echo $aux->cri_id; ?>" value="true" >SI </input></td>
                     <td><input type="radio" <?php if (!strcasecmp($aux->cri_acu_valor, 'f')) { ?> checked <?php } ?>name="cri_<?php echo $aux->cri_id; ?>" value="false" >NO </input></td>
                     </tr>
-                <?php } ?>
+<?php } ?>
             </table>  
 
         </fieldset>

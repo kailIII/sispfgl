@@ -129,8 +129,8 @@
         </td>  
         <td>
             <table>
-                <tr><td><strong>Fecha de presentación del borrador: </strong><input id="inf_pre_fecha_borrador" <?php if (isset($inf_pre_fecha_borrador)) { ?>  value="<?php echo date('d/m/y', strtotime($inf_pre_fecha_borrador)); ?>" <?php } ?> name="inf_pre_fecha_borrador" type="text" size="5" /></td></tr>
-                <tr><td><strong>Fecha de superación de observaciones: </strong><input id="inf_pre_fecha_observacion" <?php if (isset($inf_pre_fecha_observacion)) { ?>value="<?php echo date('d/m/y', strtotime($inf_pre_fecha_observacion)); ?>"<?php } ?>  name="inf_pre_fecha_observacion" type="text" size="5"/></td></tr>
+                <tr><td><strong>Fecha de entrega de producto: </strong><input id="inf_pre_fecha_borrador" <?php if (isset($inf_pre_fecha_borrador)) { ?>  value="<?php echo date('d/m/y', strtotime($inf_pre_fecha_borrador)); ?>" <?php } ?> name="inf_pre_fecha_borrador" type="text" size="5" /></td></tr>
+                <tr><td><strong>Fecha de visto bueno: </strong><input id="inf_pre_fecha_observacion" <?php if (isset($inf_pre_fecha_observacion)) { ?>value="<?php echo date('d/m/y', strtotime($inf_pre_fecha_observacion)); ?>"<?php } ?>  name="inf_pre_fecha_observacion" type="text" size="5"/></td></tr>
                 <tr><td><strong>Fecha de aprobación del consejo municipal: </strong><input id="inf_pre_aceptacion" <?php if (isset($inf_pre_aceptacion)) { ?> value="<?php echo date('d/m/y', strtotime($inf_pre_aceptacion)); ?>"<?php } ?>  name="inf_pre_aceptacion" type="text" size="5"/></td></tr>
             </table>
             <p><strong>¿Acta de aceptación contiene firmas?</strong></p>

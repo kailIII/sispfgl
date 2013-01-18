@@ -22,6 +22,11 @@ div#divpagina{
     min-width:1000px;
 }
 
+.procesoAdmin{
+    right:-150px;
+    position: relative;
+}
+
 div#divcuerpo{
     position:absolute; 
     width:960px; 

@@ -110,6 +110,7 @@ class Comp23_E4 extends CI_Controller {
                     $aux->par_apellido,
                     $aux->par_sexo,
                     $aux->par_cargo,
+                    $aux->par_tel,
                     $tipo
                 );
                 $i++;

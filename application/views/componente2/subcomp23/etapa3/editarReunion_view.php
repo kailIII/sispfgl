@@ -25,7 +25,7 @@
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','Nombre','Nombre Completo','Sexo','Cargo','Teléfono','Participa',''],
+            colNames:['id','Nombre','Nombre Completo','Sexo','Cargo','Teléfono','Asistencia',''],
             colModel:[
                 {name:'par_id',index:'par_id', width:40,editable:false,editoptions:{size:15} },
                 {name:'par_dui',index:'par_dui', width:100,editable:false},

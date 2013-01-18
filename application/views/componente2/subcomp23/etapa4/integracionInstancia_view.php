@@ -140,7 +140,7 @@
                 },
                 {name:'par_sexo',index:'par_sexo',editable:true,edittype:"select",width:50,
                     align:"center",
-                    editoptions:{ value: '0:Seleccione;F:Femenino;M:Masculino' }, 
+                    editoptions:{ value: '0:Seleccione;M:Mujer;H:Hombre' }, 
                     formoptions:{ label: "Sexo",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validar}
                 },
@@ -162,8 +162,7 @@
                 },
                 {name:'par_tel',index:'par_tel',width:100,editable:true,
                     editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}, 
-                    formoptions:{ label: "Teléfono",elmprefix:"(*)"},
-                    editrules:{required:true} 
+                    formoptions:{ label: "Teléfono"} 
                 }
             ],
             multiselect: false,

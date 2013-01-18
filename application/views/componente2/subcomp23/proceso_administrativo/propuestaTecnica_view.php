@@ -153,7 +153,7 @@
         </table>
     </center>
     <br/><br/><br/>
-    <table style="right:-150px;position: relative;">
+    <table class="procesoAdmin">
         <tr>
         <td class="textD"><strong>No. Proceso: </strong></td>
         <td> <input value="" id="pro_numero" name="pro_numero" type="text" size="10" readonly="readonly" style="border: none; background: white;"/></td>

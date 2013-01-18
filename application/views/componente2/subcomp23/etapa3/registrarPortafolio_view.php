@@ -95,7 +95,7 @@
                 }
             ],
             multiselect: false,
-            caption: "Fuentes de financiamiento",
+            caption: "Fuente de financiamiento",
             rowNum:10,
             rowList:[10,20,30],
             loadonce:true,

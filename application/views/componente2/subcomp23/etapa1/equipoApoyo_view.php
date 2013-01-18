@@ -72,7 +72,7 @@
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','Dui','Nombres','Apellidos','Sexo','Edad','Proviene R/U','Cargo','Nivel Escolar','Teléfono'],
+            colNames:['id','Dui','Nombres','Apellidos','Sexo','Edad','Area R/U','Procedencia','Nivel Escolar','Teléfono'],
             colModel:[
                 {name:'par_id',index:'par_id', width:40,editable:false,editoptions:{size:15} },
                 {name:'par_dui',index:'par_dui', width:100,editable:true,
@@ -91,7 +91,7 @@
                 },
                 {name:'par_sexo',index:'par_sexo',editable:true,edittype:"select",width:50,
                     align:"center",
-                    editoptions:{ value: '0:Seleccione;F:Femenino;M:Masculino' }, 
+                    editoptions:{ value: '0:Seleccione;M:Mujer;H:Hombre' }, 
                     formoptions:{ label: "Sexo",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validar}
                 },
@@ -103,12 +103,12 @@
                 {name:'par_proviene',index:'par_proviene',width:80,edittype:"select",
                     editable:true,
                     editoptions:{ value: '0:Seleccione;U:Urbano;R:Rural' }, 
-                    formoptions:{ label: "Proviene de",elmprefix:"(*)"},
+                    formoptions:{ label: "Area",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validar}
                 },
                 {name:'par_cargo',index:'par_cargo',width:100,editable:true,
                     editoptions:{size:25,maxlength:30}, 
-                    formoptions:{ label: "Cargo",elmprefix:"(*)"},
+                    formoptions:{ label: "Procedencia",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
                 {name:'par_nivel_esco',index:'par_nivel_esco',width:100,editable:true,
@@ -118,8 +118,7 @@
                 },
                 {name:'par_tel',index:'par_tel',width:100,editable:true,
                     editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}, 
-                    formoptions:{ label: "Teléfono",elmprefix:"(*)"},
-                    editrules:{required:true} 
+                    formoptions:{ label: "Teléfono"}
                 }
             ],
             multiselect: false,
@@ -227,7 +226,7 @@
                 <td><input type="radio" id="mayor15No"name="mayor15" value="false">NO </input></td>
                 </tr>
                 <tr>
-                <td>El 50% de los Miembros son Mujeres </td>
+                <td>Existe participación de Mujeres </td>
                 <td><input type="radio" id="porcenMujeresSi" name="porcenMujeres" value="true">SI </input></td>
                 <td><input type="radio" id="porcenMujeresNo" name="porcenMujeres" value="false">NO </input></td>    
                 </tr>

@@ -129,7 +129,7 @@
         </td>
         </tr>  
         <tr><td style="width: 100px"> 
-        <td class="textD"><strong>Fecha de superación de observaciones: </strong> </td>
+        <td class="textD"><strong>Fecha de visto bueno: </strong> </td>
         <td>
             <input <?php if (isset($f_sup_obs)) { ?> value='<?php echo date('d/m/y', strtotime(f_sup_obs)); ?>'<?php } ?>id="f_sup_obs" name="f_sup_obs" type="text" size="10" readonly="readonly"/>
         </td>

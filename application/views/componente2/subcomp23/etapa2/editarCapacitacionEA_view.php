@@ -32,7 +32,7 @@
             else return [true,""];
         }
         /*FIN ZONA VALIDACIONES*/
-        /*GRID AGREGAR OTROS PARTICIPANTES*/
+        /*GRID Otros asistentes*/
         var tabla=$("#participantes");
         tabla.jqGrid({
             url:'<?php echo base_url('componente2/comp23_E1/cargarOtrosParticipanteGA') ?>/<?php echo $cap_id; ?>',
@@ -41,7 +41,7 @@
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','Dui','Nombres','Apellidos','Sexo','Edad','Proviene R/U','Cargo','Nivel Escolar','Teléfono'],
+            colNames:['id','Dui','Nombres','Apellidos','Sexo','Edad','Area R/U','Procedencia','Nivel Escolar','Teléfono'],
             colModel:[
                 {name:'par_id',index:'par_id', width:40,editable:false,editoptions:{size:15} },
                 {name:'par_dui',index:'par_dui', width:100,editable:true,
@@ -60,7 +60,7 @@
                 },
                 {name:'par_sexo',index:'par_sexo',editable:true,edittype:"select",width:50,
                     align:"center",
-                    editoptions:{ value: '0:Seleccione;F:Femenino;M:Masculino' }, 
+                    editoptions:{ value: '0:Seleccione;M:Mujer;H:Hombre' }, 
                     formoptions:{ label: "Sexo",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validar}
                 },
@@ -72,12 +72,12 @@
                 {name:'par_proviene',index:'par_proviene',width:80,edittype:"select",
                     editable:true,
                     editoptions:{ value: '0:Seleccione;u:Urbano; r:Rural' }, 
-                    formoptions:{ label: "Proviene de",elmprefix:"(*)"},
+                    formoptions:{ label: "Area",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validar}
                 },
                 {name:'par_cargo',index:'par_cargo',width:100,editable:true,
                     editoptions:{size:25,maxlength:30}, 
-                    formoptions:{ label: "Cargo",elmprefix:"(*)"},
+                    formoptions:{ label: "Procedencia",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
                 {name:'par_nivel_esco',index:'par_nivel_esco',width:100,editable:true,
@@ -87,12 +87,11 @@
                 },
                 {name:'par_tel',index:'par_tel',width:100,editable:true,
                     editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}, 
-                    formoptions:{ label: "Teléfono",elmprefix:"(*)"},
-                    editrules:{required:true} 
+                    formoptions:{ label: "Teléfono"} 
                 }
             ],
             multiselect: false,
-            caption: "Agregar Otros Participantes",
+            caption: "Otros asistentes",
             rowNum:10,
             rowList:[10,20,30],
             loadonce:true,
@@ -118,7 +117,7 @@
             beforeRefresh: function() {
                 tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
         },//OPCIONES
-        {closeAfterEdit:true,editCaption: "Editando Otros Participantes ",
+        {closeAfterEdit:true,editCaption: "Editando Otros Asistenciantes ",width:450,
             align:'center',reloadAfterSubmit:true,
             processData: "Cargando...",afterSubmit:despuesAgregarEditar,
             bottominfo:"Campos marcados con (*) son obligatorios", 
@@ -126,7 +125,7 @@
                 $('#mensaje').dialog('open');
             }    
         },//EDITAR
-        {closeAfterAdd:true,addCaption: "Agregar Nuevos Participantes ",
+        {closeAfterAdd:true,addCaption: "Agregar Nuevos Asistenciantes ",width:450,width:450,
             align:'center',reloadAfterSubmit:true,
             processData: "Cargando...",afterSubmit:despuesAgregarEditar,
             bottominfo:"Campos marcados con (*) son obligatorios", 
@@ -134,7 +133,7 @@
                 $('#mensaje').dialog('open');
             }
         },//AGREGAR
-        {msg: "Desea Eliminar a este Participante?",caption:"Eliminando....",
+        {msg: "Desea Eliminar a este Asistenciante?",caption:"Eliminando....",
             align:'center',reloadAfterSubmit:true,processData: "Cargando...",
             onclickSubmit: function(rp_ge, postdata) {
                 $('#mensaje').dialog('open');                            
@@ -151,13 +150,13 @@
         /*GRID MIEMBROS DEL EQUIPO LOCAL DE APOYO*/
         var tabla2=$("#MiembroELA");
         tabla2.jqGrid({
-            url:'<?php echo base_url('componente2/comp23_E2/cargarParticipanteGGCap') . '/' . $gru_ges_id . '/' . $cap_id; ?>',
+            url:'<?php echo base_url('componente2/comp23_E2/cargarParticipanteGGCap')  . '/' . $gru_ges_id.'/'.$cap_id; ?>',
             editurl:'<?php echo base_url('componente2/comp23_E1/gestionParticipantesCap') ?>/<?php echo $cap_id; ?>',
             datatype:'json',
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','Dui','Nombre Completo','Sexo','Cargo','Teléfono','Participa',''],
+            colNames:['id','Dui','Nombre Completo','Sexo','Procedencia','Teléfono','Asistencia',''],
             colModel:[
                 {name:'par_id',index:'par_id', width:40,editable:false,editoptions:{size:15} },
                 {name:'par_dui',index:'par_dui', width:100,editable:false},
@@ -228,8 +227,7 @@
                 },
                 {name:'fac_telefono',index:'fac_telefono',width:100,editable:true,
                     editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}, 
-                    formoptions:{ label: "Teléfono",elmprefix:"(*)"},
-                    editrules:{required:true} 
+                    formoptions:{ label: "Teléfono",} 
                 },
                 {name:'fac_email',index:'fac_email',width:200,editable:true,
                     editoptions:{size:25,maxlength:50}, 
@@ -351,7 +349,7 @@
         </td>
         <td>
         <fieldset   style="border-color: #2F589F;height:85px;width:225px;position: relative;left: 50px;">
-            <legend align="center"><strong>Cantidad de Participantes</strong></legend>
+            <legend align="center"><strong>Cantidad de Asistenciantes</strong></legend>
             <table>
                 <tr>
                 <td class="textD">Hombres: </td>

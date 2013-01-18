@@ -60,6 +60,10 @@ class ProcesoAdministrativo extends CI_Controller {
         $informacion['pro_observacion1'] = $resultado[0]->pro_observacion1;
         $informacion['pro_pub_ruta_archivo'] = $resultado[0]->pro_pub_ruta_archivo;
         $informacion['pro_exp_ruta_archivo'] = $resultado[0]->pro_exp_ruta_archivo;
+        $this->load->model('pais/municipio');
+        $resultado=  $this->municipio->obtenerNomMunDep($mun_id);
+        $informacion['departamento'] = $resultado[0]->depto;
+        $informacion['municipio'] = $resultado[0]->muni;
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/proceso_administrativo/editarProceso_view');
@@ -188,26 +192,7 @@ class ProcesoAdministrativo extends CI_Controller {
         $this->load->view('plantilla/footer', $informacion);
     }
 
-    public function editarEvaluacionExpresion() {
-        $informacion['titulo'] = 'Proceso de Adquisicion y Contrataciones';
-        $informacion['user_id'] = $this->tank_auth->get_user_id();
-        $informacion['username'] = $this->tank_auth->get_username();
-        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
-
-        $mun_id = $this->input->post("selMun");
-        $this->load->model('procesoAdministrativo/proceso');
-        $resultado = $this->proceso->obtenerPro($mun_id);
-        $informacion['pro_id'] = $resultado[0]->pro_id;
-        $informacion['pro_numero'] = $resultado[0]->pro_numero;
-        $informacion['pro_finicio'] = $resultado[0]->pro_finicio;
-        $informacion['pro_ffinalizacion'] = $resultado[0]->pro_ffinalizacion;
-        $this->load->view('plantilla/header', $informacion);
-        $this->load->view('plantilla/menu', $informacion);
-        $this->load->view('componente2/subcomp23/proceso_administrativo/editarEvaluacionExpresion_view');
-        $this->load->view('plantilla/footer', $informacion);
-    }
-
-    public function cargarConsultoraInteres2($pro_id) {
+   public function cargarConsultoraInteres2($pro_id) {
         $this->load->model('procesoAdministrativo/consultores_interes', 'conInt');
         $consultoresInt = $this->conInt->obtenerConsultoresInteres($pro_id);
         $numfilas = count($consultoresInt);
@@ -319,25 +304,7 @@ class ProcesoAdministrativo extends CI_Controller {
         $this->load->view('plantilla/footer', $informacion);
     }
 
-    public function editarPropuestaTecnica() {
-        $informacion['titulo'] = 'Proceso de Adquisicion y Contrataciones';
-        $informacion['user_id'] = $this->tank_auth->get_user_id();
-        $informacion['username'] = $this->tank_auth->get_username();
-        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
-        $mun_id = $this->input->post("selMun");
-        $this->load->model('procesoAdministrativo/proceso');
-        $resultado = $this->proceso->obtenerPro($mun_id);
-        $informacion['pro_id'] = $resultado[0]->pro_id;
-        $informacion['pro_numero'] = $resultado[0]->pro_numero;
-        $informacion['pro_fenvio_informacion'] = $resultado[0]->pro_fenvio_informacion;
-        $informacion['pro_flimite_recepcion'] = $resultado[0]->pro_flimite_recepcion;
-        $this->load->view('plantilla/header', $informacion);
-        $this->load->view('plantilla/menu', $informacion);
-        $this->load->view('componente2/subcomp23/proceso_administrativo/editarSeleccionConsultora_view');
-        $this->load->view('plantilla/footer', $informacion);
-    }
-
-    public function cargarPropuestaTecnica($mun_id) {
+    public function cargarEvaluacionDeclaracion($mun_id) {
         $this->load->model('procesoAdministrativo/proceso');
         if($this->proceso->contarProPorMuni($mun_id)!=0) {
             $resultado = $this->proceso->obtenerPro($mun_id);
@@ -377,6 +344,46 @@ class ProcesoAdministrativo extends CI_Controller {
         echo $jsonresponse;
     }
 
+     public function cargarSeleccionConsultora($mun_id) {
+        $this->load->model('procesoAdministrativo/proceso');
+        if($this->proceso->contarProPorMuni($mun_id)!=0) {
+            $resultado = $this->proceso->obtenerPro($mun_id);
+            $id=$resultado[0]->pro_id;
+            $numero=$resultado[0]->pro_numero;
+            if ($resultado[0]->pro_fenvio_informacion != "")
+                $pro_fenvio_informacion = date('d/m/y', strtotime($resultado[0]->pro_fenvio_informacion));
+            else
+                $pro_fenvio_informacion = $resultado[0]->pro_fenvio_informacion;
+            if ($resultado[0]->pro_ffinalizacion != "")
+                $pro_flimite_recepcion = date('d/m/y', strtotime($resultado[0]->pro_flimite_recepcion));
+            else
+                $pro_flimite_recepcion = $resultado[0]->pro_flimite_recepcion;
+        }else{
+            $id=0;
+            $numero=null;
+            $pro_fenvio_informacion = "";
+            $pro_flimite_recepcion = "";
+        }
+        $rows[0]['id'] = $id;
+        $rows[0]['cell'] = array($id,
+            $numero,
+            $pro_fenvio_informacion,
+            $pro_flimite_recepcion
+        );
+
+
+        $datos = json_encode($rows);
+        $pages = floor(1 / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . 1 . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+    
     public function subirArchivo2($tabla, $campo_id, $campo, $ext) {
         echo $this->librerias->subirDocumento2($tabla, $campo_id, $_FILES, $campo, $ext);
     }
