@@ -26,9 +26,10 @@
                 if(response!='error'){
                     $('#vinieta').val('Subido con Exito');
                     this.enable();			
-                    $('#vinietaD').val('Descargar Archivo');
+                    ext= (response.substring(response.lastIndexOf("."))).toLowerCase();
+                    nombre=response.substring(response.lastIndexOf("/")).toLowerCase().replace('/','');
+                    $('#vinietaD').val('Descargar '+nombre);
                     $('#pro_pep_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO
-                    ext= (response.substring(response.lastIndexOf("."))).toLowerCase(); 
                     if (ext=='.pdf'){
                         $('#btn_descargar').attr({
                             'href': '<?php echo base_url(); ?>'+response,
@@ -108,9 +109,9 @@
         <td style="width: 20px"></td>
         <td>
             <table>
-                <tr style="width: 300px"> <td ><strong>Fecha de entrega de producto: </strong><input id="pro_pep_fecha_borrador" <?php if (isset($pro_pep_fecha_borrador)) { ?>  value="<?php echo date('d/m/y', strtotime($pro_pep_fecha_borrador)); ?>" <?php } ?> name="pro_pep_fecha_borrador" type="text" size="5" /></td></tr>
-                <tr><td><strong>Fecha de visto bueno: </strong><input id="pro_pep_fecha_observacion" <?php if (isset($pro_pep_fecha_observacion)) { ?>value="<?php echo date('d/m/y', strtotime($pro_pep_fecha_observacion)); ?>"<?php } ?>  name="pro_pep_fecha_observacion" type="text" size="5" /></td></tr>
-                <tr> <td><strong>Fecha de aprobacion del consejo municipal: </strong><input id="pro_pep_fecha_aprobacion" <?php if (isset($pro_pep_fecha_aprobacion)) { ?> value="<?php echo date('d/m/y', strtotime($pro_pep_fecha_aprobacion)); ?>"<?php } ?>  name="pro_pep_fecha_aprobacion" type="text" size="5" /></td></tr>
+                <tr style="width: 300px"> <td ><strong>Fecha de entrega de producto: </strong><input id="pro_pep_fecha_borrador" <?php if (isset($pro_pep_fecha_borrador)) { ?>  value="<?php echo date('d/m/Y', strtotime($pro_pep_fecha_borrador)); ?>" <?php } ?> name="pro_pep_fecha_borrador" type="text" size="7" /></td></tr>
+                <tr><td><strong>Fecha de visto bueno: </strong><input id="pro_pep_fecha_observacion" <?php if (isset($pro_pep_fecha_observacion)) { ?>value="<?php echo date('d/m/Y', strtotime($pro_pep_fecha_observacion)); ?>"<?php } ?>  name="pro_pep_fecha_observacion" type="text" size="7" /></td></tr>
+                <tr> <td><strong>Fecha de aprobacion del consejo municipal: </strong><input id="pro_pep_fecha_aprobacion" <?php if (isset($pro_pep_fecha_aprobacion)) { ?> value="<?php echo date('d/m/Y', strtotime($pro_pep_fecha_aprobacion)); ?>"<?php } ?>  name="pro_pep_fecha_aprobacion" type="text" size="7" /></td></tr>
             </table>
             <p><strong>¿Acta de aceptación contiene firmas?</strong></p>
             <table>
@@ -134,13 +135,14 @@
         </tr>
     </table>
     <table>
+        <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente</td></tr>
         <tr>
         <td><div id="btn_subir"></div></td>
         <td><input class="letraazul" type="text" id="vinieta" value="Subir Acta" size="60" style="border: none"/></td>
         </tr>
         <tr>
         <td><a <?php if (isset($pro_pep_ruta_archivo) && $pro_pep_ruta_archivo != '') { ?> href="<?php echo base_url() . $pro_pep_ruta_archivo; ?>"<?php } ?>  id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
-        <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($pro_pep_ruta_archivo) && $pro_pep_ruta_archivo != '') { ?>value="Descargar Acta"<?php } else { ?> value="No hay ninguna acta para descargar" <?php } ?>size="50" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($pro_pep_ruta_archivo) && $pro_pep_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo ?>"<?php } else { ?> value="No hay ninguna acta para descargar" <?php } ?>size="50" style="border: none"/></td>
         </tr>
     </table>
     <p>Observaciones y/o Recomendaciones:<br/>

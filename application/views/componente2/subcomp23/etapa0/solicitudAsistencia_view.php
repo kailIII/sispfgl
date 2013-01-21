@@ -148,7 +148,7 @@
         <tr>
         <td class="textD"><strong>Fecha de solicitud: </strong> </td>
         <td>
-            <input <?php if (isset($solicitud_fecha)) { ?> value='<?php echo date('d/m/y', strtotime($solicitud_fecha)); ?>'<?php } ?>id="solicitud_fecha" name="solicitud_fecha" type="text" size="10" readonly="readonly"/>
+            <input <?php if (isset($solicitud_fecha)) { ?> value='<?php echo date('d/m/Y', strtotime($solicitud_fecha)); ?>'<?php } ?>id="solicitud_fecha" name="solicitud_fecha" type="text" size="10" readonly="readonly"/>
         </td>
         </tr>
         <tr>

@@ -649,6 +649,8 @@ class Comp23_E1 extends CI_Controller {
             $informacion['acu_mun_p2'] = $acuerdoMun[0]['acu_mun_p2'];
             $informacion['acu_mun_observacion'] = $acuerdoMun[0]['acu_mun_observacion'];
             $informacion['acu_mun_ruta_archivo'] = $acuerdoMun[0]['acu_mun_ruta_archivo'];
+            $informacion['nombreArchivo'] =end(explode("/", $acuerdoMun[0]['acu_mun_ruta_archivo'])); 
+            
         }
 
         $informacion['contrapartidas'] = $this->contraAcuerdo->obtenerLasContrapartidoAcuerdo($acu_mun_id);
@@ -747,6 +749,7 @@ class Comp23_E1 extends CI_Controller {
             $informacion['dec_int_lugar'] = $declaracionInt[0]['dec_int_lugar'];
             $informacion['dec_int_comentario'] = $declaracionInt[0]['dec_int_comentario'];
             $informacion['dec_int_ruta_archivo'] = $declaracionInt[0]['dec_int_ruta_archivo'];
+            $informacion['nombreArchivo'] =end(explode("/", $declaracionInt[0]['dec_int_ruta_archivo'])); 
         }
         $informacion['dec_int_id'] = $dec_int_id;
         /* CARGA DE PLANTILLAS */
@@ -1051,6 +1054,7 @@ class Comp23_E1 extends CI_Controller {
         $informacion['inf_pre_fecha_observacion'] = $resultado[0]['inf_pre_fecha_observacion'];
         $informacion['inf_pre_observacion'] = $resultado[0]['inf_pre_observacion'];
         $informacion['inf_pre_ruta_archivo'] = $resultado[0]['inf_pre_ruta_archivo'];
+        $informacion['nombreArchivo'] =end(explode("/", $resultado[0]['inf_pre_ruta_archivo'])); 
         $informacion['cumplimientosMinimos'] = $this->cumInf->obtenerLosCumplimientosInforme($resultado[0]['inf_pre_id']);
         /* FIN DE INFORME PRELIMINAR */
         $this->load->view('plantilla/header', $informacion);
@@ -1229,7 +1233,7 @@ class Comp23_E1 extends CI_Controller {
         switch ($operacion) {
             case 'add':
                 if (!strcasecmp($tipo, 'p'))
-                    $this->fuePri->agregarReunion($fue_pri_nombre, $fue_pri_institucion, $fue_pri_cargo, $fue_pri_telefono, $fue_pri_tipo_info, $inv_inf_id);
+                    $this->fuePri->agregarFuentePrimaria($fue_pri_nombre, $fue_pri_institucion, $fue_pri_cargo, $fue_pri_telefono, $fue_pri_tipo_info, $inv_inf_id);
                 else
                     $this->fueSec->agregarFuenteSecundaria($fue_sec_nombre, $fue_sec_fuente, $fue_sec_disponible_en, $fue_sec_anio, $inv_inf_id);
                 break;

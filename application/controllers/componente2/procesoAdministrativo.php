@@ -311,11 +311,11 @@ class ProcesoAdministrativo extends CI_Controller {
             $id=$resultado[0]->pro_id;
             $numero=$resultado[0]->pro_numero;
             if ($resultado[0]->pro_finicio != "")
-                $pro_fininicio = date('d/m/y', strtotime($resultado[0]->pro_finicio));
+                $pro_fininicio = date('d/m/Y', strtotime($resultado[0]->pro_finicio));
             else
                 $pro_fininicio = $resultado[0]->pro_finicio;
             if ($resultado[0]->pro_ffinalizacion != "")
-                $pro_ffinalizacion = date('d/m/y', strtotime($resultado[0]->pro_ffinalizacion));
+                $pro_ffinalizacion = date('d/m/Y', strtotime($resultado[0]->pro_ffinalizacion));
             else
                 $pro_ffinalizacion = $resultado[0]->pro_ffinalizacion;
         }else{
@@ -351,11 +351,11 @@ class ProcesoAdministrativo extends CI_Controller {
             $id=$resultado[0]->pro_id;
             $numero=$resultado[0]->pro_numero;
             if ($resultado[0]->pro_fenvio_informacion != "")
-                $pro_fenvio_informacion = date('d/m/y', strtotime($resultado[0]->pro_fenvio_informacion));
+                $pro_fenvio_informacion = date('d/m/Y', strtotime($resultado[0]->pro_fenvio_informacion));
             else
                 $pro_fenvio_informacion = $resultado[0]->pro_fenvio_informacion;
             if ($resultado[0]->pro_ffinalizacion != "")
-                $pro_flimite_recepcion = date('d/m/y', strtotime($resultado[0]->pro_flimite_recepcion));
+                $pro_flimite_recepcion = date('d/m/Y', strtotime($resultado[0]->pro_flimite_recepcion));
             else
                 $pro_flimite_recepcion = $resultado[0]->pro_flimite_recepcion;
         }else{

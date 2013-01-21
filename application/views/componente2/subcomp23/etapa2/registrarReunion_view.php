@@ -94,9 +94,9 @@
                     editrules:{custom:true, custom_func:validaSexo}
                 },
                 {name:'par_edad',index:'par_edad',width:80,editable:true,
-                    editoptions:{size:25,maxlength:30}, 
+                    editoptions:{ size:15,dataInit: function(elem){$(elem).bind("keypress", function(e) {return numeros(e)})}}, 
                     formoptions:{ label: "Edad",elmprefix:"(*)"},
-                    editrules:{required:true,number:true,minvalue:12} 
+                    editrules:{required:true,number:true,minValue:12} 
                 },
                 {name:'par_cargo',index:'par_cargo',width:120,editable:true,
                     editoptions:{size:25,maxlength:30}, 
@@ -171,9 +171,10 @@
                     editrules:{required:true} 
                 },
                 {name:'pro_ide_prioridad',index:'pro_ide_prioridad',width:80,
-                    editable:true,editoptions:{size:15}, 
+                    editable:true,
+                    editoptions:{ size:15,dataInit: function(elem){$(elem).bind("keypress", function(e) {return numeros(e)})}}, 
                     formoptions:{label: "Prioridad",elmprefix:"(*)"},
-                    editrules:{required:true,number:true} 
+                    editrules:{required:true,number:true,minValue:1} 
                 }           
             ],
             multiselect: false,

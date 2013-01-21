@@ -96,9 +96,9 @@
                     editrules:{custom:true, custom_func:validar}
                 },
                 {name:'par_edad',index:'par_edad',width:80,editable:true,
-                    editoptions:{size:25,maxlength:30}, 
+                    editoptions:{ size:15,dataInit: function(elem){$(elem).bind("keypress", function(e) {return numeros(e)})}}, 
                     formoptions:{ label: "Edad",elmprefix:"(*)"},
-                    editrules:{required:true,minvalue:12,number:true} 
+                    editrules:{required:true,minValue:12,number:true} 
                 },
                 {name:'par_tipo',index:'par_tipo',width:80,edittype:"select",
                     editable:true,
@@ -171,7 +171,7 @@
         <tr>
         <td ><strong>Lugar:</strong><input id="gru_ges_lugar" <?php if (isset($gru_ges_lugar)) { ?> value='<?php echo $gru_ges_lugar; ?>'<?php } ?> name="gru_ges_lugar" type="text" size="40"/></td>
          <td style="width: 150px"></td>
-        <td  ><strong>Fecha: </strong><input readonly="readonly" <?php if (isset($gru_ges_fecha)) { ?> value='<?php echo date('d/m/y', strtotime($gru_ges_fecha)); ?>'<?php } ?>id="gru_ges_fecha" name="gru_ges_fecha" type="text" size="10"/></td>
+        <td  ><strong>Fecha: </strong><input readonly="readonly" <?php if (isset($gru_ges_fecha)) { ?> value='<?php echo date('d/m/Y', strtotime($gru_ges_fecha)); ?>'<?php } ?>id="gru_ges_fecha" name="gru_ges_fecha" type="text" size="10"/></td>
         </tr>
         <tr>
         <td colspan="2"></td>

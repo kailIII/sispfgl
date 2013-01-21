@@ -86,7 +86,7 @@
                     editrules:{required:true} 
                 },
                 {name:'par_sexo',index:'par_sexo',editable:true,edittype:"select",width:40,
-                    editoptions:{ value: '0:Seleccione;f:Femenino;m:Masculino' }, 
+                    editoptions:{ value: '0:Seleccione;M:Mujer;H:Hombre' }, 
                     formoptions:{ label: "Sexo",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validaSexo}
                 },
@@ -164,9 +164,10 @@
                 if(response!='error'){
                     $('#vinieta').val('Subido con Exito');
                     this.enable();			
-                    $('#vinietaD').val('Descargar Archivo');
+                    ext= (response.substring(response.lastIndexOf("."))).toLowerCase();
+                    nombre=response.substring(response.lastIndexOf("/")).toLowerCase().replace('/','');
+                    $('#vinietaD').val('Descargar '+nombre);
                     $('#acu_mun_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO
-                    ext= (response.substring(response.lastIndexOf("."))).toLowerCase(); 
                     if (ext=='.pdf'){
                         $('#btn_descargar').attr({
                             'href': '<?php echo base_url(); ?>'+response,
@@ -194,25 +195,26 @@
 <?php
 foreach ($contrapartidas as $aux) {
     if (!strcasecmp($aux->con_nombre, 'Otro')) {
-        if (!strcasecmp($aux->con_acu_valor, 'f')){
-        ?>
-   $('#especifique_<?php echo $aux->con_id; ?>').hide();
-   $('#lespecifique').hide();
-   <?php } ?>
-   $("#con_<?php  echo $aux->con_id; ?>").click(function() { 
-       if ($("#con_<?php echo $aux->con_id; ?>").is(':checked')) {  
-          $('#especifique_<?php echo $aux->con_id; ?>').show();
-          $('#lespecifique').show();
-      }else{
-         $('#especifique_<?php echo $aux->con_id; ?>').hide();
-         $('#lespecifique').hide();
-         $('#lespecifique').val("");
-      }
-   });
-    <?php }
+        if (!strcasecmp($aux->con_acu_valor, 'f')) {
+            ?>
+                            $('#especifique_<?php echo $aux->con_id; ?>').hide();
+                            $('#lespecifique').hide();
+        <?php } ?>
+                   $("#con_<?php echo $aux->con_id; ?>").click(function() { 
+                       if ($("#con_<?php echo $aux->con_id; ?>").is(':checked')) {  
+                           $('#especifique_<?php echo $aux->con_id; ?>').show();
+                           $('#lespecifique').show();
+                       }else{
+                           $('#especifique_<?php echo $aux->con_id; ?>').hide();
+                           $('#lespecifique').hide();
+                           $('#lespecifique').val("");
+                       }
+                   });
+    <?php
+    }
 }
 ?>
-             });
+    });
 </script>
 <form id="acuerdoMunicipalForm" method="post">
 
@@ -230,7 +232,7 @@ foreach ($contrapartidas as $aux) {
     </table>
     <table>
         <td  width="400"><strong>Fecha: </strong>
-            <input <?php if (isset($acu_mun_fecha)) { ?> value='<?php echo date('d/m/y', strtotime($acu_mun_fecha)); ?>'<?php } ?>id="acu_mun_fecha" name="acu_mun_fecha" type="text" size="10" readonly="readonly"/></td>
+            <input <?php if (isset($acu_mun_fecha)) { ?> value='<?php echo date('d/m/Y', strtotime($acu_mun_fecha)); ?>'<?php } ?>id="acu_mun_fecha" name="acu_mun_fecha" type="text" size="10" readonly="readonly"/></td>
         </tr>
     </table>
     <p>¿Consejo Municipal conoce el proceso de planificación? 
@@ -251,12 +253,13 @@ foreach ($contrapartidas as $aux) {
             <legend>Aportes de la Municipalidad</legend>
             <?php foreach ($contrapartidas as $aux) { ?>
                 <input <?php if (!strcasecmp($aux->con_acu_valor, 't')) { ?>checked <?php } ?> type="checkbox" name="con_<?php echo $aux->con_id; ?>" id="con_<?php echo $aux->con_id; ?>" value="<?php echo $aux->con_id; ?>" ><?php echo $aux->con_nombre; ?></input><br/>
-                <?php if(!strcasecmp($aux->con_nombre, 'Otro')) {?>
-                   <input value="Especifique:"type="text" name="lespecifique" id="lespecifique" size="15" style="border:none;background: white;" readonly="readonly"/>
-                   <input <?php if (isset($aux->con_especifique)) {?> value="<?php echo $aux->con_especifique; }?>"type="text" name="especifique_<?php echo $aux->con_id; ?>" id="especifique_<?php echo $aux->con_id; ?>" size="15"/>
-<?php } 
-
-}?>
+    <?php if (!strcasecmp($aux->con_nombre, 'Otro')) { ?>
+                    <input value="Especifique:"type="text" name="lespecifique" id="lespecifique" size="15" style="border:none;background: white;" readonly="readonly"/>
+                    <input <?php if (isset($aux->con_especifique)) { ?> value="<?php echo $aux->con_especifique;
+        } ?>"type="text" name="especifique_<?php echo $aux->con_id; ?>" id="especifique_<?php echo $aux->con_id; ?>" size="15"/>
+                <?php }
+            }
+            ?>
         </fieldset>
 
         </td>
@@ -318,13 +321,14 @@ foreach ($contrapartidas as $aux) {
         </tr>
     </table>
     <table>
+        <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente</td></tr>
         <tr>
         <td><div id="btn_subir"></div></td>
         <td><input class="letraazul" type="text" id="vinieta" value="Subir Acuerdo Municipal" size="30" style="border: none"/></td>
         </tr>
         <tr>
         <td><a <?php if (isset($acu_mun_ruta_archivo) && $acu_mun_ruta_archivo != '') { ?> href="<?php echo base_url() . $acu_mun_ruta_archivo; ?>"<?php } ?>  id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
-        <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($acu_mun_ruta_archivo) && $acu_mun_ruta_archivo != '') { ?>value="Descargar Acuerdo Municipal"<?php } else { ?> value="No Hay Acuerdo Por Descargar" <?php } ?>size="30" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($acu_mun_ruta_archivo) && $acu_mun_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo ?>"<?php } else { ?> value="No Hay Acuerdo Por Descargar" <?php } ?>size="30" style="border: none"/></td>
         </tr>
     </table>
 
@@ -336,6 +340,7 @@ foreach ($contrapartidas as $aux) {
         </div>
     </center>
     <input id="acu_mun_ruta_archivo" name="acu_mun_ruta_archivo" <?php if (isset($acu_mun_ruta_archivo) && $acu_mun_ruta_archivo != '') { ?>value="<?php echo $acu_mun_ruta_archivo; ?>"<?php } ?> type="text" size="100" readonly="readonly" style="visibility: hidden"/>
+    <input id="acu_mun_id" name="acu_mun_id" value="<?php echo $acu_mun_id; ?>" type="text" size="100" readonly="readonly" style="visibility: hidden"/>
 
 </form>
 <div id="mensaje" class="mensaje" title="Aviso de la operación">

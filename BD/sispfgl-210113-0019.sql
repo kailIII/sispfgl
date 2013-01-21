@@ -3486,8 +3486,6 @@ SELECT pg_catalog.setval('actividades_epi_act_id_seq', 1, true);
 --
 
 COPY acuerdo_municipal (acu_mun_id, acu_mun_fecha, acu_mun_p1, acu_mun_p2, acu_mun_observacion, pro_pep_id, acu_mun_ruta_archivo, eta_id, acu_mun_fecha_observacion, acu_mun_fecha_borrador, acu_mun_fecha_aceptacion) FROM stdin;
-15	\N	f	\N		7	documentos/acuerdo_municipal/acuerdo_municipal15.doc	4	2012-12-12	2012-12-05	2012-12-19
-13	\N	\N	\N		7	documentos/acuerdo_municipal/acuerdo_municipal13.pdf	1	\N	\N	\N
 17	\N	\N	\N	\N	9	\N	1	\N	\N	\N
 18	\N	\N	\N	\N	14	\N	1	\N	\N	\N
 19	\N	\N	\N	\N	16	\N	1	\N	\N	\N
@@ -3496,6 +3494,8 @@ COPY acuerdo_municipal (acu_mun_id, acu_mun_fecha, acu_mun_p1, acu_mun_p2, acu_m
 22	\N	\N	\N	\N	11	\N	1	\N	\N	\N
 23	\N	\N	\N	\N	12	\N	1	\N	\N	\N
 24	\N	\N	\N	\N	13	\N	1	\N	\N	\N
+13	2013-01-01	\N	\N		7	documentos/acuerdo_municipal/acuerdo_municipal13.pdf	1	\N	\N	\N
+15	\N	f	\N		7	documentos/acuerdo_municipal/acuerdo_municipal15.pdf	4	2012-12-13	2012-12-05	2012-12-19
 \.
 
 
@@ -3588,7 +3588,7 @@ COPY autor_estrategia (aut_est_id, aut_est_nombre, aut_est_fecha, aut_est_cantid
 -- Name: autor_estrategia_aut_est_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('autor_estrategia_aut_est_id_seq', 1, true);
+SELECT pg_catalog.setval('autor_estrategia_aut_est_id_seq', 3, true);
 
 
 --
@@ -3601,6 +3601,7 @@ COPY capacitacion (cap_id, cap_fecha, cap_tema, cap_lugar, cap_observacion, pro_
 60	2012-12-12	uuuuuuu	ttttttttttt		7	0	4
 20	2012-11-07	El beneficio de las finanzas	Casa Comunal La Gloria		7	Finanzas	1
 69	2069-12-31	gfsgf	gsfgfsg	gsfgfsg	7	dsgf	2
+75	2013-01-02	fadfad	fadfadsf		7	0	4
 \.
 
 
@@ -3608,7 +3609,7 @@ COPY capacitacion (cap_id, cap_fecha, cap_tema, cap_lugar, cap_observacion, pro_
 -- Name: capacitacion_cap_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('capacitacion_cap_id_seq', 70, true);
+SELECT pg_catalog.setval('capacitacion_cap_id_seq', 75, true);
 
 
 --
@@ -3616,9 +3617,7 @@ SELECT pg_catalog.setval('capacitacion_cap_id_seq', 70, true);
 --
 
 COPY ci_sessions (session_id, ip_address, user_agent, last_activity, user_data) FROM stdin;
-10aa718c72c76d3f854921b540ec3f63	127.0.0.1	Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.97 Safari/537.11	1358492186	a:2:{s:9:"user_data";s:0:"";s:17:"flash:old:message";s:97:"Ha reseteado correctamente la contraseña <a href="http://sispfgl.localhost/auth/login">Login</a>";}
-20de2efd04f21c5af091d92a4efdced4	::1	Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.97 Safari/537.11	1358490303	a:4:{s:9:"user_data";s:0:"";s:7:"user_id";s:1:"9";s:8:"username";s:11:"cfuentes_86";s:6:"status";s:1:"1";}
-4f7985ce07bf0baea3e9c510ce720d63	127.0.0.1	Mozilla/5.0 (X11; Linux x86_64; rv:10.0.11) Gecko/20100101 Firefox/10.0.11 Iceweasel/10.0.11	1358492594	
+65586195537c8e3d0e8b8a5475678902	127.0.0.1	Mozilla/5.0 (X11; Linux x86_64; rv:10.0.11) Gecko/20100101 Firefox/10.0.11 Iceweasel/10.0.11	1358747211	a:4:{s:9:"user_data";s:0:"";s:7:"user_id";s:1:"9";s:8:"username";s:11:"cfuentes_86";s:6:"status";s:1:"1";}
 \.
 
 
@@ -3716,12 +3715,6 @@ COPY contrapartida (con_id, con_nombre) FROM stdin;
 --
 
 COPY contrapartida_acuerdo (acu_mun_id, con_id, con_acu_valor, con_especifique) FROM stdin;
-13	1	f	\N
-13	3	f	\N
-13	4	f	\N
-13	5	f	\N
-13	2	f	\N
-13	6	f	\N
 17	1	\N	\N
 17	3	\N	\N
 17	5	\N	\N
@@ -3770,6 +3763,12 @@ COPY contrapartida_acuerdo (acu_mun_id, con_id, con_acu_valor, con_especifique) 
 24	2	\N	\N
 24	6	\N	\N
 24	4	\N	\N
+13	1	f	\N
+13	3	f	\N
+13	5	f	\N
+13	2	f	\N
+13	6	f	\N
+13	4	f	\N
 \.
 
 
@@ -3812,10 +3811,6 @@ SELECT pg_catalog.setval('"criterio_E0_criterio_id_seq"', 8, true);
 --
 
 COPY criterio_acuerdo (cri_id, acu_mun_id, cri_acu_valor) FROM stdin;
-1	13	t
-2	13	t
-3	13	\N
-4	13	\N
 1	17	\N
 2	17	\N
 3	17	\N
@@ -3848,6 +3843,10 @@ COPY criterio_acuerdo (cri_id, acu_mun_id, cri_acu_valor) FROM stdin;
 2	24	\N
 3	24	\N
 4	24	\N
+1	13	t
+2	13	t
+3	13	\N
+4	13	\N
 \.
 
 
@@ -4030,7 +4029,7 @@ SELECT pg_catalog.setval('dd_seq', 1, true);
 --
 
 COPY declaracion_interes (dec_int_id, dec_int_fecha, dec_int_lugar, dec_int_comentario, dec_int_ruta_archivo, pro_pep_id) FROM stdin;
-1	2012-10-11			documentos/declaracion_interes/declaracion_interes1.doc	7
+1	2012-10-11			documentos/declaracion_interes/declaracion_interes1.pdf	7
 \.
 
 
@@ -4091,22 +4090,22 @@ SELECT pg_catalog.setval('departamento_dep_id_seq', 1, false);
 --
 
 COPY detmonto_proyeccion (dmon_pro_id, dmon_pro_ingresos, dmon_pro_anio, dmon_pro_correlativo, mon_pro_id) FROM stdin;
-103	1000.00	2013	1	41
-104	1000.00	2014	2	41
-105	1000.00	2015	3	41
-106	1000.00	2016	4	41
-107	2000.00	2013	1	42
-108	2000.00	2014	2	42
-109	2000.00	2015	3	42
-110	2000.00	2016	4	42
-111	3000.00	2013	1	43
-112	3000.00	2014	2	43
-113	3000.00	2015	3	43
-114	3000.00	2016	4	43
-115	4000.00	2013	1	44
-116	4000.00	2014	2	44
-117	4000.00	2015	3	44
-118	4000.00	2016	4	44
+103	1000.00	2012	1	41
+104	1000.00	2013	2	41
+105	1000.00	2014	3	41
+106	1000.00	2015	4	41
+107	2000.00	2012	1	42
+108	2000.00	2013	2	42
+109	2000.00	2014	3	42
+110	2000.00	2015	4	42
+111	3000.00	2012	1	43
+112	3000.00	2013	2	43
+113	3000.00	2014	3	43
+114	3000.00	2015	4	43
+115	4000.00	2012	1	44
+116	4000.00	2013	2	44
+117	4000.00	2014	3	44
+118	4000.00	2015	4	44
 \.
 
 
@@ -4122,7 +4121,7 @@ SELECT pg_catalog.setval('detmonto_proyeccion_dmon_pro_id_seq', 118, true);
 --
 
 COPY diagnostico (dia_id, dia_fecha_borrador, dia_fecha_observacion, dia_fecha_concejo_muni, dia_vision, dia_observacion, dia_ruta_archivo, pro_pep_id) FROM stdin;
-1	2012-12-06	2012-12-07	2012-12-08	t		documentos/diagnostico/diagnostico1.docx	7
+1	2012-12-06	2012-12-07	2012-12-08	t		documentos/diagnostico/diagnostico1.pdf	7
 \.
 
 
@@ -4180,8 +4179,7 @@ SELECT pg_catalog.setval('epi_seq', 6, true);
 --
 
 COPY estrategia_comunicacion (est_com_id, est_com_observacion, pro_pep_id) FROM stdin;
-2	\N	7
-3	\N	7
+2		7
 \.
 
 
@@ -4212,6 +4210,7 @@ COPY facilitador (fac_id, fac_nombre, fac_apellido, cap_id, fac_email, fac_telef
 8	Hola	ho	45	ka@gmai.com	7415-9632
 5	Karen	Peñate	20	karensita_2410@hotmail.com	2276-1821
 12	dfa	fadf	60	karen@hotmail.com	5678-9644
+14	fdafd	fdadfasdf	75	fadfa@gmail.com	
 \.
 
 
@@ -4219,7 +4218,7 @@ COPY facilitador (fac_id, fac_nombre, fac_apellido, cap_id, fac_email, fac_telef
 -- Name: facilitador_fac_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('facilitador_fac_id_seq', 12, true);
+SELECT pg_catalog.setval('facilitador_fac_id_seq', 14, true);
 
 
 --
@@ -4273,7 +4272,7 @@ COPY fuente_primaria (fue_pri_id, inv_inf_id, fue_pri_nombre, fue_pri_institucio
 -- Name: fuente_primaria_fue_pri_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('fuente_primaria_fue_pri_id_seq', 4, true);
+SELECT pg_catalog.setval('fuente_primaria_fue_pri_id_seq', 5, true);
 
 
 --
@@ -4288,7 +4287,7 @@ COPY fuente_secundaria (fue_sec_id, inv_inf_id, fue_sec_nombre, fue_sec_fuente, 
 -- Name: fuente_secundaria_fue_sec_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('fuente_secundaria_fue_sec_id_seq', 1, true);
+SELECT pg_catalog.setval('fuente_secundaria_fue_sec_id_seq', 2, true);
 
 
 --
@@ -4296,7 +4295,7 @@ SELECT pg_catalog.setval('fuente_secundaria_fue_sec_id_seq', 1, true);
 --
 
 COPY grupo_apoyo (gru_apo_id, gru_apo_fecha, gru_apo_c3, gru_apo_c4, gru_apo_observacion, pro_pep_id, gru_apo_lugar) FROM stdin;
-1	2012-10-17	f	f		7	Centro Estudiantil Casa Blanca
+1	2012-10-17	f	f	fafdafds	7	Centro Estudiantil Casa Blanca
 \.
 
 
@@ -4380,7 +4379,7 @@ SELECT pg_catalog.setval('institucion_ins_id_seq', 6, true);
 --
 
 COPY integracion_instancia (int_ins_id, int_ins_fecha, int_ins_lugar, int_ins_observacion, int_ins_plan_trabajo, int_ins_reglamento_int, int_ins_ruta_archivo, pro_pep_id) FROM stdin;
-2	2012-12-11	\N		t	t	documentos/integracion_instancia/integracion_instancia2.doc	7
+2	2012-12-11	\N		t	t	documentos/integracion_instancia/integracion_instancia2.pdf	7
 \.
 
 
@@ -4448,10 +4447,10 @@ SELECT pg_catalog.setval('login_attempts_id_seq', 22, true);
 --
 
 COPY monto_proyeccion (mon_pro_id, mon_pro_nombre, mon_pro_dispo_financiera, mon_pro_ingresos, mon_pro_anio, pro_ing_id, mon_pro_idnombre) FROM stdin;
-41	FODES	12000.00	2000.00	2012	16	FODES
-42	Ingresos Propios	13000.00	3000.00	2012	16	IngresosPropios
-43	Donaciones	14000.00	4000.00	2012	16	Donaciones
-44	Créditos	15000.00	5000.00	2012	16	Creditos
+41	FODES	12000.00	2000.00	2011	16	FODES
+42	Ingresos Propios	13000.00	3000.00	2011	16	IngresosPropios
+43	Donaciones	14000.00	4000.00	2011	16	Donaciones
+44	Créditos	15000.00	5000.00	2011	16	Creditos
 \.
 
 
@@ -4862,11 +4861,11 @@ COPY participante (par_id, gru_apo_id, reu_id, ins_id, dec_int_id, inf_pre_id, p
 57	\N	\N	\N	\N	\N	Vanessa	Fuentes	M	Jefe	18	\N	1236-9587	78963314-5	\N	\N	\N	\N	\N	\N	\N	C	2
 59	\N	208	2	\N	\N	adfafd	afdafa	M	fdafdf	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
 21	\N	\N	2	1	\N	Mirna 	de Peñate	M	Jefe	65	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	S	\N
-2	1	\N	\N	\N	\N	Ariana 	Fuentes	M	Super Jefa	15	prepa	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
 65	\N	\N	\N	\N	\N	fafadf	fadfadf	H	fdafd	12	fdafd	         	          	u	\N	69	\N	\N	\N	\N	\N	\N
 46	\N	\N	\N	\N	\N	Karen	Peñate	M	Jefe	18	\N	7841-5236	14759662-2	\N	\N	\N	\N	\N	\N	1	C	\N
 66	\N	\N	\N	\N	\N	afdaf	fadfdaf	H	gsfgf	14	gsfgf	         	          	u	\N	70	\N	\N	\N	\N	\N	\N
 55	\N	\N	\N	\N	\N	fff	ffff	H	fff	\N	\N	1236-9988	\N	\N	15	\N	\N	\N	\N	\N	gg	\N
+2	1	\N	\N	\N	\N	Ariana 	Fuentes	M	Super Jefa	15	prepa	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
 \.
 
 
@@ -4879,12 +4878,14 @@ COPY participante_capacitacion (par_id, cap_id, par_cap_participa, par_cap_id) F
 46	46	Si	2
 50	46	Si	3
 46	45	Si	4
-2	20	Si	5
-58	60	Si	6
 57	60	Si	7
 1	20	Si	8
 65	69	Si	12
 46	69	Si	10
+2	20	No	5
+58	60	Si	6
+57	75	Si	27
+58	75	Si	26
 \.
 
 
@@ -4892,7 +4893,7 @@ COPY participante_capacitacion (par_id, cap_id, par_cap_participa, par_cap_id) F
 -- Name: participante_capacitacion_par_cap_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('participante_capacitacion_par_cap_id_seq', 14, true);
+SELECT pg_catalog.setval('participante_capacitacion_par_cap_id_seq', 27, true);
 
 
 --
@@ -4910,7 +4911,7 @@ COPY participante_definicion (par_id, def_id, par_def_participa) FROM stdin;
 -- Name: participante_par_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('participante_par_id_seq', 67, true);
+SELECT pg_catalog.setval('participante_par_id_seq', 80, true);
 
 
 --
@@ -5031,7 +5032,7 @@ COPY poblacion_reunion (pob_id, pob_comunidad, pob_sector, pob_institucion, reu_
 --
 
 COPY portafolio_proyecto (por_pro_id, por_pro_area, por_pro_tema, por_pro_nombre, por_pro_descripcion, por_pro_ubicacion, por_pro_costo_estimado, por_pro_fecha_desde, por_pro_fecha_hasta, por_pro_beneficiario_h, por_pro_beneficiario_m, por_pro_observacion, por_pro_ruta_archivo, pro_pep_id, por_pro_anio1, por_pro_anio2, por_pro_anio3, por_pro_anio4, por_pro_anio5) FROM stdin;
-62	Para cambiar	Para analizar1	Proyecto 1	Es un proyecto de Prueba	Col. Las Palmas	14526.05	2013-01-01	2013-01-31	1475962	1479632	fadfdf	documentos/portafolio_proyecto/portafolio_proyecto62.doc	7	9000.00	100.00	150.00	200.00	300.00
+62	Para cambiar	Para analizar1	Proyecto 1	Es un proyecto de Prueba	Col. Las Palmas	14526.05	2013-01-01	2013-01-31	1475962	1479632	fadfdf	documentos/portafolio_proyecto/portafolio_proyecto62.pdf	7	9000.00	100.00	150.00	200.00	300.00
 72	Area 2	Tema 2	Proyecto 2	Para proyecto 2	Col. Las Margaritas	1236.00	2013-01-01	2013-04-20	145696	145963		documentos/portafolio_proyecto/portafolio_proyecto72.pdf	7	2000.00	200.00	250.00	400.00	500.00
 \.
 
@@ -5040,7 +5041,7 @@ COPY portafolio_proyecto (por_pro_id, por_pro_area, por_pro_tema, por_pro_nombre
 -- Name: portafolio_proyecto_por_pro_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('portafolio_proyecto_por_pro_id_seq', 73, true);
+SELECT pg_catalog.setval('portafolio_proyecto_por_pro_id_seq', 74, true);
 
 
 --
@@ -5182,7 +5183,7 @@ COPY proyecto_pep (pro_pep_id, pro_pep_nombre, mun_id, inf_pre_id, inv_inf_id, g
 11	Proyecto pep 3 en jucuapa	248	\N	\N	\N	16	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
 12	Proyecto Pep 4 Candelaria de la frontera	211	\N	\N	\N	17	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
 13	Proyecto  pep 5 en chalchuapa	212	\N	\N	\N	18	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
-7	Proyecto de arreglo de una calle empedrada	192	4	2	1	7	1	4	2	1	t	t	\N	2012-12-04	2012-12-12	2012-12-19	documentos/proyecto_pep/proyecto_pep7.docx		2	16	2	\N
+7	Proyecto de arreglo de una calle empedrada	192	4	2	1	7	1	4	2	1	t	t	\N	2012-12-04	2012-12-12	2012-12-19	documentos/proyecto_pep/proyecto_pep7.pdf		2	16	2	\N
 \.
 
 
@@ -5386,7 +5387,7 @@ COPY reunion (reu_id, eta_id, reu_numero, reu_fecha, reu_duracion_horas, reu_tem
 -- Name: reunion_reu_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('reunion_reu_id_seq', 234, true);
+SELECT pg_catalog.setval('reunion_reu_id_seq', 235, true);
 
 
 --
@@ -5607,10 +5608,10 @@ COPY users (id, username, password, email, activated, banned, ban_reason, new_pa
 18	Usuario4	$2a$08$rf2LXUe2f4VGYpE23btvNurkxUTiqjGXr./0wqVrq59cpQ6PnYgra	kpenate4@salud.gob.sv	1	0	\N	\N	\N	\N	\N	127.0.0.1	2013-01-18	2013-01-18	\N	3
 19	Usuario5	$2a$08$hzeNXe4Hf2aMVHF6SDSs7eLu.HOnBonSZ51be024U7A0l3A.HbTCG	karen.elvira.penate4@gmail.com	1	0	\N	\N	\N	\N	\N	127.0.0.1	2013-01-18	2013-01-18	\N	3
 20	Usuario6	$2a$08$axrAa7B7hJUj7.dWb0QD5e6RZRwQxreGdaeufPsDuSkclUjrcnmVi	karensita4@hotmail.com	1	0	\N	\N	\N	\N	\N	127.0.0.1	2013-01-18	2013-01-18	\N	3
-9	cfuentes_86	$2a$08$E8ttuLm0U2cD5lHo8/bzxuPeOJw/8/8nXH912APeL12wCUl4hNbNO	cfuentes_86@hotmail.com	1	0	\N	\N	\N	\N	\N	::1	2013-01-17	2012-09-12	\N	3
 21	Usuario7	$2a$08$Z4iE6O6ueH.9xY0TTwBG..1a0jfNloWjhsAQv/1dOzyKNGTvdx2Ra	kpenate5@salud.gob.sv	1	0	\N	\N	\N	\N	\N	127.0.0.1	2013-01-18	2013-01-18	\N	3
 22	Usuario8	$2a$08$oeMJ57DEzHO0I8FiHPfNTe3vMCJaAaJhZdqXr27vClpodOLbBgPGG	karen.elvira.penate5@gmail.com	1	0	\N	\N	\N	\N	\N	127.0.0.1	2013-01-18	2013-01-18	\N	3
 14	kpenate2	$2a$08$xaEcqXMfRlC76rwrP6zus.j/PvgZ13mFhGGO39EFstPyaODtwpskC	kpenate2@salud.gob.sv	1	0	\N	\N	\N	\N	\N	127.0.0.1	2013-01-17	2013-01-13	\N	31
+9	cfuentes_86	$2a$08$E8ttuLm0U2cD5lHo8/bzxuPeOJw/8/8nXH912APeL12wCUl4hNbNO	cfuentes_86@hotmail.com	1	0	\N	\N	\N	\N	\N	127.0.0.1	2013-01-20	2012-09-12	\N	3
 \.
 
 

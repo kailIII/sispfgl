@@ -85,6 +85,8 @@
         </tr>
     </table>
     <br/><br/>
+    <p><strong>Indicación:</strong>Los montos a ingresar deben tener el siguiente formato: 999999.99  -->>
+Donde el 9 significa cualquier número entre el 0 y el 9</p>
     <table border="1"cellspacing="0" style="border-color: #2F589F" >
         <tr>
         <td class="thEstandar"></td>

@@ -55,7 +55,7 @@
                 },
                 {name:'fue_pri_tipo_info',index:'fue_pri_tipo_info',width:150,editable:true,
                     editoptions:{size:25,maxlength:100}, 
-                    formoptions:{ label: "Tipo Documento",elmprefix:"(*)"},
+                    formoptions:{ label: "Tipo de información",elmprefix:"(*)"},
                     editrules:{required:true} 
                 }
             ],

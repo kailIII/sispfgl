@@ -174,8 +174,8 @@
 </script>
 
 <form method="post" id="capacitacionForm">
-    <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
-    <h2 class="h2Titulos">Producto 4: Capacitaciones Local de Apoyo</h2>
+    <h2 class="h2Titulos">Etapa 4: Acompañamiento y Seguimiento</h2>
+    <h2 class="h2Titulos">Producto 4: Capacitaciones de los miembros de la instancia de integración</h2>
     <table>
         <tr>
         <td class="tdLugar" ><strong>Departamento:</strong></td>
@@ -187,7 +187,7 @@
     </table>
     <table>
         <tr>
-        <td  ><strong>Fecha de Capacitación: </strong><input value='<?php echo date('d/m/y', strtotime($cap_fecha)); ?>' readonly="readonly" id="cap_fecha" name="cap_fecha" type="text" size="10" /></td>
+        <td  ><strong>Fecha de Capacitación: </strong><input value='<?php echo date('d/m/Y', strtotime($cap_fecha)); ?>' readonly="readonly" id="cap_fecha" name="cap_fecha" type="text" size="10" /></td>
         </tr>
         <tr>
         <td colspan="2"><strong>Agenda:</strong><input id="cap_tema" value="<?php echo $cap_tema ?>" name="cap_tema" type="text" size="40"/></td>

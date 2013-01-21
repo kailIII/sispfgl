@@ -247,15 +247,15 @@
     <table>
         <tr>
         <td class="textD"><strong>Fecha de publicación: </strong></td> 
-        <td><input value="<?php if ($pro_fpublicacion != "") echo date('d/m/y', strtotime($pro_fpublicacion)); ?>" id="pro_fpublicacion" name="pro_fpublicacion" type="text" size="10" readonly="readonly"/></td>
+        <td><input value="<?php if ($pro_fpublicacion != "") echo date('d/m/Y', strtotime($pro_fpublicacion)); ?>" id="pro_fpublicacion" name="pro_fpublicacion" type="text" size="10" readonly="readonly"/></td>
         </tr>
         <tr>
         <td class="textD"> <strong>Fecha de aclaración de dudas: </strong></td>
-        <td><input value="<?php if ($pro_faclara_dudas != "") echo date('d/m/y', strtotime($pro_faclara_dudas)); ?>" id="pro_faclara_dudas" name="pro_faclara_dudas" type="text" size="10" readonly="readonly"/></td>
+        <td><input value="<?php if ($pro_faclara_dudas != "") echo date('d/m/Y', strtotime($pro_faclara_dudas)); ?>" id="pro_faclara_dudas" name="pro_faclara_dudas" type="text" size="10" readonly="readonly"/></td>
         </tr>
         <tr>
         <td class="textD"><strong>Fecha limite de expresión de interes: </strong></td>
-        <td><input value="<?php if ($pro_fexpresion_interes != "") echo date('d/m/y', strtotime($pro_fexpresion_interes)); ?>" id="pro_fexpresion_interes" name="pro_fexpresion_interes" type="text" size="10" readonly="readonly"/></td>
+        <td><input value="<?php if ($pro_fexpresion_interes != "") echo date('d/m/Y', strtotime($pro_fexpresion_interes)); ?>" id="pro_fexpresion_interes" name="pro_fexpresion_interes" type="text" size="10" readonly="readonly"/></td>
         </tr>
     </table>
     <br/><br/>

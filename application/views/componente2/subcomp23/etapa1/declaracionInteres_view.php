@@ -95,9 +95,9 @@
                     editrules:{required:true} 
                 },
                 {name:'par_edad',index:'par_edad',width:80,editable:true,
-                    editoptions:{size:25,maxlength:30}, 
+                    editoptions:{ size:15,dataInit: function(elem){$(elem).bind("keypress", function(e) {return numeros(e)})}}, 
                     formoptions:{ label: "Edad",elmprefix:"(*)"},
-                    editrules:{required:true,minvalue:12,number:true} 
+                    editrules:{required:true,minValue:12,number:true} 
                 },
                 {name:'par_sexo',index:'par_sexo',editable:true,edittype:"select",width:50,
                     editoptions:{ value: '0:Seleccione;M:Mujer;H:Hombre' }, 
@@ -184,9 +184,10 @@
                 if(response!='error'){
                     $('#vinieta').val('Subido con Exito');
                     this.enable();			
-                    $('#vinietaD').val('Descargar Archivo');
+                    ext= (response.substring(response.lastIndexOf("."))).toLowerCase();
+                    nombre=response.substring(response.lastIndexOf("/")).toLowerCase().replace('/','');
+                    $('#vinietaD').val('Descargar '+nombre);
                     $('#dec_int_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO
-                    ext= (response.substring(response.lastIndexOf("."))).toLowerCase(); 
                     if (ext=='.pdf'){
                         $('#btn_descargar').attr({
                             'href': '<?php echo base_url(); ?>'+response,
@@ -229,7 +230,7 @@
         </tr>
     </table>
     <table>
-        <td><strong>Fecha: </strong><input <?php if (isset($dec_int_fecha)) { ?> value='<?php echo date('d/m/y', strtotime($dec_int_fecha)); ?>'<?php } ?> id="dec_int_fecha" name="dec_int_fecha" type="text" size="10"/></td>
+        <td><strong>Fecha: </strong><input <?php if (isset($dec_int_fecha)) { ?> value='<?php echo date('d/m/Y', strtotime($dec_int_fecha)); ?>'<?php } ?> id="dec_int_fecha" name="dec_int_fecha" type="text" size="10"/></td>
         </tr>
     </table>
 
@@ -275,13 +276,14 @@
 
     </table>
     <table>
+        <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente</td></tr>
         <tr>
         <td><div id="btn_subir"></div></td>
         <td><input class="letraazul" type="text" id="vinieta" value="Subir Declaración de Interés" size="30" style="border: none"/></td>
         </tr>
         <tr>
         <td><a <?php if (isset($dec_int_ruta_archivo) && $dec_int_ruta_archivo != '') { ?> href="<?php echo base_url() . $dec_int_ruta_archivo; ?>"<?php } ?>  id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
-        <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($dec_int_ruta_archivo) && $dec_int_ruta_archivo != '') { ?>value="Descargar Declaración de Interés"<?php } else { ?> value="No Hay Ninguna Declaración Para Descargar" <?php } ?>size="50" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($dec_int_ruta_archivo) && $dec_int_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo; ?>"<?php } else { ?> value="No Hay Ninguna Declaración Para Descargar" <?php } ?>size="50" style="border: none"/></td>
         </tr>
     </table>
     <center style="position: relative;top: 20px">

@@ -979,6 +979,7 @@ class Comp23_E2 extends CI_Controller {
             $definicion = $this->definicion->obtenerDef($def_id);
             $informacion['def_fecha'] = $definicion[0]['def_fecha'];
             $informacion['def_ruta_archivo'] = $definicion[0]['def_ruta_archivo'];
+            $informacion['nombreArchivo'] =end(explode("/", $definicion[0]['def_ruta_archivo'])); 
         }
         $informacion['gru_ges_id'] = $gru_ges_id;
         $informacion['def_id'] = $def_id;
@@ -1195,6 +1196,7 @@ class Comp23_E2 extends CI_Controller {
         $informacion['dia_vision'] = $resultado[0]['dia_vision'];
         $informacion['dia_observacion'] = $resultado[0]['dia_observacion'];
         $informacion['dia_ruta_archivo'] = $resultado[0]['dia_ruta_archivo'];
+        $informacion['nombreArchivo'] =end(explode("/", $resultado[0]['dia_ruta_archivo'])); 
         $informacion['cumplimientosMinimos'] = $this->cumDia->obtenerLosCumplimientosDiagnostico($resultado[0]['dia_id']);
         /* FIN DE INFORME PRELIMINAR */
         $this->load->view('plantilla/header', $informacion);

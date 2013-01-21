@@ -65,9 +65,9 @@
                     editrules:{custom:true, custom_func:validar}
                 },
                 {name:'par_edad',index:'par_edad',width:80,editable:true,
-                    editoptions:{size:25,maxlength:30}, 
+                    editoptions:{ size:15,dataInit: function(elem){$(elem).bind("keypress", function(e) {return numeros(e)})}}, 
                     formoptions:{ label: "Edad",elmprefix:"(*)"},
-                    editrules:{required:true,number:true,minvalue:12} 
+                    editrules:{required:true,number:true,minValue:12} 
                 },
                 {name:'par_proviene',index:'par_proviene',width:80,edittype:"select",
                     editable:true,
@@ -311,7 +311,7 @@
     </table>
     <table>
         <tr>
-        <td> <strong>Fecha de Capacitación: </strong><input value='<?php echo date('d/m/y', strtotime($cap_fecha)); ?>' readonly="readonly" id="cap_fecha" name="cap_fecha" type="text" size="10" /></td>
+        <td> <strong>Fecha de Capacitación: </strong><input value='<?php echo date('d/m/Y', strtotime($cap_fecha)); ?>' readonly="readonly" id="cap_fecha" name="cap_fecha" type="text" size="10" /></td>
         </tr>
         <tr>
         <td ><strong>Area de Capacitación:</strong><input value="<?php echo $cap_area ?>" id="cap_area" name="cap_area" type="text" size="20"/></td>

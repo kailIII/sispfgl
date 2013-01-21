@@ -173,8 +173,8 @@
 
 <form method="post" id="capacitacionForm">
 
-    <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
-    <h2 class="h2Titulos">Producto 4: Capacitaciones Local de Apoyo</h2>
+    <h2 class="h2Titulos">Etapa 4: Acompañamiento y Seguimiento</h2>
+    <h2 class="h2Titulos">Producto 4: Capacitaciones de los miembros de la instancia de integración</h2>
     <table>
         <tr>
         <td class="tdLugar" ><strong>Departamento:</strong></td>

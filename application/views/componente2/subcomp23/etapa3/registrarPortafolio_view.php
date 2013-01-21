@@ -85,9 +85,9 @@
                     editrules:{required:true} 
                 },
                 {name:'fue_fin_monto',index:'fue_fin_monto',width:100,editable:true,
-                    editoptions:{size:25}, 
+                    editoptions:{ size:25,dataInit: function(elem){$(elem).bind("keypress", function(e) {return numeros(e)})}},  
                     formoptions:{label: "Monto:",elmprefix:"(*)"},
-                    editrules:{required:true, number:true} 
+                    editrules:{required:true, number:true,minValue:0} 
                 },
                 {name:'fue_fin_descripcion',index:'fue_fin_descripcion',width:300,editable:true,
                     edittype:"textarea",editoptions:{rows:"4",cols:"50",maxlength:300}, 
@@ -124,9 +124,10 @@
                 if(response!='error'){
                     $('#vinieta').val('Subido con Exito');
                     this.enable();			
-                    $('#vinietaD').val('Descargar Archivo');
+                    ext= (response.substring(response.lastIndexOf("."))).toLowerCase();
+                    nombre=response.substring(response.lastIndexOf("/")).toLowerCase().replace('/','');
+                    $('#vinietaD').val('Descargar '+nombre);
                     $('#por_pro_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO
-                    ext= (response.substring(response.lastIndexOf("."))).toLowerCase(); 
                     if (ext=='.pdf'){
                         $('#btn_descargar').attr({
                             'href': '<?php echo base_url(); ?>'+response,
@@ -245,7 +246,7 @@
         </tr>
         <tr>
         <td class="textD"><strong>Costo Estimado: </td>
-        <td><input name="por_pro_costo_estimado" type="text" size="10"/></td>
+        <td><input name="por_pro_costo_estimado" type="text" size="10"/>Con formato 99999.99</td>
         </tr>
     </table> 
     <fieldset style="border-color: #2F589F;position: relative;width: 400px;left:200px;"
@@ -267,7 +268,7 @@
         <br/><br/>
     </div>
     <fieldset style="border-color: #2F589F;position: relative;width: 400px;left:200px;"
-              <legend align="center"><strong>Beneficiarios</strong></legend>
+              <legend align="center"><strong>Beneficiarios</strong> Con Formato 999999</legend>
         <table>
             <tr>
             <td colspan="2">Hombres:<input id="por_pro_beneficiario_h" name="por_pro_beneficiario_h"  size="10"/></td>
@@ -277,13 +278,14 @@
     </fieldset>
     <p>Observaciones y/o recomendaciones:<br/><textarea id="por_pro_observacion" name="por_pro_observacion" cols="48" rows="5"></textarea></p>
     <table>
+        <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente</td></tr>
         <tr>
         <td><div id="btn_subir"></div></td>
         <td><input class="letraazul" type="text" id="vinieta" value="Subir Perfil del Proyecto" size="30" style="border: none"/></td>
         </tr>
         <tr>
         <td><a id="btn_descargar"  <?php if (isset($por_pro_ruta_archivo) && $por_pro_ruta_archivo != '') { ?> href="<?php echo base_url() . $por_pro_ruta_archivo; ?>"<?php } ?> ><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
-        <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($por_pro_ruta_archivo) && $por_pro_ruta_archivo != '') { ?>value="Descargar Perfil del Proyecto"<?php } else { ?> value="No hay perfil para ser descargado" <?php } ?>size="40" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($por_pro_ruta_archivo) && $por_pro_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo ?>"<?php } else { ?> value="No hay perfil para ser descargado" <?php } ?>size="40" style="border: none"/></td>
         </tr>
     </table>
     <center>  <p><input type="submit" id="guardar" value="Guardar Portafolio del Proyecto" />

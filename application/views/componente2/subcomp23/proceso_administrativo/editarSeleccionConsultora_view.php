@@ -102,11 +102,11 @@
         </tr>
         <tr>
         <td class="textD"><strong>Fecha de inicio: </strong></td> 
-        <td><input value="<?php if ($pro_fenvio_informacion != "") echo date('d/m/y', strtotime($pro_fenvio_informacion)); ?>" id="pro_fenvio_informacion" name="pro_fenvio_informacion" type="text" size="10" readonly="readonly"/></td>
+        <td><input value="<?php if ($pro_fenvio_informacion != "") echo date('d/m/Y', strtotime($pro_fenvio_informacion)); ?>" id="pro_fenvio_informacion" name="pro_fenvio_informacion" type="text" size="10" readonly="readonly"/></td>
         </tr>
         <tr>
         <td class="textD"> <strong>Fecha de finalización: </strong></td>
-        <td><input value="<?php if ($pro_flimite_recepcion != "") echo date('d/m/y', strtotime($pro_flimite_recepcion)); ?>" id="pro_flimite_recepcion" name="pro_flimite_recepcion" type="text" size="10" readonly="readonly"/></td>
+        <td><input value="<?php if ($pro_flimite_recepcion != "") echo date('d/m/Y', strtotime($pro_flimite_recepcion)); ?>" id="pro_flimite_recepcion" name="pro_flimite_recepcion" type="text" size="10" readonly="readonly"/></td>
         </tr>
     </table>
     <br/><br/>
