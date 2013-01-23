@@ -32,7 +32,7 @@
             else return [true,""];
         }
         /*FIN ZONA VALIDACIONES*/
-        /*GRID AGREGAR OTROS PARTICIPANTES*/
+        /*GRID Otros asistentes*/
         var tabla=$("#participantes");
         tabla.jqGrid({
             url:'<?php echo base_url('componente2/comp23_E1/cargarOtrosParticipanteGA') ?>/<?php echo $cap_id; ?>',
@@ -41,7 +41,7 @@
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','Dui','Nombres','Apellidos','Sexo','Edad','Proviene R/U','Cargo','Nivel Escolar','Teléfono'],
+            colNames:['id','Dui','Nombres','Apellidos','Sexo','Edad','Area R/U','Procedencia','Nivel Escolar','Teléfono'],
             colModel:[
                 {name:'par_id',index:'par_id', width:40,editable:false,editoptions:{size:15} },
                 {name:'par_dui',index:'par_dui', width:100,editable:true,
@@ -60,24 +60,24 @@
                 },
                 {name:'par_sexo',index:'par_sexo',editable:true,edittype:"select",width:50,
                     align:"center",
-                    editoptions:{ value: '0:Seleccione;F:Femenino;M:Masculino' }, 
+                    editoptions:{ value: '0:Seleccione;M:Mujer;H:Hombre' }, 
                     formoptions:{ label: "Sexo",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validar}
                 },
                 {name:'par_edad',index:'par_edad',width:80,editable:true,
-                    editoptions:{size:25,maxlength:30}, 
+                    editoptions:{ size:15,dataInit: function(elem){$(elem).bind("keypress", function(e) {return numeros(e)})}}, 
                     formoptions:{ label: "Edad",elmprefix:"(*)"},
-                    editrules:{required:true,number:true,minvalue:12} 
+                    editrules:{required:true,number:true,minValue:12} 
                 },
                 {name:'par_proviene',index:'par_proviene',width:80,edittype:"select",
                     editable:true,
                     editoptions:{ value: '0:Seleccione;u:Urbano; r:Rural' }, 
-                    formoptions:{ label: "Proviene de",elmprefix:"(*)"},
+                    formoptions:{ label: "Area",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validar}
                 },
                 {name:'par_cargo',index:'par_cargo',width:100,editable:true,
                     editoptions:{size:25,maxlength:30}, 
-                    formoptions:{ label: "Cargo",elmprefix:"(*)"},
+                    formoptions:{ label: "Procedencia",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
                 {name:'par_nivel_esco',index:'par_nivel_esco',width:100,editable:true,
@@ -87,12 +87,11 @@
                 },
                 {name:'par_tel',index:'par_tel',width:100,editable:true,
                     editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}, 
-                    formoptions:{ label: "Teléfono",elmprefix:"(*)"},
-                    editrules:{required:true} 
+                    formoptions:{ label: "Teléfono"} 
                 }
             ],
             multiselect: false,
-            caption: "Agregar Otros Participantes",
+            caption: "Otros asistentes",
             rowNum:10,
             rowList:[10,20,30],
             loadonce:true,
@@ -156,7 +155,7 @@
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','Dui','Nombre Completo','Sexo','Cargo','Teléfono','Participa',''],
+            colNames:['id','Dui','Nombre Completo','Sexo','Procedencia','Teléfono','Participa',''],
             colModel:[
                 {name:'par_id',index:'par_id', width:40,editable:false,editoptions:{size:15} },
                 {name:'par_dui',index:'par_dui', width:100,editable:false},
@@ -227,8 +226,7 @@
                 },
                 {name:'fac_telefono',index:'fac_telefono',width:100,editable:true,
                     editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}, 
-                    formoptions:{ label: "Teléfono",elmprefix:"(*)"},
-                    editrules:{required:true} 
+                    formoptions:{ label: "Teléfono"} 
                 },
                 {name:'fac_email',index:'fac_email',width:200,editable:true,
                     editoptions:{size:25,maxlength:50}, 
@@ -313,7 +311,7 @@
     </table>
     <table>
         <tr>
-        <td> <strong>Fecha de Capacitación: </strong><input value='<?php echo date('d/m/y', strtotime($cap_fecha)); ?>' readonly="readonly" id="cap_fecha" name="cap_fecha" type="text" size="10" /></td>
+        <td> <strong>Fecha de Capacitación: </strong><input value='<?php echo date('d/m/Y', strtotime($cap_fecha)); ?>' readonly="readonly" id="cap_fecha" name="cap_fecha" type="text" size="10" /></td>
         </tr>
         <tr>
         <td ><strong>Area de Capacitación:</strong><input value="<?php echo $cap_area ?>" id="cap_area" name="cap_area" type="text" size="20"/></td>

@@ -89,13 +89,13 @@
                     editrules:{custom:true, custom_func:validaInstitucion}
                 },
                 {name:'aut_est_cantidadm',index:'aut_est_cantidadm',width:120,editable:true,
-                    editoptions:{size:25,maxlength:30}, 
-                    formoptions:{ label: "Mujeres",elmprefix:"(*)"},
+                    editoptions:{ size:25,dataInit: function(elem){$(elem).bind("keypress", function(e) {return numeros(e)})}}, 
+                    formoptions:{ label: "Mujeres",elmprefix:"(*)",elmsuffix:"Con formato 9999"},
                     editrules:{required:true,integer:true} 
                 },
                 {name:'aut_est_cantidadh',index:'aut_est_cantidadh',width:120,editable:true,
-                    editoptions:{size:25,maxlength:30}, 
-                    formoptions:{ label: "Hombres",elmprefix:"(*)"},
+                   editoptions:{ size:25,dataInit: function(elem){$(elem).bind("keypress", function(e) {return numeros(e)})}}, 
+                    formoptions:{ label: "Hombres",elmprefix:"(*)",elmsuffix:"Con formato 9999"},
                     editrules:{required:true,integer:true} 
                 }
             ],
@@ -162,7 +162,7 @@
             <input type="button" id="cancelar" value="Cancelar" />
         </p>
     </center>
-
+<input type="text" id="est_com_id" name="est_com_id" value="<?php echo $est_com_id; ?>" style="visibility: hidden" />
 
 </form>
 <div id="mensaje" class="mensaje" title="Aviso de la operación">

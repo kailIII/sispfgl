@@ -89,14 +89,14 @@
                     editrules:{required:true} 
                 },
                 {name:'par_sexo',index:'par_sexo',editable:true,edittype:"select",width:50,
-                    editoptions:{ value: '0:Seleccione;F:Femenino;M:Masculino' }, 
+                    editoptions:{ value: '0:Seleccione;M:Mujer;H:Hombre' }, 
                     formoptions:{ label: "Sexo",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validaSexo}
                 },
                 {name:'par_edad',index:'par_edad',width:80,editable:true,
-                    editoptions:{size:25,maxlength:30}, 
+                    editoptions:{ size:15,dataInit: function(elem){$(elem).bind("keypress", function(e) {return numeros(e)})}}, 
                     formoptions:{ label: "Edad",elmprefix:"(*)"},
-                    editrules:{required:true,number:true,minvalue:12} 
+                    editrules:{required:true,number:true,minValue:12} 
                 },
                 {name:'par_cargo',index:'par_cargo',width:120,editable:true,
                     editoptions:{size:25,maxlength:30}, 
@@ -105,8 +105,7 @@
                 },
                 {name:'par_tel',index:'par_tel',width:100,editable:true,
                     editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}, 
-                    formoptions:{ label: "Teléfono",elmprefix:"(*)"},
-                    editrules:{required:true} 
+                    formoptions:{ label: "Teléfono"} 
                 }
             ],
             multiselect: false,
@@ -172,9 +171,10 @@
                     editrules:{required:true} 
                 },
                 {name:'pro_ide_prioridad',index:'pro_ide_prioridad',width:80,
-                    editable:true,editoptions:{size:15}, 
+                    editable:true,
+                    editoptions:{ size:15,dataInit: function(elem){$(elem).bind("keypress", function(e) {return numeros(e)})}}, 
                     formoptions:{label: "Prioridad",elmprefix:"(*)"},
-                    editrules:{required:true,number:true} 
+                    editrules:{required:true,number:true,minValue:1} 
                 }           
             ],
             multiselect: false,

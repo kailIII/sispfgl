@@ -24,9 +24,10 @@
                 if(response!='error'){
                     $('#vinieta').val('Subido con Exito');
                     this.enable();			
-                    $('#vinietaD').val('Descargar Archivo');
+                    ext= (response.substring(response.lastIndexOf("."))).toLowerCase();
+                    nombre=response.substring(response.lastIndexOf("/")).toLowerCase().replace('/','');
+                    $('#vinietaD').val('Descargar '+nombre);
                     $('#inf_pre_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO
-                    ext= (response.substring(response.lastIndexOf("."))).toLowerCase(); 
                     if (ext=='.pdf'){
                         $('#btn_descargar').attr({
                             'href': '<?php echo base_url(); ?>'+response,
@@ -129,9 +130,9 @@
         </td>  
         <td>
             <table>
-                <tr><td><strong>Fecha de presentación del borrador: </strong><input id="inf_pre_fecha_borrador" <?php if (isset($inf_pre_fecha_borrador)) { ?>  value="<?php echo date('d/m/y', strtotime($inf_pre_fecha_borrador)); ?>" <?php } ?> name="inf_pre_fecha_borrador" type="text" size="5" /></td></tr>
-                <tr><td><strong>Fecha de superación de observaciones: </strong><input id="inf_pre_fecha_observacion" <?php if (isset($inf_pre_fecha_observacion)) { ?>value="<?php echo date('d/m/y', strtotime($inf_pre_fecha_observacion)); ?>"<?php } ?>  name="inf_pre_fecha_observacion" type="text" size="5"/></td></tr>
-                <tr><td><strong>Fecha de aprobación del consejo municipal: </strong><input id="inf_pre_aceptacion" <?php if (isset($inf_pre_aceptacion)) { ?> value="<?php echo date('d/m/y', strtotime($inf_pre_aceptacion)); ?>"<?php } ?>  name="inf_pre_aceptacion" type="text" size="5"/></td></tr>
+                <tr><td><strong>Fecha de entrega de producto: </strong><input id="inf_pre_fecha_borrador" <?php if (isset($inf_pre_fecha_borrador)) { ?>  value="<?php echo date('d/m/Y', strtotime($inf_pre_fecha_borrador)); ?>" <?php } ?> name="inf_pre_fecha_borrador" type="text" size="7" /></td></tr>
+                <tr><td><strong>Fecha de visto bueno: </strong><input id="inf_pre_fecha_observacion" <?php if (isset($inf_pre_fecha_observacion)) { ?>value="<?php echo date('d/m/Y', strtotime($inf_pre_fecha_observacion)); ?>"<?php } ?>  name="inf_pre_fecha_observacion" type="text" size="7" /></td></tr>
+                <tr><td><strong>Fecha de aprobación del consejo municipal: </strong><input id="inf_pre_aceptacion" <?php if (isset($inf_pre_aceptacion)) { ?> value="<?php echo date('d/m/Y', strtotime($inf_pre_aceptacion)); ?>"<?php } ?>  name="inf_pre_aceptacion" type="text" size="7" /></td></tr>
             </table>
             <p><strong>¿Acta de aceptación contiene firmas?</strong></p>
             <table>
@@ -159,13 +160,14 @@
         <textarea name="inf_pre_observacion" cols="48" rows="5"><?php echo $inf_pre_observacion; ?></textarea></p>
 
     <table>
+         <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente</td></tr>
         <tr>
         <td><div id="btn_subir"></div></td>
         <td><input class="letraazul" type="text" id="vinieta" value="Subir Informe Preliminar" size="60" style="border: none"/></td>
         </tr>
         <tr>
         <td><a <?php if (isset($inf_pre_ruta_archivo) && $inf_pre_ruta_archivo != '') { ?> href="<?php echo base_url() . $inf_pre_ruta_archivo; ?>"<?php } ?>  id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
-        <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($inf_pre_ruta_archivo) && $inf_pre_ruta_archivo != '') { ?>value="Descargar Informe Preliminar"<?php } else { ?> value="No hay ningún informe preliminar para descargar" <?php } ?>size="50" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($inf_pre_ruta_archivo) && $inf_pre_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo; ?>"<?php } else { ?> value="No hay ningún informe preliminar para descargar" <?php } ?>size="50" style="border: none"/></td>
         </tr>
     </table>
 

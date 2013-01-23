@@ -20,11 +20,20 @@ class Departamento extends CI_Model {
         $this->db->select('dep_id');
         $this->db->where('reg_id', $reg_id);
         $consulta = $this->db->get($this->tabla);
-        return $consulta->result() ;
-    }
-  public function obtenerDepartamentos() {
-           $consulta = $this->db->get($this->tabla);
         return $consulta->result();
+    }
+
+    public function obtenerDepartamentos() {
+        $consulta = $this->db->get($this->tabla);
+        return $consulta->result();
+    }
+
+    public function obtenerIdPorNombre($dep_nombre) {
+        $this->db->select('dep_id');
+        $this->db->where('dep_nombre', $dep_nombre);
+        $consulta = $this->db->get($this->tabla);
+        $departamento=$consulta->result();
+        return $departamento[0]->dep_id;
     }
 
 }

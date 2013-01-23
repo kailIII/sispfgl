@@ -75,7 +75,7 @@ class Comp23_E2 extends CI_Controller {
 
         /* REGISTRAR REUNION */
         $this->load->model('etapa1-sub23/reunion', 'reu');
-        $ultima = $this->reu->ultimaReunion($pro_pep_id,2);
+        $ultima = $this->reu->ultimaReunion($pro_pep_id, 2);
         $reu_numero = (int) $ultima[0]['ultima'] + 1;
         $informacion['reu_numero'] = $reu_numero;
         $this->reu->agregarReunion(2, $pro_pep_id, $reu_numero);
@@ -203,8 +203,7 @@ class Comp23_E2 extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ');
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -238,8 +237,7 @@ class Comp23_E2 extends CI_Controller {
                 $i++;
             }
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ');
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -347,7 +345,8 @@ class Comp23_E2 extends CI_Controller {
         $informacion['municipio'] = $datos[0]->Muni;
         $pro_pep_id = $datos[0]->id;
         $informacion['proyectoPep'] = $datos[0]->Proyecto;
-
+        $this->load->model('pais/departamento');
+        $informacion['dep_id'] = $this->departamento->obtenerIdPorNombre($datos[0]->Depto);
         /* REGISTRAR ASOCIATIVIDAD */
         $this->load->model('etapa2-sub23/asociatividad');
         $this->asociatividad->agregarAsociatividad($pro_pep_id);
@@ -377,7 +376,8 @@ class Comp23_E2 extends CI_Controller {
         $informacion['departamento'] = $datos[0]->Depto;
         $informacion['municipio'] = $datos[0]->Muni;
         $informacion['proyectoPep'] = $datos[0]->Proyecto;
-
+        $this->load->model('pais/departamento');
+        $informacion['dep_id'] = $this->departamento->obtenerIdPorNombre($datos[0]->Depto);
         /* REGISTRAR ASOCIATIVIDAD */
         $this->load->model('etapa2-sub23/asociatividad');
         $resultado = $this->asociatividad->obtenerAsociatividadId($aso_id);
@@ -419,8 +419,7 @@ class Comp23_E2 extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ');
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -472,8 +471,7 @@ class Comp23_E2 extends CI_Controller {
             }
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -547,6 +545,19 @@ class Comp23_E2 extends CI_Controller {
         }
     }
 
+    public function cargarMunicipio($dep_id) {
+        //PARA CREAR LA LISTA DESPLEGABLE DE LA INSTITUCION
+        $this->load->model('pais/municipio');
+        $municipios = $this->municipio->obtenerMunicipioPorDepartamento($dep_id);
+        $combo = "<select name='int_aso_nombre'>";
+        $combo.= " <option value='0'> Seleccione</option>";
+        foreach ($municipios as $aux)
+            $combo.= " <option value='" . $aux->mun_nombre . "'>" . $aux->mun_nombre . "</option>";
+        $combo.="</select>";
+
+        echo $combo;
+    }
+
     public function cargarIntegradores($aso_id) {
         $this->load->model('etapa2-sub23/integrante_asociatividad', 'integrante');
         $integradores = $this->integrante->obtenerIntegranteAsociatividades($aso_id);
@@ -563,8 +574,7 @@ class Comp23_E2 extends CI_Controller {
             }
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ');
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -723,8 +733,7 @@ class Comp23_E2 extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ');
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -763,8 +772,7 @@ class Comp23_E2 extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ');
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -803,8 +811,7 @@ class Comp23_E2 extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ');
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -972,6 +979,7 @@ class Comp23_E2 extends CI_Controller {
             $definicion = $this->definicion->obtenerDef($def_id);
             $informacion['def_fecha'] = $definicion[0]['def_fecha'];
             $informacion['def_ruta_archivo'] = $definicion[0]['def_ruta_archivo'];
+            $informacion['nombreArchivo'] =end(explode("/", $definicion[0]['def_ruta_archivo'])); 
         }
         $informacion['gru_ges_id'] = $gru_ges_id;
         $informacion['def_id'] = $def_id;
@@ -1099,8 +1107,7 @@ class Comp23_E2 extends CI_Controller {
                 $i++;
             }
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -1189,6 +1196,7 @@ class Comp23_E2 extends CI_Controller {
         $informacion['dia_vision'] = $resultado[0]['dia_vision'];
         $informacion['dia_observacion'] = $resultado[0]['dia_observacion'];
         $informacion['dia_ruta_archivo'] = $resultado[0]['dia_ruta_archivo'];
+        $informacion['nombreArchivo'] =end(explode("/", $resultado[0]['dia_ruta_archivo'])); 
         $informacion['cumplimientosMinimos'] = $this->cumDia->obtenerLosCumplimientosDiagnostico($resultado[0]['dia_id']);
         /* FIN DE INFORME PRELIMINAR */
         $this->load->view('plantilla/header', $informacion);
@@ -1226,7 +1234,7 @@ class Comp23_E2 extends CI_Controller {
 
         /* ACTUALIZANDO ACUERDO MUNICIPAL */
         $this->load->model('etapa2-sub23/diagnostico', 'Dia');
-        $this->Dia->actualizarDia($dia_id, $dia_fecha_borrador, $dia_fecha_concejo_muni, $dia_fecha_observacion, $dia_observacion, $dia_ruta_archivo,$dia_vision);
+        $this->Dia->actualizarDia($dia_id, $dia_fecha_borrador, $dia_fecha_concejo_muni, $dia_fecha_observacion, $dia_observacion, $dia_ruta_archivo, $dia_vision);
 
         redirect(base_url('componente2/comp23_E2/diagnostico'));
     }

@@ -58,7 +58,7 @@ class Comp23_E1 extends CI_Controller {
 
         /* REGISTRAR REUNION */
         $this->load->model('etapa1-sub23/reunion', 'reu');
-        $ultima = $this->reu->ultimaReunion($pro_pep_id,1);
+        $ultima = $this->reu->ultimaReunion($pro_pep_id, 1);
         $reu_numero = (int) $ultima[0]['ultima'] + 1;
         $informacion['reu_numero'] = $reu_numero;
         $this->reu->agregarReunion(1, $pro_pep_id, $reu_numero);
@@ -174,8 +174,65 @@ class Comp23_E1 extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ');
+            $rows = array();
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+
+    public function cargarParticipantes4($campo, $id_campo) {
+        $this->load->model('participante');
+        $this->load->model('institucion');
+        $participantes = $this->participante->obtenerParticipantesParametrizado($campo, $id_campo);
+        $numfilas = count($participantes);
+
+        $i = 0;
+
+        if ($numfilas != 0) {
+            foreach ($participantes as $aux) {
+                switch ($aux->par_tipo) {
+                    case 'C':
+                        $tipo = "Comunidad";
+                        break;
+                    case 'S':
+                        $tipo = "Sector";
+                        break;
+                    case 'I':
+                        $tipo = "institución";
+                        break;
+                    default :
+                        $tipo = "";
+                        break;
+                }
+
+                if (isset($aux->ins_id))
+                    $nombreInstitucion = $this->institucion->obtenerNombreInstitucion($aux->ins_id);
+                else
+                    $nombreInstitucion = ' ';
+                $rows[$i]['id'] = $aux->par_id;
+                $rows[$i]['cell'] = array($aux->par_id,
+                    $aux->par_nombre,
+                    $aux->par_apellido,
+                    $aux->par_edad,
+                    strtoupper($aux->par_sexo),
+                    $nombreInstitucion[0]['ins_nombre'],
+                    $aux->par_cargo,
+                    $tipo
+                );
+                $i++;
+            }
+            array_multisort($rows, SORT_ASC);
+        } else {
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -211,8 +268,7 @@ class Comp23_E1 extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ');
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -255,15 +311,18 @@ class Comp23_E1 extends CI_Controller {
         $par_nivel_esco = $this->input->post("par_nivel_esco");
         if ($par_nivel_esco == '0')
             $par_nivel_esco = null;
+        $par_tipo = $this->input->post("par_tipo");
+        if ($par_tipo == '0')
+            $par_tipo = null;
 
         /* FIN DE VARIABLES */
         $this->load->model('participante');
         switch ($operacion) {
             case 'add':
-                $this->participante->agregarParticipantes($campo, $id_campo, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo, $par_tel, $par_dui, $par_edad, $par_proviene, $par_nivel_esco);
+                $this->participante->agregarParticipantes($campo, $id_campo, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo, $par_tel, $par_dui, $par_edad, $par_proviene, $par_nivel_esco,$par_tipo);
                 break;
             case 'edit':
-                $this->participante->editarParticipantes($par_id, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo, $par_tel, $par_dui, $par_edad, $par_proviene, $par_nivel_esco);
+                $this->participante->editarParticipantes($par_id, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo, $par_tel, $par_dui, $par_edad, $par_proviene, $par_nivel_esco,$par_tipo);
                 break;
             case 'del':
                 $this->participante->eliminarParticipantes($par_id);
@@ -292,8 +351,7 @@ class Comp23_E1 extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ');
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -338,8 +396,7 @@ class Comp23_E1 extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -381,8 +438,7 @@ class Comp23_E1 extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ');
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -426,8 +482,7 @@ class Comp23_E1 extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -482,11 +537,12 @@ class Comp23_E1 extends CI_Controller {
         $this->load->model('etapa1-sub23/participante_capacitacion', 'parCap');
         switch ($operacion) {
             case 'add':
-                $this->participante->agregarParticipantes('par_otros', $cap_id, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo, $par_tel, $par_dui, $par_edad, $par_proviene, $par_nivel_esco);
-                $this->parCap->insertarOtrosParticipa($cap_id, $par_dui);
+                $this->participante->agregarParticipantes('par_otros', $cap_id, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo, $par_tel, $par_dui, $par_edad, $par_proviene, $par_nivel_esco,null);
+                $par_id_nu=$this->participante->obtenerMaximado();
+                $this->parCap->insertarOtrosParticipa($cap_id, $par_id_nu[0]->par_id);
                 break;
             case 'edit':
-                if ($par_cap_participa != 0)
+                if ($par_cap_participa == '0')
                     $this->participante->editarParticipantes($par_id, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo, $par_tel, $par_dui, $par_edad, $par_proviene, $par_nivel_esco);
                 else
                     $this->parCap->actualizaParticipa($cap_id, $par_id, $par_cap_participa);
@@ -520,9 +576,9 @@ class Comp23_E1 extends CI_Controller {
         echo $jsonresponse;
     }
 
-    public function calcularTotalParticipantes($tabla,$campo_id,$campo) {
+    public function calcularTotalParticipantes($tabla, $campo_id, $campo) {
         $this->load->model('participante');
-        $totales = $this->participante->calcularTotalParticipantes($tabla,$campo_id,$campo);
+        $totales = $this->participante->calcularTotalParticipantes($tabla, $campo_id, $campo);
 
         $rows[0]['id'] = 1;
         $rows[0]['cell'] = array($totales[0]->total,
@@ -574,10 +630,10 @@ class Comp23_E1 extends CI_Controller {
         /* OBTENER ACUERDO MUNICIPAL */
         $this->load->model('etapa1-sub23/acuerdo_municipal', 'acumun');
 
-        $numAcuMun = $this->acumun->contarAcuMunPorPep($pro_pep_id,1);
+        $numAcuMun = $this->acumun->contarAcuMunPorPep($pro_pep_id, 1);
         if ($numAcuMun == 0) {
-            $this->acumun->agregarAcuMun($pro_pep_id,1);
-            $idAcuMun = $this->acumun->obtenerIdAcuMun($pro_pep_id,1);
+            $this->acumun->agregarAcuMun($pro_pep_id, 1);
+            $idAcuMun = $this->acumun->obtenerIdAcuMun($pro_pep_id, 1);
             $acu_mun_id = $idAcuMun[0]['acu_mun_id'];
             $this->load->model('proyectoPep/proyecto_pep', 'proPep');
             foreach ($contrapartidas as $contraAux)
@@ -585,7 +641,7 @@ class Comp23_E1 extends CI_Controller {
             foreach ($criterios as $criteAux)
                 $this->criterioAcuerdo->insertarCriterioAcuerdo($acu_mun_id, $criteAux->cri_id);
         } else {
-            $idAcuMun = $this->acumun->obtenerIdAcuMun($pro_pep_id,1);
+            $idAcuMun = $this->acumun->obtenerIdAcuMun($pro_pep_id, 1);
             $acu_mun_id = $idAcuMun[0]['acu_mun_id'];
             $acuerdoMun = $this->acumun->obtenerAcuMun($acu_mun_id);
             $informacion['acu_mun_fecha'] = $acuerdoMun[0]['acu_mun_fecha'];
@@ -593,6 +649,8 @@ class Comp23_E1 extends CI_Controller {
             $informacion['acu_mun_p2'] = $acuerdoMun[0]['acu_mun_p2'];
             $informacion['acu_mun_observacion'] = $acuerdoMun[0]['acu_mun_observacion'];
             $informacion['acu_mun_ruta_archivo'] = $acuerdoMun[0]['acu_mun_ruta_archivo'];
+            $informacion['nombreArchivo'] =end(explode("/", $acuerdoMun[0]['acu_mun_ruta_archivo'])); 
+            
         }
 
         $informacion['contrapartidas'] = $this->contraAcuerdo->obtenerLasContrapartidoAcuerdo($acu_mun_id);
@@ -634,11 +692,17 @@ class Comp23_E1 extends CI_Controller {
         $this->load->model('etapa1-sub23/contrapartida_acuerdo', 'contraAcuerdo');
         $contrapartidas = $this->contrapartida->obtenerContrapartidas();
         foreach ($contrapartidas as $contrapartida) {
-            if ($this->input->post("con_" . $contrapartida->con_id) == 0)
+            if ($this->input->post("con_" . $contrapartida->con_id) == 0) {
                 $valor = 'false';
-            else
+                $especifique = null;
+            } else {
                 $valor = 'true';
-            $this->contraAcuerdo->actualizarContrapartidaAcuerdo($valor, $acu_mun_id, $contrapartida->con_id);
+                if ($this->input->post("especifique_" . $contrapartida->con_id) == '')
+                    $especifique = null;
+                else
+                    $especifique = $this->input->post("especifique_" . $contrapartida->con_id);
+            }
+            $this->contraAcuerdo->actualizarContrapartidaAcuerdo($valor, $acu_mun_id, $contrapartida->con_id, $especifique);
         }
 
         /* ACTUALIZANDO ACUERDO MUNICIPAL */
@@ -685,6 +749,7 @@ class Comp23_E1 extends CI_Controller {
             $informacion['dec_int_lugar'] = $declaracionInt[0]['dec_int_lugar'];
             $informacion['dec_int_comentario'] = $declaracionInt[0]['dec_int_comentario'];
             $informacion['dec_int_ruta_archivo'] = $declaracionInt[0]['dec_int_ruta_archivo'];
+            $informacion['nombreArchivo'] =end(explode("/", $declaracionInt[0]['dec_int_ruta_archivo'])); 
         }
         $informacion['dec_int_id'] = $dec_int_id;
         /* CARGA DE PLANTILLAS */
@@ -884,9 +949,9 @@ class Comp23_E1 extends CI_Controller {
         redirect('componente2/comp23_E1/capacitacionEquipoApoyo');
     }
 
-    public function cargarFacilitadores($campo,$campo_id) {
+    public function cargarFacilitadores($campo, $campo_id) {
         $this->load->model('etapa1-sub23/facilitador');
-        $facilitadores = $this->facilitador->obtenerFacilitadores($campo,$campo_id);
+        $facilitadores = $this->facilitador->obtenerFacilitadores($campo, $campo_id);
         $numfilas = count($facilitadores);
 
         $i = 0;
@@ -904,8 +969,7 @@ class Comp23_E1 extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ');
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -920,7 +984,7 @@ class Comp23_E1 extends CI_Controller {
         echo $jsonresponse;
     }
 
-    public function gestionFacilitadores($campo,$campo_id) {
+    public function gestionFacilitadores($campo, $campo_id) {
         /* OBTENIENDO LAS VARIABLES */
         $fac_id = $this->input->post("id");
         $fac_nombre = $this->input->post("fac_nombre");
@@ -932,7 +996,7 @@ class Comp23_E1 extends CI_Controller {
         $this->load->model('etapa1-sub23/facilitador');
         switch ($operacion) {
             case 'add':
-                $this->facilitador->agregarFacilitador($fac_nombre, $fac_apellido, $fac_email,$campo,$campo_id,$fac_telefono);
+                $this->facilitador->agregarFacilitador($fac_nombre, $fac_apellido, $fac_email, $campo, $campo_id, $fac_telefono);
                 break;
             case 'edit':
                 $this->facilitador->modificarFacilitador($fac_id, $fac_nombre, $fac_apellido, $fac_email, $fac_telefono);
@@ -990,6 +1054,7 @@ class Comp23_E1 extends CI_Controller {
         $informacion['inf_pre_fecha_observacion'] = $resultado[0]['inf_pre_fecha_observacion'];
         $informacion['inf_pre_observacion'] = $resultado[0]['inf_pre_observacion'];
         $informacion['inf_pre_ruta_archivo'] = $resultado[0]['inf_pre_ruta_archivo'];
+        $informacion['nombreArchivo'] =end(explode("/", $resultado[0]['inf_pre_ruta_archivo'])); 
         $informacion['cumplimientosMinimos'] = $this->cumInf->obtenerLosCumplimientosInforme($resultado[0]['inf_pre_id']);
         /* FIN DE INFORME PRELIMINAR */
         $this->load->view('plantilla/header', $informacion);
@@ -1130,9 +1195,9 @@ class Comp23_E1 extends CI_Controller {
         } else {
             $rows[0]['id'] = 0;
             if (!strcasecmp($tipo, 'p'))
-                $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ');
+                $rows = array();
             else
-                $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ');
+                $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -1168,7 +1233,7 @@ class Comp23_E1 extends CI_Controller {
         switch ($operacion) {
             case 'add':
                 if (!strcasecmp($tipo, 'p'))
-                    $this->fuePri->agregarReunion($fue_pri_nombre, $fue_pri_institucion, $fue_pri_cargo, $fue_pri_telefono, $fue_pri_tipo_info, $inv_inf_id);
+                    $this->fuePri->agregarFuentePrimaria($fue_pri_nombre, $fue_pri_institucion, $fue_pri_cargo, $fue_pri_telefono, $fue_pri_tipo_info, $inv_inf_id);
                 else
                     $this->fueSec->agregarFuenteSecundaria($fue_sec_nombre, $fue_sec_fuente, $fue_sec_disponible_en, $fue_sec_anio, $inv_inf_id);
                 break;

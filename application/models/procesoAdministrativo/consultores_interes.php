@@ -16,6 +16,13 @@ class Consultores_interes extends CI_Model {
         return $consulta->result();
     }
     
+    public function obtenerConsultoresAplican($pro_id) {
+        $this->db->where('pro_id', $pro_id);
+        $this->db->where('con_int_aplica','Si');
+        $consulta = $this->db->get($this->tabla);
+        return $consulta->result();
+    }
+    
     public function agregarConsultoresInteres($con_int_nombre, $con_int_tipo, $pro_id) {
         $datos = array(
             'con_int_nombre ' => $con_int_nombre,
@@ -37,6 +44,14 @@ class Consultores_interes extends CI_Model {
     public function editarConsultoresInteresAplica($con_int_id, $con_int_aplica) {
         $datos = array(
             'con_int_aplica' => $con_int_aplica
+        );
+        $this->db->where('con_int_id', $con_int_id);
+        $this->db->update($this->tabla, $datos);
+    }
+    
+    public function editarConsultoresInteresSeleccionado($con_int_id, $con_int_seleccionada) {
+        $datos = array(
+            'con_int_seleccionada' => $con_int_seleccionada
         );
         $this->db->where('con_int_id', $con_int_id);
         $this->db->update($this->tabla, $datos);

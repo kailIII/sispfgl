@@ -33,12 +33,9 @@ class Participante_capacitacion extends CI_Model {
         $this->db->insert($this->tabla, $datos);
     }
     
-    public function insertarOtrosParticipa($cap_id,$dui) {
-        $this->load->model('participante');
-        $participante=$this->participante->obtenerParticipantes('par_dui', $dui);
-        
+    public function insertarOtrosParticipa($cap_id,$par_id) {
         $datos = array(
-            'par_id'=>$participante[0]->par_id,
+            'par_id'=>$par_id,
             'cap_id'=>$cap_id,
             'par_cap_participa'=>'Si'
         );

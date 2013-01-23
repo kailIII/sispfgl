@@ -72,7 +72,7 @@
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','Dui','Nombres','Apellidos','Sexo','Edad','Tipo','Cargo','Teléfono'],
+            colNames:['id','Dui','Nombres','Apellidos','Sexo','Edad','Tipo','Procedencia','Teléfono'],
             colModel:[
                 {name:'par_id',index:'par_id', width:40,editable:false,editoptions:{size:15} },
                 {name:'par_dui',index:'par_dui', width:100,editable:true,
@@ -91,14 +91,14 @@
                 },
                 {name:'par_sexo',index:'par_sexo',editable:true,edittype:"select",width:50,
                     align:"center",
-                    editoptions:{ value: '0:Seleccione;F:Femenino;M:Masculino' }, 
+                    editoptions:{ value: '0:Seleccione;M:Mujer;H:Hombre' }, 
                     formoptions:{ label: "Sexo",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validar}
                 },
                 {name:'par_edad',index:'par_edad',width:80,editable:true,
-                    editoptions:{size:25,maxlength:30}, 
+                    editoptions:{ size:15,dataInit: function(elem){$(elem).bind("keypress", function(e) {return numeros(e)})}}, 
                     formoptions:{ label: "Edad",elmprefix:"(*)"},
-                    editrules:{required:true,minvalue:12,number:true} 
+                    editrules:{required:true,minValue:12,number:true} 
                 },
                 {name:'par_tipo',index:'par_tipo',width:80,edittype:"select",
                     editable:true,
@@ -108,13 +108,12 @@
                 },
                 {name:'par_cargo',index:'par_cargo',width:100,editable:true,
                     editoptions:{size:25,maxlength:30}, 
-                    formoptions:{ label: "Cargo",elmprefix:"(*)"},
+                    formoptions:{ label: "Procedencia",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
                 {name:'par_tel',index:'par_tel',width:100,editable:true,
                     editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}, 
-                    formoptions:{ label: "Teléfono",elmprefix:"(*)"},
-                    editrules:{required:true} 
+                    formoptions:{ label: "Teléfono"} 
                 }
             ],
             multiselect: false,
@@ -172,7 +171,7 @@
         <tr>
         <td ><strong>Lugar:</strong><input id="gru_ges_lugar" <?php if (isset($gru_ges_lugar)) { ?> value='<?php echo $gru_ges_lugar; ?>'<?php } ?> name="gru_ges_lugar" type="text" size="40"/></td>
          <td style="width: 150px"></td>
-        <td  ><strong>Fecha: </strong><input readonly="readonly" <?php if (isset($gru_ges_fecha)) { ?> value='<?php echo date('d/m/y', strtotime($gru_ges_fecha)); ?>'<?php } ?>id="gru_ges_fecha" name="gru_ges_fecha" type="text" size="10"/></td>
+        <td  ><strong>Fecha: </strong><input readonly="readonly" <?php if (isset($gru_ges_fecha)) { ?> value='<?php echo date('d/m/Y', strtotime($gru_ges_fecha)); ?>'<?php } ?>id="gru_ges_fecha" name="gru_ges_fecha" type="text" size="10"/></td>
         </tr>
         <tr>
         <td colspan="2"></td>
@@ -189,7 +188,7 @@
         <input type="button" id="eliminar" value="  Eliminar  " />
         <br/><br/>
     </div>
-    <p><strong>¿Existe acuerdo sobre funciones, modidalidad de funcionamiento, y toma de decisiones?</strong>
+    <p><strong>¿Existe acuerdo sobre funciones, modalidad de funcionamiento y toma de decisiones?</strong>
         <input type="radio" name="gru_ges_acuerdo" value="true" class="required" <?php if (!strcasecmp($gru_ges_acuerdo, 't')) { ?> checked <?php } ?>  >SI </input>
         <input type="radio" name="gru_ges_acuerdo" value="false" class="required" <?php if (!strcasecmp($gru_ges_acuerdo, 'f')) { ?> checked <?php } ?> >NO </input></p>
 

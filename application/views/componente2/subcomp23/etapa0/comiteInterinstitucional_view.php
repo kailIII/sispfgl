@@ -96,7 +96,7 @@
     <br/>
     <br/>
     <strong>Fecha de selección de municipios: </strong> 
-    <input <?php if (isset($f_seleccion)) { ?> value='<?php echo date('d/m/y', strtotime($f_seleccion)); ?>'<?php } ?>id="f_seleccion" name="f_seleccion" type="text" size="10" readonly="readonly"/>
+    <input <?php if (isset($f_seleccion)) { ?> value='<?php echo date('d/m/Y', strtotime($f_seleccion)); ?>'<?php } ?>id="f_seleccion" name="f_seleccion" type="text" size="10" readonly="readonly"/>
 
     <br/>
     <br/>
@@ -109,7 +109,7 @@
         </td>
         </tr>
 
-    </table
+    </table>
 
 
     <br/>

@@ -40,27 +40,27 @@
         
         var tabla=$("#participantes");
         tabla.jqGrid({
-            url:'<?php echo base_url('componente2/comp23_E4/cargarParticipantes').'/acu_mun_id/'.$acu_mun_id; ?>',
-            editurl:'<?php echo base_url('componente2/comp23_E2/gestionParticipantes').'/acu_mun_id/'.$acu_mun_id; ?>',
+            url:'<?php echo base_url('componente2/comp23_E4/cargarParticipantes') . '/acu_mun_id/' . $acu_mun_id; ?>',
+            editurl:'<?php echo base_url('componente2/comp23_E2/gestionParticipantes') . '/acu_mun_id/' . $acu_mun_id; ?>',
             datatype:'json',
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','Nombres','Apellidos','Sexo','Cargo','Pertenece A'],
+            colNames:['id','Nombres','Apellidos','Sexo','Cargo','Teléfono','Pertenece A'],
             colModel:[
                 {name:'par_id',index:'par_id', width:40,editable:false,editoptions:{size:15} },
-                {name:'par_nombre',index:'par_nombre',width:200,editable:true,
+                {name:'par_nombre',index:'par_nombre',width:100,editable:true,
                     editoptions:{size:25,maxlength:50}, 
                     formoptions:{label: "Nombres",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
-                {name:'par_apellido',index:'par_apellido',width:200,editable:true,
+                {name:'par_apellido',index:'par_apellido',width:100,editable:true,
                     editoptions:{size:25,maxlength:50}, 
                     formoptions:{label: "Apellidos",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
                 {name:'par_sexo',index:'par_sexo',editable:true,edittype:"select",width:40,
-                    editoptions:{ value: '0:Seleccione;F:Femenino;M:Masculino' }, 
+                    editoptions:{ value: '0:Seleccione;M:Mujer;H:Hombre' }, 
                     formoptions:{ label: "Sexo",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validaSexo}
                 },
@@ -69,9 +69,13 @@
                     formoptions:{ label: "Cargo",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
+                {name:'par_tel',index:'par_tel',width:100,editable:true,
+                    editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}, 
+                    formoptions:{ label: "Teléfono"} 
+                },
                 {name:'par_tipo',index:'par_tipo',editable:true,edittype:"select",width:125,
                     editoptions:{ value: '0:Seleccione;gg:Grupo Gestor;gl:Gobierno Local' }, 
-                    formoptions:{ label: "Sexo",elmprefix:"(*)"},
+                    formoptions:{ label: "Pertenece A:",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validaPerteneceA}
                 }
             ],
@@ -148,9 +152,10 @@
                 if(response!='error'){
                     $('#vinieta').val('Subido con Exito');
                     this.enable();			
-                    $('#vinietaD').val('Descargar Archivo');
+                    ext= (response.substring(response.lastIndexOf("."))).toLowerCase();
+                    nombre=response.substring(response.lastIndexOf("/")).toLowerCase().replace('/','');
+                    $('#vinietaD').val('Descargar '+nombre);
                     $('#acu_mun_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO
-                    ext= (response.substring(response.lastIndexOf("."))).toLowerCase(); 
                     if (ext=='.pdf'){
                         $('#btn_descargar').attr({
                             'href': '<?php echo base_url(); ?>'+response,
@@ -191,7 +196,7 @@
     <h2 class="h2Titulos">Producto 1: Acuerdo Municipal</h2>
 
     <br/><br/>
-   <table>
+    <table>
         <tr>
         <td class="tdLugar" ><strong>Departamento:</strong></td>
         <td><?php echo $departamento ?></td>
@@ -200,7 +205,7 @@
         <td ><?php echo $municipio ?></td>    
         </tr>
     </table>
-    
+
     <br/><br/>
 
     <fieldset style="width:450px;">
@@ -215,9 +220,9 @@
     </fieldset>
     <br/>
     <table>
-        <tr> <td><strong>Fecha de presentación del borrador: </strong></td><td><input <?php if (isset($acu_mun_fecha_borrador)) { ?> value='<?php echo date('d/m/y', strtotime($acu_mun_fecha_borrador)); ?>'<?php } ?> id="acu_mun_fecha_borrador" name="acu_mun_fecha_borrador" type="text" size="10" /></td></tr>
-        <tr><td><strong>Fecha de superación de observaciones: </strong></td><td><input <?php if (isset($acu_mun_fecha_observacion)) { ?> value='<?php echo date('d/m/y', strtotime($acu_mun_fecha_observacion)); ?>'<?php } ?> id="acu_mun_fecha_observacion" name="acu_mun_fecha_observacion" type="text" size="10"/></td></tr>
-        <tr> <td><strong>Fecha de aprobacion del consejo municipal: </td><td></strong><input <?php if (isset($acu_mun_fecha_aceptacion)) { ?> value='<?php echo date('d/m/y', strtotime($acu_mun_fecha_aceptacion)); ?>'<?php } ?> id="acu_mun_fecha_aceptacion" name="acu_mun_fecha_aceptacion" type="text" size="10"/></td></tr>
+        <tr> <td class="textD"><strong>Fecha de entrega de producto: </strong></td><td><input <?php if (isset($acu_mun_fecha_borrador)) { ?> value='<?php echo date('d/m/Y', strtotime($acu_mun_fecha_borrador)); ?>'<?php } ?> id="acu_mun_fecha_borrador" name="acu_mun_fecha_borrador" type="text" size="7" /></td></tr>
+        <tr><td class="textD"><strong>Fecha de visto bueno: </strong></td><td><input <?php if (isset($acu_mun_fecha_observacion)) { ?> value='<?php echo date('d/m/Y', strtotime($acu_mun_fecha_observacion)); ?>'<?php } ?> id="acu_mun_fecha_observacion" name="acu_mun_fecha_observacion" type="text" size="7" /></td></tr>
+        <tr> <td class="textD"><strong>Fecha de aprobacion del consejo municipal: </td><td></strong><input <?php if (isset($acu_mun_fecha_aceptacion)) { ?> value='<?php echo date('d/m/Y', strtotime($acu_mun_fecha_aceptacion)); ?>'<?php } ?> id="acu_mun_fecha_aceptacion" name="acu_mun_fecha_aceptacion" type="text" size="7" /></td></tr>
     </table>
     <br/>
     <table id="participantes"></table>
@@ -232,13 +237,14 @@
     <p>Observaciones:<br/>
         <textarea name="acu_mun_observacion" cols="48" rows="5"><?php echo$acu_mun_observacion; ?></textarea></p>
     <table>
+        <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente</td></tr>
         <tr>
         <td><div id="btn_subir"></div></td>
         <td><input class="letraazul" type="text" id="vinieta" value="Subir Acuerdo Municipal" size="30" style="border: none"/></td>
         </tr>
         <tr>
         <td><a <?php if (isset($acu_mun_ruta_archivo) && $acu_mun_ruta_archivo != '') { ?> href="<?php echo base_url() . $acu_mun_ruta_archivo; ?>"<?php } ?>  id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
-        <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($acu_mun_ruta_archivo) && $acu_mun_ruta_archivo != '') { ?>value="Descargar Acuerdo Municipal"<?php } else { ?> value="No Hay Acuerdo Por Descargar" <?php } ?>size="30" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($acu_mun_ruta_archivo) && $acu_mun_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo ?>"<?php } else { ?> value="No Hay Acuerdo Por Descargar" <?php } ?>size="30" style="border: none"/></td>
         </tr>
     </table>
     <center style="position: relative;top: 20px">
@@ -259,4 +265,9 @@
 </div>
 <div id="extension" class="mensaje" title="Error">
     <p>Solo se permiten archivos con la extensión pdf|doc|docx</p>
+</div>
+<div id="mensaje4" class="mensaje" title="Fechas Mayores">
+   <p><img src="<?php echo base_url('resource/imagenes/cancel.png'); ?>" heigth="25px" width="25px"/>
+       <strong>Fecha de visto bueno </strong> debe ser menor a <strong>Fecha de entrega de producto</strong>
+    </p>
 </div>

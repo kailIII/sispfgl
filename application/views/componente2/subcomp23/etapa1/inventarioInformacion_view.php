@@ -22,7 +22,7 @@
             else return [true,""];
         }
         /*FIN ZONA VALIDACIONES*/
-        /*GRID AGREGAR OTROS PARTICIPANTES*/
+        /*GRID Otros asistentes*/
         var tabla=$("#FuentesPrimaria");
         tabla.jqGrid({
             url:'<?php echo base_url('componente2/comp23_E1/cargarFuentes') . '/' . $inv_inf_id . '/p' ?>',
@@ -51,12 +51,11 @@
                 },
                 {name:'fue_pri_telefono',index:'fue_pri_telefono',width:80,editable:true,
                     editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}, 
-                    formoptions:{ label: "Teléfono",elmprefix:"(*)"},
-                    editrules:{required:true} 
+                    formoptions:{ label: "Teléfono"} 
                 },
                 {name:'fue_pri_tipo_info',index:'fue_pri_tipo_info',width:150,editable:true,
                     editoptions:{size:25,maxlength:100}, 
-                    formoptions:{ label: "Tipo Documento",elmprefix:"(*)"},
+                    formoptions:{ label: "Tipo de información",elmprefix:"(*)"},
                     editrules:{required:true} 
                 }
             ],

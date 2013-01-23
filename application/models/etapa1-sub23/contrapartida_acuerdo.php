@@ -18,9 +18,10 @@ class Contrapartida_acuerdo extends CI_Model {
         $this->db->insert($this->tabla, $datos);
     }
 
-    public function actualizarContrapartidaAcuerdo($con_acu_valor, $acu_mun_id, $con_id) {
+    public function actualizarContrapartidaAcuerdo($con_acu_valor, $acu_mun_id, $con_id,$especifique) {
         $datos = array(
-            'con_acu_valor' => $con_acu_valor
+            'con_acu_valor' => $con_acu_valor,
+            'con_especifique' => $especifique
         );
         $this->db->where('acu_mun_id', $acu_mun_id);
         $this->db->where('con_id', $con_id);
@@ -36,7 +37,8 @@ class Contrapartida_acuerdo extends CI_Model {
     public function obtenerLasContrapartidoAcuerdo($acu_mun_id) {
         $this->db->select('contrapartida.con_id con_id, 
                            contrapartida.con_nombre con_nombre,
-                           contrapartida_acuerdo.con_acu_valor con_acu_valor'
+                           contrapartida_acuerdo.con_acu_valor con_acu_valor,
+                           contrapartida_acuerdo.con_especifique con_especifique'
                            );
         $this->db->from($this->tabla);
         $this->db->join('contrapartida', 'contrapartida.con_id = contrapartida_acuerdo.con_id');

@@ -178,9 +178,10 @@
                 if(response!='error'){
                     $('#vinieta').val('Subido con Exito');
                     this.enable();			
-                    $('#vinietaD').val('Descargar Archivo');
+                    ext= (response.substring(response.lastIndexOf("."))).toLowerCase();
+                    nombre=response.substring(response.lastIndexOf("/")).toLowerCase().replace('/','');
+                    $('#vinietaD').val('Descargar '+nombre);
                     $('#def_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO
-                    ext= (response.substring(response.lastIndexOf("."))).toLowerCase(); 
                     if (ext=='.pdf'){
                         $('#btn_descargar').attr({
                             'href': '<?php echo base_url(); ?>'+response,
@@ -222,7 +223,7 @@
     </table>
     <table>
         <tr>
-        <td  ><strong>Fecha reunión: </strong><input readonly="readonly" id="def_fecha" name="def_fecha" type="text"<?php if (isset($def_fecha)) { ?> value='<?php echo date('d/m/y', strtotime($def_fecha)); ?>'<?php } ?> size="10" /></td>
+        <td  ><strong>Fecha reunión: </strong><input readonly="readonly" id="def_fecha" name="def_fecha" type="text"<?php if (isset($def_fecha)) { ?> value='<?php echo date('d/m/Y', strtotime($def_fecha)); ?>'<?php } ?> size="10" /></td>
         </tr>
         <tr>
         <td colspan="2"></td>
@@ -237,13 +238,14 @@
     <div id="pagerproblemas"></div>
     <br/>
     <table>
+        <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente</td></tr>
         <tr>
         <td><div id="btn_subir"></div></td>
         <td><input class="letraazul" type="text" id="vinieta" value="Subir Informe de desarrollo de priorizacón" size="60" style="border: none"/></td>
         </tr>
         <tr>
         <td><a <?php if (isset($def_ruta_archivo) && $def_ruta_archivo != '') { ?> href="<?php echo base_url() . $def_ruta_archivo; ?>"<?php } ?>  id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
-        <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($def_ruta_archivo) && $def_ruta_archivo != '') { ?>value="Descargar Informe de Desarrollo "<?php } else { ?> value="El informe de desarrollo no se ha cargado" <?php } ?>size="60" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($def_ruta_archivo) && $def_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo ?> "<?php } else { ?> value="El informe de desarrollo no se ha cargado" <?php } ?>size="60" style="border: none"/></td>
         </tr>
     </table>
     <p>Observaciones:<br/>

@@ -35,7 +35,7 @@
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','Dui','Nombre Completo','Sexo','Cargo','Teléfono','Participa',''],
+            colNames:['id','Dui','Nombre Completo','Sexo','Cargo','Teléfono','Asistencia',''],
             colModel:[
                 {name:'par_id',index:'par_id', width:40,editable:false,editoptions:{size:15} },
                 {name:'par_dui',index:'par_dui', width:100,editable:false},
@@ -106,8 +106,7 @@
                 },
                 {name:'fac_telefono',index:'fac_telefono',width:100,editable:true,
                     editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}, 
-                    formoptions:{ label: "Teléfono",elmprefix:"(*)"},
-                    editrules:{required:true} 
+                    formoptions:{ label: "Teléfono"} 
                 },
                 {name:'fac_email',index:'fac_email',width:200,editable:true,
                     editoptions:{size:25,maxlength:50}, 
@@ -174,8 +173,8 @@
 
 <form method="post" id="capacitacionForm">
 
-    <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
-    <h2 class="h2Titulos">Producto 4: Capacitaciones Local de Apoyo</h2>
+    <h2 class="h2Titulos">Etapa 4: Acompañamiento y Seguimiento</h2>
+    <h2 class="h2Titulos">Producto 4: Capacitaciones de los miembros de la instancia de integración</h2>
     <table>
         <tr>
         <td class="tdLugar" ><strong>Departamento:</strong></td>

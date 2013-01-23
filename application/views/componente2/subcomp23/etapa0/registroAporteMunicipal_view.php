@@ -76,7 +76,7 @@
         <tr><td style="width: 100px"> 
         <td class="textD"><strong>Fecha: </strong> </td>
         <td>
-            <input <?php if (isset($f_reg_apor_mun)) { ?> value='<?php echo date('d/m/y', strtotime($f_reg_apor_mun)); ?>'<?php } ?>id="f_reg_apor_mun" name="f_reg_apor_mun" type="text" size="10" readonly="readonly"/>
+            <input <?php if (isset($f_reg_apor_mun)) { ?> value='<?php echo date('d/m/Y', strtotime($f_reg_apor_mun)); ?>'<?php } ?>id="f_reg_apor_mun" name="f_reg_apor_mun" type="text" size="10" readonly="readonly"/>
         </td>
         </tr>  
     </table>

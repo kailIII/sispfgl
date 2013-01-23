@@ -5,7 +5,14 @@
 *********************/
 
 //Specify full URL to down and right arrow images (25 is padding-right to add to top level LIs with drop downs):
-
+function numeros(e)
+        {
+            tecla = (document.all) ? e.keyCode : e.which;
+            if (tecla==8) return true;
+            patron = /\d/;
+            te = String.fromCharCode(tecla);
+            return patron.test(te);
+        }
 var jquerycssmenu={
 
 fadesettings: {overduration: 350, outduration: 100}, //duration of fade in/ out animation, in milliseconds

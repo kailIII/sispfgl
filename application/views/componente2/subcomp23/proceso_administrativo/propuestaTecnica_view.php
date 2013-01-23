@@ -1,6 +1,5 @@
 <script type="text/javascript">        
     $(document).ready(function(){
-        /*ZONA DE BOTONES*/
         $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url(); ?>';
         });
@@ -22,7 +21,27 @@
             });              
         });
         
-        /*PARA EL DATEPICKER*/
+        $('#selMun').change(function(){
+            $.getJSON('<?php echo base_url('componente2/procesoAdministrativo/cargarPropuestaTecnica') . "/" ?>'+$('#selMun').val(), 
+            function(data) {
+                var i=0;
+                $.each(data, function(key, val) {
+                    if(key=='rows'){
+                        $.each(val, function(id, registro){
+                            $('#consultoresInteres').setGridParam({
+                                url:'<?php echo base_url('componente2/procesoAdministrativo/cargarConsultoraInteres2') . '/' ?>'+registro['cell'][0],
+                                datatype:'json'
+                            }).trigger('reloadGrid');
+                            $('#pro_id').val(registro['cell'][0]);
+                            $('#pro_numero').val(registro['cell'][1]);
+                            $('#pro_finicio').val(registro['cell'][2]);
+                            $('#pro_ffinalizacion').val(registro['cell'][3]);
+                        });                    
+                    }
+                });
+            });              
+        });
+        
         $( "#pro_finicio" ).datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
@@ -46,31 +65,7 @@
         $("#guardar").button().click(function() {
             this.form.action='<?php echo base_url('componente2/procesoAdministrativo/guardarProceso') . "/2" ?>';
         });
-        $("#cancelar").button().click(function() {
-            document.location.href='<?php echo base_url('componente2/procesoAdministrativo/evaluacionExpresionInteres'); ?>';
-        });
-        
-        $('#selMun').change(function(){
-            $.getJSON('<?php echo base_url('componente2/procesoAdministrativo/cargarEvaluacionDeclaracion') . "/" ?>'+$('#selMun').val(), 
-            function(data) {
-                var i=0;
-                $.each(data, function(key, val) {
-                    if(key=='rows'){
-                        $.each(val, function(id, registro){
-                            $('#consultoresInteres').setGridParam({
-                                url:'<?php echo base_url('componente2/procesoAdministrativo/cargarConsultoraInteres2') . '/' ?>'+registro['cell'][0],
-                                editurl:'<?php echo base_url('componente2/procesoAdministrativo/gestionarConsultoresInteres') . '/'; ?>'+registro['cell'][0],
-                                datatype:'json'
-                            }).trigger('reloadGrid');
-                            $('#pro_id').val(registro['cell'][0]);
-                            $('#pro_numero').val(registro['cell'][1]);
-                            $('#pro_finicio').val(registro['cell'][2]);
-                            $('#pro_ffinalizacion').val(registro['cell'][3]);
-                        });                    
-                    }
-                });
-            });              
-        });
+               
       
         /*DIALOGOS DE VALIDACION*/
         $('.mensaje').dialog({
@@ -87,8 +82,8 @@
         /*VARIABLES*/
         var tabla=$("#consultoresInteres");
         tabla.jqGrid({
-            url:'<?php echo base_url('componente2/procesoAdministrativo/cargarConsultoraInteres2') . '/0'; ?>',
-            editurl:'<?php echo base_url('componente2/procesoAdministrativo/gestionarConsultoresInteres') . '/0'; ?>',
+            url:'<?php echo base_url('componente2/procesoAdministrativo/cargarConsultoraInteres2') . '/0' ?>',
+            editurl:'<?php echo base_url('componente2/procesoAdministrativo/gestionarConsultoresInteres') . '/0' ?>',
             datatype:'json',
             altRows:true,
             height: "100%",
@@ -105,7 +100,8 @@
                     editoptions:{ value: '0:Seleccione;Empresa:Empresa;ONG:ONG' }, 
                     formoptions:{ label: "Tipo:",elmprefix:"(*)"}
                 },
-                {name:'con_int_aplica',index:'con_int_aplica',width:60,align:'center',editable:true,edittype:"checkbox",editoptions:{value:"Si:No"}},
+                {name:'con_int_aplica',index:'con_int_aplica',width:60,align:'center',editable:true,
+                    edittype:"checkbox",editoptions:{value:"Si:No"}},
                 {name:'actions',formatter:"actions",editable:false,fixed:true,width:60,
                     formatoptions:{"keys":true,delbutton: false}
                 }
@@ -128,16 +124,14 @@
             tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');
             return[true,'']; //no error
         }
-        
                 
     });
 </script>
 
-<!--<form id="AdquisicionyContratacionForm" method="post" style="left: 100px;position: relative;">-->
-<form id="AdquisicionyContratacionForm" method="post">
+
+<form id="SeleccionConsultoraForm" method="post">
     <center>
-        <h2 class="h2Titulos">Evaluación de expresión de interés</h2>
-        <h2 class="h2Titulos">Proceso de evaluación</h2>
+        <h2 class="h2Titulos">Pedido de propuesta técnica y financiera</h2>
         <br/>
         <table>
             <tr>
@@ -158,7 +152,7 @@
             </tr>
         </table>
     </center>
-    <br/>        <br/>
+    <br/><br/><br/>
     <table class="procesoAdmin">
         <tr>
         <td class="textD"><strong>No. Proceso: </strong></td>
@@ -179,16 +173,16 @@
         <div id="pagerConsultoresInteres"></div>
         <br/>
     </center>
-
     <center style="position: relative;top: 20px">
-        <div>
-            <p><input type="submit" id="guardar" value="Guardar Evaluación" />
-                <input type="button" id="cancelar" value="Cancelar" />
-            </p>
-        </div>
+        <input type="submit" id="guardar" value="Guardar" />
+        <input type="button" id="cancelar" value="Cancelar" />
     </center>
     <input id="pro_id" name="pro_id" value="" style="visibility: hidden"/>
 </form>
+
 <div id="mensaje" class="mensaje" title="Aviso de la operación">
     <p>La acción fue realizada con satisfacción</p>
+</div>
+<div id="mensaje2" class="mensaje" title="Aviso">
+    <p>Debe Seleccionar una fila para continuar</p>
 </div>

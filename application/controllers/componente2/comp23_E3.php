@@ -188,8 +188,7 @@ class Comp23_E3 extends CI_Controller {
 
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ');
+             $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -243,6 +242,7 @@ class Comp23_E3 extends CI_Controller {
         $informacion['pro_pep_fecha_observacion'] = $datos[0]->pro_pep_fecha_observacion;
         $informacion['pro_pep_fecha_aprobacion'] = $datos[0]->pro_pep_fecha_aprobacion;
         $informacion['pro_pep_ruta_archivo'] = $datos[0]->pro_pep_ruta_archivo;
+        $informacion['nombreArchivo'] =end(explode("/", $datos[0]->pro_pep_ruta_archivo)); 
         $informacion['pro_pep_observacion'] = $datos[0]->pro_pep_observacion;
         $informacion['pro_pep_firmaue'] = $datos[0]->pro_pep_firmaue;
         $informacion['pro_pep_firmais'] = $datos[0]->pro_pep_firmais;
@@ -371,6 +371,7 @@ class Comp23_E3 extends CI_Controller {
         $informacion['por_pro_beneficiario_m'] = $datosPorta[0]->por_pro_beneficiario_m;
         $informacion['por_pro_observacion'] = $datosPorta[0]->por_pro_observacion;
         $informacion['por_pro_ruta_archivo'] = $datosPorta[0]->por_pro_ruta_archivo;
+        $informacion['nombreArchivo'] =end(explode("/", $datosPorta[0]->por_pro_ruta_archivo)); 
         /**/
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
@@ -429,8 +430,7 @@ class Comp23_E3 extends CI_Controller {
             }
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ');
+             $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -767,6 +767,15 @@ class Comp23_E3 extends CI_Controller {
         $this->load->view('componente2/subcomp23/etapa3/estrategiaComunicacion_view', $informacion);
         $this->load->view('plantilla/footer', $informacion);
     }
+    
+    public function guardarEstrategiaComunicacion() {
+       $this->load->model('etapa3-sub23/estrategia_comunicacion', 'estCom');
+        $est_com_id = $this->input->post("est_com_id");
+        $est_com_observacion = $this->input->post("est_com_observacion");
+        
+        $this->estCom->editarEstCom($est_com_id, $est_com_observacion);
+        redirect('componente2/comp23_E3/estrategiaComunicacion');
+    }
 
     public function cargarActores($est_com_id) {
         $this->load->model('etapa3-sub23/autor_estrategia', 'autEst');
@@ -790,8 +799,7 @@ class Comp23_E3 extends CI_Controller {
             }
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ');
+            $rows=array();
         }
 
         $datos = json_encode($rows);
