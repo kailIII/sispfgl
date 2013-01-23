@@ -165,3 +165,11 @@ em {
 img{
     border-style: none;
 }
+
+.fechaAdmin{
+    background-color: #2F589F; 
+    color: white; 
+    font-weight: bold;
+    padding: 2px;
+    border-color: #2F589F;
+}

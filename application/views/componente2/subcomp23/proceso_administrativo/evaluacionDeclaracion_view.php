@@ -43,10 +43,10 @@
         /*FIN DEL DATEPICKER*/
         
         /*ZONA DE BOTONES*/
-        $("#guardar").button().click(function() {
+        $("#guardar").button().hide().click(function() {
             this.form.action='<?php echo base_url('componente2/procesoAdministrativo/guardarProceso') . "/2" ?>';
         });
-        $("#cancelar").button().click(function() {
+        $("#cancelar").button().hide().click(function() {
             document.location.href='<?php echo base_url('componente2/procesoAdministrativo/evaluacionExpresionInteres'); ?>';
         });
         
@@ -66,6 +66,8 @@
                             $('#pro_numero').val(registro['cell'][1]);
                             $('#pro_finicio').val(registro['cell'][2]);
                             $('#pro_ffinalizacion').val(registro['cell'][3]);
+                            $("#cancelar").show();
+                            $("#guardar").show();
                         });                    
                     }
                 });

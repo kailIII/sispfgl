@@ -18,11 +18,11 @@
             dateFormat: 'dd/mm/yy'
         });
         
-        $("#guardar").button().click(function() {
+        $("#guardar").button().hide().click(function() {
             this.form.action='<?php echo base_url('componente2/procesoAdministrativo/guardarProceso') . "/3" ?>';
         });
         
-        $("#cancelar").button().click(function() {
+        $("#cancelar").button().hide().click(function() {
             document.location.href='<?php echo base_url(); ?>';
         });
         
@@ -70,6 +70,8 @@
                             $('#pro_numero').val(registro['cell'][1]);
                             $('#pro_fenvio_informacion').val(registro['cell'][2]);
                             $('#pro_flimite_recepcion').val(registro['cell'][3]);
+                            $("#cancelar").show();
+                            $("#guardar").show();
                         });                    
                     }
                 });
