@@ -7,7 +7,7 @@ MAP
   
   WEB
     TEMPLATE  'maptemplate.html'
-    IMAGEPATH '../../tmp/ms_tmp/'
+    IMAGEPATH '../../sispfgl/tmp/ms_tmp/'
     IMAGEURL  '../../sispfgl/tmp/ms_tmp/'
   END
   
