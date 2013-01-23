@@ -250,6 +250,43 @@ ALTER SEQUENCE area_dimension_are_dim_id_seq OWNED BY area_dimension.are_dim_id;
 
 
 --
+-- Name: asistente_divu; Type: TABLE; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+CREATE TABLE asistente_divu (
+    divu_id integer,
+    asis_id integer NOT NULL,
+    asis_nombre character varying(100),
+    asis_sexo character(1),
+    asis_cargo character varying(50),
+    asis_sector character varying(100)
+);
+
+
+ALTER TABLE public.asistente_divu OWNER TO sispfgl;
+
+--
+-- Name: asistente_divu_asis_id_seq; Type: SEQUENCE; Schema: public; Owner: sispfgl
+--
+
+CREATE SEQUENCE asistente_divu_asis_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.asistente_divu_asis_id_seq OWNER TO sispfgl;
+
+--
+-- Name: asistente_divu_asis_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: sispfgl
+--
+
+ALTER SEQUENCE asistente_divu_asis_id_seq OWNED BY asistente_divu.asis_id;
+
+
+--
 -- Name: asistente_dsat; Type: TABLE; Schema: public; Owner: sispfgl; Tablespace: 
 --
 
@@ -1035,6 +1072,43 @@ ALTER TABLE public.diagnostico_dia_id_seq OWNER TO sispfgl;
 --
 
 ALTER SEQUENCE diagnostico_dia_id_seq OWNED BY diagnostico.dia_id;
+
+
+--
+-- Name: divu; Type: TABLE; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+CREATE TABLE divu (
+    divu_id integer NOT NULL,
+    divu_nombre character varying(100),
+    divu_fecha date,
+    divu_tipo character varying(50),
+    divu_responsable character varying(100),
+    divu_municipio integer
+);
+
+
+ALTER TABLE public.divu OWNER TO sispfgl;
+
+--
+-- Name: divu_divu_id_seq; Type: SEQUENCE; Schema: public; Owner: sispfgl
+--
+
+CREATE SEQUENCE divu_divu_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.divu_divu_id_seq OWNER TO sispfgl;
+
+--
+-- Name: divu_divu_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: sispfgl
+--
+
+ALTER SEQUENCE divu_divu_id_seq OWNED BY divu.divu_id;
 
 
 --
@@ -2354,7 +2428,9 @@ CREATE TABLE proceso (
     pro_fcierre_negociacion date,
     pro_ffirma_contrato date,
     pro_observacion2 date,
-    mun_id integer NOT NULL
+    mun_id integer NOT NULL,
+    pro_faperturatecnica date,
+    pro_faperturafinanciera date
 );
 
 
@@ -3017,6 +3093,13 @@ ALTER TABLE ONLY area_dimension ALTER COLUMN are_dim_id SET DEFAULT nextval('are
 
 
 --
+-- Name: asis_id; Type: DEFAULT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY asistente_divu ALTER COLUMN asis_id SET DEFAULT nextval('asistente_divu_asis_id_seq'::regclass);
+
+
+--
 -- Name: aso_id; Type: DEFAULT; Schema: public; Owner: sispfgl
 --
 
@@ -3126,6 +3209,13 @@ ALTER TABLE ONLY detmonto_proyeccion ALTER COLUMN dmon_pro_id SET DEFAULT nextva
 --
 
 ALTER TABLE ONLY diagnostico ALTER COLUMN dia_id SET DEFAULT nextval('diagnostico_dia_id_seq'::regclass);
+
+
+--
+-- Name: divu_id; Type: DEFAULT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY divu ALTER COLUMN divu_id SET DEFAULT nextval('divu_divu_id_seq'::regclass);
 
 
 --
@@ -3541,6 +3631,21 @@ SELECT pg_catalog.setval('area_dimension_are_dim_id_seq', 4, true);
 
 
 --
+-- Data for Name: asistente_divu; Type: TABLE DATA; Schema: public; Owner: sispfgl
+--
+
+COPY asistente_divu (divu_id, asis_id, asis_nombre, asis_sexo, asis_cargo, asis_sector) FROM stdin;
+\.
+
+
+--
+-- Name: asistente_divu_asis_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
+--
+
+SELECT pg_catalog.setval('asistente_divu_asis_id_seq', 1, false);
+
+
+--
 -- Data for Name: asistente_dsat; Type: TABLE DATA; Schema: public; Owner: sispfgl
 --
 
@@ -3617,7 +3722,7 @@ SELECT pg_catalog.setval('capacitacion_cap_id_seq', 75, true);
 --
 
 COPY ci_sessions (session_id, ip_address, user_agent, last_activity, user_data) FROM stdin;
-65586195537c8e3d0e8b8a5475678902	127.0.0.1	Mozilla/5.0 (X11; Linux x86_64; rv:10.0.11) Gecko/20100101 Firefox/10.0.11 Iceweasel/10.0.11	1358747211	a:4:{s:9:"user_data";s:0:"";s:7:"user_id";s:1:"9";s:8:"username";s:11:"cfuentes_86";s:6:"status";s:1:"1";}
+bea0770352427b1db58f8c5ed037f87a	127.0.0.1	Mozilla/5.0 (X11; Linux x86_64; rv:10.0.11) Gecko/20100101 Firefox/10.0.11 Iceweasel/10.0.11	1358914121	a:4:{s:9:"user_data";s:0:"";s:7:"user_id";s:2:"14";s:8:"username";s:7:"kpenate";s:6:"status";s:1:"1";}
 \.
 
 
@@ -4133,6 +4238,21 @@ SELECT pg_catalog.setval('diagnostico_dia_id_seq', 1, true);
 
 
 --
+-- Data for Name: divu; Type: TABLE DATA; Schema: public; Owner: sispfgl
+--
+
+COPY divu (divu_id, divu_nombre, divu_fecha, divu_tipo, divu_responsable, divu_municipio) FROM stdin;
+\.
+
+
+--
+-- Name: divu_divu_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
+--
+
+SELECT pg_catalog.setval('divu_divu_id_seq', 1, false);
+
+
+--
 -- Data for Name: dsat; Type: TABLE DATA; Schema: public; Owner: sispfgl
 --
 
@@ -4439,7 +4559,7 @@ COPY login_attempts (id, ip_address, login, "time") FROM stdin;
 -- Name: login_attempts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('login_attempts_id_seq', 22, true);
+SELECT pg_catalog.setval('login_attempts_id_seq', 23, true);
 
 
 --
@@ -5095,8 +5215,8 @@ SELECT pg_catalog.setval('problema_identificado_pro_ide_id_seq', 17, true);
 -- Data for Name: proceso; Type: TABLE DATA; Schema: public; Owner: sispfgl
 --
 
-COPY proceso (pro_id, pro_numero, pro_fpublicacion, pro_faclara_dudas, pro_fexpresion_interes, pro_observacion1, pro_pub_ruta_archivo, pro_exp_ruta_archivo, pro_finicio, pro_ffinalizacion, pro_fenvio_informacion, pro_flimite_recepcion, pro_fsolicitud, pro_frecepcion, pro_fcierre_negociacion, pro_ffirma_contrato, pro_observacion2, mun_id) FROM stdin;
-1	123456	2013-01-02	2013-01-08	2013-01-22		documentos/proceso/proceso1_pub.pdf	documentos/proceso/proceso1_exp.pdf	2013-01-09	2013-01-15	2013-01-29	2013-03-28	\N	\N	\N	\N	\N	193
+COPY proceso (pro_id, pro_numero, pro_fpublicacion, pro_faclara_dudas, pro_fexpresion_interes, pro_observacion1, pro_pub_ruta_archivo, pro_exp_ruta_archivo, pro_finicio, pro_ffinalizacion, pro_fenvio_informacion, pro_flimite_recepcion, pro_fsolicitud, pro_frecepcion, pro_fcierre_negociacion, pro_ffirma_contrato, pro_observacion2, mun_id, pro_faperturatecnica, pro_faperturafinanciera) FROM stdin;
+1	123456	2013-01-02	2013-01-08	2013-01-22		documentos/proceso/proceso1_pub.pdf	documentos/proceso/proceso1_exp.pdf	2013-01-09	2013-01-15	2013-01-29	2013-03-28	\N	\N	\N	\N	\N	193	\N	\N
 \.
 
 
@@ -5610,8 +5730,8 @@ COPY users (id, username, password, email, activated, banned, ban_reason, new_pa
 20	Usuario6	$2a$08$axrAa7B7hJUj7.dWb0QD5e6RZRwQxreGdaeufPsDuSkclUjrcnmVi	karensita4@hotmail.com	1	0	\N	\N	\N	\N	\N	127.0.0.1	2013-01-18	2013-01-18	\N	3
 21	Usuario7	$2a$08$Z4iE6O6ueH.9xY0TTwBG..1a0jfNloWjhsAQv/1dOzyKNGTvdx2Ra	kpenate5@salud.gob.sv	1	0	\N	\N	\N	\N	\N	127.0.0.1	2013-01-18	2013-01-18	\N	3
 22	Usuario8	$2a$08$oeMJ57DEzHO0I8FiHPfNTe3vMCJaAaJhZdqXr27vClpodOLbBgPGG	karen.elvira.penate5@gmail.com	1	0	\N	\N	\N	\N	\N	127.0.0.1	2013-01-18	2013-01-18	\N	3
-14	kpenate2	$2a$08$xaEcqXMfRlC76rwrP6zus.j/PvgZ13mFhGGO39EFstPyaODtwpskC	kpenate2@salud.gob.sv	1	0	\N	\N	\N	\N	\N	127.0.0.1	2013-01-17	2013-01-13	\N	31
 9	cfuentes_86	$2a$08$E8ttuLm0U2cD5lHo8/bzxuPeOJw/8/8nXH912APeL12wCUl4hNbNO	cfuentes_86@hotmail.com	1	0	\N	\N	\N	\N	\N	127.0.0.1	2013-01-20	2012-09-12	\N	3
+14	kpenate	$2a$08$xaEcqXMfRlC76rwrP6zus.j/PvgZ13mFhGGO39EFstPyaODtwpskC	kpenate2@salud.gob.sv	1	0	\N	\N	\N	\N	\N	127.0.0.1	2013-01-22	2013-01-13	\N	31
 \.
 
 
@@ -5860,6 +5980,14 @@ ALTER TABLE ONLY diagnostico
 
 ALTER TABLE ONLY cumplimiento_diagnostico
     ADD CONSTRAINT pk_dia_id_cum_min_id PRIMARY KEY (dia_id, cum_min_id);
+
+
+--
+-- Name: pk_divu; Type: CONSTRAINT; Schema: public; Owner: sispfgl; Tablespace: 
+--
+
+ALTER TABLE ONLY divu
+    ADD CONSTRAINT pk_divu PRIMARY KEY (divu_id);
 
 
 --
@@ -6461,6 +6589,14 @@ ALTER TABLE ONLY problema_identificado
 
 
 --
+-- Name: fk_asistent_reference_divu; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY asistente_divu
+    ADD CONSTRAINT fk_asistent_reference_divu FOREIGN KEY (divu_id) REFERENCES divu(divu_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+
+
+--
 -- Name: fk_asistent_reference_dsat; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
 --
 
@@ -6706,6 +6842,14 @@ ALTER TABLE ONLY departamento
 
 ALTER TABLE ONLY proyecto_pep
     ADD CONSTRAINT fk_diagnostico_proyecto_pep FOREIGN KEY (dia_id) REFERENCES diagnostico(dia_id);
+
+
+--
+-- Name: fk_divu_reference_municipi; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY divu
+    ADD CONSTRAINT fk_divu_reference_municipi FOREIGN KEY (divu_municipio) REFERENCES municipio(mun_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --

@@ -114,6 +114,16 @@ class ProcesoAdministrativo extends CI_Controller {
                 $this->proceso->editarPro3($pro_id, $pro_fenvio_informacion, $pro_flimite_recepcion);
                 redirect('componente2/procesoAdministrativo/seleccionConsultoras');
                 break;
+            case 4:
+                $pro_flimite_recepcion = $this->input->post("pro_flimite_recepcion");
+                if ($pro_flimite_recepcion == "")
+                    $pro_flimite_recepcion = null;
+                $pro_fenvio_informacion = $this->input->post("pro_fenvio_informacion");
+                if ($pro_fenvio_informacion == "")
+                    $pro_fenvio_informacion = null;
+                $this->proceso->editarPro3($pro_id, $pro_fenvio_informacion, $pro_flimite_recepcion);
+                redirect('componente2/procesoAdministrativo/seleccionConsultoras');
+                break;
         }
     }
 
@@ -377,7 +387,7 @@ class ProcesoAdministrativo extends CI_Controller {
             if ($resultado[0]->pro_fsolicitud != "")
                 $pro_fsolicitud = date('d/m/Y', strtotime($resultado[0]->pro_fsolicitud));
             else
-               $pro_fsolicitud = $resultado[0]->pro_fsolicitud;
+                $pro_fsolicitud = $resultado[0]->pro_fsolicitud;
             if ($resultado[0]->pro_frecepcion != "")
                 $pro_frecepcion = date('d/m/Y', strtotime($resultado[0]->pro_frecepcion));
             else
@@ -407,7 +417,6 @@ class ProcesoAdministrativo extends CI_Controller {
                 $pro_faperturafinanciera,
                 $pro_fcierre_negociacion,
                 $pro_ffirma_contrato
-                
             );
         }
         $datos = json_encode($rows);
