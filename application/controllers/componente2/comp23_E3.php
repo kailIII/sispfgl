@@ -216,6 +216,9 @@ class Comp23_E3 extends CI_Controller {
     public function cumplimientosMinimos() {
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
+        $g = $this->input->get('g');
+        if ($g)
+            $informacion['guardo'] = true;
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $username = $this->tank_auth->get_username();
         $informacion['username'] = $username;
@@ -291,7 +294,7 @@ class Comp23_E3 extends CI_Controller {
         $this->load->model('proyectoPep/proyecto_pep', 'proPep');
         $this->proPep->actualizarProyectoPep($pro_pep_id, $pro_pep_firmacm, $pro_pep_firmais, $pro_pep_firmaue, $pro_pep_fecha_borrador, $pro_pep_fecha_observacion, $pro_pep_fecha_aprobacion, $pro_pep_ruta_archivo, $pro_pep_observacion);
 
-        redirect(base_url('componente2/comp23_E3/cumplimientosMinimos'));
+        redirect(base_url('componente2/comp23_E3/cumplimientosMinimos?g=true'));
     }
 
     public function mostrarPortafolioProyecto() {
@@ -470,6 +473,9 @@ class Comp23_E3 extends CI_Controller {
 
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
+        $g = $this->input->get('g');
+        if ($g)
+            $informacion['guardo'] = true;
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $username = $this->tank_auth->get_username();
         $informacion['username'] = $username;
@@ -666,12 +672,15 @@ class Comp23_E3 extends CI_Controller {
         }
 
 
-        redirect(base_url('componente2/comp23_E3/mostrarProyeccionIngresos'));
+        redirect(base_url('componente2/comp23_E3/mostrarProyeccionIngresos?g=true'));
     }
 
     public function planInversion() {
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
+        $g = $this->input->get('g');
+        if ($g)
+            $informacion['guardo'] = true;
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $username = $this->tank_auth->get_username();
         $informacion['username'] = $username;
@@ -732,12 +741,15 @@ class Comp23_E3 extends CI_Controller {
         }
 
         $this->plaInv->editarPlanInversion($pla_inv_id, $pla_inv_observacion);
-        redirect('componente2/comp23_E3/planInversion');
+        redirect('componente2/comp23_E3/planInversion?g=true');
     }
 
     public function estrategiaComunicacion() {
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
+        $g = $this->input->get('g');
+        if ($g)
+            $informacion['guardo'] = true;
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $username = $this->tank_auth->get_username();
         $informacion['username'] = $username;
@@ -774,7 +786,7 @@ class Comp23_E3 extends CI_Controller {
         $est_com_observacion = $this->input->post("est_com_observacion");
         
         $this->estCom->editarEstCom($est_com_id, $est_com_observacion);
-        redirect('componente2/comp23_E3/estrategiaComunicacion');
+        redirect('componente2/comp23_E3/estrategiaComunicacion?g=true');
     }
 
     public function cargarActores($est_com_id) {

@@ -1,5 +1,8 @@
 <script type="text/javascript">        
     $(document).ready(function(){
+         <?php if ($guardo){?>
+                $('#guardo').dialog();
+                <?php }?>
         /*VARIABLES*/
         var tabla=$("#participantes");
         /*ZONA DE BOTONES*/
@@ -54,7 +57,7 @@
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         /*FIN DEL DATEPICKER*/
         /*ZONA DE VALIDACIONES*/
@@ -197,7 +200,7 @@
     <table>
         <tr>
         <td ><strong>Lugar:</strong><input id="gru_apo_lugar" <?php if (isset($gru_apo_lugar)) { ?> value='<?php echo $gru_apo_lugar; ?>'<?php } ?> name="gru_apo_lugar" type="text" size="40"/></td>
-        <td  ><strong>Fecha: </strong><input readonly="readonly" <?php if (isset($gru_apo_fecha)) { ?> value='<?php echo date('d/m/Y', strtotime($gru_apo_fecha)); ?>'<?php } ?>id="gru_apo_fecha" name="gru_apo_fecha" type="text" size="10"/></td>
+        <td  ><strong>Fecha: </strong><input readonly="readonly" <?php if (isset($gru_apo_fecha)) { ?> value='<?php echo date('d-m-Y', strtotime($gru_apo_fecha)); ?>'<?php } ?>id="gru_apo_fecha" name="gru_apo_fecha" type="text" size="10"/></td>
         </tr>
     </table>
     <br/><br/>
@@ -284,4 +287,10 @@
 <div id="mensaje2" class="mensaje" title="Aviso">
     <p>Debe Seleccionar una fila para continuar</p>
 </div>
+<div id="guardo" class="mensaje" title="Almacenado">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
+    </center>
+</div>
+
 

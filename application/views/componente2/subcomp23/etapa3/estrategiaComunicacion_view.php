@@ -1,6 +1,8 @@
 <script type="text/javascript">        
     $(document).ready(function(){
-
+ <?php if ($guardo){?>
+                $('#guardo').dialog();
+                <?php }?>
         var tabla=$("#actores");
         /*ZONA DE BOTONES*/
         $("#agregar").button().click(function(){
@@ -73,7 +75,7 @@
                     editoptions: {size: 10, maxlengh: 10,
                         dataInit: function(element) {
                             $(element).datepicker(
-                            {dateFormat: 'dd/mm/yy',
+                            {dateFormat: 'dd-mm-yy',
                                 buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
                                 buttonImageOnly: true
                             
@@ -173,4 +175,9 @@
 </div>
 <div id="extension" class="mensaje" title="Error">
     <p>Solo se permiten archivos con la extensión pdf|doc|docx</p>
+</div>
+<div id="guardo" class="mensaje" title="Almacenado">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
+    </center>
 </div>

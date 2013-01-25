@@ -5,7 +5,7 @@
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         
         /*FIN DEL DATEPICKER*/
@@ -15,7 +15,7 @@
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         
         $("#guardar").button().hide().click(function() {
@@ -55,6 +55,13 @@
         });
         
         $('#selMun').change(function(){
+            $("#cancelar").hide();
+            $("#guardar").hide();
+            $('#consultoresInteres').setGridParam({
+                url:'<?php echo base_url('componente2/procesoAdministrativo/cargarConsultoraInteres3') . '/0' ?>',
+                datatype:'json'
+            }).trigger('reloadGrid');
+            $('#SeleccionConsultoraForm')[0].reset();
             $.getJSON('<?php echo base_url('componente2/procesoAdministrativo/cargarSeleccionConsultora') . "/" ?>'+$('#selMun').val(), 
             function(data) {
                 var i=0;
@@ -62,7 +69,7 @@
                     if(key=='rows'){
                         $.each(val, function(id, registro){
                             $('#consultoresInteres').setGridParam({
-                                url:'<?php echo base_url('componente2/procesoAdministrativo/cargarConsultoraInteres2') . '/' ?>'+registro['cell'][0],
+                                url:'<?php echo base_url('componente2/procesoAdministrativo/cargarConsultoraInteres3') . '/' ?>'+registro['cell'][0],
                                 editurl:'<?php echo base_url('componente2/procesoAdministrativo/gestionarConsultoresInteres') . '/'; ?>'+registro['cell'][0],
                                 datatype:'json'
                             }).trigger('reloadGrid');
@@ -123,32 +130,30 @@
                 
     });
 </script>
-
-
+<center>
+    <h2 class="h2Titulos">Selección de consultoras</h2>
+    <br/>
+    <table>
+        <tr>
+        <td><strong>Departamento</strong></td>
+        <td><select id='selDepto'>
+                <option value='0'>--Seleccione--</option>
+                <?php foreach ($departamentos as $depto) { ?>
+                    <option value='<?php echo $depto->dep_id; ?>'><?php echo $depto->dep_nombre; ?></option>
+                <?php } ?>
+            </select>
+        </td>
+        </tr>
+        <td><strong>Municipio</strong></td>
+        <td><select id='selMun' name='selMun'>
+                <option value='0'>--Seleccione--</option>
+            </select>
+        </td>
+        </tr>
+    </table>
+</center>
+<br/><br/>
 <form id="SeleccionConsultoraForm" method="post">
-    <center>
-        <h2 class="h2Titulos">Selección de consultoras</h2>
-        <br/>
-        <table>
-            <tr>
-            <td><strong>Departamento</strong></td>
-            <td><select id='selDepto'>
-                    <option value='0'>--Seleccione--</option>
-                    <?php foreach ($departamentos as $depto) { ?>
-                        <option value='<?php echo $depto->dep_id; ?>'><?php echo $depto->dep_nombre; ?></option>
-                    <?php } ?>
-                </select>
-            </td>
-            </tr>
-            <td><strong>Municipio</strong></td>
-            <td><select id='selMun' name='selMun'>
-                    <option value='0'>--Seleccione--</option>
-                </select>
-            </td>
-            </tr>
-        </table>
-    </center>
-    <br/><br/>
     <table class="procesoAdmin">
         <tr>
         <td class="textD"><strong>No. Proceso: </strong></td>

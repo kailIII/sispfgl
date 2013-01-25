@@ -26,6 +26,9 @@ class Comp23_E4 extends CI_Controller {
     public function acuerdoMunicipal() {
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
+         $g = $this->input->get('g');
+        if ($g)
+            $informacion['guardo'] = true;
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $username = $this->tank_auth->get_username();
         $informacion['username'] = $username;
@@ -85,7 +88,7 @@ class Comp23_E4 extends CI_Controller {
         $this->load->model('etapa1-sub23/acuerdo_municipal', 'acuerdoMun');
         $this->acuerdoMun->actualizarAcuMun2($acu_mun_id, $acu_mun_fecha_observacion, $acu_mun_fecha_borrador, $acu_mun_fecha_aceptacion, $acu_mun_p1, $acu_mun_observacion, $acu_mun_ruta_archivo);
 
-        redirect('componente2/comp23_E4/acuerdoMunicipal');
+        redirect('componente2/comp23_E4/acuerdoMunicipal?g=true');
     }
 
     public function cargarParticipantes($campo, $id_campo) {
@@ -136,6 +139,9 @@ class Comp23_E4 extends CI_Controller {
     public function integracionInstancia() {
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
+         $g = $this->input->get('g');
+        if ($g)
+            $informacion['guardo'] = true;
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $username = $this->tank_auth->get_username();
         $informacion['username'] = $username;
@@ -212,7 +218,7 @@ class Comp23_E4 extends CI_Controller {
         }
 
 
-        redirect('componente2/comp23_E4/integracionInstancia');
+        redirect('componente2/comp23_E4/integracionInstancia?g=true');
     }
 
     public function cargarParticipanteIntIns($campo, $campo_id,$cap_id) {

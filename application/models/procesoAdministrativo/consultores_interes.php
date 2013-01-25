@@ -23,6 +23,13 @@ class Consultores_interes extends CI_Model {
         return $consulta->result();
     }
     
+    public function obtenerConsultoresSeleccionada($pro_id) {
+        $this->db->where('pro_id', $pro_id);
+        $this->db->where('con_int_con_int_seleccionada','Si');
+        $consulta = $this->db->get($this->tabla);
+        return $consulta->result();
+    }
+    
     public function agregarConsultoresInteres($con_int_nombre, $con_int_tipo, $pro_id) {
         $datos = array(
             'con_int_nombre ' => $con_int_nombre,

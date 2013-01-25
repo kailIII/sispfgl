@@ -32,10 +32,11 @@ class Definicion extends CI_Model {
         return $consulta->result_array();
     }
 
-    public function actualizarDef($def_id, $def_fecha, $def_ruta_archivo) {
+    public function actualizarDef($def_id, $def_fecha, $def_ruta_archivo,$def_observacion) {
         $datos = array(
             'def_fecha' => $def_fecha,
-            'def_ruta_archivo' => $def_ruta_archivo
+            'def_ruta_archivo' => $def_ruta_archivo,
+            'def_observacion'=>$def_observacion
         );
         $this->db->where('def_id', $def_id);
         $this->db->update($this->tabla, $datos);

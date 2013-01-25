@@ -27,7 +27,7 @@
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         
         /*FIN DEL DATEPICKER*/
@@ -37,7 +37,7 @@
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         
         /*FIN DEL DATEPICKER*/
@@ -51,6 +51,12 @@
         });
         
         $('#selMun').change(function(){
+            $('#AdquisicionyContratacionForm')[0].reset();
+            $("#cancelar").hide();
+            $("#guardar").hide();
+            $('#consultoresInteres').setGridParam({
+                url:'<?php echo base_url('componente2/procesoAdministrativo/cargarConsultoraInteres2') . '/0' ?>',                datatype:'json'
+            }).trigger('reloadGrid');
             $.getJSON('<?php echo base_url('componente2/procesoAdministrativo/cargarEvaluacionDeclaracion') . "/" ?>'+$('#selMun').val(), 
             function(data) {
                 var i=0;
@@ -135,31 +141,30 @@
     });
 </script>
 
-<!--<form id="AdquisicionyContratacionForm" method="post" style="left: 100px;position: relative;">-->
+<center>
+    <h2 class="h2Titulos">Evaluación de expresión de interés</h2>
+    <h2 class="h2Titulos">Proceso de evaluación</h2>
+    <br/>
+    <table>
+        <tr>
+        <td><strong>Departamento</strong></td>
+        <td><select id='selDepto'>
+                <option value='0'>--Seleccione--</option>
+                <?php foreach ($departamentos as $depto) { ?>
+                    <option value='<?php echo $depto->dep_id; ?>'><?php echo $depto->dep_nombre; ?></option>
+                <?php } ?>
+            </select>
+        </td>
+        </tr>
+        <td><strong>Municipio</strong></td>
+        <td><select id='selMun' name='selMun'>
+                <option value='0'>--Seleccione--</option>
+            </select>
+        </td>
+        </tr>
+    </table>
+</center>
 <form id="AdquisicionyContratacionForm" method="post">
-    <center>
-        <h2 class="h2Titulos">Evaluación de expresión de interés</h2>
-        <h2 class="h2Titulos">Proceso de evaluación</h2>
-        <br/>
-        <table>
-            <tr>
-            <td><strong>Departamento</strong></td>
-            <td><select id='selDepto'>
-                    <option value='0'>--Seleccione--</option>
-                    <?php foreach ($departamentos as $depto) { ?>
-                        <option value='<?php echo $depto->dep_id; ?>'><?php echo $depto->dep_nombre; ?></option>
-                    <?php } ?>
-                </select>
-            </td>
-            </tr>
-            <td><strong>Municipio</strong></td>
-            <td><select id='selMun' name='selMun'>
-                    <option value='0'>--Seleccione--</option>
-                </select>
-            </td>
-            </tr>
-        </table>
-    </center>
     <br/>        <br/>
     <table class="procesoAdmin">
         <tr>

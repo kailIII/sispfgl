@@ -48,9 +48,23 @@ class ProcesoAdministrativo extends CI_Controller {
 
         $mun_id = $this->input->post("selMun");
         $this->load->model('procesoAdministrativo/proceso');
+        $this->load->model('procesoAdministrativo/pestania_proceso','pesPro');
+        $this->load->model('procesoAdministrativo/proceso_etapa','proEta');
+        $this->load->model('procesoAdministrativo/nombre_fecha_aprobacion','nomFecApr');
+        $this->load->model('procesoAdministrativo/nombrefecha_procesoetapa','fechaPro');
         $resultado = $this->proceso->contarProPorMuni($mun_id);
-        if ($resultado == '0')
+        if ($resultado == '0') {
             $this->proceso->agregarPro($mun_id);
+            $pestanias=  $this->pesPro->obtenerPestaniaProcesos();
+            foreach($pestanias as $aux){
+                $this->proEta->insertarProcesoEtapa($mun_id, $aux->pes_pro_id);
+                $nombresFechas=  $this->nomFecApr->obtenerNombresFechas();
+                $etapaId=  $this->proEta->obtenerMaxId();
+                foreach ($nombresFechas as $aux2){
+                    $this->fechaPro->insertarFechaProceso($etapaId[0]->pro_eta_id, $aux2->nom_fec_apr_id);
+                }
+            }
+        }
         $resultado = $this->proceso->obtenerPro($mun_id);
         $informacion['pro_id'] = $resultado[0]->pro_id;
         $informacion['pro_numero'] = $resultado[0]->pro_numero;
@@ -115,14 +129,27 @@ class ProcesoAdministrativo extends CI_Controller {
                 redirect('componente2/procesoAdministrativo/seleccionConsultoras');
                 break;
             case 4:
-                $pro_flimite_recepcion = $this->input->post("pro_flimite_recepcion");
-                if ($pro_flimite_recepcion == "")
-                    $pro_flimite_recepcion = null;
-                $pro_fenvio_informacion = $this->input->post("pro_fenvio_informacion");
-                if ($pro_fenvio_informacion == "")
-                    $pro_fenvio_informacion = null;
-                $this->proceso->editarPro3($pro_id, $pro_fenvio_informacion, $pro_flimite_recepcion);
-                redirect('componente2/procesoAdministrativo/seleccionConsultoras');
+                $pro_fsolicitud = $this->input->post("pro_fsolicitud");
+                if ($pro_fsolicitud == "")
+                    $pro_fsolicitud = null;
+                $pro_frecepcion = $this->input->post("pro_frecepcion");
+                if ($pro_frecepcion == "")
+                    $pro_frecepcion = null;
+                $pro_fcierre_negociacion = $this->input->post("pro_fcierre_negociacion");
+                if ($pro_fcierre_negociacion == "")
+                    $pro_fcierre_negociacion = null;
+                $pro_ffirma_contrato = $this->input->post("pro_ffirma_contrato");
+                if ($pro_ffirma_contrato == "")
+                    $pro_ffirma_contrato = null;
+                $pro_faperturatecnica = $this->input->post("pro_faperturatecnica");
+                if ($pro_faperturatecnica == "")
+                    $pro_faperturatecnica = null;
+                $pro_faperturafinanciera = $this->input->post("pro_faperturafinanciera");
+                if ($pro_faperturafinanciera == "")
+                    $pro_faperturafinanciera = null;
+                $pro_observacion2 = $this->input->post("pro_observacion2");
+                $this->proceso->editarPro4($pro_id, $pro_fsolicitud, $pro_frecepcion, $pro_fcierre_negociacion, $pro_ffirma_contrato, $pro_faperturatecnica, $pro_faperturafinanciera, $pro_observacion2);
+                redirect('componente2/procesoAdministrativo/propuestaTecnica');
                 break;
         }
     }
@@ -298,30 +325,26 @@ class ProcesoAdministrativo extends CI_Controller {
 
     public function cargarEvaluacionDeclaracion($mun_id) {
         $this->load->model('procesoAdministrativo/proceso');
+        $rows = array();
         if ($this->proceso->contarProPorMuni($mun_id) != 0) {
             $resultado = $this->proceso->obtenerPro($mun_id);
             $id = $resultado[0]->pro_id;
             $numero = $resultado[0]->pro_numero;
             if ($resultado[0]->pro_finicio != "")
-                $pro_fininicio = date('d/m/Y', strtotime($resultado[0]->pro_finicio));
+                $pro_fininicio = date('d-m-Y', strtotime($resultado[0]->pro_finicio));
             else
                 $pro_fininicio = $resultado[0]->pro_finicio;
             if ($resultado[0]->pro_ffinalizacion != "")
-                $pro_ffinalizacion = date('d/m/Y', strtotime($resultado[0]->pro_ffinalizacion));
+                $pro_ffinalizacion = date('d-m-Y', strtotime($resultado[0]->pro_ffinalizacion));
             else
                 $pro_ffinalizacion = $resultado[0]->pro_ffinalizacion;
-        }else {
-            $id = 0;
-            $numero = null;
-            $pro_fininicio = "";
-            $pro_ffinalizacion = "";
+            $rows[0]['id'] = $id;
+            $rows[0]['cell'] = array($id,
+                $numero,
+                $pro_fininicio,
+                $pro_ffinalizacion
+            );
         }
-        $rows[0]['id'] = $id;
-        $rows[0]['cell'] = array($id,
-            $numero,
-            $pro_fininicio,
-            $pro_ffinalizacion
-        );
 
 
         $datos = json_encode($rows);
@@ -338,30 +361,27 @@ class ProcesoAdministrativo extends CI_Controller {
 
     public function cargarSeleccionConsultora($mun_id) {
         $this->load->model('procesoAdministrativo/proceso');
+        $rows = array();
         if ($this->proceso->contarProPorMuni($mun_id) != 0) {
             $resultado = $this->proceso->obtenerPro($mun_id);
             $id = $resultado[0]->pro_id;
             $numero = $resultado[0]->pro_numero;
             if ($resultado[0]->pro_fenvio_informacion != "")
-                $pro_fenvio_informacion = date('d/m/Y', strtotime($resultado[0]->pro_fenvio_informacion));
+                $pro_fenvio_informacion = date('d-m-Y', strtotime($resultado[0]->pro_fenvio_informacion));
             else
                 $pro_fenvio_informacion = $resultado[0]->pro_fenvio_informacion;
             if ($resultado[0]->pro_ffinalizacion != "")
-                $pro_flimite_recepcion = date('d/m/Y', strtotime($resultado[0]->pro_flimite_recepcion));
+                $pro_flimite_recepcion = date('d-m-Y', strtotime($resultado[0]->pro_flimite_recepcion));
             else
                 $pro_flimite_recepcion = $resultado[0]->pro_flimite_recepcion;
-        }else {
-            $id = 0;
-            $numero = null;
-            $pro_fenvio_informacion = "";
-            $pro_flimite_recepcion = "";
+            $rows[0]['id'] = $id;
+            $rows[0]['cell'] = array($id,
+                $numero,
+                $pro_fenvio_informacion,
+                $pro_flimite_recepcion
+            );
         }
-        $rows[0]['id'] = $id;
-        $rows[0]['cell'] = array($id,
-            $numero,
-            $pro_fenvio_informacion,
-            $pro_flimite_recepcion
-        );
+
 
 
         $datos = json_encode($rows);
@@ -385,27 +405,27 @@ class ProcesoAdministrativo extends CI_Controller {
             $id = $resultado[0]->pro_id;
             $numero = $resultado[0]->pro_numero;
             if ($resultado[0]->pro_fsolicitud != "")
-                $pro_fsolicitud = date('d/m/Y', strtotime($resultado[0]->pro_fsolicitud));
+                $pro_fsolicitud = date('d-m-Y', strtotime($resultado[0]->pro_fsolicitud));
             else
                 $pro_fsolicitud = $resultado[0]->pro_fsolicitud;
             if ($resultado[0]->pro_frecepcion != "")
-                $pro_frecepcion = date('d/m/Y', strtotime($resultado[0]->pro_frecepcion));
+                $pro_frecepcion = date('d-m-Y', strtotime($resultado[0]->pro_frecepcion));
             else
                 $pro_frecepcion = $resultado[0]->pro_frecepcion;
             if ($resultado[0]->pro_faperturatecnica != "")
-                $pro_faperturatecnica = date('d/m/Y', strtotime($resultado[0]->pro_faperturatecnica));
+                $pro_faperturatecnica = date('d-m-Y', strtotime($resultado[0]->pro_faperturatecnica));
             else
                 $pro_faperturatecnica = $resultado[0]->pro_faperturatecnica;
             if ($resultado[0]->pro_faperturafinanciera != "")
-                $pro_faperturafinanciera = date('d/m/Y', strtotime($resultado[0]->pro_faperturafinanciera));
+                $pro_faperturafinanciera = date('d-m-Y', strtotime($resultado[0]->pro_faperturafinanciera));
             else
                 $pro_faperturafinanciera = $resultado[0]->pro_faperturafinanciera;
             if ($resultado[0]->pro_fcierre_negociacion != "")
-                $pro_fcierre_negociacion = date('d/m/Y', strtotime($resultado[0]->pro_fcierre_negociacion));
+                $pro_fcierre_negociacion = date('d-m-Y', strtotime($resultado[0]->pro_fcierre_negociacion));
             else
                 $pro_fcierre_negociacion = $resultado[0]->pro_fcierre_negociacion;
             if ($resultado[0]->pro_ffirma_contrato != "")
-                $pro_ffirma_contrato = date('d/m/Y', strtotime($resultado[0]->pro_ffirma_contrato));
+                $pro_ffirma_contrato = date('d-m-Y', strtotime($resultado[0]->pro_ffirma_contrato));
             else
                 $pro_ffirma_contrato = $resultado[0]->pro_ffirma_contrato;
             $rows[0]['id'] = $id;
@@ -416,7 +436,8 @@ class ProcesoAdministrativo extends CI_Controller {
                 $pro_faperturatecnica,
                 $pro_faperturafinanciera,
                 $pro_fcierre_negociacion,
-                $pro_ffirma_contrato
+                $pro_ffirma_contrato,
+                $resultado[0]->pro_observacion2
             );
         }
         $datos = json_encode($rows);

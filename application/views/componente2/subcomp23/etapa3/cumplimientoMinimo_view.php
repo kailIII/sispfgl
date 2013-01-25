@@ -1,10 +1,41 @@
 <script type="text/javascript">        
     $(document).ready(function(){
+                 <?php if ($guardo){?>
+                $('#guardo').dialog();
+                <?php }?>
 
-        /*ZONA DE BOTONES*/
         $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/comp23_E3/guardarCumplimientosMinimos') . '/' . $pro_pep_id; ?>';
+            borrador= $('#pro_pep_fecha_borrador').datepicker("getDate");
+            observacion=$( "#pro_pep_fecha_observacion" ).datepicker("getDate");
+            aprobacion=$( "#pro_pep_fecha_aprobacion" ).datepicker("getDate");
+            if(borrador==null){
+                $("#pro_pep_fecha_observacion" ).val('');
+                $("#pro_pep_fecha_aprobacion" ).val('');
+                this.form.action='<?php echo base_url('componente2/comp23_E3/guardarCumplimientosMinimos') . '/' . $pro_pep_id; ?>';
+            }else{
+                if(observacion==null){
+                    $( "#pro_pep_fecha_aprobacion" ).val('');
+                    this.form.action='<?php echo base_url('componente2/comp23_E3/guardarCumplimientosMinimos') . '/' . $pro_pep_id; ?>';
+                }else{
+                    if(borrador < observacion){
+                        if(aprobacion==null){
+                            this.form.action='<?php echo base_url('componente2/comp23_E3/guardarCumplimientosMinimos') . '/' . $pro_pep_id; ?>';
+                        }else{
+                            if(observacion < aprobacion){
+                                this.form.action='<?php echo base_url('componente2/comp23_E3/guardarCumplimientosMinimos') . '/' . $pro_pep_id; ?>';
+                            }else{
+                                $('#fechaValidacion').dialog('open');
+                                return false
+                            }
+                        }
+                    }else{
+                        $('#fechaValidacion').dialog('open');
+                        return false
+                    }
+                }
+            }  
         });
+        
         $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url(); ?>';
         });
@@ -57,21 +88,32 @@
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         
         $( "#pro_pep_fecha_observacion" ).datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         $( "#pro_pep_fecha_aprobacion" ).datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
+        /*DIALOGOS DE VALIDACION*/
+        $('.mensaje').dialog({
+            autoOpen: false,
+            width: 300,
+            buttons: {
+                "Ok": function() {
+                    $(this).dialog("close");
+                }
+            }
+        });
+        /*FIN DIALOGOS VALIDACION*/
     });
 </script>
 <form method="post">
@@ -79,7 +121,7 @@
     <h2 class="h2Titulos">Cumplimientos de los elementos mínimos del PEP</h2>
 
     <br/><br/>
-   <table>
+    <table>
         <tr>
         <td class="tdLugar" ><strong>Departamento:</strong></td>
         <td><?php echo $departamento ?></td>
@@ -109,9 +151,9 @@
         <td style="width: 20px"></td>
         <td>
             <table>
-                <tr style="width: 300px"> <td ><strong>Fecha de entrega de producto: </strong><input id="pro_pep_fecha_borrador" <?php if (isset($pro_pep_fecha_borrador)) { ?>  value="<?php echo date('d/m/Y', strtotime($pro_pep_fecha_borrador)); ?>" <?php } ?> name="pro_pep_fecha_borrador" type="text" size="7" /></td></tr>
-                <tr><td><strong>Fecha de visto bueno: </strong><input id="pro_pep_fecha_observacion" <?php if (isset($pro_pep_fecha_observacion)) { ?>value="<?php echo date('d/m/Y', strtotime($pro_pep_fecha_observacion)); ?>"<?php } ?>  name="pro_pep_fecha_observacion" type="text" size="7" /></td></tr>
-                <tr> <td><strong>Fecha de aprobacion del consejo municipal: </strong><input id="pro_pep_fecha_aprobacion" <?php if (isset($pro_pep_fecha_aprobacion)) { ?> value="<?php echo date('d/m/Y', strtotime($pro_pep_fecha_aprobacion)); ?>"<?php } ?>  name="pro_pep_fecha_aprobacion" type="text" size="7" /></td></tr>
+                <tr style="width: 300px"> <td ><strong>Fecha de entrega de producto: </strong><input id="pro_pep_fecha_borrador" <?php if (isset($pro_pep_fecha_borrador)) { ?>  value="<?php echo date('d-m-Y', strtotime($pro_pep_fecha_borrador)); ?>" <?php } ?> name="pro_pep_fecha_borrador" type="text" size="7" /></td></tr>
+                <tr><td><strong>Fecha de visto bueno: </strong><input id="pro_pep_fecha_observacion" <?php if (isset($pro_pep_fecha_observacion)) { ?>value="<?php echo date('d-m-Y', strtotime($pro_pep_fecha_observacion)); ?>"<?php } ?>  name="pro_pep_fecha_observacion" type="text" size="7" /></td></tr>
+                <tr> <td><strong>Fecha de aprobacion del consejo municipal: </strong><input id="pro_pep_fecha_aprobacion" <?php if (isset($pro_pep_fecha_aprobacion)) { ?> value="<?php echo date('d-m-Y', strtotime($pro_pep_fecha_aprobacion)); ?>"<?php } ?>  name="pro_pep_fecha_aprobacion" type="text" size="7" /></td></tr>
             </table>
             <p><strong>¿Acta de aceptación contiene firmas?</strong></p>
             <table>
@@ -157,3 +199,16 @@
 
     <input id="pro_pep_ruta_archivo" name="pro_pep_ruta_archivo" <?php if (isset($pro_pep_ruta_archivo) && $pro_pep_ruta_archivo != '') { ?>value="<?php echo $pro_pep_ruta_archivo; ?>"<?php } ?> type="text" size="100" readonly="readonly" style="visibility: hidden"/>
 </form>
+<div id="extension" class="mensaje" title="Error">
+    <p>Solo se permiten archivos con la extensión pdf|doc|docx</p>
+</div>
+<div id="fechaValidacion" class="mensaje" title="Error en fechas">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/cancel.png'); ?>" class="imagenError" />Las fechas deben de ir en orden ascendente</p>
+    </center>
+</div>
+<div id="guardo" class="mensaje" title="Almacenado">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
+    </center>
+</div>

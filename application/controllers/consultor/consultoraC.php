@@ -69,12 +69,12 @@ class ConsultoraC extends CI_Controller {
 
         /* REGLAS DE VALIDACIÒN */
         $this->form_validation->set_rules('cons_nombre', 'Nombre Consultora', 'required');
-        $this->form_validation->set_rules('cons_direccion', 'Dirección', 'required|max_length[200]');
-        $this->form_validation->set_rules('cons_telefono', 'Teléfono', 'required|max_length[9]');
+        $this->form_validation->set_rules('cons_direccion', 'Dirección', 'max_length[200]');
+        $this->form_validation->set_rules('cons_telefono', 'Teléfono', 'max_length[9]');
         $this->form_validation->set_rules('cons_telefono2', ';', 'max_length[9]');
-        $this->form_validation->set_rules('cons_fax', 'Fax', 'required|max_length[9]');
-        $this->form_validation->set_rules('cons_email', 'Correo Electrónico', 'required|max_length[200]|valid_email');
-        $this->form_validation->set_rules('cons_repres_legal', 'Representante Legal', 'required|max_length[100]');
+        $this->form_validation->set_rules('cons_fax', 'Fax', 'max_length[9]');
+        $this->form_validation->set_rules('cons_email', 'Correo Electrónico', 'max_length[200]|valid_email');
+        $this->form_validation->set_rules('cons_repres_legal', 'Representante Legal', 'max_length[100]');
         $this->form_validation->set_rules('cons_observaciones', 'Observaciones', '');
 
         if ($this->form_validation->run() == FALSE) {
@@ -256,29 +256,31 @@ class ConsultoraC extends CI_Controller {
             $this->load->view('plantilla/footer', $informacion);
         } else {
             //SI ESTA CORRECTO
+            $this->load->model('proyectoPep/proyecto_pep', 'proPep');
+            $this->load->model('consultor/consultor', 'con');
             $con_nombre = $this->input->post("con_nombre");
             $con_apellido = $this->input->post("con_apellido");
             $con_telefono = $this->input->post("con_telefono");
             $con_email = $this->input->post("con_email");
             $proyectoPep = $this->input->post("proyectoPep");
             $consultora = $this->input->post("selConsultoras");
-            $this->load->model('consultor/consultor', 'con');
+            
 
             /* CREAR USUARIO EN BASE DE DATOS */
             $this->con->insertarConsultor($con_nombre, $con_apellido, $con_telefono, $con_email, $proyectoPep, $consultora);
-            $posicion = strpos($con_email, '@');
-            $nuevoUsuario = strtolower(substr($con_email, 0, $posicion));
-            $password = strtolower(substr($con_email, 0, $posicion));
+            $con_id=$this->con->obtenerIdConsultorD();
+            $resultado=  $this->proPep->obtenerNombreDepMun($proyectoPep);
+            $departamento=explode(" ",$resultado[0]->dep_nombre);
+            $iniciales = substr(end($departamento),0,2);
+            $nuevoUsuario = str_replace(" ","",strtolower($iniciales).$resultado[0]->dep_id.$resultado[0]->mun_id);
             $email_activation = $this->config->item('email_activation', 'tank_auth');
-
-            $informacion2 = $this->tank_auth->create_user($nuevoUsuario, $con_email, $password, 3, $email_activation);
+            $informacion2 = $this->tank_auth->create_user($nuevoUsuario, $con_email, $nuevoUsuario, 3, $email_activation);
             $informacion2['site_name'] = 'SIS-PFGL';
             $informacion2['activation_period'] = (60 * 60 * 24 * 20) / 3600;
             $this->_enviar_correo('activate', $con_email, $informacion2);
-            $this->con->editarUsuarioConsultor($con_email, $nuevoUsuario);
-            $resultado = $this->con->obtenerIdConsultor($proyectoPep);
-            $this->load->model('proyectoPep/proyecto_pep', 'proPep');
-            $this->proPep->actualizarIndices('con_id', $resultado[0]['con_id'], $proyectoPep);
+            $this->con->editarUsuarioConsultor($con_id[0]->con_id, $nuevoUsuario);
+            
+            $this->proPep->actualizarIndices('con_id', $con_id[0]->con_id, $proyectoPep);
             /* FIN DE CREAR USUARIO */
             redirect('consultor/consultoraC/coordinadores');
         }

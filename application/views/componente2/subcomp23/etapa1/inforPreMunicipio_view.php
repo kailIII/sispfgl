@@ -1,8 +1,39 @@
 <script type="text/javascript">        
     $(document).ready(function(){
         /*ZONA DE BOTONES*/
+          <?php if ($guardo){?>
+                $('#guardo').dialog();
+                <?php }?>
         $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/comp23_E1/guardarInformePreliminar/' . $inf_pre_id); ?>';
+            borrador= $('#inf_pre_fecha_borrador').datepicker("getDate");
+            observacion=$( "#inf_pre_fecha_observacion" ).datepicker("getDate");
+            aprobacion=$( "#inf_pre_aceptacion" ).datepicker("getDate");
+            if(borrador==''){
+                $( "#inf_pre_fecha_observacion" ).val('');
+                $( "#inf_pre_aceptacion" ).val('');
+                this.form.action='<?php echo base_url('componente2/comp23_E1/guardarInformePreliminar/' . $inf_pre_id); ?>';
+            }else{
+                if(observacion==''){
+                    $("#inf_pre_aceptacion" ).val('');
+                    this.form.action='<?php echo base_url('componente2/comp23_E1/guardarInformePreliminar/' . $inf_pre_id); ?>';
+                }else{
+                    if(borrador< observacion){
+                        if(aprobacion==''){
+                            this.form.action='<?php echo base_url('componente2/comp23_E1/guardarInformePreliminar/' . $inf_pre_id); ?>';
+                        }else{
+                            if(observacion < aprobacion){
+                                this.form.action='<?php echo base_url('componente2/comp23_E1/guardarInformePreliminar/' . $inf_pre_id); ?>';
+                            }else{
+                                $('#fechaValidacion').dialog('open');
+                                return false
+                            }
+                        }
+                    }else{
+                        $('#fechaValidacion').dialog('open');
+                        return false
+                    }
+                }
+            }  
         });
         $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url(); ?>';
@@ -56,20 +87,20 @@
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         
         $( "#inf_pre_fecha_observacion" ).datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         $( "#inf_pre_aceptacion" ).datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         /*FIN DEL DATEPICKER*/
         /*ZONA DE VALIDACIONES*/
@@ -130,9 +161,9 @@
         </td>  
         <td>
             <table>
-                <tr><td><strong>Fecha de entrega de producto: </strong><input id="inf_pre_fecha_borrador" <?php if (isset($inf_pre_fecha_borrador)) { ?>  value="<?php echo date('d/m/Y', strtotime($inf_pre_fecha_borrador)); ?>" <?php } ?> name="inf_pre_fecha_borrador" type="text" size="7" /></td></tr>
-                <tr><td><strong>Fecha de visto bueno: </strong><input id="inf_pre_fecha_observacion" <?php if (isset($inf_pre_fecha_observacion)) { ?>value="<?php echo date('d/m/Y', strtotime($inf_pre_fecha_observacion)); ?>"<?php } ?>  name="inf_pre_fecha_observacion" type="text" size="7" /></td></tr>
-                <tr><td><strong>Fecha de aprobación del consejo municipal: </strong><input id="inf_pre_aceptacion" <?php if (isset($inf_pre_aceptacion)) { ?> value="<?php echo date('d/m/Y', strtotime($inf_pre_aceptacion)); ?>"<?php } ?>  name="inf_pre_aceptacion" type="text" size="7" /></td></tr>
+                <tr><td><strong>Fecha de entrega de producto: </strong><input id="inf_pre_fecha_borrador" <?php if (isset($inf_pre_fecha_borrador)) { ?>  value="<?php echo date('d-m-Y', strtotime($inf_pre_fecha_borrador)); ?>" <?php } ?> name="inf_pre_fecha_borrador" type="text" size="7" /></td></tr>
+                <tr><td><strong>Fecha de visto bueno: </strong><input id="inf_pre_fecha_observacion" <?php if (isset($inf_pre_fecha_observacion)) { ?>value="<?php echo date('d-m-Y', strtotime($inf_pre_fecha_observacion)); ?>"<?php } ?>  name="inf_pre_fecha_observacion" type="text" size="7" /></td></tr>
+                <tr><td><strong>Fecha de aprobación del consejo municipal: </strong><input id="inf_pre_aceptacion" <?php if (isset($inf_pre_aceptacion)) { ?> value="<?php echo date('d-m-Y', strtotime($inf_pre_aceptacion)); ?>"<?php } ?>  name="inf_pre_aceptacion" type="text" size="7" /></td></tr>
             </table>
             <p><strong>¿Acta de aceptación contiene firmas?</strong></p>
             <table>
@@ -160,7 +191,7 @@
         <textarea name="inf_pre_observacion" cols="48" rows="5"><?php echo $inf_pre_observacion; ?></textarea></p>
 
     <table>
-         <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente</td></tr>
+        <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente</td></tr>
         <tr>
         <td><div id="btn_subir"></div></td>
         <td><input class="letraazul" type="text" id="vinieta" value="Subir Informe Preliminar" size="60" style="border: none"/></td>
@@ -189,3 +220,14 @@
 <div id="extension" class="mensaje" title="Error">
     <p>Solo se permiten archivos con la extensión pdf|doc|docx</p>
 </div>
+<div id="fechaValidacion" class="mensaje" title="Error en fechas">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/cancel.png'); ?>" class="imagenError" />Las fechas deben de ir en orden ascendente</p>
+    </center>
+</div>
+<div id="guardo" class="mensaje" title="Almacenado">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
+    </center>
+</div>
+

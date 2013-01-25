@@ -55,43 +55,7 @@
             dateFormat: 'dd-mm-yy'
         });
         
-        /*FIN DEL DATEPICKER*/
-        
-        /*PARA EL DATEPICKER*/
-        $( "#pro_frecepcion" ).datepicker({
-            showOn: 'both',
-            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
-            dateFormat: 'dd-mm-yy'
-        });
-        
-        $( "#pro_faperturatecnica" ).datepicker({
-            showOn: 'both',
-            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
-            dateFormat: 'dd-mm-yy'
-        });
-        $( "#pro_faperturafinanciera" ).datepicker({
-            showOn: 'both',
-            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
-            dateFormat: 'dd-mm-yy'
-        });
-        $( "#pro_fcierre_negociacion" ).datepicker({
-            showOn: 'both',
-            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
-            dateFormat: 'dd-mm-yy'
-        });
-        $( "#pro_ffirma_contrato" ).datepicker({
-            showOn: 'both',
-            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
-            dateFormat: 'dd-mm-yy'
-        });
-        /*FIN DEL DATEPICKER*/
-        
-        /*ZONA DE BOTONES*/
+       /*ZONA DE BOTONES*/
         $("#guardar").button().hide().click(function() {
             this.form.action='<?php echo base_url('componente2/procesoAdministrativo/guardarProceso') . "/4" ?>';
         });

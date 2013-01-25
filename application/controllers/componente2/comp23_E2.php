@@ -614,7 +614,9 @@ class Comp23_E2 extends CI_Controller {
     public function grupoGestor() {
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
-
+        $g = $this->input->get('g');
+        if ($g)
+            $informacion['guardo'] = true;
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $username = $this->tank_auth->get_username();
         $informacion['username'] = $username;
@@ -686,7 +688,7 @@ class Comp23_E2 extends CI_Controller {
 
         $this->load->model('etapa2-sub23/grupo_gestor', 'gruGes');
         $this->gruGes->actualizarGruGes($gru_ges_id, $gru_ges_lugar, $gru_ges_fecha, $gru_ges_acuerdo, $gru_ges_observacion);
-        redirect('componente2/comp23_E2/grupoGestor');
+        redirect('componente2/comp23_E2/grupoGestor?g=true');
     }
 
     public function capacitacionGrupoGestor() {
@@ -942,6 +944,10 @@ class Comp23_E2 extends CI_Controller {
 
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
+        $g = $this->input->get('g');
+        if ($g)
+            $informacion['guardo'] = true;
+
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $username = $this->tank_auth->get_username();
         $informacion['username'] = $username;
@@ -979,7 +985,8 @@ class Comp23_E2 extends CI_Controller {
             $definicion = $this->definicion->obtenerDef($def_id);
             $informacion['def_fecha'] = $definicion[0]['def_fecha'];
             $informacion['def_ruta_archivo'] = $definicion[0]['def_ruta_archivo'];
-            $informacion['nombreArchivo'] =end(explode("/", $definicion[0]['def_ruta_archivo'])); 
+            $informacion['nombreArchivo'] = end(explode("/", $definicion[0]['def_ruta_archivo']));
+            $informacion['def_observacion'] = $definicion[0]['def_observacion'];
         }
         $informacion['gru_ges_id'] = $gru_ges_id;
         $informacion['def_id'] = $def_id;
@@ -996,14 +1003,17 @@ class Comp23_E2 extends CI_Controller {
         $def_observacion = $this->input->post("def_observacion");
 
         $this->load->model('etapa2-sub23/definicion');
-        $this->definicion->actualizarDef($def_id, $def_fecha, $def_ruta_archivo);
-        redirect('componente2/comp23_E2/definicionTema');
+        $this->definicion->actualizarDef($def_id, $def_fecha, $def_ruta_archivo,$def_observacion);
+        redirect('componente2/comp23_E2/definicionTema?g=true');
     }
 
     public function priorizacion() {
 
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
+        $g = $this->input->get('g');
+        if ($g)
+            $informacion['guardo'] = true;
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $username = $this->tank_auth->get_username();
         $informacion['username'] = $username;
@@ -1056,7 +1066,7 @@ class Comp23_E2 extends CI_Controller {
 
         $this->load->model('etapa2-sub23/priorizacion');
         $this->priorizacion->actualizarPri($pri_id, $pri_fecha, $pri_observacion);
-        redirect('componente2/comp23_E2/priorizacion');
+        redirect('componente2/comp23_E2/priorizacion?g=true');
     }
 
     public function cargarProyectosIdentificados($pri_id) {
@@ -1156,7 +1166,9 @@ class Comp23_E2 extends CI_Controller {
     public function diagnostico() {
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
-
+        $g = $this->input->get('g');
+        if ($g)
+            $informacion['guardo'] = true;
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $username = $this->tank_auth->get_username();
         $informacion['username'] = $username;
@@ -1196,7 +1208,7 @@ class Comp23_E2 extends CI_Controller {
         $informacion['dia_vision'] = $resultado[0]['dia_vision'];
         $informacion['dia_observacion'] = $resultado[0]['dia_observacion'];
         $informacion['dia_ruta_archivo'] = $resultado[0]['dia_ruta_archivo'];
-        $informacion['nombreArchivo'] =end(explode("/", $resultado[0]['dia_ruta_archivo'])); 
+        $informacion['nombreArchivo'] = end(explode("/", $resultado[0]['dia_ruta_archivo']));
         $informacion['cumplimientosMinimos'] = $this->cumDia->obtenerLosCumplimientosDiagnostico($resultado[0]['dia_id']);
         /* FIN DE INFORME PRELIMINAR */
         $this->load->view('plantilla/header', $informacion);
@@ -1236,7 +1248,7 @@ class Comp23_E2 extends CI_Controller {
         $this->load->model('etapa2-sub23/diagnostico', 'Dia');
         $this->Dia->actualizarDia($dia_id, $dia_fecha_borrador, $dia_fecha_concejo_muni, $dia_fecha_observacion, $dia_observacion, $dia_ruta_archivo, $dia_vision);
 
-        redirect(base_url('componente2/comp23_E2/diagnostico'));
+        redirect(base_url('componente2/comp23_E2/diagnostico?g=true'));
     }
 
 }

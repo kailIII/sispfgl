@@ -1,9 +1,41 @@
 <script type="text/javascript">        
     $(document).ready(function(){
-        
+                 <?php if ($guardo){?>
+                $('#guardo').dialog();
+                <?php }?>
+
         $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/comp23_E4/guardarAcuerdoMunicipal').'/'.$acu_mun_id; ?>';
+            borrador= $('#acu_mun_fecha_borrador').datepicker("getDate");
+            observacion=$( "#acu_mun_fecha_observacion" ).datepicker("getDate");
+            aprobacion=$( "#acu_mun_fecha_aceptacion" ).datepicker("getDate");
+            if(borrador==null){
+                $("#acu_mun_fecha_observacion" ).val('');
+                $("#acu_mun_fecha_aceptacion" ).val('');
+                this.form.action='<?php echo base_url('componente2/comp23_E4/guardarAcuerdoMunicipal') . '/' . $acu_mun_id; ?>';
+            }else{
+                if(observacion==null){
+                    $( "#acu_mun_fecha_aceptacion" ).val('');
+                    this.form.action='<?php echo base_url('componente2/comp23_E4/guardarAcuerdoMunicipal') . '/' . $acu_mun_id; ?>';
+                }else{
+                    if(borrador<observacion){
+                        if(aprobacion==null){
+                            this.form.action='<?php echo base_url('componente2/comp23_E4/guardarAcuerdoMunicipal') . '/' . $acu_mun_id; ?>';
+                        }else{
+                            if(observacion<aprobacion){
+                                this.form.action='<?php echo base_url('componente2/comp23_E4/guardarAcuerdoMunicipal') . '/' . $acu_mun_id; ?>';
+                            }else{
+                                $('#fechaValidacion').dialog('open');
+                                return false
+                            }
+                        }
+                    }else{
+                        $('#fechaValidacion').dialog('open');
+                        return false
+                    }
+                }
+            }  
         });
+        
         $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url('componente2/comp23_E4/'); ?>';
         });
@@ -12,20 +44,20 @@
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         
         $( "#acu_mun_fecha_observacion" ).datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         $( "#acu_mun_fecha_aceptacion" ).datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         
         function validaSexo(value, colname) {
@@ -220,9 +252,9 @@
     </fieldset>
     <br/>
     <table>
-        <tr> <td class="textD"><strong>Fecha de entrega de producto: </strong></td><td><input <?php if (isset($acu_mun_fecha_borrador)) { ?> value='<?php echo date('d/m/Y', strtotime($acu_mun_fecha_borrador)); ?>'<?php } ?> id="acu_mun_fecha_borrador" name="acu_mun_fecha_borrador" type="text" size="7" /></td></tr>
-        <tr><td class="textD"><strong>Fecha de visto bueno: </strong></td><td><input <?php if (isset($acu_mun_fecha_observacion)) { ?> value='<?php echo date('d/m/Y', strtotime($acu_mun_fecha_observacion)); ?>'<?php } ?> id="acu_mun_fecha_observacion" name="acu_mun_fecha_observacion" type="text" size="7" /></td></tr>
-        <tr> <td class="textD"><strong>Fecha de aprobacion del consejo municipal: </td><td></strong><input <?php if (isset($acu_mun_fecha_aceptacion)) { ?> value='<?php echo date('d/m/Y', strtotime($acu_mun_fecha_aceptacion)); ?>'<?php } ?> id="acu_mun_fecha_aceptacion" name="acu_mun_fecha_aceptacion" type="text" size="7" /></td></tr>
+        <tr> <td class="textD"><strong>Fecha de entrega de producto: </strong></td><td><input <?php if (isset($acu_mun_fecha_borrador)) { ?> value='<?php echo date('d-m-Y', strtotime($acu_mun_fecha_borrador)); ?>'<?php } ?> id="acu_mun_fecha_borrador" name="acu_mun_fecha_borrador" type="text" size="7" /></td></tr>
+        <tr><td class="textD"><strong>Fecha de visto bueno: </strong></td><td><input <?php if (isset($acu_mun_fecha_observacion)) { ?> value='<?php echo date('d-m-Y', strtotime($acu_mun_fecha_observacion)); ?>'<?php } ?> id="acu_mun_fecha_observacion" name="acu_mun_fecha_observacion" type="text" size="7" /></td></tr>
+        <tr> <td class="textD"><strong>Fecha de aprobacion del consejo municipal: </td><td></strong><input <?php if (isset($acu_mun_fecha_aceptacion)) { ?> value='<?php echo date('d-m-Y', strtotime($acu_mun_fecha_aceptacion)); ?>'<?php } ?> id="acu_mun_fecha_aceptacion" name="acu_mun_fecha_aceptacion" type="text" size="7" /></td></tr>
     </table>
     <br/>
     <table id="participantes"></table>
@@ -267,7 +299,17 @@
     <p>Solo se permiten archivos con la extensión pdf|doc|docx</p>
 </div>
 <div id="mensaje4" class="mensaje" title="Fechas Mayores">
-   <p><img src="<?php echo base_url('resource/imagenes/cancel.png'); ?>" heigth="25px" width="25px"/>
-       <strong>Fecha de visto bueno </strong> debe ser menor a <strong>Fecha de entrega de producto</strong>
+    <p><img src="<?php echo base_url('resource/imagenes/cancel.png'); ?>" heigth="25px" width="25px"/>
+        <strong>Fecha de visto bueno </strong> debe ser menor a <strong>Fecha de entrega de producto</strong>
     </p>
+</div>
+<div id="fechaValidacion" class="mensaje" title="Error en fechas">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/cancel.png'); ?>" class="imagenError" />Las fechas deben de ir en orden ascendente</p>
+    </center>
+</div>
+<div id="guardo" class="mensaje" title="Almacenado">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
+    </center>
 </div>

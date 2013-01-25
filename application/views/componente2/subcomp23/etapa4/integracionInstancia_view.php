@@ -1,5 +1,8 @@
 <script type="text/javascript">        
     $(document).ready(function(){
+         <?php if ($guardo){?>
+                $('#guardo').dialog();
+                <?php }?>
         
         $("#guardar").button().click(function() {
             this.form.action='<?php echo base_url('componente2/comp23_E4/guardarIntegracionInstancia') . '/' . $int_ins_id; ?>';
@@ -13,7 +16,7 @@
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         /*  PARA SUBIR EL ARCHIVO  */
         var button = $('#btn_subir'), interval;
@@ -202,7 +205,7 @@
     </table>
     <table>
         <tr>  <td ><strong>Fecha: </strong></td>
-        <td><input <?php if (isset($int_ins_fecha)) { ?> value='<?php echo date('d/m/Y', strtotime($int_ins_fecha)); ?>'<?php } ?>id="int_ins_fecha" name="int_ins_fecha" type="text" size="10" readonly="readonly"/></td>
+        <td><input <?php if (isset($int_ins_fecha)) { ?> value='<?php echo date('d-m-Y', strtotime($int_ins_fecha)); ?>'<?php } ?>id="int_ins_fecha" name="int_ins_fecha" type="text" size="10" readonly="readonly"/></td>
         </tr>
     </table>
     <table id="participantes"></table>
@@ -273,4 +276,9 @@
 </div>
 <div id="extension" class="mensaje" title="Error">
     <p>Solo se permiten archivos con la extensión pdf|doc|docx</p>
+</div>
+<div id="guardo" class="mensaje" title="Almacenado">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
+    </center>
 </div>

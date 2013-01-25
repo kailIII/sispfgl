@@ -1,9 +1,41 @@
 <script type="text/javascript">        
     $(document).ready(function(){
         /*ZONA DE BOTONES*/
+         <?php if ($guardo){?>
+                $('#guardo').dialog();
+                <?php }?>
         $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/comp23_E2/guardarDiagnostico/' . $dia_id); ?>';
+            borrador= $('#dia_fecha_borrador').datepicker("getDate");
+            observacion=$( "#dia_fecha_observacion" ).datepicker("getDate");
+            aprobacion=$( "#dia_fecha_concejo_muni" ).datepicker("getDate");
+            if(borrador==null){
+                $("#dia_fecha_observacion" ).val('');
+                $("#dia_fecha_concejo_muni" ).val('');
+                this.form.action='<?php echo base_url('componente2/comp23_E2/guardarDiagnostico/' . $dia_id); ?>';
+            }else{
+                if(observacion==null){
+                    $( "#dia_fecha_concejo_muni" ).val('');
+                    this.form.action='<?php echo base_url('componente2/comp23_E2/guardarDiagnostico/' . $dia_id); ?>';
+                }else{
+                    if(borrador<observacion){
+                        if(aprobacion==null){
+                            this.form.action='<?php echo base_url('componente2/comp23_E2/guardarDiagnostico/' . $dia_id); ?>';
+                        }else{
+                            if(observacion<aprobacion){
+                                this.form.action='<?php echo base_url('componente2/comp23_E2/guardarDiagnostico/' . $dia_id); ?>';
+                            }else{
+                                $('#fechaValidacion').dialog('open');
+                                return false
+                            }
+                        }
+                    }else{
+                        $('#fechaValidacion').dialog('open');
+                        return false
+                    }
+                }
+            }  
         });
+        
         $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url('componente2/comp23_E2'); ?>';
         });
@@ -56,23 +88,23 @@
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         
         $( "#dia_fecha_observacion" ).datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         $( "#dia_fecha_concejo_muni" ).datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         /*FIN DEL DATEPICKER*/
-         /*DIALOGOS DE VALIDACION*/
+        /*DIALOGOS DE VALIDACION*/
         $('.mensaje').dialog({
             autoOpen: false,
             width: 300,
@@ -122,9 +154,9 @@
         </td>  
         <td>
             <table>
-                <tr> <td ><strong>Fecha de entrega de producto: </strong><input id="dia_fecha_borrador" <?php if (isset($dia_fecha_borrador)) { ?>  value="<?php echo date('d/m/Y', strtotime($dia_fecha_borrador)); ?>" <?php } ?> name="dia_fecha_borrador" type="text" size="7" /></td></tr>
-                <tr><td><strong>Fecha de visto bueno: </strong><input id="dia_fecha_observacion" <?php if (isset($dia_fecha_observacion)) { ?>value="<?php echo date('d/m/Y', strtotime($dia_fecha_observacion)); ?>"<?php } ?>  name="dia_fecha_observacion" type="text" size="7" /></td></tr>
-                <tr> <td><strong>Fecha de aprobacion del Consejo Municipal: </strong><input id="dia_fecha_concejo_muni" <?php if (isset($dia_fecha_concejo_muni)) { ?> value="<?php echo date('d/m/Y', strtotime($dia_fecha_concejo_muni)); ?>"<?php } ?>  name="dia_fecha_concejo_muni" type="text" size="7" /></td></tr>
+                <tr> <td ><strong>Fecha de entrega de producto: </strong><input id="dia_fecha_borrador" <?php if (isset($dia_fecha_borrador)) { ?>  value="<?php echo date('d-m-Y', strtotime($dia_fecha_borrador)); ?>" <?php } ?> name="dia_fecha_borrador" type="text" size="7" /></td></tr>
+                <tr><td><strong>Fecha de visto bueno: </strong><input id="dia_fecha_observacion" <?php if (isset($dia_fecha_observacion)) { ?>value="<?php echo date('d-m-Y', strtotime($dia_fecha_observacion)); ?>"<?php } ?>  name="dia_fecha_observacion" type="text" size="7" /></td></tr>
+                <tr> <td><strong>Fecha de aprobacion del Consejo Municipal: </strong><input id="dia_fecha_concejo_muni" <?php if (isset($dia_fecha_concejo_muni)) { ?> value="<?php echo date('d-m-Y', strtotime($dia_fecha_concejo_muni)); ?>"<?php } ?>  name="dia_fecha_concejo_muni" type="text" size="7" /></td></tr>
             </table>
             </tr>
     </table>
@@ -139,7 +171,7 @@
         <textarea name="dia_observacion" cols="48" rows="5"><?php echo $dia_observacion; ?></textarea></p>
 
     <table>
-          <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente</td></tr>
+        <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente</td></tr>
         <tr>
         <td><div id="btn_subir"></div></td>
         <td><input class="letraazul" type="text" id="vinieta" value="Subir Documentos" size="60" style="border: none"/></td>
@@ -161,4 +193,14 @@
 
 <div id="extension" class="mensaje" title="Error">
     <p>Solo se permiten archivos con la extensión pdf|doc|docx</p>
+</div>
+<div id="fechaValidacion" class="mensaje" title="Error en fechas">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/cancel.png'); ?>" class="imagenError" />Las fechas deben de ir en orden ascendente</p>
+    </center>
+</div>
+<div id="guardo" class="mensaje" title="Almacenado">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
+    </center>
 </div>

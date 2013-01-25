@@ -23,7 +23,7 @@
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         /*FIN DEL DATEPICKER*/ 
         /*GRID MIEMBROS DEL EQUIPO LOCAL DE APOYO*/
@@ -187,7 +187,7 @@
     </table>
     <table>
         <tr>
-        <td  ><strong>Fecha de Capacitación: </strong><input value='<?php echo date('d/m/Y', strtotime($cap_fecha)); ?>' readonly="readonly" id="cap_fecha" name="cap_fecha" type="text" size="10" /></td>
+        <td  ><strong>Fecha de Capacitación: </strong><input value='<?php echo date('d-m-Y', strtotime($cap_fecha)); ?>' readonly="readonly" id="cap_fecha" name="cap_fecha" type="text" size="10" /></td>
         </tr>
         <tr>
         <td colspan="2"><strong>Agenda:</strong><input id="cap_tema" value="<?php echo $cap_tema ?>" name="cap_tema" type="text" size="40"/></td>

@@ -1,5 +1,8 @@
 <script type="text/javascript">        
     $(document).ready(function(){
+        <?php if ($guardo){?>
+                $('#guardo').dialog();
+                <?php }?>
         /*VARIABLES*/
         var tabla=$("#participantes");
         /*ZONA DE BOTONES*/
@@ -54,7 +57,7 @@
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         /*FIN DEL DATEPICKER*/
         /*ZONA DE VALIDACIONES*/
@@ -232,7 +235,7 @@ foreach ($contrapartidas as $aux) {
     </table>
     <table>
         <td  width="400"><strong>Fecha: </strong>
-            <input <?php if (isset($acu_mun_fecha)) { ?> value='<?php echo date('d/m/Y', strtotime($acu_mun_fecha)); ?>'<?php } ?>id="acu_mun_fecha" name="acu_mun_fecha" type="text" size="10" readonly="readonly"/></td>
+            <input <?php if (isset($acu_mun_fecha)) { ?> value='<?php echo date('d-m-Y', strtotime($acu_mun_fecha)); ?>'<?php } ?>id="acu_mun_fecha" name="acu_mun_fecha" type="text" size="10" readonly="readonly"/></td>
         </tr>
     </table>
     <p>¿Consejo Municipal conoce el proceso de planificación? 
@@ -351,4 +354,9 @@ foreach ($contrapartidas as $aux) {
 </div>
 <div id="extension" class="mensaje" title="Error">
     <p>Solo se permiten archivos con la extensión pdf|doc|docx</p>
+</div>
+<div id="guardo" class="mensaje" title="Almacenado">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
+    </center>
 </div>

@@ -1,5 +1,8 @@
 <script type="text/javascript">        
     $(document).ready(function(){
+         <?php if ($guardo){?>
+                $('#guardo').dialog();
+                <?php }?>
         /*ZONA DE BOTONES*/
         $("#guardar").button().click(function() {
             this.form.action='<?php echo base_url('componente2/comp23_E2/guardarDefinicionTema') . '/' . $def_id; ?>';
@@ -23,7 +26,7 @@
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         /*FIN DEL DATEPICKER*/
         /*ZONA DE VALIDACIONES*/
@@ -223,7 +226,7 @@
     </table>
     <table>
         <tr>
-        <td  ><strong>Fecha reunión: </strong><input readonly="readonly" id="def_fecha" name="def_fecha" type="text"<?php if (isset($def_fecha)) { ?> value='<?php echo date('d/m/Y', strtotime($def_fecha)); ?>'<?php } ?> size="10" /></td>
+        <td  ><strong>Fecha reunión: </strong><input readonly="readonly" id="def_fecha" name="def_fecha" type="text"<?php if (isset($def_fecha)) { ?> value='<?php echo date('d-m-Y', strtotime($def_fecha)); ?>'<?php } ?> size="10" /></td>
         </tr>
         <tr>
         <td colspan="2"></td>
@@ -269,4 +272,8 @@
 <div id="extension" class="mensaje" title="Error">
     <p>Solo se permiten archivos con la extensión pdf|doc|docx</p>
 </div>
-
+<div id="guardo" class="mensaje" title="Almacenado">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
+    </center>
+</div>

@@ -41,8 +41,8 @@ div#divcuerpo{
     border-radius:20px;
     -moz-border-radius: 20px;
     box-shadow: 15px 10px 15px grey;
-   -webkit-box-shadow: 15px 10px 15px grey;
-   -moz-box-shadow: 15px 10px 15px grey;
+    -webkit-box-shadow: 15px 10px 15px grey;
+    -moz-box-shadow: 15px 10px 15px grey;
 }
 .letraazul{
     color:#2F589F;
@@ -172,4 +172,11 @@ img{
     font-weight: bold;
     padding: 2px;
     border-color: #2F589F;
+}
+
+.imagenError{
+    width:25px;
+    height:25px;
+    position: relative;
+    top:8px;
 }
