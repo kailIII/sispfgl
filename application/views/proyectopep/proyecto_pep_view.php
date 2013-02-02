@@ -120,7 +120,7 @@
         $("#agregar").button().click(function(){
             if($('#selDepto').val()!='0' && $('#selRegion').val()!='0'&& $('#selMun').val()!='0'){
                 tabla.jqGrid('editGridRow',"new",
-                {closeAfterAdd:true,addCaption: "Agregar ",width:'500',
+                {closeAfterAdd:true,addCaption: "Agregar ",width:'600',
                     reloadAfterSubmit:true,top:'300',left:'300',
                     processData: "Cargando...",afterSubmit:despuesAgregarEditar,
                     bottominfo:"Campos marcados con (*) son obligatorios", 
@@ -140,7 +140,7 @@
             if( gr != null )
                 tabla.jqGrid('editGridRow',gr,
             {closeAfterEdit:true,editCaption: "Editando ",
-                top:'300',left:'300',width:'500',
+                top:'300',left:'300',width:'600',
                 align:'center',reloadAfterSubmit:true,
                 processData: "Cargando...",afterSubmit:despuesAgregarEditar,
                 bottominfo:"Campos marcados con (*) son obligatorios", 

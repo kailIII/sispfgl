@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Contendrá todos los metodos utilizados para definir las pantallas relacionadas
+ * Contendrá combinacion los mecombinacion utilizados para definir las pantallas relacionadas
  * a las Consultoras y Consultores.
  *
  * @author Ing. Karen Peñate
@@ -47,7 +47,7 @@ class ConsultoraC extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-             $rows = array();
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -211,7 +211,7 @@ class ConsultoraC extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-           $rows = array();
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -264,22 +264,24 @@ class ConsultoraC extends CI_Controller {
             $con_email = $this->input->post("con_email");
             $proyectoPep = $this->input->post("proyectoPep");
             $consultora = $this->input->post("selConsultoras");
-            
+
 
             /* CREAR USUARIO EN BASE DE DATOS */
             $this->con->insertarConsultor($con_nombre, $con_apellido, $con_telefono, $con_email, $proyectoPep, $consultora);
-            $con_id=$this->con->obtenerIdConsultorD();
-            $resultado=  $this->proPep->obtenerNombreDepMun($proyectoPep);
-            $departamento=explode(" ",$resultado[0]->dep_nombre);
-            $iniciales = substr(end($departamento),0,2);
-            $nuevoUsuario = str_replace(" ","",strtolower($iniciales).$resultado[0]->dep_id.$resultado[0]->mun_id);
+            $con_id = $this->con->obtenerIdConsultorD();
+            $resultado = $this->proPep->obtenerNombreDepMun($proyectoPep);
+            $departamento = explode(" ", $resultado[0]->dep_nombre);
+            $iniciales = substr(end($departamento), 0, 2);
+            $nuevoUsuario = str_replace(" ", "", strtolower($iniciales) . $resultado[0]->dep_id . $resultado[0]->mun_id);
+            $combinacion = "1234567890abcdefghijklmnopqrstuvwxyz";
+             $contrasenia = substr(str_shuffle($combinacion), 0, 8);
             $email_activation = $this->config->item('email_activation', 'tank_auth');
-            $informacion2 = $this->tank_auth->create_user($nuevoUsuario, $con_email, $nuevoUsuario, 3, $email_activation);
+            $informacion2 = $this->tank_auth->create_user($nuevoUsuario, $con_email, $contrasenia, 3, $email_activation);
             $informacion2['site_name'] = 'SIS-PFGL';
             $informacion2['activation_period'] = (60 * 60 * 24 * 20) / 3600;
             $this->_enviar_correo('activate', $con_email, $informacion2);
             $this->con->editarUsuarioConsultor($con_id[0]->con_id, $nuevoUsuario);
-            
+
             $this->proPep->actualizarIndices('con_id', $con_id[0]->con_id, $proyectoPep);
             /* FIN DE CREAR USUARIO */
             redirect('consultor/consultoraC/coordinadores');
@@ -327,12 +329,12 @@ class ConsultoraC extends CI_Controller {
         $con_telefono = $this->input->post("con_telefono");
         $con_email = $this->input->post("con_email");
         $cons_id = $this->input->post("cons_id");
-         if ($cons_id == 0)
+        if ($cons_id == 0)
             $cons_id = null;
-        
+
         $this->load->model('consultor/consultor');
         $this->consultor->editarConsultor($con_email, $con_nombre, $con_apellido, $con_telefono,$cons_id,$con_id);
-        
+
         redirect(base_url('consultor/consultoraC/coordinadores'));
     }
 

@@ -400,6 +400,7 @@ class ProcesoAdministrativo extends CI_Controller {
         $this->load->model('procesoAdministrativo/proceso');
 
         $rows = array();
+        $numfilas=0;
         if ($this->proceso->contarProPorMuni($mun_id) != 0) {
             $resultado = $this->proceso->obtenerPro($mun_id);
             $id = $resultado[0]->pro_id;
@@ -439,6 +440,7 @@ class ProcesoAdministrativo extends CI_Controller {
                 $pro_ffirma_contrato,
                 $resultado[0]->pro_observacion2
             );
+            $numfilas=1;
         }
         $datos = json_encode($rows);
         $pages = floor(1 / 10) + 1;
@@ -446,10 +448,31 @@ class ProcesoAdministrativo extends CI_Controller {
         $jsonresponse = '{
                "page":"1",
                "total":"' . $pages . '",
-               "records":"' . 1 . '", 
+               "records":"' . $numfilas . '", 
                "rows":' . $datos . '}';
 
         echo $jsonresponse;
+    }
+    
+    public function recepcionAprobacionProductos(){
+        $informacion['titulo'] = 'Recepción y Aprobación de Productos';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        //OBTENER DEPARTAMENTOS
+        $this->load->model('pais/departamento');
+        $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
+        $this->load->model('procesoAdministrativo/proceso_etapa','proEta');
+        $this->load->model('procesoAdministrativo/pestania_proceso','pesPro');
+        $this->load->model('procesoAdministrativo/nombre_fecha_aprobacion','fechaAproba');
+        $etapa=  $this->pesPro->obtenerPestaniaProcesos();
+        $nombresFecha=  $this->fechaAproba->obtenerNombresFechas();
+        $informacion['etapas']=$etapa;
+        $informacion['fechas']=$nombresFecha;
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/subcomp23/proceso_administrativo/recepcion_view');
+        $this->load->view('plantilla/footer', $informacion);
     }
 
     public function subirArchivo2($tabla, $campo_id, $campo, $ext) {
