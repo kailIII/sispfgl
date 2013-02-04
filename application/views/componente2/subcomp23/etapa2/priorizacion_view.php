@@ -1,7 +1,7 @@
 <script type="text/javascript">        
     $(document).ready(function(){
         /*ZONA DE BOTONES*/
-         <?php if ($guardo){?>
+         <?php if (isset($guardo)){?>
                 $('#guardo').dialog();
                 <?php }?>
         $("#guardar").button().click(function() {

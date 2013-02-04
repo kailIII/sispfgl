@@ -14,7 +14,7 @@
                     <li><a>Mapa de Pobreza</a></li>
                 </ul>
             </li>
-			<li><a>Reportes</a></li>
+            <li><a>Reportes</a></li>
             <li><a>Contáctenos</a></li>
             <li><a href="http://localhost/limesurvey">Encuestas</a></li>
             <?php
@@ -25,10 +25,17 @@
 </div>
 
 <?php if (isset($username)) { ?>
-    <div style="position: relative;top:-25px; left: 650px;">
-        <p class="letraazul" >Bienvenido: <?php echo $username; ?>
-            <?php echo anchor('/auth/logout/', 'Salir'); ?>
-        </p>
+    <div style="position: relative;top:-25px; left: 600px;">
+        <!-- Opciones:Menu Horizontal  -->
+        <ul id="menuh"style="position: relative;top:-1px;left:10px;">
+                <li><a href="#"><img src="<?php echo base_url("resource/imagenes/configuracion.png") ?>" height="20px" width="20px"/></a>
+                    <ul>
+                        <li><?php echo anchor('/auth/change_password/', 'Cambiar Contraseña'); ?></li>
+                        <!--<li><a href="manualusuario.pdf"  target="_blank" style="Cursor : help;"><strong>Manual de Usuario</strong></a></li>-->
+                        <li><?php echo anchor('/auth/logout/', 'Salir'); ?></li>
+                    </ul>
+                </li>
+            </ul><p class="letraazul" style="position: relative; top:-20px; left: 50px" >Bienvenido: <?php echo $username; ?></p>
     </div>
 <?php } ?>
 <?php

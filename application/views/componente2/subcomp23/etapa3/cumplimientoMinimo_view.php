@@ -1,6 +1,6 @@
 <script type="text/javascript">        
     $(document).ready(function(){
-                 <?php if ($guardo){?>
+                 <?php if (isset($guardo)){?>
                 $('#guardo').dialog();
                 <?php }?>
 
@@ -177,14 +177,14 @@
         </tr>
     </table>
     <table>
-        <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente</td></tr>
+        <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente. Solo se permiten archivos con extensión pdf, doc, docx</td></tr>
         <tr>
         <td><div id="btn_subir"></div></td>
-        <td><input class="letraazul" type="text" id="vinieta" value="Subir Acta" size="60" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinieta" readonly="readonly" value="Subir Acta" size="60" style="border: none"/></td>
         </tr>
         <tr>
         <td><a <?php if (isset($pro_pep_ruta_archivo) && $pro_pep_ruta_archivo != '') { ?> href="<?php echo base_url() . $pro_pep_ruta_archivo; ?>"<?php } ?>  id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
-        <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($pro_pep_ruta_archivo) && $pro_pep_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo ?>"<?php } else { ?> value="No hay ninguna acta para descargar" <?php } ?>size="50" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinietaD" readonly="readonly" <?php if (isset($pro_pep_ruta_archivo) && $pro_pep_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo ?>"<?php } else { ?> value="No hay ninguna acta para descargar" <?php } ?>size="50" style="border: none"/></td>
         </tr>
     </table>
     <p>Observaciones y/o Recomendaciones:<br/>

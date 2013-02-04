@@ -32,8 +32,73 @@
         
         /*ZONA DE BOTONES*/
         $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/procesoAdministrativo/guardarProceso') . "/1" ?>';
+            publicacion= $('#pro_fpublicacion').datepicker("getDate");
+            aclaraDudas=$( "#pro_faclara_dudas" ).datepicker("getDate");
+            expresionInteres=$( "#pro_fexpresion_interes" ).datepicker("getDate");
+            if(publicacion==null){
+                $( "#pro_faclara_dudas" ).val('');
+                $( "#pro_fexpresion_interes" ).val('');
+                $.ajax({
+                    type: "POST",
+                    url: '<?php echo base_url('componente2/procesoAdministrativo/guardarProceso') . "/1" ?>',
+                    data: $("#AdquisicionyContratacionForm").serialize(), // serializes the form's elements.
+                    success: function(data)
+                    {
+                        $('#efectivo').dialog('open');
+                    }
+                });
+                return false;
+            }else{
+                if(aclaraDudas==null){
+                    $("#pro_fexpresion_interes" ).val('');
+                    $.ajax({
+                        type: "POST",
+                        url: '<?php echo base_url('componente2/procesoAdministrativo/guardarProceso') . "/1" ?>',
+                        data: $("#AdquisicionyContratacionForm").serialize(), // serializes the form's elements.
+                        success: function(data)
+                        {
+                            $('#efectivo').dialog('open');
+                        }
+                    });
+                    return false;
+                }else{
+                    if(publicacion< aclaraDudas){
+                        if(expresionInteres==null){
+                            $.ajax({
+                                type: "POST",
+                                url: '<?php echo base_url('componente2/procesoAdministrativo/guardarProceso') . "/1" ?>',
+                                data: $("#AdquisicionyContratacionForm").serialize(), // serializes the form's elements.
+                                success: function(data)
+                                {
+                                    $('#efectivo').dialog('open');
+                                }
+                            });
+                            return false;
+                        }else{
+                            if(aclaraDudas < expresionInteres){
+                                $.ajax({
+                                    type: "POST",
+                                    url: '<?php echo base_url('componente2/procesoAdministrativo/guardarProceso') . "/1" ?>',
+                                    data: $("#AdquisicionyContratacionForm").serialize(), // serializes the form's elements.
+                                    success: function(data)
+                                    {
+                                        $('#efectivo').dialog('open');
+                                    }
+                                });
+                                return false;
+                            }else{
+                                $('#fechaValidacion').dialog('open');
+                                return false
+                            }
+                        }
+                    }else{
+                        $('#fechaValidacion').dialog('open');
+                        return false
+                    }
+                }
+            }  
         });
+        
         $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url('componente2/procesoAdministrativo/adquisicionContrataciones'); ?>';
         });
@@ -96,48 +161,6 @@
             $.get($(this).attr('href'));
         });
         
-        var button = $('#btn_exp_subir'), interval;
-        new AjaxUpload('#btn_exp_subir', {
-            action: '<?php echo base_url('componente2/procesoAdministrativo/subirArchivo2') . '/proceso/' . $pro_id . '/pro_id/pro_exp_'; ?>',
-            onSubmit : function(file , ext){
-                if (! (ext && /^(pdf|doc|docx)$/.test(ext))){
-                    $('#extension').dialog('open');
-                    return false;
-                } else {
-                    $('#exp_vin').val('Subiendo....');
-                    this.disable();
-                }
-            },
-            onComplete: function(file, response,ext){
-                if(response!='error'){
-                    $('#exp_vin').val('Subido con Exito');
-                    this.enable();			
-                    $('#exp_vinD').val('Descargar Archivo');
-                    $('#pro_exp_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO
-                    ext= (response.substring(response.lastIndexOf("."))).toLowerCase(); 
-                    if (ext=='.pdf'){
-                        $('#btn_exp_descargar').attr({
-                            'href': '<?php echo base_url(); ?>'+response,
-                            'target':'_blank'
-                        });
-                    }
-                    else{
-                        $('#btn_exp_descargar').attr({
-                            'href': '<?php echo base_url(); ?>'+response,
-                            'target':'_self'
-                        });
-                    }
-                }else{
-                    $('#exp_vin').val('El Archivo debe ser menor a 1 MB.');
-                    this.enable();			
-                 
-                }
-                 
-            }	
-        });
-        $('#btn_exp_descargar').click(function() {
-            $.get($(this).attr('href'));
-        });
         function validaSexo(value, colname) {
             if (value == 0 ) return [false,"Seleccione el Tipo de la consultora"];
             else return [true,""];
@@ -272,19 +295,16 @@
     </div>
     <br/><br/>
     <table>
+        <tr><td colspan="2  ">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente. Solo se permiten archivos con extensión pdf, doc, docx</td></tr>
         <tr>
         <td><div id="btn_pub_subir"></div></td>
-        <td><input class="letraazul" type="text" id="pub_vin" value="Subir Publicación en periódico" size="30" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="pub_vin" value="Subir Publicación en periódico" size="30" readonly="readonly" style="border: none"/></td>
         <td width="100"></td>
-        <td><div id="btn_exp_subir"></div></td>
-        <td><input class="letraazul" type="text" id="exp_vin" value="Subir Expresión de interés" size="30" style="border: none"/></td>
         </tr>
         <tr>
         <td><a <?php if (isset($pro_pub_ruta_archivo) && $pro_pub_ruta_archivo != '') { ?> href="<?php echo base_url() . $pro_pub_ruta_archivo; ?>"<?php } ?>  id="btn_pub_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
         <td><input class="letraazul" type="text" id="pub_vinD" <?php if (isset($pro_pub_ruta_archivo) && $pro_pub_ruta_archivo != '') { ?>value="Descargar Publicación"<?php } else { ?> value="No Hay publicacion para Descargar" <?php } ?>size="30" style="border: none"/></td>
         <td></td>
-        <td><a <?php if (isset($pro_exp_ruta_archivo) && $pro_exp_ruta_archivo != '') { ?> href="<?php echo base_url() . $pro_exp_ruta_archivo; ?>"<?php } ?>  id="btn_exp_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
-        <td><input class="letraazul" type="text" id="exp_vinD" <?php if (isset($pro_exp_ruta_archivo) && $pro_exp_ruta_archivo != '') { ?>value="Descargar Expresión"<?php } else { ?> value="No Hay explicación de interés para Descargar" <?php } ?>size="30" style="border: none"/></td>
         </tr>
     </table>
 
@@ -292,7 +312,7 @@
     <table style="position: relative;top: 15px;">
         <tr>
         <td>
-            <p>Observaciones:<br/><textarea id="pro_observacion1" name="pro_observacion1" cols="48" rows="5"><?php if (isset($pro_observacion1)) echo$pro_observacion1; ?></textarea></p>
+            <p>Observaciones:<br/><textarea id="pro_observacion" name="pro_observacion" cols="48" rows="5"><?php if (isset($pro_observacion)) echo $pro_observacion; ?></textarea></p>
         </td>
         <td style="width: 50px"></td>
         </tr>
@@ -302,7 +322,7 @@
     <center style="position: relative;top: 20px">
         <div>
             <p><input type="submit" id="guardar" value="Guardar Adquisición y Contratación" />
-                <input type="button" id="cancelar" value="Cancelar" />
+                <input type="button" id="cancelar" value="Regresar" />
             </p>
         </div>
     </center>
@@ -318,4 +338,14 @@
 </div>
 <div id="extension" class="mensaje" title="Error">
     <p>Solo se permiten archivos con la extensión pdf|doc|docx</p>
+</div>
+<div id="fechaValidacion" class="mensaje" title="Error en fechas">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/cancel.png'); ?>" class="imagenError" />Las fechas deben de ir en orden ascendente</p>
+    </center>
+</div>
+<div id="efectivo" class="mensaje" title="Almacenado">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
+    </center>
 </div>

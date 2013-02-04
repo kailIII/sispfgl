@@ -1,11 +1,13 @@
 <script type="text/javascript">        
     $(document).ready(function(){
-        $("#cancelar").button().hide().click(function() {
+        $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url(); ?>';
         });
         
         /*CARGAR MUNICIPIOS*/
-        $('#selDepto').change(function(){   
+        $('#selDepto').change(function(){
+            $('#Mensajito').hide();
+            $("#propuestaTecnicaForm").hide();
             $('#selMun').children().remove();
             $.getJSON('<?php echo base_url('componente2/proyectoPep/cargarMunicipios') ?>?dep_id='+$('#selDepto').val(), 
             function(data) {
@@ -23,14 +25,20 @@
         
         $('#selMun').change(function(){
             $('#propuestaTecnicaForm')[0].reset();
-            $("#cancelar").hide();
-            $("#guardar").hide();
+            $("#propuestaTecnicaForm").hide();
             $.getJSON('<?php echo base_url('componente2/procesoAdministrativo/cargarPropuestaTecnica') . "/" ?>'+$('#selMun').val(), 
             function(data) {
                 var i=0;
                 $.each(data, function(key, val) {
+                    if(key=="records"){
+                        if(val=="0"){
+                            $('#Mensajito').show();
+                            $('#Mensajito').val("Este proyecto no esta registrado");
+                        }
+                    }
                     if(key=='rows'){
                         $.each(val, function(id, registro){
+                            $('#Mensajito').hide();
                             $('#pro_id').val(registro['cell'][0]);
                             $('#pro_numero').val(registro['cell'][1]);
                             $('#pro_fsolicitud').val(registro['cell'][2]);
@@ -40,8 +48,7 @@
                             $('#pro_fcierre_negociacion').val(registro['cell'][6]);
                             $('#pro_ffirma_contrato').val(registro['cell'][7]);
                             $('#pro_observacion2').val(registro['cell'][8]);
-                            $("#cancelar").show();
-                            $("#guardar").show();
+                            $("#propuestaTecnicaForm").show();
                         });                    
                     }
                 });
@@ -90,13 +97,83 @@
             dateFormat: 'dd-mm-yy'
         });
         /*FIN DEL DATEPICKER*/
-        
-        /*ZONA DE BOTONES*/
-        $("#guardar").button().hide().click(function() {
-            this.form.action='<?php echo base_url('componente2/procesoAdministrativo/guardarProceso') . "/4" ?>';
+        $("#guardar").button().click(function() {
+            fSolicitud= $('#pro_fsolicitud').datepicker("getDate");
+            fRecepcion=$( "#pro_frecepcion" ).datepicker("getDate");
+            fApertura=$( "#pro_faperturatecnica" ).datepicker("getDate");
+            fFinanciera= $('#pro_faperturafinanciera').datepicker("getDate");
+            fCierre=$( "#pro_fcierre_negociacion" ).datepicker("getDate");
+            fContrato=$( "#pro_ffirma_contrato" ).datepicker("getDate");
+            if(fSolicitud==null){
+                $( "#pro_frecepcion" ).val('');
+                $( "#pro_faperturatecnica" ).val('');
+                $('#pro_faperturafinanciera').val('')
+                $( "#pro_fcierre_negociacion" ).val('')
+                $( "#pro_ffirma_contrato" ).val('')
+                $.ajax({
+                    type: "POST",
+                    url: '<?php echo base_url('componente2/procesoAdministrativo/guardarProceso') . "/4" ?>',
+                    data: $("#propuestaTecnicaForm").serialize(), // serializes the form's elements.
+                    success: function(data)
+                    {
+                        $('#efectivo').dialog('open');
+                    }
+                });
+                return false;
+            }else{
+                if(fRecepcion==null){
+                    $("#pro_faperturatecnica" ).val('');
+                    $('#pro_faperturafinanciera').val('')
+                    $( "#pro_fcierre_negociacion" ).val('')
+                    $( "#pro_ffirma_contrato" ).val('')
+                    $.ajax({
+                        type: "POST",
+                        url: '<?php echo base_url('componente2/procesoAdministrativo/guardarProceso') . "/4" ?>',
+                        data: $("#propuestaTecnicaForm").serialize(), // serializes the form's elements.
+                        success: function(data)
+                        {
+                            $('#efectivo').dialog('open');
+                        }
+                    });
+                    return false;
+                }else{
+                    if(fSolicitud< fRecepcion){
+                        if(fApertura==null){
+                            $.ajax({
+                                type: "POST",
+                                url: '<?php echo base_url('componente2/procesoAdministrativo/guardarProceso') . "/4" ?>',
+                                data: $("#propuestaTecnicaForm").serialize(), // serializes the form's elements.
+                                success: function(data)
+                                {
+                                    $('#efectivo').dialog('open');
+                                }
+                            });
+                            return false;
+                        }else{
+                            if(fRecepcion < fApertura){
+                                $.ajax({
+                                    type: "POST",
+                                    url: '<?php echo base_url('componente2/procesoAdministrativo/guardarProceso') . "/4" ?>',
+                                    data: $("#propuestaTecnicaForm").serialize(), // serializes the form's elements.
+                                    success: function(data)
+                                    {
+                                        $('#efectivo').dialog('open');
+                                    }
+                                });
+                                return false;
+                            }else{
+                                $('#fechaValidacion').dialog('open');
+                                return false
+                            }
+                        }
+                    }else{
+                        $('#fechaValidacion').dialog('open');
+                        return false
+                    }
+                }
+            }  
         });
-               
-      
+        
         /*DIALOGOS DE VALIDACION*/
         $('.mensaje').dialog({
             autoOpen: false,
@@ -107,7 +184,7 @@
                 }
             }
         });
-                      
+        $("#propuestaTecnicaForm").hide();               
     });
 </script>
 
@@ -136,6 +213,7 @@
     </table>
 </center>
 <br/><br/><br/>
+<input value="" id="Mensajito" type="text" size="100" readonly="readonly" style="border: none;"/>
 <form id="propuestaTecnicaForm" method="post">
     <table class="procesoAdmin" border="0" cellspacing="0" >
         <tr>
@@ -191,4 +269,14 @@
 
 <div id="mensaje" class="mensaje" title="Aviso de la operación">
     <p>La acción fue realizada con satisfacción</p>
+</div>
+<div id="efectivo" class="mensaje" title="Almacenado">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
+    </center>
+</div>
+<div id="fechaValidacion" class="mensaje" title="Error en fechas">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/cancel.png'); ?>" class="imagenError" />Las fechas deben de ir en orden ascendente</p>
+    </center>
 </div>

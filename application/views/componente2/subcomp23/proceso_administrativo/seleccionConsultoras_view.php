@@ -17,12 +17,54 @@
             buttonImageOnly: true, 
             dateFormat: 'dd-mm-yy'
         });
-        
-        $("#guardar").button().hide().click(function() {
-            this.form.action='<?php echo base_url('componente2/procesoAdministrativo/guardarProceso') . "/3" ?>';
+        $("#guardar").button().click(function() {
+            fEnvio= $('#pro_fenvio_informacion').datepicker("getDate");
+            fRecepcion=$( "#pro_flimite_recepcion" ).datepicker("getDate");
+            if(fEnvio==null){
+                $("#pro_flimite_recepcion" ).val('');
+                $.ajax({
+                    type: "POST",
+                    url: '<?php echo base_url('componente2/procesoAdministrativo/guardarProceso') . "/3" ?>',
+                    data: $("#SeleccionConsultoraForm").serialize(), // serializes the form's elements.
+                    success: function(data)
+                    {
+                        $('#efectivo').dialog('open');
+                    }
+                });
+                return false;
+            }else{
+                if(fRecepcion==null){
+                    $.ajax({
+                        type: "POST",
+                        url: '<?php echo base_url('componente2/procesoAdministrativo/guardarProceso') . "/3" ?>',
+                        data: $("#SeleccionConsultoraForm").serialize(), // serializes the form's elements.
+                        success: function(data)
+                        {
+                            $('#efectivo').dialog('open');
+                        }
+                    });
+                    return false;
+                }else{
+                    if(fEnvio< fRecepcion){
+                        $.ajax({
+                            type: "POST",
+                            url: '<?php echo base_url('componente2/procesoAdministrativo/guardarProceso') . "/3" ?>',
+                            data: $("#SeleccionConsultoraForm").serialize(), // serializes the form's elements.
+                            success: function(data)
+                            {
+                                $('#efectivo').dialog('open');
+                            }
+                        });
+                        return false;
+                    }else{
+                        $('#fechaValidacion').dialog('open');
+                        return false;
+                    }
+                }
+            }  
         });
         
-        $("#cancelar").button().hide().click(function() {
+        $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url(); ?>';
         });
         
@@ -39,6 +81,8 @@
         
         /*CARGAR MUNICIPIOS*/
         $('#selDepto').change(function(){   
+            $('#Mensajito').hide();
+            $("#SeleccionConsultoraForm").hide();
             $('#selMun').children().remove();
             $.getJSON('<?php echo base_url('componente2/proyectoPep/cargarMunicipios') ?>?dep_id='+$('#selDepto').val(), 
             function(data) {
@@ -55,19 +99,26 @@
         });
         
         $('#selMun').change(function(){
-            $("#cancelar").hide();
-            $("#guardar").hide();
+            $("#SeleccionConsultoraForm").hide();
             $('#consultoresInteres').setGridParam({
                 url:'<?php echo base_url('componente2/procesoAdministrativo/cargarConsultoraInteres3') . '/0' ?>',
                 datatype:'json'
             }).trigger('reloadGrid');
             $('#SeleccionConsultoraForm')[0].reset();
+            $("#SeleccionConsultoraForm").hide();
             $.getJSON('<?php echo base_url('componente2/procesoAdministrativo/cargarSeleccionConsultora') . "/" ?>'+$('#selMun').val(), 
             function(data) {
                 var i=0;
                 $.each(data, function(key, val) {
+                    if(key=="records"){
+                        if(val=="0"){
+                            $('#Mensajito').show();
+                            $('#Mensajito').val("Este proyecto no esta registrado");
+                        }
+                    }
                     if(key=='rows'){
                         $.each(val, function(id, registro){
+                             $('#Mensajito').hide();
                             $('#consultoresInteres').setGridParam({
                                 url:'<?php echo base_url('componente2/procesoAdministrativo/cargarConsultoraInteres3') . '/' ?>'+registro['cell'][0],
                                 editurl:'<?php echo base_url('componente2/procesoAdministrativo/gestionarConsultoresInteres') . '/'; ?>'+registro['cell'][0],
@@ -77,8 +128,7 @@
                             $('#pro_numero').val(registro['cell'][1]);
                             $('#pro_fenvio_informacion').val(registro['cell'][2]);
                             $('#pro_flimite_recepcion').val(registro['cell'][3]);
-                            $("#cancelar").show();
-                            $("#guardar").show();
+                            $("#SeleccionConsultoraForm").show();
                         });                    
                     }
                 });
@@ -127,7 +177,8 @@
             tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');
             return[true,'']; //no error
         }
-                
+             
+        $("#SeleccionConsultoraForm").hide();
     });
 </script>
 <center>
@@ -153,6 +204,7 @@
     </table>
 </center>
 <br/><br/>
+<input value="" id="Mensajito" type="text" size="100" readonly="readonly" style="border: none;"/>
 <form id="SeleccionConsultoraForm" method="post">
     <table class="procesoAdmin">
         <tr>
@@ -185,4 +237,14 @@
 </form>
 <div id="mensaje" class="mensaje" title="Aviso de la operación">
     <p>La acción fue realizada con satisfacción</p>
+</div>
+<div id="efectivo" class="mensaje" title="Almacenado">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
+    </center>
+</div>
+<div id="fechaValidacion" class="mensaje" title="Error en fechas">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/cancel.png'); ?>" class="imagenError" />Las fechas deben de ir en orden ascendente</p>
+    </center>
 </div>

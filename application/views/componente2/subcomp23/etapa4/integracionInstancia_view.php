@@ -1,6 +1,6 @@
 <script type="text/javascript">        
     $(document).ready(function(){
-         <?php if ($guardo){?>
+         <?php if (isset($guardo)){?>
                 $('#guardo').dialog();
                 <?php }?>
         
@@ -248,14 +248,14 @@
     <p>Observaciones:<br/>
         <textarea name="int_ins_observacion" cols="48" rows="5"><?php echo$int_ins_observacion; ?></textarea></p>
     <table>
-        <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente</td></tr>
+        <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente. Solo se permiten archivos con extensión pdf, doc, docx</td></tr>
         <tr>
         <td><div id="btn_subir"></div></td>
-        <td><input class="letraazul" type="text" id="vinieta" value="Subir Acta de Constitucion" size="30" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinieta" readonly="readonly" value="Subir Acta de Constitucion" size="30" style="border: none"/></td>
         </tr>
         <tr>
         <td><a <?php if (isset($int_ins_ruta_archivo) && $int_ins_ruta_archivo != '') { ?> href="<?php echo base_url() . $int_ins_ruta_archivo; ?>"<?php } ?>  id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
-        <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($int_ins_ruta_archivo) && $int_ins_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo ?>"<?php } else { ?> value="No hay acta para descargar" <?php } ?>size="30" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinietaD" readonly="readonly" <?php if (isset($int_ins_ruta_archivo) && $int_ins_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo ?>"<?php } else { ?> value="No hay acta para descargar" <?php } ?>size="30" style="border: none"/></td>
         </tr>
     </table>
     <center style="position: relative;top: 20px">

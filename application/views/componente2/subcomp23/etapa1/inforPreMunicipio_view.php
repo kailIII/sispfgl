@@ -1,24 +1,24 @@
 <script type="text/javascript">        
     $(document).ready(function(){
         /*ZONA DE BOTONES*/
-          <?php if ($guardo){?>
+          <?php if (isset($guardo)){?>
                 $('#guardo').dialog();
                 <?php }?>
         $("#guardar").button().click(function() {
             borrador= $('#inf_pre_fecha_borrador').datepicker("getDate");
             observacion=$( "#inf_pre_fecha_observacion" ).datepicker("getDate");
             aprobacion=$( "#inf_pre_aceptacion" ).datepicker("getDate");
-            if(borrador==''){
+            if(borrador==null){
                 $( "#inf_pre_fecha_observacion" ).val('');
                 $( "#inf_pre_aceptacion" ).val('');
                 this.form.action='<?php echo base_url('componente2/comp23_E1/guardarInformePreliminar/' . $inf_pre_id); ?>';
             }else{
-                if(observacion==''){
+                if(observacion==null){
                     $("#inf_pre_aceptacion" ).val('');
                     this.form.action='<?php echo base_url('componente2/comp23_E1/guardarInformePreliminar/' . $inf_pre_id); ?>';
                 }else{
                     if(borrador< observacion){
-                        if(aprobacion==''){
+                        if(aprobacion==null){
                             this.form.action='<?php echo base_url('componente2/comp23_E1/guardarInformePreliminar/' . $inf_pre_id); ?>';
                         }else{
                             if(observacion < aprobacion){
@@ -191,14 +191,14 @@
         <textarea name="inf_pre_observacion" cols="48" rows="5"><?php echo $inf_pre_observacion; ?></textarea></p>
 
     <table>
-        <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente</td></tr>
+        <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente. Solo se permiten archivos con extensión pdf, doc, docx</td></tr>
         <tr>
         <td><div id="btn_subir"></div></td>
-        <td><input class="letraazul" type="text" id="vinieta" value="Subir Informe Preliminar" size="60" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinieta" readonly="readonly" value="Subir Informe Preliminar" size="60" style="border: none"/></td>
         </tr>
         <tr>
         <td><a <?php if (isset($inf_pre_ruta_archivo) && $inf_pre_ruta_archivo != '') { ?> href="<?php echo base_url() . $inf_pre_ruta_archivo; ?>"<?php } ?>  id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
-        <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($inf_pre_ruta_archivo) && $inf_pre_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo; ?>"<?php } else { ?> value="No hay ningún informe preliminar para descargar" <?php } ?>size="50" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinietaD" readonly="readonly" <?php if (isset($inf_pre_ruta_archivo) && $inf_pre_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo; ?>"<?php } else { ?> value="No hay ningún informe preliminar para descargar" <?php } ?>size="50" style="border: none"/></td>
         </tr>
     </table>
 

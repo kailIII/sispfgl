@@ -27,15 +27,7 @@ class Nombrefecha_procesoetapa extends CI_Model {
         $this->db->update($this->tabla, $datos);
     }
 
-    public function obtenerFechaProceso($pro_eta_id) {
-        $this->db->where('pro_eta_id', $pro_eta_id);
-        $this->db->where('nom_fec_apr_id', $nom_fec_apr_id);
-        $this->db->order_by('nom_fec_apr_id');
-        $consulta = $this->db->get($this->tabla);
-        return $consulta->result();
-    }
-
-    function obtenerLasFechasProcesos($pro_eta_id) {
+   function obtenerLasFechasProcesos($pro_eta_id) {
         $this->db->select('nombrefecha_procesoetapa.nomfec_proeta_valor nomfec_proeta_valor, 
                            nombre_fecha_aprobacion.nom_fec_apro_nombre nom_fec_apro_nombre, 
                            nombrefecha_procesoetapa.pro_eta_id pro_eta_id, 

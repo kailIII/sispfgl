@@ -3,7 +3,9 @@
         /*CARGAR MUNICIPIOS*/
         $( "#etapas" ).tabs().hide();
         $('#Mensajito').hide();
-        $('#selDepto').change(function(){   
+        $('#selDepto').change(function(){  
+            $("#etapas").hide();
+            $('#Mensajito').hide();
             $('#selMun').children().remove();
             $.getJSON('<?php echo base_url('componente2/proyectoPep/cargarMunicipios') ?>?dep_id='+$('#selDepto').val(), 
             function(data) {
@@ -20,62 +22,75 @@
         });
         
         $('#selMun').change(function(){
-            $( "#etapas" ).hide();
+            $("#etapas").hide();
             $('#Mensajito').hide();
-            $.getJSON('<?php echo base_url('componente2/procesoAdministrativo/cargarPropuestaTecnica') . "/" ?>'+$('#selMun').val(), 
+            $.getJSON('<?php echo base_url('componente2/procesoAdministrativo/cargarAprobacionProductos') . "/" ?>'+$('#selMun').val(), 
             function(data) {
+                $("#etapas").hide();
+                $('#Mensajito').hide();
                 $.each(data, function(key, val) {
                     if(key=="records"){
                         if(val=="0"){
-                        $('#Mensajito').show();
-                        $('#Mensajito').val("Este municipio no tiene proyecto para registrar");
+                            $('#Mensajito').show();
+                            $('#Mensajito').val("Este proyecto no esta registrado");
                         }
                     }
                     if(key=='rows'){
+                        i=0;
                         $.each(val, function(id, registro){
+                            j=1;
+                            $('#pro_eta_id_'+(i+1)).val(registro['cell'][0]);
+                            $('#pro_eta_observacion_'+(i+1)).val(registro['cell'][2]);
+                            $.each(registro['cell'][1], function(id, valor){
+                                $("#eta"+(i+1)+"_fecha"+j).val(valor); 
+                                j++;
+                            });
+                            i++;
+                        });
+                        if(i!=0){
                             $("#etapas").show();
-                            $('#pro_id').val(registro['cell'][0]);
-                            $('#pro_numero').val(registro['cell'][1]);
-                            $('#pro_fsolicitud').val(registro['cell'][2]);
-                            $('#pro_frecepcion').val(registro['cell'][3]);
-                            $('#pro_faperturatecnica').val(registro['cell'][4]);
-                            $('#pro_faperturafinanciera').val(registro['cell'][5]);
-                            $('#pro_fcierre_negociacion').val(registro['cell'][6]);
-                            $('#pro_ffirma_contrato').val(registro['cell'][7]);
-                            $('#pro_observacion2').val(registro['cell'][8]);
-                        });                    
+                        }
                     }
-                    
-            });
-        });              
-    });
-    /*DIALOGOS DE VALIDACION*/
-    $('.Mensajito').dialog({
-        autoOpen: false,
-        width: 300,
-        buttons: {
-            "Ok": function() {
-                $(this).dialog("close");
-            }
-        }
-    });
-        
-<?php foreach ($etapas as $etapa) { ?>
-        $("#guardar<?php echo $etapa->pes_pro_id; ?>").button();
-        $("#cancelar<?php echo $etapa->pes_pro_id; ?>").button();
-    <?php foreach ($fechas as $fecha) { ?>
-                $("#eta<?php echo $etapa->pes_pro_id; ?>_fecha<?php echo $fecha->nom_fec_apr_id; ?>").datepicker({
-                    showOn: 'both',
-                    buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-                    buttonImageOnly: true, 
-                    dateFormat: 'dd-mm-yy'
                 });
+            });              
+        });
+        /*DIALOGOS DE VALIDACION*/
+        $('.mensaje').dialog({
+            autoOpen: false,
+            width: 300,
+            buttons: {
+                "Ok": function() {
+                    $(this).dialog("close");
+                }
+            }
+        });     
+<?php foreach ($etapas as $etapa) { ?>
+            $("#guardar<?php echo $etapa->pes_pro_id; ?>").button().click(function() {
+                $.ajax({
+                    type: "POST",
+                    url: '<?php echo base_url('componente2/procesoAdministrativo/guardarAprobacionProductos') . "/" . $etapa->pes_pro_id; ?>',
+                    data: $("#recepcionAprobacion_<?php echo $etapa->pes_pro_id; ?>").serialize(), // serializes the form's elements.
+                    success: function(data)
+                    {
+                        $('#efectivo').dialog('open');
+                    }
+                });
+                return false; // avoid to execute the actual submit of the form.
+            });
+            $("#cancelar<?php echo $etapa->pes_pro_id; ?>").button();
+    <?php foreach ($fechas as $fecha) { ?>
+                    $("#eta<?php echo $etapa->pes_pro_id; ?>_fecha<?php echo $fecha->nom_fec_apr_id; ?>").datepicker({
+                        showOn: 'both',
+                        buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+                        buttonImageOnly: true, 
+                        dateFormat: 'dd-mm-yy'
+                    });
         <?php
     }
 }
 ?>
         
-});
+    });
 </script>
 <center>
     <h2 class="h2Titulos">Procesos de recepción y aprobación de productos</h2>
@@ -100,7 +115,7 @@
     </table>
 </center>
 <br/><br/><br/>
-<input value="" id="Mensajito" type="text" size="150" readonly="readonly" style="border: none;"/>
+<input value="" id="Mensajito" type="text" size="100" readonly="readonly" style="border: none;"/>
 <div id="etapas">
     <ul>
         <?php foreach ($etapas as $etapa) { ?>
@@ -119,7 +134,7 @@
                         </tr>
                     <?php } ?>
                     <tr><td colspan="3" >
-                        Observaciones:<br/><textarea id="pro_eta_observacion_<?php echo $etapa->pes_pro_id; ?>" name="pro_observacion2" cols="48" rows="5"></textarea>
+                        Observaciones:<br/><textarea id="pro_eta_observacion_<?php echo $etapa->pes_pro_id; ?>" name="pro_eta_observacion_<?php echo $etapa->pes_pro_id; ?>" cols="48" rows="5"></textarea>
                     </td></tr>
                     <tr><td colspan="3" align="center">
                         <input type="submit" id="guardar<?php echo $etapa->pes_pro_id; ?>" value="Guardar <?php echo $etapa->pes_pro_nombre; ?>" />
@@ -127,11 +142,15 @@
                     </td>
                     </tr>
                 </table>
+                <input id="pro_eta_id_<?php echo $etapa->pes_pro_id; ?>" name="pro_eta_id_<?php echo $etapa->pes_pro_id; ?>" style="visibility:hidden" ></input>
             </form>
         </div>
     <?php } ?>
 </div>
 <br/><br/><br/>
-<div id="Mensajito" class="Mensajito" title="Aviso de la operación">
-    <p>La acción fue realizada con satisfacción</p>
+<div id="efectivo" class="mensaje" title="Almacenado">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
+    </center>
 </div>
+

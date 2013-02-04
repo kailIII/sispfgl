@@ -1,7 +1,7 @@
 <script type="text/javascript">        
     $(document).ready(function(){
         /*ZONA DE BOTONES*/
-         <?php if ($guardo){?>
+         <?php if (isset($guardo)){?>
                 $('#guardo').dialog();
                 <?php }?>
         $("#guardar").button().click(function() {
@@ -171,14 +171,14 @@
         <textarea name="dia_observacion" cols="48" rows="5"><?php echo $dia_observacion; ?></textarea></p>
 
     <table>
-        <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente</td></tr>
+        <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente. Solo se permiten archivos con extensión pdf, doc, docx</td></tr>
         <tr>
         <td><div id="btn_subir"></div></td>
-        <td><input class="letraazul" type="text" id="vinieta" value="Subir Documentos" size="60" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinieta" readonly="readonly" value="Subir Documentos" size="60" style="border: none"/></td>
         </tr>
         <tr>
         <td><a <?php if (isset($dia_ruta_archivo) && $dia_ruta_archivo != '') { ?> href="<?php echo base_url() . $dia_ruta_archivo; ?>"<?php } ?>  id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
-        <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($dia_ruta_archivo) && $dia_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo ?>"<?php } else { ?> value="No hay ningún documento para descargar" <?php } ?>size="50" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinietaD" readonly="readonly" <?php if (isset($dia_ruta_archivo) && $dia_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo ?>"<?php } else { ?> value="No hay ningún documento para descargar" <?php } ?>size="50" style="border: none"/></td>
         </tr>
     </table>
 

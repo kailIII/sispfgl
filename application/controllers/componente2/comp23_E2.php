@@ -145,6 +145,7 @@ class Comp23_E2 extends CI_Controller {
         /* VARIABLES POST */
         $reu_fecha = $this->input->post("reu_fecha");
         $reu_duracion_horas = $this->input->post("reu_duracion_horas");
+        $reu_duracion_minutos = $this->input->post("reu_duracion_minutos");
         $reu_tema = $this->input->post("reu_tema");
         $reu_resultado = $this->input->post("reu_resultado");
         $reu_observacion = $this->input->post("reu_observacion");
@@ -177,7 +178,7 @@ class Comp23_E2 extends CI_Controller {
         $this->load->model('etapa2-sub23/poblacion_reunion', 'pobReu');
         $this->pobReu->actualizarPoblacionReunion($pob_comunidad, $pob_sector, $pob_institucion, $pob_id);
         $this->load->model('etapa1-sub23/reunion', 'reunion');
-        $this->reunion->actualizarReunion($reu_fecha, $reu_duracion_horas, $reu_tema, $reu_resultado, $reu_observacion, $reu_id);
+        $this->reunion->actualizarReunion($reu_fecha, $reu_duracion_horas,$reu_duracion_minutos,$reu_tema, $reu_resultado, $reu_observacion, $reu_id);
         redirect('componente2/comp23_E2/muestraReuniones');
     }
 

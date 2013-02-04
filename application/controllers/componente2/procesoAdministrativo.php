@@ -48,19 +48,19 @@ class ProcesoAdministrativo extends CI_Controller {
 
         $mun_id = $this->input->post("selMun");
         $this->load->model('procesoAdministrativo/proceso');
-        $this->load->model('procesoAdministrativo/pestania_proceso','pesPro');
-        $this->load->model('procesoAdministrativo/proceso_etapa','proEta');
-        $this->load->model('procesoAdministrativo/nombre_fecha_aprobacion','nomFecApr');
-        $this->load->model('procesoAdministrativo/nombrefecha_procesoetapa','fechaPro');
+        $this->load->model('procesoAdministrativo/pestania_proceso', 'pesPro');
+        $this->load->model('procesoAdministrativo/proceso_etapa', 'proEta');
+        $this->load->model('procesoAdministrativo/nombre_fecha_aprobacion', 'nomFecApr');
+        $this->load->model('procesoAdministrativo/nombrefecha_procesoetapa', 'fechaPro');
         $resultado = $this->proceso->contarProPorMuni($mun_id);
         if ($resultado == '0') {
             $this->proceso->agregarPro($mun_id);
-            $pestanias=  $this->pesPro->obtenerPestaniaProcesos();
-            foreach($pestanias as $aux){
+            $pestanias = $this->pesPro->obtenerPestaniaProcesos();
+            foreach ($pestanias as $aux) {
                 $this->proEta->insertarProcesoEtapa($mun_id, $aux->pes_pro_id);
-                $nombresFechas=  $this->nomFecApr->obtenerNombresFechas();
-                $etapaId=  $this->proEta->obtenerMaxId();
-                foreach ($nombresFechas as $aux2){
+                $nombresFechas = $this->nomFecApr->obtenerNombresFechas();
+                $etapaId = $this->proEta->obtenerMaxId();
+                foreach ($nombresFechas as $aux2) {
                     $this->fechaPro->insertarFechaProceso($etapaId[0]->pro_eta_id, $aux2->nom_fec_apr_id);
                 }
             }
@@ -104,7 +104,7 @@ class ProcesoAdministrativo extends CI_Controller {
                 $pro_exp_ruta_archivo = $this->input->post("pro_exp_ruta_archivo");
 
                 $this->proceso->editarPro($pro_id, $pro_exp_ruta_archivo, $pro_faclara_dudas, $pro_fexpresion_interes, $pro_fpublicacion, $pro_numero, $pro_observacion1, $pro_pub_ruta_archivo);
-                redirect('componente2/procesoAdministrativo/adquisicionContrataciones');
+                //redirect('componente2/procesoAdministrativo/adquisicionContrataciones');
                 break;
 
             case 2:
@@ -115,7 +115,7 @@ class ProcesoAdministrativo extends CI_Controller {
                 if ($pro_ffinalizacion == "")
                     $pro_ffinalizacion = null;
                 $this->proceso->editarPro2($pro_id, $pro_ffinalizacion, $pro_finicio);
-                redirect('componente2/procesoAdministrativo/propuestaTecnica');
+                //redirect('componente2/procesoAdministrativo/propuestaTecnica');
                 break;
 
             case 3:
@@ -126,7 +126,7 @@ class ProcesoAdministrativo extends CI_Controller {
                 if ($pro_fenvio_informacion == "")
                     $pro_fenvio_informacion = null;
                 $this->proceso->editarPro3($pro_id, $pro_fenvio_informacion, $pro_flimite_recepcion);
-                redirect('componente2/procesoAdministrativo/seleccionConsultoras');
+                //redirect('componente2/procesoAdministrativo/seleccionConsultoras');
                 break;
             case 4:
                 $pro_fsolicitud = $this->input->post("pro_fsolicitud");
@@ -149,7 +149,7 @@ class ProcesoAdministrativo extends CI_Controller {
                     $pro_faperturafinanciera = null;
                 $pro_observacion2 = $this->input->post("pro_observacion2");
                 $this->proceso->editarPro4($pro_id, $pro_fsolicitud, $pro_frecepcion, $pro_fcierre_negociacion, $pro_ffirma_contrato, $pro_faperturatecnica, $pro_faperturafinanciera, $pro_observacion2);
-                redirect('componente2/procesoAdministrativo/propuestaTecnica');
+                //redirect('componente2/procesoAdministrativo/propuestaTecnica');
                 break;
         }
     }
@@ -326,6 +326,7 @@ class ProcesoAdministrativo extends CI_Controller {
     public function cargarEvaluacionDeclaracion($mun_id) {
         $this->load->model('procesoAdministrativo/proceso');
         $rows = array();
+        $numfilas=0;
         if ($this->proceso->contarProPorMuni($mun_id) != 0) {
             $resultado = $this->proceso->obtenerPro($mun_id);
             $id = $resultado[0]->pro_id;
@@ -344,6 +345,7 @@ class ProcesoAdministrativo extends CI_Controller {
                 $pro_fininicio,
                 $pro_ffinalizacion
             );
+            $numfilas=1;
         }
 
 
@@ -353,7 +355,7 @@ class ProcesoAdministrativo extends CI_Controller {
         $jsonresponse = '{
                "page":"1",
                "total":"' . $pages . '",
-               "records":"' . 1 . '", 
+               "records":"' . $numfilas . '", 
                "rows":' . $datos . '}';
 
         echo $jsonresponse;
@@ -362,6 +364,7 @@ class ProcesoAdministrativo extends CI_Controller {
     public function cargarSeleccionConsultora($mun_id) {
         $this->load->model('procesoAdministrativo/proceso');
         $rows = array();
+        $numfilas=0;
         if ($this->proceso->contarProPorMuni($mun_id) != 0) {
             $resultado = $this->proceso->obtenerPro($mun_id);
             $id = $resultado[0]->pro_id;
@@ -380,6 +383,7 @@ class ProcesoAdministrativo extends CI_Controller {
                 $pro_fenvio_informacion,
                 $pro_flimite_recepcion
             );
+            $numfilas=1;
         }
 
 
@@ -390,7 +394,7 @@ class ProcesoAdministrativo extends CI_Controller {
         $jsonresponse = '{
                "page":"1",
                "total":"' . $pages . '",
-               "records":"' . 1 . '", 
+               "records":"' . $numfilas . '", 
                "rows":' . $datos . '}';
 
         echo $jsonresponse;
@@ -400,7 +404,7 @@ class ProcesoAdministrativo extends CI_Controller {
         $this->load->model('procesoAdministrativo/proceso');
 
         $rows = array();
-        $numfilas=0;
+        $numfilas = 0;
         if ($this->proceso->contarProPorMuni($mun_id) != 0) {
             $resultado = $this->proceso->obtenerPro($mun_id);
             $id = $resultado[0]->pro_id;
@@ -440,7 +444,7 @@ class ProcesoAdministrativo extends CI_Controller {
                 $pro_ffirma_contrato,
                 $resultado[0]->pro_observacion2
             );
-            $numfilas=1;
+            $numfilas = 1;
         }
         $datos = json_encode($rows);
         $pages = floor(1 / 10) + 1;
@@ -453,8 +457,8 @@ class ProcesoAdministrativo extends CI_Controller {
 
         echo $jsonresponse;
     }
-    
-    public function recepcionAprobacionProductos(){
+
+    public function recepcionAprobacionProductos() {
         $informacion['titulo'] = 'Recepción y Aprobación de Productos';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
@@ -462,20 +466,79 @@ class ProcesoAdministrativo extends CI_Controller {
         //OBTENER DEPARTAMENTOS
         $this->load->model('pais/departamento');
         $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
-        $this->load->model('procesoAdministrativo/proceso_etapa','proEta');
-        $this->load->model('procesoAdministrativo/pestania_proceso','pesPro');
-        $this->load->model('procesoAdministrativo/nombre_fecha_aprobacion','fechaAproba');
-        $etapa=  $this->pesPro->obtenerPestaniaProcesos();
-        $nombresFecha=  $this->fechaAproba->obtenerNombresFechas();
-        $informacion['etapas']=$etapa;
-        $informacion['fechas']=$nombresFecha;
+        $this->load->model('procesoAdministrativo/proceso_etapa', 'proEta');
+        $this->load->model('procesoAdministrativo/pestania_proceso', 'pesPro');
+        $this->load->model('procesoAdministrativo/nombre_fecha_aprobacion', 'fechaAproba');
+        $etapa = $this->pesPro->obtenerPestaniaProcesos();
+        $nombresFecha = $this->fechaAproba->obtenerNombresFechas();
+        $informacion['etapas'] = $etapa;
+        $informacion['fechas'] = $nombresFecha;
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/proceso_administrativo/recepcion_view');
         $this->load->view('plantilla/footer', $informacion);
     }
 
-    public function subirArchivo2($tabla, $campo_id, $campo, $ext) {
+    public function cargarAprobacionProductos($mun_id) {
+        $this->load->model('procesoAdministrativo/proceso_etapa', 'proEta');
+        $this->load->model('procesoAdministrativo/pestania_proceso', 'pesPro');
+        $this->load->model('procesoAdministrativo/proceso');
+        $rows = array();
+        $numfilas = 0;
+        if ($this->proceso->contarProPorMuni($mun_id) != 0) {
+            $pestanias = $this->pesPro->obtenerPestaniaProcesos();
+            $i = 0;
+            foreach ($pestanias as $pestania) {
+                $valores = $this->proEta->obtenerValoresEtapas($mun_id, $pestania->pes_pro_id);
+                $fechas = array();
+                $j = 0;
+                foreach ($valores as $valor) {
+                    $pro_eta_id = $valor->pro_eta_id;
+                    $pro_eta_observacion = $valor->pro_eta_observacion;
+                    $valorFecha = $valor->nomfec_proeta_valor;
+                    if ($valorFecha != "")
+                        $valorFecha = date('d-m-Y', strtotime($valorFecha));
+                    $fechas[$valor->nom_fec_apr_id] = $valorFecha;
+                    $j++;
+                }
+                $rows[$i]['id'] = $pro_eta_id;
+                $rows[$i]['cell'] = array($pro_eta_id,
+                    $fechas,
+                    $pro_eta_observacion);
+                $i++;
+            } $numfilas = count($rows);
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+
+    public function guardarAprobacionProductos($etapa) {
+        $this->load->model('procesoAdministrativo/proceso_etapa', 'proEta');
+        $this->load->model('procesoAdministrativo/nombrefecha_procesoetapa', 'nombreFecha');
+        $this->load->model('procesoAdministrativo/nombre_fecha_aprobacion', 'fechas');
+
+        $pro_eta_id = $this->input->post("pro_eta_id_" . $etapa);
+        $pro_eta_observacion = $this->input->post("pro_eta_observacion_" . $etapa);
+        $fechasO = $this->fechas->obtenerNombresFechas();
+        foreach ($fechasO as $fecha) {
+            $fechaGuardar = $this->input->post("eta".$etapa."_fecha".$fecha->nom_fec_apr_id);
+            if ($fechaGuardar == "")
+                $fechaGuardar = null;
+            $this->nombreFecha->actualizarFechaProceso($fechaGuardar, $pro_eta_id, $fecha->nom_fec_apr_id);
+        }
+        $this->proEta->actualizarProcesoEtapa($pro_eta_observacion, $pro_eta_id);
+    }
+
+    function subirArchivo2($tabla, $campo_id, $campo, $ext) {
         echo $this->librerias->subirDocumento2($tabla, $campo_id, $_FILES, $campo, $ext);
     }
 

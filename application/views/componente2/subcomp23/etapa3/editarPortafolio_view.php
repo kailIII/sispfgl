@@ -285,14 +285,14 @@
     </fieldset>
     <p>Observaciones y/o recomendaciones:<br/><textarea id="por_pro_observacion" name="por_pro_observacion" cols="48" rows="5"><?php echo $por_pro_observacion ?></textarea></p>
     <table>
-        <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente</td></tr>
+        <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente. Solo se permiten archivos con extensión pdf, doc, docx</td></tr>
         <tr>
         <td><div id="btn_subir"></div></td>
-        <td><input class="letraazul" type="text" id="vinieta" value="Subir Perfil del Proyecto" size="30" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinieta" readonly="readonly" value="Subir Perfil del Proyecto" size="30" style="border: none"/></td>
         </tr>
         <tr>
         <td><a id="btn_descargar"  <?php if (isset($por_pro_ruta_archivo) && $por_pro_ruta_archivo != '') { ?> href="<?php echo base_url() . $por_pro_ruta_archivo; ?>"<?php } ?> ><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
-        <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($por_pro_ruta_archivo) && $por_pro_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo ?>"<?php } else { ?> value="No hay perfil para ser descargado" <?php } ?>size="40" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinietaD" readonly="readonly" <?php if (isset($por_pro_ruta_archivo) && $por_pro_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo ?>"<?php } else { ?> value="No hay perfil para ser descargado" <?php } ?>size="40" style="border: none"/></td>
         </tr>
     </table>
     <center>  <p><input type="submit" id="guardar" value="Guardar Portafolio del Proyecto" />

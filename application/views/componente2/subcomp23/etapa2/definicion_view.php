@@ -1,6 +1,6 @@
 <script type="text/javascript">        
     $(document).ready(function(){
-         <?php if ($guardo){?>
+         <?php if (isset($guardo)){?>
                 $('#guardo').dialog();
                 <?php }?>
         /*ZONA DE BOTONES*/
@@ -241,14 +241,14 @@
     <div id="pagerproblemas"></div>
     <br/>
     <table>
-        <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente</td></tr>
+        <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente. Solo se permiten archivos con extensión pdf, doc, docx</td></tr>
         <tr>
         <td><div id="btn_subir"></div></td>
-        <td><input class="letraazul" type="text" id="vinieta" value="Subir Informe de desarrollo de priorizacón" size="60" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinieta" readonly="readonly" value="Subir Informe de desarrollo de priorizacón" size="60" style="border: none"/></td>
         </tr>
         <tr>
         <td><a <?php if (isset($def_ruta_archivo) && $def_ruta_archivo != '') { ?> href="<?php echo base_url() . $def_ruta_archivo; ?>"<?php } ?>  id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
-        <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($def_ruta_archivo) && $def_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo ?> "<?php } else { ?> value="El informe de desarrollo no se ha cargado" <?php } ?>size="60" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinietaD" readonly="readonly" <?php if (isset($def_ruta_archivo) && $def_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo ?> "<?php } else { ?> value="El informe de desarrollo no se ha cargado" <?php } ?>size="60" style="border: none"/></td>
         </tr>
     </table>
     <p>Observaciones:<br/>

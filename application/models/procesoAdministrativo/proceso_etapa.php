@@ -51,6 +51,27 @@ class Proceso_etapa extends CI_Model {
         return $query->result();
     }
 
+    public function obtenerValoresEtapas($mun_id,$pes_pro_id) {
+        $query = "SELECT 
+                    proceso_etapa.mun_id, 
+                    nombrefecha_procesoetapa.nomfec_proeta_valor, 
+                    proceso_etapa.pro_eta_observacion, 
+                    nombrefecha_procesoetapa.nom_fec_apr_id, 
+                    proceso_etapa.pro_eta_id, 
+                    proceso_etapa.pes_pro_id
+                 FROM 
+                    proceso_etapa, 
+                    nombrefecha_procesoetapa
+                 WHERE 
+                    proceso_etapa.pro_eta_id = nombrefecha_procesoetapa.pro_eta_id AND
+                    proceso_etapa.mun_id = ? AND 
+                    proceso_etapa.pes_pro_id  = ?
+                 ORDER BY
+                    nombrefecha_procesoetapa.nom_fec_apr_id ASC";
+        $consulta = $this->db->query($query, array($mun_id,$pes_pro_id));
+        return $consulta->result();
+    }
+
 }
 
 ?>

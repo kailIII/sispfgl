@@ -106,13 +106,14 @@ class Comp23_E3 extends CI_Controller {
         /* VARIABLES POST */
         $reu_fecha = $this->input->post("reu_fecha");
         $reu_duracion_horas = $this->input->post("reu_duracion_horas");
+        $reu_duracion_minutos = $this->input->post("reu_duracion_minutos");
         $reu_tema = $this->input->post("reu_tema");
         $reu_resultado = $this->input->post("reu_resultado");
         $reu_observacion = $this->input->post("reu_observacion");
         $reu_id = $this->input->post("reu_id");
 
         $this->load->model('etapa1-sub23/reunion', 'reunion');
-        $this->reunion->actualizarReunion($reu_fecha, $reu_duracion_horas, $reu_tema, $reu_resultado, $reu_observacion, $reu_id);
+        $this->reunion->actualizarReunion($reu_fecha, $reu_duracion_horas,$reu_duracion_minutos, $reu_tema, $reu_resultado, $reu_observacion, $reu_id);
 
         $this->load->model('etapa3-sub23/resultado_reunion', 'resReu');
         $resultados = $this->resReu->obtenerLosResultadosReunion($reu_id);
@@ -147,6 +148,7 @@ class Comp23_E3 extends CI_Controller {
         $informacion['reu_id'] = $reu_id;
         $informacion['reu_fecha'] = $datosReu[0]->reu_fecha;
         $informacion['reu_duracion_horas'] = $datosReu[0]->reu_duracion_horas;
+        $informacion['reu_duracion_minutos'] = $datosReu[0]->reu_duracion_minutos;
         $informacion['reu_numero'] = $datosReu[0]->reu_numero;
         $informacion['reu_tema'] = $datosReu[0]->reu_tema;
         $informacion['reu_observacion'] = $datosReu[0]->reu_observacion;

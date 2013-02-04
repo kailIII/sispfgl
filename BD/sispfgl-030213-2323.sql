@@ -2697,11 +2697,12 @@ CREATE TABLE reunion (
     eta_id integer NOT NULL,
     reu_numero integer,
     reu_fecha date,
-    reu_duracion_horas integer,
+    reu_duracion_horas integer DEFAULT 0,
     reu_tema character varying(200),
     reu_resultado text,
     reu_observacion text,
-    pro_pep_id integer NOT NULL
+    pro_pep_id integer NOT NULL,
+    reu_duracion_minutos integer DEFAULT 0
 );
 
 
@@ -3555,7 +3556,7 @@ COPY acuerdo_municipal (acu_mun_id, acu_mun_fecha, acu_mun_p1, acu_mun_p2, acu_m
 -- Name: acuerdo_municipal_acu_mun_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('acuerdo_municipal_acu_mun_id_seq', 1, false);
+SELECT pg_catalog.setval('acuerdo_municipal_acu_mun_id_seq', 1, true);
 
 
 --
@@ -3674,8 +3675,8 @@ SELECT pg_catalog.setval('capacitacion_cap_id_seq', 75, true);
 --
 
 COPY ci_sessions (session_id, ip_address, user_agent, last_activity, user_data) FROM stdin;
-4e28b3d318fbbe74870d881bf439aa7f	127.0.0.1	Mozilla/5.0 (X11; Linux x86_64; rv:10.0.12) Gecko/20100101 Firefox/10.0.12 Iceweasel/10.0.12	1359821455	a:4:{s:9:"user_data";s:0:"";s:7:"user_id";s:1:"1";s:8:"username";s:5:"admin";s:6:"status";s:1:"1";}
-a5df0124dcb3ed53d85b063fa4ba8570	127.0.0.1	Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.57 Safari/537.17	1359821546	a:2:{s:9:"user_data";s:0:"";s:17:"flash:old:message";s:73:"El código de activación que ha introducido es incorrecto o ha caducado.";}
+e2dd4e92db41dc86b853491e0ea163af	127.0.0.1	Mozilla/5.0 (X11; Linux x86_64; rv:10.0.12) Gecko/20100101 Firefox/10.0.12 Iceweasel/10.0.12	1359953610	a:4:{s:9:"user_data";s:0:"";s:7:"user_id";s:2:"15";s:8:"username";s:7:"kpenate";s:6:"status";s:1:"1";}
+0a6b6d057b194f78821f1056e63e263b	127.0.0.1	Mozilla/5.0 (X11; Linux x86_64; rv:10.0.12) Gecko/20100101 Firefox/10.0.12 Iceweasel/10.0.12	1359954865	a:4:{s:9:"user_data";s:0:"";s:7:"user_id";s:2:"15";s:8:"username";s:7:"kpenate";s:6:"status";s:1:"1";}
 \.
 
 
@@ -3707,6 +3708,7 @@ SELECT pg_catalog.setval('consulta_cons_id_seq', 8, true);
 
 COPY consultor (con_id, con_nombre, con_apellido, con_telefono, con_email, pro_pep_id, cons_id, "user") FROM stdin;
 2	Coordinador 1	Apellido Coordinado1	2276-1821	karensita_2410@hotmail.com	1	\N	ah01001
+35	Karen	Peñate	6666-6666	kpenate@salud.gob.sv	33	\N	sa10193
 4	Coordinador 1	Apellido Coordinado1	5555-5555	karensita_2410@hotmail.com	2	\N	ah01004
 5	Coordinador 1	Apellido Coordinado1	9999-9999	karensita_2410@hotmail.com	3	\N	ah01005
 6	Coordinador 1	Apellido Coordinado1	6666-6666	karensita_2410@hotmail.com	4	\N	ah01012
@@ -3743,7 +3745,7 @@ COPY consultor (con_id, con_nombre, con_apellido, con_telefono, con_email, pro_p
 -- Name: consultor_con_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('consultor_con_id_seq', 32, true);
+SELECT pg_catalog.setval('consultor_con_id_seq', 35, true);
 
 
 --
@@ -3766,9 +3768,6 @@ COPY consultora (cons_id, cons_nombre, cons_direccion, cons_telefono, cons_telef
 --
 
 COPY consultores_interes (con_int_id, con_int_nombre, con_int_tipo, con_int_aplica, con_int_seleccionada, pro_id) FROM stdin;
-4	Consultora 3	Empresa	No	\N	1
-2	Consultora A	ONG	Si	Si	1
-3	Consultora B	Empresa	Si	No	1
 \.
 
 
@@ -3990,7 +3989,7 @@ COPY declaracion_interes (dec_int_id, dec_int_fecha, dec_int_lugar, dec_int_come
 -- Name: declaracion_interes_dec_int_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('declaracion_interes_dec_int_id_seq', 1, false);
+SELECT pg_catalog.setval('declaracion_interes_dec_int_id_seq', 1, true);
 
 
 --
@@ -4292,7 +4291,7 @@ COPY informe_preliminar (inf_pre_id, inf_pre_fecha_borrador, inf_pre_fecha_obser
 -- Name: informe_preliminar_inf_pre_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('informe_preliminar_inf_pre_id_seq', 4, true);
+SELECT pg_catalog.setval('informe_preliminar_inf_pre_id_seq', 5, true);
 
 
 --
@@ -4358,7 +4357,7 @@ COPY inventario_informacion (inv_inf_id, inv_inf_observacion, pro_pep_id) FROM s
 -- Name: inventario_informacion_inv_inf_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('inventario_informacion_inv_inf_id_seq', 1, true);
+SELECT pg_catalog.setval('inventario_informacion_inv_inf_id_seq', 2, true);
 
 
 --
@@ -4376,7 +4375,7 @@ COPY login_attempts (id, ip_address, login, "time") FROM stdin;
 -- Name: login_attempts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('login_attempts_id_seq', 23, true);
+SELECT pg_catalog.setval('login_attempts_id_seq', 27, true);
 
 
 --
@@ -4399,10 +4398,6 @@ SELECT pg_catalog.setval('monto_proyeccion_mon_pro_id_seq', 44, true);
 --
 
 COPY municipio (mun_id, dep_id, mun_nombre, mun_presupuesto, cons_id) FROM stdin;
-1	1	Ahuachapan	\N	\N
-2	1	Jujutla	\N	\N
-3	1	Atiquizaya	\N	\N
-4	1	Concepcion de Ataco	\N	\N
 5	1	El Refugio	\N	\N
 6	1	Guaymango	\N	\N
 7	1	Apaneca	\N	\N
@@ -4550,6 +4545,10 @@ COPY municipio (mun_id, dep_id, mun_nombre, mun_presupuesto, cons_id) FROM stdin
 150	8	San Fernando	\N	\N
 151	8	San Francisco Gotera	\N	\N
 152	8	San Isidro	\N	\N
+1	1	Ahuachapan	\N	1
+2	1	Jujutla	\N	1
+3	1	Atiquizaya	\N	1
+4	1	Concepcion de Ataco	\N	1
 153	8	San Simon	\N	\N
 154	8	Sensembra	\N	\N
 155	8	Sociedad	\N	\N
@@ -4704,31 +4703,31 @@ SELECT pg_catalog.setval('nombre_fecha_aprobacion_nom_fec_apr_id_seq', 5, true);
 --
 
 COPY nombrefecha_procesoetapa (pro_eta_id, nom_fec_apr_id, nomfec_proeta_valor) FROM stdin;
-3	1	\N
-3	2	\N
-3	3	\N
-3	4	\N
-3	5	\N
-4	1	\N
-4	2	\N
-4	3	\N
-4	4	\N
-4	5	\N
-5	1	\N
-5	2	\N
-5	3	\N
-5	4	\N
-5	5	\N
-1	1	\N
-1	2	\N
-1	3	\N
-1	4	\N
-1	5	\N
-2	1	\N
-2	2	\N
-2	3	\N
-2	4	\N
-2	5	\N
+18	1	\N
+18	2	2013-02-07
+18	3	\N
+18	4	\N
+18	5	\N
+19	1	\N
+19	2	2013-02-09
+19	3	\N
+19	4	\N
+19	5	\N
+20	1	\N
+20	2	\N
+20	3	\N
+20	4	\N
+20	5	\N
+17	1	2013-02-05
+17	2	2013-02-16
+17	3	2013-02-08
+17	4	\N
+17	5	\N
+21	1	\N
+21	2	2013-02-08
+21	3	\N
+21	4	\N
+21	5	\N
 \.
 
 
@@ -4805,6 +4804,7 @@ SELECT pg_catalog.setval('opcion_sistema_opc_sis_id_seq', 59, true);
 --
 
 COPY participante (par_id, gru_apo_id, reu_id, ins_id, dec_int_id, inf_pre_id, par_nombre, par_apellido, par_sexo, par_cargo, par_edad, par_nivel_esco, par_tel, par_dui, par_proviene, acu_mun_id, par_otros, aso_id, par_direccion, par_email, gru_ges_id, par_tipo, int_ins_id) FROM stdin;
+2	\N	4	2	\N	\N	fdfa	fdadf	M	fdafd	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
 \.
 
 
@@ -4835,7 +4835,7 @@ COPY participante_definicion (par_id, def_id, par_def_participa) FROM stdin;
 -- Name: participante_par_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('participante_par_id_seq', 1, true);
+SELECT pg_catalog.setval('participante_par_id_seq', 2, true);
 
 
 --
@@ -4851,6 +4851,8 @@ COPY participante_priorizacion (par_id, pri_id, par_pri_participa) FROM stdin;
 --
 
 COPY participante_reunion (par_id, reu_id, par_reu_participa) FROM stdin;
+2	7	\N
+2	8	\N
 \.
 
 
@@ -4923,7 +4925,7 @@ SELECT pg_catalog.setval('plan_trabajo_plan_trab_id_seq', 1, false);
 -- Name: poblacion_pro_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('poblacion_pro_id_seq', 26, true);
+SELECT pg_catalog.setval('poblacion_pro_id_seq', 27, true);
 
 
 --
@@ -4999,8 +5001,7 @@ SELECT pg_catalog.setval('problema_identificado_pro_ide_id_seq', 1, true);
 --
 
 COPY proceso (pro_id, pro_numero, pro_fpublicacion, pro_faclara_dudas, pro_fexpresion_interes, pro_observacion1, pro_pub_ruta_archivo, pro_exp_ruta_archivo, pro_finicio, pro_ffinalizacion, pro_fenvio_informacion, pro_flimite_recepcion, pro_fsolicitud, pro_frecepcion, pro_fcierre_negociacion, pro_ffirma_contrato, mun_id, pro_faperturatecnica, pro_faperturafinanciera, pro_observacion2) FROM stdin;
-1	123456	2013-01-02	2013-01-08	2013-01-22		documentos/proceso/proceso1_pub.pdf	documentos/proceso/proceso1_exp.pdf	2013-01-09	2013-01-15	2013-01-29	2013-03-28	2013-01-01	2013-01-02	2013-01-05	2013-01-06	193	2013-01-03	2013-01-04	Cambio
-9	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	1	\N	\N	\N
+10	123456	\N	\N	\N	\N			\N	\N	\N	\N	\N	\N	\N	\N	193	\N	\N	\N
 \.
 
 
@@ -5009,16 +5010,11 @@ COPY proceso (pro_id, pro_numero, pro_fpublicacion, pro_faclara_dudas, pro_fexpr
 --
 
 COPY proceso_etapa (pro_eta_id, pro_eta_observacion, pes_pro_id, mun_id) FROM stdin;
-1	\N	1	193
-2	\N	2	193
-3	\N	3	193
-4	\N	4	193
-5	\N	5	193
-12	\N	1	1
-13	\N	2	1
-14	\N	3	1
-15	\N	4	1
-16	\N	5	1
+20	\N	4	193
+18		2	193
+19		3	193
+17		1	193
+21		5	193
 \.
 
 
@@ -5026,14 +5022,14 @@ COPY proceso_etapa (pro_eta_id, pro_eta_observacion, pes_pro_id, mun_id) FROM st
 -- Name: proceso_etapa_pro_eta_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('proceso_etapa_pro_eta_id_seq', 16, true);
+SELECT pg_catalog.setval('proceso_etapa_pro_eta_id_seq', 21, true);
 
 
 --
 -- Name: proceso_pro_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('proceso_pro_id_seq', 9, true);
+SELECT pg_catalog.setval('proceso_pro_id_seq', 16, true);
 
 
 --
@@ -5063,7 +5059,7 @@ COPY proyecto (pro_id, mun_id, com_id, pro_codigo, pro_nombre, pro_num_ord_llega
 -- Name: proyecto_Pep_pro_pep_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('"proyecto_Pep_pro_pep_id_seq"', 30, true);
+SELECT pg_catalog.setval('"proyecto_Pep_pro_pep_id_seq"', 33, true);
 
 
 --
@@ -5116,6 +5112,7 @@ COPY proyecto_pep (pro_pep_id, pro_pep_nombre, mun_id, inf_pre_id, inv_inf_id, g
 28	El Transito	165	\N	\N	\N	30	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
 29	San José la Fuente	129	\N	\N	\N	31	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
 30	Meanguera del Golfo	124	\N	\N	\N	32	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+33	proyecto pep	193	\N	\N	\N	35	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
 \.
 
 
@@ -5157,150 +5154,18 @@ COPY resultado (res_id, res_nombre) FROM stdin;
 --
 
 COPY resultado_reunion (res_id, reu_id, res_reu_valor) FROM stdin;
-1	179	\N
-2	179	\N
-3	179	\N
-4	179	\N
-5	179	\N
-6	179	\N
-1	180	\N
-2	180	\N
-3	180	\N
-4	180	\N
-5	180	\N
-6	180	\N
-1	181	\N
-2	181	\N
-3	181	\N
-4	181	\N
-5	181	\N
-6	181	\N
-1	182	\N
-2	182	\N
-3	182	\N
-4	182	\N
-5	182	\N
-6	182	\N
-1	183	\N
-2	183	\N
-3	183	\N
-4	183	\N
-5	183	\N
-6	183	\N
-1	188	\N
-2	188	\N
-3	188	\N
-4	188	\N
-5	188	\N
-6	188	\N
-1	189	\N
-2	189	\N
-3	189	\N
-4	189	\N
-5	189	\N
-6	189	\N
-1	190	\N
-2	190	\N
-3	190	\N
-4	190	\N
-5	190	\N
-6	190	\N
-1	191	\N
-2	191	\N
-3	191	\N
-4	191	\N
-5	191	\N
-6	191	\N
-1	192	\N
-2	192	\N
-3	192	\N
-4	192	\N
-5	192	\N
-6	192	\N
-1	193	\N
-2	193	\N
-3	193	\N
-4	193	\N
-5	193	\N
-6	193	\N
-1	194	\N
-2	194	\N
-3	194	\N
-4	194	\N
-5	194	\N
-6	194	\N
-1	195	\N
-2	195	\N
-3	195	\N
-4	195	\N
-5	195	\N
-6	195	\N
-1	196	\N
-2	196	\N
-3	196	\N
-4	196	\N
-5	196	\N
-6	196	\N
-1	197	\N
-2	197	\N
-3	197	\N
-4	197	\N
-5	197	\N
-6	197	\N
-1	199	\N
-2	199	\N
-3	199	\N
-4	199	\N
-5	199	\N
-6	199	\N
-1	205	t
-2	205	t
-3	205	f
-4	205	f
-5	205	f
-6	205	f
-1	213	\N
-2	213	\N
-3	213	\N
-4	213	\N
-5	213	\N
-6	213	\N
-1	214	\N
-2	214	\N
-3	214	\N
-4	214	\N
-5	214	\N
-6	214	\N
-1	215	\N
-2	215	\N
-3	215	\N
-4	215	\N
-5	215	\N
-6	215	\N
-1	216	\N
-2	216	\N
-3	216	\N
-4	216	\N
-5	216	\N
-6	216	\N
-1	198	t
-2	198	t
-3	198	f
-4	198	f
-5	198	f
-6	198	f
-1	217	\N
-2	217	\N
-3	217	\N
-4	217	\N
-5	217	\N
-6	217	\N
-1	234	\N
-2	234	\N
-3	234	\N
-4	234	\N
-5	234	\N
-6	234	\N
+1	7	\N
+2	7	\N
+3	7	\N
+4	7	\N
+5	7	\N
+6	7	\N
+1	8	f
+2	8	f
+3	8	f
+4	8	f
+5	8	f
+6	8	f
 \.
 
 
@@ -5308,7 +5173,9 @@ COPY resultado_reunion (res_id, reu_id, res_reu_valor) FROM stdin;
 -- Data for Name: reunion; Type: TABLE DATA; Schema: public; Owner: sispfgl
 --
 
-COPY reunion (reu_id, eta_id, reu_numero, reu_fecha, reu_duracion_horas, reu_tema, reu_resultado, reu_observacion, pro_pep_id) FROM stdin;
+COPY reunion (reu_id, eta_id, reu_numero, reu_fecha, reu_duracion_horas, reu_tema, reu_resultado, reu_observacion, pro_pep_id, reu_duracion_minutos) FROM stdin;
+4	1	1	2013-02-05	2	fdafdf	fdafdf	fdasfdf	33	30
+8	3	1	2013-02-06	3	FFFFFFFFF	0		33	10
 \.
 
 
@@ -5316,7 +5183,7 @@ COPY reunion (reu_id, eta_id, reu_numero, reu_fecha, reu_duracion_horas, reu_tem
 -- Name: reunion_reu_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('reunion_reu_id_seq', 1, true);
+SELECT pg_catalog.setval('reunion_reu_id_seq', 8, true);
 
 
 --
@@ -5553,6 +5420,8 @@ COPY user_profiles (id, user_id, country, website) FROM stdin;
 50	44	\N	\N
 51	45	\N	\N
 52	46	\N	\N
+53	47	\N	\N
+54	48	\N	\N
 \.
 
 
@@ -5560,7 +5429,7 @@ COPY user_profiles (id, user_id, country, website) FROM stdin;
 -- Name: user_profiles_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('user_profiles_id_seq', 52, true);
+SELECT pg_catalog.setval('user_profiles_id_seq', 54, true);
 
 
 --
@@ -5571,7 +5440,7 @@ COPY users (id, username, password, email, activated, banned, ban_reason, new_pa
 19	ah01005	$2a$08$6hK.o39tVrEcYzggckT4IOfOu53/nVazEtRpsfpvcc9KNg5Njyt1W	karensita_2410@hotmail.com	1	0	\N	\N	\N	\N	\N	127.0.0.1	2013-02-02	2013-02-02	\N	3
 35	cu04058	$2a$08$t48x4nhdANPalU66hCcwmOKgEf6ar9sgfUXspBRLph9MlUX26juda	karensita_2410@hotmail.com	1	0	\N	\N	\N	\N	\N	127.0.0.1	\N	2013-02-02	\N	3
 20	ah01012	$2a$08$H3TRunvBEJKO40n1GnxpfOmO0NW6pEGSym5rML.Zp4qCX09sT56Zy	karensita_2410@hotmail.com	1	0	\N	\N	\N	\N	\N	127.0.0.1	\N	2013-02-02	\N	3
-1	admin	$2a$08$orzZRVsYd7hePXoZ7s61De5ecu2TD9OIZMqYpA6jvHv44eH8qp31W	karensita2410@hotmail.com	1	0	\N	\N	\N	\N	\N	127.0.0.1	2013-02-02	2012-08-19	\N	1
+9	cfuentes_86	$2a$08$E8ttuLm0U2cD5lHo8/bzxuPeOJw/8/8nXH912APeL12wCUl4hNbNO	cfuentes_86@hotmail.com	1	0	\N	\N	\N	\N	\N	::1	2013-02-03	2012-09-12	\N	3
 21	so13224	$2a$08$nHln6RHGVRsYpw9sL4tMQO7syuhvtA5.ir5jz49ZVFfLRlSCZ7bn2	karensita_2410@hotmail.com	1	0	\N	\N	\N	\N	\N	127.0.0.1	\N	2013-02-02	\N	3
 22	so13226	$2a$08$sJhWdlZRSzSKwhJqGztVZevplGEQtOhI1pc0Yk3Z1olAW5y6TS96K	karensita_2410@hotmail.com	1	0	\N	\N	\N	\N	\N	127.0.0.1	\N	2013-02-02	\N	3
 23	so13232	$2a$08$95RLBLbICbTjBBnRSiCjLufl9wpAn3I1C/MrO0SemZL99TzKRadjG	karensita_2410@hotmail.com	1	0	\N	\N	\N	\N	\N	127.0.0.1	\N	2013-02-02	\N	3
@@ -5579,9 +5448,8 @@ COPY users (id, username, password, email, activated, banned, ban_reason, new_pa
 25	an12218	$2a$08$fMuWkb5XmOl9mt4V0fru4eB0V4HxHodJ7sHWF6Aqx0swl1aGwyswi	karensita_2410@hotmail.com	1	0	\N	\N	\N	\N	\N	127.0.0.1	\N	2013-02-02	\N	3
 26	an12221	$2a$08$Za16X5OqjRVJi/pfkMIWKOMBEK1icNOrZ0NItL/s2tTlzH8ygOp0C	karensita_2410@hotmail.com	1	0	\N	\N	\N	\N	\N	127.0.0.1	\N	2013-02-02	\N	3
 27	sa10197	$2a$08$podpZLbefI6WMSq91SYNQOaqCW/1FdrP2eO0KSLklbyuHAsoVhabG	karensita_2410@hotmail.com	1	0	\N	\N	\N	\N	\N	127.0.0.1	\N	2013-02-02	\N	3
-9	cfuentes_86	$2a$08$E8ttuLm0U2cD5lHo8/bzxuPeOJw/8/8nXH912APeL12wCUl4hNbNO	cfuentes_86@hotmail.com	1	0	\N	\N	\N	\N	\N	::1	2013-02-01	2012-09-12	\N	3
+1	admin	$2a$08$/nXdYjk2FTZtbB9qxyNbdutoPzhsieMYlU3tNXcxqUb0jJsXx7C7.	karensita_2410@hotmail.com	1	0	\N	\N	\N	\N	\N	127.0.0.1	2013-02-03	2012-08-19	\N	1
 28	sa10185	$2a$08$/2dgOQYtXdDb5BZqLzdTXOfJ0G96tNsi9sU2WTYolsvyWOrexYCBa	karensita_2410@hotmail.com	1	0	\N	\N	\N	\N	\N	127.0.0.1	\N	2013-02-02	\N	3
-15	kpenate	$2a$08$tMXNZ2vOC05VGZxXKs4beupR.4CTO4BzRjpXW987KlW/1uYrLLshe	kpenate@salud.gob.sv	1	0	\N	\N	\N	\N	\N	127.0.0.1	2013-02-01	2013-02-01	\N	5
 29	li05076	$2a$08$IrMFOFDHxcZ6WEfOvuXYi.JSNiPbu7rkt32TF4IOLRiejoNfPocym	karensita_2410@hotmail.com	1	0	\N	\N	\N	\N	\N	127.0.0.1	\N	2013-02-02	\N	3
 30	ch03037	$2a$08$Bj3F1.S6d2NX2c2k4.1rGOvLkTVvnP6xM/JGf4/g2KIXlxkWCtuFW	karensita_2410@hotmail.com	1	0	\N	\N	\N	\N	\N	127.0.0.1	\N	2013-02-02	\N	3
 31	ch03046	$2a$08$9aDPW8JmyWheTllY4W8GlupOpDzDFE9hNEsOh0AaZlI3wByUM1852	karensita_2410@hotmail.com	1	0	\N	\N	\N	\N	\N	127.0.0.1	\N	2013-02-02	\N	3
@@ -5602,6 +5470,8 @@ COPY users (id, username, password, email, activated, banned, ban_reason, new_pa
 44	mi09165	$2a$08$nyuorJuvW0iawsaTMMyzC.ntFRKVBPvRPuPfeDDCf1nsjYfxOOmDC	karensita_2410@hotmail.com	1	0	\N	\N	\N	\N	\N	127.0.0.1	\N	2013-02-02	\N	3
 45	un07129	$2a$08$mx9h7dD4hxPlYJ3GZflyueeskiXoFmI3aoXVBH43pvoH38JH47Zcy	karensita_2410@hotmail.com	1	0	\N	\N	\N	\N	\N	127.0.0.1	\N	2013-02-02	\N	3
 46	un07124	$2a$08$wAOOfCneKOB9IEF6PWRsw.zrZ4j5NMWOY7jEnqXYNHhjjkcPIduAu	karensita_2410@hotmail.com	1	0	\N	\N	\N	\N	\N	127.0.0.1	\N	2013-02-02	\N	3
+15	kpenate	$2a$08$iDSnhWfSv6y1epb6zuf2q.rW9tketjzk5Y9Vv9ZvnF6Xv/8tOS2Pq	kpenate@salud.gob.sv	1	0	\N	\N	\N	\N	\N	127.0.0.1	2013-02-03	2013-02-01	\N	5
+48	sa10193	$2a$08$QJfiCrWdFUXaURtP0svk2eIuTI5cCUpuneG3deAtKuiKKnba3xWyC	kpenate@salud.gob.sv	1	0	\N	\N	\N	\N	\N	127.0.0.1	2013-02-03	2013-02-03	\N	3
 \.
 
 
@@ -5609,7 +5479,7 @@ COPY users (id, username, password, email, activated, banned, ban_reason, new_pa
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: sispfgl
 --
 
-SELECT pg_catalog.setval('users_id_seq', 46, true);
+SELECT pg_catalog.setval('users_id_seq', 48, true);
 
 
 --
@@ -6348,20 +6218,6 @@ CREATE INDEX fki_asociatividad_integrante ON integrante_asociatividad USING btre
 
 
 --
--- Name: fki_asociatividad_participante; Type: INDEX; Schema: public; Owner: sispfgl; Tablespace: 
---
-
-CREATE INDEX fki_asociatividad_participante ON participante USING btree (aso_id);
-
-
---
--- Name: fki_capacitacion_facilitador; Type: INDEX; Schema: public; Owner: sispfgl; Tablespace: 
---
-
-CREATE INDEX fki_capacitacion_facilitador ON facilitador USING btree (cap_id);
-
-
---
 -- Name: fki_capacitacion_participante_capacitacion; Type: INDEX; Schema: public; Owner: sispfgl; Tablespace: 
 --
 
@@ -6383,31 +6239,10 @@ CREATE INDEX fki_etapa_capacitacion ON capacitacion USING btree (eta_id);
 
 
 --
--- Name: fki_participante_asociatividad; Type: INDEX; Schema: public; Owner: sispfgl; Tablespace: 
---
-
-CREATE INDEX fki_participante_asociatividad ON participante USING btree (aso_id);
-
-
---
 -- Name: fki_participante_capacitacion; Type: INDEX; Schema: public; Owner: sispfgl; Tablespace: 
 --
 
 CREATE INDEX fki_participante_capacitacion ON participante_capacitacion USING btree (par_id);
-
-
---
--- Name: fki_pk_proyecto_pep_acuerdo_municipal; Type: INDEX; Schema: public; Owner: sispfgl; Tablespace: 
---
-
-CREATE INDEX fki_pk_proyecto_pep_acuerdo_municipal ON acuerdo_municipal USING btree (pro_pep_id);
-
-
---
--- Name: fki_reunion_resultado_reunion; Type: INDEX; Schema: public; Owner: sispfgl; Tablespace: 
---
-
-CREATE INDEX fki_reunion_resultado_reunion ON resultado_reunion USING btree (res_id);
 
 
 --
@@ -6439,7 +6274,7 @@ ALTER TABLE ONLY actividades_epi
 --
 
 ALTER TABLE ONLY participante
-    ADD CONSTRAINT fk_acuerdo_municipal_participante FOREIGN KEY (acu_mun_id) REFERENCES acuerdo_municipal(acu_mun_id);
+    ADD CONSTRAINT fk_acuerdo_municipal_participante FOREIGN KEY (acu_mun_id) REFERENCES acuerdo_municipal(acu_mun_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -6455,7 +6290,7 @@ ALTER TABLE ONLY aporte_municipal
 --
 
 ALTER TABLE ONLY problema_identificado
-    ADD CONSTRAINT fk_area_dimension_problema_identificado FOREIGN KEY (are_dim_id) REFERENCES area_dimension(are_dim_id);
+    ADD CONSTRAINT fk_area_dimension_problema_identificado FOREIGN KEY (are_dim_id) REFERENCES area_dimension(are_dim_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -6527,7 +6362,7 @@ ALTER TABLE ONLY componente
 --
 
 ALTER TABLE ONLY proyecto_pep
-    ADD CONSTRAINT fk_consultor_proyecto_pep FOREIGN KEY (con_id) REFERENCES consultor(con_id);
+    ADD CONSTRAINT fk_consultor_proyecto_pep FOREIGN KEY (con_id) REFERENCES consultor(con_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -6543,7 +6378,7 @@ ALTER TABLE ONLY consultor
 --
 
 ALTER TABLE ONLY contrapartida_aporte
-    ADD CONSTRAINT fk_cont_aport_contrapartida FOREIGN KEY (con_id) REFERENCES contrapartida(con_id);
+    ADD CONSTRAINT fk_cont_aport_contrapartida FOREIGN KEY (con_id) REFERENCES contrapartida(con_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -6551,7 +6386,7 @@ ALTER TABLE ONLY contrapartida_aporte
 --
 
 ALTER TABLE ONLY contrapartida_aporte
-    ADD CONSTRAINT fk_contra_aporte_aporte_mun FOREIGN KEY (aporte_municipal_id) REFERENCES aporte_municipal(aporte_municipal_id);
+    ADD CONSTRAINT fk_contra_aporte_aporte_mun FOREIGN KEY (aporte_municipal_id) REFERENCES aporte_municipal(aporte_municipal_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -6559,7 +6394,7 @@ ALTER TABLE ONLY contrapartida_aporte
 --
 
 ALTER TABLE ONLY contrapartida_acuerdo
-    ADD CONSTRAINT fk_contrapa_aporta_acuerdo_ FOREIGN KEY (acu_mun_id) REFERENCES acuerdo_municipal(acu_mun_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_contrapa_aporta_acuerdo_ FOREIGN KEY (acu_mun_id) REFERENCES acuerdo_municipal(acu_mun_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -6567,7 +6402,7 @@ ALTER TABLE ONLY contrapartida_acuerdo
 --
 
 ALTER TABLE ONLY contrapartida_acuerdo
-    ADD CONSTRAINT fk_contrapa_conformad_contrapa FOREIGN KEY (con_id) REFERENCES contrapartida(con_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_contrapa_conformad_contrapa FOREIGN KEY (con_id) REFERENCES contrapartida(con_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -6575,15 +6410,7 @@ ALTER TABLE ONLY contrapartida_acuerdo
 --
 
 ALTER TABLE ONLY criterio_acuerdo
-    ADD CONSTRAINT fk_criterio_conformad_criterio FOREIGN KEY (cri_id) REFERENCES criterio(cri_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
-
-
---
--- Name: fk_criterio_conformad_criterio; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
---
-
-ALTER TABLE ONLY criterio_reunion
-    ADD CONSTRAINT fk_criterio_conformad_criterio FOREIGN KEY (cri_id) REFERENCES criterio(cri_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_criterio_conformad_criterio FOREIGN KEY (cri_id) REFERENCES criterio(cri_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -6591,7 +6418,7 @@ ALTER TABLE ONLY criterio_reunion
 --
 
 ALTER TABLE ONLY criterio_grupo_gestor
-    ADD CONSTRAINT fk_criterio_conformad_criterio FOREIGN KEY (cri_id) REFERENCES criterio(cri_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_criterio_conformad_criterio FOREIGN KEY (cri_id) REFERENCES criterio(cri_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -6599,7 +6426,15 @@ ALTER TABLE ONLY criterio_grupo_gestor
 --
 
 ALTER TABLE ONLY criterio_integracion
-    ADD CONSTRAINT fk_criterio_conformad_criterio FOREIGN KEY (cri_id) REFERENCES criterio(cri_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_criterio_conformad_criterio FOREIGN KEY (cri_id) REFERENCES criterio(cri_id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: fk_criterio_conformad_criterio; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY criterio_reunion
+    ADD CONSTRAINT fk_criterio_conformad_criterio FOREIGN KEY (cri_id) REFERENCES criterio(cri_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -6607,7 +6442,7 @@ ALTER TABLE ONLY criterio_integracion
 --
 
 ALTER TABLE ONLY criterio_acuerdo
-    ADD CONSTRAINT fk_criterio_cumple_acuerdo_ FOREIGN KEY (acu_mun_id) REFERENCES acuerdo_municipal(acu_mun_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_criterio_cumple_acuerdo_ FOREIGN KEY (acu_mun_id) REFERENCES acuerdo_municipal(acu_mun_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -6615,15 +6450,7 @@ ALTER TABLE ONLY criterio_acuerdo
 --
 
 ALTER TABLE ONLY criterio_integracion
-    ADD CONSTRAINT fk_criterio_cumple_integracion_ FOREIGN KEY (int_ins_id) REFERENCES integracion_instancia(int_ins_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
-
-
---
--- Name: fk_cumplimi_cumplen_a_cumplimi; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
---
-
-ALTER TABLE ONLY cumplimiento_informe
-    ADD CONSTRAINT fk_cumplimi_cumplen_a_cumplimi FOREIGN KEY (cum_min_id) REFERENCES cumplimiento_minimo(cum_min_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_criterio_cumple_integracion_ FOREIGN KEY (int_ins_id) REFERENCES integracion_instancia(int_ins_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -6638,8 +6465,16 @@ ALTER TABLE ONLY cumplimiento_diagnostico
 -- Name: fk_cumplimi_cumplen_a_cumplimi; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
 --
 
+ALTER TABLE ONLY cumplimiento_informe
+    ADD CONSTRAINT fk_cumplimi_cumplen_a_cumplimi FOREIGN KEY (cum_min_id) REFERENCES cumplimiento_minimo(cum_min_id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: fk_cumplimi_cumplen_a_cumplimi; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
+--
+
 ALTER TABLE ONLY cumplimiento_proyecto
-    ADD CONSTRAINT fk_cumplimi_cumplen_a_cumplimi FOREIGN KEY (cum_min_id) REFERENCES cumplimiento_minimo(cum_min_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_cumplimi_cumplen_a_cumplimi FOREIGN KEY (cum_min_id) REFERENCES cumplimiento_minimo(cum_min_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -6647,7 +6482,7 @@ ALTER TABLE ONLY cumplimiento_proyecto
 --
 
 ALTER TABLE ONLY cumplimiento_diagnostico
-    ADD CONSTRAINT fk_cumplimi_posee_alg_diagnostico_ FOREIGN KEY (dia_id) REFERENCES diagnostico(dia_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_cumplimi_posee_alg_diagnostico_ FOREIGN KEY (dia_id) REFERENCES diagnostico(dia_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -6655,7 +6490,7 @@ ALTER TABLE ONLY cumplimiento_diagnostico
 --
 
 ALTER TABLE ONLY cumplimiento_informe
-    ADD CONSTRAINT fk_cumplimi_posee_alg_informe_ FOREIGN KEY (inf_pre_id) REFERENCES informe_preliminar(inf_pre_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_cumplimi_posee_alg_informe_ FOREIGN KEY (inf_pre_id) REFERENCES informe_preliminar(inf_pre_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -6663,7 +6498,7 @@ ALTER TABLE ONLY cumplimiento_informe
 --
 
 ALTER TABLE ONLY cumplimiento_proyecto
-    ADD CONSTRAINT fk_cumplimi_posee_alg_proyecto_ FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_cumplimi_posee_alg_proyecto_ FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -6711,7 +6546,7 @@ ALTER TABLE ONLY departamento
 --
 
 ALTER TABLE ONLY proyecto_pep
-    ADD CONSTRAINT fk_diagnostico_proyecto_pep FOREIGN KEY (dia_id) REFERENCES diagnostico(dia_id);
+    ADD CONSTRAINT fk_diagnostico_proyecto_pep FOREIGN KEY (dia_id) REFERENCES diagnostico(dia_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -6759,7 +6594,7 @@ ALTER TABLE ONLY autor_estrategia
 --
 
 ALTER TABLE ONLY proyecto_pep
-    ADD CONSTRAINT fk_estrategia_comunicacion_proyecto_pep FOREIGN KEY (est_com_id) REFERENCES estrategia_comunicacion(est_com_id);
+    ADD CONSTRAINT fk_estrategia_comunicacion_proyecto_pep FOREIGN KEY (est_com_id) REFERENCES estrategia_comunicacion(est_com_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -6775,7 +6610,7 @@ ALTER TABLE ONLY capacitacion
 --
 
 ALTER TABLE ONLY reunion
-    ADD CONSTRAINT fk_etapa_reunion FOREIGN KEY (eta_id) REFERENCES etapa(eta_id);
+    ADD CONSTRAINT fk_etapa_reunion FOREIGN KEY (eta_id) REFERENCES etapa(eta_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -6783,7 +6618,7 @@ ALTER TABLE ONLY reunion
 --
 
 ALTER TABLE ONLY fecha_recepcion_observacion_din
-    ADD CONSTRAINT fk_fecha_re_din_tiene_proyecto FOREIGN KEY (pro_id) REFERENCES proyecto(pro_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_fecha_re_din_tiene_proyecto FOREIGN KEY (pro_id) REFERENCES proyecto(pro_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -6791,7 +6626,7 @@ ALTER TABLE ONLY fecha_recepcion_observacion_din
 --
 
 ALTER TABLE ONLY fuente_primaria
-    ADD CONSTRAINT fk_fuente_p_formado_inventar FOREIGN KEY (inv_inf_id) REFERENCES inventario_informacion(inv_inf_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_fuente_p_formado_inventar FOREIGN KEY (inv_inf_id) REFERENCES inventario_informacion(inv_inf_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -6799,7 +6634,7 @@ ALTER TABLE ONLY fuente_primaria
 --
 
 ALTER TABLE ONLY fuente_secundaria
-    ADD CONSTRAINT fk_fuente_s_formado_p_inventar FOREIGN KEY (inv_inf_id) REFERENCES inventario_informacion(inv_inf_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_fuente_s_formado_p_inventar FOREIGN KEY (inv_inf_id) REFERENCES inventario_informacion(inv_inf_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -6807,7 +6642,7 @@ ALTER TABLE ONLY fuente_secundaria
 --
 
 ALTER TABLE ONLY participante
-    ADD CONSTRAINT fk_grupo_apoyo_participantes FOREIGN KEY (gru_apo_id) REFERENCES grupo_apoyo(gru_apo_id);
+    ADD CONSTRAINT fk_grupo_apoyo_participantes FOREIGN KEY (gru_apo_id) REFERENCES grupo_apoyo(gru_apo_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -6823,7 +6658,7 @@ ALTER TABLE ONLY criterio_grupo_gestor
 --
 
 ALTER TABLE ONLY proyecto_pep
-    ADD CONSTRAINT fk_grupo_gestor_proyecto_pep FOREIGN KEY (gru_ges_id) REFERENCES grupo_gestor(gru_ges_id);
+    ADD CONSTRAINT fk_grupo_gestor_proyecto_pep FOREIGN KEY (gru_ges_id) REFERENCES grupo_gestor(gru_ges_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -6839,7 +6674,7 @@ ALTER TABLE ONLY indicador
 --
 
 ALTER TABLE ONLY proyecto_pep
-    ADD CONSTRAINT fk_informe_preliminar_proyecto_pep FOREIGN KEY (inf_pre_id) REFERENCES informe_preliminar(inf_pre_id);
+    ADD CONSTRAINT fk_informe_preliminar_proyecto_pep FOREIGN KEY (inf_pre_id) REFERENCES informe_preliminar(inf_pre_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -6855,15 +6690,7 @@ ALTER TABLE ONLY participante
 --
 
 ALTER TABLE ONLY proyecto_pep
-    ADD CONSTRAINT fk_integracion_instancia_proyecto_pep FOREIGN KEY (int_ins_id) REFERENCES integracion_instancia(int_ins_id);
-
-
---
--- Name: fk_inventario_informacion_proyecto_pep; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
---
-
-ALTER TABLE ONLY proyecto_pep
-    ADD CONSTRAINT fk_inventario_informacion_proyecto_pep FOREIGN KEY (inv_inf_id) REFERENCES inventario_informacion(inv_inf_id);
+    ADD CONSTRAINT fk_integracion_instancia_proyecto_pep FOREIGN KEY (int_ins_id) REFERENCES integracion_instancia(int_ins_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -6871,7 +6698,7 @@ ALTER TABLE ONLY proyecto_pep
 --
 
 ALTER TABLE ONLY detmonto_proyeccion
-    ADD CONSTRAINT fk_monto_proyeccion_det FOREIGN KEY (mon_pro_id) REFERENCES monto_proyeccion(mon_pro_id);
+    ADD CONSTRAINT fk_monto_proyeccion_det FOREIGN KEY (mon_pro_id) REFERENCES monto_proyeccion(mon_pro_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -6911,7 +6738,7 @@ ALTER TABLE ONLY municipio
 --
 
 ALTER TABLE ONLY proceso
-    ADD CONSTRAINT fk_municipio_proceso FOREIGN KEY (mun_id) REFERENCES municipio(mun_id);
+    ADD CONSTRAINT fk_municipio_proceso FOREIGN KEY (mun_id) REFERENCES municipio(mun_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -6919,7 +6746,7 @@ ALTER TABLE ONLY proceso
 --
 
 ALTER TABLE ONLY proceso_etapa
-    ADD CONSTRAINT fk_municipio_proceso_etapa FOREIGN KEY (mun_id) REFERENCES municipio(mun_id);
+    ADD CONSTRAINT fk_municipio_proceso_etapa FOREIGN KEY (mun_id) REFERENCES municipio(mun_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -6927,7 +6754,7 @@ ALTER TABLE ONLY proceso_etapa
 --
 
 ALTER TABLE ONLY proyecto_pep
-    ADD CONSTRAINT fk_municipio_proyecto_pep FOREIGN KEY (mun_id) REFERENCES municipio(mun_id);
+    ADD CONSTRAINT fk_municipio_proyecto_pep FOREIGN KEY (mun_id) REFERENCES municipio(mun_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -6951,7 +6778,7 @@ ALTER TABLE ONLY participante
 --
 
 ALTER TABLE ONLY participante
-    ADD CONSTRAINT fk_particip_necesita__informe_ FOREIGN KEY (inf_pre_id) REFERENCES informe_preliminar(inf_pre_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_particip_necesita__informe_ FOREIGN KEY (inf_pre_id) REFERENCES informe_preliminar(inf_pre_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -6959,7 +6786,7 @@ ALTER TABLE ONLY participante
 --
 
 ALTER TABLE ONLY participante
-    ADD CONSTRAINT fk_particip_necesita_declarac FOREIGN KEY (dec_int_id) REFERENCES declaracion_interes(dec_int_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_particip_necesita_declarac FOREIGN KEY (dec_int_id) REFERENCES declaracion_interes(dec_int_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -6967,7 +6794,7 @@ ALTER TABLE ONLY participante
 --
 
 ALTER TABLE ONLY participante
-    ADD CONSTRAINT fk_particip_pueden_te_instituc FOREIGN KEY (ins_id) REFERENCES institucion(ins_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_particip_pueden_te_instituc FOREIGN KEY (ins_id) REFERENCES institucion(ins_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -7023,7 +6850,7 @@ ALTER TABLE ONLY participante_reunion
 --
 
 ALTER TABLE ONLY personal_enlace
-    ADD CONSTRAINT fk_personal_necesita__acuerdo_ FOREIGN KEY (acu_mun_id) REFERENCES acuerdo_municipal(acu_mun_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_personal_necesita__acuerdo_ FOREIGN KEY (acu_mun_id) REFERENCES acuerdo_municipal(acu_mun_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -7031,7 +6858,7 @@ ALTER TABLE ONLY personal_enlace
 --
 
 ALTER TABLE ONLY proceso_etapa
-    ADD CONSTRAINT fk_pestania_proceso_etapa FOREIGN KEY (pes_pro_id) REFERENCES pestania_proceso(pes_pro_id);
+    ADD CONSTRAINT fk_pestania_proceso_etapa FOREIGN KEY (pes_pro_id) REFERENCES pestania_proceso(pes_pro_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -7039,7 +6866,7 @@ ALTER TABLE ONLY proceso_etapa
 --
 
 ALTER TABLE ONLY proyecto_pep
-    ADD CONSTRAINT fk_plan_inversion_proyecto_pep FOREIGN KEY (pla_inv_id) REFERENCES plan_inversion(pla_inv_id);
+    ADD CONSTRAINT fk_plan_inversion_proyecto_pep FOREIGN KEY (pla_inv_id) REFERENCES plan_inversion(pla_inv_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -7047,7 +6874,7 @@ ALTER TABLE ONLY proyecto_pep
 --
 
 ALTER TABLE ONLY plan_trabajo
-    ADD CONSTRAINT fk_plan_trabajo_municipio FOREIGN KEY (mun_id) REFERENCES municipio(mun_id);
+    ADD CONSTRAINT fk_plan_trabajo_municipio FOREIGN KEY (mun_id) REFERENCES municipio(mun_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -7071,7 +6898,7 @@ ALTER TABLE ONLY presupuesto
 --
 
 ALTER TABLE ONLY proyecto_pep
-    ADD CONSTRAINT fk_priorizacion_proyecto_pep FOREIGN KEY (pri_id) REFERENCES priorizacion(pri_id);
+    ADD CONSTRAINT fk_priorizacion_proyecto_pep FOREIGN KEY (pri_id) REFERENCES priorizacion(pri_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -7079,7 +6906,7 @@ ALTER TABLE ONLY proyecto_pep
 --
 
 ALTER TABLE ONLY proyecto_identificado
-    ADD CONSTRAINT fk_priorizacion_proyectos_identificados FOREIGN KEY (pri_id) REFERENCES priorizacion(pri_id);
+    ADD CONSTRAINT fk_priorizacion_proyectos_identificados FOREIGN KEY (pri_id) REFERENCES priorizacion(pri_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -7095,7 +6922,7 @@ ALTER TABLE ONLY consultores_interes
 --
 
 ALTER TABLE ONLY nombrefecha_procesoetapa
-    ADD CONSTRAINT fk_procesos FOREIGN KEY (pro_eta_id) REFERENCES proceso_etapa(pro_eta_id);
+    ADD CONSTRAINT fk_procesos FOREIGN KEY (pro_eta_id) REFERENCES proceso_etapa(pro_eta_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -7103,7 +6930,7 @@ ALTER TABLE ONLY nombrefecha_procesoetapa
 --
 
 ALTER TABLE ONLY monto_proyeccion
-    ADD CONSTRAINT fk_proyeccion_ingresos FOREIGN KEY (pro_ing_id) REFERENCES proyeccion_ingreso(pro_ing_id);
+    ADD CONSTRAINT fk_proyeccion_ingresos FOREIGN KEY (pro_ing_id) REFERENCES proyeccion_ingreso(pro_ing_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -7111,7 +6938,7 @@ ALTER TABLE ONLY monto_proyeccion
 --
 
 ALTER TABLE ONLY proyecto_pep
-    ADD CONSTRAINT fk_proyeccion_ingresos_proyecto_pep FOREIGN KEY (pro_ing_id) REFERENCES proyeccion_ingreso(pro_ing_id);
+    ADD CONSTRAINT fk_proyeccion_ingresos_proyecto_pep FOREIGN KEY (pro_ing_id) REFERENCES proyeccion_ingreso(pro_ing_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -7119,7 +6946,7 @@ ALTER TABLE ONLY proyecto_pep
 --
 
 ALTER TABLE ONLY inventario_informacion
-    ADD CONSTRAINT fk_proyecto_pep FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id);
+    ADD CONSTRAINT fk_proyecto_pep FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -7127,23 +6954,7 @@ ALTER TABLE ONLY inventario_informacion
 --
 
 ALTER TABLE ONLY acuerdo_municipal
-    ADD CONSTRAINT fk_proyecto_pep_acuerdo_municipal FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id);
-
-
---
--- Name: fk_proyecto_pep_asociatividad; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
---
-
-ALTER TABLE ONLY asociatividad
-    ADD CONSTRAINT fk_proyecto_pep_asociatividad FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id);
-
-
---
--- Name: fk_proyecto_pep_capacitacion; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
---
-
-ALTER TABLE ONLY capacitacion
-    ADD CONSTRAINT fk_proyecto_pep_capacitacion FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id);
+    ADD CONSTRAINT fk_proyecto_pep_acuerdo_municipal FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -7151,7 +6962,7 @@ ALTER TABLE ONLY capacitacion
 --
 
 ALTER TABLE ONLY consultor
-    ADD CONSTRAINT fk_proyecto_pep_consultor FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id);
+    ADD CONSTRAINT fk_proyecto_pep_consultor FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -7159,7 +6970,7 @@ ALTER TABLE ONLY consultor
 --
 
 ALTER TABLE ONLY declaracion_interes
-    ADD CONSTRAINT fk_proyecto_pep_declaracion_interes FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id);
+    ADD CONSTRAINT fk_proyecto_pep_declaracion_interes FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -7167,7 +6978,7 @@ ALTER TABLE ONLY declaracion_interes
 --
 
 ALTER TABLE ONLY diagnostico
-    ADD CONSTRAINT fk_proyecto_pep_diagnostico FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id);
+    ADD CONSTRAINT fk_proyecto_pep_diagnostico FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -7175,15 +6986,7 @@ ALTER TABLE ONLY diagnostico
 --
 
 ALTER TABLE ONLY estrategia_comunicacion
-    ADD CONSTRAINT fk_proyecto_pep_estrategia_inversion FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id);
-
-
---
--- Name: fk_proyecto_pep_grupo_apoyo; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
---
-
-ALTER TABLE ONLY grupo_apoyo
-    ADD CONSTRAINT fk_proyecto_pep_grupo_apoyo FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id);
+    ADD CONSTRAINT fk_proyecto_pep_estrategia_inversion FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -7191,7 +6994,15 @@ ALTER TABLE ONLY grupo_apoyo
 --
 
 ALTER TABLE ONLY proyecto_pep
-    ADD CONSTRAINT fk_proyecto_pep_grupo_apoyo FOREIGN KEY (gru_apo_id) REFERENCES grupo_apoyo(gru_apo_id);
+    ADD CONSTRAINT fk_proyecto_pep_grupo_apoyo FOREIGN KEY (gru_apo_id) REFERENCES grupo_apoyo(gru_apo_id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: fk_proyecto_pep_grupo_apoyo; Type: FK CONSTRAINT; Schema: public; Owner: sispfgl
+--
+
+ALTER TABLE ONLY grupo_apoyo
+    ADD CONSTRAINT fk_proyecto_pep_grupo_apoyo FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -7207,7 +7018,7 @@ ALTER TABLE ONLY grupo_gestor
 --
 
 ALTER TABLE ONLY informe_preliminar
-    ADD CONSTRAINT fk_proyecto_pep_informe_preliminar FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id);
+    ADD CONSTRAINT fk_proyecto_pep_informe_preliminar FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -7215,7 +7026,7 @@ ALTER TABLE ONLY informe_preliminar
 --
 
 ALTER TABLE ONLY integracion_instancia
-    ADD CONSTRAINT fk_proyecto_pep_integracion_instancia FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id);
+    ADD CONSTRAINT fk_proyecto_pep_integracion_instancia FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -7223,7 +7034,7 @@ ALTER TABLE ONLY integracion_instancia
 --
 
 ALTER TABLE ONLY plan_inversion
-    ADD CONSTRAINT fk_proyecto_pep_plan_inversion FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id);
+    ADD CONSTRAINT fk_proyecto_pep_plan_inversion FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -7239,7 +7050,7 @@ ALTER TABLE ONLY portafolio_proyecto
 --
 
 ALTER TABLE ONLY priorizacion
-    ADD CONSTRAINT fk_proyecto_pep_priorizacion FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id);
+    ADD CONSTRAINT fk_proyecto_pep_priorizacion FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -7247,7 +7058,7 @@ ALTER TABLE ONLY priorizacion
 --
 
 ALTER TABLE ONLY proyeccion_ingreso
-    ADD CONSTRAINT fk_proyecto_pep_proyeccion_ingresos FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id);
+    ADD CONSTRAINT fk_proyecto_pep_proyeccion_ingresos FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -7255,7 +7066,7 @@ ALTER TABLE ONLY proyeccion_ingreso
 --
 
 ALTER TABLE ONLY reunion
-    ADD CONSTRAINT fk_proyecto_pep_reunion FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id);
+    ADD CONSTRAINT fk_proyecto_pep_reunion FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -7263,7 +7074,7 @@ ALTER TABLE ONLY reunion
 --
 
 ALTER TABLE ONLY proyecto
-    ADD CONSTRAINT fk_proyecto_programa_componen FOREIGN KEY (com_id) REFERENCES componente(com_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_proyecto_programa_componen FOREIGN KEY (com_id) REFERENCES componente(com_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -7271,7 +7082,7 @@ ALTER TABLE ONLY proyecto
 --
 
 ALTER TABLE ONLY proyecto
-    ADD CONSTRAINT fk_proyecto_se_realiz_municipi FOREIGN KEY (mun_id) REFERENCES municipio(mun_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_proyecto_se_realiz_municipi FOREIGN KEY (mun_id) REFERENCES municipio(mun_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -7279,7 +7090,7 @@ ALTER TABLE ONLY proyecto
 --
 
 ALTER TABLE ONLY resultado_reunion
-    ADD CONSTRAINT fk_resultado_resultado_reunion FOREIGN KEY (res_id) REFERENCES resultado(res_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
+    ADD CONSTRAINT fk_resultado_resultado_reunion FOREIGN KEY (res_id) REFERENCES resultado(res_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -7311,7 +7122,7 @@ ALTER TABLE ONLY problema_identificado
 --
 
 ALTER TABLE ONLY resultado_reunion
-    ADD CONSTRAINT fk_reunion_resultado_reunion FOREIGN KEY (res_id) REFERENCES resultado(res_id);
+    ADD CONSTRAINT fk_reunion_resultado_reunion FOREIGN KEY (res_id) REFERENCES resultado(res_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -7335,7 +7146,7 @@ ALTER TABLE ONLY users
 --
 
 ALTER TABLE ONLY seleccion_comite
-    ADD CONSTRAINT fk_seleccion_comite_solicitud_asistencia FOREIGN KEY (sol_asis_id) REFERENCES solicitud_asistencia(sol_asis_id);
+    ADD CONSTRAINT fk_seleccion_comite_solicitud_asistencia FOREIGN KEY (sol_asis_id) REFERENCES solicitud_asistencia(sol_asis_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -7343,7 +7154,7 @@ ALTER TABLE ONLY seleccion_comite
 --
 
 ALTER TABLE ONLY solicitud_asistencia
-    ADD CONSTRAINT fk_solicitud_asistencia_municipio FOREIGN KEY (mun_id) REFERENCES municipio(mun_id);
+    ADD CONSTRAINT fk_solicitud_asistencia_municipio FOREIGN KEY (mun_id) REFERENCES municipio(mun_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -7351,7 +7162,7 @@ ALTER TABLE ONLY solicitud_asistencia
 --
 
 ALTER TABLE ONLY solicitud_asistencia
-    ADD CONSTRAINT fk_solicitud_asistencia_seleccion_comite FOREIGN KEY (seleccion_comite_id) REFERENCES seleccion_comite(seleccion_comite_id);
+    ADD CONSTRAINT fk_solicitud_asistencia_seleccion_comite FOREIGN KEY (seleccion_comite_id) REFERENCES seleccion_comite(seleccion_comite_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -7391,7 +7202,7 @@ ALTER TABLE ONLY cumplimiento_minimo
 --
 
 ALTER TABLE ONLY nombrefecha_procesoetapa
-    ADD CONSTRAINT pk_nombrefecha FOREIGN KEY (nom_fec_apr_id) REFERENCES nombre_fecha_aprobacion(nom_fec_apr_id);
+    ADD CONSTRAINT pk_nombrefecha FOREIGN KEY (nom_fec_apr_id) REFERENCES nombre_fecha_aprobacion(nom_fec_apr_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -7407,7 +7218,7 @@ ALTER TABLE ONLY opcion_sistema
 --
 
 ALTER TABLE ONLY definicion
-    ADD CONSTRAINT pro_pep_id FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id);
+    ADD CONSTRAINT pro_pep_id FOREIGN KEY (pro_pep_id) REFERENCES proyecto_pep(pro_pep_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --

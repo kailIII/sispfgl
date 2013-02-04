@@ -1,7 +1,7 @@
 <script type="text/javascript">        
     $(document).ready(function(){
         /*VARIABLES*/
-          <?php if ($guardo){?>
+          <?php if (isset($guardo)){?>
                 $('#guardo').dialog();
                 <?php }?>
         var tabla=$("#participantes");

@@ -165,7 +165,7 @@
         </td>
         <td style="width: 150px"> </td>
         <td><div id="btn_subir"></div></td>
-        <td><input class="letraazul" type="text" id="vinieta" value="Subir Acta" size="30" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinieta" readonly="readonly" value="Subir Acta" size="30" style="border: none"/></td>
 
 
         </tr>
@@ -178,7 +178,7 @@
         </td>
         <td style="width: 150px"> </td>
         <td><a <?php if (isset($acu_mun_ruta_archivo) && $acu_mun_ruta_archivo != '') { ?> href="<?php echo base_url() . $acu_mun_ruta_archivo; ?>"<?php } ?>  id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
-        <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($acu_mun_ruta_archivo) && $acu_mun_ruta_archivo != '') { ?>value="Descargar Acta"<?php } else { ?> value="No Hay Actas Por Descargar" <?php } ?>size="35" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinietaD" readonly="readonly" <?php if (isset($acu_mun_ruta_archivo) && $acu_mun_ruta_archivo != '') { ?>value="Descargar Acta"<?php } else { ?> value="No Hay Actas Por Descargar" <?php } ?>size="35" style="border: none"/></td>
 
 
 

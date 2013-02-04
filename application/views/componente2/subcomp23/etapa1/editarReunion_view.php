@@ -160,6 +160,12 @@
                     min: 0,
                     max:12
                 },
+                reu_duracion_minutos: {
+                    required: true,
+                    number: true,
+                    min: 0,
+                    max:59
+                },
                 reu_tema: {
                     required: true,
                     maxlength: 200
@@ -190,16 +196,19 @@
         <tr>
         <td width="300">
             No. de Reunión: <input type="text" id="reu_numero" value="<?php echo $reu_numero ?>" name="reu_numero" size="5" readonly="readonly"/> </td>
-        <td width="300">
+        <td width="200">
             Fecha: 
             <input value="<?php echo date_format(date_create($reu_fecha), "d-m-Y") ?>" id="reu_fecha" name="reu_fecha" readonly="readonly" size="10"/>
         </td>
-        <td width="300">
-            Duración en Horas:
-            <input value="<?php echo $reu_duracion_horas ?>" type="text" id="reu_duracion_horas" name="reu_duracion_horas" size="5"/>
+       <td width="160" >
+            Duración:
+            <input value="<?php echo $reu_duracion_horas ?>" type="text" id="reu_duracion_horas" name="reu_duracion_horas" size="3"/> horas
         </td>
-        <td>
-            </tr>
+       <td width="200">
+            con 
+            <input value="<?php echo $reu_duracion_minutos ?>" type="text" id="reu_duracion_minutos" name="reu_duracion_minutos" size="3"/> minutos
+        </td>
+        </tr>
 
     </table>
 
