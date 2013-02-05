@@ -4,14 +4,15 @@
         var myGrid = $('#gestionSolicitud');        
         myGrid.jqGrid({ 
             url: '<?php echo base_url('componente2/comp23_E0/cargarSolicitudes') . "/0" ?>',
+            editurl:'<?php echo base_url('componente2/comp23_E0/borrarSolicitud')?>',
             datatype:'json',
             altRows:true,
             colNames:['Id','Fecha Solicitud', 'Nombre del solicitante', 'Cargo', 'Teléfono',''],
             colModel:[
                 { name:'id', index: 'id', width:20,editable:false,editoptions:{size:15}  },
-                { name:'fecha_solicitud', index: 'fecha_solicitud', width:150,editable:true,editoptions:{size:25}  },
+                { name:'fecha_solicitud', index: 'fecha_solicitud',align:'center' ,width:150,editable:true,editoptions:{size:25}  },
                 { name:'nombre_solicitante', index: 'nombre_solicitante',width:300,editable:true,editoptions:{size:50}},
-                { name:'cargo', index: 'cargo',width:150,editable:true,editoptions:{size:50}},
+                { name:'cargo', index: 'cargo',align:'center',width:150,editable:true,editoptions:{size:50}},
                 { name:'telefono', index: 'telefono',width:60,editable:true,editoptions:{size:50}},
                 {name:'act',index:'act', width:120,sortable:false}],            
             rowNum:10,
@@ -23,7 +24,7 @@
                 for(var i=0;i < ids.length;i++){ 
                     var cl = ids[i];
                     if(cl!=0){
-                        ce = "<input style='height:22px;width:120px;' type='submit' value='Editar' onclick=\" $('#idfila').attr('value', '"+cl+"'); this.form.action='<?php echo base_url('componente2/comp23_E0/solicitudAsistenciaTecnica') ?>' \" />";
+                        ce = "<input style='height:22px;width:60px;' type='submit' value='Editar' onclick=\" $('#idfila').attr('value', '"+cl+"'); this.form.action='<?php echo base_url('componente2/comp23_E0/modificarSolicitudAsistencia') ?>' \" />";
                         jQuery("#gestionSolicitud").jqGrid('setRowData',ids[i],{act:ce}); 
                     }} 
             },
@@ -35,7 +36,7 @@
         });
         
         myGrid.jqGrid('navGrid','#pagergestionSolicitud',
-        {edit:false,add:false,del:false,
+        {edit:false,add:false,del:true,
             beforeRefresh: function() {gestionSolicitud.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}},
         {width:550,height:200},{width:550,height:200},{width:550,height:100},{multipleSearch:true, multipleGroup:true}
     ).hideCol('id');

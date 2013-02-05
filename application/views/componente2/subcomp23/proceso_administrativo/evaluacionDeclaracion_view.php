@@ -6,7 +6,9 @@
         });
         
         /*CARGAR MUNICIPIOS*/
-        $('#selDepto').change(function(){   
+        $('#selDepto').change(function(){  
+            $('#Mensajito').hide();
+            $("#AdquisicionyContratacionForm").hide();
             $('#selMun').children().remove();
             $.getJSON('<?php echo base_url('componente2/proyectoPep/cargarMunicipios') ?>?dep_id='+$('#selDepto').val(), 
             function(data) {
@@ -27,7 +29,7 @@
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         
         /*FIN DEL DATEPICKER*/
@@ -37,26 +39,82 @@
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         
         /*FIN DEL DATEPICKER*/
         
         /*ZONA DE BOTONES*/
-        $("#guardar").button().hide().click(function() {
-            this.form.action='<?php echo base_url('componente2/procesoAdministrativo/guardarProceso') . "/2" ?>';
+        $("#guardar").button().click(function() {
+            fInicio= $('#pro_finicio').datepicker("getDate");
+            fFin=$( "#pro_ffinalizacion" ).datepicker("getDate");
+            if(fInicio==null){
+                $("#pro_ffinalizacion" ).val('');
+                $.ajax({
+                    type: "POST",
+                    url: '<?php echo base_url('componente2/procesoAdministrativo/guardarProceso') . "/2" ?>',
+                    data: $("#AdquisicionyContratacionForm").serialize(), // serializes the form's elements.
+                    success: function(data)
+                    {
+                        $('#efectivo').dialog('open');
+                    }
+                });
+                return false;
+            }else{
+                if(fFin==null){
+                    $.ajax({
+                        type: "POST",
+                        url: '<?php echo base_url('componente2/procesoAdministrativo/guardarProceso') . "/2" ?>',
+                        data: $("#AdquisicionyContratacionForm").serialize(), // serializes the form's elements.
+                        success: function(data)
+                        {
+                            $('#efectivo').dialog('open');
+                        }
+                    });
+                    return false;
+                }else{
+                    if(fInicio< fFin){
+                        $.ajax({
+                            type: "POST",
+                            url: '<?php echo base_url('componente2/procesoAdministrativo/guardarProceso') . "/2" ?>',
+                            data: $("#AdquisicionyContratacionForm").serialize(), // serializes the form's elements.
+                            success: function(data)
+                            {
+                                $('#efectivo').dialog('open');
+                            }
+                        });
+                        return false;
+                    }else{
+                        $('#fechaValidacion').dialog('open');
+                        return false;
+                    }
+                }
+            }  
         });
-        $("#cancelar").button().hide().click(function() {
+       
+        $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url('componente2/procesoAdministrativo/evaluacionExpresionInteres'); ?>';
         });
         
         $('#selMun').change(function(){
+            $('#AdquisicionyContratacionForm')[0].reset();
+            $("#AdquisicionyContratacionForm").hide();
+            $('#consultoresInteres').setGridParam({
+                url:'<?php echo base_url('componente2/procesoAdministrativo/cargarConsultoraInteres2') . '/0' ?>',                datatype:'json'
+            }).trigger('reloadGrid');
             $.getJSON('<?php echo base_url('componente2/procesoAdministrativo/cargarEvaluacionDeclaracion') . "/" ?>'+$('#selMun').val(), 
             function(data) {
                 var i=0;
                 $.each(data, function(key, val) {
+                    if(key=="records"){
+                        if(val=="0"){
+                            $('#Mensajito').show();
+                            $('#Mensajito').val("Este proyecto no esta registrado");
+                        }
+                    }
                     if(key=='rows'){
                         $.each(val, function(id, registro){
+                            $('#Mensajito').hide();
                             $('#consultoresInteres').setGridParam({
                                 url:'<?php echo base_url('componente2/procesoAdministrativo/cargarConsultoraInteres2') . '/' ?>'+registro['cell'][0],
                                 editurl:'<?php echo base_url('componente2/procesoAdministrativo/gestionarConsultoresInteres') . '/'; ?>'+registro['cell'][0],
@@ -66,16 +124,16 @@
                             $('#pro_numero').val(registro['cell'][1]);
                             $('#pro_finicio').val(registro['cell'][2]);
                             $('#pro_ffinalizacion').val(registro['cell'][3]);
-                            $("#cancelar").show();
-                            $("#guardar").show();
+                            $("#AdquisicionyContratacionForm").show();
                         });                    
                     }
                 });
             });              
         });
-      
+        $("#AdquisicionyContratacionForm").hide();
         /*DIALOGOS DE VALIDACION*/
-        $('.mensaje').dialog({
+       
+       $('.mensaje').dialog({
             autoOpen: false,
             width: 300,
             buttons: {
@@ -135,31 +193,31 @@
     });
 </script>
 
-<!--<form id="AdquisicionyContratacionForm" method="post" style="left: 100px;position: relative;">-->
+<center>
+    <h2 class="h2Titulos">Evaluación de expresión de interés</h2>
+    <h2 class="h2Titulos">Proceso de evaluación</h2>
+    <br/>
+    <table>
+        <tr>
+        <td><strong>Departamento</strong></td>
+        <td><select id='selDepto'>
+                <option value='0'>--Seleccione--</option>
+                <?php foreach ($departamentos as $depto) { ?>
+                    <option value='<?php echo $depto->dep_id; ?>'><?php echo $depto->dep_nombre; ?></option>
+                <?php } ?>
+            </select>
+        </td>
+        </tr>
+        <td><strong>Municipio</strong></td>
+        <td><select id='selMun' name='selMun'>
+                <option value='0'>--Seleccione--</option>
+            </select>
+        </td>
+        </tr>
+    </table>
+</center>
+<input value="" id="Mensajito" type="text" size="100" readonly="readonly" style="border: none;"/>
 <form id="AdquisicionyContratacionForm" method="post">
-    <center>
-        <h2 class="h2Titulos">Evaluación de expresión de interés</h2>
-        <h2 class="h2Titulos">Proceso de evaluación</h2>
-        <br/>
-        <table>
-            <tr>
-            <td><strong>Departamento</strong></td>
-            <td><select id='selDepto'>
-                    <option value='0'>--Seleccione--</option>
-                    <?php foreach ($departamentos as $depto) { ?>
-                        <option value='<?php echo $depto->dep_id; ?>'><?php echo $depto->dep_nombre; ?></option>
-                    <?php } ?>
-                </select>
-            </td>
-            </tr>
-            <td><strong>Municipio</strong></td>
-            <td><select id='selMun' name='selMun'>
-                    <option value='0'>--Seleccione--</option>
-                </select>
-            </td>
-            </tr>
-        </table>
-    </center>
     <br/>        <br/>
     <table class="procesoAdmin">
         <tr>
@@ -193,4 +251,14 @@
 </form>
 <div id="mensaje" class="mensaje" title="Aviso de la operación">
     <p>La acción fue realizada con satisfacción</p>
+</div>
+<div id="efectivo" class="mensaje" title="Almacenado">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
+    </center>
+</div>
+<div id="fechaValidacion" class="mensaje" title="Error en fechas">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/cancel.png'); ?>" class="imagenError" />Las fechas deben de ir en orden ascendente</p>
+    </center>
 </div>

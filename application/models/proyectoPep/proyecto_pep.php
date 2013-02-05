@@ -73,19 +73,28 @@ class Proyecto_pep extends CI_Model {
         return $consulta;
     }
 
-    public function actualizarProyectoPep($pro_pep_id, $pro_pep_firmacm, $pro_pep_firmais,$pro_pep_firmaue,$pro_pep_fecha_borrador,$pro_pep_fecha_observacion,$pro_pep_fecha_aprobacion,$pro_pep_ruta_archivo,$pro_pep_observacion) {
+    public function actualizarProyectoPep($pro_pep_id, $pro_pep_firmacm, $pro_pep_firmais, $pro_pep_firmaue, $pro_pep_fecha_borrador, $pro_pep_fecha_observacion, $pro_pep_fecha_aprobacion, $pro_pep_ruta_archivo, $pro_pep_observacion) {
         $datos = array(
             'pro_pep_firmacm' => $pro_pep_firmacm,
             'pro_pep_firmais' => $pro_pep_firmais,
-            'pro_pep_firmaue'=> $pro_pep_firmaue,
-            'pro_pep_fecha_borrador'=>$pro_pep_fecha_borrador,
-            'pro_pep_fecha_observacion'=>$pro_pep_fecha_observacion,
-            'pro_pep_fecha_aprobacion'=>$pro_pep_fecha_aprobacion,
-            'pro_pep_ruta_archivo'=>$pro_pep_ruta_archivo,
-            'pro_pep_observacion'=>$pro_pep_observacion
+            'pro_pep_firmaue' => $pro_pep_firmaue,
+            'pro_pep_fecha_borrador' => $pro_pep_fecha_borrador,
+            'pro_pep_fecha_observacion' => $pro_pep_fecha_observacion,
+            'pro_pep_fecha_aprobacion' => $pro_pep_fecha_aprobacion,
+            'pro_pep_ruta_archivo' => $pro_pep_ruta_archivo,
+            'pro_pep_observacion' => $pro_pep_observacion
         );
         $this->db->where('pro_pep_id', $pro_pep_id);
         $this->db->update($this->tabla, $datos);
+    }
+
+    public function obtenerNombreDepMun($pro_pep_id) {
+        $consulta = "SELECT to_char(municipio.dep_id,'09') dep_id, to_char(municipio.mun_id,'009') mun_id, departamento.dep_nombre dep_nombre
+                     FROM  municipio, proyecto_pep, departamento
+                     WHERE municipio.mun_id = proyecto_pep.mun_id AND departamento.dep_id = municipio.dep_id AND
+                           proyecto_pep.pro_pep_id = ?";
+        $query = $this->db->query($consulta, array($pro_pep_id));
+        return $query->result();
     }
 
 }

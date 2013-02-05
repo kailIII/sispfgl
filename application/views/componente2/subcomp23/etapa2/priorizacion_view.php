@@ -1,6 +1,9 @@
 <script type="text/javascript">        
     $(document).ready(function(){
         /*ZONA DE BOTONES*/
+         <?php if (isset($guardo)){?>
+                $('#guardo').dialog();
+                <?php }?>
         $("#guardar").button().click(function() {
             this.form.action='<?php echo base_url('componente2/comp23_E2/guardarPriorizacion') . '/' . $pri_id; ?>';
         });
@@ -23,7 +26,7 @@
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         /*FIN DEL DATEPICKER*/
         /*ZONA DE VALIDACIONES*/
@@ -191,7 +194,7 @@
     </table>
     <table>
         <tr>
-        <td  ><strong>Fecha reunión: </strong><input readonly="readonly" id="pri_fecha" name="pri_fecha" type="text"<?php if (isset($pri_fecha)) { ?> value='<?php echo date('d/m/Y', strtotime($pri_fecha)); ?>'<?php } ?> size="10" /></td>
+        <td  ><strong>Fecha reunión: </strong><input readonly="readonly" id="pri_fecha" name="pri_fecha" type="text"<?php if (isset($pri_fecha)) { ?> value='<?php echo date('d-m-Y', strtotime($pri_fecha)); ?>'<?php } ?> size="10" /></td>
         </tr>
         <tr>
         <td colspan="2"></td>
@@ -226,5 +229,8 @@
 <div id="mensaje2" class="mensaje" title="Aviso">
     <p>Debe Seleccionar una fila para continuar</p>
 </div>
-
-
+<div id="guardo" class="mensaje" title="Almacenado">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
+    </center>
+</div>

@@ -57,6 +57,8 @@ class Consultora extends CI_Model {
         $this->db->where('cons_id', $cons_id);
         $this->db->update($this->tabla, $datos);
     }
+    
+   
 
 }
 

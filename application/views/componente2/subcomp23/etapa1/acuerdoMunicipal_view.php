@@ -1,5 +1,8 @@
 <script type="text/javascript">        
     $(document).ready(function(){
+        <?php if (isset($guardo)){?>
+                $('#guardo').dialog();
+                <?php }?>
         /*VARIABLES*/
         var tabla=$("#participantes");
         /*ZONA DE BOTONES*/
@@ -54,7 +57,7 @@
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         /*FIN DEL DATEPICKER*/
         /*ZONA DE VALIDACIONES*/
@@ -232,7 +235,7 @@ foreach ($contrapartidas as $aux) {
     </table>
     <table>
         <td  width="400"><strong>Fecha: </strong>
-            <input <?php if (isset($acu_mun_fecha)) { ?> value='<?php echo date('d/m/Y', strtotime($acu_mun_fecha)); ?>'<?php } ?>id="acu_mun_fecha" name="acu_mun_fecha" type="text" size="10" readonly="readonly"/></td>
+            <input <?php if (isset($acu_mun_fecha)) { ?> value='<?php echo date('d-m-Y', strtotime($acu_mun_fecha)); ?>'<?php } ?>id="acu_mun_fecha" name="acu_mun_fecha" type="text" size="10" readonly="readonly"/></td>
         </tr>
     </table>
     <p>¿Consejo Municipal conoce el proceso de planificación? 
@@ -321,14 +324,14 @@ foreach ($contrapartidas as $aux) {
         </tr>
     </table>
     <table>
-        <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente</td></tr>
+        <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente. Solo se permiten archivos con extensión pdf, doc, docx</td></tr>
         <tr>
         <td><div id="btn_subir"></div></td>
-        <td><input class="letraazul" type="text" id="vinieta" value="Subir Acuerdo Municipal" size="30" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinieta" readonly="readonly" value="Subir Acuerdo Municipal" size="30" style="border: none"/></td>
         </tr>
         <tr>
         <td><a <?php if (isset($acu_mun_ruta_archivo) && $acu_mun_ruta_archivo != '') { ?> href="<?php echo base_url() . $acu_mun_ruta_archivo; ?>"<?php } ?>  id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
-        <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($acu_mun_ruta_archivo) && $acu_mun_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo ?>"<?php } else { ?> value="No Hay Acuerdo Por Descargar" <?php } ?>size="30" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinietaD" readonly="readonly" <?php if (isset($acu_mun_ruta_archivo) && $acu_mun_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo ?>"<?php } else { ?> value="No Hay Acuerdo Por Descargar" <?php } ?>size="30" style="border: none"/></td>
         </tr>
     </table>
 
@@ -351,4 +354,9 @@ foreach ($contrapartidas as $aux) {
 </div>
 <div id="extension" class="mensaje" title="Error">
     <p>Solo se permiten archivos con la extensión pdf|doc|docx</p>
+</div>
+<div id="guardo" class="mensaje" title="Almacenado">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
+    </center>
 </div>

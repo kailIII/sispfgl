@@ -42,13 +42,13 @@
 | make active.  By default there is only one group (the 'default' group).
 |
 | The $active_record variables lets you determine whether or not to load
-| the active record class
+| the active record class karencita.dyndns-wiki.com
 */
 
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = 'localhost';
+$db['default']['hostname'] = '192.168.1.4';
 $db['default']['username'] = 'sispfgl';
 $db['default']['password'] = 'sispfgl';
 $db['default']['database'] = 'sispfgl';

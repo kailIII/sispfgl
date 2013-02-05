@@ -1,6 +1,8 @@
 <script type="text/javascript">        
     $(document).ready(function(){
-
+         <?php if (isset($guardo)){?>
+                $('#guardo').dialog();
+                <?php }?>
         /*ZONA DE BOTONES*/
         $("#guardar").button().click(function() {
             this.form.action='<?php echo base_url('componente2/comp23_E3/guardarPlanInversion') ?>';
@@ -68,6 +70,15 @@
             $('#saldo_3').val($('#anio_3').val()-suma3);
             $('#saldo_4').val($('#anio_4').val()-suma4);
             $('#saldo_5').val($('#anio_5').val()-suma5);
+            $('.mensaje').dialog({
+            autoOpen: false,
+            width: 300,
+            buttons: {
+                "Ok": function() {
+                    $(this).dialog("close");
+                }
+            }
+        });
     });
 </script>
 <form class="cmxform" id="planInversionForm" method="post">
@@ -190,3 +201,8 @@ Donde el 9 significa cualquier número entre el 0 y el 9</p>
 <input id="pla_inv_id" name="pla_inv_id" value="<?php echo $pla_inv_id; ?>" style="visibility:hidden"/>
 <input id="pro_pep_id" name="pro_pep_id" value="<?php echo $pro_pep_id; ?>" style="visibility:hidden"/>
 </form>
+<div id="guardo" class="mensaje" title="Almacenado">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
+    </center>
+</div>

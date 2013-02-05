@@ -1,8 +1,16 @@
 <script type="text/javascript">        
     $(document).ready(function(){
         $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/comp23_E3/guardarPortafolio') ?>/'+$('#por_pro_id').val();
+            desde = $('#por_pro_fecha_desde').datepicker("getDate");
+            hasta =$( "#por_pro_fecha_hasta" ).datepicker("getDate");
+            if(desde < hasta){    
+                this.form.action='<?php echo base_url('componente2/comp23_E3/guardarPortafolio') ?>/'+$('#por_pro_id').val();
+            }else{
+                $('#fechaValidacion').dialog('open');
+                return false
+            }  
         });
+        
         $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url('componente2/comp23_E3/muestraPortafolio'); ?>/'+$('#por_pro_id').val();
         });
@@ -12,7 +20,7 @@
             showOn: 'both',
             buttonImage: '<?php echo base_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         /*FIN DEL DATEPICKER*/
         
@@ -21,7 +29,7 @@
             showOn: 'both',
             buttonImage: '<?php echo base_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         /*FIN DEL DATEPICKER*/
         /*GRID*/
@@ -278,14 +286,14 @@
     </fieldset>
     <p>Observaciones y/o recomendaciones:<br/><textarea id="por_pro_observacion" name="por_pro_observacion" cols="48" rows="5"></textarea></p>
     <table>
-        <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente</td></tr>
+        <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente. Solo se permiten archivos con extensión pdf, doc, docx</td></tr>
         <tr>
         <td><div id="btn_subir"></div></td>
-        <td><input class="letraazul" type="text" id="vinieta" value="Subir Perfil del Proyecto" size="30" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinieta" readonly="readonly" value="Subir Perfil del Proyecto" size="30" style="border: none"/></td>
         </tr>
         <tr>
         <td><a id="btn_descargar"  <?php if (isset($por_pro_ruta_archivo) && $por_pro_ruta_archivo != '') { ?> href="<?php echo base_url() . $por_pro_ruta_archivo; ?>"<?php } ?> ><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
-        <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($por_pro_ruta_archivo) && $por_pro_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo ?>"<?php } else { ?> value="No hay perfil para ser descargado" <?php } ?>size="40" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinietaD" readonly="readonly" <?php if (isset($por_pro_ruta_archivo) && $por_pro_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo ?>"<?php } else { ?> value="No hay perfil para ser descargado" <?php } ?>size="40" style="border: none"/></td>
         </tr>
     </table>
     <center>  <p><input type="submit" id="guardar" value="Guardar Portafolio del Proyecto" />
@@ -305,4 +313,9 @@
 </div>
 <div id="extension" class="mensaje" title="Error">
     <p>Solo se permiten archivos con la extensión pdf|doc|docx</p>
+</div>
+<div id="fechaValidacion" class="mensaje" title="Error en fechas">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/cancel.png'); ?>" class="imagenError" />Las fechas deben de ir en orden ascendente</p>
+    </center>
 </div>

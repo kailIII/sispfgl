@@ -1,5 +1,8 @@
 <script type="text/javascript">        
     $(document).ready(function(){
+         <?php if (isset($guardo)){?>
+                $('#guardo').dialog();
+                <?php }?>
         /*VARIABLES*/
         var tabla=$("#participantes");
         /*ZONA DE BOTONES*/
@@ -54,7 +57,7 @@
             showOn: 'both',
             buttonImage: '<?php echo base_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         /*FIN DEL DATEPICKER*/
         /*ZONA DE VALIDACIONES*/
@@ -230,7 +233,7 @@
         </tr>
     </table>
     <table>
-        <td><strong>Fecha: </strong><input <?php if (isset($dec_int_fecha)) { ?> value='<?php echo date('d/m/Y', strtotime($dec_int_fecha)); ?>'<?php } ?> id="dec_int_fecha" name="dec_int_fecha" type="text" size="10"/></td>
+        <td><strong>Fecha: </strong><input <?php if (isset($dec_int_fecha)) { ?> value='<?php echo date('d-m-Y', strtotime($dec_int_fecha)); ?>'<?php } ?> id="dec_int_fecha" name="dec_int_fecha" type="text" size="10"/></td>
         </tr>
     </table>
 
@@ -276,14 +279,14 @@
 
     </table>
     <table>
-        <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente</td></tr>
+        <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente. Solo se permiten archivos con extensión pdf, doc, docx</td></tr>
         <tr>
         <td><div id="btn_subir"></div></td>
-        <td><input class="letraazul" type="text" id="vinieta" value="Subir Declaración de Interés" size="30" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinieta" readonly="readonly" value="Subir Declaración de Interés" size="30" style="border: none"/></td>
         </tr>
         <tr>
         <td><a <?php if (isset($dec_int_ruta_archivo) && $dec_int_ruta_archivo != '') { ?> href="<?php echo base_url() . $dec_int_ruta_archivo; ?>"<?php } ?>  id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
-        <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($dec_int_ruta_archivo) && $dec_int_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo; ?>"<?php } else { ?> value="No Hay Ninguna Declaración Para Descargar" <?php } ?>size="50" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinietaD" readonly="readonly" <?php if (isset($dec_int_ruta_archivo) && $dec_int_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo; ?>"<?php } else { ?> value="No Hay Ninguna Declaración Para Descargar" <?php } ?>size="50" style="border: none"/></td>
         </tr>
     </table>
     <center style="position: relative;top: 20px">
@@ -303,4 +306,9 @@
 </div>
 <div id="extension" class="mensaje" title="Error">
     <p>Solo se permiten archivos con la extensión pdf|doc|docx</p>
+</div>
+<div id="guardo" class="mensaje" title="Almacenado">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
+    </center>
 </div>

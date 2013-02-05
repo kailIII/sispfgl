@@ -1,5 +1,8 @@
 <script type="text/javascript">        
     $(document).ready(function(){
+         <?php if (isset($guardo)){?>
+                $('#guardo').dialog();
+                <?php }?>
         
         $("#guardar").button().click(function() {
             this.form.action='<?php echo base_url('componente2/comp23_E4/guardarIntegracionInstancia') . '/' . $int_ins_id; ?>';
@@ -13,7 +16,7 @@
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         /*  PARA SUBIR EL ARCHIVO  */
         var button = $('#btn_subir'), interval;
@@ -202,7 +205,7 @@
     </table>
     <table>
         <tr>  <td ><strong>Fecha: </strong></td>
-        <td><input <?php if (isset($int_ins_fecha)) { ?> value='<?php echo date('d/m/Y', strtotime($int_ins_fecha)); ?>'<?php } ?>id="int_ins_fecha" name="int_ins_fecha" type="text" size="10" readonly="readonly"/></td>
+        <td><input <?php if (isset($int_ins_fecha)) { ?> value='<?php echo date('d-m-Y', strtotime($int_ins_fecha)); ?>'<?php } ?>id="int_ins_fecha" name="int_ins_fecha" type="text" size="10" readonly="readonly"/></td>
         </tr>
     </table>
     <table id="participantes"></table>
@@ -245,14 +248,14 @@
     <p>Observaciones:<br/>
         <textarea name="int_ins_observacion" cols="48" rows="5"><?php echo$int_ins_observacion; ?></textarea></p>
     <table>
-        <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente</td></tr>
+        <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente. Solo se permiten archivos con extensión pdf, doc, docx</td></tr>
         <tr>
         <td><div id="btn_subir"></div></td>
-        <td><input class="letraazul" type="text" id="vinieta" value="Subir Acta de Constitucion" size="30" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinieta" readonly="readonly" value="Subir Acta de Constitucion" size="30" style="border: none"/></td>
         </tr>
         <tr>
         <td><a <?php if (isset($int_ins_ruta_archivo) && $int_ins_ruta_archivo != '') { ?> href="<?php echo base_url() . $int_ins_ruta_archivo; ?>"<?php } ?>  id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
-        <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($int_ins_ruta_archivo) && $int_ins_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo ?>"<?php } else { ?> value="No hay acta para descargar" <?php } ?>size="30" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinietaD" readonly="readonly" <?php if (isset($int_ins_ruta_archivo) && $int_ins_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo ?>"<?php } else { ?> value="No hay acta para descargar" <?php } ?>size="30" style="border: none"/></td>
         </tr>
     </table>
     <center style="position: relative;top: 20px">
@@ -273,4 +276,9 @@
 </div>
 <div id="extension" class="mensaje" title="Error">
     <p>Solo se permiten archivos con la extensión pdf|doc|docx</p>
+</div>
+<div id="guardo" class="mensaje" title="Almacenado">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
+    </center>
 </div>

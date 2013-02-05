@@ -164,10 +164,11 @@ class Tank_auth
 		if ((strlen($username) > 0) AND !$this->ci->users->is_username_available($username)) {
 			$this->error = array('username' => 'auth_username_in_use');
 
-		} elseif (!$this->ci->users->is_email_available($email)) {
-			$this->error = array('email' => 'auth_email_in_use');
+		} //elseif (!$this->ci->users->is_email_available($email)) {
+		//	$this->error = array('email' => 'auth_email_in_use');
 
-		} else {
+		//} 
+                else {
 			// Hash password using phpass
 			$hasher = new PasswordHash(
 					$this->ci->config->item('phpass_hash_strength', 'tank_auth'),

@@ -17,7 +17,7 @@
             showOn: 'both',
             buttonImage: '<?php echo base_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         var tabla=$("#participantes");
         /*ZONA DE BOTONES*/

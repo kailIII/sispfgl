@@ -18,7 +18,7 @@ $confirm_new_password = array(
 );
 ?>
 <?php echo form_open($this->uri->uri_string()); ?>
-<table align="center" style=" border-color: #2F589F; border-style: solid" >
+<table align="center" style="position: relative; border-color: #2F589F; border-style: solid" >
     <tr>
         <td colspan="5" align="center">
             <img src="<?php echo base_url("resource/imagenes/cambiar-contrasenia") ?>"/>
@@ -33,7 +33,7 @@ $confirm_new_password = array(
         </tr>
 	<tr>
             <td width="50px"></td>
-        <td class="letraazul"><?php echo form_label('Confirmar Contraseña', $confirm_new_password['id']); ?></td>
+            <td class="letraazul"><?php echo form_label('Confirmar Contraseña', $confirm_new_password['id']); ?></td>
 		<td><?php echo form_password($confirm_new_password); ?></td>
 		<td class="error"><?php echo form_error($confirm_new_password['name']); ?><?php echo isset($errors[$confirm_new_password['name']])?$errors[$confirm_new_password['name']]:''; ?></td>
                 <td width="50px"></td>	

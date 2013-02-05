@@ -39,6 +39,7 @@ class ProyectoPep extends CI_Controller {
         $numfilas = count($proyectosPep);
 
         $i = 0;
+        $rows = array();
         if ($numfilas != 0) {
             foreach ($proyectosPep as $aux) {
                 $rows[$i]['id'] = $aux->pro_pep_id;
@@ -49,9 +50,6 @@ class ProyectoPep extends CI_Controller {
                 $i++;
             }
             array_multisort($rows, SORT_ASC);
-        } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ');
         }
 
         $datos = json_encode($rows);
@@ -73,19 +71,16 @@ class ProyectoPep extends CI_Controller {
         $numfilas = count($departamentos);
 
         $i = 0;
-        foreach ($departamentos as $aux) {
-            $rows[$i]['id'] = $aux->dep_id;
-            $rows[$i]['cell'] = array($aux->dep_id,
-                $aux->dep_nombre
-            );
-            $i++;
-        }
-
+        $rows = array();
         if ($numfilas != 0) {
+            foreach ($departamentos as $aux) {
+                $rows[$i]['id'] = $aux->dep_id;
+                $rows[$i]['cell'] = array($aux->dep_id,
+                    $aux->dep_nombre
+                );
+                $i++;
+            }
             array_multisort($rows, SORT_ASC);
-        } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ');
         }
 
         $datos = json_encode($rows);
@@ -128,19 +123,17 @@ class ProyectoPep extends CI_Controller {
         $numfilas = count($municipios);
 
         $i = 0;
-        foreach ($municipios as $aux) {
-            $rows[$i]['id'] = $aux->mun_id;
-            $rows[$i]['cell'] = array($aux->mun_id,
-                $aux->mun_nombre
-            );
-            $i++;
-        }
+        $rows = array();
 
         if ($numfilas != 0) {
+            foreach ($municipios as $aux) {
+                $rows[$i]['id'] = $aux->mun_id;
+                $rows[$i]['cell'] = array($aux->mun_id,
+                    $aux->mun_nombre
+                );
+                $i++;
+            }
             array_multisort($rows, SORT_ASC);
-        } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ');
         }
 
         $datos = json_encode($rows);

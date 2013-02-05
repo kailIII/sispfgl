@@ -2,10 +2,75 @@
     $(document).ready(function(){
         /*ZONA DE BOTONES*/
         $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/comp23_E2/guardarDiagnostico/' . $dia_id); ?>';
+            borrador= $('#dia_fecha_borrador').datepicker("getDate");
+            observacion=$( "#dia_fecha_observacion" ).datepicker("getDate");
+            aprobacion=$( "#dia_fecha_concejo_muni" ).datepicker("getDate");
+            if(borrador==null){
+                $("#dia_fecha_observacion" ).val('');
+                $("#dia_fecha_concejo_muni" ).val('');
+                $.ajax({
+                    type: "POST",
+                    url: '<?php echo base_url('componente2/comp23_E2/guardarDiagnostico/' . $dia_id); ?>',
+                    data: $("#diagnosticoForm").serialize(), // serializes the form's elements.
+                    success: function(data)
+                    {
+                        $('#efectivo').dialog('open');
+                    }
+                });
+                return false;
+            }else{
+                if(observacion==null){
+                    $( "#dia_fecha_concejo_muni" ).val('');
+                    $.ajax({
+                        type: "POST",
+                        url: '<?php echo base_url('componente2/comp23_E2/guardarDiagnostico/' . $dia_id); ?>',
+                        data: $("#diagnosticoForm").serialize(), // serializes the form's elements.
+                        success: function(data)
+                        {
+                            $('#efectivo').dialog('open');
+                        }
+                    });
+                    return false;
+                }else{
+                    if(borrador<observacion){
+                        if(aprobacion==null){
+                            $.ajax({
+                                type: "POST",
+                                url: '<?php echo base_url('componente2/comp23_E2/guardarDiagnostico/' . $dia_id); ?>',
+                                data: $("#diagnosticoForm").serialize(), // serializes the form's elements.
+                                success: function(data)
+                                {
+                                    $('#efectivo').dialog('open');
+                                }
+                            });
+                            return false;
+                        }else{
+                            if(observacion<aprobacion){
+                                $.ajax({
+                                    type: "POST",
+                                    url: '<?php echo base_url('componente2/comp23_E2/guardarDiagnostico/' . $dia_id); ?>',
+                                    data: $("#diagnosticoForm").serialize(), // serializes the form's elements.
+                                    success: function(data)
+                                    {
+                                        $('#efectivo').dialog('open');
+                                    }
+                                });
+                                return false;
+                            }else{
+                                $('#fechaValidacion').dialog('open');
+                                return false
+                            }
+                        }
+                    }else{
+                        $('#fechaValidacion').dialog('open');
+                        return false
+                    }
+                }
+            }  
         });
+        
         $("#cancelar").button().click(function() {
-            document.location.href='<?php echo base_url('componente2/comp23_E2'); ?>';
+            document.location.href='<?php echo base_url('componente2/comp23_E2/diagnostico'); ?>';
         });
         /*  PARA SUBIR EL ARCHIVO  */
         var button = $('#btn_subir'), interval;
@@ -56,23 +121,23 @@
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         
         $( "#dia_fecha_observacion" ).datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         $( "#dia_fecha_concejo_muni" ).datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         /*FIN DEL DATEPICKER*/
-         /*DIALOGOS DE VALIDACION*/
+        /*DIALOGOS DE VALIDACION*/
         $('.mensaje').dialog({
             autoOpen: false,
             width: 300,
@@ -87,7 +152,7 @@
     });
 </script>
 
-<form method="post">
+<form id="diagnosticoForm" method="post">
     <h2 class="h2Titulos">Etapa 2: Diagnóstico del municipio</h2>
     <h2 class="h2Titulos">Producto 6:Elementos mínimos del diagnóstico</h2>
 
@@ -122,9 +187,9 @@
         </td>  
         <td>
             <table>
-                <tr> <td ><strong>Fecha de entrega de producto: </strong><input id="dia_fecha_borrador" <?php if (isset($dia_fecha_borrador)) { ?>  value="<?php echo date('d/m/Y', strtotime($dia_fecha_borrador)); ?>" <?php } ?> name="dia_fecha_borrador" type="text" size="7" /></td></tr>
-                <tr><td><strong>Fecha de visto bueno: </strong><input id="dia_fecha_observacion" <?php if (isset($dia_fecha_observacion)) { ?>value="<?php echo date('d/m/Y', strtotime($dia_fecha_observacion)); ?>"<?php } ?>  name="dia_fecha_observacion" type="text" size="7" /></td></tr>
-                <tr> <td><strong>Fecha de aprobacion del Consejo Municipal: </strong><input id="dia_fecha_concejo_muni" <?php if (isset($dia_fecha_concejo_muni)) { ?> value="<?php echo date('d/m/Y', strtotime($dia_fecha_concejo_muni)); ?>"<?php } ?>  name="dia_fecha_concejo_muni" type="text" size="7" /></td></tr>
+                <tr> <td ><strong>Fecha de entrega de producto: </strong><input id="dia_fecha_borrador" <?php if (isset($dia_fecha_borrador)) { ?>  value="<?php echo date('d-m-Y', strtotime($dia_fecha_borrador)); ?>" <?php } ?> name="dia_fecha_borrador" type="text" size="7" /></td></tr>
+                <tr><td><strong>Fecha de visto bueno: </strong><input id="dia_fecha_observacion" <?php if (isset($dia_fecha_observacion)) { ?>value="<?php echo date('d-m-Y', strtotime($dia_fecha_observacion)); ?>"<?php } ?>  name="dia_fecha_observacion" type="text" size="7" /></td></tr>
+                <tr> <td><strong>Fecha de aprobacion del Consejo Municipal: </strong><input id="dia_fecha_concejo_muni" <?php if (isset($dia_fecha_concejo_muni)) { ?> value="<?php echo date('d-m-Y', strtotime($dia_fecha_concejo_muni)); ?>"<?php } ?>  name="dia_fecha_concejo_muni" type="text" size="7" /></td></tr>
             </table>
             </tr>
     </table>
@@ -139,21 +204,21 @@
         <textarea name="dia_observacion" cols="48" rows="5"><?php echo $dia_observacion; ?></textarea></p>
 
     <table>
-          <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente</td></tr>
+        <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente. Solo se permiten archivos con extensión pdf, doc, docx</td></tr>
         <tr>
         <td><div id="btn_subir"></div></td>
-        <td><input class="letraazul" type="text" id="vinieta" value="Subir Documentos" size="60" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinieta" readonly="readonly" value="Subir Documentos" size="60" style="border: none"/></td>
         </tr>
         <tr>
         <td><a <?php if (isset($dia_ruta_archivo) && $dia_ruta_archivo != '') { ?> href="<?php echo base_url() . $dia_ruta_archivo; ?>"<?php } ?>  id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
-        <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($dia_ruta_archivo) && $dia_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo ?>"<?php } else { ?> value="No hay ningún documento para descargar" <?php } ?>size="50" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinietaD" readonly="readonly" <?php if (isset($dia_ruta_archivo) && $dia_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo ?>"<?php } else { ?> value="No hay ningún documento para descargar" <?php } ?>size="50" style="border: none"/></td>
         </tr>
     </table>
 
     <center>
         <p > 
             <input type="submit" id="guardar" value="Guardar Diagnóstico" />
-            <input type="button" id="cancelar" value="Cancelar" />
+            <input type="button" id="cancelar" value="Regresar" />
         </p>
     </center>
     <input id="dia_ruta_archivo" name="dia_ruta_archivo" <?php if (isset($dia_ruta_archivo) && $dia_ruta_archivo != '') { ?>value="<?php echo $dia_ruta_archivo; ?>"<?php } ?> type="text" size="100" readonly="readonly" style="visibility: hidden"/>
@@ -161,4 +226,14 @@
 
 <div id="extension" class="mensaje" title="Error">
     <p>Solo se permiten archivos con la extensión pdf|doc|docx</p>
+</div>
+<div id="fechaValidacion" class="mensaje" title="Error en fechas">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/cancel.png'); ?>" class="imagenError" />Las fechas deben de ir en orden ascendente</p>
+    </center>
+</div>
+<div id="efectivo" class="mensaje" title="Almacenado">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
+    </center>
 </div>

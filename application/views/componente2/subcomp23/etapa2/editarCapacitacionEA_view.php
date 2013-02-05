@@ -23,7 +23,7 @@
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         /*FIN DEL DATEPICKER*/
         /*ZONA DE VALIDACIONES*/
@@ -313,7 +313,7 @@
     </table>
     <table>
         <tr>
-        <td> <strong>Fecha de Capacitación: </strong><input value='<?php echo date('d/m/Y', strtotime($cap_fecha)); ?>' readonly="readonly" id="cap_fecha" name="cap_fecha" type="text" size="10" /></td>
+        <td> <strong>Fecha de Capacitación: </strong><input value='<?php echo date('d-m-Y', strtotime($cap_fecha)); ?>' readonly="readonly" id="cap_fecha" name="cap_fecha" type="text" size="10" /></td>
         </tr>
         <tr>
         <td ><strong>Area de Capacitación:</strong><input value="<?php echo $cap_area ?>" id="cap_area" name="cap_area" type="text" size="20"/></td>

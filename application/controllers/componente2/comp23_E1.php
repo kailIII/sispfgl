@@ -92,6 +92,7 @@ class Comp23_E1 extends CI_Controller {
         $informacion['reu_numero'] = $datosReu[0]->reu_numero;
         $informacion['reu_fecha'] = $datosReu[0]->reu_fecha;
         $informacion['reu_duracion_horas'] = $datosReu[0]->reu_duracion_horas;
+        $informacion['reu_duracion_minutos'] = $datosReu[0]->reu_duracion_minutos;
         $informacion['reu_tema'] = $datosReu[0]->reu_tema;
         $informacion['reu_resultado'] = $datosReu[0]->reu_resultado;
         $informacion['reu_observacion'] = $datosReu[0]->reu_observacion;
@@ -107,13 +108,14 @@ class Comp23_E1 extends CI_Controller {
         /* VARIABLES POST */
         $reu_fecha = $this->input->post("reu_fecha");
         $reu_duracion_horas = $this->input->post("reu_duracion_horas");
+        $reu_duracion_minutos = $this->input->post("reu_duracion_minutos");
         $reu_tema = $this->input->post("reu_tema");
         $reu_resultado = $this->input->post("reu_resultado");
         $reu_observacion = $this->input->post("reu_observacion");
         $reu_id = $this->input->post("reu_id");
 
         $this->load->model('etapa1-sub23/reunion', 'reunion');
-        $this->reunion->actualizarReunion($reu_fecha, $reu_duracion_horas, $reu_tema, $reu_resultado, $reu_observacion, $reu_id);
+        $this->reunion->actualizarReunion($reu_fecha, $reu_duracion_horas, $reu_duracion_minutos, $reu_tema, $reu_resultado, $reu_observacion, $reu_id);
         redirect('componente2/comp23_E1/muestraReuniones');
     }
 
@@ -319,10 +321,10 @@ class Comp23_E1 extends CI_Controller {
         $this->load->model('participante');
         switch ($operacion) {
             case 'add':
-                $this->participante->agregarParticipantes($campo, $id_campo, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo, $par_tel, $par_dui, $par_edad, $par_proviene, $par_nivel_esco,$par_tipo);
+                $this->participante->agregarParticipantes($campo, $id_campo, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo, $par_tel, $par_dui, $par_edad, $par_proviene, $par_nivel_esco, $par_tipo);
                 break;
             case 'edit':
-                $this->participante->editarParticipantes($par_id, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo, $par_tel, $par_dui, $par_edad, $par_proviene, $par_nivel_esco,$par_tipo);
+                $this->participante->editarParticipantes($par_id, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo, $par_tel, $par_dui, $par_edad, $par_proviene, $par_nivel_esco, $par_tipo);
                 break;
             case 'del':
                 $this->participante->eliminarParticipantes($par_id);
@@ -537,8 +539,8 @@ class Comp23_E1 extends CI_Controller {
         $this->load->model('etapa1-sub23/participante_capacitacion', 'parCap');
         switch ($operacion) {
             case 'add':
-                $this->participante->agregarParticipantes('par_otros', $cap_id, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo, $par_tel, $par_dui, $par_edad, $par_proviene, $par_nivel_esco,null);
-                $par_id_nu=$this->participante->obtenerMaximado();
+                $this->participante->agregarParticipantes('par_otros', $cap_id, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo, $par_tel, $par_dui, $par_edad, $par_proviene, $par_nivel_esco, null);
+                $par_id_nu = $this->participante->obtenerMaximado();
                 $this->parCap->insertarOtrosParticipa($cap_id, $par_id_nu[0]->par_id);
                 break;
             case 'edit':
@@ -603,6 +605,9 @@ class Comp23_E1 extends CI_Controller {
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
 
+        $g = $this->input->get('g');
+        if ($g)
+            $informacion['guardo'] = true;
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $username = $this->tank_auth->get_username();
         $informacion['username'] = $username;
@@ -649,8 +654,7 @@ class Comp23_E1 extends CI_Controller {
             $informacion['acu_mun_p2'] = $acuerdoMun[0]['acu_mun_p2'];
             $informacion['acu_mun_observacion'] = $acuerdoMun[0]['acu_mun_observacion'];
             $informacion['acu_mun_ruta_archivo'] = $acuerdoMun[0]['acu_mun_ruta_archivo'];
-            $informacion['nombreArchivo'] =end(explode("/", $acuerdoMun[0]['acu_mun_ruta_archivo'])); 
-            
+            $informacion['nombreArchivo'] = end(explode("/", $acuerdoMun[0]['acu_mun_ruta_archivo']));
         }
 
         $informacion['contrapartidas'] = $this->contraAcuerdo->obtenerLasContrapartidoAcuerdo($acu_mun_id);
@@ -669,10 +673,10 @@ class Comp23_E1 extends CI_Controller {
         if ($acu_mun_fecha == '')
             $acu_mun_fecha = null;
         $acu_mun_p1 = $this->input->post("acu_mun_p1");
-        if ($acu_mun_p1 == 0)
+        if ($acu_mun_p1 == '0')
             $acu_mun_p1 = null;
         $acu_mun_p2 = $this->input->post("acu_mun_p2");
-        if ($acu_mun_p2 == 0)
+        if ($acu_mun_p2 == '0')
             $acu_mun_p2 = null;
         $acu_mun_observacion = $this->input->post("acu_mun_observacion");
         $acu_mun_ruta_archivo = $this->input->post("acu_mun_ruta_archivo");
@@ -709,7 +713,7 @@ class Comp23_E1 extends CI_Controller {
         $this->load->model('etapa1-sub23/acuerdo_municipal', 'acuerdoMun');
         $this->acuerdoMun->actualizarAcuMun($acu_mun_id, $acu_mun_fecha, $acu_mun_p1, $acu_mun_p2, $acu_mun_observacion, $acu_mun_ruta_archivo);
 
-        redirect('componente2/comp23_E1/acuerdoMunicipal');
+        redirect('componente2/comp23_E1/acuerdoMunicipal?g=true');
     }
 
     public function subirArchivo($tabla, $campo_id, $campo) {
@@ -719,7 +723,9 @@ class Comp23_E1 extends CI_Controller {
     public function declaracionInteres() {
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
-
+        $g = $this->input->get('g');
+        if ($g)
+            $informacion['guardo'] = true;
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $username = $this->tank_auth->get_username();
         $informacion['username'] = $username;
@@ -749,7 +755,7 @@ class Comp23_E1 extends CI_Controller {
             $informacion['dec_int_lugar'] = $declaracionInt[0]['dec_int_lugar'];
             $informacion['dec_int_comentario'] = $declaracionInt[0]['dec_int_comentario'];
             $informacion['dec_int_ruta_archivo'] = $declaracionInt[0]['dec_int_ruta_archivo'];
-            $informacion['nombreArchivo'] =end(explode("/", $declaracionInt[0]['dec_int_ruta_archivo'])); 
+            $informacion['nombreArchivo'] = end(explode("/", $declaracionInt[0]['dec_int_ruta_archivo']));
         }
         $informacion['dec_int_id'] = $dec_int_id;
         /* CARGA DE PLANTILLAS */
@@ -772,13 +778,15 @@ class Comp23_E1 extends CI_Controller {
         $this->load->model('etapa1-sub23/declaracion_interes', 'decInt');
         $this->decInt->actualizarDecInt($dec_int_id, $dec_int_fecha, $dec_int_lugar, $dec_int_comentario, $dec_int_ruta_archivo);
 
-        redirect('componente2/comp23_E1/declaracionInteres');
+        redirect('componente2/comp23_E1/declaracionInteres?g=true');
     }
 
     public function equipoApoyo() {
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
-
+        $g = $this->input->get('g');
+        if ($g)
+            $informacion['guardo'] = true;
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $username = $this->tank_auth->get_username();
         $informacion['username'] = $username;
@@ -823,8 +831,14 @@ class Comp23_E1 extends CI_Controller {
     public function guardarEquipoApoyo($gru_apo_id) {
         /* VARIABLES POST */
         $gru_apo_fecha = $this->input->post('gru_apo_fecha');
+        if ($gru_apo_fecha == '')
+            $gru_apo_fecha = null;
         $gru_apo_c3 = $this->input->post('gru_apo_c3');
+        if ($gru_apo_c3 == '0')
+            $gru_apo_c3 = null;
         $gru_apo_c4 = $this->input->post('gru_apo_c4');
+        if ($gru_apo_c4 == '0')
+            $gru_apo_c4 = null;
         $gru_apo_observacion = $this->input->post('gru_apo_observacion');
         $gru_apo_lugar = $this->input->post('gru_apo_lugar');
 
@@ -835,7 +849,7 @@ class Comp23_E1 extends CI_Controller {
         $this->load->model('etapa1-sub23/grupo_apoyo', 'gruApo');
         $this->gruApo->actualizarGruApo($gru_apo_id, $gru_apo_fecha, $gru_apo_c3, $gru_apo_c4, $gru_apo_observacion, $gru_apo_lugar);
 
-        redirect('componente2/comp23_E1/equipoApoyo');
+        redirect('componente2/comp23_E1/equipoApoyo?g=true');
     }
 
     public function capacitacionEquipoApoyo() {
@@ -1010,19 +1024,36 @@ class Comp23_E1 extends CI_Controller {
     public function informePreliminar() {
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        //OBTENER DEPARTAMENTOS
+        $this->load->model('pais/departamento');
+        $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/subcomp23/etapa1/seleccionInformePreliminar_view');
+        $this->load->view('plantilla/footer', $informacion);
+    }
 
+    public function cargarInformePreliminar() {
+        $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
+            Planeación Estratégica Participativa';
+        $mun_id = $this->input->post("selMun");
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $username = $this->tank_auth->get_username();
         $informacion['username'] = $username;
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
         /* OBTENER DEPARTAMENTO Y MUNICIPIO DEL USUARIO */
-        $this->load->model('tank_auth/users', 'usuario');
-        $datos = $this->usuario->obtenerDepartamento($username);
-        $informacion['departamento'] = $datos[0]->Depto;
-        $informacion['municipio'] = $datos[0]->Muni;
+        $this->load->model('proyectoPep/proyecto_pep', 'PEP');
+        $this->load->model('pais/municipio', 'muni');
+        $pep = $this->PEP->obtenerProyectoPepPorMun($mun_id);
+        $municipio = $this->muni->obtenerNomMunDep($mun_id);
+        $informacion['departamento'] = $municipio[0]->depto;
+        $informacion['municipio'] = $municipio[0]->muni;
         //PROYECTO PEP ASOCIADO
-        $pro_pep_id = $datos[0]->id;
-        $informacion['proyectoPep'] = $datos[0]->Proyecto;
+        $pro_pep_id = $pep[0]->pro_pep_id;
+        // $informacion['proyectoPep'] = $datos[0]->Proyecto;
         $informacion['pro_pep_id'] = $pro_pep_id;
         /* INFORME PRELIMINAR ASPECTOS IMPORTANTES */
         $this->load->model('cumplimiento_minimo', 'cumm');
@@ -1054,13 +1085,38 @@ class Comp23_E1 extends CI_Controller {
         $informacion['inf_pre_fecha_observacion'] = $resultado[0]['inf_pre_fecha_observacion'];
         $informacion['inf_pre_observacion'] = $resultado[0]['inf_pre_observacion'];
         $informacion['inf_pre_ruta_archivo'] = $resultado[0]['inf_pre_ruta_archivo'];
-        $informacion['nombreArchivo'] =end(explode("/", $resultado[0]['inf_pre_ruta_archivo'])); 
+        $informacion['nombreArchivo'] = end(explode("/", $resultado[0]['inf_pre_ruta_archivo']));
         $informacion['cumplimientosMinimos'] = $this->cumInf->obtenerLosCumplimientosInforme($resultado[0]['inf_pre_id']);
         /* FIN DE INFORME PRELIMINAR */
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/etapa1/inforPreMunicipio_view', $informacion);
         $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function verificarProyectoPep($mun_id) {
+        $this->load->model('proyectoPep/proyecto_pep', 'PEP');
+        $rows = array();
+        $numfilas = 0;
+        if ($this->PEP->cuantosPep($mun_id) != 0) {
+
+            $rows[0]['id'] = $mun_id;
+            $rows[0]['cell'] = array($mun_id,
+                $this->PEP->cuantosPep($mun_id)
+            );
+            $numfilas = 1;
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
     }
 
     public function guardarInformePreliminar($inf_pre_id) {
@@ -1102,15 +1158,15 @@ class Comp23_E1 extends CI_Controller {
         /* ACTUALIZANDO ACUERDO MUNICIPAL */
         $this->load->model('etapa1-sub23/informe_preliminar', 'infPre');
         $this->infPre->actualizarInfPre($inf_pre_id, $inf_pre_firmam, $inf_pre_firmau, $inf_pre_firmai, $inf_pre_fecha_borrador, $inf_pre_aceptacion, $inf_pre_fecha_observacion, $inf_pre_observacion, $inf_pre_ruta_archivo, $inf_pre_aceptada);
-
-        redirect(base_url('componente2/comp23_E1/InformePreliminar'));
     }
 
     public function inventarioInformacion() {
 
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
-
+        $g = $this->input->get('g');
+        if ($g)
+            $informacion['guardo'] = true;
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $username = $this->tank_auth->get_username();
         $informacion['username'] = $username;
@@ -1152,7 +1208,7 @@ class Comp23_E1 extends CI_Controller {
 
         $this->load->model('etapa1-sub23/inventario_informacion');
         $this->inventario_informacion->editarInventarioInformacion($inv_inf_id, $inv_inf_observacion);
-        redirect('componente2/comp23_E1/inventarioInformacion');
+        redirect('componente2/comp23_E1/inventarioInformacion?g=true');
     }
 
     public function cargarFuentes($inv_inf_id, $tipo) {
