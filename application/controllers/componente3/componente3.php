@@ -18,9 +18,9 @@ class  componente3 extends CI_Controller {
     public function diag_sect_anal_tran() {
 
         $informacion['titulo'] = '3.1 Diagnostico Sectorial y Analisis Transversales';
-        //$informacion['user_id'] = $this->tank_auth->get_user_id();
-        //$informacion['username'] = $this->tank_auth->get_username();
-        //$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente3/ingresar_dsat');
@@ -30,9 +30,9 @@ class  componente3 extends CI_Controller {
     public function form_conc_disc_poli() {
 
         $informacion['titulo'] = '3.2.1 Formacion de Concenso y Discusion de la Politica de Descentralizacion';
-        //$informacion['user_id'] = $this->tank_auth->get_user_id();
-        //$informacion['username'] = $this->tank_auth->get_username();
-        //$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());                 
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());                 
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente3/ingresar_fcdp');
@@ -42,9 +42,9 @@ class  componente3 extends CI_Controller {
     public function elab_plan_imp() {
 
         $informacion['titulo'] = '3.2.2 Elaboracion del Plan Piloto';
-        //$informacion['user_id'] = $this->tank_auth->get_user_id();
-        //$informacion['username'] = $this->tank_auth->get_username();
-        //$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());                 
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());                 
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente3/ingresar_epi');
@@ -54,9 +54,9 @@ class  componente3 extends CI_Controller {
     public function divu() {
 
         $informacion['titulo'] = '3.3 Divulgaci&oacute;n';
-        //$informacion['user_id'] = $this->tank_auth->get_user_id();
-        //$informacion['username'] = $this->tank_auth->get_username();
-        //$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());                 
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());                 
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente3/ingresar_divu');
@@ -165,9 +165,9 @@ class  componente3 extends CI_Controller {
 		{
 			$error_upload = $this->upload->display_errors('<p style="color:red">Error: ', '</p>');
 			$informacion['titulo'] = '3.2.1 Formacion de Concenso y Discusion de la Politica de Descentralizacion';
-			//$informacion['user_id'] = $this->tank_auth->get_user_id();
-			//$informacion['username'] = $this->tank_auth->get_username();
-			//$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username()); 
+			$informacion['user_id'] = $this->tank_auth->get_user_id();
+			$informacion['username'] = $this->tank_auth->get_username();
+			$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username()); 
 			$informacion['aviso'] = $error_upload;         
 			$this->load->view('plantilla/header', $informacion);
 			$this->load->view('plantilla/menu', $informacion);
@@ -183,9 +183,9 @@ class  componente3 extends CI_Controller {
 			$this->componente3_model->insertar_fcdp($datos_fcdp,$ruta);				
 			
 			$informacion['titulo'] = '3.2.1 Formacion de Concenso y Discusion de la Politica de Descentralizacion';
-			//$informacion['user_id'] = $this->tank_auth->get_user_id();
-			//$informacion['username'] = $this->tank_auth->get_username();
-			//$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username()); 
+			$informacion['user_id'] = $this->tank_auth->get_user_id();
+			$informacion['username'] = $this->tank_auth->get_username();
+			$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username()); 
 			$informacion['aviso'] = '<p style="color:blue">Se ha realizado el registro correctamete.</p>';         
 			$this->load->view('plantilla/header', $informacion);
 			$this->load->view('plantilla/menu', $informacion);
@@ -201,9 +201,9 @@ class  componente3 extends CI_Controller {
 			$this->componente3_model->insertar_fcdp($datos_fcdp,$ruta);				
 			
 			$informacion['titulo'] = '3.2.1 Formacion de Concenso y Discusion de la Politica de Descentralizacion';
-			//$informacion['user_id'] = $this->tank_auth->get_user_id();
-			//$informacion['username'] = $this->tank_auth->get_username();
-			//$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username()); 
+			$informacion['user_id'] = $this->tank_auth->get_user_id();
+			$informacion['username'] = $this->tank_auth->get_username();
+			$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username()); 
 			$informacion['aviso'] = '<p style="color:blue">Se ha realizado el registro correctamete.</p>';         
 			$this->load->view('plantilla/header', $informacion);
 			$this->load->view('plantilla/menu', $informacion);
@@ -231,9 +231,9 @@ class  componente3 extends CI_Controller {
 				$informacion['aviso'] = '<p style="color:blue">Se ha realziado el registro correctamete.</p>';
 				
 			$informacion['titulo'] = '3.2.2 Elaboracion del Plan Piloto';
-			//$informacion['user_id'] = $this->tank_auth->get_user_id();
-			//$informacion['username'] = $this->tank_auth->get_username();
-			//$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username()); 
+			$informacion['user_id'] = $this->tank_auth->get_user_id();
+			$informacion['username'] = $this->tank_auth->get_username();
+			$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username()); 
 			         
 			$this->load->view('plantilla/header', $informacion);
 			$this->load->view('plantilla/menu', $informacion);
