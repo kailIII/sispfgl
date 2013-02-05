@@ -138,7 +138,7 @@ Class componente3_model extends CI_Model{
 				  'act_nombre' => $new_epi['act_nombre'.$i],
 				  'act_fecha_ini' => $new_epi['act_inicio'.$i],
 				  'act_fecha_fin' => $new_epi['act_fin'.$i],
-				  'act_estado' => $new_epi['act_estado'.$i],
+				  'act_estado' => null,
 				  'act_responsable' => $new_epi['act_responsable'.$i],
 				  'act_cargo' => $new_epi['act_cargo'.$i],
 				  'act_descripcion' => $new_epi['act_desc'.$i],

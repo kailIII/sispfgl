@@ -93,7 +93,7 @@
         }
         
         function validaSector(value, colname) {
-            if (value == 0 ) return [false,"Seleccione el Sector del Asistente"];
+            if (value == 0 ) return [false,"Seleccione la Procedencia del Asistente"];
             else return [true,""];
         }
         /*grid*/
@@ -106,31 +106,26 @@
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','Nombres','Apellidos','Sexo','Cargo','Sector'],
+            colNames:['id','Nombres','Sexo','Cargo','Procedencia'],
             colModel:[
                 {name:'par_id',index:'par_id', width:40,editable:false,editoptions:{size:15} },
-                {name:'par_nombre',index:'par_nombre',width:200,editable:true,
-                    editoptions:{size:25,maxlength:50}, 
+                {name:'par_nombre',index:'par_nombre',width:250,editable:true,
+                    editoptions:{size:38,maxlength:50}, 
                     formoptions:{label: "Nombres",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
-                {name:'par_apellido',index:'par_apellido',width:200,editable:true,
-                    editoptions:{size:25,maxlength:50}, 
-                    formoptions:{label: "Apellidos",elmprefix:"(*)"},
-                    editrules:{required:true} 
-                },
-                {name:'par_sexo',index:'par_sexo',editable:true,edittype:"select",width:40,
-                    editoptions:{ value: '0:Seleccione;f:Femenino;m:Masculino' }, 
+                {name:'par_sexo',index:'par_sexo',editable:true,edittype:"select",width:75,
+                    editoptions:{ value: '0:Seleccione;F:Femenino;M:Masculino' }, 
                     formoptions:{ label: "Sexo",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validaSexo}
                 },
-                {name:'par_cargo',index:'par_cargo',width:250,editable:true,
-                    editoptions:{size:25,maxlength:30}, 
+                {name:'par_cargo',index:'par_cargo',width:220,editable:true,
+                    editoptions:{size:34,maxlength:30}, 
                     formoptions:{ label: "Cargo",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
-                {name:'par_sector',index:'par_sector',editable:true,edittype:"select",width:125,
-                    editoptions:{ value: '0:Seleccione;po:Politico;ed:Educacion;ju:Juventud;si:Sindical;em:Empresarial;mu:Mujer;ot:Otro' }, 
+                {name:'par_sector',index:'par_sector',editable:true,edittype:"select",width:150,
+                    editoptions:{ value: '0:Seleccione;Gobierno Central:Gobierno Central;Gobierno Municipal:Gobierno Municipal;Asamblea Legislativa:Asamblea Legislativa;ONG:ONG;Academico:Academico;Sociedad Civil:Sociedad Civil;Otro:Otro' }, 
                     formoptions:{ label: "Sector",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validaSector}
                 }
@@ -168,19 +163,22 @@
         
         
         
-        /*$("#ed1").click( function() { 
+        $("#ed1").button().click( function() { 
 			var selected=$('#asistentes').jqGrid('getGridParam','selrow');
-			$("#asistentes").jqGrid('editRow',""+selected);
-			$("#sv1").attr("disabled",false); 
-			this.disabled = 'true'; 
+			if( selected != null )
+				$("#asistentes").jqGrid('editRow',""+selected);
+			else $('#mensaje1').dialog('open');
+			
 		});
 		
-		$("#sv1").click( function() {
-			var selected=$('#asistentes').jqGrid('getGridParam','selrow'); 
-			$("#asistentes").jqGrid('saveRow',""+selected); 
-			$("#ed1").attr("disabled",false);
-			this.disabled = 'true';
-		});*/
+		$("#sv1").button().click( function() {
+			var selected=$('#asistentes').jqGrid('getGridParam','selrow');
+			if( selected != null )
+				if ($("tr#"+selected).attr("editable") === "1") 
+					$("#asistentes").jqGrid('saveRow',""+selected, {"url": 'clientArray'}); 
+				else $('#mensaje4').dialog('open');
+			else $('#mensaje1').dialog('open');
+		});
 		
 		$('#myform').submit(function() {
 				
@@ -199,6 +197,10 @@
 				$('<input type="hidden" />').attr('name', 'par_sector'+i).attr('value',rowId['par_sector']).appendTo('#divpost');
 			}
 			$('<input type="hidden" />').attr('name', 'cant_asis').attr('value',numberOfRecords).appendTo('#divpost');
+			if ($('#archivo_reporte').val()!='')
+				$('<input type="hidden" />').attr('name', 'adjunto').attr('value','si').appendTo('#divpost');
+			else
+				$('<input type="hidden" />').attr('name', 'adjunto').attr('value','no').appendTo('#divpost');
 			return true;
 			
 		});
@@ -264,7 +266,7 @@ echo form_open_multipart('componente3/componente3/guardar_dsat', $attributes);?>
 		
 	</div>
 	<div style="height:120px;">
-		<label>Sector:</label><br/>
+		<label>&#8226; Sector:</label><br/>
 		<table>
 			<tr>
 				<td>&nbsp;&nbsp;<input type="checkbox" name="sector_act1" value="1" <?php echo set_checkbox('sector_act1', '1'); ?> /></td>
@@ -276,11 +278,14 @@ echo form_open_multipart('componente3/componente3/guardar_dsat', $attributes);?>
 			</tr>
 			<tr>
 				<td>&nbsp;&nbsp;<input type="checkbox" name="sector_act3" value="3" <?php echo set_checkbox('sector_act3', '3'); ?> /></td>
-				<td><label>Agua y Sanemaiento</label></td>
+				<td><label>Agua y Saneamiento</label></td>
 			</tr>
 			<tr>
 				<td>&nbsp;&nbsp;<input type="checkbox" name="sector_act4" value="4" <?php echo set_checkbox('sector_act4', '4'); ?> /></td>
 				<td><label>Obras Publicas y Transporte</label></td>
+			</tr>
+			<tr>
+				<td colspan="2"><label>&#8226; &Aacute;reas de Estudio:</label></td>
 			</tr>
 			<tr>
 				<td>&nbsp;&nbsp;<input type="checkbox" name="sector_act5" value="5" <?php echo set_checkbox('sector_act5', '5'); ?> /></td>
@@ -293,30 +298,30 @@ echo form_open_multipart('componente3/componente3/guardar_dsat', $attributes);?>
 		</table>
 	</div>
 	
-		<br/><br/><br/>
+		<br/><br/><br/><br/>
 		<p align="center"><b>Asistentes</b></p>
 		
 		<label>Nombre: </label>
-		<input type="text" name="nombre_asis" id="nombre_asis"  size="22" align="left">
+		<input type="text" name="nombre_asis" id="nombre_asis"  size="17" align="left">
 		
 		<select name="sexo_asis" size="1" id="sexo_asis">
 			<option value="F"<?php echo set_select('sexo_asis', 'F'); ?>>Femenino</option>
 			<option value="M"<?php echo set_select('sexo_asis', 'M'); ?>>Masculino</option>
 		</select>
 		
-		<label>Sector: </label>
+		<label>Procedencia: </label>
 		<select name="sector_asis" size="1" id="sector_asis">
-			<option value="Politico"<?php echo set_select('sector_asis', 'Politico'); ?>>Politico</option>
-			<option value="Educacion"<?php echo set_select('sector_asis', 'Educacion'); ?>>Educacion</option>
-			<option value="Juventud"<?php echo set_select('sector_asis', 'Juventud'); ?>>Juventud</option>
-			<option value="Sindical"<?php echo set_select('sector_asis', 'Sindical'); ?>>Sindical</option>
-			<option value="Empresarial"<?php echo set_select('sector_asis', 'Empresarial'); ?>>Empresarial</option>
-			<option value="Mujer"<?php echo set_select('sector_asis', 'Mujer'); ?>>Mujer</option>
+			<option value="Gobierno Central"<?php echo set_select('sector_asis', 'Gobierno Central'); ?>>Gobierno Central</option>
+			<option value="Gobierno Municipal"<?php echo set_select('sector_asis', 'Gobierno Municipal'); ?>>Gobierno Municipal</option>
+			<option value="Asamblea Legislativa"<?php echo set_select('sector_asis', 'Asamblea Legislativa'); ?>>Asamblea Legislativa</option>
+			<option value="ONG"<?php echo set_select('sector_asis', 'ONG'); ?>>ONG</option>
+			<option value="Academico"<?php echo set_select('sector_asis', 'Academico'); ?>>Academico</option>
+			<option value="Sociedad Civil"<?php echo set_select('sector_asis', 'Sociedad Civil'); ?>>Sociedad Civil</option>
 			<option value="Otro"<?php echo set_select('sector_asis', 'Otro'); ?>>Otro</option>
 		</select>
 		
 		<label>Cargo: </label>
-		<input type="text" name="cargo_asis" id="cargo_asis"  size="10" align="left">
+		<input type="text" name="cargo_asis" id="cargo_asis"  size="7" align="left">
 		
 		<input type="button" value="Agregar" name="agregar" id="agregar" align="left"><br/>
 		
@@ -328,6 +333,8 @@ echo form_open_multipart('componente3/componente3/guardar_dsat', $attributes);?>
 
 		<div style="position: relative;left: 275px; top: 5px;">
 			<input  type="button" id="eliminar" value="  Eliminar  " />
+			<input  type="button" id="ed1" value="  Editar  " />
+			<input  type="button" id="sv1" value="  Guardar  " />
 		</div>
 		
 		<label>Observaciones: </label><br/>
@@ -352,4 +359,7 @@ echo form_open_multipart('componente3/componente3/guardar_dsat', $attributes);?>
 </div>
 <div id="mensaje3" class="mensaje" title="Aviso">
     <p>Archivo no valido! Extenciones permitidas: .pdf | .doc | .docx | .rtf</p>
+</div>
+<div id="mensaje4" class="mensaje" title="Aviso">
+    <p>No se encuentra editando la fila seleccionada.</p>
 </div>
