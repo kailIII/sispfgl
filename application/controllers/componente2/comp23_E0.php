@@ -153,7 +153,8 @@ class Comp23_E0 extends CI_Controller {
         $informacion['nombre_solicitante'] = $tuplaSolicitud[0]->nombre_solicitante;
         $informacion['cargo'] = $tuplaSolicitud[0]->cargo;
         $informacion['telefono'] = $tuplaSolicitud[0]->telefono;
-        $informacion['sol_asi_ruta_archivo'] = $tuplaSolicitud[0]->sol_asi_ruta_archivo;
+        $informacion['sol_asis_ruta_archivo'] = $tuplaSolicitud[0]->sol_asis_ruta_archivo;
+        $informacion['nombreArchivo'] = end(explode("/", $tuplaSolicitud[0]->sol_asis_ruta_archivo));
         $informacion['leido_cri'] = $tuplaSolicitud[0]->c1;
         $informacion['cumple_cri'] = $tuplaSolicitud[0]->c2;
         $informacion['solicitud_fecha'] = $tuplaSolicitud[0]->fecha_solicitud;
@@ -193,10 +194,10 @@ class Comp23_E0 extends CI_Controller {
         $cargo = $this->input->post("cargo");
         $telefono = $this->input->post("telefono");
         $comentarios = $this->input->post('comentarios');
-        $sol_asi_ruta_archivo = $this->input->post('sol_asi_ruta_archivo');
+        $sol_asis_ruta_archivo = $this->input->post('sol_asis_ruta_archivo');
 
         $this->load->model('etapa0-sub23/solicitud_asistencia', 'sol_asistencia');
-        $this->sol_asistencia->agregarSolictudAsistencia($c1, $c2, $mun_id, $fecha_solicitud, $nombre_solicitante, $cargo, $telefono, $comentarios, $sol_asi_ruta_archivo);
+        $this->sol_asistencia->agregarSolictudAsistencia($c1, $c2, $mun_id, $fecha_solicitud, $nombre_solicitante, $cargo, $telefono, $comentarios, $sol_asis_ruta_archivo);
         redirect('componente2/comp23_E0/gestionsolicitudAsistencia');
     }
 
@@ -213,10 +214,10 @@ class Comp23_E0 extends CI_Controller {
         $cargo = $this->input->post("cargo");
         $telefono = $this->input->post("telefono");
         $comentarios = $this->input->post('comentarios');
-        $sol_asi_ruta_archivo = $this->input->post('sol_asi_ruta_archivo');
+        $sol_asis_ruta_archivo = $this->input->post('sol_asis_ruta_archivo');
 
         $this->load->model('etapa0-sub23/solicitud_asistencia', 'sol_asistencia');
-        $this->sol_asistencia->ActualizarSolictudAsistencia($sol_asis_id, $c1, $c2, $mun_id, $fecha_solicitud, $nombre_solicitante, $cargo, $telefono, $comentarios, $sol_asi_ruta_archivo);
+        $this->sol_asistencia->ActualizarSolictudAsistencia($sol_asis_id, $c1, $c2, $mun_id, $fecha_solicitud, $nombre_solicitante, $cargo, $telefono, $comentarios, $sol_asis_ruta_archivo);
         redirect('componente2/comp23_E0/gestionsolicitudAsistencia');
     }
 

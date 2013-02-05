@@ -71,7 +71,7 @@
             viewrecords: true
         
         }).jqGrid('navGrid','#pagerCriterioE0',
-        {edit:false,add:false,del:false,search:false,refresh:false,
+        {edit:false,add:false,del:false,search:true,refresh:false,
             beforeRefresh: function() {
                 tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
         }
@@ -99,19 +99,20 @@
 </script>
 <form id="criteriosE0Form" method="post">
 
-    <h2 class="h2Titulos">Etapa 0: Seleccion de Municipios</h2>
+    <h2 class="h2Titulos">Etapa 0: Selección de Municipios</h2>
+    <h2 class="h2Titulos">Gestión de Criterios que se establecen en el Manual Operativo</h2>
 
     <br/>
 
-    <center> <table id="criteriosE0"></table></center>
-    <div id="pagerCriterioE0"></div>
-    
-    <div style="position: relative;left: 275px; top: 5px;">
-        <input type="button" id="agregar" value="  Agregar  " />
-        <input type="button" id="editar" value="   Editar   " />
-        <input type="button" id="eliminar" value="  Eliminar  " />
-    </div>
- 
+    <center> <table id="criteriosE0"></table>
+        <div id="pagerCriterioE0"></div>
+        <br/><br/>
+        <div>
+            <input type="button" id="agregar" value="  Agregar  " />
+            <input type="button" id="editar" value="   Editar   " />
+            <input type="button" id="eliminar" value="  Eliminar  " />
+        </div>
+    </center>
 </form>
 
 <div id="mensaje" class="mensaje" title="Aviso de la operación">

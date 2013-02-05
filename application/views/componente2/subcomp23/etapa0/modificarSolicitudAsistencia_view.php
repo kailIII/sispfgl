@@ -35,7 +35,6 @@
         
         tabla.jqGrid({
             url:'<?php echo base_url('componente2/comp23_E0/cargarCriterios') ?>',
-            editurl:'<?php echo base_url('componente2/comp23_E0/gestionarCriterios') ?>',
             datatype:'json',
             altRows:true,
             height: "100%",
@@ -91,7 +90,49 @@
             }
         });
  
-        /*FIN DIALOGOS VALIDACION*/
+        var button = $('#btn_subir'), interval;
+        new AjaxUpload('#btn_subir', {
+            action: '<?php echo base_url('componente2/comp23_E1/subirArchivo') . '/solicitud_asistencia/' . $idfila . '/sol_asis_id'; ?>',
+            onSubmit : function(file , ext){
+                if (! (ext && /^(pdf|doc|docx)$/.test(ext))){
+                    $('#extension').dialog('open');
+                    return false;
+                } else {
+                    $('#vinieta').val('Subiendo....');
+                    this.disable();
+                }
+            },
+            onComplete: function(file, response,ext){
+                if(response!='error'){
+                    $('#vinieta').val('Subido con Exito');
+                    this.enable();			
+                    ext= (response.substring(response.lastIndexOf("."))).toLowerCase();
+                    nombre=response.substring(response.lastIndexOf("/")).toLowerCase().replace('/','');
+                    $('#vinietaD').val('Descargar '+nombre);
+                    $('#sol_asis_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO
+                    if (ext=='.pdf'){
+                        $('#btn_descargar').attr({
+                            'href': '<?php echo base_url(); ?>'+response,
+                            'target':'_blank'
+                        });
+                    }
+                    else{
+                        $('#btn_descargar').attr({
+                            'href': '<?php echo base_url(); ?>'+response,
+                            'target':'_self'
+                        });
+                    }
+                }else{
+                    $('#vinieta').val('El Archivo debe ser menor a 1 MB.');
+                    this.enable();			
+                 
+                }
+                 
+            }	
+        });
+        $('#btn_descargar').click(function() {
+            $.get($(this).attr('href'));
+        });
   
     });
 </script>
@@ -99,7 +140,7 @@
 
 <form id="seleccionMunicipiosForm" method="post">
 
-    <h2 class="h2Titulos">Etapa 0: Seleccion de Municipios</h2>
+    <h2 class="h2Titulos">Etapa 0: Selección de Municipios</h2>
     <h2 class="h2Titulos">Solicitud de asistencia técnica para la elaboración de planes estratégicos participadtivos</h2>
     <br/>
     <br/>
@@ -112,16 +153,12 @@
         <td ><?php echo $municipio ?></td>    
         </tr>
     </table>
-   
-    <table>
-        <tr><td style="width: 100px"></td>
-        <td>
-            <table id="criteriosE0"></table>  
-            <div id="pagerCriterioE0"></div> 
-        </td>
-        </tr>
+    <br/><br/>
+    <center>
+        <table id="criteriosE0"></table>  
+        <div id="pagerCriterioE0"></div> 
+    </center>
 
-    </table>
     <br/>
 
     <table>
@@ -145,7 +182,7 @@
     <br/>
     <br/>
     <table>
-   
+
         <tr>
         <td class="textD"><strong>Fecha de solicitud: </strong> </td>
         <td>
@@ -154,7 +191,7 @@
         </tr>
         <tr>
         <td class="textD"><strong>Nombre del solicitante: </strong></td>
-        <td><input id="nombre_solicitante" name="nombre_solicitante" type="text" size="70" value="<?php echo $nombre_solicitante?>" /></td>
+        <td><input id="nombre_solicitante" name="nombre_solicitante" type="text" size="70" value="<?php echo $nombre_solicitante ?>" /></td>
         </tr>
         <tr>
         <td class="textD"><strong>Cargo: </strong></td>
@@ -174,13 +211,14 @@
         <td style="width: 50px"></td>
         <td>
             <table>
+                <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente. Solo se permiten archivos con extensión pdf, doc, docx</td></tr>
                 <tr>
                 <td><div id="btn_subir"></div></td>
-                <td><input class="letraazul" type="text" id="vinieta" value="Subir Solicitud" size="30" style="border: none"/></td>
+                <td><input class="letraazul" type="text" id="vinieta" readonly="readonly" value="Subir Solicitud" size="30" style="border: none"/></td>
                 </tr>
                 <tr>
-                <td><a <?php if (isset($acu_mun_ruta_archivo) && $acu_mun_ruta_archivo != '') { ?> href="<?php echo base_url() . $acu_mun_ruta_archivo; ?>"<?php } ?>  id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
-                <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($acu_mun_ruta_archivo) && $acu_mun_ruta_archivo != '') { ?>value="Descargar Solicitud"<?php } else { ?> value="No Hay Solicitudes Por Descargar" <?php } ?>size="35" style="border: none"/></td>
+                <td><a <?php if (isset($sol_asis_ruta_archivo) && $sol_asis_ruta_archivo != '') { ?> href="<?php echo base_url() . $sol_asis_ruta_archivo; ?>"<?php } ?>  id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
+                <td><input class="letraazul" type="text" id="vinietaD" readonly="readonly" <?php if (isset($sol_asis_ruta_archivo) && $sol_asis_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo ?>"<?php } else { ?> value="No Hay Solicitudes Por Descargar" <?php } ?>size="35" style="border: none"/></td>
                 </tr>
             </table> 
         </td>
@@ -194,8 +232,10 @@
             </p>
         </div>
     </center>
-    <input id="acu_mun_ruta_archivo" name="acu_mun_ruta_archivo" <?php if (isset($acu_mun_ruta_archivo) && $acu_mun_ruta_archivo != '') { ?>value="<?php echo $acu_mun_ruta_archivo; ?>"<?php } ?> type="text" size="100" readonly="readonly" style="visibility: hidden"/>
-<input id="idfila" type="text" name="idfila" value="<?php echo $idfila?>" style="visibility: hidden"/>
-<input id="id_mun" type="text" name="id_mun" value="<?php echo $id_mun?>" style="visibility: hidden"/>
+    <input id="sol_asis_ruta_archivo" name="sol_asis_ruta_archivo" <?php if (isset($sol_asis_ruta_archivo) && $sol_asis_ruta_archivo != '') { ?>value="<?php echo $sol_asis_ruta_archivo; ?>"<?php } ?> type="text" size="100" readonly="readonly" style="visibility: hidden"/>
+    <input id="idfila" type="text" name="idfila" value="<?php echo $idfila ?>" style="visibility: hidden"/>
+    <input id="id_mun" type="text" name="id_mun" value="<?php echo $id_mun ?>" style="visibility: hidden"/>
 </form>
-
+<div id="extension" class="mensaje" title="Error">
+    <p>Solo se permiten archivos con la extensión pdf|doc|docx</p>
+</div>

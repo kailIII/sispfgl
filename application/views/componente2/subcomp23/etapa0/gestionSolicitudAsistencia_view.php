@@ -4,7 +4,7 @@
         var myGrid = $('#gestionSolicitud');        
         myGrid.jqGrid({ 
             url: '<?php echo base_url('componente2/comp23_E0/cargarSolicitudes') . "/0" ?>',
-            editurl:'<?php echo base_url('componente2/comp23_E0/borrarSolicitud')?>',
+            editurl:'<?php echo base_url('componente2/comp23_E0/borrarSolicitud') ?>',
             datatype:'json',
             altRows:true,
             colNames:['Id','Fecha Solicitud', 'Nombre del solicitante', 'Cargo', 'Teléfono',''],
@@ -36,7 +36,7 @@
         });
         
         myGrid.jqGrid('navGrid','#pagergestionSolicitud',
-        {edit:false,add:false,del:true,
+        {edit:false,add:false,del:false,
             beforeRefresh: function() {gestionSolicitud.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}},
         {width:550,height:200},{width:550,height:200},{width:550,height:100},{multipleSearch:true, multipleGroup:true}
     ).hideCol('id');
@@ -60,21 +60,26 @@
         /*CARGAR PROYECTOS PEP*/
         $('#selMun').change(function(){
             $('#gestionSolicitud').setGridParam({
-                url:'<?php echo base_url('componente2/comp23_E0/cargarSolicitudes')."/" ?>'+$('#selMun').val(),
+                url:'<?php echo base_url('componente2/comp23_E0/cargarSolicitudes') . "/" ?>'+$('#selMun').val(),
                 datatype:'json'
             }).trigger("reloadGrid"); 
         });
         
         
-           $("#agregarS").button().click(function() {
+        $("#agregarS").button().click(function() {
             this.form.action='<?php echo base_url('componente2/comp23_E0/agregarsolicitudAsistencia'); ?>';
         });
     });               
 </script>     
 <form id="gestionSolicitudForm" method="post">
-
-    <table>
-        <tr><td style="width: 150px"> 
+    <h2 class="h2Titulos">Etapa 0: Selección de Municipios</h2>
+    <h2 class="h2Titulos">Solicitud de asistencia técnica para la elaboración de planes estratégicos participadtivos</h2>
+    <br/>
+    <p>A continuación se presentan todas las solicitudes técnicas registradas para cada municipio en donde se requiere realizar un proyecto PEP</p>
+    <br/>
+    <br/>
+    <table align="center">
+        <tr>
         <td class="textD"><strong>Departamento:</strong></td>
         <td>
             <select id='selDepto' name="selDepto">
@@ -85,7 +90,7 @@
             </select>
         </td>
         </tr>
-        <tr><td style="width: 150px"> 
+        <tr>
         <td class="textD"><strong>Municipio:</strong></td>
         <td >
             <select id='selMun' name="selMun">
@@ -95,14 +100,14 @@
         </tr>
     </table>
 
-   <center style="position: relative;top: 20px">
+    <center style="position: relative;top: 20px">
         <div>
             <p>
                 <input type="submit" id="agregarS" name="agregarS" value="Agregar Solicitud  de Asistencia"  />
             </p>
         </div>
     </center>
-<br/>
+    <br/>
     <table>
         <tr>
         <td style="width: 100px"></td>

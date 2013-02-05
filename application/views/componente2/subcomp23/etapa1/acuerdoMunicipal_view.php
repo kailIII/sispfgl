@@ -238,11 +238,11 @@ foreach ($contrapartidas as $aux) {
             <input <?php if (isset($acu_mun_fecha)) { ?> value='<?php echo date('d-m-Y', strtotime($acu_mun_fecha)); ?>'<?php } ?>id="acu_mun_fecha" name="acu_mun_fecha" type="text" size="10" readonly="readonly"/></td>
         </tr>
     </table>
-    <p>¿Consejo Municipal conoce el proceso de planificación? 
+    <p>¿concejo municipal conoce el proceso de planificación? 
         <input type="radio" name="acu_mun_p1" value="true"<?php if (isset($acu_mun_p1) && $acu_mun_p1 == 't') { ?> checked <?php } ?>>SI </input>
         <input type="radio" name="acu_mun_p1" value="false"<?php if (isset($acu_mun_p1) && $acu_mun_p1 == 'f') { ?> checked <?php } ?> >NO </input>
     </p>
-    <p>¿Consejo Municipal apoya el proceso? 
+    <p>¿concejo municipal apoya el proceso? 
         <input type="radio" name="acu_mun_p2" value="true" <?php if (isset($acu_mun_p2) && $acu_mun_p2 == 't') { ?> checked <?php } ?> >SI </input>
         <input type="radio" name="acu_mun_p2" value="false" <?php if (isset($acu_mun_p2) && $acu_mun_p2 == 'f') { ?> checked <?php } ?>>NO </input>
     </p>
