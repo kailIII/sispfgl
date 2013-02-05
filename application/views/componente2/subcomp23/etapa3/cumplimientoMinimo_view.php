@@ -186,12 +186,12 @@
             <table>
                 <tr style="width: 300px"> <td ><strong>Fecha de entrega de producto: </strong><input id="pro_pep_fecha_borrador" <?php if (isset($pro_pep_fecha_borrador)) { ?>  value="<?php echo date('d-m-Y', strtotime($pro_pep_fecha_borrador)); ?>" <?php } ?> name="pro_pep_fecha_borrador" type="text" size="7" /></td></tr>
                 <tr><td><strong>Fecha de visto bueno: </strong><input id="pro_pep_fecha_observacion" <?php if (isset($pro_pep_fecha_observacion)) { ?>value="<?php echo date('d-m-Y', strtotime($pro_pep_fecha_observacion)); ?>"<?php } ?>  name="pro_pep_fecha_observacion" type="text" size="7" /></td></tr>
-                <tr> <td><strong>Fecha de aprobacion del consejo municipal: </strong><input id="pro_pep_fecha_aprobacion" <?php if (isset($pro_pep_fecha_aprobacion)) { ?> value="<?php echo date('d-m-Y', strtotime($pro_pep_fecha_aprobacion)); ?>"<?php } ?>  name="pro_pep_fecha_aprobacion" type="text" size="7" /></td></tr>
+                <tr> <td><strong>Fecha de aprobacion del concejo municipal: </strong><input id="pro_pep_fecha_aprobacion" <?php if (isset($pro_pep_fecha_aprobacion)) { ?> value="<?php echo date('d-m-Y', strtotime($pro_pep_fecha_aprobacion)); ?>"<?php } ?>  name="pro_pep_fecha_aprobacion" type="text" size="7" /></td></tr>
             </table>
             <p><strong>¿Acta de aceptación contiene firmas?</strong></p>
             <table>
                 <tr>
-                <td><strong>Consejo Municipalidad</strong></td>
+                <td><strong>concejo municipalidad</strong></td>
                 <td><input type="radio" name="pro_pep_firmacm" value="true" <?php if (!strcasecmp($pro_pep_firmacm, 't')) { ?>checked <?php } ?>>SI </input></td>
                 <td><input type="radio" name="pro_pep_firmacm" value="false" <?php if (!strcasecmp($pro_pep_firmacm, 'f')) { ?>checked <?php } ?>>NO </input></td>
                 </tr>

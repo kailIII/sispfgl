@@ -141,7 +141,7 @@
         </td>
         </tr>  
         <tr><td style="width: 100px"> 
-        <td class="textD"><strong>Fecha de presentación al Consejo Municipal: </strong> </td>
+        <td class="textD"><strong>Fecha de presentación al concejo municipal: </strong> </td>
         <td>
             <input <?php if (isset($f_rec_con_mun)) { ?> value='<?php echo date('d/m/Y', strtotime($f_rec_con_mun)); ?>'<?php } ?>id="f_rec_con_mun" name="f_rec_con_mun" type="text" size="10" readonly="readonly"/>
         </td>

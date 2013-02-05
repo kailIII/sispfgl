@@ -10,11 +10,11 @@ class Solicitud_asistencia extends CI_Model {
 
     private $tabla = 'solicitud_asistencia';
 
-    public function agregarSolictudAsistencia($c1, $c2, $mun_id, $fecha_solicitud, $nombre_solicitante, $cargo, $telefono, $comentarios, $sol_asi_ruta_archivo) {
+    public function agregarSolictudAsistencia($c1, $c2, $mun_id, $fecha_solicitud, $nombre_solicitante, $cargo, $telefono, $comentarios, $sol_asis_ruta_archivo) {
         $datos = array('nombre_solicitante' => $nombre_solicitante,
             'cargo' => $cargo,
             'telefono' => $telefono,
-            'sol_asi_ruta_archivo' => $sol_asi_ruta_archivo,
+            'sol_asis_ruta_archivo' => $sol_asis_ruta_archivo,
             'mun_id' => $mun_id,
             'c1' => $c1,
             'c2' => $c2,
@@ -25,11 +25,11 @@ class Solicitud_asistencia extends CI_Model {
         $this->db->insert($this->tabla, $datos);
     }
 
-    public function actualizarSolictudAsistencia($sol_asis_id, $c1, $c2, $mun_id, $fecha_solicitud, $nombre_solicitante, $cargo, $telefono, $comentarios, $sol_asi_ruta_archivo) {
+    public function actualizarSolictudAsistencia($sol_asis_id, $c1, $c2, $mun_id, $fecha_solicitud, $nombre_solicitante, $cargo, $telefono, $comentarios, $sol_asis_ruta_archivo) {
         $datos = array('nombre_solicitante' => $nombre_solicitante,
             'cargo' => $cargo,
             'telefono' => $telefono,
-            'sol_asi_ruta_archivo' => $sol_asi_ruta_archivo,
+            'sol_asis_ruta_archivo' => $sol_asis_ruta_archivo,
             'mun_id' => $mun_id,
             'c1' => $c1,
             'c2' => $c2,
