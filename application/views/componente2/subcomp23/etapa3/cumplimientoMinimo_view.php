@@ -1,9 +1,5 @@
 <script type="text/javascript">        
     $(document).ready(function(){
-                 <?php if (isset($guardo)){?>
-                $('#guardo').dialog();
-                <?php }?>
-
         $("#guardar").button().click(function() {
             borrador= $('#pro_pep_fecha_borrador').datepicker("getDate");
             observacion=$( "#pro_pep_fecha_observacion" ).datepicker("getDate");
@@ -11,18 +7,55 @@
             if(borrador==null){
                 $("#pro_pep_fecha_observacion" ).val('');
                 $("#pro_pep_fecha_aprobacion" ).val('');
-                this.form.action='<?php echo base_url('componente2/comp23_E3/guardarCumplimientosMinimos') . '/' . $pro_pep_id; ?>';
+                $.ajax({
+                    type: "POST",
+                    url: '<?php echo base_url('componente2/comp23_E3/guardarCumplimientosMinimos') . '/' . $pro_pep_id; ?>',
+                    data: $("#cumplimientosForm").serialize(), // serializes the form's elements.
+                    success: function(data)
+                    {
+                        $('#efectivo').dialog('open');
+                    }
+                });
+                return false;
+                
             }else{
                 if(observacion==null){
                     $( "#pro_pep_fecha_aprobacion" ).val('');
-                    this.form.action='<?php echo base_url('componente2/comp23_E3/guardarCumplimientosMinimos') . '/' . $pro_pep_id; ?>';
+                    $.ajax({
+                        type: "POST",
+                        url: '<?php echo base_url('componente2/comp23_E3/guardarCumplimientosMinimos') . '/' . $pro_pep_id; ?>',
+                        data: $("#cumplimientosForm").serialize(), // serializes the form's elements.
+                        success: function(data)
+                        {
+                            $('#efectivo').dialog('open');
+                        }
+                    });
+                    return false;
                 }else{
                     if(borrador < observacion){
                         if(aprobacion==null){
-                            this.form.action='<?php echo base_url('componente2/comp23_E3/guardarCumplimientosMinimos') . '/' . $pro_pep_id; ?>';
+                            $.ajax({
+                                type: "POST",
+                                url: '<?php echo base_url('componente2/comp23_E3/guardarCumplimientosMinimos') . '/' . $pro_pep_id; ?>',
+                                data: $("#cumplimientosForm").serialize(), // serializes the form's elements.
+                                success: function(data)
+                                {
+                                    $('#efectivo').dialog('open');
+                                }
+                            });
+                            return false;
                         }else{
                             if(observacion < aprobacion){
-                                this.form.action='<?php echo base_url('componente2/comp23_E3/guardarCumplimientosMinimos') . '/' . $pro_pep_id; ?>';
+                                $.ajax({
+                                    type: "POST",
+                                    url: '<?php echo base_url('componente2/comp23_E3/guardarCumplimientosMinimos') . '/' . $pro_pep_id; ?>',
+                                    data: $("#cumplimientosForm").serialize(), // serializes the form's elements.
+                                    success: function(data)
+                                    {
+                                        $('#efectivo').dialog('open');
+                                    }
+                                });
+                                return false;
                             }else{
                                 $('#fechaValidacion').dialog('open');
                                 return false
@@ -37,7 +70,7 @@
         });
         
         $("#cancelar").button().click(function() {
-            document.location.href='<?php echo base_url(); ?>';
+            document.location.href='<?php echo base_url("componente2/comp23_E3/cumplimientosMinimos"); ?>';
         });
         
         /*  PARA SUBIR EL ARCHIVO  */
@@ -116,7 +149,7 @@
         /*FIN DIALOGOS VALIDACION*/
     });
 </script>
-<form method="post">
+<form id="cumplimientosForm" method="post">
     <h2 class="h2Titulos">Etapa 3: Plan Estratégico Participativo</h2>
     <h2 class="h2Titulos">Cumplimientos de los elementos mínimos del PEP</h2>
 
@@ -193,7 +226,7 @@
     <center>
         <p > 
             <input type="submit" id="guardar" value="Guardar Cumplimientos Mínimos" />
-            <input type="button" id="cancelar" value="Cancelar" />
+            <input type="button" id="cancelar" value="Regresar" />
         </p>
     </center>
 
@@ -207,7 +240,7 @@
         <p><img src="<?php echo base_url('resource/imagenes/cancel.png'); ?>" class="imagenError" />Las fechas deben de ir en orden ascendente</p>
     </center>
 </div>
-<div id="guardo" class="mensaje" title="Almacenado">
+<div id="efectivo" class="mensaje" title="Almacenado">
     <center>
         <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
     </center>

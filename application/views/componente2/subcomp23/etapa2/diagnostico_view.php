@@ -1,9 +1,6 @@
 <script type="text/javascript">        
     $(document).ready(function(){
         /*ZONA DE BOTONES*/
-         <?php if (isset($guardo)){?>
-                $('#guardo').dialog();
-                <?php }?>
         $("#guardar").button().click(function() {
             borrador= $('#dia_fecha_borrador').datepicker("getDate");
             observacion=$( "#dia_fecha_observacion" ).datepicker("getDate");
@@ -11,18 +8,54 @@
             if(borrador==null){
                 $("#dia_fecha_observacion" ).val('');
                 $("#dia_fecha_concejo_muni" ).val('');
-                this.form.action='<?php echo base_url('componente2/comp23_E2/guardarDiagnostico/' . $dia_id); ?>';
+                $.ajax({
+                    type: "POST",
+                    url: '<?php echo base_url('componente2/comp23_E2/guardarDiagnostico/' . $dia_id); ?>',
+                    data: $("#diagnosticoForm").serialize(), // serializes the form's elements.
+                    success: function(data)
+                    {
+                        $('#efectivo').dialog('open');
+                    }
+                });
+                return false;
             }else{
                 if(observacion==null){
                     $( "#dia_fecha_concejo_muni" ).val('');
-                    this.form.action='<?php echo base_url('componente2/comp23_E2/guardarDiagnostico/' . $dia_id); ?>';
+                    $.ajax({
+                        type: "POST",
+                        url: '<?php echo base_url('componente2/comp23_E2/guardarDiagnostico/' . $dia_id); ?>',
+                        data: $("#diagnosticoForm").serialize(), // serializes the form's elements.
+                        success: function(data)
+                        {
+                            $('#efectivo').dialog('open');
+                        }
+                    });
+                    return false;
                 }else{
                     if(borrador<observacion){
                         if(aprobacion==null){
-                            this.form.action='<?php echo base_url('componente2/comp23_E2/guardarDiagnostico/' . $dia_id); ?>';
+                            $.ajax({
+                                type: "POST",
+                                url: '<?php echo base_url('componente2/comp23_E2/guardarDiagnostico/' . $dia_id); ?>',
+                                data: $("#diagnosticoForm").serialize(), // serializes the form's elements.
+                                success: function(data)
+                                {
+                                    $('#efectivo').dialog('open');
+                                }
+                            });
+                            return false;
                         }else{
                             if(observacion<aprobacion){
-                                this.form.action='<?php echo base_url('componente2/comp23_E2/guardarDiagnostico/' . $dia_id); ?>';
+                                $.ajax({
+                                    type: "POST",
+                                    url: '<?php echo base_url('componente2/comp23_E2/guardarDiagnostico/' . $dia_id); ?>',
+                                    data: $("#diagnosticoForm").serialize(), // serializes the form's elements.
+                                    success: function(data)
+                                    {
+                                        $('#efectivo').dialog('open');
+                                    }
+                                });
+                                return false;
                             }else{
                                 $('#fechaValidacion').dialog('open');
                                 return false
@@ -37,7 +70,7 @@
         });
         
         $("#cancelar").button().click(function() {
-            document.location.href='<?php echo base_url('componente2/comp23_E2'); ?>';
+            document.location.href='<?php echo base_url('componente2/comp23_E2/diagnostico'); ?>';
         });
         /*  PARA SUBIR EL ARCHIVO  */
         var button = $('#btn_subir'), interval;
@@ -119,7 +152,7 @@
     });
 </script>
 
-<form method="post">
+<form id="diagnosticoForm" method="post">
     <h2 class="h2Titulos">Etapa 2: Diagnóstico del municipio</h2>
     <h2 class="h2Titulos">Producto 6:Elementos mínimos del diagnóstico</h2>
 
@@ -185,7 +218,7 @@
     <center>
         <p > 
             <input type="submit" id="guardar" value="Guardar Diagnóstico" />
-            <input type="button" id="cancelar" value="Cancelar" />
+            <input type="button" id="cancelar" value="Regresar" />
         </p>
     </center>
     <input id="dia_ruta_archivo" name="dia_ruta_archivo" <?php if (isset($dia_ruta_archivo) && $dia_ruta_archivo != '') { ?>value="<?php echo $dia_ruta_archivo; ?>"<?php } ?> type="text" size="100" readonly="readonly" style="visibility: hidden"/>
@@ -199,7 +232,7 @@
         <p><img src="<?php echo base_url('resource/imagenes/cancel.png'); ?>" class="imagenError" />Las fechas deben de ir en orden ascendente</p>
     </center>
 </div>
-<div id="guardo" class="mensaje" title="Almacenado">
+<div id="efectivo" class="mensaje" title="Almacenado">
     <center>
         <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
     </center>

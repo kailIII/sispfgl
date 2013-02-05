@@ -107,9 +107,9 @@
             if(fSolicitud==null){
                 $( "#pro_frecepcion" ).val('');
                 $( "#pro_faperturatecnica" ).val('');
-                $('#pro_faperturafinanciera').val('')
-                $( "#pro_fcierre_negociacion" ).val('')
-                $( "#pro_ffirma_contrato" ).val('')
+                $('#pro_faperturafinanciera').val('');
+                $( "#pro_fcierre_negociacion" ).val('');
+                $( "#pro_ffirma_contrato" ).val('');
                 $.ajax({
                     type: "POST",
                     url: '<?php echo base_url('componente2/procesoAdministrativo/guardarProceso') . "/4" ?>',
@@ -122,10 +122,10 @@
                 return false;
             }else{
                 if(fRecepcion==null){
-                    $("#pro_faperturatecnica" ).val('');
-                    $('#pro_faperturafinanciera').val('')
-                    $( "#pro_fcierre_negociacion" ).val('')
-                    $( "#pro_ffirma_contrato" ).val('')
+                    $( "#pro_faperturatecnica" ).val('');
+                    $('#pro_faperturafinanciera').val('');
+                    $( "#pro_fcierre_negociacion" ).val('');
+                    $( "#pro_ffirma_contrato" ).val('');
                     $.ajax({
                         type: "POST",
                         url: '<?php echo base_url('componente2/procesoAdministrativo/guardarProceso') . "/4" ?>',
@@ -137,8 +137,11 @@
                     });
                     return false;
                 }else{
-                    if(fSolicitud< fRecepcion){
+                    if(fSolicitud<fRecepcion){
                         if(fApertura==null){
+                            $('#pro_faperturafinanciera').val('');
+                            $( "#pro_fcierre_negociacion" ).val('');
+                            $( "#pro_ffirma_contrato" ).val('');
                             $.ajax({
                                 type: "POST",
                                 url: '<?php echo base_url('componente2/procesoAdministrativo/guardarProceso') . "/4" ?>',
@@ -150,28 +153,85 @@
                             });
                             return false;
                         }else{
-                            if(fRecepcion < fApertura){
-                                $.ajax({
-                                    type: "POST",
-                                    url: '<?php echo base_url('componente2/procesoAdministrativo/guardarProceso') . "/4" ?>',
-                                    data: $("#propuestaTecnicaForm").serialize(), // serializes the form's elements.
-                                    success: function(data)
-                                    {
-                                        $('#efectivo').dialog('open');
+                            if(fRecepcion<fApertura){
+                                if(fFinanciera==null){
+                                    $( "#pro_fcierre_negociacion" ).val('');
+                                    $( "#pro_ffirma_contrato" ).val('');
+                                    $.ajax({
+                                        type: "POST",
+                                        url: '<?php echo base_url('componente2/procesoAdministrativo/guardarProceso') . "/4" ?>',
+                                        data: $("#propuestaTecnicaForm").serialize(), // serializes the form's elements.
+                                        success: function(data)
+                                        {
+                                            $('#efectivo').dialog('open');
+                                        }
+                                    });
+                                    return false;
+                                }else{
+                                    if(fApertura<fFinanciera){
+                                        if(fCierre==null){
+                                            $( "#pro_ffirma_contrato" ).val('');
+                                            $.ajax({
+                                                type: "POST",
+                                                url: '<?php echo base_url('componente2/procesoAdministrativo/guardarProceso') . "/4" ?>',
+                                                data: $("#propuestaTecnicaForm").serialize(), // serializes the form's elements.
+                                                success: function(data)
+                                                {
+                                                    $('#efectivo').dialog('open');
+                                                }
+                                            });
+                                            return false;
+                                        }else{
+                                            if(fFinanciera<fCierre){
+                                                if(fContrato==null){
+                                                    $.ajax({
+                                                        type: "POST",
+                                                        url: '<?php echo base_url('componente2/procesoAdministrativo/guardarProceso') . "/4" ?>',
+                                                        data: $("#propuestaTecnicaForm").serialize(), // serializes the form's elements.
+                                                        success: function(data)
+                                                        {
+                                                            $('#efectivo').dialog('open');
+                                                        }
+                                                    });
+                                                    return false;
+                                                }else{
+                                                    if(fCierre<fContrato){
+                                                        $.ajax({
+                                                            type: "POST",
+                                                            url: '<?php echo base_url('componente2/procesoAdministrativo/guardarProceso') . "/4" ?>',
+                                                            data: $("#propuestaTecnicaForm").serialize(), // serializes the form's elements.
+                                                            success: function(data)
+                                                            {
+                                                                $('#efectivo').dialog('open');
+                                                            }
+                                                        });
+                                                        return false;
+                                                    }else{
+                                                        $('#fechaValidacion').dialog('open');
+                                                        return false;
+                                                    }
+                                                }
+                                            }else{
+                                                $('#fechaValidacion').dialog('open');
+                                                return false;
+                                            }
+                                        }
+                                    }else{
+                                        $('#fechaValidacion').dialog('open');
+                                        return false;
                                     }
-                                });
-                                return false;
+                                }
                             }else{
                                 $('#fechaValidacion').dialog('open');
-                                return false
+                                return false;
                             }
                         }
                     }else{
                         $('#fechaValidacion').dialog('open');
-                        return false
+                        return false;
                     }
                 }
-            }  
+            }
         });
         
         /*DIALOGOS DE VALIDACION*/

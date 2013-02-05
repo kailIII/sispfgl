@@ -66,17 +66,119 @@
         });     
 <?php foreach ($etapas as $etapa) { ?>
             $("#guardar<?php echo $etapa->pes_pro_id; ?>").button().click(function() {
-                $.ajax({
-                    type: "POST",
-                    url: '<?php echo base_url('componente2/procesoAdministrativo/guardarAprobacionProductos') . "/" . $etapa->pes_pro_id; ?>',
-                    data: $("#recepcionAprobacion_<?php echo $etapa->pes_pro_id; ?>").serialize(), // serializes the form's elements.
-                    success: function(data)
-                    {
-                        $('#efectivo').dialog('open');
+                fecha1=$( "#eta<?php echo $etapa->pes_pro_id; ?>_fecha1" ).datepicker("getDate");
+                fecha2=$( "#eta<?php echo $etapa->pes_pro_id; ?>_fecha2" ).datepicker("getDate");
+                fecha3= $("#eta<?php echo $etapa->pes_pro_id; ?>_fecha3").datepicker("getDate");
+                fecha4=$( "#eta<?php echo $etapa->pes_pro_id; ?>_fecha4" ).datepicker("getDate");
+                fecha5=$( "#eta<?php echo $etapa->pes_pro_id; ?>_fecha5" ).datepicker("getDate");
+                if(fecha1==null){
+                    $( "#eta<?php echo $etapa->pes_pro_id; ?>_fecha2" ).val('');
+                    $("#eta<?php echo $etapa->pes_pro_id; ?>_fecha3").val('');
+                    $( "#eta<?php echo $etapa->pes_pro_id; ?>_fecha4" ).val('');
+                    $( "#eta<?php echo $etapa->pes_pro_id; ?>_fecha5" ).val('');
+                    $.ajax({
+                        type: "POST",
+                        url: '<?php echo base_url('componente2/procesoAdministrativo/guardarAprobacionProductos') . "/" . $etapa->pes_pro_id; ?>',
+                        data: $("#recepcionAprobacion_<?php echo $etapa->pes_pro_id; ?>").serialize(), // serializes the form's elements.
+                        success: function(data)
+                        {
+                            $('#efectivo').dialog('open');
+                        }
+                    });
+                    return false;
+                }else{
+                    if(fecha2==null){
+                        $("#eta<?php echo $etapa->pes_pro_id; ?>_fecha3").val('');
+                        $( "#eta<?php echo $etapa->pes_pro_id; ?>_fecha4" ).val('');
+                        $( "#eta<?php echo $etapa->pes_pro_id; ?>_fecha5" ).val('');
+                        $.ajax({
+                            type: "POST",
+                            url: '<?php echo base_url('componente2/procesoAdministrativo/guardarAprobacionProductos') . "/" . $etapa->pes_pro_id; ?>',
+                            data: $("#recepcionAprobacion_<?php echo $etapa->pes_pro_id; ?>").serialize(), // serializes the form's elements.
+                            success: function(data)
+                            {
+                                $('#efectivo').dialog('open');
+                            }
+                        });
+                        return false;
+                    }else{
+                        if(fecha1<fecha2){
+                            if(fecha3==null){
+                                $( "#eta<?php echo $etapa->pes_pro_id; ?>_fecha4" ).val('');
+                                $( "#eta<?php echo $etapa->pes_pro_id; ?>_fecha5" ).val('');
+                                $.ajax({
+                                    type: "POST",
+                                    url: '<?php echo base_url('componente2/procesoAdministrativo/guardarAprobacionProductos') . "/" . $etapa->pes_pro_id; ?>',
+                                    data: $("#recepcionAprobacion_<?php echo $etapa->pes_pro_id; ?>").serialize(), // serializes the form's elements.
+                                    success: function(data)
+                                    {
+                                        $('#efectivo').dialog('open');
+                                    }
+                                });
+                                return false;
+                            }else{
+                                if(fecha2<fecha3){
+                                    if(fecha4==null){
+                                        $( "#eta<?php echo $etapa->pes_pro_id; ?>_fecha5" ).val('');
+                                        $.ajax({
+                                            type: "POST",
+                                            url: '<?php echo base_url('componente2/procesoAdministrativo/guardarAprobacionProductos') . "/" . $etapa->pes_pro_id; ?>',
+                                            data: $("#recepcionAprobacion_<?php echo $etapa->pes_pro_id; ?>").serialize(), // serializes the form's elements.
+                                            success: function(data)
+                                            {
+                                                $('#efectivo').dialog('open');
+                                            }
+                                        });
+                                        return false;
+                                    }else{
+                                        if(fecha3<fecha4){
+                                            if(fecha5==null){
+                                                $.ajax({
+                                                    type: "POST",
+                                                    url: '<?php echo base_url('componente2/procesoAdministrativo/guardarAprobacionProductos') . "/" . $etapa->pes_pro_id; ?>',
+                                                    data: $("#recepcionAprobacion_<?php echo $etapa->pes_pro_id; ?>").serialize(), // serializes the form's elements.
+                                                    success: function(data)
+                                                    {
+                                                        $('#efectivo').dialog('open');
+                                                    }
+                                                });
+                                                return false;
+                                            }else{
+                                                if(fecha4<fecha5){
+                                                    $.ajax({
+                                                        type: "POST",
+                                                        url: '<?php echo base_url('componente2/procesoAdministrativo/guardarAprobacionProductos') . "/" . $etapa->pes_pro_id; ?>',
+                                                        data: $("#recepcionAprobacion_<?php echo $etapa->pes_pro_id; ?>").serialize(), // serializes the form's elements.
+                                                        success: function(data)
+                                                        {
+                                                            $('#efectivo').dialog('open');
+                                                        }
+                                                    });
+                                                    return false;
+                                                }else{
+                                                    $('#fechaValidacion').dialog('open');
+                                                    return false;
+                                                }
+                                            }
+                                        }else{
+                                            $('#fechaValidacion').dialog('open');
+                                            return false;
+                                        }
+                                    }
+                                }else{
+                                    $('#fechaValidacion').dialog('open');
+                                    return false;
+                                }
+                            }
+                        }else{
+                            $('#fechaValidacion').dialog('open');
+                            return false;
+                        }
                     }
-                });
-                return false; // avoid to execute the actual submit of the form.
+                }
+                        
             });
+                        
             $("#cancelar<?php echo $etapa->pes_pro_id; ?>").button();
     <?php foreach ($fechas as $fecha) { ?>
                     $("#eta<?php echo $etapa->pes_pro_id; ?>_fecha<?php echo $fecha->nom_fec_apr_id; ?>").datepicker({
@@ -151,6 +253,11 @@
 <div id="efectivo" class="mensaje" title="Almacenado">
     <center>
         <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
+    </center>
+</div>
+<div id="fechaValidacion" class="mensaje" title="Error en fechas">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/cancel.png'); ?>" class="imagenError" />Las fechas deben de ir en orden ascendente</p>
     </center>
 </div>
 

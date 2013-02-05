@@ -115,7 +115,7 @@ class Comp23_E1 extends CI_Controller {
         $reu_id = $this->input->post("reu_id");
 
         $this->load->model('etapa1-sub23/reunion', 'reunion');
-        $this->reunion->actualizarReunion($reu_fecha, $reu_duracion_horas,$reu_duracion_minutos, $reu_tema, $reu_resultado, $reu_observacion, $reu_id);
+        $this->reunion->actualizarReunion($reu_fecha, $reu_duracion_horas, $reu_duracion_minutos, $reu_tema, $reu_resultado, $reu_observacion, $reu_id);
         redirect('componente2/comp23_E1/muestraReuniones');
     }
 
@@ -1024,21 +1024,36 @@ class Comp23_E1 extends CI_Controller {
     public function informePreliminar() {
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
-        $g = $this->input->get('g');
-        if ($g)
-            $informacion['guardo'] = true;
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        //OBTENER DEPARTAMENTOS
+        $this->load->model('pais/departamento');
+        $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/subcomp23/etapa1/seleccionInformePreliminar_view');
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function cargarInformePreliminar() {
+        $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
+            Planeación Estratégica Participativa';
+        $mun_id = $this->input->post("selMun");
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $username = $this->tank_auth->get_username();
         $informacion['username'] = $username;
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
         /* OBTENER DEPARTAMENTO Y MUNICIPIO DEL USUARIO */
-        $this->load->model('tank_auth/users', 'usuario');
-        $datos = $this->usuario->obtenerDepartamento($username);
-        $informacion['departamento'] = $datos[0]->Depto;
-        $informacion['municipio'] = $datos[0]->Muni;
+        $this->load->model('proyectoPep/proyecto_pep', 'PEP');
+        $this->load->model('pais/municipio', 'muni');
+        $pep = $this->PEP->obtenerProyectoPepPorMun($mun_id);
+        $municipio = $this->muni->obtenerNomMunDep($mun_id);
+        $informacion['departamento'] = $municipio[0]->depto;
+        $informacion['municipio'] = $municipio[0]->muni;
         //PROYECTO PEP ASOCIADO
-        $pro_pep_id = $datos[0]->id;
-        $informacion['proyectoPep'] = $datos[0]->Proyecto;
+        $pro_pep_id = $pep[0]->pro_pep_id;
+        // $informacion['proyectoPep'] = $datos[0]->Proyecto;
         $informacion['pro_pep_id'] = $pro_pep_id;
         /* INFORME PRELIMINAR ASPECTOS IMPORTANTES */
         $this->load->model('cumplimiento_minimo', 'cumm');
@@ -1077,6 +1092,31 @@ class Comp23_E1 extends CI_Controller {
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/etapa1/inforPreMunicipio_view', $informacion);
         $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function verificarProyectoPep($mun_id) {
+        $this->load->model('proyectoPep/proyecto_pep', 'PEP');
+        $rows = array();
+        $numfilas = 0;
+        if ($this->PEP->cuantosPep($mun_id) != 0) {
+
+            $rows[0]['id'] = $mun_id;
+            $rows[0]['cell'] = array($mun_id,
+                $this->PEP->cuantosPep($mun_id)
+            );
+            $numfilas = 1;
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
     }
 
     public function guardarInformePreliminar($inf_pre_id) {
@@ -1118,8 +1158,6 @@ class Comp23_E1 extends CI_Controller {
         /* ACTUALIZANDO ACUERDO MUNICIPAL */
         $this->load->model('etapa1-sub23/informe_preliminar', 'infPre');
         $this->infPre->actualizarInfPre($inf_pre_id, $inf_pre_firmam, $inf_pre_firmau, $inf_pre_firmai, $inf_pre_fecha_borrador, $inf_pre_aceptacion, $inf_pre_fecha_observacion, $inf_pre_observacion, $inf_pre_ruta_archivo, $inf_pre_aceptada);
-
-        redirect(base_url('componente2/comp23_E1/InformePreliminar?g=true'));
     }
 
     public function inventarioInformacion() {

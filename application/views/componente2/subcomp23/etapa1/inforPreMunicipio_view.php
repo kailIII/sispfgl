@@ -1,9 +1,6 @@
 <script type="text/javascript">        
     $(document).ready(function(){
-        /*ZONA DE BOTONES*/
-          <?php if (isset($guardo)){?>
-                $('#guardo').dialog();
-                <?php }?>
+        
         $("#guardar").button().click(function() {
             borrador= $('#inf_pre_fecha_borrador').datepicker("getDate");
             observacion=$( "#inf_pre_fecha_observacion" ).datepicker("getDate");
@@ -11,18 +8,54 @@
             if(borrador==null){
                 $( "#inf_pre_fecha_observacion" ).val('');
                 $( "#inf_pre_aceptacion" ).val('');
-                this.form.action='<?php echo base_url('componente2/comp23_E1/guardarInformePreliminar/' . $inf_pre_id); ?>';
+                $.ajax({
+                    type: "POST",
+                    url: '<?php echo base_url('componente2/comp23_E1/guardarInformePreliminar/' . $inf_pre_id); ?>',
+                    data: $("#informePreliminarForm").serialize(), // serializes the form's elements.
+                    success: function(data)
+                    {
+                        $('#efectivo').dialog('open');
+                    }
+                });
+                return false;
             }else{
                 if(observacion==null){
                     $("#inf_pre_aceptacion" ).val('');
-                    this.form.action='<?php echo base_url('componente2/comp23_E1/guardarInformePreliminar/' . $inf_pre_id); ?>';
+                    $.ajax({
+                        type: "POST",
+                        url: '<?php echo base_url('componente2/comp23_E1/guardarInformePreliminar/' . $inf_pre_id); ?>',
+                        data: $("#informePreliminarForm").serialize(), // serializes the form's elements.
+                        success: function(data)
+                        {
+                            $('#efectivo').dialog('open');
+                        }
+                    });
+                    return false;
                 }else{
                     if(borrador< observacion){
                         if(aprobacion==null){
-                            this.form.action='<?php echo base_url('componente2/comp23_E1/guardarInformePreliminar/' . $inf_pre_id); ?>';
+                            $.ajax({
+                                type: "POST",
+                                url: '<?php echo base_url('componente2/comp23_E1/guardarInformePreliminar/' . $inf_pre_id); ?>',
+                                data: $("#informePreliminarForm").serialize(), // serializes the form's elements.
+                                success: function(data)
+                                {
+                                    $('#efectivo').dialog('open');
+                                }
+                            });
+                            return false;
                         }else{
                             if(observacion < aprobacion){
-                                this.form.action='<?php echo base_url('componente2/comp23_E1/guardarInformePreliminar/' . $inf_pre_id); ?>';
+                                $.ajax({
+                                    type: "POST",
+                                    url: '<?php echo base_url('componente2/comp23_E1/guardarInformePreliminar/' . $inf_pre_id); ?>',
+                                    data: $("#informePreliminarForm").serialize(), // serializes the form's elements.
+                                    success: function(data)
+                                    {
+                                        $('#efectivo').dialog('open');
+                                    }
+                                });
+                                return false;
                             }else{
                                 $('#fechaValidacion').dialog('open');
                                 return false
@@ -36,7 +69,7 @@
             }  
         });
         $("#cancelar").button().click(function() {
-            document.location.href='<?php echo base_url(); ?>';
+            document.location.href='<?php echo base_url("componente2/comp23_E1/InformePreliminar"); ?>';
         });
         /*  PARA SUBIR EL ARCHIVO  */
         var button = $('#btn_subir'), interval;
@@ -126,7 +159,7 @@
     
 </script>
 
-<form method="post">
+<form id="informePreliminarForm" method="post">
     <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
     <h2 class="h2Titulos">Producto 6: Informe Preliminar del Municipio</h2>
 
@@ -205,7 +238,7 @@
     <center>
         <p > 
             <input type="submit" id="guardar" value="Guardar Informe Preliminar" />
-            <input type="button" id="cancelar" value="Cancelar" />
+            <input type="button" id="cancelar" value="Regresar" />
         </p>
     </center>
     <input id="inf_pre_ruta_archivo" name="inf_pre_ruta_archivo" <?php if (isset($inf_pre_ruta_archivo) && $inf_pre_ruta_archivo != '') { ?>value="<?php echo $inf_pre_ruta_archivo; ?>"<?php } ?> type="text" size="100" readonly="readonly" style="visibility: hidden"/>
@@ -225,7 +258,7 @@
         <p><img src="<?php echo base_url('resource/imagenes/cancel.png'); ?>" class="imagenError" />Las fechas deben de ir en orden ascendente</p>
     </center>
 </div>
-<div id="guardo" class="mensaje" title="Almacenado">
+<div id="efectivo" class="mensaje" title="Almacenado">
     <center>
         <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
     </center>
