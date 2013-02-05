@@ -26,9 +26,7 @@ class Comp23_E0 extends CI_Controller {
             $i = 0;
             foreach ($criterios as $aux) {
                 $rows[$i]['id'] = $aux->criterio_id;
-                $rows[$i]['cell'] = array($aux->criterio_id,
-                    $aux->criterio_nombre
-                );
+                $rows[$i]['cell'] = array($aux->criterio_id, $aux->criterio_nombre);
                 $i++;
             }
             array_multisort($rows, SORT_ASC);
@@ -49,6 +47,7 @@ class Comp23_E0 extends CI_Controller {
         echo $jsonresponse;
     }
 
+// http://localhost/sispfgl/gestionCriterios
     public function gestionCriterios() {
         $informacion['titulo'] = 'Gestion de Criterios';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
@@ -93,7 +92,7 @@ class Comp23_E0 extends CI_Controller {
             foreach ($solicitudes as $aux) {
                 $rows[$i]['id'] = $aux->sol_asis_id;
                 $rows[$i]['cell'] = array($aux->sol_asis_id,
-                    $aux->fecha_solicitud,
+                    date('d/m/Y', strtotime($aux->fecha_solicitud)),
                     $aux->nombre_solicitante,
                     $aux->cargo,
                     $aux->telefono
@@ -133,34 +132,54 @@ class Comp23_E0 extends CI_Controller {
         $this->load->view('plantilla/footer', $informacion);
     }
 
-    public function solicitudAsistenciaTecnica() {
+    public function modificarSolicitudAsistencia() {
         $informacion['titulo'] = 'Solicitud de Asistencia Técnica';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+
+        $this->load->model('pais/municipio');
+
+        $nombre = $this->municipio->obtenerNomMunDep($this->input->post('selMun'));
+        $informacion['departamento'] = $nombre[0]->depto;
+        $informacion['municipio'] = $nombre[0]->muni;
+        $informacion['id_mun'] = $this->input->post('selMun');
+
         $id_solicitud = $this->input->post("idfila");
+        $informacion['idfila'] = $this->input->post("idfila");
+        $this->load->model('etapa0-sub23/solicitud_asistencia', 'solicitud');
+        $tuplaSolicitud = $this->solicitud->obtenerSolicitudPorId($id_solicitud);
+
+        $informacion['nombre_solicitante'] = $tuplaSolicitud[0]->nombre_solicitante;
+        $informacion['cargo'] = $tuplaSolicitud[0]->cargo;
+        $informacion['telefono'] = $tuplaSolicitud[0]->telefono;
+        $informacion['sol_asi_ruta_archivo'] = $tuplaSolicitud[0]->sol_asi_ruta_archivo;
+        $informacion['leido_cri'] = $tuplaSolicitud[0]->c1;
+        $informacion['cumple_cri'] = $tuplaSolicitud[0]->c2;
+        $informacion['solicitud_fecha'] = $tuplaSolicitud[0]->fecha_solicitud;
+        $informacion['comentarios'] = $tuplaSolicitud[0]->comentarios;
+
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
-        $this->load->view('componente2/subcomp23/etapa0/solicitudAsistencia_view');
+        $this->load->view('componente2/subcomp23/etapa0/modificarSolicitudAsistencia_view');
         $this->load->view('plantilla/footer', $informacion);
     }
-    
-       public function agregarsolicitudAsistencia() {
+
+    public function agregarsolicitudAsistencia() {
         $informacion['titulo'] = 'Solicitud de Asistencia Técnica';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
         $this->load->model('pais/municipio');
-        $nombre=$this->municipio->obtenerNomMunDep($this->input->post('selMun'));
-        $informacion['departamento']=$nombre[0]->depto;
-        $informacion['municipio']=  $nombre[0]->muni;
-        $informacion['selMun']= $this->input->post('selMun');
+        $nombre = $this->municipio->obtenerNomMunDep($this->input->post('selMun'));
+        $informacion['departamento'] = $nombre[0]->depto;
+        $informacion['municipio'] = $nombre[0]->muni;
+        $informacion['selMun'] = $this->input->post('selMun');
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/etapa0/solicitudAsistencia_view');
         $this->load->view('plantilla/footer', $informacion);
     }
-    
 
     public function guardarsolicitud() {
         /* VARIABLES POST */
@@ -168,7 +187,8 @@ class Comp23_E0 extends CI_Controller {
         $c2 = $this->input->post("cumple_cri");
         $mun_id = $this->input->post("selMun");
         $fecha_solicitud = $this->input->post("solicitud_fecha");
-  
+        if ($fecha_solicitud == '')
+            $fecha_solicitud = null;
         $nombre_solicitante = $this->input->post("nombre_solicitante");
         $cargo = $this->input->post("cargo");
         $telefono = $this->input->post("telefono");
@@ -178,8 +198,63 @@ class Comp23_E0 extends CI_Controller {
         $this->load->model('etapa0-sub23/solicitud_asistencia', 'sol_asistencia');
         $this->sol_asistencia->agregarSolictudAsistencia($c1, $c2, $mun_id, $fecha_solicitud, $nombre_solicitante, $cargo, $telefono, $comentarios, $sol_asi_ruta_archivo);
         redirect('componente2/comp23_E0/gestionsolicitudAsistencia');
-        
-   }
+    }
+
+    public function actualizarSolicitud() {
+        /* VARIABLES POST */
+        $sol_asis_id = $this->input->post("idfila");
+        $c1 = $this->input->post("leido_cri");
+        $c2 = $this->input->post("cumple_cri");
+        $mun_id = $this->input->post("id_mun");
+        $fecha_solicitud = $this->input->post("solicitud_fecha");
+        if ($fecha_solicitud == '')
+            $fecha_solicitud = null;
+        $nombre_solicitante = $this->input->post("nombre_solicitante");
+        $cargo = $this->input->post("cargo");
+        $telefono = $this->input->post("telefono");
+        $comentarios = $this->input->post('comentarios');
+        $sol_asi_ruta_archivo = $this->input->post('sol_asi_ruta_archivo');
+
+        $this->load->model('etapa0-sub23/solicitud_asistencia', 'sol_asistencia');
+        $this->sol_asistencia->ActualizarSolictudAsistencia($sol_asis_id, $c1, $c2, $mun_id, $fecha_solicitud, $nombre_solicitante, $cargo, $telefono, $comentarios, $sol_asi_ruta_archivo);
+        redirect('componente2/comp23_E0/gestionsolicitudAsistencia');
+    }
+
+    public function borrarSolicitud() {
+        $sol_asis_id = $this->input->post("id");
+        $operacion = $this->input->post("oper");
+        $this->load->model('etapa0-sub23/solicitud_asistencia', 'solicitud');
+        switch ($operacion) {
+            case 'add':
+                echo 'no se puede';
+                break;
+            case 'edit':
+                echo 'no se puede';
+                break;
+            case 'del':
+                $this->solicitud->eliminarSolicitud($sol_asis_id);
+                break;
+        }
+    }
+
+    /* Integracion de Grupos     */
+
+    public function integracionDeGrupos() {
+
+        $informacion['titulo'] = 'Registro de Intregación de Grupos';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $this->load->model('pais/region');
+        $informacion['regiones'] = $this->region->obtenerRegiones();
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/subcomp23/etapa0/integracionDeGrupos_view');
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    /* Fin de Integracion de Grupos
+     */
 
     /* Plan de Trabajo de Consultora */
 

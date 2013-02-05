@@ -7,21 +7,22 @@
  */
 
 class Municipio extends CI_Model {
-    
+
     private $tabla = 'municipio';
 
     public function obtenerMunicipioPorDepartamento($dep_id) {
-        $this->db->where('dep_id',$dep_id);
+        $this->db->where('dep_id', $dep_id);
         $consulta = $this->db->get($this->tabla);
         return $consulta->result();
     }
-       public function obtenerTodosLosMunicipios() {
-       $cadena="SELECT mun_id mun_id,reg_nombre,dep_nombre,mun_nombre FROM departamento,municipio,region WHERE departamento.dep_id = municipio.dep_id AND region.reg_id = departamento.reg_id;";
-       $consulta=  $this->db->get($cadena);  
-       return $consulta->result();
+
+    public function obtenerTodosLosMunicipios() {
+        $cadena = "SELECT mun_id mun_id,reg_nombre,dep_nombre,mun_nombre FROM departamento,municipio,region WHERE departamento.dep_id = municipio.dep_id AND region.reg_id = departamento.reg_id;";
+        $consulta = $this->db->get($cadena);
+        return $consulta->result();
     }
-    
-   function obtenerNomMunDep($mun_id) {
+
+    function obtenerNomMunDep($mun_id) {
         $this->db->select('departamento.dep_nombre depto,municipio.mun_nombre muni');
         $this->db->from($this->tabla);
         $this->db->join('departamento', 'departamento.dep_id = municipio.dep_id');
@@ -29,8 +30,15 @@ class Municipio extends CI_Model {
         $query = $this->db->get();
         return $query->result();
     }
- 
-    
+
+    function obtenerMunicipiosPorConsultora($cons_id) {
+  $query="select municipio.mun_id municipio,municipio.mun_nombre from municipio where municipio.mun_id not in 
+(select municipio.mun_id municipio from consultora join municipio on consultora.cons_id=municipio.cons_id where consultora.cons_id=?)";
+  $consulta=  $this->db->query($query,array($cons_id));   
+  return $consulta->result();
+        
+    }
+
 }
 
 ?>

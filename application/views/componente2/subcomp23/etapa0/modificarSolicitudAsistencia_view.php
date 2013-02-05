@@ -3,8 +3,8 @@
         /*VARIABLES*/
         var tabla=$("#criteriosE0");
        
-        $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/comp23_E0/guardarSolicitud'); ?>';
+        $("#modificar").button().click(function() {
+            this.form.action='<?php echo base_url('componente2/comp23_E0/actualizarSolicitud'); ?>';
         });
         
         $("#cancelar").button().click(function() {
@@ -112,6 +112,7 @@
         <td ><?php echo $municipio ?></td>    
         </tr>
     </table>
+   
     <table>
         <tr><td style="width: 100px"></td>
         <td>
@@ -153,15 +154,15 @@
         </tr>
         <tr>
         <td class="textD"><strong>Nombre del solicitante: </strong></td>
-        <td><input id="nombre_solicitante" name="nombre_solicitante" type="text" size="70" value="" /></td>
+        <td><input id="nombre_solicitante" name="nombre_solicitante" type="text" size="70" value="<?php echo $nombre_solicitante?>" /></td>
         </tr>
         <tr>
         <td class="textD"><strong>Cargo: </strong></td>
-        <td><input id="cargo" name="cargo" type="text" size="70" value=""/><br/></td>
+        <td><input id="cargo" name="cargo" type="text" size="70" value="<?php echo $cargo ?>"/><br/></td>
         </tr>
         <tr>
         <td class="textD"><strong>Telefono:</strong> </td>
-        <td><input id="telefono" name="telefono"type="text" size="9" value=""/></td>
+        <td><input id="telefono" name="telefono"type="text" size="9" value="<?php echo $telefono ?>"/></td>
         </tr>
     </table> 
 
@@ -186,17 +187,15 @@
         </tr>
     </table>
 
-<input id="selMun" type="text" name="selMun" value="<?php echo $selMun?>" style="visibility: hidden"/>
-
-
     <center style="position: relative;top: 20px">
         <div>
-            <p><input type="submit" id="guardar" value="Guardar Solicitud" />
+            <p><input type="submit" id="modificar" value="Modificar Solicitud" />
                 <input type="button" id="cancelar" value="Cancelar" />
             </p>
         </div>
     </center>
     <input id="acu_mun_ruta_archivo" name="acu_mun_ruta_archivo" <?php if (isset($acu_mun_ruta_archivo) && $acu_mun_ruta_archivo != '') { ?>value="<?php echo $acu_mun_ruta_archivo; ?>"<?php } ?> type="text" size="100" readonly="readonly" style="visibility: hidden"/>
-
+<input id="idfila" type="text" name="idfila" value="<?php echo $idfila?>" style="visibility: hidden"/>
+<input id="id_mun" type="text" name="id_mun" value="<?php echo $id_mun?>" style="visibility: hidden"/>
 </form>
 
