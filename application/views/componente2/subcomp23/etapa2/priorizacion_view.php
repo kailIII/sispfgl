@@ -1,6 +1,9 @@
 <script type="text/javascript">        
     $(document).ready(function(){
         /*ZONA DE BOTONES*/
+         <?php if (isset($guardo)){?>
+                $('#guardo').dialog();
+                <?php }?>
         $("#guardar").button().click(function() {
             this.form.action='<?php echo base_url('componente2/comp23_E2/guardarPriorizacion') . '/' . $pri_id; ?>';
         });
@@ -23,7 +26,7 @@
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         /*FIN DEL DATEPICKER*/
         /*ZONA DE VALIDACIONES*/
@@ -102,22 +105,22 @@
                     editrules:{custom:true, custom_func:validar}
                 },
                 {name:'pro_ide_monto',index:'pro_ide_monto',width:80,editable:true,
-                    editoptions:{size:25},  
+                    editoptions:{size:25,dataInit: function(elem){$(elem).bind("keypress", function(e) {return numeros(e)})}}, 
                     formoptions:{ label: "Monto",elmprefix:"(*)"},
                     editrules:{required:true,number:true,minvalue:0} 
                 },
                 {name:'pro_ide_plazoejec',index:'pro_ide_plazoejec',width:120,editable:true,
-                    editoptions:{size:15}, 
+                    editoptions:{ size:15,dataInit: function(elem){$(elem).bind("keypress", function(e) {return numeros(e)})}}, 
                     formoptions:{label: "Plazo Ejecución",elmprefix:"(*)",elmsuffix:"meses"},
                     editrules:{required:true,number:true,minvalue:0} 
                 },
                 {name:'pro_ide_pbh',index:'pro_ide_pbh',width:80,editable:true,
-                    editoptions:{size:25},  
+                    editoptions:{ size:25,dataInit: function(elem){$(elem).bind("keypress", function(e) {return numeros(e)})}}, 
                     formoptions:{label: "Población Beneficiaria Hombres",elmprefix:"(*)"},
                     editrules:{required:true,number:true,minvalue:0} 
                 },
                 {name:'pro_ide_pbm',index:'pro_ide_pbm',width:80,editable:true,
-                    editoptions:{size:25},  
+                    editoptions:{ size:25,dataInit: function(elem){$(elem).bind("keypress", function(e) {return numeros(e)})}},   
                     formoptions:{label: "Población Beneficiaria Mujeres",elmprefix:"(*)"},
                     editrules:{required:true,number:true,minvalue:0} 
                 },
@@ -191,7 +194,7 @@
     </table>
     <table>
         <tr>
-        <td  ><strong>Fecha reunión: </strong><input readonly="readonly" id="pri_fecha" name="pri_fecha" type="text"<?php if (isset($pri_fecha)) { ?> value='<?php echo date('d/m/y', strtotime($pri_fecha)); ?>'<?php } ?> size="10" /></td>
+        <td  ><strong>Fecha reunión: </strong><input readonly="readonly" id="pri_fecha" name="pri_fecha" type="text"<?php if (isset($pri_fecha)) { ?> value='<?php echo date('d-m-Y', strtotime($pri_fecha)); ?>'<?php } ?> size="10" /></td>
         </tr>
         <tr>
         <td colspan="2"></td>
@@ -226,5 +229,8 @@
 <div id="mensaje2" class="mensaje" title="Aviso">
     <p>Debe Seleccionar una fila para continuar</p>
 </div>
-
-
+<div id="guardo" class="mensaje" title="Almacenado">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
+    </center>
+</div>

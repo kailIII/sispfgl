@@ -12,7 +12,7 @@
             showOn: 'both',
             buttonImage: '<?php echo base_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         /*FIN DEL DATEPICKER*/
         /*ZONA DE VALIDACIONES*/
@@ -25,7 +25,7 @@
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','Nombre','Nombre Completo','Sexo','Cargo','Teléfono','Participa',''],
+            colNames:['id','Nombre','Nombre Completo','Sexo','Cargo','Teléfono','Asistencia',''],
             colModel:[
                 {name:'par_id',index:'par_id', width:40,editable:false,editoptions:{size:15} },
                 {name:'par_dui',index:'par_dui', width:100,editable:false},
@@ -84,14 +84,36 @@
         });
         /*FIN DIALOGOS VALIDACION*/
         //Validar formulario
-        $("#reunionForm").validate();    
+        $("#reunionForm").validate({
+            rules: {
+                reu_fecha: {
+                    required: true
+                },
+                reu_duracion_horas: {
+                    required: true,
+                    number: true,
+                    min: 0,
+                    max:12
+                },
+                reu_duracion_minutos: {
+                    required: true,
+                    number: true,
+                    min: 0,
+                    max:59
+                },
+                reu_tema: {
+                    required: true,
+                    maxlength: 200
+                }     
+            }
+        });      
     });
 </script>
 <form id="reunionForm" method="post">
     <h2 class="h2Titulos">Etapa 2: Diagnóstico del Municipio</h2>
     <h2 class="h2Titulos">Producto 1: Reuniones del Diagnóstico</h2>
     <br/><br/>
-     <table>
+    <table>
         <tr>
         <td class="tdLugar" ><strong>Departamento:</strong></td>
         <td><?php echo $departamento ?></td>
@@ -102,13 +124,19 @@
     </table>
     <table>
         <tr>
-        <td style="width: 200px"><strong>No.</strong><input type="text" id="reu_numero" value="<?php echo $reu_numero ?>" name="reu_numero" size="5" readonly="readonly"/> </td>
-        <td colspan="2" style="width: 300px">
-            <strong>Fecha:</strong>
-            <input id="reu_fecha" name="reu_fecha" value="<?php echo date_format(date_create($reu_fecha),"d-m-Y") ;?>" readonly="readonly" class="required"  size="10"/>
+        <td width="300">
+            No. de Reunión: <input type="text" id="reu_numero" value="<?php echo $reu_numero ?>" name="reu_numero" size="5" readonly="readonly"/> </td>
+        <td width="200">
+            Fecha: 
+            <input value="<?php echo date_format(date_create($reu_fecha), "d-m-Y") ?>" id="reu_fecha" name="reu_fecha" readonly="readonly" size="10"/>
         </td>
-        <td><strong>Duración en Horas:</strong>
-            <input type="text" id="reu_duracion_horas" value="<?php echo $reu_duracion_horas ?>" name="reu_duracion_horas" size="5" class="required number"/>
+        <td width="160" >
+            Duración:
+            <input value="<?php echo $reu_duracion_horas ?>" type="text" id="reu_duracion_horas" name="reu_duracion_horas" size="3"/> horas
+        </td>
+        <td width="200">
+            con 
+            <input value="<?php echo $reu_duracion_minutos ?>" type="text" id="reu_duracion_minutos" name="reu_duracion_minutos" size="3"/> minutos
         </td>
         </tr>
     </table>

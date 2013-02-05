@@ -309,6 +309,109 @@ class  componente3 extends CI_Controller {
         echo $jsonresponse;
     }
     
+    public function cargar_act_divu() {
+        $this->load->model('componente3/componente3_model');
+        $actividades = $this->componente3_model->get_actividades_divu();
+        $numfilas = count($actividades);
+
+        $i = 0;
+        foreach ($actividades as $aux) {
+            $rows[$i]['id'] = $aux->divu_id;
+            $rows[$i]['cell'] = array($aux->divu_id,
+                $aux->divu_nombre,
+                $aux->divu_fecha,
+                $aux->divu_tipo,
+                $aux->divu_responsable,
+                $this->componente3_model->get_depto_nombre($aux->divu_municipio),
+                $this->componente3_model->get_mun_nombre($aux->divu_municipio)
+            );
+            $i++;
+        }
+
+        if ($numfilas != 0) {
+            array_multisort($rows, SORT_ASC);
+        } else {
+            //$rows[0]['id'] = 0;
+           // $rows[0]['cell'] = array('0', ' ', ' ', ' ', ' ', ' ');
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+    
+    public function guardar_divu() {
+        
+        $act_nombre = $this->input->post("act_nombre");
+        $act_fecha = $this->input->post("act_fecha");
+        $act_tipo = strtoupper($this->input->post("act_tipo"));
+        $act_responsable = $this->input->post("act_responsable");
+        $act_mun = $this->input->post("act_mun");
+        $operacion = $this->input->post('oper');
+
+        $this->load->model('componente3/componente3_model');
+        $this->componente3_model->insertar_divu($act_nombre, $act_fecha, $act_tipo, $act_responsable, $act_mun);
+
+    }
+    
+    public function cargarAsistentes_divu($divu_id) {
+		if(!isset($divu_id))
+			$divu_id='';
+        $this->load->model('componente3/componente3_model');
+        $asistentes = $this->componente3_model->get_asistentes_divu($divu_id);
+        $numfilas = count($asistentes);
+
+        $i = 0;
+        foreach ($asistentes as $aux) {
+            $rows[$i]['id'] = $aux->asis_id;
+            $rows[$i]['cell'] = array($aux->asis_id,
+                $aux->asis_nombre,
+                $aux->asis_sexo,
+                $aux->asis_cargo,
+                $aux->asis_sector
+            );
+            $i++;
+        }
+
+        if ($numfilas != 0) {
+            array_multisort($rows, SORT_ASC);
+        } else {
+            //$rows[0]['id'] = 0;
+           // $rows[0]['cell'] = array('0', ' ', ' ', ' ', ' ', ' ');
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+    
+    
+    public function guardar_asis_divu() {
+        
+        $asis_nombre = $this->input->post("par_nombre");
+        $asis_sexo = $this->input->post("par_sexo");
+        $asis_sector = strtoupper($this->input->post("par_sector"));
+        $asis_cargo = $this->input->post("par_cargo");
+        $divu_id = $this->input->post("act_id");
+        
+        $this->load->model('componente3/componente3_model');
+        $this->componente3_model->insertar_asis_divu($asis_nombre, $asis_sexo, $asis_sector, $asis_cargo, $divu_id);
+
+    }
     
     public function cargarAsistentes_dsat() {
         $numfilas=0;

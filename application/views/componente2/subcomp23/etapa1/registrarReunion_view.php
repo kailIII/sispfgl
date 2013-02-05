@@ -54,7 +54,7 @@
             showOn: 'both',
             buttonImage: '<?php echo base_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         /*FIN DEL DATEPICKER*/
         /*ZONA DE VALIDACIONES*/
@@ -66,8 +66,6 @@
             if (value == 0 ) return [false,"Seleccione la institucion del Participante"];
             else return [true,""];
         }
-        //Validar formulario
-        $("#reunionForm").validate();
         /*FIN ZONA VALIDACIONES*/
         /*GRID PARTICIPANTES*/
         tabla.jqGrid({
@@ -91,7 +89,7 @@
                     editrules:{required:true} 
                 },
                 {name:'par_sexo',index:'par_sexo',editable:true,edittype:"select",width:50,
-                    editoptions:{ value: '0:Seleccione;F:Femenino;M:Masculino' }, 
+                    editoptions:{ value: '0:Seleccione;M:Mujer;H:Hombre' }, 
                     formoptions:{ label: "Sexo",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validaSexo}
                 },
@@ -152,7 +150,32 @@
             }
         });
         /*FIN DIALOGOS VALIDACION*/
-            
+        $("#reunionForm").validate({
+            rules: {
+                reu_fecha: {
+                    required: true
+                },
+                reu_duracion_horas: {
+                    required: true,
+                    number: true,
+                    min: 0,
+                    max:12
+                },
+                reu_duracion_minutos: {
+                    required: true,
+                    number: true,
+                    min: 0,
+                    max:59
+                },
+                reu_tema: {
+                    required: true,
+                    maxlength: 200
+                },
+                reu_resultado: {
+                    required: true
+                }       
+            }
+        });   
     });
 </script>
 <form id="reunionForm" method="post" action="">
@@ -173,20 +196,24 @@
         <tr>
         <td width="300">
             No. de Reunión: <input type="text" id="reu_numero" value="<?php echo $reu_numero ?>" name="reu_numero" size="5" readonly="readonly"/> </td>
-        <td width="300">
+        <td width="200">
             Fecha: 
-            <input id="reu_fecha" name="reu_fecha" readonly="readonly" class="required"  size="10"/>
+            <input id="reu_fecha" name="reu_fecha" readonly="readonly" size="10"/>
         </td>
-        <td width="300">
-            Duración en Horas:
-            <input type="text" id="reu_duracion_horas" name="reu_duracion_horas" size="5" class="required number"/>
+        <td width="160" >
+           Duración:
+            <input type="text" id="reu_duracion_horas" name="reu_duracion_horas" value="0" size="3"/> horas
         </td>
-        <td>
+        <td width="200">
+            con 
+            <input type="text" id="reu_duracion_minutos" name="reu_duracion_minutos" value="0" size="3"/> minutos
+        </td>
+        
             </tr>
 
     </table>
 
-    <p>Tema o Agenda a Desarrollar: <textarea id="reu_tema" name="reu_tema" cols="50" rows="2" class="required" maxlength="200" ></textarea></p>
+    <p>Tema o Agenda a Desarrollar: <textarea id="reu_tema" name="reu_tema" cols="50" rows="2" ></textarea></p>
     <table id="participantes"></table>
     <div id="pagerParticipantes"></div>
     <div style="position: relative;left: 275px;top: 5px;">
@@ -200,7 +227,7 @@
         <tr>  
         <td>
             <p>Resultado de la Reunión:<br/> 
-                <textarea id="reu_resultado" name="reu_resultado" cols="48" rows="5" class="required" ></textarea></p>
+                <textarea id="reu_resultado" name="reu_resultado" cols="48" rows="5" ></textarea></p>
         </td>
         <td>
         <fieldset   style="border-color: #2F589F;height:85px;width:225px;position: relative;left: 50px;">

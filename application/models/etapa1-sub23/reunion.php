@@ -49,10 +49,11 @@ class Reunion extends CI_Model {
         return $consulta->result_array();
     }
 
-    public function actualizarReunion($reu_fecha, $reu_duracion_horas, $reu_tema, $reu_resultado, $reu_observacion, $reu_id) {
+    public function actualizarReunion($reu_fecha, $reu_duracion_horas,$reu_duracion_minutos, $reu_tema, $reu_resultado, $reu_observacion, $reu_id) {
         $datos = array(
             'reu_fecha' => $reu_fecha,
             'reu_duracion_horas' => $reu_duracion_horas,
+            'reu_duracion_minutos' => $reu_duracion_minutos,
             'reu_observacion' => $reu_observacion,
             'reu_resultado' => $reu_resultado,
             'reu_tema' => $reu_tema

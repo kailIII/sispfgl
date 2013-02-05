@@ -113,43 +113,43 @@
         <tr><td style="width: 100px"> 
         <td class="textD"><strong>Fecha de orden de inicio: </strong> </td>
         <td>
-            <input <?php if (isset($f_ord_ini)) { ?> value='<?php echo date('d/m/y', strtotime($f_ord_ini)); ?>'<?php } ?>id="f_ord_ini" name="f_ord_ini" type="text" size="10" readonly="readonly"/>
+            <input <?php if (isset($f_ord_ini)) { ?> value='<?php echo date('d/m/Y', strtotime($f_ord_ini)); ?>'<?php } ?>id="f_ord_ini" name="f_ord_ini" type="text" size="10" readonly="readonly"/>
         </td>
         </tr>   
         <tr><td style="width: 100px"> 
         <td class="textD"><strong>Fecha de entrega de plan: </strong> </td>
         <td>
-            <input <?php if (isset($f_ent_pla)) { ?> value='<?php echo date('d/m/y', strtotime($f_ent_pla)); ?>'<?php } ?>id="f_ent_pla" name="f_ent_pla" type="text" size="10" readonly="readonly"/>
+            <input <?php if (isset($f_ent_pla)) { ?> value='<?php echo date('d/m/Y', strtotime($f_ent_pla)); ?>'<?php } ?>id="f_ent_pla" name="f_ent_pla" type="text" size="10" readonly="readonly"/>
         </td>
         </tr>  
         <tr><td style="width: 100px"> 
         <td class="textD"><strong>Fecha de recepción de observaciones: </strong> </td>
         <td>
-            <input <?php if (isset($f_rec_obs)) { ?> value='<?php echo date('d/m/y', strtotime($f_rec_obs)); ?>'<?php } ?>id="f_rec_obs" name="f_rec_obs" type="text" size="10" readonly="readonly"/>
+            <input <?php if (isset($f_rec_obs)) { ?> value='<?php echo date('d/m/Y', strtotime($f_rec_obs)); ?>'<?php } ?>id="f_rec_obs" name="f_rec_obs" type="text" size="10" readonly="readonly"/>
         </td>
         </tr>  
         <tr><td style="width: 100px"> 
-        <td class="textD"><strong>Fecha de superación de observaciones: </strong> </td>
+        <td class="textD"><strong>Fecha de visto bueno: </strong> </td>
         <td>
-            <input <?php if (isset($f_sup_obs)) { ?> value='<?php echo date('d/m/y', strtotime(f_sup_obs)); ?>'<?php } ?>id="f_sup_obs" name="f_sup_obs" type="text" size="10" readonly="readonly"/>
+            <input <?php if (isset($f_sup_obs)) { ?> value='<?php echo date('d/m/Y', strtotime(f_sup_obs)); ?>'<?php } ?>id="f_sup_obs" name="f_sup_obs" type="text" size="10" readonly="readonly"/>
         </td>
         </tr>  
         <tr><td style="width: 100px"> 
         <td class="textD"><strong>Fecha de visto bueno al plan: </strong> </td>
         <td>
-            <input <?php if (isset($f_vis_bue_plan)) { ?> value='<?php echo date('d/m/y', strtotime($f_vis_bue_plan)); ?>'<?php } ?>id="f_vis_bue_plan" name="f_vis_bue_plan" type="text" size="10" readonly="readonly"/>
+            <input <?php if (isset($f_vis_bue_plan)) { ?> value='<?php echo date('d/m/Y', strtotime($f_vis_bue_plan)); ?>'<?php } ?>id="f_vis_bue_plan" name="f_vis_bue_plan" type="text" size="10" readonly="readonly"/>
         </td>
         </tr>  
         <tr><td style="width: 100px"> 
         <td class="textD"><strong>Fecha de presentación al Consejo Municipal: </strong> </td>
         <td>
-            <input <?php if (isset($f_rec_con_mun)) { ?> value='<?php echo date('d/m/y', strtotime($f_rec_con_mun)); ?>'<?php } ?>id="f_rec_con_mun" name="f_rec_con_mun" type="text" size="10" readonly="readonly"/>
+            <input <?php if (isset($f_rec_con_mun)) { ?> value='<?php echo date('d/m/Y', strtotime($f_rec_con_mun)); ?>'<?php } ?>id="f_rec_con_mun" name="f_rec_con_mun" type="text" size="10" readonly="readonly"/>
         </td>
         </tr>  
         <tr><td style="width: 100px"> 
         <td class="textD"><strong>Fecha de recepción del producto final UEP: </strong> </td>
         <td>
-            <input <?php if (isset($f_rec_pro_fin)) { ?> value='<?php echo date('d/m/y', strtotime($f_rec_pro_fin)); ?>'<?php } ?>id="f_rec_pro_fin" name="f_rec_pro_fin" type="text" size="10" readonly="readonly"/>
+            <input <?php if (isset($f_rec_pro_fin)) { ?> value='<?php echo date('d/m/Y', strtotime($f_rec_pro_fin)); ?>'<?php } ?>id="f_rec_pro_fin" name="f_rec_pro_fin" type="text" size="10" readonly="readonly"/>
         </td>
         </tr>  
 
@@ -165,7 +165,7 @@
         </td>
         <td style="width: 150px"> </td>
         <td><div id="btn_subir"></div></td>
-        <td><input class="letraazul" type="text" id="vinieta" value="Subir Acta" size="30" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinieta" readonly="readonly" value="Subir Acta" size="30" style="border: none"/></td>
 
 
         </tr>
@@ -178,7 +178,7 @@
         </td>
         <td style="width: 150px"> </td>
         <td><a <?php if (isset($acu_mun_ruta_archivo) && $acu_mun_ruta_archivo != '') { ?> href="<?php echo base_url() . $acu_mun_ruta_archivo; ?>"<?php } ?>  id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
-        <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($acu_mun_ruta_archivo) && $acu_mun_ruta_archivo != '') { ?>value="Descargar Acta"<?php } else { ?> value="No Hay Actas Por Descargar" <?php } ?>size="35" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinietaD" readonly="readonly" <?php if (isset($acu_mun_ruta_archivo) && $acu_mun_ruta_archivo != '') { ?>value="Descargar Acta"<?php } else { ?> value="No Hay Actas Por Descargar" <?php } ?>size="35" style="border: none"/></td>
 
 
 

@@ -148,7 +148,7 @@
         <tr>
         <td class="textD"><strong>Fecha de solicitud: </strong> </td>
         <td>
-            <input <?php if (isset($solicitud_fecha)) { ?> value='<?php echo date('d/m/y', strtotime($solicitud_fecha)); ?>'<?php } ?>id="solicitud_fecha" name="solicitud_fecha" type="text" size="10" readonly="readonly"/>
+            <input <?php if (isset($solicitud_fecha)) { ?> value='<?php echo date('d/m/Y', strtotime($solicitud_fecha)); ?>'<?php } ?>id="solicitud_fecha" name="solicitud_fecha" type="text" size="10" readonly="readonly"/>
         </td>
         </tr>
         <tr>
@@ -175,11 +175,11 @@
             <table>
                 <tr>
                 <td><div id="btn_subir"></div></td>
-                <td><input class="letraazul" type="text" id="vinieta" value="Subir Solicitud" size="30" style="border: none"/></td>
+                <td><input class="letraazul" type="text" id="vinieta" readonly="readonly" value="Subir Solicitud" size="30" style="border: none"/></td>
                 </tr>
                 <tr>
                 <td><a <?php if (isset($acu_mun_ruta_archivo) && $acu_mun_ruta_archivo != '') { ?> href="<?php echo base_url() . $acu_mun_ruta_archivo; ?>"<?php } ?>  id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
-                <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($acu_mun_ruta_archivo) && $acu_mun_ruta_archivo != '') { ?>value="Descargar Solicitud"<?php } else { ?> value="No Hay Solicitudes Por Descargar" <?php } ?>size="35" style="border: none"/></td>
+                <td><input class="letraazul" type="text" id="vinietaD" readonly="readonly" <?php if (isset($acu_mun_ruta_archivo) && $acu_mun_ruta_archivo != '') { ?>value="Descargar Solicitud"<?php } else { ?> value="No Hay Solicitudes Por Descargar" <?php } ?>size="35" style="border: none"/></td>
                 </tr>
             </table> 
         </td>

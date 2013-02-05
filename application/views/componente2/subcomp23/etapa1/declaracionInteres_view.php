@@ -1,5 +1,8 @@
 <script type="text/javascript">        
     $(document).ready(function(){
+         <?php if (isset($guardo)){?>
+                $('#guardo').dialog();
+                <?php }?>
         /*VARIABLES*/
         var tabla=$("#participantes");
         /*ZONA DE BOTONES*/
@@ -54,7 +57,7 @@
             showOn: 'both',
             buttonImage: '<?php echo base_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         /*FIN DEL DATEPICKER*/
         /*ZONA DE VALIDACIONES*/
@@ -66,45 +69,61 @@
             if (value == 0 ) return [false,"Seleccione la institucion del Participante"];
             else return [true,""];
         }
+        
+        function validar(value, colname) {
+            if (value == 0 ) return [false,"Debe Seleccionar una Opción"];
+            else return [true,""];
+        }
         /*FIN ZONA VALIDACIONES*/
         /*GRID PARTICIPANTES*/
         var tabla=$("#participantes");
         tabla.jqGrid({
-            url:'<?php echo base_url('componente2/comp23_E1/cargarParticipantes') ?>/dec_int_id/<?php echo $dec_int_id; ?>',
+            url:'<?php echo base_url('componente2/comp23_E1/cargarParticipantes4') ?>/dec_int_id/<?php echo $dec_int_id; ?>',
             editurl:'<?php echo base_url('componente2/comp23_E1/gestionParticipantes') ?>/declaracion_interes/dec_int_id/<?php echo $dec_int_id; ?>',
             datatype:'json',
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','Nombres','Apellidos','Sexo','Institución','Cargo'],
+            colNames:['id','Nombres','Apellidos','Edad','Sexo','Nombre','Cargo','Tipo'],
             colModel:[
                 {name:'par_id',index:'par_id', width:40,editable:false,editoptions:{size:15} },
-                {name:'par_nombre',index:'par_nombre',width:200,editable:true,
+                {name:'par_nombre',index:'par_nombre',width:100,editable:true,
                     editoptions:{size:25,maxlength:50}, 
                     formoptions:{label: "Nombres",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
-                {name:'par_apellido',index:'par_apellido',width:200,editable:true,
+                {name:'par_apellido',index:'par_apellido',width:100,editable:true,
                     editoptions:{size:25,maxlength:50}, 
                     formoptions:{label: "Apellidos",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
+                {name:'par_edad',index:'par_edad',width:80,editable:true,
+                    editoptions:{ size:15,dataInit: function(elem){$(elem).bind("keypress", function(e) {return numeros(e)})}}, 
+                    formoptions:{ label: "Edad",elmprefix:"(*)"},
+                    editrules:{required:true,minValue:12,number:true} 
+                },
                 {name:'par_sexo',index:'par_sexo',editable:true,edittype:"select",width:50,
-                    editoptions:{ value: '0:Seleccione;F:Femenino;M:Masculino' }, 
+                    editoptions:{ value: '0:Seleccione;M:Mujer;H:Hombre' }, 
                     formoptions:{ label: "Sexo",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validaSexo}
                 },
                 {name:'par_institucion',index:'par_institucion',editable:true,
                     edittype:"select",width:250,
                     editoptions:{ dataUrl:'<?php echo base_url('componente2/comp23_E1/cargarInstituciones'); ?>'}, 
-                    formoptions:{ label: "Institución",elmprefix:"(*)"},
+                    formoptions:{ label: "Nombre:",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validaInstitucion}
                 },
                 {name:'par_cargo',index:'par_cargo',width:120,editable:true,
                     editoptions:{size:25,maxlength:30}, 
                     formoptions:{ label: "Cargo",elmprefix:"(*)"},
                     editrules:{required:true} 
-                }
+                },
+                {name:'par_tipo',index:'par_tipo',width:80,edittype:"select",
+                    editable:true,
+                    editoptions:{ value: '0:Seleccione;C:Comunidad;S:Sector;I:Institución' }, 
+                    formoptions:{ label: "Tipo",elmprefix:"(*)"},
+                    editrules:{custom:true, custom_func:validar}
+                },
             ],
             multiselect: false,
             caption: "Participantes en la Asamblea",
@@ -168,9 +187,10 @@
                 if(response!='error'){
                     $('#vinieta').val('Subido con Exito');
                     this.enable();			
-                    $('#vinietaD').val('Descargar Archivo');
+                    ext= (response.substring(response.lastIndexOf("."))).toLowerCase();
+                    nombre=response.substring(response.lastIndexOf("/")).toLowerCase().replace('/','');
+                    $('#vinietaD').val('Descargar '+nombre);
                     $('#dec_int_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO
-                    ext= (response.substring(response.lastIndexOf("."))).toLowerCase(); 
                     if (ext=='.pdf'){
                         $('#btn_descargar').attr({
                             'href': '<?php echo base_url(); ?>'+response,
@@ -213,7 +233,7 @@
         </tr>
     </table>
     <table>
-        <td><strong>Fecha: </strong><input <?php if (isset($dec_int_fecha)) { ?> value='<?php echo date('d/m/y', strtotime($dec_int_fecha)); ?>'<?php } ?> id="dec_int_fecha" name="dec_int_fecha" type="text" size="10"/></td>
+        <td><strong>Fecha: </strong><input <?php if (isset($dec_int_fecha)) { ?> value='<?php echo date('d-m-Y', strtotime($dec_int_fecha)); ?>'<?php } ?> id="dec_int_fecha" name="dec_int_fecha" type="text" size="10"/></td>
         </tr>
     </table>
 
@@ -259,13 +279,14 @@
 
     </table>
     <table>
+        <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente. Solo se permiten archivos con extensión pdf, doc, docx</td></tr>
         <tr>
         <td><div id="btn_subir"></div></td>
-        <td><input class="letraazul" type="text" id="vinieta" value="Subir Declaración de Interés" size="30" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinieta" readonly="readonly" value="Subir Declaración de Interés" size="30" style="border: none"/></td>
         </tr>
         <tr>
         <td><a <?php if (isset($dec_int_ruta_archivo) && $dec_int_ruta_archivo != '') { ?> href="<?php echo base_url() . $dec_int_ruta_archivo; ?>"<?php } ?>  id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
-        <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($dec_int_ruta_archivo) && $dec_int_ruta_archivo != '') { ?>value="Descargar Declaración de Interés"<?php } else { ?> value="No Hay Ninguna Declaración Para Descargar" <?php } ?>size="50" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinietaD" readonly="readonly" <?php if (isset($dec_int_ruta_archivo) && $dec_int_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo; ?>"<?php } else { ?> value="No Hay Ninguna Declaración Para Descargar" <?php } ?>size="50" style="border: none"/></td>
         </tr>
     </table>
     <center style="position: relative;top: 20px">
@@ -285,4 +306,9 @@
 </div>
 <div id="extension" class="mensaje" title="Error">
     <p>Solo se permiten archivos con la extensión pdf|doc|docx</p>
+</div>
+<div id="guardo" class="mensaje" title="Almacenado">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
+    </center>
 </div>

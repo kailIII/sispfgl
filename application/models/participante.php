@@ -33,8 +33,14 @@ class Participante extends CI_Model {
         $consulta = $this->db->get($this->tabla);
         return $consulta->result();
     }
+    public function obtenerMaximado() {
+         $this->db->select_max('par_id');
+        $consulta = $this->db->get($this->tabla);
+        return $consulta->result();
+    }
+    
 
-    public function agregarParticipantes($campo, $id_campo, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo, $par_tel, $par_dui, $par_edad, $par_proviene, $par_nivel_esco) {
+    public function agregarParticipantes($campo, $id_campo, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo, $par_tel, $par_dui, $par_edad, $par_proviene, $par_nivel_esco,$par_tipo) {
         $datos = array(
             'par_nombre' => $par_nombre,
             'par_apellido' => $par_apellido,
@@ -46,12 +52,13 @@ class Participante extends CI_Model {
             'par_edad' => $par_edad,
             'par_proviene' => $par_proviene,
             'par_nivel_esco' => $par_nivel_esco,
+            'par_tipo'=>$par_tipo,
             $campo => $id_campo
         );
         $this->db->insert($this->tabla, $datos);
     }
 
-    public function editarParticipantes($par_id, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo, $par_tel, $par_dui, $par_edad, $par_proviene, $par_nivel_esco) {
+    public function editarParticipantes($par_id, $par_nombre, $par_apellido, $par_sexo, $ins_id, $par_cargo, $par_tel, $par_dui, $par_edad, $par_proviene, $par_nivel_esco,$par_tipo) {
         $datos = array(
             'par_nombre' => $par_nombre,
             'par_apellido' => $par_apellido,
@@ -62,7 +69,8 @@ class Participante extends CI_Model {
             'par_dui' => $par_dui,
             'par_edad' => $par_edad,
             'par_proviene' => $par_proviene,
-            'par_nivel_esco' => $par_nivel_esco
+            'par_nivel_esco' => $par_nivel_esco,
+            'par_tipo'=>$par_tipo
         );
         $this->db->where('par_id', $par_id);
         $this->db->update($this->tabla, $datos);
@@ -117,10 +125,10 @@ class Participante extends CI_Model {
         $sql = "SELECT count(participante.par_sexo) Total,
                   (Select count(*) 
                    FROM participante
-                   WHERE " . $campo . " = ? and par_sexo='F' ) Mujeres,
+                   WHERE " . $campo . " = ? and par_sexo='M' ) Mujeres,
                    (Select count(*) 
                     FROM participante
-                    WHERE " . $campo . " = ? and par_sexo='M' ) Hombres,
+                    WHERE " . $campo . " = ? and par_sexo='H' ) Hombres,
                    (Select count(*) 
                     FROM participante
                     WHERE " . $campo . " = ? and par_edad>=15 ) Mayor
@@ -136,14 +144,14 @@ class Participante extends CI_Model {
                  FROM participante_".$tabla.", participante
                  WHERE participante_".$tabla.".par_id = participante.par_id AND
                        participante_".$tabla.".".$campo." = ? AND
-                       participante.par_sexo='F' AND
+                       participante.par_sexo='M' AND
                        participante_".$tabla.".par_".substr($campo,0,3)."_participa='Si'
                  )Mujeres,
                 (SELECT  count(*)
                  FROM participante_".$tabla.", participante
                  WHERE participante_".$tabla.".par_id = participante.par_id AND
                        participante_".$tabla.".".$campo." = ? AND
-                       participante.par_sexo='M' AND
+                       participante.par_sexo='H' AND
                        participante_".$tabla.".par_".substr($campo,0,3)."_participa='Si'
                 )Hombres
                FROM participante_".$tabla.", participante

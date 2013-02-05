@@ -39,20 +39,17 @@ class ProyectoPep extends CI_Controller {
         $numfilas = count($proyectosPep);
 
         $i = 0;
-        foreach ($proyectosPep as $aux) {
-            $rows[$i]['id'] = $aux->pro_pep_id;
-            $rows[$i]['cell'] = array($aux->pro_pep_id,
-                $aux->pro_pep_nombre/*,
-                'NO', 'NO', 'NO', 'NO'*/
-            );
-            $i++;
-        }
-
+        $rows = array();
         if ($numfilas != 0) {
+            foreach ($proyectosPep as $aux) {
+                $rows[$i]['id'] = $aux->pro_pep_id;
+                $rows[$i]['cell'] = array($aux->pro_pep_id,
+                    $aux->pro_pep_nombre/* ,
+                          'NO', 'NO', 'NO', 'NO' */
+                );
+                $i++;
+            }
             array_multisort($rows, SORT_ASC);
-        } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ');
         }
 
         $datos = json_encode($rows);
@@ -74,19 +71,16 @@ class ProyectoPep extends CI_Controller {
         $numfilas = count($departamentos);
 
         $i = 0;
-        foreach ($departamentos as $aux) {
-            $rows[$i]['id'] = $aux->dep_id;
-            $rows[$i]['cell'] = array($aux->dep_id,
-                $aux->dep_nombre
-            );
-            $i++;
-        }
-
+        $rows = array();
         if ($numfilas != 0) {
+            foreach ($departamentos as $aux) {
+                $rows[$i]['id'] = $aux->dep_id;
+                $rows[$i]['cell'] = array($aux->dep_id,
+                    $aux->dep_nombre
+                );
+                $i++;
+            }
             array_multisort($rows, SORT_ASC);
-        } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ');
         }
 
         $datos = json_encode($rows);
@@ -100,47 +94,46 @@ class ProyectoPep extends CI_Controller {
 
         echo $jsonresponse;
     }
-    
-     public function gestionProyectoPep() {
-        /*VARIABLES POST*/
+
+    public function gestionProyectoPep() {
+        /* VARIABLES POST */
         $id = $this->input->post("id");
         $nombre = $this->input->post("pro_pep_nombre");
         $operacion = $this->input->post('oper');
-        
-        /*VARIABLE GET*/
+
+        /* VARIABLE GET */
         $mun_id = $this->input->get("mun_id");
-        
+
         $this->load->model('proyectoPep/proyecto_pep', 'propep');
         switch ($operacion) {
             case 'add':
-                $this->propep->agregarProyecto($mun_id,$nombre);
+                $this->propep->agregarProyecto($mun_id, $nombre);
                 break;
             case 'edit':
-                $this->propep->editarProyecto($id,$nombre);
+                $this->propep->editarProyecto($id, $nombre);
                 break;
         }
     }
+
     public function cargarMunicipios() {
-       $dep_id = $this->input->get("dep_id");
+        $dep_id = $this->input->get("dep_id");
         $this->load->model('pais/municipio', 'mun');
         $municipios = $this->mun->obtenerMunicipioPorDepartamento($dep_id);
-       
+
         $numfilas = count($municipios);
 
         $i = 0;
-        foreach ($municipios as $aux) {
-            $rows[$i]['id'] = $aux->mun_id;
-            $rows[$i]['cell'] = array($aux->mun_id,
-                $aux->mun_nombre
-            );
-            $i++;
-        }
+        $rows = array();
 
         if ($numfilas != 0) {
+            foreach ($municipios as $aux) {
+                $rows[$i]['id'] = $aux->mun_id;
+                $rows[$i]['cell'] = array($aux->mun_id,
+                    $aux->mun_nombre
+                );
+                $i++;
+            }
             array_multisort($rows, SORT_ASC);
-        } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ');
         }
 
         $datos = json_encode($rows);
@@ -154,8 +147,9 @@ class ProyectoPep extends CI_Controller {
 
         echo $jsonresponse;
     }
-     public function cuantosPepMuni($mun_id) {
-        $this->load->model('proyectoPep/proyecto_pep','proPep');
+
+    public function cuantosPepMuni($mun_id) {
+        $this->load->model('proyectoPep/proyecto_pep', 'proPep');
         $totales = $this->proPep->cuantosPep($mun_id);
 
         $rows[0]['id'] = 1;
@@ -172,7 +166,7 @@ class ProyectoPep extends CI_Controller {
 
         echo $jsonresponse;
     }
-     
+
 }
 
 ?>

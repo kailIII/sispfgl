@@ -193,6 +193,66 @@ Class componente3_model extends CI_Model{
 		//$this->db->update('gestionperiodos', $data);
 	}
 	
+	public function get_actividades_divu() {
+        $query = $this->db->get('divu');
+        return $query->result();
+    }
+    
+    public function get_mun_nombre($id_mun){
+		$this->db->where('mun_id', $id_mun);
+		$query = $this->db->get('municipio');
+		$row = $query->row();
+ 		return $row->mun_nombre;
+	}
+	
+	public function get_depto_nombre($id_mun){
+		$this->db->where('mun_id', $id_mun);
+		$query = $this->db->get('municipio');
+		$row = $query->row();
+ 		
+ 		$this->db->where('dep_id', $row->dep_id);
+ 		$query = $this->db->get('departamento');
+ 		$row = $query->row();
+ 		
+ 		return $row->dep_nombre;
+	}
+	
+	public function insertar_divu($act_nombre, $act_fecha, $act_tipo, $act_responsable, $act_mun) {
+		
+		$data_divu = array(
+		  'divu_nombre' => $act_nombre,
+          'divu_fecha' => $act_fecha,
+          'divu_tipo' => $act_tipo,
+		  'divu_responsable' => $act_responsable,
+		  'divu_municipio' => $act_mun
+        );
+        
+        $this->db->insert('divu', $data_divu); 
+        
+        
+	}
+	
+	public function insertar_asis_divu($asis_nombre, $asis_sexo, $asis_sector, $asis_cargo, $divu_id){
+		
+		$data_asis_divu = array(
+		  'divu_id' => $divu_id,
+          'asis_nombre' => $asis_nombre,
+          'asis_sexo' => $asis_sexo,
+		  'asis_cargo' => $asis_cargo,
+		  'asis_sector' => $asis_sector
+        );
+        
+        $this->db->insert('asistente_divu', $data_asis_divu);
+	}
+	
+	
+	
+	public function get_asistentes_divu($divu_id){
+		$this->db->where('divu_id',$divu_id);
+		$query = $this->db->get('asistente_divu');
+        return $query->result();
+	}
+	
 	public function finalizar_pmatricula() {
 		/*$data = array(
             'estadoPeriodoMatricula' => 0

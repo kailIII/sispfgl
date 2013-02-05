@@ -1,7 +1,14 @@
 <script type="text/javascript">        
     $(document).ready(function(){
         $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/comp23_E3/guardarPortafolio') ?>/'+$('#por_pro_id').val();
+            desde = $('#por_pro_fecha_desde').datepicker("getDate");
+            hasta =$( "#por_pro_fecha_hasta" ).datepicker("getDate");
+            if(desde < hasta){    
+                this.form.action='<?php echo base_url('componente2/comp23_E3/guardarPortafolio') ?>/'+$('#por_pro_id').val();
+            }else{
+                $('#fechaValidacion').dialog('open');
+                return false
+            }  
         });
         $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url('componente2/comp23_E3/mostrarPortafolioProyecto'); ?>';
@@ -11,7 +18,7 @@
             showOn: 'both',
             buttonImage: '<?php echo base_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         /*FIN DEL DATEPICKER*/
         
@@ -20,7 +27,7 @@
             showOn: 'both',
             buttonImage: '<?php echo base_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         /*FIN DEL DATEPICKER*/
         /*GRID*/
@@ -84,9 +91,9 @@
                     editrules:{required:true} 
                 },
                 {name:'fue_fin_monto',index:'fue_fin_monto',width:100,editable:true,
-                    editoptions:{size:25}, 
+                    editoptions:{ size:25,dataInit: function(elem){$(elem).bind("keypress", function(e) {return numeros(e)})}}, 
                     formoptions:{label: "Monto:",elmprefix:"(*)"},
-                    editrules:{required:true, number:true} 
+                    editrules:{required:true, number:true,minValue:0} 
                 },
                 {name:'fue_fin_descripcion',index:'fue_fin_descripcion',width:300,editable:true,
                     edittype:"textarea",editoptions:{rows:"4",cols:"50",maxlength:300}, 
@@ -94,7 +101,7 @@
                 }
             ],
             multiselect: false,
-            caption: "Fuentes de financiamiento",
+            caption: "Fuente de financiamiento",
             rowNum:10,
             rowList:[10,20,30],
             loadonce:true,
@@ -123,9 +130,10 @@
                 if(response!='error'){
                     $('#vinieta').val('Subido con Exito');
                     this.enable();			
-                    $('#vinietaD').val('Descargar Archivo');
+                    ext= (response.substring(response.lastIndexOf("."))).toLowerCase();
+                    nombre=response.substring(response.lastIndexOf("/")).toLowerCase().replace('/','');
+                    $('#vinietaD').val('Descargar '+nombre);
                     $('#por_pro_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO
-                    ext= (response.substring(response.lastIndexOf("."))).toLowerCase(); 
                     if (ext=='.pdf'){
                         $('#btn_descargar').attr({
                             'href': '<?php echo base_url(); ?>'+response,
@@ -245,7 +253,7 @@
         </tr>
         <tr>
         <td class="textD"><strong>Costo Estimado: </td>
-        <td><input name="por_pro_costo_estimado" type="text" size="10" value="<?php echo $por_pro_costo_estimado ?>"/></td>
+        <td><input name="por_pro_costo_estimado" type="text" size="10" value="<?php echo $por_pro_costo_estimado ?>"/>Con formato 99999.99</td>
         </tr>
     </table> 
     <fieldset style="border-color: #2F589F;position: relative;width: 400px;left:200px;"
@@ -267,7 +275,7 @@
         <br/><br/>
     </div>
     <fieldset style="border-color: #2F589F;position: relative;width: 400px;left:200px;"
-              <legend align="center"><strong>Beneficiarios</strong></legend>
+              <legend align="center"><strong>Beneficiarios</strong> Con Formato 999999</legend>
         <table>
             <tr>
             <td colspan="2">Hombres:<input value="<?php echo $por_pro_beneficiario_h ?>" id="por_pro_beneficiario_h" name="por_pro_beneficiario_h"  size="10"/></td>
@@ -277,13 +285,14 @@
     </fieldset>
     <p>Observaciones y/o recomendaciones:<br/><textarea id="por_pro_observacion" name="por_pro_observacion" cols="48" rows="5"><?php echo $por_pro_observacion ?></textarea></p>
     <table>
+        <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente. Solo se permiten archivos con extensión pdf, doc, docx</td></tr>
         <tr>
         <td><div id="btn_subir"></div></td>
-        <td><input class="letraazul" type="text" id="vinieta" value="Subir Perfil del Proyecto" size="30" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinieta" readonly="readonly" value="Subir Perfil del Proyecto" size="30" style="border: none"/></td>
         </tr>
         <tr>
         <td><a id="btn_descargar"  <?php if (isset($por_pro_ruta_archivo) && $por_pro_ruta_archivo != '') { ?> href="<?php echo base_url() . $por_pro_ruta_archivo; ?>"<?php } ?> ><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
-        <td><input class="letraazul" type="text" id="vinietaD" <?php if (isset($por_pro_ruta_archivo) && $por_pro_ruta_archivo != '') { ?>value="Descargar Perfil del Proyecto"<?php } else { ?> value="No hay perfil para ser descargado" <?php } ?>size="40" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinietaD" readonly="readonly" <?php if (isset($por_pro_ruta_archivo) && $por_pro_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo ?>"<?php } else { ?> value="No hay perfil para ser descargado" <?php } ?>size="40" style="border: none"/></td>
         </tr>
     </table>
     <center>  <p><input type="submit" id="guardar" value="Guardar Portafolio del Proyecto" />
@@ -304,3 +313,9 @@
 <div id="extension" class="mensaje" title="Error">
     <p>Solo se permiten archivos con la extensión pdf|doc|docx</p>
 </div>
+<div id="fechaValidacion" class="mensaje" title="Error en fechas">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/cancel.png'); ?>" class="imagenError" />Las fechas deben de ir en orden ascendente</p>
+    </center>
+</div>
+

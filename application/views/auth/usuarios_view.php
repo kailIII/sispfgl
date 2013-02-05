@@ -12,7 +12,7 @@
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         /*FIN DEL DATEPICKER*/
         /*ZONA DE VALIDACIONES*/
@@ -55,8 +55,7 @@
                 },
                 {name:'par_tel',index:'par_tel',width:100,editable:true,
                     editoptions:{size:10,maxlength:9}, 
-                    formoptions:{ label: "Teléfono",elmprefix:"(*)"},
-                    editrules:{required:true} 
+                    formoptions:{ label: "Teléfono"} 
                 }
             ],
             multiselect: false,

@@ -216,7 +216,7 @@
 		/*CARGAR MUNICIPIOS*/
         $('#selDepto').change(function(){   
             $('#selMun').children().remove();
-            $.getJSON('<?php echo base_url('index.php/componente3/componente3/cargarMunicipios');?>'+'?dep_id='+$('#selDepto').val(), 
+            $.getJSON('<?php echo base_url('componente3/componente3/cargarMunicipios');?>'+'?dep_id='+$('#selDepto').val(), 
             function(data) {
                 var i=0;
                 $.each(data, function(key, val) {

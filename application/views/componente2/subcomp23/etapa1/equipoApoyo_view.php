@@ -1,5 +1,8 @@
 <script type="text/javascript">        
     $(document).ready(function(){
+         <?php if (isset($guardo)){?>
+                $('#guardo').dialog();
+                <?php }?>
         /*VARIABLES*/
         var tabla=$("#participantes");
         /*ZONA DE BOTONES*/
@@ -54,7 +57,7 @@
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         /*FIN DEL DATEPICKER*/
         /*ZONA DE VALIDACIONES*/
@@ -72,7 +75,7 @@
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','Dui','Nombres','Apellidos','Sexo','Edad','Proviene R/U','Cargo','Nivel Escolar','Teléfono'],
+            colNames:['id','Dui','Nombres','Apellidos','Sexo','Edad','Area R/U','Procedencia','Nivel Escolar','Teléfono'],
             colModel:[
                 {name:'par_id',index:'par_id', width:40,editable:false,editoptions:{size:15} },
                 {name:'par_dui',index:'par_dui', width:100,editable:true,
@@ -91,35 +94,33 @@
                 },
                 {name:'par_sexo',index:'par_sexo',editable:true,edittype:"select",width:50,
                     align:"center",
-                    editoptions:{ value: '0:Seleccione;F:Femenino;M:Masculino' }, 
+                    editoptions:{ value: '0:Seleccione;M:Mujer;H:Hombre' }, 
                     formoptions:{ label: "Sexo",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validar}
                 },
                 {name:'par_edad',index:'par_edad',width:80,editable:true,
-                    editoptions:{size:25,maxlength:30}, 
+                    editoptions:{ size:15,dataInit: function(elem){$(elem).bind("keypress", function(e) {return numeros(e)})}}, 
                     formoptions:{ label: "Edad",elmprefix:"(*)"},
-                    editrules:{required:true,minvalue:12,number:true} 
+                    editrules:{required:true,minValue:12,number:true} 
                 },
                 {name:'par_proviene',index:'par_proviene',width:80,edittype:"select",
                     editable:true,
                     editoptions:{ value: '0:Seleccione;U:Urbano;R:Rural' }, 
-                    formoptions:{ label: "Proviene de",elmprefix:"(*)"},
+                    formoptions:{ label: "Area",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validar}
                 },
                 {name:'par_cargo',index:'par_cargo',width:100,editable:true,
                     editoptions:{size:25,maxlength:30}, 
-                    formoptions:{ label: "Cargo",elmprefix:"(*)"},
+                    formoptions:{ label: "Procedencia",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
                 {name:'par_nivel_esco',index:'par_nivel_esco',width:100,editable:true,
                     editoptions:{size:25,maxlength:30}, 
-                    formoptions:{ label: "Nivel Escolar",elmprefix:"(*)"},
-                    editrules:{required:true} 
+                    formoptions:{ label: "Nivel Escolar"}
                 },
                 {name:'par_tel',index:'par_tel',width:100,editable:true,
                     editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}, 
-                    formoptions:{ label: "Teléfono",elmprefix:"(*)"},
-                    editrules:{required:true} 
+                    formoptions:{ label: "Teléfono"}
                 }
             ],
             multiselect: false,
@@ -199,7 +200,7 @@
     <table>
         <tr>
         <td ><strong>Lugar:</strong><input id="gru_apo_lugar" <?php if (isset($gru_apo_lugar)) { ?> value='<?php echo $gru_apo_lugar; ?>'<?php } ?> name="gru_apo_lugar" type="text" size="40"/></td>
-        <td  ><strong>Fecha: </strong><input readonly="readonly" <?php if (isset($gru_apo_fecha)) { ?> value='<?php echo date('d/m/y', strtotime($gru_apo_fecha)); ?>'<?php } ?>id="gru_apo_fecha" name="gru_apo_fecha" type="text" size="10"/></td>
+        <td  ><strong>Fecha: </strong><input readonly="readonly" <?php if (isset($gru_apo_fecha)) { ?> value='<?php echo date('d-m-Y', strtotime($gru_apo_fecha)); ?>'<?php } ?>id="gru_apo_fecha" name="gru_apo_fecha" type="text" size="10"/></td>
         </tr>
     </table>
     <br/><br/>
@@ -227,7 +228,7 @@
                 <td><input type="radio" id="mayor15No"name="mayor15" value="false">NO </input></td>
                 </tr>
                 <tr>
-                <td>El 50% de los Miembros son Mujeres </td>
+                <td>Existe participación de Mujeres </td>
                 <td><input type="radio" id="porcenMujeresSi" name="porcenMujeres" value="true">SI </input></td>
                 <td><input type="radio" id="porcenMujeresNo" name="porcenMujeres" value="false">NO </input></td>    
                 </tr>
@@ -286,4 +287,10 @@
 <div id="mensaje2" class="mensaje" title="Aviso">
     <p>Debe Seleccionar una fila para continuar</p>
 </div>
+<div id="guardo" class="mensaje" title="Almacenado">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
+    </center>
+</div>
+
 

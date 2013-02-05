@@ -12,7 +12,7 @@
             showOn: 'both',
             buttonImage: '<?php echo base_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         /*FIN DEL DATEPICKER*/
         /*ZONA DE VALIDACIONES*/
@@ -25,7 +25,7 @@
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','Nombre','Nombre Completo','Sexo','Cargo','Teléfono','Participa',''],
+            colNames:['id','Nombre','Nombre Completo','Sexo','Cargo','Teléfono','Asistencia',''],
             colModel:[
                 {name:'par_id',index:'par_id', width:40,editable:false,editoptions:{size:15} },
                 {name:'par_dui',index:'par_dui', width:100,editable:false},
@@ -84,7 +84,29 @@
         });
         /*FIN DIALOGOS VALIDACION*/
         //Validar formulario
-        $("#reunionForm").validate();    
+          $("#reunionForm").validate({
+            rules: {
+                reu_fecha: {
+                    required: true
+                },
+                reu_duracion_horas: {
+                    required: true,
+                    number: true,
+                    min: 0,
+                    max:12
+                },
+                reu_duracion_minutos: {
+                    required: true,
+                    number: true,
+                    min: 0,
+                    max:59
+                },
+                reu_tema: {
+                    required: true,
+                    maxlength: 200
+                }     
+            }
+        });    
     });
 </script>
 <form id="reunionForm" method="post">
@@ -102,14 +124,20 @@
     </table>
     <table>
         <tr>
-        <td style="width: 200px"><strong>No.</strong><input type="text" id="reu_numero" value="<?php echo $reu_numero ?>" name="reu_numero" size="5" readonly="readonly"/> </td>
-        <td colspan="2" style="width: 300px">
-            <strong>Fecha:</strong>
-            <input id="reu_fecha" name="reu_fecha" readonly="readonly" class="required"  size="10"/>
+        <td style="width: 200px">No.<input type="text" id="reu_numero" value="<?php echo $reu_numero ?>" name="reu_numero" size="5" readonly="readonly"/> </td>
+        <td width="200">
+            Fecha:
+            <input id="reu_fecha" name="reu_fecha" readonly="readonly" size="10"/>
         </td>
-        <td><strong>Duración en Horas:</strong>
-            <input type="text" id="reu_duracion_horas" name="reu_duracion_horas" size="5" class="required number"/>
+        <td width="160" >
+            Duración:
+            <input type="text" id="reu_duracion_horas" name="reu_duracion_horas" value="0" size="3"/> horas
         </td>
+        <td width="200">
+            con 
+            <input type="text" id="reu_duracion_minutos" name="reu_duracion_minutos" value="0" size="3"/> minutos
+        </td>
+
         </tr>
     </table>
 

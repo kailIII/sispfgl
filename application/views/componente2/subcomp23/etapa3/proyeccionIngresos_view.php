@@ -1,6 +1,8 @@
 <script type="text/javascript">        
     $(document).ready(function(){
-
+ <?php if (isset($guardo)){?>
+                $('#guardo').dialog();
+                <?php }?>
         /*ZONA DE BOTONES*/
         $("#guardar").button().click(function() {
             this.form.action='<?php echo base_url('componente2/comp23_E3/guardarProyeccion') ?>';
@@ -81,6 +83,7 @@ foreach ($creditos as $aux)
 <?php echo trim($validacion, ','); ?>
             }
         });   
+         $(".numeric").numeric();
     });
 </script>
 <form class="cmxform" id="proyeccionIngresosForm" method="post">
@@ -98,9 +101,11 @@ foreach ($creditos as $aux)
         </tr>
     </table>
     <br/><br/>
+    <p><strong>Indicación:</strong>Los montos a ingresar deben tener el siguiente formato: 999999.99  -->>
+Donde el 9 significa cualquier número entre el 0 y el 9</p>
     <h2 class="h2Titulos">Proyección de ingresos del primer año</h2>
     <center>
-        <p><strong>Dígite el primer año de proyección:</strong><input id="pro_ing_anio"<?php if (isset($mon_pro_anio)) echo 'value="' . $mon_pro_anio . '"'; ?> name="pro_ing_anio" type="text" size="8"/>
+        <p><strong>Dígite el primer año de proyección:</strong><input class="numeric"  id="pro_ing_anio"<?php if (isset($mon_pro_anio)) echo 'value="' . $mon_pro_anio . '"'; ?> name="pro_ing_anio" type="text" size="8"/>
             <a id="agregarAnio" style="position: relative;top: 15px;right: 5px" ><img src="<?php echo base_url('resource/imagenes/save.png'); ?>"/></a>
         </p>
     </center>
@@ -115,9 +120,9 @@ foreach ($creditos as $aux)
         <?php foreach ($montos as $monto) { ?>
             <tr>
             <td><strong><?php echo $monto->mon_pro_nombre ?></strong></td>
-            <td align="center"><input id="disponibilidad_financiera_<?php echo $monto->mon_pro_idnombre ?>" name="disponibilidad_financiera_<?php echo $monto->mon_pro_idnombre ?>" value="<?php echo $monto->mon_pro_dispo_financiera ?>" type="text" size="10"/></td>
+            <td align="center"><input class="numeric" id="disponibilidad_financiera_<?php echo $monto->mon_pro_idnombre ?>" name="disponibilidad_financiera_<?php echo $monto->mon_pro_idnombre ?>" value="<?php echo $monto->mon_pro_dispo_financiera ?>" type="text" size="10"/></td>
             <td style="width: 80px"></td>
-            <td align="center"><input id="ingresos_<?php echo $monto->mon_pro_idnombre ?>" name="ingresos_<?php echo $monto->mon_pro_idnombre ?>" value="<?php echo $monto->mon_pro_ingresos ?>" type="text" size="10"/></td>
+            <td align="center"><input class="numeric" id="ingresos_<?php echo $monto->mon_pro_idnombre ?>" name="ingresos_<?php echo $monto->mon_pro_idnombre ?>"  value="<?php echo $monto->mon_pro_ingresos ?>" type="text" size="10"/></td>
             </tr>
         <?php } ?>
     </table >
@@ -142,7 +147,7 @@ foreach ($creditos as $aux)
         } else {
             for($i=1;$i<=4;$i++){
             ?>
-            <td align="center"><strong><input value='0' id="anio_<?php echo $i; ?>" size="2" style=" border: none; font-weight: bold"/></strong></td>
+            <td align="center"><strong><input class="numeric"  value='0' id="anio_<?php echo $i; ?>" size="2" style=" border: none; font-weight: bold"/></strong></td>
             <td style="width: 30px"></td>
             <?php }
         }
@@ -151,28 +156,28 @@ foreach ($creditos as $aux)
         <tr>
         <td><strong>FODES</strong></td>
         <?php foreach ($fodes as $aux) { ?>
-            <td align="center"><input id="<?php echo $aux->mon_pro_nombre . '_' . $aux->dmon_pro_id ?>" name="<?php echo $aux->mon_pro_nombre . '_' . $aux->dmon_pro_id ?>" value="<?php echo $aux->dmon_pro_ingreso; ?>" type="text" size="10"/></td>
+            <td align="center"><input id="<?php echo $aux->mon_pro_nombre . '_' . $aux->dmon_pro_id ?>" name="<?php echo $aux->mon_pro_nombre . '_' . $aux->dmon_pro_id ?>" value="<?php echo $aux->dmon_pro_ingreso; ?>" class="numeric" type="text" size="10"/></td>
             <td style="width: 30px"></td>
         <?php } ?>
         </tr>
         <tr>
         <td><strong>Ingresos Propios</strong></td>
         <?php foreach ($ingresosPropios as $aux) { ?>
-            <td align="center"><input id="<?php echo $aux->mon_pro_nombre . '_' . $aux->dmon_pro_id ?>" name="<?php echo $aux->mon_pro_nombre . '_' . $aux->dmon_pro_id ?>" value="<?php echo $aux->dmon_pro_ingreso; ?>" type="text" size="10"/></td>
+            <td align="center"><input id="<?php echo $aux->mon_pro_nombre . '_' . $aux->dmon_pro_id ?>" name="<?php echo $aux->mon_pro_nombre . '_' . $aux->dmon_pro_id ?>" value="<?php echo $aux->dmon_pro_ingreso; ?>" class="numeric" type="text" size="10"/></td>
             <td style="width: 30px"></td>
         <?php } ?>
         </tr>
         <tr>
         <td><strong>Donaciones</strong></td>
         <?php foreach ($donaciones as $aux) { ?>
-            <td align="center"><input id="<?php echo $aux->mon_pro_nombre . '_' . $aux->dmon_pro_id ?>" name="<?php echo $aux->mon_pro_nombre . '_' . $aux->dmon_pro_id ?>" value="<?php echo $aux->dmon_pro_ingreso; ?>" type="text" size="10"/></td>
+            <td align="center"><input id="<?php echo $aux->mon_pro_nombre . '_' . $aux->dmon_pro_id ?>" name="<?php echo $aux->mon_pro_nombre . '_' . $aux->dmon_pro_id ?>" value="<?php echo $aux->dmon_pro_ingreso; ?>" class="numeric" type="text" size="10"/></td>
             <td style="width: 30px"></td>
         <?php } ?>
         </tr>
         <tr>
         <td><strong>Créditos</strong></td>
         <?php foreach ($creditos as $aux) { ?>
-            <td align="center"><input id="<?php echo $aux->mon_pro_nombre . '_' . $aux->dmon_pro_id ?>" name="<?php echo $aux->mon_pro_nombre . '_' . $aux->dmon_pro_id ?>" value="<?php echo $aux->dmon_pro_ingreso; ?>" type="text" size="10"/></td>
+            <td align="center"><input id="<?php echo $aux->mon_pro_nombre . '_' . $aux->dmon_pro_id ?>" name="<?php echo $aux->mon_pro_nombre . '_' . $aux->dmon_pro_id ?>" value="<?php echo $aux->dmon_pro_ingreso; ?>" class="numeric" type="text" size="10"/></td>
             <td style="width: 30px"></td>
         <?php } ?>
         </tr>
@@ -190,4 +195,9 @@ foreach ($creditos as $aux)
 <div id="mensaje" class="mensaje" title="Aviso:">
     <p><img src="<?php echo base_url('resource/imagenes/cancel.png'); ?>" heigth="25px" width="25px"/>Debe de llenar el año de proyección para continuar
     </p>
+</div>
+<div id="guardo" class="mensaje" title="Almacenado">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
+    </center>
 </div>

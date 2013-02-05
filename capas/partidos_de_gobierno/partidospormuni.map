@@ -2,7 +2,7 @@ MAP
   IMAGETYPE      PNG
   EXTENT         375000.000000 240000.000000 650000.000000 350000.000000
   SIZE           750 450
-  SHAPEPATH      "capas/partidos_de_gobierno"
+  SHAPEPATH      "../../capas/partidos_de_gobierno"
   IMAGECOLOR     245 245 245
   
   WEB

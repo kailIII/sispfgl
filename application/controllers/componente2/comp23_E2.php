@@ -75,7 +75,7 @@ class Comp23_E2 extends CI_Controller {
 
         /* REGISTRAR REUNION */
         $this->load->model('etapa1-sub23/reunion', 'reu');
-        $ultima = $this->reu->ultimaReunion($pro_pep_id,2);
+        $ultima = $this->reu->ultimaReunion($pro_pep_id, 2);
         $reu_numero = (int) $ultima[0]['ultima'] + 1;
         $informacion['reu_numero'] = $reu_numero;
         $this->reu->agregarReunion(2, $pro_pep_id, $reu_numero);
@@ -145,6 +145,7 @@ class Comp23_E2 extends CI_Controller {
         /* VARIABLES POST */
         $reu_fecha = $this->input->post("reu_fecha");
         $reu_duracion_horas = $this->input->post("reu_duracion_horas");
+        $reu_duracion_minutos = $this->input->post("reu_duracion_minutos");
         $reu_tema = $this->input->post("reu_tema");
         $reu_resultado = $this->input->post("reu_resultado");
         $reu_observacion = $this->input->post("reu_observacion");
@@ -177,7 +178,7 @@ class Comp23_E2 extends CI_Controller {
         $this->load->model('etapa2-sub23/poblacion_reunion', 'pobReu');
         $this->pobReu->actualizarPoblacionReunion($pob_comunidad, $pob_sector, $pob_institucion, $pob_id);
         $this->load->model('etapa1-sub23/reunion', 'reunion');
-        $this->reunion->actualizarReunion($reu_fecha, $reu_duracion_horas, $reu_tema, $reu_resultado, $reu_observacion, $reu_id);
+        $this->reunion->actualizarReunion($reu_fecha, $reu_duracion_horas, $reu_duracion_minutos, $reu_tema, $reu_resultado, $reu_observacion, $reu_id);
         redirect('componente2/comp23_E2/muestraReuniones');
     }
 
@@ -203,8 +204,7 @@ class Comp23_E2 extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ');
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -238,8 +238,7 @@ class Comp23_E2 extends CI_Controller {
                 $i++;
             }
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ');
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -347,7 +346,8 @@ class Comp23_E2 extends CI_Controller {
         $informacion['municipio'] = $datos[0]->Muni;
         $pro_pep_id = $datos[0]->id;
         $informacion['proyectoPep'] = $datos[0]->Proyecto;
-
+        $this->load->model('pais/departamento');
+        $informacion['dep_id'] = $this->departamento->obtenerIdPorNombre($datos[0]->Depto);
         /* REGISTRAR ASOCIATIVIDAD */
         $this->load->model('etapa2-sub23/asociatividad');
         $this->asociatividad->agregarAsociatividad($pro_pep_id);
@@ -377,7 +377,8 @@ class Comp23_E2 extends CI_Controller {
         $informacion['departamento'] = $datos[0]->Depto;
         $informacion['municipio'] = $datos[0]->Muni;
         $informacion['proyectoPep'] = $datos[0]->Proyecto;
-
+        $this->load->model('pais/departamento');
+        $informacion['dep_id'] = $this->departamento->obtenerIdPorNombre($datos[0]->Depto);
         /* REGISTRAR ASOCIATIVIDAD */
         $this->load->model('etapa2-sub23/asociatividad');
         $resultado = $this->asociatividad->obtenerAsociatividadId($aso_id);
@@ -419,8 +420,7 @@ class Comp23_E2 extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ');
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -472,8 +472,7 @@ class Comp23_E2 extends CI_Controller {
             }
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -547,6 +546,19 @@ class Comp23_E2 extends CI_Controller {
         }
     }
 
+    public function cargarMunicipio($dep_id) {
+        //PARA CREAR LA LISTA DESPLEGABLE DE LA INSTITUCION
+        $this->load->model('pais/municipio');
+        $municipios = $this->municipio->obtenerMunicipioPorDepartamento($dep_id);
+        $combo = "<select name='int_aso_nombre'>";
+        $combo.= " <option value='0'> Seleccione</option>";
+        foreach ($municipios as $aux)
+            $combo.= " <option value='" . $aux->mun_nombre . "'>" . $aux->mun_nombre . "</option>";
+        $combo.="</select>";
+
+        echo $combo;
+    }
+
     public function cargarIntegradores($aso_id) {
         $this->load->model('etapa2-sub23/integrante_asociatividad', 'integrante');
         $integradores = $this->integrante->obtenerIntegranteAsociatividades($aso_id);
@@ -563,8 +575,7 @@ class Comp23_E2 extends CI_Controller {
             }
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ');
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -604,7 +615,9 @@ class Comp23_E2 extends CI_Controller {
     public function grupoGestor() {
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
-
+        $g = $this->input->get('g');
+        if ($g)
+            $informacion['guardo'] = true;
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $username = $this->tank_auth->get_username();
         $informacion['username'] = $username;
@@ -676,7 +689,7 @@ class Comp23_E2 extends CI_Controller {
 
         $this->load->model('etapa2-sub23/grupo_gestor', 'gruGes');
         $this->gruGes->actualizarGruGes($gru_ges_id, $gru_ges_lugar, $gru_ges_fecha, $gru_ges_acuerdo, $gru_ges_observacion);
-        redirect('componente2/comp23_E2/grupoGestor');
+        redirect('componente2/comp23_E2/grupoGestor?g=true');
     }
 
     public function capacitacionGrupoGestor() {
@@ -723,8 +736,7 @@ class Comp23_E2 extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ');
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -763,8 +775,7 @@ class Comp23_E2 extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ');
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -803,8 +814,7 @@ class Comp23_E2 extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ');
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -935,6 +945,10 @@ class Comp23_E2 extends CI_Controller {
 
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
+        $g = $this->input->get('g');
+        if ($g)
+            $informacion['guardo'] = true;
+
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $username = $this->tank_auth->get_username();
         $informacion['username'] = $username;
@@ -972,6 +986,8 @@ class Comp23_E2 extends CI_Controller {
             $definicion = $this->definicion->obtenerDef($def_id);
             $informacion['def_fecha'] = $definicion[0]['def_fecha'];
             $informacion['def_ruta_archivo'] = $definicion[0]['def_ruta_archivo'];
+            $informacion['nombreArchivo'] = end(explode("/", $definicion[0]['def_ruta_archivo']));
+            $informacion['def_observacion'] = $definicion[0]['def_observacion'];
         }
         $informacion['gru_ges_id'] = $gru_ges_id;
         $informacion['def_id'] = $def_id;
@@ -988,14 +1004,17 @@ class Comp23_E2 extends CI_Controller {
         $def_observacion = $this->input->post("def_observacion");
 
         $this->load->model('etapa2-sub23/definicion');
-        $this->definicion->actualizarDef($def_id, $def_fecha, $def_ruta_archivo);
-        redirect('componente2/comp23_E2/definicionTema');
+        $this->definicion->actualizarDef($def_id, $def_fecha, $def_ruta_archivo, $def_observacion);
+        redirect('componente2/comp23_E2/definicionTema?g=true');
     }
 
     public function priorizacion() {
 
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
+        $g = $this->input->get('g');
+        if ($g)
+            $informacion['guardo'] = true;
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $username = $this->tank_auth->get_username();
         $informacion['username'] = $username;
@@ -1048,7 +1067,7 @@ class Comp23_E2 extends CI_Controller {
 
         $this->load->model('etapa2-sub23/priorizacion');
         $this->priorizacion->actualizarPri($pri_id, $pri_fecha, $pri_observacion);
-        redirect('componente2/comp23_E2/priorizacion');
+        redirect('componente2/comp23_E2/priorizacion?g=true');
     }
 
     public function cargarProyectosIdentificados($pri_id) {
@@ -1099,8 +1118,7 @@ class Comp23_E2 extends CI_Controller {
                 $i++;
             }
         } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -1149,19 +1167,37 @@ class Comp23_E2 extends CI_Controller {
     public function diagnostico() {
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        //OBTENER DEPARTAMENTOS
+        $this->load->model('pais/departamento');
+        $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/subcomp23/etapa2/seleccionDiagnostico_view');
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function cargarDiagnostico() {
+        $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
+            Planeación Estratégica Participativa';
 
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $username = $this->tank_auth->get_username();
         $informacion['username'] = $username;
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
         /* OBTENER DEPARTAMENTO Y MUNICIPIO DEL USUARIO */
-        $this->load->model('tank_auth/users', 'usuario');
-        $datos = $this->usuario->obtenerDepartamento($username);
-        $informacion['departamento'] = $datos[0]->Depto;
-        $informacion['municipio'] = $datos[0]->Muni;
+        $mun_id = $this->input->post("selMun");
+        $this->load->model('proyectoPep/proyecto_pep', 'PEP');
+        $this->load->model('pais/municipio', 'muni');
+        $pep = $this->PEP->obtenerProyectoPepPorMun($mun_id);
+        $municipio = $this->muni->obtenerNomMunDep($mun_id);
+        $informacion['departamento'] = $municipio[0]->depto;
+        $informacion['municipio'] = $municipio[0]->muni;
         //PROYECTO PEP ASOCIADO
-        $pro_pep_id = $datos[0]->id;
-        $informacion['proyectoPep'] = $datos[0]->Proyecto;
+        $pro_pep_id = $pep[0]->pro_pep_id;
+        // $informacion['proyectoPep'] = $datos[0]->Proyecto;
         $informacion['pro_pep_id'] = $pro_pep_id;
         /* INFORME PRELIMINAR ASPECTOS IMPORTANTES */
         $this->load->model('cumplimiento_minimo', 'cumm');
@@ -1189,6 +1225,7 @@ class Comp23_E2 extends CI_Controller {
         $informacion['dia_vision'] = $resultado[0]['dia_vision'];
         $informacion['dia_observacion'] = $resultado[0]['dia_observacion'];
         $informacion['dia_ruta_archivo'] = $resultado[0]['dia_ruta_archivo'];
+        $informacion['nombreArchivo'] = end(explode("/", $resultado[0]['dia_ruta_archivo']));
         $informacion['cumplimientosMinimos'] = $this->cumDia->obtenerLosCumplimientosDiagnostico($resultado[0]['dia_id']);
         /* FIN DE INFORME PRELIMINAR */
         $this->load->view('plantilla/header', $informacion);
@@ -1226,9 +1263,7 @@ class Comp23_E2 extends CI_Controller {
 
         /* ACTUALIZANDO ACUERDO MUNICIPAL */
         $this->load->model('etapa2-sub23/diagnostico', 'Dia');
-        $this->Dia->actualizarDia($dia_id, $dia_fecha_borrador, $dia_fecha_concejo_muni, $dia_fecha_observacion, $dia_observacion, $dia_ruta_archivo,$dia_vision);
-
-        redirect(base_url('componente2/comp23_E2/diagnostico'));
+        $this->Dia->actualizarDia($dia_id, $dia_fecha_borrador, $dia_fecha_concejo_muni, $dia_fecha_observacion, $dia_observacion, $dia_ruta_archivo, $dia_vision);
     }
 
 }

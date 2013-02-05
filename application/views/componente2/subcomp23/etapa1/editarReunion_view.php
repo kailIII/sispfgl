@@ -52,7 +52,7 @@
             showOn: 'both',
             buttonImage: '<?php echo base_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         /*FIN DEL DATEPICKER*/
         /*ZONA DE VALIDACIONES*/
@@ -64,8 +64,6 @@
             if (value == 0 ) return [false,"Seleccione la institucion del Participante"];
             else return [true,""];
         }
-        //Validar formulario
-        $("#reunionForm").validate();
         /*FIN ZONA VALIDACIONES*/
         /*GRID PARTICIPANTES*/
         var tabla=$("#participantes");
@@ -90,7 +88,7 @@
                     editrules:{required:true} 
                 },
                 {name:'par_sexo',index:'par_sexo',editable:true,edittype:"select",width:50,
-                    editoptions:{ value: '0:Seleccione;F:Femenino;M:Masculino' }, 
+                    editoptions:{ value: '0:Seleccione;M:Mujer;H:Hombre' }, 
                     formoptions:{ label: "Sexo",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validaSexo}
                 },
@@ -151,16 +149,41 @@
             }
         });
         /*FIN DIALOGOS VALIDACION*/
-        $('#reunionForm').validate();
+        $("#reunionForm").validate({
+            rules: {
+                reu_fecha: {
+                    required: true
+                },
+                reu_duracion_horas: {
+                    required: true,
+                    number: true,
+                    min: 0,
+                    max:12
+                },
+                reu_duracion_minutos: {
+                    required: true,
+                    number: true,
+                    min: 0,
+                    max:59
+                },
+                reu_tema: {
+                    required: true,
+                    maxlength: 200
+                },
+                reu_resultado: {
+                    required: true
+                }       
+            }
+        });   
             
     });
 </script>
-<form id="reunionForm" method="post" action="">
+<form id="reunionForm" method="post">
     <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
     <h2 class="h2Titulos">Producto 1: Acuerdo Municipal</h2>
     <h2 class="h2Titulos">Registro de Reuniones</h2>
     <br/><br/>
-      <table>
+    <table>
         <tr>
         <td class="tdLugar" ><strong>Departamento:</strong></td>
         <td><?php echo $departamento ?></td>
@@ -168,72 +191,75 @@
         <td class="tdLugar"><strong>Municipio:</strong></td>
         <td ><?php echo $municipio ?></td>    
         </tr>
-     </table>
+    </table>
+    <table>
+        <tr>
+        <td width="300">
+            No. de Reunión: <input type="text" id="reu_numero" value="<?php echo $reu_numero ?>" name="reu_numero" size="5" readonly="readonly"/> </td>
+        <td width="200">
+            Fecha: 
+            <input value="<?php echo date_format(date_create($reu_fecha), "d-m-Y") ?>" id="reu_fecha" name="reu_fecha" readonly="readonly" size="10"/>
+        </td>
+       <td width="160" >
+            Duración:
+            <input value="<?php echo $reu_duracion_horas ?>" type="text" id="reu_duracion_horas" name="reu_duracion_horas" size="3"/> horas
+        </td>
+       <td width="200">
+            con 
+            <input value="<?php echo $reu_duracion_minutos ?>" type="text" id="reu_duracion_minutos" name="reu_duracion_minutos" size="3"/> minutos
+        </td>
+        </tr>
+
+    </table>
+
+    <p>Tema o Agenda a Desarrollar: <textarea id="reu_tema" name="reu_tema" cols="50" rows="2" ><?php echo $reu_tema ?></textarea></p>
+    <table id="participantes"></table>
+    <div id="pagerParticipantes"></div>
+    <div style="position: relative;left: 275px;top: 5px;">
+        <input type="button" id="agregar" value="  Agregar  " />
+        <input type="button" id="editar" value="   Editar   " />
+        <input type="button" id="eliminar" value="  Eliminar  " />
+    </div>
+    <p></p>
+
+    <table style="position: relative;top: 15px;">
+        <tr>  
+        <td>
+            <p>Resultado de la Reunión:<br/> 
+                <textarea id="reu_resultado" name="reu_resultado" cols="48" rows="5" ><?php echo $reu_resultado ?></textarea></p>
+        </td>
+        <td>
+        <fieldset   style="border-color: #2F589F;height:85px;width:225px;position: relative;left: 50px;">
+            <legend align="center"><strong>Cantidad de Participantes</strong></legend>
             <table>
-            <tr>
-            <td width="300">
-                No. de Reunión: <input type="text" id="reu_numero" value="<?php echo $reu_numero ?>" id="reu_numero" size="5" readonly="readonly"/> </td>
-            <td width="300">
-                Fecha: 
-                <input value="<?php echo date_format(date_create($reu_fecha),"d-m-Y") ?>" id="reu_fecha" name="reu_fecha" readonly="readonly" class="required"  size="10"/>
-            </td>
-            <td width="300">
-                Duración en Horas:
-                <input value="<?php echo $reu_duracion_horas ?>" type="text" id="reu_duracion_horas" name="reu_duracion_horas" size="5" class="required number"/>
-            </td>
-            <td>
+                <tr>
+                <td class="textD">Hombres: </td>
+                <td><input class="bordeNo" id="hombres" type="text" size="5" readonly="readonly" /></td>
                 </tr>
+                <tr>
+                <td class="textD">Mujeres: </td>
+                <td><input class="bordeNo" id="mujeres" type="text" size="5" readonly="readonly" /><br/></td>
+                </tr>
+                <tr>
+                <td class="textD">Total: </td>
+                <td><input class="bordeNo" id="total" type="text" size="5" readonly="readonly" /></td>
+                </tr>
+            </table> 
+        </fieldset>
+        </td>
+        </tr>
+    </table>
+    <div>
+        <p>Observaciones y/o Recomendaciones:<br/>
+            <textarea id="reu_observacion"  name="reu_observacion" cols="48" rows="5"><?php echo $reu_observacion ?></textarea></p>
+        <center style="position: relative;top: 20px">
 
-        </table>
-
-        <p>Tema o Agenda a Desarrollar: <textarea id="reu_tema" name="reu_tema" cols="50" rows="2" class="required" maxlength="200" ><?php echo $reu_tema ?></textarea></p>
-        <table id="participantes"></table>
-        <div id="pagerParticipantes"></div>
-        <div style="position: relative;left: 275px;top: 5px;">
-            <input type="button" id="agregar" value="  Agregar  " />
-            <input type="button" id="editar" value="   Editar   " />
-            <input type="button" id="eliminar" value="  Eliminar  " />
-        </div>
-        <p></p>
-
-        <table style="position: relative;top: 15px;">
-            <tr>  
-            <td>
-                <p>Resultado de la Reunión:<br/> 
-                    <textarea id="reu_resultado" name="reu_resultado" cols="48" rows="5" class="required" ><?php echo $reu_resultado ?></textarea></p>
-            </td>
-            <td>
-            <fieldset   style="border-color: #2F589F;height:85px;width:225px;position: relative;left: 50px;">
-                <legend align="center"><strong>Cantidad de Participantes</strong></legend>
-                <table>
-                    <tr>
-                    <td class="textD">Hombres: </td>
-                    <td><input class="bordeNo" id="hombres" type="text" size="5" readonly="readonly" /></td>
-                    </tr>
-                    <tr>
-                    <td class="textD">Mujeres: </td>
-                    <td><input class="bordeNo" id="mujeres" type="text" size="5" readonly="readonly" /><br/></td>
-                    </tr>
-                    <tr>
-                    <td class="textD">Total: </td>
-                    <td><input class="bordeNo" id="total" type="text" size="5" readonly="readonly" /></td>
-                    </tr>
-                </table> 
-            </fieldset>
-            </td>
-            </tr>
-        </table>
-        <div>
-            <p>Observaciones y/o Recomendaciones:<br/>
-                <textarea id="reu_observacion"  name="reu_observacion" cols="48" rows="5"><?php echo $reu_observacion ?></textarea></p>
-            <center style="position: relative;top: 20px">
-
-                <p><input type="submit" id="guardar" value="Guardar Reunión" />
-                    <input type="button" id="cancelar" value="Cancelar" />
-                </p>
-        </div>
-        </center>
-    <input id="reu_id" name="reu_id" value="<?php echo $reu_id ?>" style="visibility: hidden"/>
+            <p><input type="submit" id="guardar" value="Guardar Reunión" />
+                <input type="button" id="cancelar" value="Cancelar" />
+            </p>
+    </div>
+</center>
+<input id="reu_id" name="reu_id" value="<?php echo $reu_id ?>" style="visibility: hidden"/>
 </form>
 <div id="mensaje" class="mensaje" title="Aviso de la operación">
     <p>La acción fue realizada con satisfacción</p>

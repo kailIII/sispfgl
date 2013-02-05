@@ -1,6 +1,8 @@
 <script type="text/javascript">        
     $(document).ready(function(){
-
+ <?php if (isset($guardo)){?>
+                $('#guardo').dialog();
+                <?php }?>
         var tabla=$("#actores");
         /*ZONA DE BOTONES*/
         $("#agregar").button().click(function(){
@@ -73,7 +75,7 @@
                     editoptions: {size: 10, maxlengh: 10,
                         dataInit: function(element) {
                             $(element).datepicker(
-                            {dateFormat: 'dd/mm/yy',
+                            {dateFormat: 'dd-mm-yy',
                                 buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
                                 buttonImageOnly: true
                             
@@ -89,13 +91,13 @@
                     editrules:{custom:true, custom_func:validaInstitucion}
                 },
                 {name:'aut_est_cantidadm',index:'aut_est_cantidadm',width:120,editable:true,
-                    editoptions:{size:25,maxlength:30}, 
-                    formoptions:{ label: "Mujeres",elmprefix:"(*)"},
+                    editoptions:{ size:25,dataInit: function(elem){$(elem).bind("keypress", function(e) {return numeros(e)})}}, 
+                    formoptions:{ label: "Mujeres",elmprefix:"(*)",elmsuffix:"Con formato 9999"},
                     editrules:{required:true,integer:true} 
                 },
                 {name:'aut_est_cantidadh',index:'aut_est_cantidadh',width:120,editable:true,
-                    editoptions:{size:25,maxlength:30}, 
-                    formoptions:{ label: "Hombres",elmprefix:"(*)"},
+                   editoptions:{ size:25,dataInit: function(elem){$(elem).bind("keypress", function(e) {return numeros(e)})}}, 
+                    formoptions:{ label: "Hombres",elmprefix:"(*)",elmsuffix:"Con formato 9999"},
                     editrules:{required:true,integer:true} 
                 }
             ],
@@ -162,7 +164,7 @@
             <input type="button" id="cancelar" value="Cancelar" />
         </p>
     </center>
-
+<input type="text" id="est_com_id" name="est_com_id" value="<?php echo $est_com_id; ?>" style="visibility: hidden" />
 
 </form>
 <div id="mensaje" class="mensaje" title="Aviso de la operación">
@@ -173,4 +175,9 @@
 </div>
 <div id="extension" class="mensaje" title="Error">
     <p>Solo se permiten archivos con la extensión pdf|doc|docx</p>
+</div>
+<div id="guardo" class="mensaje" title="Almacenado">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
+    </center>
 </div>

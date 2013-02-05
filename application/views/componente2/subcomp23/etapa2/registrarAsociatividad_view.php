@@ -17,7 +17,7 @@
             showOn: 'both',
             buttonImage: '<?php echo base_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd-mm-yy'
         });
         var tabla=$("#participantes");
         /*ZONA DE BOTONES*/
@@ -63,7 +63,7 @@
         /*GRID PARTICIPANTES*/
         tabla.jqGrid({
             url:'<?php echo base_url('componente2/comp23_E2/cargarParticipantesAP') ?>/aso_id/<?php echo $aso_id; ?>',
-            editurl:'<?php echo base_url('componente2/comp23_E2/gestionParticipantes') ?>/asociatividad/aso_id/<?php echo $aso_id; ?>',
+            editurl:'<?php echo base_url('componente2/comp23_E2/gestionParticipantes') ?>/aso_id/<?php echo $aso_id; ?>',
             datatype:'json',
             altRows:true,
             height: "100%",
@@ -83,13 +83,12 @@
                 },
                 {name:'par_email',index:'par_email',width:200,editable:true,
                     editoptions:{size:25,maxlength:50}, 
-                    formoptions:{label: "Email",elmprefix:"(*)"},
-                    editrules:{required:true,email: true} 
+                    formoptions:{label: "Email"},
+                    editrules:{email: true,required:false} 
                 },
                 {name:'par_tel',index:'par_tel',width:100,editable:true,
                     editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}, 
-                    formoptions:{ label: "Teléfono",elmprefix:"(*)"},
-                    editrules:{required:true} 
+                    formoptions:{ label: "Teléfono"} 
                 },
                 {name:'par_direccion',index:'par_direccion',width:120,editable:true,
                     edittype:"textarea",editoptions:{rows:"4",cols:"20",maxlength:250},width:150, 
@@ -128,14 +127,14 @@
             colNames:['id','Nombre'],
             colModel:[
                 {name:'int_aso_id',index:'int_aso_id', width:40,editable:false,editoptions:{size:15} },
-                {name:'int_aso_nombre',index:'int_aso_nombre',width:100,editable:true,
-                    edittype:"textarea",editoptions:{rows:"4",cols:"20",maxlength:250},width:450, 
+                {name:'int_aso_nombre',index:'int_aso_nombre', edittype:"select",width:100,editable:true,
+                    editoptions:{ dataUrl:'<?php echo base_url('componente2/comp23_E2/cargarMunicipio').'/'.$dep_id; ?>'},width:450, 
                     formoptions:{label: "Nombre",elmprefix:"(*)"},
                     editrules:{required:true} 
                 }           
             ],
             multiselect: false,
-            caption: "Integrado Por",
+            caption: "Municipio que la integran",
             rowNum:10,
             rowList:[10,20,30],
             loadonce:true,
@@ -243,7 +242,7 @@
         </td>
         </tr>
     </table>
-    <p><strong>Móvil de constitución:</strong><input type="text" id="aso_movil" name="aso_movil" size="60" class="required" /></p>
+    <p><strong>Objetivo de constitución:</strong><input type="text" id="aso_movil" name="aso_movil" size="60" class="required" /></p>
     <p><strong>Recibe apoyo de:</strong><input type="text"id="aso_apoyo" name="aso_apoyo" size="60" class="required" /></p>
     <p><strong>¿Tiene unidad técnica?</strong><input type="radio" name="aso_unidad_tecnica" value="true" class="required" >SI </input><input type="radio" name="aso_unidad_tecnica" value="false" class="required">NO </input></p>
     <table id="participantes"></table>
