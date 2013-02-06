@@ -172,7 +172,7 @@
         /*ZONA DE BOTONES*/
         $("#agregar").button().click(function(){
             tabla.jqGrid('editGridRow',"new",
-            {closeAfterAdd:true,addCaption: "Agregar consultora",width:350,
+            {closeAfterAdd:true,addCaption: "Agregar consultora",width:750,
                 align:'center',reloadAfterSubmit:true,
                 processData: "Cargando...",afterSubmit:despuesAgregarEditar,
                 bottominfo:"Campos marcados con (*) son obligatorios", 
@@ -186,7 +186,7 @@
             var gr = tabla.jqGrid('getGridParam','selrow');
             if( gr != null )
                 tabla.jqGrid('editGridRow',gr,
-            {closeAfterEdit:true,editCaption: "Editando consultora",width:350,
+            {closeAfterEdit:true,editCaption: "Editando consultora",width:750,
                 align:'center',reloadAfterSubmit:true,
                 processData: "Cargando...",afterSubmit:despuesAgregarEditar,
                 bottominfo:"Campos marcados con (*) son obligatorios", 
@@ -208,6 +208,10 @@
                 }}); 
             else $('#mensaje2').dialog('open'); 
         });
+        function validaInstitucion(value, colname) {
+            if (value == 0 ) return [false,"Seleccione una consultora para continuar"];
+            else return [true,""];
+        }
         tabla.jqGrid({
             url:'<?php echo base_url('componente2/procesoAdministrativo/cargarConsultoraInteres') . '/' . $pro_id ?>',
             editurl:'<?php echo base_url('componente2/procesoAdministrativo/gestionarConsultoresInteres') . '/' . $pro_id ?>',
@@ -218,10 +222,11 @@
             colNames:['id','Nombre','Tipo'],
             colModel:[
                 {name:'con_int_id',index:'con_int_id', width:40,editable:false,editoptions:{size:15} },
-                {name:'con_int_nombre',index:'con_int_nombre',width:200,editable:true,
-                    editoptions:{size:25,maxlength:50}, 
-                    formoptions:{label: "Nombre:",elmprefix:"(*)"},
-                    editrules:{required:true} 
+                {name:'con_int_nombre',index:'con_int_nombre',editable:true,
+                    edittype:"select",width:650,
+                    editoptions:{ dataUrl:'<?php echo base_url('componente2/procesoAdministrativo/cargarConsultoras'); ?>'}, 
+                    formoptions:{ label: "Nombre:",elmprefix:"(*)"},
+                    editrules:{custom:true, custom_func:validaInstitucion}
                 },
                 {name:'con_int_tipo',index:'con_int_tipo',editable:true,edittype:"select",width:60,
                     editoptions:{ value: '0:Seleccione;Empresa:Empresa;ONG:ONG' }, 
@@ -298,12 +303,12 @@
         <tr><td colspan="2  ">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente. Solo se permiten archivos con extensión pdf, doc, docx</td></tr>
         <tr>
         <td><div id="btn_pub_subir"></div></td>
-        <td><input class="letraazul" type="text" id="pub_vin" value="Subir Publicación en periódico" size="30" readonly="readonly" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="pub_vin" readonly="readonly" value="Subir Publicación en periódico" size="30" readonly="readonly" style="border: none"/></td>
         <td width="100"></td>
         </tr>
         <tr>
         <td><a <?php if (isset($pro_pub_ruta_archivo) && $pro_pub_ruta_archivo != '') { ?> href="<?php echo base_url() . $pro_pub_ruta_archivo; ?>"<?php } ?>  id="btn_pub_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
-        <td><input class="letraazul" type="text" id="pub_vinD" <?php if (isset($pro_pub_ruta_archivo) && $pro_pub_ruta_archivo != '') { ?>value="Descargar Publicación"<?php } else { ?> value="No Hay publicacion para Descargar" <?php } ?>size="30" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="pub_vinD" readonly="readonly" <?php if (isset($pro_pub_ruta_archivo) && $pro_pub_ruta_archivo != '') { ?>value="Descargar Publicación"<?php } else { ?> value="No Hay publicacion para Descargar" <?php } ?>size="30" style="border: none"/></td>
         <td></td>
         </tr>
     </table>

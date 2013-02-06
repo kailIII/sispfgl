@@ -10,27 +10,7 @@
         $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url('componente2/comp23_E0/gestionsolicitudAsistencia'); ?>';
         });
-       
-       
-       
-        /*CARGAR MUNICIPIOS*/
-        $('#selDepto').change(function(){   
-            $('#selMun').children().remove();
-            $.getJSON('<?php echo base_url('componente2/proyectoPep/cargarMunicipios') ?>?dep_id='+$('#selDepto').val(), 
-            function(data) {
-                var i=0;
-                $.each(data, function(key, val) {
-                    if(key=='rows'){
-                        $('#selMun').append('<option value="0">--Seleccione Municipio--</option>');
-                        $.each(val, function(id, registro){
-                            $('#selMun').append('<option value="'+registro['cell'][0]+'">'+registro['cell'][1]+'</option>');
-                        });                    
-                    }
-                });
-            });              
-        });
-       
-       
+            
         /*GRID CRITERIOS ETAPA 0*/
         
         tabla.jqGrid({
@@ -133,7 +113,32 @@
         $('#btn_descargar').click(function() {
             $.get($(this).attr('href'));
         });
-  
+      $('#telefono').mask("9999-9999",{placeholder:"_"}); 
+      $('#seleccionMunicipiosForm').validate({
+            rules: {
+                leido_cri: {
+                    required: true
+                },
+                cumple_cri: {
+                    required: true
+                },
+                solicitud_fecha: {
+                    required: true
+                },
+                nombre_solicitante: {
+                    required: true,
+                    maxlength: 50
+                },
+                cargo: {
+                    required: true,
+                    maxlength: 50
+                },
+                telefono:{
+                    required: true
+                }
+                
+            }
+        });   
     });
 </script>
 
@@ -163,7 +168,7 @@
 
     <table>
         <tr><td style="width: 100px"></td>
-        <td style="width: 500px"> 
+        <td style="width: 600px"> 
             He leido los criterios que establece el manual operativo 
             <input type="radio" name="leido_cri" value="true"<?php if (isset($leido_cri) && $leido_cri == 't') { ?> checked <?php } ?>>SI </input>
             <input type="radio" name="leido_cri" value="false"<?php if (isset($leido_cri) && $leido_cri == 'f') { ?> checked <?php } ?> >NO </input>
@@ -171,7 +176,7 @@
         </tr>
 
         <tr><td style="width: 100px"></td>
-        <td style="width: 100px">
+        <td style="width: 600px"> 
             La municipalidad cumple con los criterios establecidos 
             <input type="radio" name="cumple_cri" value="true" <?php if (isset($cumple_cri) && $cumple_cri == 't') { ?> checked <?php } ?> >SI </input>
             <input type="radio" name="cumple_cri" value="false" <?php if (isset($cumple_cri) && $cumple_cri == 'f') { ?> checked <?php } ?>>NO </input>
@@ -191,11 +196,11 @@
         </tr>
         <tr>
         <td class="textD"><strong>Nombre del solicitante: </strong></td>
-        <td><input id="nombre_solicitante" name="nombre_solicitante" type="text" size="70" value="<?php echo $nombre_solicitante ?>" /></td>
+        <td><input id="nombre_solicitante" name="nombre_solicitante" type="text" size="50" value="<?php echo $nombre_solicitante ?>" /></td>
         </tr>
         <tr>
         <td class="textD"><strong>Cargo: </strong></td>
-        <td><input id="cargo" name="cargo" type="text" size="70" value="<?php echo $cargo ?>"/><br/></td>
+        <td><input id="cargo" name="cargo" type="text" size="50" value="<?php echo $cargo ?>"/><br/></td>
         </tr>
         <tr>
         <td class="textD"><strong>Telefono:</strong> </td>

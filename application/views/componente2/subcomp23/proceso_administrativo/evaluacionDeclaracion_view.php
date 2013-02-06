@@ -156,14 +156,9 @@
             colNames:['id','Nombre','Tipo','Aplica',''],
             colModel:[
                 {name:'con_int_id',index:'con_int_id', width:40,editable:false,editoptions:{size:15} },
-                {name:'con_int_nombre',index:'con_int_nombre',width:200,editable:false,
-                    editoptions:{size:25,maxlength:50}, 
-                    formoptions:{label: "Nombre:",elmprefix:"(*)"},
-                    editrules:{required:true} 
+                {name:'con_int_nombre',index:'con_int_nombre',width:650,editable:false
                 },
-                {name:'con_int_tipo',index:'con_int_tipo',editable:false,edittype:"select",width:60,
-                    editoptions:{ value: '0:Seleccione;Empresa:Empresa;ONG:ONG' }, 
-                    formoptions:{ label: "Tipo:",elmprefix:"(*)"}
+                {name:'con_int_tipo',index:'con_int_tipo',editable:false,width:60
                 },
                 {name:'con_int_aplica',index:'con_int_aplica',width:60,align:'center',editable:true,edittype:"checkbox",editoptions:{value:"Si:No"}},
                 {name:'actions',formatter:"actions",editable:false,fixed:true,width:60,
