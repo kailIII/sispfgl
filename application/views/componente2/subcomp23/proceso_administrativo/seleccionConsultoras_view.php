@@ -146,7 +146,7 @@
             colNames:['id','Nombre','Tipo','Seleccionada',''],
             colModel:[
                 {name:'con_int_id',index:'con_int_id', width:40,editable:false,editoptions:{size:15} },
-                {name:'con_int_nombre',index:'con_int_nombre',width:200,editable:false,
+                {name:'con_int_nombre',index:'con_int_nombre',width:650,editable:false,
                     editoptions:{size:25,maxlength:50}, 
                     formoptions:{label: "Nombre:",elmprefix:"(*)"},
                     editrules:{required:true} 
