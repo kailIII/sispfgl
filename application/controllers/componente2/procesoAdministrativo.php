@@ -191,8 +191,16 @@ class ProcesoAdministrativo extends CI_Controller {
         $con_int_tipo = $this->input->post("con_int_tipo");
         $con_int_nombre = $this->input->post("con_int_nombre");
 
-        $con_int_aplica = $this->input->post("con_int_aplica");
-        $con_int_seleccionada = $this->input->post("con_int_seleccionada");
+        if($this->input->post("con_int_aplica"))
+            $con_int_aplica = $this->input->post("con_int_aplica");
+        else
+            $con_int_aplica='0';
+        
+        if($this->input->post("con_int_seleccionada"))
+            $con_int_seleccionada = $this->input->post("con_int_seleccionada");
+        else
+            $con_int_seleccionada='0';
+
 
         $this->load->model('procesoAdministrativo/consultores_interes', 'conInt');
         $operacion = $this->input->post("oper");
@@ -201,8 +209,8 @@ class ProcesoAdministrativo extends CI_Controller {
                 $this->conInt->agregarConsultoresInteres($con_int_nombre, $con_int_tipo, $pro_id);
                 break;
             case 'edit':
-                if ($con_int_aplica == 0)
-                    if ($con_int_seleccionada == 0)
+                if (strcmp($con_int_aplica, "0")!= 0 | strcmp($con_int_seleccionada, "0") != 0)
+                    if (strcmp($con_int_seleccionada, "0") != 0)
                         $this->conInt->editarConsultoresInteresSeleccionado($con_int_id, $con_int_seleccionada);
                     else
                         $this->conInt->editarConsultoresInteresAplica($con_int_id, $con_int_aplica);
@@ -276,6 +284,19 @@ class ProcesoAdministrativo extends CI_Controller {
         $this->load->view('plantilla/footer', $informacion);
     }
 
+    public function cargarConsultoras() {
+        //PARA CREAR LA LISTA DESPLEGABLE DE LA INSTITUCION
+        $this->load->model('consultor/consultora');
+        $consultoras = $this->consultora->obtenerConsultora();
+        $combo = "<select name='par_institucion'>";
+        $combo.= " <option value='0'> Seleccione</option>";
+        foreach ($consultoras as $aux)
+            $combo.= " <option value='" . $aux->cons_id . "'>" . $aux->cons_nombre . "</option>";
+        $combo.="</select>";
+
+        echo $combo;
+    }
+
     public function cargarConsultoraInteres3($pro_id) {
         $this->load->model('procesoAdministrativo/consultores_interes', 'conInt');
         $consultoresInt = $this->conInt->obtenerConsultoresAplican($pro_id);
@@ -326,7 +347,7 @@ class ProcesoAdministrativo extends CI_Controller {
     public function cargarEvaluacionDeclaracion($mun_id) {
         $this->load->model('procesoAdministrativo/proceso');
         $rows = array();
-        $numfilas=0;
+        $numfilas = 0;
         if ($this->proceso->contarProPorMuni($mun_id) != 0) {
             $resultado = $this->proceso->obtenerPro($mun_id);
             $id = $resultado[0]->pro_id;
@@ -345,7 +366,7 @@ class ProcesoAdministrativo extends CI_Controller {
                 $pro_fininicio,
                 $pro_ffinalizacion
             );
-            $numfilas=1;
+            $numfilas = 1;
         }
 
 
@@ -364,7 +385,7 @@ class ProcesoAdministrativo extends CI_Controller {
     public function cargarSeleccionConsultora($mun_id) {
         $this->load->model('procesoAdministrativo/proceso');
         $rows = array();
-        $numfilas=0;
+        $numfilas = 0;
         if ($this->proceso->contarProPorMuni($mun_id) != 0) {
             $resultado = $this->proceso->obtenerPro($mun_id);
             $id = $resultado[0]->pro_id;
@@ -383,7 +404,7 @@ class ProcesoAdministrativo extends CI_Controller {
                 $pro_fenvio_informacion,
                 $pro_flimite_recepcion
             );
-            $numfilas=1;
+            $numfilas = 1;
         }
 
 
@@ -530,7 +551,7 @@ class ProcesoAdministrativo extends CI_Controller {
         $pro_eta_observacion = $this->input->post("pro_eta_observacion_" . $etapa);
         $fechasO = $this->fechas->obtenerNombresFechas();
         foreach ($fechasO as $fecha) {
-            $fechaGuardar = $this->input->post("eta".$etapa."_fecha".$fecha->nom_fec_apr_id);
+            $fechaGuardar = $this->input->post("eta" . $etapa . "_fecha" . $fecha->nom_fec_apr_id);
             if ($fechaGuardar == "")
                 $fechaGuardar = null;
             $this->nombreFecha->actualizarFechaProceso($fechaGuardar, $pro_eta_id, $fecha->nom_fec_apr_id);

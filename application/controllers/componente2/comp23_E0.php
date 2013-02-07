@@ -86,7 +86,7 @@ class Comp23_E0 extends CI_Controller {
         $this->load->model('etapa0-sub23/solicitud_asistencia', 'solicitud');
         $solicitudes = $this->solicitud->obtenerSolicitudesPorMuni($mun_id);
         $numfilas = count($solicitudes);
-
+        $rows = array();
         if ($numfilas != 0) {
             $i = 0;
             foreach ($solicitudes as $aux) {
@@ -100,9 +100,6 @@ class Comp23_E0 extends CI_Controller {
                 $i++;
             }
             array_multisort($rows, SORT_ASC);
-        } else {
-            $rows[0]['id'] = 0;
-            $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ');
         }
 
         $datos = json_encode($rows);
@@ -166,7 +163,7 @@ class Comp23_E0 extends CI_Controller {
         $this->load->view('plantilla/footer', $informacion);
     }
 
-    public function agregarsolicitudAsistencia() {
+    public function agregarSolicitudAsistencia() {
         $informacion['titulo'] = 'Solicitud de Asistencia Técnica';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
@@ -175,38 +172,33 @@ class Comp23_E0 extends CI_Controller {
         $nombre = $this->municipio->obtenerNomMunDep($this->input->post('selMun'));
         $informacion['departamento'] = $nombre[0]->depto;
         $informacion['municipio'] = $nombre[0]->muni;
-        $informacion['selMun'] = $this->input->post('selMun');
+        $mun_id = $this->input->post('selMun');
+        $informacion['id_mun'] = $mun_id;
+        $this->load->model('etapa0-sub23/solicitud_asistencia', 'solAsi');
+        $this->solAsi->agregarSolictudAsistencia($mun_id);
+        $solicitud = $this->solAsi->obtenerId($mun_id);
+        $tuplaSolicitud = $this->solAsi->obtenerSolicitudPorId($solicitud[0]['sol_asis_id']);
+        $informacion['idfila'] = $solicitud[0]['sol_asis_id'];
+        $informacion['nombre_solicitante'] = $tuplaSolicitud[0]->nombre_solicitante;
+        $informacion['cargo'] = $tuplaSolicitud[0]->cargo;
+        $informacion['telefono'] = $tuplaSolicitud[0]->telefono;
+        $informacion['sol_asis_ruta_archivo'] = $tuplaSolicitud[0]->sol_asis_ruta_archivo;
+        $informacion['nombreArchivo'] = end(explode("/", $tuplaSolicitud[0]->sol_asis_ruta_archivo));
+        $informacion['leido_cri'] = $tuplaSolicitud[0]->c1;
+        $informacion['cumple_cri'] = $tuplaSolicitud[0]->c2;
+        $informacion['solicitud_fecha'] = $tuplaSolicitud[0]->fecha_solicitud;
+        $informacion['comentarios'] = $tuplaSolicitud[0]->comentarios;
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/etapa0/solicitudAsistencia_view');
         $this->load->view('plantilla/footer', $informacion);
     }
 
-    public function guardarsolicitud() {
-        /* VARIABLES POST */
-        $c1 = $this->input->post("leido_cri");
-        $c2 = $this->input->post("cumple_cri");
-        $mun_id = $this->input->post("selMun");
-        $fecha_solicitud = $this->input->post("solicitud_fecha");
-        if ($fecha_solicitud == '')
-            $fecha_solicitud = null;
-        $nombre_solicitante = $this->input->post("nombre_solicitante");
-        $cargo = $this->input->post("cargo");
-        $telefono = $this->input->post("telefono");
-        $comentarios = $this->input->post('comentarios');
-        $sol_asis_ruta_archivo = $this->input->post('sol_asis_ruta_archivo');
-
-        $this->load->model('etapa0-sub23/solicitud_asistencia', 'sol_asistencia');
-        $this->sol_asistencia->agregarSolictudAsistencia($c1, $c2, $mun_id, $fecha_solicitud, $nombre_solicitante, $cargo, $telefono, $comentarios, $sol_asis_ruta_archivo);
-        redirect('componente2/comp23_E0/gestionsolicitudAsistencia');
-    }
-
-    public function actualizarSolicitud() {
+   public function actualizarSolicitud() {
         /* VARIABLES POST */
         $sol_asis_id = $this->input->post("idfila");
         $c1 = $this->input->post("leido_cri");
         $c2 = $this->input->post("cumple_cri");
-        $mun_id = $this->input->post("id_mun");
         $fecha_solicitud = $this->input->post("solicitud_fecha");
         if ($fecha_solicitud == '')
             $fecha_solicitud = null;
@@ -217,25 +209,20 @@ class Comp23_E0 extends CI_Controller {
         $sol_asis_ruta_archivo = $this->input->post('sol_asis_ruta_archivo');
 
         $this->load->model('etapa0-sub23/solicitud_asistencia', 'sol_asistencia');
-        $this->sol_asistencia->ActualizarSolictudAsistencia($sol_asis_id, $c1, $c2, $mun_id, $fecha_solicitud, $nombre_solicitante, $cargo, $telefono, $comentarios, $sol_asis_ruta_archivo);
+        $this->sol_asistencia->ActualizarSolictudAsistencia($sol_asis_id, $c1, $c2, $fecha_solicitud, $nombre_solicitante, $cargo, $telefono, $comentarios, $sol_asis_ruta_archivo);
         redirect('componente2/comp23_E0/gestionsolicitudAsistencia');
     }
 
     public function borrarSolicitud() {
-        $sol_asis_id = $this->input->post("id");
         $operacion = $this->input->post("oper");
+        if($operacion=='del')
+            $sol_asis_id = $this->input->post("id");
+        else
+            $sol_asis_id = $this->input->get("id");
         $this->load->model('etapa0-sub23/solicitud_asistencia', 'solicitud');
-        switch ($operacion) {
-            case 'add':
-                echo 'no se puede';
-                break;
-            case 'edit':
-                echo 'no se puede';
-                break;
-            case 'del':
-                $this->solicitud->eliminarSolicitud($sol_asis_id);
-                break;
-        }
+        $this->solicitud->eliminarSolicitud($sol_asis_id);
+        if($operacion!='del')
+            redirect('componente2/comp23_E0/gestionsolicitudAsistencia');
     }
 
     /* Integracion de Grupos     */

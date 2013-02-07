@@ -31,14 +31,22 @@
             pager: jQuery('#pagergestionSolicitud'),
             viewrecords: true,          
             caption: 'Unidades Organizativas',
-            height: "100%",
-            editurl: 'manttUnidadEdicion'
+            height: "100%"
         });
         
         myGrid.jqGrid('navGrid','#pagergestionSolicitud',
-        {edit:false,add:false,del:false,
+        {edit:false,add:false,del:true,
             beforeRefresh: function() {gestionSolicitud.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}},
-        {width:550,height:200},{width:550,height:200},{width:550,height:100},{multipleSearch:true, multipleGroup:true}
+        {width:550,height:200},
+        {width:550,height:200},
+        {msg: "¿Desea eliminar esta Solicitud?",caption:"Eliminando ",
+            align:'center',reloadAfterSubmit:true,
+            processData: "Cargando...",width:300,height:150,
+            onclickSubmit: function(rp_ge, postdata) {
+                $('#mensaje').dialog('open');                            
+            }},
+        {multipleSearch:true, 
+            multipleGroup:true}
     ).hideCol('id');
  
         /*CARGAR MUNICIPIOS*/
@@ -67,7 +75,18 @@
         
         
         $("#agregarS").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/comp23_E0/agregarsolicitudAsistencia'); ?>';
+            this.form.action='<?php echo base_url('componente2/comp23_E0/agregarSolicitudAsistencia'); ?>';
+        });
+        
+        /*DIALOGOS DE VALIDACION*/
+        $('.mensaje').dialog({
+            autoOpen: false,
+            width: 300,
+            buttons: {
+                "Ok": function() {
+                    $(this).dialog("close");
+                }
+            }
         });
     });               
 </script>     
@@ -119,3 +138,6 @@
     </table>
     <input id="idfila" type="text" name="idfila" value="" style="visibility: hidden"/>
 </form>
+<div id="mensaje" class="mensaje" title="Aviso de la operación">
+    <p>La acción fue realizada con satisfacción</p>
+</div>

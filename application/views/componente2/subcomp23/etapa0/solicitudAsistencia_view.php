@@ -4,32 +4,12 @@
         var tabla=$("#criteriosE0");
        
         $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/comp23_E0/guardarSolicitud'); ?>';
+            this.form.action='<?php echo base_url('componente2/comp23_E0/actualizarSolicitud'); ?>';
         });
         
         $("#cancelar").button().click(function() {
-            document.location.href='<?php echo base_url('componente2/comp23_E0/gestionsolicitudAsistencia'); ?>';
+            document.location.href='<?php echo base_url('componente2/comp23_E0/borrarSolicitud?id=').$idfila; ?>';
         });
-       
-       
-       
-        /*CARGAR MUNICIPIOS*/
-        $('#selDepto').change(function(){   
-            $('#selMun').children().remove();
-            $.getJSON('<?php echo base_url('componente2/proyectoPep/cargarMunicipios') ?>?dep_id='+$('#selDepto').val(), 
-            function(data) {
-                var i=0;
-                $.each(data, function(key, val) {
-                    if(key=='rows'){
-                        $('#selMun').append('<option value="0">--Seleccione Municipio--</option>');
-                        $.each(val, function(id, registro){
-                            $('#selMun').append('<option value="'+registro['cell'][0]+'">'+registro['cell'][1]+'</option>');
-                        });                    
-                    }
-                });
-            });              
-        });
-       
        
         /*GRID CRITERIOS ETAPA 0*/
         
@@ -135,7 +115,32 @@
         $('#btn_descargar').click(function() {
             $.get($(this).attr('href'));
         });
-  
+        $('#telefono').mask("9999-9999",{placeholder:"_"});  
+        $('#seleccionMunicipiosForm').validate({
+            rules: {
+                leido_cri: {
+                    required: true
+                },
+                cumple_cri: {
+                    required: true
+                },
+                solicitud_fecha: {
+                    required: true
+                },
+                nombre_solicitante: {
+                    required: true,
+                    maxlength: 50
+                },
+                cargo: {
+                    required: true,
+                    maxlength: 50
+                },
+                telefono:{
+                    required: true
+                }
+                
+            }
+        });  
     });
 </script>
 
@@ -164,7 +169,7 @@
 
     <table>
         <tr><td style="width: 100px"></td>
-        <td style="width: 500px"> 
+        <td style="width: 600px"> 
             He leido los criterios que establece el manual operativo 
             <input type="radio" name="leido_cri" value="true"<?php if (isset($leido_cri) && $leido_cri == 't') { ?> checked <?php } ?>>SI </input>
             <input type="radio" name="leido_cri" value="false"<?php if (isset($leido_cri) && $leido_cri == 'f') { ?> checked <?php } ?> >NO </input>
@@ -172,7 +177,7 @@
         </tr>
 
         <tr><td style="width: 100px"></td>
-        <td style="width: 100px">
+        <td style="width: 600px">
             La municipalidad cumple con los criterios establecidos 
             <input type="radio" name="cumple_cri" value="true" <?php if (isset($cumple_cri) && $cumple_cri == 't') { ?> checked <?php } ?> >SI </input>
             <input type="radio" name="cumple_cri" value="false" <?php if (isset($cumple_cri) && $cumple_cri == 'f') { ?> checked <?php } ?>>NO </input>
@@ -192,11 +197,11 @@
         </tr>
         <tr>
         <td class="textD"><strong>Nombre del solicitante: </strong></td>
-        <td><input id="nombre_solicitante" name="nombre_solicitante" type="text" size="70" value="" /></td>
+        <td><input id="nombre_solicitante" name="nombre_solicitante" type="text" size="50" value="" /></td>
         </tr>
         <tr>
         <td class="textD"><strong>Cargo: </strong></td>
-        <td><input id="cargo" name="cargo" type="text" size="70" value=""/><br/></td>
+        <td><input id="cargo" name="cargo" type="text" size="50" value=""/><br/></td>
         </tr>
         <tr>
         <td class="textD"><strong>Telefono:</strong> </td>
@@ -212,7 +217,7 @@
         <td style="width: 50px"></td>
         <td>
             <table>
-                  <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente. Solo se permiten archivos con extensión pdf, doc, docx</td></tr>
+                <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente. Solo se permiten archivos con extensión pdf, doc, docx</td></tr>
                 <tr>
                 <td><div id="btn_subir"></div></td>
                 <td><input class="letraazul" type="text" id="vinieta" readonly="readonly" value="Subir Solicitud" size="30" style="border: none"/></td>
@@ -226,9 +231,6 @@
         </tr>
     </table>
 
-    <input id="selMun" type="text" name="selMun" value="<?php echo $selMun ?>" style="visibility: hidden"/>
-
-
     <center style="position: relative;top: 20px">
         <div>
             <p><input type="submit" id="guardar" value="Guardar Solicitud" />
@@ -237,6 +239,8 @@
         </div>
     </center>
     <input id="sol_asis_ruta_archivo" name="sol_asis_ruta_archivo" <?php if (isset($sol_asis_ruta_archivo) && $sol_asis_ruta_archivo != '') { ?>value="<?php echo $sol_asis_ruta_archivo; ?>"<?php } ?> type="text" size="100" readonly="readonly" style="visibility: hidden"/>
+    <input id="idfila" type="text" name="idfila" value="<?php echo $idfila ?>" style="visibility: hidden"/>
+    <input id="id_mun" type="text" name="id_mun" value="<?php echo $id_mun ?>" style="visibility: hidden"/>
 
 </form>
 <div id="extension" class="mensaje" title="Error">
