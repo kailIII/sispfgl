@@ -275,14 +275,14 @@ echo form_open('componente3/componente3/guardar_dsat',$attributes);?>
 			<option value="M"<?php echo set_select('sexo_div', 'M'); ?>>Masculino</option>
 		</select>
 		
-		<label>Sector: </label>
+		<label>Procedencia: </label>
 		<select name="sector_asis" size="1" id="sector_asis">
-			<option value="Politico"<?php echo set_select('sector_asis', 'Politico'); ?>>Politico</option>
-			<option value="Educacion"<?php echo set_select('sector_asis', 'Educacion'); ?>>Educacion</option>
-			<option value="Juventud"<?php echo set_select('sector_asis', 'Juventud'); ?>>Juventud</option>
-			<option value="Sindical"<?php echo set_select('sector_asis', 'Sindical'); ?>>Sindical</option>
-			<option value="Empresarial"<?php echo set_select('sector_asis', 'Empresarial'); ?>>Empresarial</option>
-			<option value="Mujer"<?php echo set_select('sector_asis', 'Mujer'); ?>>Mujer</option>
+			<option value="Gobierno Central"<?php echo set_select('sector_asis', 'Gobierno Central'); ?>>Gobierno Central</option>
+			<option value="Gobierno Municipal"<?php echo set_select('sector_asis', 'Gobierno Municipal'); ?>>Gobierno Municipal</option>
+			<option value="Asamblea Legislativa"<?php echo set_select('sector_asis', 'Asamblea Legislativa'); ?>>Asamblea Legislativa</option>
+			<option value="ONG"<?php echo set_select('sector_asis', 'ONG'); ?>>ONG</option>
+			<option value="Academico"<?php echo set_select('sector_asis', 'Academico'); ?>>Academico</option>
+			<option value="Sociedad Civil"<?php echo set_select('sector_asis', 'Sociedad Civil'); ?>>Sociedad Civil</option>
 			<option value="Otro"<?php echo set_select('sector_asis', 'Otro'); ?>>Otro</option>
 		</select>
 		
@@ -296,7 +296,7 @@ echo form_open('componente3/componente3/guardar_dsat',$attributes);?>
 		
 <?php echo form_close();?>
 <div id="mensaje" class="mensaje" title="Aviso">
-    <p>Chivo.</p>
+    <p>Ok.</p>
 </div>
 <div id="mensaje1" class="mensaje" title="Aviso">
     <p>Debe Seleccionar una fila para realizar esta acci&oacute;n.</p>

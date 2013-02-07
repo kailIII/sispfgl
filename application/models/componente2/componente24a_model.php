@@ -19,7 +19,7 @@ Class componente24a_model extends CI_Model{
 			return $row->mun_nombre;
 		}
 		
-	public function insertar_comp24a($mun_id, $fecha_cap, $tema_cap, $total_mujeres, $total_hombres, $fecha_instalacion, $fecha_operacion, $observaciones) {
+	public function insertar_comp24a_cap($mun_id, $fecha_cap, $tema_cap, $total_mujeres, $total_hombres, $fecha_instalacion, $fecha_operacion, $observaciones) {
 		
 		$data_new = array(
 		  'mun_id' => $mun_id,
