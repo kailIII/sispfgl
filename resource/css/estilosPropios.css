@@ -259,11 +259,12 @@ from .campo input {
 }
 
 #rpt_frm_bdy .campo label {
-	width: 			250px;
+	width: 			300px;
 	margin-left:	20px;
 	display:        inline-block;
 	line-height: 	35px;
 	cursor: 		pointer;
+    text-align:     right;
 }
 
 #rpt_frm_bdy .campo input[type=text] {
@@ -277,6 +278,15 @@ from .campo input {
     width: 251px;
 }
 
+#rpt_frm_bdy .tabla{
+    margin-left: 20px;
+    margin-right: 20px;    
+}
+
+#rpt_frm_bdy .tabla label{
+    
+}
+
 
 .rpt_groupBy {
 	margin-left: 5px;
@@ -284,85 +294,8 @@ from .campo input {
     font-weight: bold;
 }
 
-/****************
-   Form
- ****************/
- 
-.form input[type=checkbox],
-form input[type=checkbox]{
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    margin-top:10px;
-    }
-.form input[type=text], 
-.form input[type=password],
-form input[type=text],
-form input[type=password]{
-    -moz-border-radius: 7px;
-    -webkit-border-radius: 7px;
-    background-color: #eaeaea;
-    background: -moz-linear-gradient(top, #ffffff, #f2f2f2);
-    background: -webkit-gradient(linear, left top, left bottom,
-                color-stop(0.0, #ffffff), color-stop(1.0, #f2f2f2));
-    border: 1px solid #cacaca;
-    font-family: inherit;
-    color: #797979;
-    padding: 3px 6px;
-    width: 150px;
-    font-weight: bold;
+.ui-datepicker-trigger{
+    vertical-align: middle;
+    margin-left: 5px;
 }
- 
-.form select,
-form select{
-    -moz-border-radius: 7px;
-    -webkit-border-radius: 7px;
-    border: 1px solid #b9bdc1;
-    padding: 3px;
-    font-family: inherit;
-    font-weight: bold;
-    color: #797979;
-    width: 264px;
-}
- 
-.form :focus,
-form :focus{
-    -webkit-box-shadow: 0px 0px 4px #aaa;
-    -moz-box-shadow: 0px 0px 4px #aaa;
-    box-shadow: 0px 0px 4px #aaa;
-    }
- 
-..form .gender-fields,
-form .gender-fields{
-    padding-top:10px;
-    }
- 
-.form  span.error,
-form  span.error {
-    color:red;
-    padding-left:10px;
-}
- 
-.form .info,
-form .info{
-    margin-left:130px;
-    font-size: 12px;
-    font-style:italic;
-    color: #999;
-    }
- 
-.form .submit{
-    -moz-border-radius: 15px;
-    -webkit-border-radius: 15px;
-    font-family: arial,verdana,sans-serif;
-    background-color: #dedede;
-    background: -moz-linear-gradient(top, #ffffff, #eaeaea);
-    background: -webkit-gradient(linear, left top, left bottom,
-                color-stop(0.0, #ffffff), color-stop(1.0, #eaeaea));
-    border: 1px solid #dedede;
-    color: #484848;
-    font-size:14px;
-    font-weight: bold;
-    padding: 8px 10px;
-    cursor: pointer;
-    margin-left:220px;
-    }
+
