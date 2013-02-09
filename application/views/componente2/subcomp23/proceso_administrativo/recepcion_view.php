@@ -217,7 +217,7 @@
     </table>
 </center>
 <br/><br/><br/>
-<input value="" id="Mensajito" type="text" size="100" readonly="readonly" style="border: none;"/>
+<input value="" class="error" id="Mensajito" type="text" size="100" readonly="readonly" style="border: none;"/>
 <div id="etapas">
     <ul>
         <?php foreach ($etapas as $etapa) { ?>

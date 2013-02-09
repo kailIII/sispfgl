@@ -284,12 +284,12 @@ class ProcesoAdministrativo extends CI_Controller {
         $this->load->view('plantilla/footer', $informacion);
     }
 
-    public function cargarConsultoras() {
+    public function cargarConsultoras($pro_id) {
         //PARA CREAR LA LISTA DESPLEGABLE DE LA INSTITUCION
         $this->load->model('consultor/consultora');
-        $consultoras = $this->consultora->obtenerConsultora();
-        $combo = "<select name='par_institucion'>";
-        $combo.= " <option value='0'> Seleccione</option>";
+        $consultoras = $this->consultora->obtenerConsultoraNoRegistradas($pro_id);
+        $combo = "<select name='con_int_nombre'>";
+        $combo.= " <option value='0'> -- Seleccione --</option>";
         foreach ($consultoras as $aux)
             $combo.= " <option value='" . $aux->cons_id . "'>" . $aux->cons_nombre . "</option>";
         $combo.="</select>";
@@ -352,6 +352,10 @@ class ProcesoAdministrativo extends CI_Controller {
             $resultado = $this->proceso->obtenerPro($mun_id);
             $id = $resultado[0]->pro_id;
             $numero = $resultado[0]->pro_numero;
+            if ($resultado[0]->pro_fexpresion_interes != "")
+                $pro_fexpresion_interes=date('d-m-Y', strtotime($resultado[0]->pro_fexpresion_interes.'1 day'));
+            else
+                $pro_fexpresion_interes=$resultado[0]->pro_fexpresion_interes;
             if ($resultado[0]->pro_finicio != "")
                 $pro_fininicio = date('d-m-Y', strtotime($resultado[0]->pro_finicio));
             else
@@ -364,7 +368,8 @@ class ProcesoAdministrativo extends CI_Controller {
             $rows[0]['cell'] = array($id,
                 $numero,
                 $pro_fininicio,
-                $pro_ffinalizacion
+                $pro_ffinalizacion,
+                $pro_fexpresion_interes
             );
             $numfilas = 1;
         }

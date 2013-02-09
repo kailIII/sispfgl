@@ -273,7 +273,7 @@
     </table>
 </center>
 <br/><br/><br/>
-<input value="" id="Mensajito" type="text" size="100" readonly="readonly" style="border: none;"/>
+<input value="" class="error" id="Mensajito" type="text" size="100" readonly="readonly" style="border: none;"/>
 <form id="propuestaTecnicaForm" method="post">
     <table class="procesoAdmin" border="0" cellspacing="0" >
         <tr>

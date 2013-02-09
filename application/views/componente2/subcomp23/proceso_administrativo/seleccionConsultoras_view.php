@@ -204,7 +204,7 @@
     </table>
 </center>
 <br/><br/>
-<input value="" id="Mensajito" type="text" size="100" readonly="readonly" style="border: none;"/>
+<input value="" class="error" id="Mensajito" type="text" size="100" readonly="readonly" style="border: none;"/>
 <form id="SeleccionConsultoraForm" method="post">
     <table class="procesoAdmin">
         <tr>

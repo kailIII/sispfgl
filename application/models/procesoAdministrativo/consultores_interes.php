@@ -27,6 +27,16 @@ class Consultores_interes extends CI_Model {
         return $query->result();
     }
 
+    public function obtenerIDConsultoresInteres($pro_id) {
+        $this->db->select('consultora.cons_id');
+        $this->db->from($this->tabla);
+        $this->db->join('consultora', 'consultora.cons_id = consultores_interes.cons_id');
+        $this->db->where('consultores_interes.pro_id', $pro_id);
+        $this->db->order_by('pro_id');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
     public function obtenerConsultoresAplican($pro_id) {
         $this->db->select('consultora.cons_nombre con_int_nombre, 
                 consultores_interes.pro_id, 
@@ -63,6 +73,15 @@ class Consultores_interes extends CI_Model {
         return $query->result();
     }
 
+    public function obtenerConsultoresSeleccionada($pro_id) {
+        $this->db->from($this->tabla);
+        $this->db->join('consultora', 'consultora.cons_id = consultores_interes.cons_id');
+        $this->db->where('consultores_interes.pro_id', $pro_id);
+        $this->db->where('consultores_interes.con_int_seleccionada', 'Si');
+        $this->db->order_by('pro_id');
+        return $this->db->count_all_results();
+    }
+
     public function agregarConsultoresInteres($con_int_nombre, $con_int_tipo, $pro_id) {
         $datos = array(
             'cons_id ' => $con_int_nombre,
@@ -89,7 +108,11 @@ class Consultores_interes extends CI_Model {
         $this->db->update($this->tabla, $datos);
     }
 
-    public function editarConsultoresInteresSeleccionado($con_int_id, $con_int_seleccionada) {
+    public function editarConsultoresInteresSeleccionado($con_int_id, $con_int_seleccionada, $pro_id) {
+        if (strcmp($con_int_seleccionada, 'Si') == 0) {
+            
+        }
+
         $datos = array(
             'con_int_seleccionada' => $con_int_seleccionada
         );
