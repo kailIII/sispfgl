@@ -23,7 +23,7 @@ class  componente24a extends CI_Controller {
         //$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
-        $this->load->view('componente2/componente24a_view');
+        $this->load->view('componente2/comp24a_cap_view');
         $this->load->view('plantilla/footer', $informacion);
     }
     
@@ -67,7 +67,7 @@ class  componente24a extends CI_Controller {
         echo $jsonresponse;
     }
     
-    public function guardar_comp24a() {
+    public function guardar_comp24a_cap() {
         
         $mun_id = $this->input->post("nombre_muni");
         $fecha_cap = $this->input->post("fecha_cap");
@@ -79,8 +79,32 @@ class  componente24a extends CI_Controller {
         $observaciones = $this->input->post("observaciones");
 
         $this->load->model('componente2/componente24a_model');
-        $this->componente24a_model->insertar_comp24a($mun_id, $fecha_cap, $tema_cap, $total_mujeres, $total_hombres, $fecha_instalacion, $fecha_operacion, $observaciones);
+        $this->componente24a_model->insertar_comp24a_cap($mun_id, $fecha_cap, $tema_cap, $total_mujeres, $total_hombres, $fecha_instalacion, $fecha_operacion, $observaciones);
 
+    }
+    
+    public function asis_tec_municipal() {
+
+        $informacion['titulo'] = 'Componente 2.4.a, Asistencia T&eacute;cnica Municipal';
+        //$informacion['user_id'] = $this->tank_auth->get_user_id();
+        //$informacion['username'] = $this->tank_auth->get_username();
+        //$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/comp24a_atm_view');
+        $this->load->view('plantilla/footer', $informacion);
+    }
+    
+    public function comp26() {
+
+        $informacion['titulo'] = 'Componente 2.6';
+        //$informacion['user_id'] = $this->tank_auth->get_user_id();
+        //$informacion['username'] = $this->tank_auth->get_username();
+        //$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/comp26_view');
+        $this->load->view('plantilla/footer', $informacion);
     }
 }
 ?>

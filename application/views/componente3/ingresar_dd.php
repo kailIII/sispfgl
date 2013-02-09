@@ -64,7 +64,7 @@ echo form_open_multipart('componente3/componente3/guardar_dd',$attributes);?>
 	</div>
 	
 	<div  style="float:left;height:200px;">
-	<label>Tipo: </label>
+	<label>&#8226; Tipo: </label><br/>
 		<table>
 			<tr>
 				<td>&nbsp;&nbsp;<input type="checkbox" name="sector_act1" value="1" <?php echo set_checkbox('sector_act1', '1'); ?> /></td>
@@ -81,6 +81,9 @@ echo form_open_multipart('componente3/componente3/guardar_dd',$attributes);?>
 			<tr>
 				<td>&nbsp;&nbsp;<input type="checkbox" name="sector_act4" value="4" <?php echo set_checkbox('sector_act4', '4'); ?> /></td>
 				<td><label>Obras Publicas y Transporte</label></td>
+			</tr>
+			<tr>
+				<td colspan="2"><label>&#8226; &Aacute;reas de Estudio:</label></td>
 			</tr>
 			<tr>
 				<td>&nbsp;&nbsp;<input type="checkbox" name="sector_act5" value="5" <?php echo set_checkbox('sector_act5', '5'); ?> /></td>
