@@ -27,6 +27,8 @@ class Administracion extends CI_Controller {
     }
 
     public function rolesSistema() {
+		if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
+		
         $informacion['titulo'] = 'Administración de roles del SISPFGL';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
@@ -217,6 +219,8 @@ class Administracion extends CI_Controller {
     }
 
     public function opcionesSistema() {
+		if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
+		
         $informacion['titulo'] = 'Gestionar las Opciones del Sistema';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
