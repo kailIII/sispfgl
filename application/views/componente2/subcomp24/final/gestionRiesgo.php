@@ -12,7 +12,7 @@ $this->load->view('plantilla/menu', $menu);
 ?>
 <script type="text/javascript">
 <!--
-	
+
 -->
 </script>
 
