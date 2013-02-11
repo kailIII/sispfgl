@@ -128,6 +128,9 @@ $this->load->view('plantilla/menu', $menu);
             return[true,'']; //no error
         }
         /**/
+        
+        /* Calculos */
+        
                
         /*DIALOGOS DE VALIDACION*/
         $('.mensaje').dialog({
@@ -149,7 +152,7 @@ $this->load->view('plantilla/menu', $menu);
 <?php echo form_open() ?>
 
     <h2 class="h2Titulos">Etapa 0: Condiciones Previas</h2>
-    <h2 class="h2Titulos">Registro de Solicitud</h2>
+    <h2 class="h2Titulos">Indicadores de Desempeno Administrativo y Financiero Municipal</h2>
     <br/>
     <div id="rpt_frm_bdy">
         <div class="campo">
@@ -167,24 +170,81 @@ $this->load->view('plantilla/menu', $menu);
                 <option value='0'>--Seleccione--</option>
             </select>
         </div>
-        <div id="rpt-border"></div>
         <div class="campo">
-            <label>Fecha de conformacion de comision municipal:</label>
+            <label>Fecha:</label>
             <input <?php if (isset($f_conformacion)) { ?> value='<?php echo date('d/m/Y', strtotime($f_conformacion)); ?>'<?php } ?>id="f_conformacion" name="f_conformacion" type="text" size="10" readonly="readonly"/>
         </div>
-        <div class="campo">
-            <label>Fecha de acuerdo municipal:</label>
-            <input <?php if (isset($f_acuerdo)) { ?> value='<?php echo date('d/m/Y', strtotime($f_acuerdo)); ?>'<?php } ?>id="f_acuerdo" name="f_acuerdo" type="text" size="10" readonly="readonly"/>
+        <hr />
+        <div id="rpt-border"></div>
+        
+        <div class="bigCampo">
+            <label>Indice de Capacidad de Pago</label>
+            <div class="comment">Mide la disponibilidad de recursos financieros
+             con que cuenta la municipalidad para hacer frente al pago de la deuda 
+             de corto plazo y se considera escesivo cuando el indicador resultante
+             es un valor negativo, Art. 3 de la Ley de Endeudamiento Municipal:
+             No podra superar el limite maximo de 0.6 veces el ahorro operacional
+             obtenido por la municipalidad en el ejercicio fiscal anterior.</div>
+             <div class="bdy">
+                <div class="frm">
+                    <div class="hdr">Indice de Capacidad de Pago</div>
+                    <div class="igual">=</div>
+                    <div class="col">
+                        <div class="row">
+                            <span>Pasivo Circulante</span>
+                            <input class="txtInput" id="t_pasCir" name="t_pasCir" />
+                            <span>+ ( Deuda a Corto Plazo</span>
+                            <input class="txtInput" id="t_deuCorPla" name="t_deuCorPla" />
+                            <span>+ Intereses</span>
+                            <input class="txtInput" id="t_interes" name="t_interes" />
+                            <span>)</span>
+                        </div>
+                        <div></div>
+                        <hr />
+                        <div class="row">
+                            <span>Ahorro Operacional</span>
+                            <input class="txtInput" id="t_ahoOper" name="t_ahoOper" />
+                            <span>+ Intereses de la deuda</span>
+                            <input class="txtInput" id="t_intDueda" name="t_intDueda" />
+                        </div>
+                    </div>
+                </div>
+             </div>
+             <div class="result centrar">
+                <div class="hdr">Indice Capacidad de Pago</div>
+                <input id="t_icp" name="t_icp" type="text" size="100" />
+             </div>
         </div>
-        <div class="campo">
-            <label>Fecha de recepcion de acuerdo municipal:</label>
-            <input <?php if (isset($f_recepcion)) { ?> value='<?php echo date('d/m/Y', strtotime($f_recepcion)); ?>'<?php } ?>id="f_recepcion" name="f_recepcion" type="text" size="10" readonly="readonly"/>
+        
+        <div class="bigCampo">
+            <label>Limite de Endeudamiento Municipal</label>
+            <div class="comment">Mide el valor de dinero comprometido con relacion a cada dolar disponible,
+            el resultado no debera ser mayor que 1.70, (Art. 5 de la Ley de Endeudamiento Publico Municipal)
+            y se concidera aceptable, si cada vez que se determine el indicador, este resulta ser un valor
+            decreciente y menor que 1.70.</div>
+             <div class="bdy">
+                <div class="frm">
+                    <div class="hdr">Limite de Endeudamiento Municipal</div>
+                    <div class="igual">=</div>
+                    <div class="col">
+                        <div class="row">
+                            <span>Deuda Municipal Total</span>
+                            <input class="txtInput" id="t_deuMunTotal" name="t_deuMunTotal" />
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <span>Ingresos Operacionales Percibidos</span>
+                            <input class="txtInput" id="t_ingOpePer" name="t_ingOpePer" />
+                        </div>
+                    </div>
+                </div>
+             </div>
+             <div class="result centrar">
+                <div class="hdr">Limite de Endeudamiento Municipal</div>
+                <input id="t_iop" name="t_iop" type="text" size="100" />
+             </div>
         </div>
-        <div class="tabla">
-            <label>Miembros de la comision financiera municipal</label>
-            <table id="miembros"></table>
-            <div id="pagerMiembros"></div>
-        </div>
+        
         <div style="width: 100%;">
             <div style="width: 50%;">
                 <div class="campo">
