@@ -118,17 +118,24 @@
                     }
                     if(key=='rows'){
                         $.each(val, function(id, registro){
-                             $('#Mensajito').hide();
-                            $('#consultoresInteres').setGridParam({
-                                url:'<?php echo base_url('componente2/procesoAdministrativo/cargarConsultoraInteres3') . '/' ?>'+registro['cell'][0],
-                                editurl:'<?php echo base_url('componente2/procesoAdministrativo/gestionarConsultoresInteres') . '/'; ?>'+registro['cell'][0],
-                                datatype:'json'
-                            }).trigger('reloadGrid');
-                            $('#pro_id').val(registro['cell'][0]);
-                            $('#pro_numero').val(registro['cell'][1]);
-                            $('#pro_fenvio_informacion').val(registro['cell'][2]);
-                            $('#pro_flimite_recepcion').val(registro['cell'][3]);
-                            $("#SeleccionConsultoraForm").show();
+                            if(registro['cell'][4]!=null){
+                                $('#Mensajito').hide();
+                                $( "#pro_fenvio_informacion" ).datepicker( "option", "minDate", registro['cell'][4] ); 
+                                $( "#pro_flimite_recepcion" ).datepicker( "option", "minDate", registro['cell'][4] ); 
+                                $('#consultoresInteres').setGridParam({
+                                    url:'<?php echo base_url('componente2/procesoAdministrativo/cargarConsultoraInteres3') . '/' ?>'+registro['cell'][0],
+                                    editurl:'<?php echo base_url('componente2/procesoAdministrativo/gestionarConsultoresInteres') . '/'; ?>'+registro['cell'][0],
+                                    datatype:'json'
+                                }).trigger('reloadGrid');
+                                $('#pro_id').val(registro['cell'][0]);
+                                $('#pro_numero').val(registro['cell'][1]);
+                                $('#pro_fenvio_informacion').val(registro['cell'][2]);
+                                $('#pro_flimite_recepcion').val(registro['cell'][3]);
+                                $("#SeleccionConsultoraForm").show();
+                            }else{
+                                $('#Mensajito').show();
+                                $('#Mensajito').val("Debe de registrar primero las fechas de la etapa: Evaluación de expresión de interés");
+                            }
                         });                    
                     }
                 });
@@ -170,6 +177,7 @@
         {edit:false,add:false,del:false,search:false,refresh:false,
             beforeRefresh: function() {
                 tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
+            
         }
     ).hideCol('con_int_id');
         /* Funcion para regargar los JQGRID luego de agregar y editar*/
@@ -212,11 +220,11 @@
         <td><input value="" id="pro_numero" name="pro_numero" type="text" size="10" readonly="readonly" style="border: none; background: white;"/></td>
         </tr>
         <tr>
-        <td class="textD"><strong>Fecha de inicio: </strong></td> 
+        <td class="textD"><strong>Fecha de envio de la información: </strong></td> 
         <td><input value="" id="pro_fenvio_informacion" name="pro_fenvio_informacion" type="text" size="10" readonly="readonly"/></td>
         </tr>
         <tr>
-        <td class="textD"> <strong>Fecha de finalización: </strong></td>
+        <td class="textD"> <strong>Fecha límite de recepción de la información: </strong></td>
         <td><input value="" id="pro_flimite_recepcion" name="pro_flimite_recepcion" type="text" size="10" readonly="readonly"/></td>
         </tr>
     </table>

@@ -104,7 +104,6 @@ class ProcesoAdministrativo extends CI_Controller {
                 $pro_exp_ruta_archivo = $this->input->post("pro_exp_ruta_archivo");
 
                 $this->proceso->editarPro($pro_id, $pro_exp_ruta_archivo, $pro_faclara_dudas, $pro_fexpresion_interes, $pro_fpublicacion, $pro_numero, $pro_observacion1, $pro_pub_ruta_archivo);
-                //redirect('componente2/procesoAdministrativo/adquisicionContrataciones');
                 break;
 
             case 2:
@@ -115,7 +114,6 @@ class ProcesoAdministrativo extends CI_Controller {
                 if ($pro_ffinalizacion == "")
                     $pro_ffinalizacion = null;
                 $this->proceso->editarPro2($pro_id, $pro_ffinalizacion, $pro_finicio);
-                //redirect('componente2/procesoAdministrativo/propuestaTecnica');
                 break;
 
             case 3:
@@ -126,7 +124,6 @@ class ProcesoAdministrativo extends CI_Controller {
                 if ($pro_fenvio_informacion == "")
                     $pro_fenvio_informacion = null;
                 $this->proceso->editarPro3($pro_id, $pro_fenvio_informacion, $pro_flimite_recepcion);
-                //redirect('componente2/procesoAdministrativo/seleccionConsultoras');
                 break;
             case 4:
                 $pro_fsolicitud = $this->input->post("pro_fsolicitud");
@@ -149,7 +146,6 @@ class ProcesoAdministrativo extends CI_Controller {
                     $pro_faperturafinanciera = null;
                 $pro_observacion2 = $this->input->post("pro_observacion2");
                 $this->proceso->editarPro4($pro_id, $pro_fsolicitud, $pro_frecepcion, $pro_fcierre_negociacion, $pro_ffirma_contrato, $pro_faperturatecnica, $pro_faperturafinanciera, $pro_observacion2);
-                //redirect('componente2/procesoAdministrativo/propuestaTecnica');
                 break;
         }
     }
@@ -191,15 +187,15 @@ class ProcesoAdministrativo extends CI_Controller {
         $con_int_tipo = $this->input->post("con_int_tipo");
         $con_int_nombre = $this->input->post("con_int_nombre");
 
-        if($this->input->post("con_int_aplica"))
+        if ($this->input->post("con_int_aplica"))
             $con_int_aplica = $this->input->post("con_int_aplica");
         else
-            $con_int_aplica='0';
-        
-        if($this->input->post("con_int_seleccionada"))
+            $con_int_aplica = '0';
+
+        if ($this->input->post("con_int_seleccionada"))
             $con_int_seleccionada = $this->input->post("con_int_seleccionada");
         else
-            $con_int_seleccionada='0';
+            $con_int_seleccionada = '0';
 
 
         $this->load->model('procesoAdministrativo/consultores_interes', 'conInt');
@@ -209,9 +205,9 @@ class ProcesoAdministrativo extends CI_Controller {
                 $this->conInt->agregarConsultoresInteres($con_int_nombre, $con_int_tipo, $pro_id);
                 break;
             case 'edit':
-                if (strcmp($con_int_aplica, "0")!= 0 | strcmp($con_int_seleccionada, "0") != 0)
+                if (strcmp($con_int_aplica, "0") != 0 | strcmp($con_int_seleccionada, "0") != 0)
                     if (strcmp($con_int_seleccionada, "0") != 0)
-                        $this->conInt->editarConsultoresInteresSeleccionado($con_int_id, $con_int_seleccionada);
+                        $this->conInt->editarConsultoresInteresSeleccionado($con_int_id, $con_int_seleccionada, $pro_id);
                     else
                         $this->conInt->editarConsultoresInteresAplica($con_int_id, $con_int_aplica);
                 else
@@ -353,9 +349,9 @@ class ProcesoAdministrativo extends CI_Controller {
             $id = $resultado[0]->pro_id;
             $numero = $resultado[0]->pro_numero;
             if ($resultado[0]->pro_fexpresion_interes != "")
-                $pro_fexpresion_interes=date('d-m-Y', strtotime($resultado[0]->pro_fexpresion_interes.'1 day'));
+                $pro_fexpresion_interes = date('d-m-Y', strtotime($resultado[0]->pro_fexpresion_interes . '1 day'));
             else
-                $pro_fexpresion_interes=$resultado[0]->pro_fexpresion_interes;
+                $pro_fexpresion_interes = $resultado[0]->pro_fexpresion_interes;
             if ($resultado[0]->pro_finicio != "")
                 $pro_fininicio = date('d-m-Y', strtotime($resultado[0]->pro_finicio));
             else
@@ -395,11 +391,15 @@ class ProcesoAdministrativo extends CI_Controller {
             $resultado = $this->proceso->obtenerPro($mun_id);
             $id = $resultado[0]->pro_id;
             $numero = $resultado[0]->pro_numero;
+            if ($resultado[0]->pro_ffinalizacion != "")
+                $pro_ffinalizacion = date('d-m-Y', strtotime($resultado[0]->pro_ffinalizacion . '1 day'));
+            else
+                $pro_ffinalizacion = $resultado[0]->pro_ffinalizacion;
             if ($resultado[0]->pro_fenvio_informacion != "")
                 $pro_fenvio_informacion = date('d-m-Y', strtotime($resultado[0]->pro_fenvio_informacion));
             else
                 $pro_fenvio_informacion = $resultado[0]->pro_fenvio_informacion;
-            if ($resultado[0]->pro_ffinalizacion != "")
+            if ($resultado[0]->pro_flimite_recepcion != "")
                 $pro_flimite_recepcion = date('d-m-Y', strtotime($resultado[0]->pro_flimite_recepcion));
             else
                 $pro_flimite_recepcion = $resultado[0]->pro_flimite_recepcion;
@@ -407,13 +407,11 @@ class ProcesoAdministrativo extends CI_Controller {
             $rows[0]['cell'] = array($id,
                 $numero,
                 $pro_fenvio_informacion,
-                $pro_flimite_recepcion
+                $pro_flimite_recepcion,
+                $pro_ffinalizacion
             );
             $numfilas = 1;
         }
-
-
-
         $datos = json_encode($rows);
         $pages = floor(1 / 10) + 1;
 
@@ -435,6 +433,10 @@ class ProcesoAdministrativo extends CI_Controller {
             $resultado = $this->proceso->obtenerPro($mun_id);
             $id = $resultado[0]->pro_id;
             $numero = $resultado[0]->pro_numero;
+            if ($resultado[0]->pro_flimite_recepcion != "")
+                $pro_flimite_recepcion = date('d-m-Y', strtotime($resultado[0]->pro_flimite_recepcion . "1 day"));
+            else
+                $pro_flimite_recepcion = $resultado[0]->pro_flimite_recepcion;
             if ($resultado[0]->pro_fsolicitud != "")
                 $pro_fsolicitud = date('d-m-Y', strtotime($resultado[0]->pro_fsolicitud));
             else
@@ -468,12 +470,39 @@ class ProcesoAdministrativo extends CI_Controller {
                 $pro_faperturafinanciera,
                 $pro_fcierre_negociacion,
                 $pro_ffirma_contrato,
-                $resultado[0]->pro_observacion2
+                $resultado[0]->pro_observacion2,
+                $pro_flimite_recepcion
             );
             $numfilas = 1;
         }
         $datos = json_encode($rows);
         $pages = floor(1 / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+
+    public function cargarUltimaFechaProTecFin($mun_id) {
+        $this->load->model('procesoAdministrativo/proceso');
+        $resultado = $this->proceso->obtenerPro($mun_id);
+        $id = $resultado[0]->pro_id;
+        if ($resultado[0]->pro_ffirma_contrato != "")
+            $pro_ffirma_contrato = date('d-m-Y', strtotime($resultado[0]->pro_ffirma_contrato."1 Day"));
+        else
+            $pro_ffirma_contrato = $resultado[0]->pro_ffirma_contrato;
+        $rows[0]['id'] = $id;
+        $rows[0]['cell'] = array($id,
+            $pro_ffirma_contrato
+        );
+        $numfilas = 1;
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
 
         $jsonresponse = '{
                "page":"1",
@@ -532,7 +561,8 @@ class ProcesoAdministrativo extends CI_Controller {
                     $fechas,
                     $pro_eta_observacion);
                 $i++;
-            } $numfilas = count($rows);
+            }
+            $numfilas = count($rows);
         }
 
         $datos = json_encode($rows);

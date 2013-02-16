@@ -36,21 +36,41 @@
                         }
                     }
                     if(key=='rows'){
-                        i=0;
-                        $.each(val, function(id, registro){
-                            j=1;
-                            $('#pro_eta_id_'+(i+1)).val(registro['cell'][0]);
-                            $('#pro_eta_observacion_'+(i+1)).val(registro['cell'][2]);
-                            $.each(registro['cell'][1], function(id, valor){
-                                $("#eta"+(i+1)+"_fecha"+j).val(valor); 
-                                j++;
+                        $.getJSON('<?php echo base_url('componente2/procesoAdministrativo/cargarUltimaFechaProTecFin') . "/" ?>'+$('#selMun').val(), 
+                        function(datos) {
+                            $.each(datos, function(keys,valores) {
+                                if(keys=='rows'){
+                                    $.each(valores, function(id, registroFecha){
+                                        if(registroFecha['cell'][1]!=null){
+                                            i=0;
+                                            ultimaFecha=registroFecha['cell'][1];
+                                            $.each(val, function(id, registro){
+                                                j=1;                                              
+                                                $('#pro_eta_id_'+(i+1)).val(registro['cell'][0]);
+                                                $('#pro_eta_observacion_'+(i+1)).val(registro['cell'][2]);
+                                                $.each(registro['cell'][1], function(id, valor){
+                                                    $("#eta"+(i+1)+"_fecha"+j).val(valor); 
+                                                    $("#eta"+(i+1)+"_fecha"+j).datepicker( "option", "minDate", ultimaFecha); 
+                                                    j++;
+                                                });
+                                                if($("#eta"+(i+1)+"_fecha"+(j-1)).val()=='')
+                                                    $("#etapas").tabs("disable", i+1);
+                                                else
+                                                    ultimaFecha=$("#eta"+(i+1)+"_fecha"+(j-1)).val();
+                                                i++;
+                                            });
+                                            if(i!=0){
+                                                $("#etapas").show();
+                                            }
+                                        }else{
+                                            $('#Mensajito').show();
+                                            $('#Mensajito').val("Debe de registrar primero las fechas de la etapa: Pedido de propuesta técnica y financiera");
+                                        }
+                                    }); 
+                                }
                             });
-                            i++;
                         });
-                        if(i!=0){
-                            $("#etapas").show();
-                        }
-                    }
+                    }//
                 });
             });              
         });
@@ -152,8 +172,17 @@
                                                         success: function(data)
                                                         {
                                                             $('#efectivo').dialog('open');
+                                                            if(<?php echo $etapa->pes_pro_id; ?>!=5){
+                                                                $("#etapas").tabs("enable", <?php echo $etapa->pes_pro_id; ?>);
+                                                                $("#eta<?php echo $etapa->pes_pro_id+1; ?>_fecha1").datepicker( "option", "minDate", fecha5); 
+                                                                $("#eta<?php echo $etapa->pes_pro_id+1; ?>_fecha2").datepicker( "option", "minDate", fecha5); 
+                                                                $("#eta<?php echo $etapa->pes_pro_id+1; ?>_fecha3").datepicker( "option", "minDate", fecha5); 
+                                                                $("#eta<?php echo $etapa->pes_pro_id+1; ?>_fecha4").datepicker( "option", "minDate", fecha5); 
+                                                                $("#eta<?php echo $etapa->pes_pro_id+1; ?>_fecha5").datepicker( "option", "minDate", fecha5); 
+                                                            }
                                                         }
                                                     });
+                                                           
                                                     return false;
                                                 }else{
                                                     $('#fechaValidacion').dialog('open');
@@ -176,9 +205,9 @@
                         }
                     }
                 }
-                        
+                                                    
             });
-                        
+                                                    
             $("#cancelar<?php echo $etapa->pes_pro_id; ?>").button();
     <?php foreach ($fechas as $fecha) { ?>
                     $("#eta<?php echo $etapa->pes_pro_id; ?>_fecha<?php echo $fecha->nom_fec_apr_id; ?>").datepicker({

@@ -38,17 +38,27 @@
                     }
                     if(key=='rows'){
                         $.each(val, function(id, registro){
-                            $('#Mensajito').hide();
-                            $('#pro_id').val(registro['cell'][0]);
-                            $('#pro_numero').val(registro['cell'][1]);
-                            $('#pro_fsolicitud').val(registro['cell'][2]);
-                            $('#pro_frecepcion').val(registro['cell'][3]);
-                            $('#pro_faperturatecnica').val(registro['cell'][4]);
-                            $('#pro_faperturafinanciera').val(registro['cell'][5]);
-                            $('#pro_fcierre_negociacion').val(registro['cell'][6]);
-                            $('#pro_ffirma_contrato').val(registro['cell'][7]);
-                            $('#pro_observacion2').val(registro['cell'][8]);
-                            $("#propuestaTecnicaForm").show();
+                            if(registro['cell'][9]!=null){
+                                $( "#pro_fsolicitud" ).datepicker( "option", "minDate", registro['cell'][9] ); 
+                                $( "#pro_frecepcion" ).datepicker( "option", "minDate", registro['cell'][9] ); 
+                                $( "#pro_faperturatecnica" ).datepicker( "option", "minDate", registro['cell'][9] ); 
+                                $( "#pro_fcierre_negociacion" ).datepicker( "option", "minDate", registro['cell'][9] ); 
+                                $( "#pro_ffirma_contrato" ).datepicker( "option", "minDate", registro['cell'][9] );
+                                $('#Mensajito').hide();
+                                $('#pro_id').val(registro['cell'][0]);
+                                $('#pro_numero').val(registro['cell'][1]);
+                                $('#pro_fsolicitud').val(registro['cell'][2]);
+                                $('#pro_frecepcion').val(registro['cell'][3]);
+                                $('#pro_faperturatecnica').val(registro['cell'][4]);
+                                $('#pro_faperturafinanciera').val(registro['cell'][5]);
+                                $('#pro_fcierre_negociacion').val(registro['cell'][6]);
+                                $('#pro_ffirma_contrato').val(registro['cell'][7]);
+                                $('#pro_observacion2').val(registro['cell'][8]);
+                                $("#propuestaTecnicaForm").show();
+                            }else{
+                                $('#Mensajito').show();
+                                $('#Mensajito').val("Debe de registrar primero las fechas de la etapa: Selección de consultoras");
+                            }
                         });                    
                     }
                 });
