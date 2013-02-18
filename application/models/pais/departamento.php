@@ -32,8 +32,33 @@ class Departamento extends CI_Model {
         $this->db->select('dep_id');
         $this->db->where('dep_nombre', $dep_nombre);
         $consulta = $this->db->get($this->tabla);
-        $departamento=$consulta->result();
+        $departamento = $consulta->result();
         return $departamento[0]->dep_id;
+    }
+
+    public function obtenerDepartamentosSinConsultora($reg_id) {
+        $query = "SELECT distinct(departamento.dep_id), 
+                         departamento.dep_nombre
+                  FROM 	 municipio,departamento,region
+                  WHERE  municipio.dep_id = departamento.dep_id AND
+                         departamento.reg_id = region.reg_id AND
+                         municipio.cons_id is null AND
+                         departamento.reg_id = ?
+                  ORDER BY departamento.dep_id";
+        $consulta = $this->db->query($query, array($reg_id));
+        return $consulta->result();
+    }
+
+    public function obtenerDepartamentosPorConsultora($cons_id) {
+        $query = "SELECT distinct(departamento.dep_id), 
+                         departamento.dep_nombre
+                  FROM 	 municipio,departamento,region
+                  WHERE  municipio.dep_id = departamento.dep_id AND
+                         departamento.reg_id = region.reg_id AND
+                         municipio.cons_id = ?
+                  ORDER BY departamento.dep_id";
+        $consulta = $this->db->query($query, array($cons_id));
+        return $consulta->result();
     }
 
 }

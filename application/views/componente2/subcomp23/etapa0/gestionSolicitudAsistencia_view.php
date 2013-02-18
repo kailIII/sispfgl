@@ -30,7 +30,7 @@
             },
             pager: jQuery('#pagergestionSolicitud'),
             viewrecords: true,          
-            caption: 'Unidades Organizativas',
+            caption: 'Gestión de solicitudes',
             height: "100%"
         });
         
@@ -65,17 +65,23 @@
                 });
             });
         }); 
-        /*CARGAR PROYECTOS PEP*/
+       
         $('#selMun').change(function(){
             $('#gestionSolicitud').setGridParam({
                 url:'<?php echo base_url('componente2/comp23_E0/cargarSolicitudes') . "/" ?>'+$('#selMun').val(),
                 datatype:'json'
             }).trigger("reloadGrid"); 
+            $('#idfila').val($('#selMun').val());
         });
         
         
         $("#agregarS").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/comp23_E0/agregarSolicitudAsistencia'); ?>';
+            if($("#idfila").val()!='')
+                this.form.action='<?php echo base_url('componente2/comp23_E0/agregarSolicitudAsistencia'); ?>';
+            else{
+                $('#seleccion').dialog('open');      
+                return false;
+            }
         });
         
         /*DIALOGOS DE VALIDACION*/
@@ -140,4 +146,7 @@
 </form>
 <div id="mensaje" class="mensaje" title="Aviso de la operación">
     <p>La acción fue realizada con satisfacción</p>
+</div>
+<div id="seleccion" class="mensaje" title="Aviso de la operación">
+    <p>Debe seleccionar un municipio para continuar</p>
 </div>

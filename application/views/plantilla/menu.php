@@ -25,7 +25,7 @@
 </div>
 
 <?php if (isset($username)) { ?>
-    <div style="position: relative;top:-25px; left: 600px;">
+    <div style="position: relative;top:-25px; left: 700px;">
         <!-- Opciones:Menu Horizontal  -->
         <ul id="menuh"style="position: relative;top:-1px;left:10px;">
                 <li><a href="#"><img src="<?php echo base_url("resource/imagenes/configuracion.png") ?>" height="20px" width="20px"/></a>

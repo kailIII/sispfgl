@@ -31,12 +31,40 @@ class Municipio extends CI_Model {
         return $query->result();
     }
 
-    function obtenerMunicipiosPorConsultora($cons_id) {
-  $query="select municipio.mun_id municipio,municipio.mun_nombre from municipio where municipio.mun_id not in 
-(select municipio.mun_id municipio from consultora join municipio on consultora.cons_id=municipio.cons_id where consultora.cons_id=?)";
-  $consulta=  $this->db->query($query,array($cons_id));   
-  return $consulta->result();
-        
+    public function obtenerMunicipiosSinConsultora($dep_id) {
+        $query = "SELECT municipio.mun_id, 
+                         municipio.mun_nombre
+                  FROM 	 municipio,departamento,region
+                  WHERE  municipio.dep_id = departamento.dep_id AND
+                         departamento.reg_id = region.reg_id AND
+                         municipio.cons_id is null AND
+                         municipio.dep_id = ?
+                  ORDER BY municipio.mun_id";
+        $consulta = $this->db->query($query, array($dep_id));
+        return $consulta->result();
+    }
+
+    public function obtenerMunicipioPorConsultora($cons_id) {
+        $this->db->where('cons_id', $cons_id);
+        $this->db->order_by('mun_id', 'asc');
+        $consulta = $this->db->get($this->tabla);
+        return $consulta->result();
+    }
+
+    public function obtenerMunicipioPorConsultoraDepto($cons_id,$dep_id) {
+        $this->db->where('cons_id', $cons_id);
+        $this->db->where('dep_id', $dep_id);
+        $this->db->order_by('mun_id', 'asc');
+        $consulta = $this->db->get($this->tabla);
+        return $consulta->result();
+    }
+
+    public function actualizarConsultoraMuni($cons_id, $mun_id) {
+        $datos = array(
+            'cons_id' => $cons_id
+        );
+        $this->db->where('mun_id', $mun_id);
+        $this->db->update($this->tabla, $datos);
     }
 
 }
