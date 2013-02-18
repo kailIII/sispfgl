@@ -15,12 +15,13 @@ class Comp24_E0 extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
+        $this->load->model('pais/departamento');
     }
 	
 	public function solicitudAyuda(){
 		if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
 	   
-       $this->load->model('pais/departamento');
+       
        $this->load->view($this->ruta.'solicitudAyuda_view',
             array('titulo' => 'Solicitud de Ayuda',
                     'user_uid' => $this->tank_auth->get_user_id(),
@@ -38,25 +39,39 @@ class Comp24_E0 extends CI_Controller {
             array('titulo' => 'Solicitud de Ayuda',
                     'user_uid' => $this->tank_auth->get_user_id(),
                     'username' => $this->tank_auth->get_username(),
-                    'menu' => $this->librerias->creaMenu($this->tank_auth->get_username())
+                    'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
+                    'departamentos' => $this->departamento->obtenerDepartamentos()
                     ));
 					
     }
+    
+    //public function acuerdoMunicipal_
     
     public function solicitudAsistenciaTecnica(){
 		if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
 	
         $this->load->view($this->ruta.'solicitudAsistenciaTecnica',
-            array('titulo' => 'Solicitud de Ayuda',
+            array('titulo' => 'Solicitud de Asistencia Tecnica',
                     'user_uid' => $this->tank_auth->get_user_id(),
                     'username' => $this->tank_auth->get_username(),
-                    'menu' => $this->librerias->creaMenu($this->tank_auth->get_username())
+                    'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
+                    'departamentos' => $this->departamento->obtenerDepartamentos()
                     ));
     }
     
-    public function D(){
+    /**
+     * D. Indicadores de Desempeno Administrativo y Financiero Municipal 1
+     */
+    public function indicadoresDesempenoAdmin(){
 		if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
         
+        $this->load->view($this->ruta.'D',
+            array('titulo' => 'Elaboracion de Diagnostico',
+                    'user_uid' => $this->tank_auth->get_user_id(),
+                    'username' => $this->tank_auth->get_username(),
+                    'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
+                    'departamentos' => $this->departamento->obtenerDepartamentos()
+                    ));
     }
     
     public function E(){

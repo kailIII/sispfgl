@@ -128,6 +128,9 @@ $this->load->view('plantilla/menu', $menu);
             return[true,'']; //no error
         }
         /**/
+        
+        /* Calculos */
+        
                
         /*DIALOGOS DE VALIDACION*/
         $('.mensaje').dialog({
@@ -149,7 +152,7 @@ $this->load->view('plantilla/menu', $menu);
 <?php echo form_open() ?>
 
     <h2 class="h2Titulos">Etapa 0: Condiciones Previas</h2>
-    <h2 class="h2Titulos">Registro de Solicitud</h2>
+    <h2 class="h2Titulos">Indicadores de Desempeno Administrativo y Financiero Municipal</h2>
     <br/>
     <div id="rpt_frm_bdy">
         <div class="campo">
@@ -167,24 +170,94 @@ $this->load->view('plantilla/menu', $menu);
                 <option value='0'>--Seleccione--</option>
             </select>
         </div>
-        <div id="rpt-border"></div>
         <div class="campo">
-            <label>Fecha de conformacion de comision municipal:</label>
+            <label>Fecha:</label>
             <input <?php if (isset($f_conformacion)) { ?> value='<?php echo date('d/m/Y', strtotime($f_conformacion)); ?>'<?php } ?>id="f_conformacion" name="f_conformacion" type="text" size="10" readonly="readonly"/>
         </div>
-        <div class="campo">
-            <label>Fecha de acuerdo municipal:</label>
-            <input <?php if (isset($f_acuerdo)) { ?> value='<?php echo date('d/m/Y', strtotime($f_acuerdo)); ?>'<?php } ?>id="f_acuerdo" name="f_acuerdo" type="text" size="10" readonly="readonly"/>
+        <hr />
+        <div id="rpt-border"></div>
+        
+        <div class="bigCampo">
+            <label>Resultado Presupuestario</label>
+            <div class="comment">Determina el comportamiento de la ejecucion</div>
+             <div class="bdy">
+                <div class="frm">
+                    <div class="hdr">Resultado Presupuestario</div>
+                    <div class="igual">=</div>
+                    <div class="col">
+                        <div class="row">
+                            <span>Ingresos Totales Precibidos</span>
+                            <input class="txtInput" id="t_ingTotPer" name="t_ingTotPer" />
+                            <span>- Gastos Totales Devengados</span>
+                            <input class="txtInput" id="t_gasTotDev" name="t_gasTotDev" />
+                        </div>
+                    </div>
+                </div>
+             </div>
+             <div class="result centrar">
+                <div class="hdr">Resultado Presupuestario</div>
+                <input id="t_icp" name="t_resPre" type="text" size="100" />
+             </div>
         </div>
-        <div class="campo">
-            <label>Fecha de recepcion de acuerdo municipal:</label>
-            <input <?php if (isset($f_recepcion)) { ?> value='<?php echo date('d/m/Y', strtotime($f_recepcion)); ?>'<?php } ?>id="f_recepcion" name="f_recepcion" type="text" size="10" readonly="readonly"/>
+        
+        <div class="bigCampo">
+            <label>Autonomia Financiera</label>
+            <div class="comment">Mide el valor de dinero comprometido con relacion a cada dolar disponible,
+            el resultado no debera ser mayor que 1.70, (Art. 5 de la Ley de Endeudamiento Publico Municipal)
+            y se concidera aceptable, si cada vez que se determine el indicador, este resulta ser un valor
+            decreciente y menor que 1.70.</div>
+             <div class="bdy">
+                <div class="frm">
+                    <div class="hdr">Autonomia Financiera</div>
+                    <div class="igual">=</div>
+                    <div class="col">
+                        <div class="row">
+                            <span>Ingresos Propios Devengados</span>
+                            <input class="txtInput" id="t_ingProDev" name="t_ingProDev" />
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <span>Total de Ingresos Devengados</span>
+                            <input class="txtInput" id="t_totIngDev" name="t_totIngDev" />
+                        </div>
+                    </div>
+                </div>
+             </div>
+             <div class="result centrar">
+                <div class="hdr">Autonomia Financiera</div>
+                <input id="t_af" name="t_af" type="text" size="100" />
+             </div>
         </div>
-        <div class="tabla">
-            <label>Miembros de la comision financiera municipal</label>
-            <table id="miembros"></table>
-            <div id="pagerMiembros"></div>
+        
+        <div class="bigCampo">
+            <label>Eficacia en la Recaudacion</label>
+            <div class="comment">Mide el valor de dinero comprometido con relacion a cada dolar disponible,
+            el resultado no debera ser mayor que 1.70, (Art. 5 de la Ley de Endeudamiento Publico Municipal)
+            y se concidera aceptable, si cada vez que se determine el indicador, este resulta ser un valor
+            decreciente y menor que 1.70.</div>
+             <div class="bdy">
+                <div class="frm">
+                    <div class="hdr">Eficacia en la Recaudacion</div>
+                    <div class="igual">=</div>
+                    <div class="col">
+                        <div class="row">
+                            <span>Monto de Ingresos Propios Percibidos en el Ano de Impuestos y Tasas de Credito</span>
+                            <input class="txtInput" id="t_ingProDev" name="t_ingProDev" />
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <span>Total de Ingresos Devengados</span>
+                            <input class="txtInput" id="t_totIngDev" name="t_totIngDev" />
+                        </div>
+                    </div>
+                </div>
+             </div>
+             <div class="result centrar">
+                <div class="hdr">Eficacia en la Recaudacion</div>
+                <input id="t_af" name="t_af" type="text" size="100" />
+             </div>
         </div>
+        
         <div style="width: 100%;">
             <div style="width: 50%;">
                 <div class="campo">
