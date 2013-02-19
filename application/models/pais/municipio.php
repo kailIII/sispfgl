@@ -66,6 +66,19 @@ class Municipio extends CI_Model {
         $this->db->where('mun_id', $mun_id);
         $this->db->update($this->tabla, $datos);
     }
+    
+    public function obtenerMunicipiosSeleccionado($dep_id){
+        $query = "SELECT municipio.mun_id, 
+                         municipio.mun_nombre
+                  FROM 	 seleccion_comite, solicitud_asistencia, municipio
+                  WHERE  solicitud_asistencia.sol_asis_id = seleccion_comite.sol_asis_id AND
+                         municipio.mun_id = solicitud_asistencia.mun_id AND
+                         seleccion_comite.sel_com_seleccionado = 'Si' AND 
+                         municipio.dep_id = ?
+                  ORDER BY municipio.mun_id";
+        $consulta = $this->db->query($query, array($dep_id));
+        return $consulta->result();
+    }
 
 }
 

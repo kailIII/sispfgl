@@ -587,7 +587,7 @@ class Comp23_E0 extends CI_Controller {
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
         $this->load->model('pais/departamento', 'depar');
-        $departamentos = $this->depar->obtenerDepartamentos();
+        $departamentos = $this->depar->obtenerDepartamentosSeleccionado();
         $informacion['departamentos'] = $departamentos;
 
         $this->load->model('etapa', 'eta');
@@ -598,6 +598,36 @@ class Comp23_E0 extends CI_Controller {
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/etapa0/registroAporteMunicipal_view');
         $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function cargarMuniSeleccionados($dep_id) {
+        $this->load->model('pais/municipio');
+        $municipios = $this->municipio->obtenerMunicipiosSeleccionado($dep_id);
+        $numfilas = count($municipios);
+
+        $i = 0;
+        $rows = array();
+        if ($numfilas != 0) {
+            foreach ($municipios as $aux) {
+                $rows[$i]['id'] = $aux->mun_id;
+                $rows[$i]['cell'] = array($aux->mun_id,
+                    $aux->mun_nombre
+                );
+                $i++;
+            }
+            array_multisort($rows, SORT_ASC);
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
     }
 
     public function guardarResgitrodeAporte() {
@@ -628,7 +658,7 @@ class Comp23_E0 extends CI_Controller {
         $this->load->view('componente2/subcomp23/etapa0/comiteInterinstitucional_view');
         $this->load->view('plantilla/footer', $informacion);
     }
-    
+
     public function cargarSolicitudes2($mun_id) {
         $this->load->model('etapa0-sub23/solicitud_asistencia', 'solicitud');
         $this->load->model('etapa0-sub23/seleccion_comite', 'selCom');
@@ -638,7 +668,7 @@ class Comp23_E0 extends CI_Controller {
         if ($numfilas != 0) {
             $i = 0;
             foreach ($solicitudes as $aux) {
-                $comite=$this->selCom->obtenerId($aux->sol_asis_id);
+                $comite = $this->selCom->obtenerId($aux->sol_asis_id);
                 $rows[$i]['id'] = $aux->sol_asis_id;
                 $rows[$i]['cell'] = array($aux->sol_asis_id,
                     $aux->nombre_solicitante,

@@ -60,6 +60,19 @@ class Departamento extends CI_Model {
         $consulta = $this->db->query($query, array($cons_id));
         return $consulta->result();
     }
+    
+    public function obtenerDepartamentosSeleccionado() {
+        $query = "SELECT distinct(departamento.dep_id), 
+                         departamento.dep_nombre
+                  FROM 	 seleccion_comite, solicitud_asistencia, municipio, departamento
+                  WHERE  solicitud_asistencia.sol_asis_id = seleccion_comite.sol_asis_id AND
+                         municipio.mun_id = solicitud_asistencia.mun_id AND
+                         municipio.dep_id = departamento.dep_id AND
+                         seleccion_comite.sel_com_seleccionado = 'Si'
+                  ORDER BY departamento.dep_id";
+        $consulta = $this->db->query($query, array());
+        return $consulta->result();
+    }
 
 }
 

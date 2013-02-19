@@ -13,10 +13,10 @@
 
 
 
-/*CARGAR MUNICIPIOS*/
+        /*CARGAR MUNICIPIOS*/
         $('#selDepto').change(function(){   
             $('#selMun').children().remove();
-            $.getJSON('<?php echo base_url('componente2/proyectoPep/cargarMunicipios') ?>?dep_id='+$('#selDepto').val(), 
+            $.getJSON('<?php echo base_url('componente2/comp23_E0/cargarMuniSeleccionados') ?>/'+$('#selDepto').val(), 
             function(data) {
                 var i=0;
                 $.each(data, function(key, val) {
@@ -39,109 +39,117 @@
         });
          
         /*FIN DEL DATEPICKER*/
-    
-    });
-</script>
+        
+<?php
+foreach ($contrapartidas as $aux) {
+    if (!strcasecmp($aux->con_nombre, 'Otro')) {
+        if (!strcasecmp($aux->con_acu_valor, 'f')) {
+            ?>
+                                $('#especifique_<?php echo $aux->con_id; ?>').hide();
+                                $('#lespecifique').hide();
+        <?php } ?>
+                        $("#con_<?php echo $aux->con_id; ?>").click(function() { 
+                            if ($("#con_<?php echo $aux->con_id; ?>").is(':checked')) {  
+                                $('#especifique_<?php echo $aux->con_id; ?>').show();
+                                $('#lespecifique').show();
+                            }else{
+                                $('#especifique_<?php echo $aux->con_id; ?>').hide();
+                                $('#lespecifique').hide();
+                                $('#lespecifique').val("");
+                            }
+                        });
+        <?php } ?>
+            });
+    </script>
 
 
 
 
 
-<form id="registroAporteMunicipalForm" method="post">
+    <form id="registroAporteMunicipalForm" method="post">
 
-    <h2 class="h2Titulos">Etapa 0: Selección de Municipios</h2>
-    <h2 class="h2Titulos">Registro de Aportes de la Municipalidad</h2>
-    <br/>
-
-    <table>
-        <tr><td style="width: 150px"> 
-        <td class="textD"><strong>Departamento:</strong></td>
-        <td>
-            <select id='selDepto'>
-                <option value='0'>--Seleccione Departamento--</option>
-                <?php foreach ($departamentos as $depar) { ?>
-                    <option value='<?php echo $depar->dep_id; ?>'><?php echo $depar->dep_nombre; ?></option>
-                <?php } ?>
-            </select>
-        </td>
-        </tr>
-        <tr><td style="width: 150px"> 
-        <td class="textD"><strong>Municipio:</strong></td>
-        <td >
-            <select id='selMun'>
-                <option value='0'>--Seleccione Municipio--</option>
-            </select>
-        </td>    
-        </tr>
-        <tr><td style="width: 100px"> 
-        <td class="textD"><strong>Fecha: </strong> </td>
-        <td>
-            <input <?php if (isset($f_reg_apor_mun)) { ?> value='<?php echo date('d/m/Y', strtotime($f_reg_apor_mun)); ?>'<?php } ?>id="f_reg_apor_mun" name="f_reg_apor_mun" type="text" size="10" readonly="readonly"/>
-        </td>
-        </tr>  
-    </table>
-    <br/>
-
-    <table>
-        <tr>
-        <td style="width: 60px"></td>     
-        <td class="textD"><strong>Etapa a la que se aportará:</strong></td>
-        <td>
-            <select id='selEta'>
-                <option value='0'>--Seleccione Etapa--</option>
-                <?php foreach ($etapas as $eta) { ?>
-                    <option value='<?php echo $eta->eta_id; ?>'><?php echo $eta->eta_nombre; ?></option>
-                <?php } ?>
-            </select>
-        </td>
-        </tr>
-    </table>
-
-    <br/>
-
-
-    <table>
-        <tr>
-        <td>
+        <h2 class="h2Titulos">Etapa 0: Selección de Municipios</h2>
+        <h2 class="h2Titulos">Registro de Aportes de la Municipalidad</h2>
+        <br/>
+        <center>
             <table>
                 <tr>
-                <td rowspan="7">Seleccione el tipo de aporte</td>
-                <td></td>
-                <td><strong>Aportes de la municipalidad</strong></td>
-                </tr>
-                <tr><td><input type="checkbox" name="aportacion" value="local"></td><td>Locales para reuniones</td></tr>
-                <tr><td><input type="checkbox" name="tranporte" value="tranporte"></td><td>Transporte</td></tr>
-                <tr><td><input type="checkbox" name="alimentacion" value="alimentacion"></td><td>Alimentación</td></tr>
-                <tr><td><input type="checkbox" name="material" value="material"></td><td>Materiales y Equipo</td></tr>
-                <tr><td><input type="checkbox" name="personal" value="personal"></td><td>Personal</td></tr>
-                <tr><td><input type="checkbox" name="Otros" value="Otros"></td><td>Otros</td></tr>
-
-            </table>
-
-        </td>
-        <td>
-            <table>
-                <tr>   
-                <td style="width: 30px"></td>    
+                <td class="textD"><strong>Departamento:</strong></td>
                 <td>
-                    <strong>Monto estimado ($)</strong><input type="text" name="mon_est" value="" size="15"/>
+                    <select id='selDepto'>
+                        <option value='0'>--Seleccione Departamento--</option>
+                        <?php foreach ($departamentos as $depar) { ?>
+                            <option value='<?php echo $depar->dep_id; ?>'><?php echo $depar->dep_nombre; ?></option>
+                        <?php } ?>
+                    </select>
                 </td>
                 </tr>
-
                 <tr>
-                <td style="width: 30px"></td> 
-                <td>
-                    <p><strong>Observaciones:</strong><br/><textarea id="observaciones" name="observaciones" cols="40" rows="5"><?php if (isset($observaciones)) echo $observaciones; ?></textarea></p>
-                </td>
-
+                <td class="textD"><strong>Municipio:</strong></td>
+                <td >
+                    <select id='selMun'>
+                        <option value='0'>--Seleccione Municipio--</option>
+                    </select>
+                </td>    
                 </tr>
             </table>
+            <br/>
 
-        </td>
+            <table>
+                <tr>
+                <td class="textD"><strong>Etapa a la que se aportará:</strong></td>
+                <td>
+                    <select id='selEta'>
+                        <option value='0'>--Seleccione Etapa--</option>
+                        <?php foreach ($etapas as $eta) { ?>
+                            <option value='<?php echo $eta->eta_id; ?>'><?php echo $eta->eta_nombre; ?></option>
+                        <?php } ?>
+                    </select>
+                </td>
+                </tr>
+                <tr>
+                <td class="textD"><strong>Fecha: </strong> </td>
+                <td>
+                    <input <?php if (isset($f_reg_apor_mun)) { ?> value='<?php echo date('d/m/Y', strtotime($f_reg_apor_mun)); ?>'<?php } ?>id="f_reg_apor_mun" name="f_reg_apor_mun" type="text" size="10" readonly="readonly"/>
+                </td>
+                </tr>  
+            </table>
+            <br/>
+            <table>
+                <tr>
+                <td>
+                    <table>
+                        <tr>
+                        <td colspan="2"><strong>Seleccione el tipo de aporte</strong></td>
+                        </tr>
+                        <tr><td><input type="checkbox" name="aportacion" value="local"></td><td>Locales para reuniones</td></tr>
+                        <tr><td><input type="checkbox" name="tranporte" value="tranporte"></td><td>Transporte</td></tr>
+                        <tr><td><input type="checkbox" name="alimentacion" value="alimentacion"></td><td>Alimentación</td></tr>
+                        <tr><td><input type="checkbox" name="material" value="material"></td><td>Materiales y Equipo</td></tr>
+                        <tr><td><input type="checkbox" name="personal" value="personal"></td><td>Personal</td></tr>
+                        <tr><td><input type="checkbox" name="Otros" value="Otros"></td><td>Otros</td></tr>
 
-        </tr>
-    </table>
-
+                    </table>
+                </td>
+                <td>
+                    <table>
+                        <tr>   
+                        <td style="width: 30px"></td>    
+                        <td>
+                            <strong>Monto estimado ($)</strong><input type="text" name="mon_est" value="" size="15"/>
+                        </td>
+                        </tr>
+                        <tr>
+                        <td style="width: 30px"></td> 
+                        <td>
+                            <p><strong>Observaciones:</strong><br/><textarea id="observaciones" name="observaciones" cols="40" rows="5"><?php if (isset($observaciones)) echo $observaciones; ?></textarea></p>
+                    </td>
+                    </tr>
+                </table>
+            </td>
+            </tr>
+        </table>
+    </center>
     <center style="position: relative;top: 20px">
         <div>
             <p><input type="submit" id="guardar" value="Guardar Registro" />
