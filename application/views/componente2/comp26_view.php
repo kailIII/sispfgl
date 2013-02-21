@@ -53,7 +53,45 @@
 				
 		});
 		
-		
+		$('#total_mujeres').change(function(){   
+            var m = $('#total_mujeres').val();
+            if(!isNumber(m) || m % 1 != 0 || m<0){
+					$('#mensaje5').dialog('open');
+					$('#total_mujeres').val("");
+			}
+        });
+        
+        $('#total_hombres').change(function(){   
+            var h = $('#total_hombres').val();
+            if(!isNumber(h) || h % 1 != 0 || h<0){
+					$('#mensaje6').dialog('open');
+					$('#total_hombres').val("");
+			}
+        });
+        
+        $('#monto_cap').change(function(){   
+            var m = $('#monto_cap').val();
+            if(!isNumber(m) || m<0){
+					$('#mensaje7').dialog('open');
+					$('#monto_cap').val("0");
+			}
+        });
+        
+        $('#monto_con').change(function(){   
+            var m = $('#monto_con').val();
+            if(!isNumber(m) || m<0){
+					$('#mensaje7').dialog('open');
+					$('#monto_con').val("0");
+			}
+        });
+        
+        $('#monto_equi').change(function(){   
+            var m = $('#monto_equi').val();
+            if(!isNumber(m) || m<0){
+					$('#mensaje7').dialog('open');
+					$('#monto_equi').val("0");
+			}
+        });
 		
         
         /*CARGAR MUNICIPIOS*/
@@ -77,39 +115,140 @@
         
         $("#agregar_cap").button().click(function() {
 			// var records=$('#actividades').jqGrid('getGridParam','records');
-			 var muni = $('#selMun').val();
+			 var nombre_cap = $('#nombre_cap').val();
 			 var fecha_cap = $('#fecha_cap').val();
-			 var tema = $('#tema_cap').val();
+			 var nomb_capacitador = $('#nomb_capacitador').val();
 			 var m = $('#total_mujeres').val();
 			 var h = $('#total_hombres').val();
-			 var fecha_inst = $('#fecha_inst').val();
-			 var fecha_ope = $('#fecha_ope').val();
-			 var observaciones = $('#observaciones').val();
-			 
+			 var monto_cap = $('#monto_cap').val();
+			 var entidad = "";
 			
+			 if (!isEntCheck()){
+				$('#mensaje8').dialog('open');
+				return false;}
+				
+				if($("#entidad1").is(':checked'))
+				entidad = $("#entidad1").val();
+			 if($("#entidad2").is(':checked'))
+				entidad = $("#entidad2").val();
+			if($("#entidad3").is(':checked'))
+				entidad = $("#entidad3").val();
+			if($("#entidad4").is(':checked'))
+				entidad = $("#entidad4").val();
+			if($("#entidad5").is(':checked'))
+				entidad = $("#entidad5").val();
 
-			 if (muni!=0 && fecha_cap!="" && tema!="" && m!="" && h!="" && fecha_inst!="" && fecha_ope!="" && observaciones!="") {
-				 if(!isNumber(m) || m % 1 != 0){
+			 if (nombre_cap!="" && fecha_cap!="" && nomb_capacitador!="" && m!="" && h!="" && monto_cap!="" && entidad!="") {
+				 if(!isNumber(m) || m % 1 != 0 || m<0){
 					$('#mensaje5').dialog('open');
 					return false;}
-				if(!isNumber(h) || h % 1 != 0){
+				if(!isNumber(h) || h % 1 != 0 || h<0){
 					$('#mensaje6').dialog('open');
 					return false;}
+				if(!isNumber(monto_cap) || monto_cap<0){
+					$('#mensaje7').dialog('open');
+					return false;}
 				
-				 var newrow = {id:"0", nombre_muni:""+muni, fecha_cap:""+fecha_cap, tema_cap:""+tema,total_mujeres:""+m,total_hombres:""+h,
-				 fecha_inst:""+fecha_inst,fecha_ope:""+fecha_ope,observaciones:""+observaciones};
+				 var newrow = {id:"0", nombre_cap:""+nombre_cap, fecha_cap:""+fecha_cap, nomb_capacitador:""+nomb_capacitador,total_mujeres:""+m,total_hombres:""+h,
+				 monto_cap:""+monto_cap, entidad:""+entidad};
 				 
-				 $.post('<?php echo base_url('componente2/componente24a/guardar_comp24a_cap') ?>', newrow,function(){
-					 tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');
+				 $.post('<?php echo base_url('componente2/componente26/guardar_comp26_cap') ?>', newrow,function(){
+					 tablacap.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');
 					 });
-				$('#selMun').val("");
+				$('#nombre_cap').val("");
 				$('#fecha_cap').val("");
-				$('#tema_cap').val("");
+				$('#nomb_capacitador').val("");
 				$('#total_mujeres').val("");
 				$('#total_hombres').val("");
-				$('#fecha_inst').val("");
-				$('#fecha_ope').val("");
-				$('#observaciones').val("");
+				$('#monto_cap').val("");
+				
+			 }
+			 else $('#mensaje2').dialog('open');
+        });
+        
+        $("#agregar_equi").button().click(function() {
+			// var records=$('#actividades').jqGrid('getGridParam','records');
+			 var desc_equi = $('#desc_equi').val();
+			 var fecha_equi = $('#fecha_equi').val();
+			 var monto_equi = $('#monto_equi').val();
+			 var entidad = "";
+			
+			if (!isEntCheck()){
+				$('#mensaje8').dialog('open');
+				return false;}
+				
+				if($("#entidad1").is(':checked'))
+				entidad = $("#entidad1").val();
+			 if($("#entidad2").is(':checked'))
+				entidad = $("#entidad2").val();
+			if($("#entidad3").is(':checked'))
+				entidad = $("#entidad3").val();
+			if($("#entidad4").is(':checked'))
+				entidad = $("#entidad4").val();
+			if($("#entidad5").is(':checked'))
+				entidad = $("#entidad5").val();
+
+			 if (desc_equi!="" && fecha_equi!="" && monto_equi!="" && entidad!="") {
+				
+				if(!isNumber(monto_equi) || monto_equi<0){
+					$('#mensaje7').dialog('open');
+					return false;}
+					
+				 var newrow = {id:"0", desc_equi:""+desc_equi, fecha_equi:""+fecha_equi, monto_equi:""+monto_equi,
+					entidad:""+entidad};
+				 
+				 $.post('<?php echo base_url('componente2/componente26/guardar_comp26_equi') ?>', newrow,function(){
+					 tablaequi.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');
+					 });
+				$('#desc_equi').val("");
+				$('#fecha_equi').val("");
+				$('#monto_equi').val("");
+				
+				
+			 }
+			 else $('#mensaje2').dialog('open');
+        });
+        
+        $("#agregar_con").button().click(function() {
+			// var records=$('#actividades').jqGrid('getGridParam','records');
+			 var nombre_con = $('#nombre_con').val();
+			 var fecha_con = $('#fecha_con').val();
+			 var nomb_consultor = $('#nomb_consultor').val();
+			 var monto_con = $('#monto_con').val();
+			 var entidad = "";
+			 
+			 if (!isEntCheck()){
+				$('#mensaje8').dialog('open');
+				return false;}
+			 
+			 if($("#entidad1").is(':checked'))
+				entidad = $("#entidad1").val();
+			 if($("#entidad2").is(':checked'))
+				entidad = $("#entidad2").val();
+			if($("#entidad3").is(':checked'))
+				entidad = $("#entidad3").val();
+			if($("#entidad4").is(':checked'))
+				entidad = $("#entidad4").val();
+			if($("#entidad5").is(':checked'))
+				entidad = $("#entidad5").val();
+			 
+			 
+			 if (nombre_con!="" && fecha_con!="" && nomb_consultor!="" && monto_con!="" && entidad!="") {
+				
+				if(!isNumber(monto_con) || monto_con<0){
+					$('#mensaje7').dialog('open');
+					return false;}
+					
+				 var newrow = {id:"0", nombre_con:""+nombre_con, fecha_con:""+fecha_con, nomb_consultor:""+nomb_consultor,
+				 monto_con:""+monto_con, entidad:""+entidad};
+				 
+				 $.post('<?php echo base_url('componente2/componente26/guardar_comp26_con') ?>', newrow,function(){
+					 tablacon.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');
+					 });
+				$('#nombre_con').val("");
+				$('#fecha_con').val("");
+				$('#nomb_consultor').val("");
+				$('#monto_con').val("");
 				
 			 }
 			 else $('#mensaje2').dialog('open');
@@ -117,55 +256,50 @@
        
        /*Grid Capacitaciones*/
        
-       var tabla=$("#Capacitaciones");
-        tabla.jqGrid({
-            url:'<?php echo base_url('componente2/componente24a/cargar_capacitaciones') ?>',
+       var tablacap=$("#Capacitaciones");
+        tablacap.jqGrid({
+            url:'<?php echo base_url('componente2/componente26/cargar_capacitaciones') ?>',
             //editurl: '<?php echo base_url('componente3/componente3/guardar_divu') ?>',
             datatype:'json',
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','Municipio','Fecha Capacitacion','Tema','Mujeres','Hombres','Fecha Instalacion','Fecha Operacion','Observaciones'],
+            colNames:['id','Nombre Capacitacion','Fecha','Nombre Capacitador','Total de mujeres','Total de hombres','Monto','Entidad'],
             colModel:[
                 {name:'id',index:'id', width:40,editable:false,editoptions:{size:15} },
-                {name:'nombre_muni',index:'act_nombre',width:100,editable:true,
+                {name:'nombre_cap',index:'nombre_cap',width:200,editable:true,
                     editoptions:{size:25,maxlength:100}, 
-                    formoptions:{label: "Municipio",elmprefix:"(*)"},
+                    formoptions:{label: "Nombre Capacitacion",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
-                {name:'fecha_cap',index:'fecha_cap',width:100,editable:true,
+                {name:'fecha_cap',index:'fecha_cap',width:60,editable:true,
                     editoptions:{size:25,maxlength:20}, 
                     formoptions:{label: "Fecha Capacitacion",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
-                {name:'tema_cap',index:'tema_cap',editable:true,width:150,
+                {name:'nombre_capacitador',index:'nombre_capacitador',editable:true,width:180,
                     editoptions:{ size:25,maxlength:20 }, 
-                    formoptions:{ label: "Tema",elmprefix:"(*)"},
+                    formoptions:{ label: "Nombre Capacitador",elmprefix:"(*)"},
                     editrules:{required:true}
                 },
-                {name:'total_mujeres',index:'total_mujeres',width:20,editable:true,
-                    editoptions:{size:25,maxlength:100}, 
+                {name:'total_mujeres',index:'total_mujeres',width:100,editable:true,
+                    editoptions:{size:25,maxlength:20}, 
                     formoptions:{ label: "Total Mujeres",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
-                {name:'total_hombres',index:'total_hombres',editable:true,width:20,
+                {name:'total_hombres',index:'total_hombres',editable:true,width:100,
                     editoptions:{ size:25,maxlength:20 }, 
                     formoptions:{ label: "Total Hombres",elmprefix:"(*)"},
                     editrules:{required:true}
                 },
-                {name:'fecha_inst',index:'fecha_inst',width:100,editable:true,
+                {name:'monto',index:'monto',width:100,editable:true,
                     editoptions:{size:25,maxlength:20}, 
-                    formoptions:{label: "Fecha Instalacion",elmprefix:"(*)"},
+                    formoptions:{label: "Monto",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
-                {name:'fecha_ope',index:'fecha_ope',width:100,editable:true,
+                {name:'entidad',index:'entidad',width:55,editable:true,
                     editoptions:{size:25,maxlength:20}, 
-                    formoptions:{label: "Fecha Operacion",elmprefix:"(*)"},
-                    editrules:{required:true} 
-                },
-                {name:'observaciones',index:'observaciones',width:200,editable:true,
-                    editoptions:{size:25,maxlength:100}, 
-                    formoptions:{label: "Observaciones",elmprefix:"(*)"},
+                    formoptions:{label: "Entidad",elmprefix:"(*)"},
                     editrules:{required:true} 
                 }
             ],
@@ -179,19 +313,124 @@
         }).jqGrid('navGrid','#pagerCapacitaciones',
         {edit:false,add:false,del:false,search:false,refresh:false,
             beforeRefresh: function() {
-                tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
+                tablacap.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
         }
     ).hideCol('id');
 
-     
-        function despuesAgregarEditar() {
-            tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');
-            return[true,'']; //no error
-        }
         
          function isNumber(n) {
 			return !isNaN(parseFloat(n)) && isFinite(n);
 		}
+		
+		function isEntCheck(){
+			if($("#entidad1").is(':checked')||$("#entidad2").is(':checked')||$("#entidad3").is(':checked')||$("#entidad4").is(':checked')||$("#entidad5").is(':checked')) {  
+				return true;
+			} else {  
+				return false;
+			}
+		}
+	
+	/*Grid Consultorias*/
+       
+       var tablacon=$("#Consultorias");
+        tablacon.jqGrid({
+            url:'<?php echo base_url('componente2/componente26/cargar_consultorias') ?>',
+            //editurl: '<?php echo base_url('componente3/componente3/guardar_divu') ?>',
+            datatype:'json',
+            altRows:true,
+            height: "100%",
+            hidegrid: false,
+            colNames:['id','Nombre Consultoria','Fecha','Nombre Consultor','Monto','Entidad'],
+            colModel:[
+                {name:'id',index:'id', width:40,editable:false,editoptions:{size:15} },
+                {name:'nombre_con',index:'nombre_con',width:200,editable:true,
+                    editoptions:{size:25,maxlength:100}, 
+                    formoptions:{label: "Nombre Consultoria",elmprefix:"(*)"},
+                    editrules:{required:true} 
+                },
+                {name:'fecha_con',index:'fecha_con',width:60,editable:true,
+                    editoptions:{size:25,maxlength:20}, 
+                    formoptions:{label: "Fecha Consultoria",elmprefix:"(*)"},
+                    editrules:{required:true} 
+                },
+                {name:'nombre_consultoria',index:'nombre_consultoria',editable:true,width:180,
+                    editoptions:{ size:25,maxlength:20 }, 
+                    formoptions:{ label: "Nombre Consultoria",elmprefix:"(*)"},
+                    editrules:{required:true}
+                },
+                {name:'monto',index:'monto',width:100,editable:true,
+                    editoptions:{size:25,maxlength:20}, 
+                    formoptions:{label: "Monto",elmprefix:"(*)"},
+                    editrules:{required:true} 
+                },
+                {name:'entidad',index:'entidad',width:55,editable:true,
+                    editoptions:{size:25,maxlength:20}, 
+                    formoptions:{label: "Entidad",elmprefix:"(*)"},
+                    editrules:{required:true} 
+                }
+            ],
+            multiselect: false,
+            caption: "Consultorias",
+            rowNum:10,
+            rowList:[10,20,30],
+            loadonce:true,
+            pager: jQuery('#pagerConsultorias'),
+            viewrecords: true
+        }).jqGrid('navGrid','#pagerConsultorias',
+        {edit:false,add:false,del:false,search:false,refresh:false,
+            beforeRefresh: function() {
+                tablacon.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
+        }
+    ).hideCol('id');
+    
+	/*Grid Equipamiento*/
+       
+       var tablaequi=$("#Equipamientos");
+        tablaequi.jqGrid({
+            url:'<?php echo base_url('componente2/componente26/cargar_equipamientos') ?>',
+            //editurl: '<?php echo base_url('componente3/componente3/guardar_divu') ?>',
+            datatype:'json',
+            altRows:true,
+            height: "100%",
+            hidegrid: false,
+            colNames:['id','Descripcion Equipamiento','Fecha','Monto', 'Entidad'],
+            colModel:[
+                {name:'id',index:'id', width:40,editable:false,editoptions:{size:15} },
+                {name:'desc_equi',index:'desc_equi',width:200,editable:true,
+                    editoptions:{size:25,maxlength:100}, 
+                    formoptions:{label: "Descripcion Equipamiento",elmprefix:"(*)"},
+                    editrules:{required:true} 
+                },
+                {name:'fecha_equi',index:'fecha_equi',width:60,editable:true,
+                    editoptions:{size:25,maxlength:20}, 
+                    formoptions:{label: "Fecha Equipamiento",elmprefix:"(*)"},
+                    editrules:{required:true} 
+                },
+                {name:'monto',index:'monto',width:100,editable:true,
+                    editoptions:{size:25,maxlength:20}, 
+                    formoptions:{label: "Monto",elmprefix:"(*)"},
+                    editrules:{required:true} 
+                },
+                {name:'entidad',index:'entidad',width:55,editable:true,
+                    editoptions:{size:25,maxlength:20}, 
+                    formoptions:{label: "Entidad",elmprefix:"(*)"},
+                    editrules:{required:true} 
+                }
+            ],
+            multiselect: false,
+            caption: "Equipamientos",
+            rowNum:10,
+            rowList:[10,20,30],
+            loadonce:true,
+            pager: jQuery('#pagerEquipamientos'),
+            viewrecords: true
+        }).jqGrid('navGrid','#pagerEquipamientos',
+        {edit:false,add:false,del:false,search:false,refresh:false,
+            beforeRefresh: function() {
+                tablaequi.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
+        }
+    ).hideCol('id');
+
     
 });
    
@@ -219,14 +458,14 @@ echo form_open('componente3/componente3/guardar_dsat',$attributes);?>
 	<div  style="float:left;height:155px;width:250px;">
 		<label><b>Entidad</b></label>
 		<br/><br/>
-		<input type="radio" name="entidad" id="entidad" value="ISDEM" <?php echo set_radio('entidad', 'ISDEM'); ?> />ISDEM<br/>
-		<input type="radio" name="entidad" id="entidad" value="COMURES" <?php echo set_radio('entidad', 'COMURES'); ?> />COMURES<br/>
-		<input type="radio" name="entidad" id="entidad" value="SSDT" <?php echo set_radio('entidad', 'SSDT'); ?> />SSDT<br/>
-		<input type="radio" name="entidad" id="entidad" value="MH" <?php echo set_radio('entidad', 'MH'); ?> />MH<br/>
-		<input type="radio" name="entidad" id="entidad" value="FISDL" <?php echo set_radio('entidad', 'FISDL'); ?> />FISDL
+		<input type="radio" name="entidad" id="entidad1" value="ISDEM" <?php echo set_radio('entidad', 'ISDEM'); ?> />ISDEM<br/>
+		<input type="radio" name="entidad" id="entidad2" value="COMURES" <?php echo set_radio('entidad', 'COMURES'); ?> />COMURES<br/>
+		<input type="radio" name="entidad" id="entidad3" value="SSDT" <?php echo set_radio('entidad', 'SSDT'); ?> />SSDT<br/>
+		<input type="radio" name="entidad" id="entidad4" value="MH" <?php echo set_radio('entidad', 'MH'); ?> />MH<br/>
+		<input type="radio" name="entidad" id="entidad5" value="FISDL" <?php echo set_radio('entidad', 'FISDL'); ?> />FISDL
 	</div>
 	
-	<div id="div_cap" style="float:left;height:300px;"  hidden="hidden">
+	<div id="div_cap" style="float:left;height:500px;"  hidden="hidden">
 		
 		<label>Nombre de la Capacitaci&oacute;n: </label>
 		<input type="text" name="nombre_cap" id="nombre_cap"  size="25">
@@ -248,11 +487,14 @@ echo form_open('componente3/componente3/guardar_dsat',$attributes);?>
 		<input type="text" name="monto_cap" id="monto_cap"  size="5" align="left">
 		
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<input type="button" value="Agregar" name="agregar_cap" id="agregar_cap" align="left"><br/>
+		<input type="button" value="Agregar" name="agregar_cap" id="agregar_cap" align="left"><br/><br/>
+		
+		<table id="Capacitaciones"></table>
+		<div id="pagerCapacitaciones"></div>
 		
 	</div>
 	
-	<div id="div_con" style="float:left;height:300px;"  hidden="hidden">
+	<div id="div_con" style="float:left;height:500px;"  hidden="hidden">
 		
 		<label>Nombre de la Consulto&iacute;a: </label>
 		<input type="text" name="nombre_con" id="nombre_con"  size="25">
@@ -268,7 +510,10 @@ echo form_open('componente3/componente3/guardar_dsat',$attributes);?>
 		<input type="text" name="monto_con" id="monto_con"  size="5" align="left">
 		
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<input type="button" value="Agregar" name="agregar_con" id="agregar_con" align="left"><br/>
+		<input type="button" value="Agregar" name="agregar_con" id="agregar_con" align="left"><br/><br/>
+		
+		<table id="Consultorias"></table>
+		<div id="pagerConsultorias"></div>
 		
 	</div>
 	
@@ -287,14 +532,14 @@ echo form_open('componente3/componente3/guardar_dsat',$attributes);?>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type="button" value="Agregar" name="agregar_equi" id="agregar_equi" align="left"><br/><br/>
 		
-		<table id="Capacitaciones"></table>
-		<div id="pagerCapacitaciones"></div>
+		<table id="Equipamientos"></table>
+		<div id="pagerEquipamientos"></div>
 		
 	</div>
 	
 <?php echo form_close();?>
 <div id="mensaje" class="mensaje" title="Aviso">
-    <p>Chivo.</p>
+    <p>Ok.</p>
 </div>
 <div id="mensaje1" class="mensaje" title="Aviso">
     <p>Debe Seleccionar una fila para realizar esta acci&oacute;n.</p>
@@ -314,3 +559,10 @@ echo form_open('componente3/componente3/guardar_dsat',$attributes);?>
 <div id="mensaje6" class="mensaje" title="Aviso">
     <p>La cantidad de hombres no es valida.</p>
 </div>
+<div id="mensaje7" class="mensaje" title="Aviso">
+    <p>El monto ingresado no es valido.</p>
+</div>
+<div id="mensaje8" class="mensaje" title="Aviso">
+    <p>Seleccione la entidad a la que pertenece.</p>
+</div>
+
