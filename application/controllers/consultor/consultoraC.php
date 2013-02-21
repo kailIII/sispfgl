@@ -263,11 +263,11 @@ class ConsultoraC extends CI_Controller {
             $con_telefono = $this->input->post("con_telefono");
             $con_email = $this->input->post("con_email");
             $proyectoPep = $this->input->post("proyectoPep");
-            $consultora = $this->input->post("selConsultoras");
+            $cons_id = $this->input->post("cons_id");
 
 
             /* CREAR USUARIO EN BASE DE DATOS */
-            $this->con->insertarConsultor($con_nombre, $con_apellido, $con_telefono, $con_email, $proyectoPep, $consultora);
+            $this->con->insertarConsultor($con_nombre, $con_apellido, $con_telefono, $con_email, $proyectoPep, $cons_id);
             $con_id = $this->con->obtenerIdConsultorD();
             $resultado = $this->proPep->obtenerNombreDepMun($proyectoPep);
             $departamento = explode(" ", $resultado[0]->dep_nombre);
@@ -329,9 +329,7 @@ class ConsultoraC extends CI_Controller {
         $con_telefono = $this->input->post("con_telefono");
         $con_email = $this->input->post("con_email");
         $cons_id = $this->input->post("cons_id");
-        if ($cons_id == 0)
-            $cons_id = null;
-
+        
         $this->load->model('consultor/consultor');
         $this->consultor->editarConsultor($con_email, $con_nombre, $con_apellido, $con_telefono,$cons_id,$con_id);
 

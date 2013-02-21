@@ -194,7 +194,7 @@
         $('#btn_descargar').click(function() {
             $.get($(this).attr('href'));
         });
-       
+       $('#lespecifique').hide();
 <?php
 foreach ($contrapartidas as $aux) {
     if (!strcasecmp($aux->con_nombre, 'Otro')) {

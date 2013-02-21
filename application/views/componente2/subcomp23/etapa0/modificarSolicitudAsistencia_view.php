@@ -1,53 +1,29 @@
 <script type="text/javascript">        
     $(document).ready(function(){
         /*VARIABLES*/
-        var tabla=$("#criteriosE0");
-       
+               
         $("#modificar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/comp23_E0/actualizarSolicitud'); ?>';
+            $("#seleccionMunicipiosForm").submit(function(event){
+                if ($("#seleccionMunicipiosForm").validate().form() == true){      
+                    $.ajax({
+                        type: "POST",
+                        url: '<?php echo base_url('componente2/comp23_E0/actualizarSolicitud'); ?>',
+                        data: $("#seleccionMunicipiosForm").serialize(), // serializes the form's elements.
+                        success: function(data)
+                        {
+                            $('#efectivo').dialog('open');
+                        }
+                    });
+                    return false;
+                }
+            });
         });
+        
         
         $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url('componente2/comp23_E0/gestionsolicitudAsistencia'); ?>';
         });
-            
-        /*GRID CRITERIOS ETAPA 0*/
-        
-        tabla.jqGrid({
-            url:'<?php echo base_url('componente2/comp23_E0/cargarCriterios') ?>',
-            datatype:'json',
-            altRows:true,
-            height: "100%",
-            hidegrid: false,
-            colNames:['id','Criterios'],
-            colModel:[
-                {name:'criterio_id',index:'criterio_id', width:40,editable:false,editoptions:{size:15} },
-                {name:'criterio_nombre',index:'criterio_nombre',width:700,editable:true,
-                    editoptions:{size:25,maxlength:50}, 
-                    formoptions:{label: "Nombre",elmprefix:"(*)"},
-                    editrules:{required:true} 
-                }
-            ],
-            multiselect: false,
-            rowNum:15,
-            rowList:[15,30,45],
-            loadonce:true,
-            pager: jQuery('#pagerCriterioE0'),
-            viewrecords: true
-        
-        }).jqGrid('navGrid','#pagerCriterioE0',
-        {edit:false,add:false,del:false,search:false,refresh:false,
-            beforeRefresh: function() {
-                tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
-        }
-    ).hideCol('criterio_id');
-        /* Funcion para regargar los JQGRID luego de agregar y editar*/
-        function despuesAgregarEditar() {
-            tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');
-            return[true,'']; //no error
-        }
-               
-                
+
         /*PARA EL DATEPICKER*/
         $( "#solicitud_fecha" ).datepicker({
             showOn: 'both',
@@ -113,8 +89,8 @@
         $('#btn_descargar').click(function() {
             $.get($(this).attr('href'));
         });
-      $('#telefono').mask("9999-9999",{placeholder:"_"}); 
-      $('#seleccionMunicipiosForm').validate({
+        $('#telefono').mask("9999-9999",{placeholder:"_"}); 
+        $('#seleccionMunicipiosForm').validate({
             rules: {
                 leido_cri: {
                     required: true
@@ -159,11 +135,26 @@
         </tr>
     </table>
     <br/><br/>
-    <center>
-        <table id="criteriosE0"></table>  
-        <div id="pagerCriterioE0"></div> 
-    </center>
+    <p>
+        Los criterios que establece el manual operativo del PFGL para poder solicitar asistencia técnica para la elaboración de planes estratégicos participativos de desarrollo con énfasis en
+        desarrollo económico de su territorio son los siguientes:
+    </p>
 
+    <ol>
+        <?php
+        foreach ($criterios as $criterio) {
+            ?>    
+            <li><?php echo $criterio->criterio_nombre; ?></li>
+            <?php
+        }
+        ?>
+    </ol>
+    <p><strong>Nota:</strong> para que el registro sea valido deberá 
+        entregar al asesor-a del ISDEM que visita su municipio la solicitud 
+        original firmada y sellada en el plazo de 30 días a partir del 
+        registro en línea.  
+        <br/>
+        El asesor-a firmará de visto bueno el cumplimiento de criterios que respaldan la solicitud.</p>
     <br/>
 
     <table>
@@ -233,7 +224,7 @@
     <center style="position: relative;top: 20px">
         <div>
             <p><input type="submit" id="modificar" value="Modificar Solicitud" />
-                <input type="button" id="cancelar" value="Cancelar" />
+                <input type="button" id="cancelar" value="Regresar" />
             </p>
         </div>
     </center>
@@ -243,4 +234,9 @@
 </form>
 <div id="extension" class="mensaje" title="Error">
     <p>Solo se permiten archivos con la extensión pdf|doc|docx</p>
+</div>
+<div id="efectivo" class="mensaje" title="Almacenado">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
+    </center>
 </div>

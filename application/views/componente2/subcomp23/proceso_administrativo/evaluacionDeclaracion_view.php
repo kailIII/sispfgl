@@ -25,22 +25,7 @@
         });
         
         /*PARA EL DATEPICKER*/
-        $( "#pro_finicio" ).datepicker({
-            showOn: 'both',
-            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
-            dateFormat: 'dd-mm-yy'
-        });
         
-        /*FIN DEL DATEPICKER*/
-        
-        /*PARA EL DATEPICKER*/
-        $( "#pro_ffinalizacion" ).datepicker({
-            showOn: 'both',
-            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
-            dateFormat: 'dd-mm-yy'
-        });
         
         /*FIN DEL DATEPICKER*/
         
@@ -95,6 +80,19 @@
         $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url('componente2/procesoAdministrativo/evaluacionExpresionInteres'); ?>';
         });
+        $( "#pro_finicio" ).datepicker({
+            showOn: 'both',
+            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+            buttonImageOnly: true, 
+            dateFormat: 'dd-mm-yy'
+        });
+        
+        $("#pro_ffinalizacion").datepicker({
+            showOn: 'both',
+            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+            buttonImageOnly: true, 
+            dateFormat: 'dd-mm-yy'
+        });
         
         $('#selMun').change(function(){
             $('#AdquisicionyContratacionForm')[0].reset();
@@ -114,17 +112,24 @@
                     }
                     if(key=='rows'){
                         $.each(val, function(id, registro){
-                            $('#Mensajito').hide();
-                            $('#consultoresInteres').setGridParam({
-                                url:'<?php echo base_url('componente2/procesoAdministrativo/cargarConsultoraInteres2') . '/' ?>'+registro['cell'][0],
-                                editurl:'<?php echo base_url('componente2/procesoAdministrativo/gestionarConsultoresInteres') . '/'; ?>'+registro['cell'][0],
-                                datatype:'json'
-                            }).trigger('reloadGrid');
-                            $('#pro_id').val(registro['cell'][0]);
-                            $('#pro_numero').val(registro['cell'][1]);
-                            $('#pro_finicio').val(registro['cell'][2]);
-                            $('#pro_ffinalizacion').val(registro['cell'][3]);
-                            $("#AdquisicionyContratacionForm").show();
+                            if(registro['cell'][4]!=null){
+                                $('#Mensajito').hide();
+                                $( "#pro_finicio" ).datepicker( "option", "minDate", registro['cell'][4] ); 
+                                $( "#pro_ffinalizacion" ).datepicker( "option", "minDate", registro['cell'][4] ); 
+                                $('#consultoresInteres').setGridParam({
+                                    url:'<?php echo base_url('componente2/procesoAdministrativo/cargarConsultoraInteres2') . '/' ?>'+registro['cell'][0],
+                                    editurl:'<?php echo base_url('componente2/procesoAdministrativo/gestionarConsultoresInteres') . '/'; ?>'+registro['cell'][0],
+                                    datatype:'json'
+                                }).trigger('reloadGrid');
+                                $('#pro_id').val(registro['cell'][0]);
+                                $('#pro_numero').val(registro['cell'][1]);
+                                $('#pro_finicio').val(registro['cell'][2]);
+                                $('#pro_ffinalizacion').val(registro['cell'][3]);
+                                $("#AdquisicionyContratacionForm").show();
+                            }else{
+                                $('#Mensajito').show();
+                                $('#Mensajito').val("Debe de registrar primero las fechas de la etapa: Proceso de Adquisición y Contrataciones");
+                            }
                         });                    
                     }
                 });
@@ -133,7 +138,7 @@
         $("#AdquisicionyContratacionForm").hide();
         /*DIALOGOS DE VALIDACION*/
        
-       $('.mensaje').dialog({
+        $('.mensaje').dialog({
             autoOpen: false,
             width: 300,
             buttons: {
@@ -211,7 +216,8 @@
         </tr>
     </table>
 </center>
-<input value="" id="Mensajito" type="text" size="100" readonly="readonly" style="border: none;"/>
+<br/><br/>
+<input class="error" value="" id="Mensajito" type="text" size="100" readonly="readonly" style="border: none;"/>
 <form id="AdquisicionyContratacionForm" method="post">
     <br/>        <br/>
     <table class="procesoAdmin">

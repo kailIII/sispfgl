@@ -180,3 +180,215 @@ img{
     position: relative;
     top:8px;
 }
+
+
+/* Agregados por Alexis Beltran */
+
+/****************
+    Formularios
+ ***************/
+ 
+ 
+#actions {
+	padding-bottom: 10px;
+	padding-top: 10px;
+	padding-right: 30px;
+	border-left-color: white;
+	border-left-style: solid;
+	border-left-width: 1px;
+	/*float: right;*/
+	width: 700px;
+	text-align: right;
+}
+
+form .campo label {
+    margin-left:	20px;
+    width: 150px;
+    display: inline-block;
+
+}
+
+from .campo input {
+    width: 200px;
+}
+ 
+#rpt {
+}
+
+#rpr_hdr {
+    color: #222;
+    font-size:  120%;
+    font-weight: bold;
+    float: left;
+}
+
+#rpt_frm_hdr,
+#rpt_opt_hdr,
+#rpt_prt_hdr {
+    color: #222;
+    text-decoration: none;
+    font-size:  110%;
+	background: #fff;
+	border-bottom: #999 0px solid;
+	border-right: #999 0px solid;
+	height: 24px;
+}
+
+#rpt-border {
+  background: url(../images/header_border.png) no-repeat;
+  clear: both;
+  height: 3px;
+  margin-bottom: 20px;
+}
+
+#rpt_frm_hdr img,
+#rpt_opt_hdr img,
+#rpt_prt_hdr img {
+	
+	cursor: pointer;
+}
+
+#rpt_frm_bdy,
+#rpt_opt_bdy,
+#rpt_prt_bdy {
+}
+
+#rpt_frm_bdy .campo {
+	margin-bottom:	10px;
+	display: 		block;
+}
+
+#rpt_frm_bdy .campo label {
+	width: 			300px;
+	margin-left:	20px;
+	display:        inline-block;
+	line-height: 	35px;
+	cursor: 		pointer;
+    text-align:     right;
+}
+
+#rpt_frm_bdy .campo input[type=text] {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin-left: -3;
+    margin-right: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    height: 20px;
+    width: 251px;
+}
+
+#rpt_frm_bdy .tabla{
+    margin-left: 20px;
+    margin-right: 20px;    
+}
+
+#rpt_frm_bdy .tabla label{
+    
+}
+
+
+.rpt_groupBy {
+	margin-left: 5px;
+    font-size: 100%;
+    font-weight: bold;
+}
+
+.ui-datepicker-trigger{
+    vertical-align: middle;
+    margin-left: 5px;
+}
+
+/**/
+
+.centrar{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.bigCampo{
+    width: 100%;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: solid grey 1px;
+}
+
+.bigCampo label{
+    text-align: center;
+    text-transform: uppercase;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    font-weight: bold;
+}
+
+.bigCampo .comment{
+    border: solid blue;
+    background: lightcyan;
+    margin: 10px 20px;
+    padding: 5px;
+    text-align: center;
+}
+
+.bigCampo .bdy{
+    margin: 10px 20px;
+}
+
+.bigCampo .bdy .frm,
+.bigCampo .bdy .frm .col .row1{
+    display:  table-row;
+}
+
+.bigCampo .bdy .frm .hdr{
+    text-align: right;
+    text-transform: uppercase;
+}
+
+.bigCampo .bdy .frm .igual{
+    padding-left: 5px;
+    padding-right: 5px;
+    vertical-align: middle;
+}
+
+.bigCampo .bdy .frm div{
+    display:  table-cell;
+}
+
+.bigCampo .bdy .frm input{
+    width: 50px;
+    text-align: center;
+}
+
+.bigCampo .bdy .frm span{
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.bigCampo .result{
+    border: solid 2px;
+    background-color: yellow;
+    padding: 10px;
+    width: 450px;
+}
+
+.bigCampo .result div{
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.bigCampo .result .hdr{
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.bigCampo .result input{
+    width: 150px;
+    height: 20px;
+    border: solid 1px gray;
+    background-color: white;
+    text-align: center;
+    font-weight: bold;
+}
