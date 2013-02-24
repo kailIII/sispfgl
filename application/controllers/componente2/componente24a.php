@@ -95,16 +95,58 @@ class  componente24a extends CI_Controller {
         $this->load->view('plantilla/footer', $informacion);
     }
     
-    public function comp26() {
+    public function cargar_asistencias() {
+        $this->load->model('componente2/componente24a_model');
+        $asistencias = $this->componente24a_model->get_asistencias();
+        $numfilas = count($asistencias);
 
-        $informacion['titulo'] = 'Componente 2.6';
-        //$informacion['user_id'] = $this->tank_auth->get_user_id();
-        //$informacion['username'] = $this->tank_auth->get_username();
-        //$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
-        $this->load->view('plantilla/header', $informacion);
-        $this->load->view('plantilla/menu', $informacion);
-        $this->load->view('componente2/comp26_view');
-        $this->load->view('plantilla/footer', $informacion);
+        $i = 0;
+        foreach ($asistencias as $aux) {
+            $rows[$i]['id'] = $aux->comp_id;
+            $rows[$i]['cell'] = array($aux->comp_id,
+				$this->componente24a_model->get_mun_nombre($aux->mun_id),
+                $aux->fecha_atm,
+                $this->componente24a_model->get_area_nombre($aux->id_area_accion),
+                $aux->tipo_entidad_asesora,
+                $aux->nombre_entidad_asesora,
+                $aux->monto
+            );
+            $i++;
+        }
+
+        if ($numfilas != 0) {
+            array_multisort($rows, SORT_ASC);
+        } else {
+            //$rows[0]['id'] = 0;
+           // $rows[0]['cell'] = array('0', ' ', ' ', ' ', ' ', ' ');
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
     }
+    
+    public function guardar_comp24a_atm() {
+        
+        $mun_id = $this->input->post("nombre_muni");
+        $fecha_atm = $this->input->post("fecha_atm");
+        $id_area_accion = $this->input->post("area_atm");
+        $tipo_entidad_asesora = $this->input->post("entidad_atm");
+        $nombre_entidad_asesora = $this->input->post("nombre_atm");
+        $monto = $this->input->post("monto_atm");
+
+        $this->load->model('componente2/componente24a_model');
+        $this->componente24a_model->insertar_comp24a_atm($mun_id, $fecha_atm, $id_area_accion, $tipo_entidad_asesora, $nombre_entidad_asesora, $monto);
+
+    }
+    
+    
 }
 ?>

@@ -1,19 +1,40 @@
 <script type="text/javascript">        
     $(document).ready(function(){    
-        $('#pestanias').tabs();
-        function validaMunicipio(value, colname) {
-            if (value == 0 ) return [false,"Seleccione el municipio del proyecto"];
-            else return [true,""];
-        }
-        /*CARGAR DEPARTAMENTOS*/
-        $('#selRegion').change(function(){   
-            $('#selDepto').children().remove();
-            $.getJSON('<?php echo base_url('componente2/proyectoPep/cargarDepartamentos') ?>?reg_id='+$('#selRegion').val(), 
+        /*CARGAR REGIONES DISPONIBLES*/
+        $('#selConsul').change(function(){   
+            $('#municipios').setGridParam({
+                url:'<?php echo base_url('componente2/comp23_E0/cargarMunicipiosConsultora') . '/' ?>'+$('#selConsul').val(),
+                datatype:'json'
+            }).trigger("reloadGrid"); 
+            
+            $('#selRegion').children().remove();
+            $.getJSON('<?php echo base_url('componente2/comp23_E0/cargarRegionesDisponibles') ?>', 
             function(data) {
                 var i=0;
                 $.each(data, function(key, val) {
                     if(key=='rows'){
-                        $('#selDepto').append('<option value="0">--Seleccione Departamento--</option>');
+                        $('#selRegion').append('<option value="0">-- Seleccione --</option>');
+                        $.each(val, function(id, registro){
+                            $('#selRegion').append('<option value="'+registro['cell'][0]+'">'+registro['cell'][1]+'</option>');
+                        });                    
+                    }
+                });
+            }); 
+            $('#selDepto').children().remove();
+            $('#selDepto').append('<option value="0">-- Seleccione --</option>');
+            $('#selMun').children().remove();
+            $('#selMun').append('<option value="0">-- Seleccione --</option>');
+        });
+        
+        /*CARGAR DEPARTAMENTOS*/
+        $('#selRegion').change(function(){   
+            $('#selDepto').children().remove();
+            $.getJSON('<?php echo base_url('componente2/comp23_E0/cargarDeptosDisponibles') ?>/'+$('#selRegion').val(), 
+            function(data) {
+                var i=0;
+                $.each(data, function(key, val) {
+                    if(key=='rows'){
+                        $('#selDepto').append('<option value="0">--Seleccione--</option>');
                         $.each(val, function(id, registro){
                             $('#selDepto').append('<option value="'+registro['cell'][0]+'">'+registro['cell'][1]+'</option>');
                         });                    
@@ -24,12 +45,12 @@
         /*CARGAR MUNICIPIOS*/
         $('#selDepto').change(function(){   
             $('#selMun').children().remove();
-            $.getJSON('<?php echo base_url('componente2/proyectoPep/cargarMunicipios') ?>?dep_id='+$('#selDepto').val(), 
+            $.getJSON('<?php echo base_url('componente2/comp23_E0/cargarMuniDisponibles') ?>/'+$('#selDepto').val(), 
             function(data) {
                 var i=0;
                 $.each(data, function(key, val) {
                     if(key=='rows'){
-                        $('#selMun').append('<option value="0">--Seleccione Municipio--</option>');
+                        $('#selMun').append('<option value="0">--Seleccione --</option>');
                         $.each(val, function(id, registro){
                             $('#selMun').append('<option value="'+registro['cell'][0]+'">'+registro['cell'][1]+'</option>');
                         });                    
@@ -37,57 +58,27 @@
                 });
             });              
         });
-        
-        /*CARGAR PROYECTOS PEP*/
-        $('#selMun').change(function(){
-            $('#proPep').setGridParam({
-                url:'<?php echo base_url('componente2/proyectoPep/cargarProyectosPorMunicipio') ?>?mun_id='+$('#selMun').val(),
-                editurl:'<?php echo base_url('componente2/proyectoPep/gestionProyectoPep') ?>?mun_id='+$('select.#selMun').val(),
-                datatype:'json'
-            }).trigger("reloadGrid"); 
-        });
-                        
-        var tabla=$("#proPep");
+                              
+        var tabla=$("#municipios");
         tabla.jqGrid({
-            url:'<?php echo base_url('componente2/proyectoPep/cargarProyectosPorMunicipio') ?>',
+            url:'<?php echo base_url('componente2/comp23_E0/cargarMunicipiosConsultora') . '/' ?>'+$('#selMun').val(),
+            editurl:'<?php echo base_url('componente2/comp23_E0/actualizarMunicipio') ?>/'+$('#selMun').val()+'/'+$('#selConsul').val(),
             datatype:'json',
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['pro_pep_id','Nombre Proyecto'],//,'Etapa I','Etapa II','Etapa III','Etapa IV'],
+            colNames:['mun_id','Municipio'],//,'Etapa I','Etapa II','Etapa III','Etapa IV'],
             colModel:[
                 {name:'id',index:'id', editable:false,editoptions:{size:15} },
-                {name:'pro_pep_nombre',index:'pro_pep_nombre',editable:true,
-                    edittype:"textarea",editoptions:{rows:"4",cols:"50"},width:'450', 
-                    formoptions:{label: "Nombre",elmprefix:"(*)"},
-                    editrules:{required:true} 
-                }
+                {name:'mun_nombre',index:'mun_nombre',editable:false,width:500}
             ],
             multiselect: false,
-            caption: "Proyectos PEP",
+            caption: "Municipios Seleccionados",
             rowNum:10,
             rowList:[10,20,30],
             loadonce:true,
             pager: jQuery('#pager'),
-            viewrecords: true,
-            gridComplete: 
-                function(){
-                $.getJSON('<?php echo base_url('componente2/proyectoPep/cuantosPepMuni') . '/'; ?>'+$('select.#selMun').val(),
-                function(data) {
-                    $.each(data, function(key, val) {
-                        if(key=='rows'){
-                            $.each(val, function(id, registro){
-                                if(registro['cell'][0]!=0){
-                                    $('#agregar').hide();
-                                }
-                                else{
-                                    $('#agregar').show();
-                                }
-                            });                    
-                        }
-                    });
-                }); 
-            }
+            viewrecords: true
         }).jqGrid('navGrid','#pager',
         {edit:false,add:false,del:false,search:false,refresh:false,
             beforeRefresh: function() {
@@ -103,44 +94,73 @@
                                 
         //AGREGAR
         $("#agregar").button().click(function(){
-            if($('#selDepto').val()!='0' && $('#selRegion').val()!='0'&& $('#selMun').val()!='0'){
-                tabla.jqGrid('editGridRow',"new",
-                {closeAfterAdd:true,addCaption: "Agregar ",width:'500',
-                    reloadAfterSubmit:true,top:'300',left:'300',
-                    processData: "Cargando...",afterSubmit:despuesAgregarEditar,
-                    bottominfo:"Campos marcados con (*) son obligatorios", 
-                    onclickSubmit: function(rp_ge, postdata) {
-                        $('#mensaje').dialog('open');
-                    }
+            if($('#selMun').val()!='0'){
+                $.getJSON('<?php echo base_url('componente2/comp23_E0/actualizarMunicipio') ?>/'+$('#selMun').val()+'/'+$('#selConsul').val(), 
+                function(data) {
+                    $.each(data, function(key, val) {
+                        if(key=='rows'){
+                            $.each(val, function(id, registro){
+                                datos = {'id':id,'mun_nombre':registro['cell'][1]};
+                                tabla.jqGrid('addRowData',id,datos);
+                                tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');
+                                return[true,'']; //no error
+                            });                    
+                        }
+                    });
                 });
+                $('#selMun').children().remove();
+                $.getJSON('<?php echo base_url('componente2/comp23_E0/cargarMuniDisponibles') ?>/'+$('#selDepto').val(), 
+                function(data) {
+                    var i=0;
+                    $.each(data, function(key, val) {
+                        if(key=='rows'){
+                            $('#selMun').append('<option value="0">--Seleccione --</option>');
+                            $.each(val, function(id, registro){
+                                $('#selMun').append('<option value="'+registro['cell'][0]+'">'+registro['cell'][1]+'</option>');
+                            });                    
+                        }
+                    });
+                });  
             }
             else
                 $('#mensaje3').dialog('open'); 
-            
         });
-
-        //EDITAR
-        $("#editar").button().click(function(){
-            var gr = tabla.jqGrid('getGridParam','selrow');
-            if( gr != null )
-                tabla.jqGrid('editGridRow',gr,
-            {closeAfterEdit:true,editCaption: "Editando ",
-                top:'300',left:'300',width:'500',
-                align:'center',reloadAfterSubmit:true,
-                processData: "Cargando...",afterSubmit:despuesAgregarEditar,
-                bottominfo:"Campos marcados con (*) son obligatorios", 
+        
+        //ELIMINAR
+        $("#eliminar").button().click(function(){
+            var grs = tabla.jqGrid('getGridParam','selrow');
+            if( grs != null ) tabla.jqGrid('delGridRow',grs,
+            {msg: "¿Desea desasignar este Municipio?",caption:"Desasignando Municipio",
+                align:'center',reloadAfterSubmit:true,afterSubmit:despuesAgregarEditar,
+                processData: "Cargando...",
                 onclickSubmit: function(rp_ge, postdata) {
                     $('#mensaje').dialog('open');
-                    ;}
-            });
-            else $('#mensaje2').dialog('open'); 
-        
+                    $('#selMun').children().remove();
+                    $.getJSON('<?php echo base_url('componente2/comp23_E0/cargarMuniDisponibles') ?>/'+$('#selDepto').val(), 
+                    function(data) {
+                        var i=0;
+                        $.each(data, function(key, val) {
+                            if(key=='rows'){
+                                $('#selMun').append('<option value="0">--Seleccione --</option>');
+                                $.each(val, function(id, registro){
+                                    $('#selMun').append('<option value="'+registro['cell'][0]+'">'+registro['cell'][1]+'</option>');
+                                });                    
+                            }
+                        });
+                    });
+                }}); 
+            else 
+                $('#mensaje2').dialog('open'); 
         });
-
+        
+        function despuesAgregarEditar() {
+            tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');
+            return[true,'']; //no error
+        }
         /*DIALOGOS DE VALIDACION*/
         $('.mensaje').dialog({
             autoOpen: false,
-            width: 300,
+            width: 400,
             buttons: {
                 "Ok": function() {
                     $(this).dialog("close");
@@ -155,59 +175,71 @@
 <h3 align="Center">Etapa 0: Seleccion de Municipios</h3>
 <h3 align="Center">Registro de la integracion de grupos</h3>
 <center>
-    
-    Consultora
-     <select id='selConsul'>
-        <option value='0'>--Seleccione Consultora--</option>
-    </select>
+    <table>
+        <tr>
+        <td class="textD" ><strong>Consultora</strong></td>
+        <td> <select id='selConsul'>
+                <option value='0'>--Seleccione Consultora--</option>
+                <?php foreach ($consultoras as $consultora) { ?>
+                    <option value='<?php echo $consultora->cons_id; ?>'><?php echo $consultora->cons_nombre; ?></option>
+                <?php } ?>
+            </select>
+        </td>
+        </tr>
+        <tr>
+        <td colspan="2">Si desea agregar un municipio a esta consultora realice los siguientes pasos:
+            <ol>
+                <li>La región.</li>
+                <li>El departamento.</li>
+                <li>El municipio</li>
+                <li>Presione botón agregar</li>
+            </ol>
+        </td>
+        </tr>
+        <tr>
+        <td class="textD" ><strong>Región</strong></td>
+        <td>  <select id='selRegion'>
+                <option value='0'>--Seleccione Region--</option>
+            </select>
+        </td>
+        </tr>
+        <tr>
+        <td class="textD" ><strong>Departamento</strong></td>
+        <td>
+            <select id='selDepto'>
+                <option value='0'>--Seleccione Departamento--</option>
+            </select>
+        </td>
+        </tr>
+        <tr>
+        <td class="textD" ><strong>Municipio</strong></td>
+        <td>
+            <select id='selMun'>
+                <option value='0'>--Seleccione Municipio--</option>
+            </select>
+        </td>
+        </tr>
+    </table>
     <br/><br/>
-    Región
-    <select id='selRegion'>
-        <option value='0'>--Seleccione Region--</option>
-        <?php foreach ($regiones as $region) { ?>
-            <option value='<?php echo $region->reg_id; ?>'><?php echo $region->reg_nombre; ?></option>
-        <?php } ?>
-    </select>
-    <br/><br/>
-    Departamento
-    <select id='selDepto'>
-        <option value='0'>--Seleccione Departamento--</option>
-    </select>
-    <br/><br/>
-    Municipio
-    <select id='selMun'>
-        <option value='0'>--Seleccione Municipio--</option>
-    </select>
-
+    <input type="button" id="agregar" value="  Asignar  " />
+    <input type="button" id="eliminar" value="   Desasignar   " />
     <br/><br/><br/>
-    <table id="proPep"></table>
+    <table id="municipios"></table>
     <div id="pager"></div>
-    <br/><br/>
-    <input type="button" id="agregar" value="  Agregar  " />
-    <input type="button" id="editar" value="   Editar   " />
+
 
 </center>
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- SON LOS MENSAJES DE VALIDACION DE CAMPOS -->
+<div id="mensaje3" class="mensaje" title="Recuerde:">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/alert.png'); ?>" class="imagenError" />
+            Debe Seleccionar la Region, el Departamento y el 
+            Municipio para poder agruparlo a la consulta seleccionada
+        </p>
+    </center>
+</div>
 <div id="mensaje" class="mensaje" title="Aviso de la operación">
-    <p>La acción fue realizada con satisfacción</p>
+    <p>Se desasigno el municipio con éxito</p>
 </div>
 <div id="mensaje2" class="mensaje" title="Aviso">
-    <p>Debe Seleccionar una fila para continuar</p>
-</div>
-<div id="mensaje3" class="mensaje" title="Recuerde:">
-    <p>Debe Seleccionar la Region, el Departamento y el Municipio 
-        para poder agregar un nuevo Proyecto PEP
-    </p>
+    <p>Debe Seleccionar un municipio a desasignar</p>
 </div>

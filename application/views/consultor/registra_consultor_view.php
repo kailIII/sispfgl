@@ -45,6 +45,7 @@ $cons_id = array(
                 var gr = $('#proPep').jqGrid('getGridParam','selrow');
                 if( gr != null ){
                     $('#proyectoPep').val(gr);
+                    alert($('#selConsultoras').val());
                     $('#cons_id').val($('#selConsultoras').val());
                     this.form.action='<?php echo base_url('consultor/consultoraC/registrarCoordinador')?>';
                 }

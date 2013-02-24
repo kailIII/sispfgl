@@ -173,7 +173,7 @@
         $("#agregar").button().click(function(){
             tabla.jqGrid('editGridRow',"new",
             {closeAfterAdd:true,addCaption: "Agregar consultora",width:750,
-                align:'center',reloadAfterSubmit:true,
+                align:'center',reloadAfterSubmit:true,recreateForm: true,
                 processData: "Cargando...",afterSubmit:despuesAgregarEditar,
                 bottominfo:"Campos marcados con (*) son obligatorios", 
                 onclickSubmit: function(rp_ge, postdata) {
@@ -187,7 +187,7 @@
             if( gr != null )
                 tabla.jqGrid('editGridRow',gr,
             {closeAfterEdit:true,editCaption: "Editando consultora",width:750,
-                align:'center',reloadAfterSubmit:true,
+                align:'center',reloadAfterSubmit:true,recreateForm: true,
                 processData: "Cargando...",afterSubmit:despuesAgregarEditar,
                 bottominfo:"Campos marcados con (*) son obligatorios", 
                 onclickSubmit: function(rp_ge, postdata) {
@@ -224,7 +224,7 @@
                 {name:'con_int_id',index:'con_int_id', width:40,editable:false,editoptions:{size:15} },
                 {name:'con_int_nombre',index:'con_int_nombre',editable:true,
                     edittype:"select",width:650,
-                    editoptions:{ dataUrl:'<?php echo base_url('componente2/procesoAdministrativo/cargarConsultoras'); ?>'}, 
+                    editoptions:{ dataUrl:'<?php echo base_url('componente2/procesoAdministrativo/cargarConsultoras'). '/' . $pro_id ; ?>'}, 
                     formoptions:{ label: "Nombre:",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validaInstitucion}
                 },
