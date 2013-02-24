@@ -253,9 +253,18 @@ from .campo input {
 #rpt_prt_bdy {
 }
 
-#rpt_frm_bdy .campo {
+#rpt_frm_bdy .campo,
+#rpt_frm_bdy .campoUp, {
 	margin-bottom:	10px;
 	display: 		block;
+}
+
+#rpt_frm_bdy .campoUp label {
+	width: 			300px;
+	margin-left:	20px;
+	display:        block;
+	line-height: 	35px;
+	cursor: 		pointer;
 }
 
 #rpt_frm_bdy .campo label {
@@ -265,6 +274,18 @@ from .campo input {
 	line-height: 	35px;
 	cursor: 		pointer;
     text-align:     right;
+}
+
+#rpt_frm_bdy .campoUp input[type=text] {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin-left: -3px;
+    margin-right: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    height: 20px;
+    width: 251px;
+    margin-left: 20px;
 }
 
 #rpt_frm_bdy .campo input[type=text] {

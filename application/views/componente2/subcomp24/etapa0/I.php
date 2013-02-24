@@ -51,7 +51,7 @@ $this->load->view('plantilla/menu', $menu);
                         if(val=="0"){
                             $('#Mensajito').show();
                             $("#guardar").hide();
-                            $('#Mensajito').val("Este municipio no posee ning�n Proyecto PEP asignado");
+                            $('#Mensajito').val("Este municipio no posee ningún Proyecto PEP asignado");
                         }else{
                             $('#Mensajito').hide();
                             $("#guardar").show();
@@ -62,25 +62,29 @@ $this->load->view('plantilla/menu', $menu);
         });
                 
         /*PARA EL DATEPICKER*/
-        $( "#f_presentacion" ).datepicker({
+        $( "#f_conformacion" ).datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
             dateFormat: 'dd/mm/yy'
         });
-        $( "#f_vistobueno" ).datepicker({
+        $( "#f_acuerdo" ).datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
             dateFormat: 'dd/mm/yy'
         });
-        $( "#f_aprobacion" ).datepicker({
+        $( "#f_recepcion" ).datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
             dateFormat: 'dd/mm/yy'
         });
         /*FIN DEL DATEPICKER*/
+        
+        
+        /* Calculos */
+        
                
         /*DIALOGOS DE VALIDACION*/
         $('.mensaje').dialog({
@@ -98,10 +102,11 @@ $this->load->view('plantilla/menu', $menu);
     });
 </script>
 
+
 <?php echo form_open() ?>
 
-    <h2 class="h2Titulos">Etapa 1: Diagnostico y Plan</h2>
-    <h2 class="h2Titulos">Revision y Aprovacion de Productos</h2>
+    <h2 class="h2Titulos">Etapa 0: Condiciones Previas</h2>
+    <h2 class="h2Titulos">Indicadores de Desempeno Administrativo y Financiero Municipal</h2>
     <br/>
     <div id="rpt_frm_bdy">
         <div class="campo">
@@ -119,69 +124,50 @@ $this->load->view('plantilla/menu', $menu);
                 <option value='0'>--Seleccione--</option>
             </select>
         </div>
+        <div class="campo">
+            <label>Fecha:</label>
+            <input <?php if (isset($f_conformacion)) { ?> value='<?php echo date('d/m/Y', strtotime($f_conformacion)); ?>'<?php } ?>id="f_conformacion" name="f_conformacion" type="text" size="10" readonly="readonly"/>
+        </div>
         <hr />
         <div id="rpt-border"></div>
-        <!-- Lado Derecho -->
-        <fieldset style="width: 450px; display: inline-block; vertical-align: top;">
-            <legend>Productos</legend>
-            <div class="campo">
-                <label style="text-align: left;">Plan de Trabajo</label>
-                <span>Si</span><input type="radio" name="t_planTrabajo" value="yes" />
-                <span>No</span><input type="radio" name="t_planTrabajo" value="no" checked="checked" />
-            </div>
-            <div class="campo">
-                <label style="text-align: left;">El Borrador del diagnostico contiene</label>
-            </div>
-            <div class="campo">
-                <label style="text-align: left; margin-left: 40px; width: 280px;">Perfil del municipio</label>
-                <span>Si</span><input type="radio" name="t_perfil" value="yes" />
-                <span>No</span><input type="radio" name="t_perfil" value="no" checked="checked" />
-            </div>
-            <div class="campo">
-                <label style="text-align: left; margin-left: 40px; width: 280px;">Indicadores de analisis de endeudamiento</label>
-                <span>Si</span><input type="radio" name="t_indAnaEnd" value="yes" />
-                <span>No</span><input type="radio" name="t_indAnaEnd" value="no" checked="checked" />
-            </div>
-            <div class="campo">
-                <label style="text-align: left; margin-left: 40px; width: 280px;">Indicadores del Comportamineto de ingresos</label>
-                <span>Si</span><input type="radio" name="t_indComIng" value="yes" />
-                <span>No</span><input type="radio" name="t_indComIng" value="no" checked="checked" />
-            </div>
-            <div class="campo">
-                <label style="text-align: left;">Informe de la etapa de diagnostico</label>
-                <span>Si</span><input type="radio" name="t_infEtaDia" value="yes" />
-                <span>No</span><input type="radio" name="t_infEtaDia" value="no" checked="checked" />
-            </div>
-            <div class="campo">
-                <label style="text-align: left;">Visto bueno de la municipalidad</label>
-                <span>Si</span><input type="radio" name="t_vistoBueno" value="yes" />
-                <span>No</span><input type="radio" name="t_vistoBueno" value="no" checked="checked" />
-            </div>
-        </fieldset>
         
-        <!-- Lado Izquierdo -->
-        <div style="display: inline-block; vertical-align: top;">
-            <div class="campoUp">
-                <label>Fecha de presentacion de producto</label>
-                <input <?php if (isset($f_emision)) { ?> value='<?php echo date('d/m/Y', strtotime($f_emision)); ?>'<?php } ?>id="f_presentacion" name="f_presentacion" type="text" size="10" readonly="readonly"/>
-            </div>
-            <div class="campoUp">
-                <label>Fecha de visto bueno</label>
-                <input <?php if (isset($f_emision)) { ?> value='<?php echo date('d/m/Y', strtotime($f_emision)); ?>'<?php } ?>id="f_vistobueno" name="f_vistobueno" type="text" size="10" readonly="readonly"/>
-            </div>
-            <div class="campoUp">
-                <label>Fecha de aprobacion concejo Municipal</label>
-                <input <?php if (isset($f_emision)) { ?> value='<?php echo date('d/m/Y', strtotime($f_emision)); ?>'<?php } ?>id="f_aprobacion" name="f_aprobacion" type="text" size="10" readonly="readonly"/>
-            </div>
-            
-            <div class="campo">
-                <label>Cargar archivo</label>
-            </div>
+        <div class="campo">
+            <label>Nombre del manual</label>
+            <input id="" name="" type="text" />
         </div>
         
-        <div class="campoUp">
-            <label>Observaciones</label>
-            <textarea cols="30" rows="5" wrap="virtual" maxlength="100" style="margin-left: 20px;"></textarea>
+        <div class="campo">
+            <label>Fecha de elaboracion</label>
+            <input <?php if (isset($f_emision)) { ?> value='<?php echo date('d/m/Y', strtotime($f_emision)); ?>'<?php } ?>id="f_emision" name="f_emision" type="text" size="10" readonly="readonly"/>
+        </div>
+        
+        <div class="campo">
+            <label>¿Se encuentra vigente?</label>
+            <span>Si</span><input type="radio" name="t_I_vigente" value="yes"/>
+            <span>No</span><input type="radio" name="t_I_vigente"  value="no"/>
+        </div>
+        
+        <div class="campo">
+            <label>Fecha de aprobacion</label>
+            <input <?php if (isset($f_emision)) { ?> value='<?php echo date('d/m/Y', strtotime($f_emision)); ?>'<?php } ?>id="f_emision" name="f_emision" type="text" size="10" readonly="readonly"/>
+        </div>
+        
+        <div class="campo">
+            <label>¿Es utilizado?</label>
+            <span>Si</span><input type="radio" name="t_I_util" value="yes"/>
+            <span>No</span><input type="radio" name="t_I_util"  value="no"/>
+        </div>
+               
+        <div style="width: 100%;">
+            <div style="width: 50%;">
+                <div class="campo">
+                    <label>Observaciones</label>
+                    <textarea cols="30" rows="5" wrap="virtual" maxlength="100"></textarea>
+                </div>
+            </div>
+            <div style="width: 50%;">
+                
+            </div>
         </div>
         
         <div id="actions" style="position: relative;top: 20px">
