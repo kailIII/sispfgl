@@ -24,23 +24,27 @@ class Seleccion_comite extends CI_Model {
         return $consulta->result();
     }
 
-   public function actualizarSeleccionComite($pla_tra_id, $pla_tra_forden_inicio, $pla_tra_fentrega_plan, $pla_tra_frecepcion_obs, $pla_tra_fsuperacion_obs, $pla_tra_fvisto_bueno, $pla_tra_fpresentacion, $pla_tra_frecepcion, $pla_tra_firmada_mun, $pla_tra_firmada_isdem, $pla_tra_firmada_uep, $pla_tra_ruta_archivo, $pla_tra_observaciones) {
+    public function actualizarSeleccionComite($sel_com_id, $sel_com_seleccionado, $sel_com_fverificacion,$mun_id) {
+        if (strcmp($sel_com_seleccionado, 'Si') == 0) {
+            $num = $this->contarSeleccionados($mun_id);
+            if ($num != 0)
+                $sel_com_seleccionado = 'No';
+        }
         $datos = array(
-            'pla_tra_forden_inicio' => $pla_tra_forden_inicio,
-            'pla_tra_fentrega_plan' => $pla_tra_fentrega_plan,
-            'pla_tra_frecepcion_obs' => $pla_tra_frecepcion_obs,
-            'pla_tra_fsuperacion_obs' => $pla_tra_fsuperacion_obs,
-            'pla_tra_fvisto_bueno' => $pla_tra_fvisto_bueno,
-            'pla_tra_fpresentacion' => $pla_tra_fpresentacion,
-            'pla_tra_frecepcion' => $pla_tra_frecepcion,
-            'pla_tra_firmada_mun' => $pla_tra_firmada_mun,
-            'pla_tra_firmada_isdem' => $pla_tra_firmada_isdem,
-            'pla_tra_firmada_uep' => $pla_tra_firmada_uep,
-            'pla_tra_ruta_archivo' => $pla_tra_ruta_archivo,
-            'pla_tra_observaciones' => $pla_tra_observaciones
+            'sel_com_seleccionado' => $sel_com_seleccionado,
+            'sel_com_fverificacion' => $sel_com_fverificacion
         );
-        $this->db->where('pla_tra_id', $pla_tra_id);
+        $this->db->where('sol_asis_id', $sel_com_id);
         $this->db->update($this->tabla, $datos);
+    }
+    
+      public function contarSeleccionados($mun_id) {
+        $this->db->from($this->tabla);
+        $this->db->join('solicitud_asistencia', 'solicitud_asistencia.sol_asis_id = seleccion_comite.sol_asis_id');
+        $this->db->where('solicitud_asistencia.mun_id', $mun_id);
+        $this->db->where('seleccion_comite.sel_com_seleccionado', 'Si');
+        $consulta = $this->db->count_all_results();
+        return $consulta;
     }
 
 }

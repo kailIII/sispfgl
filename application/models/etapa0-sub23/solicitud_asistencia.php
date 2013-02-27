@@ -61,6 +61,13 @@ class Solicitud_asistencia extends CI_Model {
         return $consulta->result_array();
     }
 
+    public function contarSeleccionComite($mun_id) {
+        $this->db->from($this->tabla);
+        $this->db->where('mun_id', $mun_id);
+        $consulta = $this->db->count_all_results();
+        return $consulta;
+    }
+
 }
 
 ?>

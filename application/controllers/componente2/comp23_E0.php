@@ -588,7 +588,10 @@ class Comp23_E0 extends CI_Controller {
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
         $this->load->model('pais/departamento', 'depar');
         $departamentos = $this->depar->obtenerDepartamentosSeleccionado();
+        $this->load->model('etapa1-sub23/contrapartida');
+        $contrapartidas = $this->contrapartida->obtenerContrapartidas();
         $informacion['departamentos'] = $departamentos;
+        $informacion['contrapartidas'] = $contrapartidas;
 
         $this->load->model('etapa', 'eta');
         $etapas = $this->eta->obtenerEtapas();
@@ -596,7 +599,7 @@ class Comp23_E0 extends CI_Controller {
 
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
-        $this->load->view('componente2/subcomp23/etapa0/registroAporteMunicipal_view');
+        $this->load->view('componente2/subcomp23/etapa0/registroAporteMunicipal_view', $informacion);
         $this->load->view('plantilla/footer', $informacion);
     }
 
@@ -630,17 +633,75 @@ class Comp23_E0 extends CI_Controller {
         echo $jsonresponse;
     }
 
-    public function guardarResgitrodeAporte() {
-        /* VARIABLES POST */
-        $leido_cri = $this->input->post("leido_cri");
-        $cumple_cri = $this->input->post("cumple_cri");
+    public function cargarAporteMunicipal($mun_id, $eta_id) {
+        if ($eta_id != 0) {
+            $this->load->model('etapa0-sub23/aporte_municipal', 'apoMun');
+            $this->load->model('etapa1-sub23/contrapartida');
+            $this->load->model('etapa0-sub23/contrapartida_aporte', 'contraAporte');
 
-        $solicitud_fecha = $this->input->post("solicitud_fecha");
-        if ($acu_mun_fecha == '')
-            $acu_mun_fecha = null;
-        $acu_mun_p2 = $this->input->post("acu_mun_p2");
-        $acu_mun_observacion = $this->input->post("acu_mun_observacion");
-        $acu_mun_ruta_archivo = $this->input->post("acu_mun_ruta_archivo");
+            if ($this->apoMun->contarAportePorMunEta($mun_id, $eta_id) == 0) {
+                $this->apoMun->agregarAporteMunicipal($mun_id, $eta_id);
+                $aporteMunicipal = $this->apoMun->obtenerAporteMuncipal($mun_id, $eta_id);
+                $contrapartidas = $this->contrapartida->obtenerContrapartidas();
+                foreach ($contrapartidas as $contraAux)
+                    $this->contraAporte->insertarContrapartidaAporte($aporteMunicipal[0]->apo_mun_id, $contraAux->con_id);
+            }
+            $aporteMunicipal = $this->apoMun->obtenerAporteMuncipal($mun_id, $eta_id);
+            $contrapartidaAportes = $this->contraAporte->obtenerLasContrapartidoAporte($aporteMunicipal[0]->apo_mun_id);
+            $j = 0;
+            foreach ($contrapartidaAportes as $aux) {
+
+                $contrapartida[$j] = array($aux->con_id, $aux->con_apo_valor, $aux->con_apo_especifique, $aux->con_nombre);
+                $j++;
+            }
+            $i = 0;
+            $numfilas = 1;
+            $rows[$i]['id'] = $aporteMunicipal[0]->apo_mun_id;
+            $rows[$i]['cell'] = array($aporteMunicipal[0]->apo_mun_id,
+                $aporteMunicipal[0]->apo_mun_monto_estimado,
+                date('d/m/Y', strtotime($aporteMunicipal[0]->apo_mun_faprobacion)),
+                $aporteMunicipal[0]->apo_mun_observaciones,
+                $contrapartida
+            );
+        } else {
+            $rows = array();
+            $numfilas = 0;
+        }
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+        echo $jsonresponse;
+    }
+
+    public function guardarAporteMunicipal() {
+        /* VARIABLES POST */
+        $apo_mun_id = $this->input->post("apo_mun_id");
+        $apo_mun_monto_estimado = $this->input->post("apo_mun_monto_estimado");
+
+        $apo_mun_faprobacion = $this->input->post("apo_mun_faprobacion");
+        if ($apo_mun_faprobacion == '')
+            $apo_mun_faprobacion = null;
+        $apo_mun_observaciones = $this->input->post("apo_mun_observaciones");
+        $this->load->model('etapa0-sub23/aporte_municipal', 'apoMun');
+        $this->apoMun->actualizarAcuMun($apo_mun_id, $apo_mun_monto_estimado, $apo_mun_faprobacion, $apo_mun_observaciones);
+        $this->load->model('etapa0-sub23/contrapartida_aporte', 'contraAporte');
+        $contrapartidaAportes = $this->contraAporte->obtenerLasContrapartidoAporte($apo_mun_id);
+        foreach ($contrapartidaAportes as $aux) {
+            $con_apo_valor = $this->input->post("con_" . $aux->con_id);
+            if ($con_apo_valor == '0')
+                $con_apo_valor = null;
+            else
+                $con_apo_valor = 'true';
+            if (!strcmp($aux->con_nombre, 'Otro'))
+                $especifique = $this->input->post("especifique_" . $aux->con_id);
+            else
+                $especifique = null;
+            $this->contraAporte->actualizarContrapartidaAporte($con_apo_valor, $apo_mun_id, $aux->con_id, $especifique);
+        }
     }
 
     /* Seleccion de municipios por el comite interinstitucional */
@@ -669,11 +730,15 @@ class Comp23_E0 extends CI_Controller {
             $i = 0;
             foreach ($solicitudes as $aux) {
                 $comite = $this->selCom->obtenerId($aux->sol_asis_id);
+                if ($comite[0]->sel_com_fverificacion != "")
+                    $fechaVerificacion = date('d-m-Y', strtotime($comite[0]->sel_com_fverificacion));
+                else
+                    $fechaVerificacion = $comite[0]->sel_com_fverificacion;
                 $rows[$i]['id'] = $aux->sol_asis_id;
                 $rows[$i]['cell'] = array($aux->sol_asis_id,
                     $aux->nombre_solicitante,
                     date('d/m/Y', strtotime($aux->fecha_solicitud)),
-                    $comite[0]->sel_com_fverificacion,
+                    $fechaVerificacion,
                     $comite[0]->sel_com_seleccionado
                 );
                 $i++;
@@ -691,6 +756,73 @@ class Comp23_E0 extends CI_Controller {
                "rows":' . $datos . '}';
 
         echo $jsonresponse;
+    }
+
+    public function contarSolicitudMuni($mun_id) {
+        $this->load->model('etapa0-sub23/solicitud_asistencia', 'selCom');
+        $cont = $this->selCom->contarSeleccionComite($mun_id);
+        $rows[0]['id'] = 1;
+        $rows[0]['cell'] = array($cont);
+        $datos = json_encode($rows);
+        $pages = floor(1 / 15) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . 1 . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+
+    public function obtenerComiteInteristitucional($mun_id) {
+        $this->load->model('pais/municipio');
+        $mun = $this->municipio->obtenerMunicipio($mun_id);
+        $rows[0]['id'] = $mun[0]->mun_id;
+        if ($mun[0]->mun_fseleccion != "")
+            $frecepcion = date('d-m-Y', strtotime($mun[0]->mun_fseleccion));
+        else
+            $frecepcion = $mun[0]->mun_fseleccion;
+
+        $rows[0]['cell'] = array($mun[0]->mun_id,
+            $mun[0]->mun_com_observacion,
+            $mun[0]->mun_act_ruta_archivo,
+            $mun[0]->mun_pro_ruta_archivo,
+            $frecepcion,
+            end(explode("/", $mun[0]->mun_act_ruta_archivo)),
+            end(explode("/", $mun[0]->mun_pro_ruta_archivo))
+        );
+        $datos = json_encode($rows);
+        $pages = floor(1 / 15) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . 1 . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+
+    public function guardarComiteInterintitucional() {
+        /* VARIABLES POST */
+        $mun_id = $this->input->post("mun_id");
+        $mun_com_observacion = $this->input->post("mun_com_observacion");
+
+        $mun_fseleccion = $this->input->post("mun_fseleccion");
+        if ($mun_fseleccion == '')
+            $mun_fseleccion = null;
+
+        $this->load->model('pais/municipio');
+        $this->municipio->actualizarMunicipioComInt($mun_id, $mun_com_observacion, $mun_fseleccion);
+    }
+
+    public function editarSolicitud($mun_id) {
+        $sel_com_id = $this->input->post("id");
+        $sel_com_fverificacion = $this->input->post("sel_com_fverificacion");
+        $sel_com_seleccionado = $this->input->post("sel_com_seleccionado");
+        $this->load->model('etapa0-sub23/seleccion_comite', 'selCom');
+        $this->selCom->actualizarSeleccionComite($sel_com_id, $sel_com_seleccionado, $sel_com_fverificacion, $mun_id);
     }
 
 }
