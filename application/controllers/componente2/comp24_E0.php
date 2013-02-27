@@ -74,29 +74,72 @@ class Comp24_E0 extends CI_Controller {
                     ));
     }
     
+    /**
+     * 
+     * E. 
+     */
     public function E(){
 		if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
         
+        $this->load->view($this->ruta.'E',
+            array('titulo' => 'Elaboracion de Diagnostico',
+                    'user_uid' => $this->tank_auth->get_user_id(),
+                    'username' => $this->tank_auth->get_username(),
+                    'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
+                    'departamentos' => $this->departamento->obtenerDepartamentos()
+                    ));
     }
     
     public function F(){
 		if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
         
+        $this->load->view($this->ruta.'F',
+            array('titulo' => 'Elaboracion de Diagnostico',
+                    'user_uid' => $this->tank_auth->get_user_id(),
+                    'username' => $this->tank_auth->get_username(),
+                    'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
+                    'departamentos' => $this->departamento->obtenerDepartamentos()
+                    ));
     }
     
-    public function G(){
+    /**
+     * 
+     * G. Perfil del municipio
+     */
+    public function perfilMunicipio(){
 		if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
         
+        $this->load->view($this->ruta.'G',
+            array('titulo' => 'Diagnostico del Municipio',
+                    'user_uid' => $this->tank_auth->get_user_id(),
+                    'username' => $this->tank_auth->get_username(),
+                    'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
+                    'departamentos' => $this->departamento->obtenerDepartamentos()
+                    ));
     }
     
     public function H(){
 		if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
         
+        $this->load->view($this->ruta.'H',
+            array('titulo' => 'Diagnostico del Municipio',
+                    'user_uid' => $this->tank_auth->get_user_id(),
+                    'username' => $this->tank_auth->get_username(),
+                    'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
+                    'departamentos' => $this->departamento->obtenerDepartamentos()
+                    ));
     }
     
     public function I(){
 		if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
         
+        $this->load->view($this->ruta.'I',
+            array('titulo' => 'Diagnostico del Municipio',
+                    'user_uid' => $this->tank_auth->get_user_id(),
+                    'username' => $this->tank_auth->get_username(),
+                    'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
+                    'departamentos' => $this->departamento->obtenerDepartamentos()
+                    ));
     }
 
 }

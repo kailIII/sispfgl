@@ -18,6 +18,14 @@
             }
         });
         
+        $('#monto_atm').change(function(){   
+            var m = $('#monto_atm').val();
+            if(!isNumber(m) || m<0){
+					$('#mensaje5').dialog('open');
+					$('#monto_atm').val("0");
+			}
+        });
+        
         /*CARGAR MUNICIPIOS*/
         $('#selDepto').change(function(){   
             $('#selMun').children().remove();
@@ -37,41 +45,34 @@
         
         /*botones*/
         
-        $("#agregar_cap").button().click(function() {
+        $("#agregar_atm").button().click(function() {
 			// var records=$('#actividades').jqGrid('getGridParam','records');
 			 var muni = $('#selMun').val();
-			 var fecha_cap = $('#fecha_cap').val();
-			 var tema = $('#tema_cap').val();
-			 var m = $('#total_mujeres').val();
-			 var h = $('#total_hombres').val();
-			 var fecha_inst = $('#fecha_inst').val();
-			 var fecha_ope = $('#fecha_ope').val();
-			 var observaciones = $('#observaciones').val();
+			 var fecha_atm = $('#fecha_atm').val();
+			 var area_atm = $('#area_atm').val();
+			 var entidad_atm = $('#entidad_atm').val();
+			 var nombre_atm = $('#nombre_atm').val();
+			 var monto_atm = $('#monto_atm').val();
 			 
 			
 
-			 if (muni!=0 && fecha_cap!="" && tema!="" && m!="" && h!="" && fecha_inst!="" && fecha_ope!="" && observaciones!="") {
-				 if(!isNumber(m) || m % 1 != 0){
+			 if (muni!=0 && fecha_atm!="" && area_atm!="" && entidad_atm!="" && nombre_atm!="" && monto_atm!="") {
+				 if(!isNumber(monto_atm) || monto_atm < 0){
 					$('#mensaje5').dialog('open');
 					return false;}
-				if(!isNumber(h) || h % 1 != 0){
-					$('#mensaje6').dialog('open');
-					return false;}
 				
-				 var newrow = {id:"0", nombre_muni:""+muni, fecha_cap:""+fecha_cap, tema_cap:""+tema,total_mujeres:""+m,total_hombres:""+h,
-				 fecha_inst:""+fecha_inst,fecha_ope:""+fecha_ope,observaciones:""+observaciones};
+				 var newrow = {id:"0", nombre_muni:""+muni, fecha_atm:""+fecha_atm, area_atm:""+area_atm,entidad_atm:""+entidad_atm,nombre_atm:""+nombre_atm,
+				 monto_atm:""+monto_atm};
 				 
-				 $.post('<?php echo base_url('componente2/componente24a/guardar_comp24a_cap') ?>', newrow,function(){
+				 $.post('<?php echo base_url('componente2/componente24a/guardar_comp24a_atm') ?>', newrow,function(){
 					 tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');
 					 });
 				$('#selMun').val("");
-				$('#fecha_cap').val("");
-				$('#tema_cap').val("");
-				$('#total_mujeres').val("");
-				$('#total_hombres').val("");
-				$('#fecha_inst').val("");
-				$('#fecha_ope').val("");
-				$('#observaciones').val("");
+				$('#fecha_atm').val("");
+				$('#area_atm').val("");
+				$('#entidad_atm').val("");
+				$('#nombre_atm').val("");
+				$('#monto_atm').val("");
 				
 			 }
 			 else $('#mensaje2').dialog('open');
@@ -79,66 +80,56 @@
        
        /*Grid Capacitaciones*/
        
-       var tabla=$("#Capacitaciones");
+       var tabla=$("#Asistencias");
         tabla.jqGrid({
-            url:'<?php echo base_url('componente2/componente24a/cargar_capacitaciones') ?>',
+            url:'<?php echo base_url('componente2/componente24a/cargar_asistencias') ?>',
             //editurl: '<?php echo base_url('componente3/componente3/guardar_divu') ?>',
             datatype:'json',
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','Municipio','Fecha Capacitacion','Tema','Mujeres','Hombres','Fecha Instalacion','Fecha Operacion','Observaciones'],
+            colNames:['id','Municipio','Fecha asistencia','Area de accion','Entidad que asesora','Nombre','Monto($)'],
             colModel:[
                 {name:'id',index:'id', width:40,editable:false,editoptions:{size:15} },
-                {name:'nombre_muni',index:'act_nombre',width:100,editable:true,
+                {name:'nombre_muni',index:'nombre_muni',width:100,editable:true,
                     editoptions:{size:25,maxlength:100}, 
                     formoptions:{label: "Municipio",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
-                {name:'fecha_cap',index:'fecha_cap',width:100,editable:true,
+                {name:'fecha_atm',index:'fecha_atm',width:100,editable:true,
                     editoptions:{size:25,maxlength:20}, 
-                    formoptions:{label: "Fecha Capacitacion",elmprefix:"(*)"},
+                    formoptions:{label: "Fecha ATM",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
-                {name:'tema_cap',index:'tema_cap',editable:true,width:150,
+                {name:'area_atm',index:'area_atm',editable:true,width:200,
                     editoptions:{ size:25,maxlength:20 }, 
-                    formoptions:{ label: "Tema",elmprefix:"(*)"},
+                    formoptions:{ label: "Area de accion",elmprefix:"(*)"},
                     editrules:{required:true}
                 },
-                {name:'total_mujeres',index:'total_mujeres',width:20,editable:true,
-                    editoptions:{size:25,maxlength:100}, 
-                    formoptions:{ label: "Total Mujeres",elmprefix:"(*)"},
-                    editrules:{required:true} 
-                },
-                {name:'total_hombres',index:'total_hombres',editable:true,width:20,
-                    editoptions:{ size:25,maxlength:20 }, 
-                    formoptions:{ label: "Total Hombres",elmprefix:"(*)"},
-                    editrules:{required:true}
-                },
-                {name:'fecha_inst',index:'fecha_inst',width:100,editable:true,
+                {name:'entidad_atm',index:'entidad_atm',width:140,editable:true,
                     editoptions:{size:25,maxlength:20}, 
-                    formoptions:{label: "Fecha Instalacion",elmprefix:"(*)"},
+                    formoptions:{label: "Entidad que asesora",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
-                {name:'fecha_ope',index:'fecha_ope',width:100,editable:true,
+                {name:'nombre_atm',index:'nombre_atm',width:120,editable:true,
                     editoptions:{size:25,maxlength:20}, 
-                    formoptions:{label: "Fecha Operacion",elmprefix:"(*)"},
+                    formoptions:{label: "Nombre",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
-                {name:'observaciones',index:'observaciones',width:200,editable:true,
+                {name:'monto_atm',index:'monto_atm',width:60,editable:true,
                     editoptions:{size:25,maxlength:100}, 
-                    formoptions:{label: "Observaciones",elmprefix:"(*)"},
+                    formoptions:{label: "Monto",elmprefix:"(*)"},
                     editrules:{required:true} 
                 }
             ],
             multiselect: false,
-            caption: "Capacitaciones",
+            caption: "Asistencia Tecnica Municipal",
             rowNum:10,
             rowList:[10,20,30],
             loadonce:true,
-            pager: jQuery('#pagerCapacitaciones'),
+            pager: jQuery('#pagerAsistencias'),
             viewrecords: true
-        }).jqGrid('navGrid','#pagerCapacitaciones',
+        }).jqGrid('navGrid','#pagerAsistencias',
         {edit:false,add:false,del:false,search:false,refresh:false,
             beforeRefresh: function() {
                 tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
@@ -164,7 +155,7 @@
 ?>
 <?php if(isset($aviso))
 	echo $aviso;?>
-<h1>Componente 2.4.a, Capacitaciones</h1>
+<h1>Componente 2.4.a, Asistencia T&eacute;cnica a Municipios</h1>
 <br/>
 <?php $attributes = array('id' => 'myform');
 echo form_open('componente3/componente3/guardar_dsat',$attributes);?>
@@ -182,15 +173,15 @@ echo form_open('componente3/componente3/guardar_dsat',$attributes);?>
 	<input readonly="readonly"  type="text" name="fecha_atm" id="fecha_atm"  size="4" align="left">
 	<br/><br/>
     
-	<label>&Aacute;rea de Acci&oacute;n: </label>
-	<input type="text" name="area_atm" id="area_atm"  size="30" align="left">
+	<label>&Aacute;rea de Acci&oacute;n: </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<?php echo form_dropdown_from_db('id_area_accion','area_atm' ,"SELECT id_area_accion,nombre_area_accion FROM area_accion");?>
 	<br/><br/>
 	
 	<label>Entidad que Asesora: </label>
 	<select name="entidad_atm" size="1" id="entidad_atm">
 			<option value="ONG"<?php echo set_select('entidad_atm', 'ONG'); ?>>ONG</option>
-			<option value="Firma"<?php echo set_select('entidad_atm', 'Firma'); ?>>Firma</option>
-			<option value="Consultora"<?php echo set_select('entidad_atm', 'Consultora'); ?>>Consultora</option>
+			<option value="Firma Consultora"<?php echo set_select('entidad_atm', 'Firma Consultora'); ?>>Firma Consultora</option>
+			<option value="Consultor Individual"<?php echo set_select('entidad_atm', 'Consultor Individual'); ?>>Consultor Individual</option>
 			<option value="Otro"<?php echo set_select('entidad_atm', 'Otro'); ?>>Otro</option>
 	</select>
 	<br/><br/>
@@ -206,12 +197,12 @@ echo form_open('componente3/componente3/guardar_dsat',$attributes);?>
 	
 	<br/><br/>
 		
-	<table id="Capacitaciones"></table>
-	<div id="pagerCapacitaciones"></div>
+	<table id="Asistencias"></table>
+	<div id="pagerAsistencias"></div>
 		
 <?php echo form_close();?>
 <div id="mensaje" class="mensaje" title="Aviso">
-    <p>Chivo.</p>
+    <p>Ok.</p>
 </div>
 <div id="mensaje1" class="mensaje" title="Aviso">
     <p>Debe Seleccionar una fila para realizar esta acci&oacute;n.</p>
@@ -226,8 +217,5 @@ echo form_open('componente3/componente3/guardar_dsat',$attributes);?>
     <p>Debe completar los datos de la persona para continuar.</p>
 </div>
 <div id="mensaje5" class="mensaje" title="Aviso">
-    <p>La cantidad de mujeres no es valida.</p>
-</div>
-<div id="mensaje6" class="mensaje" title="Aviso">
-    <p>La cantidad de hombres no es valida.</p>
+    <p>El monto ingresado no es valido.</p>
 </div>

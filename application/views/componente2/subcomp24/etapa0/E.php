@@ -82,52 +82,6 @@ $this->load->view('plantilla/menu', $menu);
         });
         /*FIN DEL DATEPICKER*/
         
-        /*GRID*/
-        var tabla=$("#miembros");
-        tabla.jqGrid({
-            url:'<?php echo base_url('componente2/procesoAdministrativo/cargarConsultoraInteres') . '/' . $pro_id ?>',
-            editurl:'<?php echo base_url('componente2/procesoAdministrativo/gestionarConsultoresInteres') . '/' . $pro_id ?>',
-            datatype:'json',
-            altRows:true,
-            height: "100%",
-            hidegrid: false,
-            colNames:['id','Nombres','Apellidos','Sexo','Edad','Nivel de Escolaridad','Telefono'],
-            colModel:[
-                {name:'con_int_id',index:'con_int_id', width:40,editable:false,editoptions:{size:15} },
-                {name:'con_int_id',index:'con_int_id', width:40,editable:false,editoptions:{size:15} },
-                {name:'con_int_id',index:'con_int_id', width:40,editable:false,editoptions:{size:15} },
-                {name:'con_int_id',index:'con_int_id', width:40,editable:false,editoptions:{size:15} },
-                {name:'con_int_nombre',index:'con_int_nombre',editable:true,
-                    edittype:"select",width:650,
-                    editoptions:{ dataUrl:'<?php echo base_url('componente2/procesoAdministrativo/cargarConsultoras'); ?>'}, 
-                    formoptions:{ label: "Nombre:",elmprefix:"(*)"},
-                    editrules:{custom:true, custom_func:validaInstitucion}
-                },
-                {name:'con_int_tipo',index:'con_int_tipo',editable:true,edittype:"select",width:60,
-                    editoptions:{ value: '0:Seleccione;Empresa:Empresa;ONG:ONG' }, 
-                    formoptions:{ label: "Tipo:",elmprefix:"(*)"},
-                    editrules:{custom:true, custom_func:validaSexo}
-                }
-            ],
-            multiselect: false,
-            caption: "Consultoras que han manifestado interés",
-            rowNum:10,
-            rowList:[10,20,30],
-            loadonce:true,
-            pager: jQuery('#pagerMiembros'),
-            viewrecords: true
-        }).jqGrid('navGrid','#pagerMiembros',
-        {edit:false,add:false,del:false,search:false,refresh:false,
-            beforeRefresh: function() {
-                tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
-        }
-    ).hideCol('con_int_id');
-        /* Funcion para regargar los JQGRID luego de agregar y editar*/
-        function despuesAgregarEditar() {
-            tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');
-            return[true,'']; //no error
-        }
-        /**/
         
         /* Calculos */
         
@@ -196,7 +150,7 @@ $this->load->view('plantilla/menu', $menu);
              </div>
              <div class="result centrar">
                 <div class="hdr">Resultado Presupuestario</div>
-                <input id="t_icp" name="t_resPre" type="text" size="100" />
+                <input id="t_E1_total" name="t_E1_total" type="text" size="100" />
              </div>
         </div>
         
@@ -225,7 +179,7 @@ $this->load->view('plantilla/menu', $menu);
              </div>
              <div class="result centrar">
                 <div class="hdr">Autonomia Financiera</div>
-                <input id="t_af" name="t_af" type="text" size="100" />
+                <input id="t_E2_total" name="t_E2_total" type="text" size="100" />
              </div>
         </div>
         
@@ -254,7 +208,89 @@ $this->load->view('plantilla/menu', $menu);
              </div>
              <div class="result centrar">
                 <div class="hdr">Eficacia en la Recaudacion</div>
-                <input id="t_af" name="t_af" type="text" size="100" />
+                <input id="t_E3_total" name="t_E3_total" type="text" size="100" />
+             </div>
+        </div>
+        
+        <div class="bigCampo">
+            <label>Eficacia en la Ejecucion Presupuestaria de Ingresos Propiedades Percibidos (Eficacia en la Ejecucion)</label>
+            <div class="comment">Mide el grado de alcance de la meta propuesta. Este indicador permite establecer la brecha
+            existente entre el monto fijado (presupuestado) y lo realmente ejecutado o recaudado. 
+            <span style="color: red;">Entre mas se acerque a 100, mejor el indicador de eficiacia en la presupuestacion de ingresos.</span></div>
+             <div class="bdy">
+                <div class="frm">
+                    <div class="hdr">Eficacia en la Ejecucion</div>
+                    <div class="igual">=</div>
+                    <div class="col">
+                        <div class="row">
+                            <span>Monto de Ingresos Propios Percibidos en el Ano</span>
+                            <input class="txtInput" id="t_E4_monProPer" name="t_E4_monProPer" />
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <span>Monto de ingresos Propios Presupuestado</span>
+                            <input class="txtInput" id="t_E4_monProPre" name="t_E4_monProPre" />
+                        </div>
+                    </div>
+                </div>
+             </div>
+             <div class="result centrar">
+                <div class="hdr">Eficacia en la Ejecucion</div>
+                <input id="t_E4_total" name="t_E4_total" type="text" size="100" />
+             </div>
+        </div>
+        
+        <div class="bigCampo">
+            <label>Participacion de Ingresos por Tasas</label>
+            <div class="comment">Determinar la participacion relativa de las tasas dentro de la estructura
+            de los ingresos propios percibidos.</div>
+             <div class="bdy">
+                <div class="frm">
+                    <div class="hdr">Participacion de Ingresos por Tasas</div>
+                    <div class="igual">=</div>
+                    <div class="col">
+                        <div class="row">
+                            <span>Total de Ingresos por Tasas Percibidos</span>
+                            <input class="txtInput" id="t_E5_ingTasPer" name="t_E5_ingTasPer" />
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <span>Total de Ingresos Propios Percibidos</span>
+                            <input class="txtInput" id="t_E5_ingProPer" name="t_E5_ingProPer" />
+                        </div>
+                    </div>
+                </div>
+             </div>
+             <div class="result centrar">
+                <div class="hdr">Participacion de Ingresos por Tasas</div>
+                <input id="t_E5_total" name="t_E5_total" type="text" size="100" />
+             </div>
+        </div>
+        
+        <div class="bigCampo">
+            <label>Participacion de Ingresos por Impuestos</label>
+            <div class="comment">Determinar la participacion relativa de las Impuestos dentro de la estructura
+            de los ingresos propios percibidos.</div>
+             <div class="bdy">
+                <div class="frm">
+                    <div class="hdr">Participacion de Ingresos por Impuestos</div>
+                    <div class="igual">=</div>
+                    <div class="col">
+                        <div class="row">
+                            <span>Total de Ingresos por Impuestos Percibidos</span>
+                            <input class="txtInput" id="t_E6_ingImpPer" name="t_E6_ingImpPer" />
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <span>Total de Ingresos Propios Percibidos</span>
+                            <input class="txtInput" id="t_E6_ingProPer" name="t_E6_ingProPer" />
+                        </div>
+                    </div>
+                </div>
+             </div>
+             <div class="result centrar">
+                <div class="hdr">Participacion de Ingresos por Impuestos</div>
+                <input id="t_E6_total" name="t_E6_total" type="text" size="100" />
              </div>
         </div>
         

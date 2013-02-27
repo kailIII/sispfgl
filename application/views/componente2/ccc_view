@@ -1,6 +1,6 @@
 <script type="text/javascript">        
    $(document).ready(function(){
-	   $( "#fecha_cap" ).datepicker({
+	   $( "#fecha_convocatoria" ).datepicker({
            showOn: 'both',
            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
            buttonImageOnly: true, 
@@ -8,7 +8,7 @@
            minDate: (new Date(2013, 0, 1))
        });
        
-       $( "#fecha_inst" ).datepicker({
+       $( "#fecha_con" ).datepicker({
            showOn: 'both',
            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
            buttonImageOnly: true, 
@@ -16,7 +16,7 @@
            minDate: (new Date(2013, 0, 1))
        });
        
-       $( "#fecha_ope" ).datepicker({
+       $( "#fecha_equi" ).datepicker({
            showOn: 'both',
            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
            buttonImageOnly: true, 
@@ -33,23 +33,28 @@
                 }
             }
         });
-        
-        $('#total_mujeres').change(function(){   
-            var m = $('#total_mujeres').val();
-            if(!isNumber(m) || m % 1 != 0 || m<0){
-					$('#mensaje5').dialog('open');
-					$('#total_mujeres').val("");
-			}
-        });
-        
-        $('#total_hombres').change(function(){   
-            var h = $('#total_hombres').val();
-            if(!isNumber(h) || h % 1 != 0 || h<0){
-					$('#mensaje6').dialog('open');
-					$('#total_hombres').val("");
-					
-			}
-        });
+		
+		$("#tipo_act_cap").click( function() {
+				$("#div_con").hide();
+				$("#div_equi").hide();
+				$("#div_cap").show();
+		});
+		
+		$("#tipo_act_con").click( function() {
+				$("#div_equi").hide();
+				$("#div_cap").hide();
+				$("#div_con").show();
+		});
+		
+		$("#tipo_act_equi").click( function() {
+				$("#div_cap").hide();
+				$("#div_con").hide();
+				$("#div_equi").show();
+				
+		});
+		
+		
+		
         
         /*CARGAR MUNICIPIOS*/
         $('#selDepto').change(function(){   
@@ -68,7 +73,6 @@
             });              
         });
         
-        
         /*botones*/
         
         $("#agregar_cap").button().click(function() {
@@ -85,10 +89,10 @@
 			
 
 			 if (muni!=0 && fecha_cap!="" && tema!="" && m!="" && h!="" && fecha_inst!="" && fecha_ope!="" && observaciones!="") {
-				 if(!isNumber(m) || m % 1 != 0 || m<0){
+				 if(!isNumber(m) || m % 1 != 0){
 					$('#mensaje5').dialog('open');
 					return false;}
-				if(!isNumber(h) || h % 1 != 0 || h<0){
+				if(!isNumber(h) || h % 1 != 0){
 					$('#mensaje6').dialog('open');
 					return false;}
 				
@@ -124,7 +128,7 @@
             colNames:['id','Municipio','Fecha Capacitacion','Tema','Mujeres','Hombres','Fecha Instalacion','Fecha Operacion','Observaciones'],
             colModel:[
                 {name:'id',index:'id', width:40,editable:false,editoptions:{size:15} },
-                {name:'nombre_muni',index:'nombre_muni',width:100,editable:true,
+                {name:'nombre_muni',index:'act_nombre',width:100,editable:true,
                     editoptions:{size:25,maxlength:100}, 
                     formoptions:{label: "Municipio",elmprefix:"(*)"},
                     editrules:{required:true} 
@@ -198,50 +202,87 @@
 ?>
 <?php if(isset($aviso))
 	echo $aviso;?>
-<h1>Componente 2.4.a, Capacitaciones</h1>
+<h1>CC</h1>
 <br/>
 <?php $attributes = array('id' => 'myform');
 echo form_open('componente3/componente3/guardar_dsat',$attributes);?>
-
+	
 	<label>Departamento: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 	<?php echo form_dropdown_from_db('dep_id','selDepto' ,"SELECT dep_id,dep_nombre FROM departamento");?>
+	<br/><br/>
 		
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Nombre del Municipio: </label>
+	<label>Nombre del Municipio: </label>&nbsp;
 	<select id='selMun' name='mun_id'>
                 <option value='0'>--Seleccione--</option>
     </select>
     <br/><br/>
     
-    <label>Fecha de capacitaci&oacute;n: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-	<input readonly="readonly"  type="text" name="fecha_cap" id="fecha_cap"  size="4" align="left">
-    
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Tema: </label>
-	<input type="text" name="tema_cap" id="tema_cap"  size="30" align="left">
+    <label>Fecha de Convocatoria: </label>
+	<input readonly="readonly"  type="text" name="fecha_convocatoria" id="fecha_convocatoria"  size="4">
+	
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Hora: </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="text" value="hh:mm" name="hora_convocatoria" id="hora_convocatoria"  size="4">
+	
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Lugar: </label>
+	<input type="text" name="lugar_convocatoria" id="lugar_convocatoria"  size="8">
+	<br/><br/><br/>
+	
+	<label>Nombre del Proyecto: </label>&nbsp;&nbsp;
+	<input type="text" name="nombre_proy" id="nombre_proy"  size="10">
+	
+	&nbsp;&nbsp;<label>Monto &#40;&#36;&#41;: </label>
+	<input type="text" name="monto_proy" id="monto_proy"  size="4" >
+	
+	<table>
+		<tr>
+			<td rowspan="2">
+				<input type="radio" name="tipo_proy" id="tipo_proy" value="Cambio Proyecto" <?php echo set_radio('tipo_proy', 'Cambio Proyecto'); ?> />Nuevo Proyecto<br/>
+				<input type="radio" name="tipo_proy" id="tipo_proy" value="Nuevo Proyecto" <?php echo set_radio('tipo_proy', 'Nuevo Proyecto'); ?> />Nuevo Proyecto
+			</td>
+		</tr>
+	</table>
+	
+	<label>N&uacute;mero de Comunidades Beneficiadas: </label>
+	<input type="text" name="com_beneficiadas" id="com_beneficiadas"  size="5">
+	
+	<label>Poblaci&oacute;n Beneficiada: </label>
+	<input type="text" name="pob_beneficiada" id="pob_beneficiada"  size="5">
+	
+	<input type="button" value="Agregar" name="agregar_proy" id="agregar_proy"><br/>
 	<br/><br/>
 	
-	<label>Total de Mujeres Participantes: &nbsp;&nbsp;&nbsp;</label>
-	<input type="text" name="total_mujeres" id="total_mujeres"  size="1" align="left"><br/><br/>
-	
-	<label>Total de Hombres Participantes: &nbsp;&nbsp;</label>
-	<input type="text" name="total_hombres" id="total_hombres"  size="1" align="left"><br/><br/>
-	
-	<label>Fecha de Instalaci&oacute;n: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-	<input readonly="readonly"  type="text" name="fecha_inst" id="fecha_inst"  size="4" align="left"><br/><br/>
-	
-	<label>Fecha de Inicio de Operaci&oacute;n: </label>
-	<input readonly="readonly"  type="text" name="fecha_ope" id="fecha_ope"  size="4" align="left"><br/><br/>
-	
-	<label>Observaciones: </label><br/>
-	<textarea rows="5" cols="75" maxlength="500" name="observaciones" id="observaciones" align="center"></textarea>
-	
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<input type="button" value="Agregar" name="agregar_cap" id="agregar_cap" align="left"><br/>
-	
-	<br/><br/>
-		
 	<table id="Capacitaciones"></table>
 	<div id="pagerCapacitaciones"></div>
+	<br/><br/>
+	
+	<div style="float:left;height:200px;width:330px;">
+		&nbsp;&nbsp;&nbsp;&nbsp;<label>Registro de Asistencia a la CC: </label>
+		<br/><br/>
 		
+		<label>Total de Mujeres: &nbsp;</label>
+		<input type="text" name="total_mujeres" id="total_mujeres"  size="1" ><br/><br/>
+		
+		<label>Total de Hombres: </label>
+		<input type="text" name="total_hombres" id="total_hombres"  size="1" ><br/><br/>
+		
+		<label>Total: </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input readonly="readonly" type="text" name="total_hombres" id="total_hombres"  size="1"><br/><br/>
+	</div>
+	
+	<div style="float:left;height:200px;">
+		&nbsp;&nbsp;&nbsp;&nbsp;<label>Archivos: </label>
+		<br/><br/>
+		
+		<label>Acta Final: </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="file" id="acta_final" name="acta_final" size="20" /><br/><br/>
+		
+		<label>Listado de Asistencia: </label>
+		<input type="file" id="lista_asis" name="lista_asis" size="20" /><br/><br/>
+		
+		<input type="submit" id="guardar" name="guardar" value="Guardar" align="right">
+	</div>
+	
+	
 <?php echo form_close();?>
 <div id="mensaje" class="mensaje" title="Aviso">
     <p>Ok.</p>

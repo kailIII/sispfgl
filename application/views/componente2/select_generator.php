@@ -22,6 +22,7 @@ function form_dropdown_from_db($name = '', $ids='', $sql, $selected = array(), $
         $multiple = (count($selected) > 1 && strpos($extra, 'multiple') === FALSE) ? ' multiple="multiple"' : '';
 
         $form = '<select name="'.$name.'"'.'id="'.$ids.'"'.''.$extra.$multiple.">\n";
+        $form .= '<option value="0">--Seleccione--</option>';
         $query=$CI->db->query($sql);
         if ($query->num_rows() > 0)
         {
