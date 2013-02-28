@@ -11,16 +11,53 @@ if (!defined('BASEPATH'))
 
 class Comp24_E0 extends CI_Controller {
     
-     private $ruta = "componente2/subcomp24/etapa0/";
+    private $ruta = "componente2/subcomp24/etapa0/";
 
     public function __construct() {
         parent::__construct();
         $this->load->model('pais/departamento');
+        $this->load->model('componente2/comp24');
+    }
+    
+    function index()
+    {
+        if ($message = $this->session->flashdata('message')) {
+            $this->load->view('mensaje', array('message' => $message));
+        } else {
+            redirect('/');
+        }
     }
 	
-	public function solicitudAyuda(){
-		if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
-	   
+    public function solicitudAyuda(){
+        if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
+        
+        $config = array(
+            array('field'   => 'selMun',   'label' => 'Municipio',   'rules' => 'trim|required|xss_clean'),
+            array('field'   => 'f_emision',    'label' => 'Emision',    'rules' => 'trim|required|xss_clean'),
+            array('field'   => 'f_recepcion',   'label' => 'Recepcion',   'rules' => 'required|xss_clean')
+        );
+             
+        $this->form_validation->set_rules($config);
+        
+        $data['errors'] = array();
+        
+        if ($this->form_validation->run())
+        {
+            if(!is_null($data = $this->comp24->inser_solicitud_ayuda(
+                $this->form_validation->set_value('selMun'),
+                $this->form_validation->set_value('f_emision'),
+                $this->form_validation->set_value('f_recepcion')
+                )))
+                {
+                    $this->_show_message('La Solicitud se a creado correctamente.');
+                }
+                else
+                {
+                    $errors = $this->tank_auth->get_error_message();
+                    foreach ($errors as $k => $v)    $data['errors'][$k] = $this->lang->line($v);
+                }          
+        }
+        $data['id'] = $id;
        
        $this->load->view($this->ruta.'solicitudAyuda_view',
             array('titulo' => 'Solicitud de Ayuda',
@@ -74,29 +111,78 @@ class Comp24_E0 extends CI_Controller {
                     ));
     }
     
+    /**
+     * 
+     * E. 
+     */
     public function E(){
 		if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
         
+        $this->load->view($this->ruta.'E',
+            array('titulo' => 'Elaboracion de Diagnostico',
+                    'user_uid' => $this->tank_auth->get_user_id(),
+                    'username' => $this->tank_auth->get_username(),
+                    'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
+                    'departamentos' => $this->departamento->obtenerDepartamentos()
+                    ));
     }
     
     public function F(){
 		if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
         
+        $this->load->view($this->ruta.'F',
+            array('titulo' => 'Elaboracion de Diagnostico',
+                    'user_uid' => $this->tank_auth->get_user_id(),
+                    'username' => $this->tank_auth->get_username(),
+                    'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
+                    'departamentos' => $this->departamento->obtenerDepartamentos()
+                    ));
     }
     
-    public function G(){
+    /**
+     * 
+     * G. Perfil del municipio
+     */
+    public function perfilMunicipio(){
 		if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
         
+        $this->load->view($this->ruta.'G',
+            array('titulo' => 'Diagnostico del Municipio',
+                    'user_uid' => $this->tank_auth->get_user_id(),
+                    'username' => $this->tank_auth->get_username(),
+                    'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
+                    'departamentos' => $this->departamento->obtenerDepartamentos()
+                    ));
     }
     
     public function H(){
 		if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
         
+        $this->load->view($this->ruta.'H',
+            array('titulo' => 'Diagnostico del Municipio',
+                    'user_uid' => $this->tank_auth->get_user_id(),
+                    'username' => $this->tank_auth->get_username(),
+                    'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
+                    'departamentos' => $this->departamento->obtenerDepartamentos()
+                    ));
     }
     
     public function I(){
 		if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
         
+        $this->load->view($this->ruta.'I',
+            array('titulo' => 'Diagnostico del Municipio',
+                    'user_uid' => $this->tank_auth->get_user_id(),
+                    'username' => $this->tank_auth->get_username(),
+                    'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
+                    'departamentos' => $this->departamento->obtenerDepartamentos()
+                    ));
+    }
+    
+    function _show_message($path, $message)
+    {
+        $this->session->set_flashdata('message', $message);
+        redirect('/componente2/comp24_E0'+$path);
     }
 
 }

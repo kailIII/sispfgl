@@ -79,6 +79,22 @@ class Municipio extends CI_Model {
         $consulta = $this->db->query($query, array($dep_id));
         return $consulta->result();
     }
+    
+    public function actualizarMunicipioComInt($mun_id,$mun_com_observacion,$mun_fseleccion) {
+        $datos = array(
+            'mun_com_observacion' => $mun_com_observacion,
+            'mun_fseleccion'=> $mun_fseleccion
+            
+        );
+        $this->db->where('mun_id', $mun_id);
+        $this->db->update($this->tabla, $datos);
+    }
+    
+    public function obtenerMunicipio($mun_id){
+        $this->db->where('mun_id', $mun_id);
+        $consulta = $this->db->get($this->tabla);
+        return $consulta->result();
+    }
 
 }
 
