@@ -149,7 +149,7 @@ $this->load->view('plantilla/menu', $menu);
 <?php echo form_open() ?>
 
     <h2 class="h2Titulos">Etapa 0: Condiciones Previas</h2>
-    <h2 class="h2Titulos">Registro de Solicitud</h2>
+    <h2 class="h2Titulos">Acuerdo Municipal</h2>
     <br/>
     <div id="rpt_frm_bdy">
         <div class="campo">
