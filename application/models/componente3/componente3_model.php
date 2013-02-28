@@ -253,6 +253,28 @@ Class componente3_model extends CI_Model{
         return $query->result();
 	}
 	
+	public function get_asistentes_dsat($dsat_id){
+		$this->db->where('dsat_id',$dsat_id);
+		$query = $this->db->get('asistente_dsat');
+        return $query->result();
+	}
+	
+	public function get_asistentes_fcdp($fcdp_id){
+		$this->db->where('fcdp_id',$fcdp_id);
+		$query = $this->db->get('asistente_fcdp');
+        return $query->result();
+	}
+	
+	public function get_actividades_dsat() {
+        $query = $this->db->get('dsat');
+        return $query->result();
+    }
+    
+    public function get_actividades_fcdp() {
+        $query = $this->db->get('fcdp');
+        return $query->result();
+    }
+	
 	public function finalizar_pmatricula() {
 		/*$data = array(
             'estadoPeriodoMatricula' => 0

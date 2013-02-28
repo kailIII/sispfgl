@@ -264,7 +264,7 @@
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','Nombre Capacitacion','Fecha','Nombre Capacitador','Total de mujeres','Total de hombres','Monto','Entidad'],
+            colNames:['id','Tema Capacitacion','Fecha','Nombre Capacitador','Total de mujeres','Total de hombres','Monto','Entidad'],
             colModel:[
                 {name:'id',index:'id', width:40,editable:false,editoptions:{size:15} },
                 {name:'nombre_cap',index:'nombre_cap',width:200,editable:true,
@@ -467,7 +467,7 @@ echo form_open('componente3/componente3/guardar_dsat',$attributes);?>
 	
 	<div id="div_cap" style="float:left;height:500px;"  hidden="hidden">
 		
-		<label>Nombre de la Capacitaci&oacute;n: </label>
+		<label>Tema de Capacitaci&oacute;n: </label>
 		<input type="text" name="nombre_cap" id="nombre_cap"  size="25">
 		
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Fecha: </label>
@@ -496,7 +496,7 @@ echo form_open('componente3/componente3/guardar_dsat',$attributes);?>
 	
 	<div id="div_con" style="float:left;height:500px;"  hidden="hidden">
 		
-		<label>Nombre de la Consulto&iacute;a: </label>
+		<label>Nombre de la Consultor&iacute;a: </label>
 		<input type="text" name="nombre_con" id="nombre_con"  size="25">
 		
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Fecha: </label>
