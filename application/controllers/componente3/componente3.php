@@ -518,6 +518,42 @@ class  componente3 extends CI_Controller {
         $this->load->view('plantilla/footer', $informacion);
     }
     
+    public function elab_plan_imp_ssdt() {
+
+        $informacion['titulo'] = '3.2.2 Elaboracion del Plan Piloto';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());                 
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente3/ingresar_epi_ssdt');
+        $this->load->view('plantilla/footer', $informacion);
+    }
+    
+    public function divu_ssdt() {
+
+        $informacion['titulo'] = '3.3 Divulgaci&oacute;n';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());                 
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente3/ingresar_divu_ssdt');
+        $this->load->view('plantilla/footer', $informacion);
+    }
+    
+    public function docs_desc_ssdt() {
+
+        $informacion['titulo'] = 'Documentos Concernientes a Descentralizaci&oacute;n';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());                 
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente3/ingresar_dd_ssdt');
+        $this->load->view('plantilla/footer', $informacion);
+    }
+    
     public function cargar_act_dsat(){
 		$this->load->model('componente3/componente3_model');
         $actividades = $this->componente3_model->get_actividades_dsat();
@@ -534,6 +570,7 @@ class  componente3 extends CI_Controller {
             $rows[$i]['cell'] = array($aux->dsat_id,
                 $aux->dsat_fecha,
                 $aux->dsat_actividad,
+                $this->componente3_model->get_sectores_dsat($aux->dsat_id),
                 $this->componente3_model->get_mun_nombre($aux->dsat_municipio),
                 $aux->dsat_observaciones,
                 $arch
@@ -642,6 +679,131 @@ class  componente3 extends CI_Controller {
 
      
     }
+    
+    public function cargar_dd(){
+		$this->load->model('componente3/componente3_model');
+        $actividades = $this->componente3_model->get_dd();
+        $numfilas = count($actividades);
+
+        $i = 0;
+        foreach ($actividades as $aux) {
+            
+            if($aux->dd_archivo_resumen!='')
+				$arch1='<a href="'.base_url().''.$aux->dd_archivo_resumen.'">Descargar</a>';
+            else $arch1='No disponible';
+            
+            if($aux->dd_archivo_completo!='')
+				$arch2='<a href="'.base_url().''.$aux->dd_archivo_completo.'">Descargar</a>';
+            else $arch2='No disponible';
+            
+            $rows[$i]['id'] = $aux->dd_id;
+            $rows[$i]['cell'] = array($aux->dd_id,
+                $aux->dd_fecha,
+                $aux->dd_descripcion,
+                $this->componente3_model->get_sectores_dd($aux->dd_id),
+                $arch1,
+                $arch2
+            );
+            $i++;
+        }
+
+        if ($numfilas != 0) {
+            array_multisort($rows, SORT_ASC);
+        } else {
+            //$rows[0]['id'] = 0;
+           // $rows[0]['cell'] = array('0', ' ', ' ', ' ', ' ', ' ');
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+	}
+    
+    
+    public function cargar_epi(){
+		$this->load->model('componente3/componente3_model');
+        $actividades = $this->componente3_model->get_epi();
+        $numfilas = count($actividades);
+
+        $i = 0;
+        foreach ($actividades as $aux) {
+            
+            $rows[$i]['id'] = $aux->epi_id;
+            $rows[$i]['cell'] = array($aux->epi_id,
+                $aux->epi_nombre
+            );
+            $i++;
+        }
+
+        if ($numfilas != 0) {
+            array_multisort($rows, SORT_ASC);
+        } else {
+            //$rows[0]['id'] = 0;
+           // $rows[0]['cell'] = array('0', ' ', ' ', ' ', ' ', ' ');
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+	}
+	
+	public function cargarActividadess_epi($epi_id) {
+        if(!isset($epi_id))
+			$epi_id='';
+        $this->load->model('componente3/componente3_model');
+        $act = $this->componente3_model->get_act_epi($epi_id);
+        $numfilas = count($act);
+
+        $i = 0;
+        foreach ($act as $aux) {
+            $rows[$i]['id'] = $aux->act_id;
+            $rows[$i]['cell'] = array($aux->act_id,
+                $aux->act_nombre,
+                $aux->act_fecha_ini,
+                $aux->act_fecha_fin,
+                $aux->act_responsable,
+                $aux->act_cargo,
+                $aux->act_descripcion,
+                $aux->act_recursos
+            );
+            $i++;
+        }
+
+        if ($numfilas != 0) {
+            array_multisort($rows, SORT_ASC);
+        } else {
+            //$rows[0]['id'] = 0;
+           // $rows[0]['cell'] = array('0', ' ', ' ', ' ', ' ', ' ');
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+
+     
+    }
+    
 
 }
 

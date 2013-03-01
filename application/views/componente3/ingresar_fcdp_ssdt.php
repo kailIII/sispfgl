@@ -67,7 +67,7 @@
         
         var tabla=$("#actividades");
         tabla.jqGrid({
-            url:'<?php echo base_url('index.php/componente3/componente3/cargar_act_fcdp') ?>',
+            url:'<?php echo base_url('componente3/componente3/cargar_act_fcdp') ?>',
             //editurl: '<?php echo base_url('componente3/componente3/guardar_divu') ?>',
             datatype:'json',
             altRows:true,
@@ -110,7 +110,7 @@
             pager: jQuery('#pagerActividades'),
             viewrecords: true,
             onSelectRow: function(id){
-				  var new_url= '<?php echo base_url('index.php/componente3/componente3/cargarAsistentes_fcdp/') ?>'+'/'+id;
+				  var new_url= '<?php echo base_url('componente3/componente3/cargarAsistentes_fcdp/') ?>'+'/'+id;
 				  asis.clearGridData(false);
 				  asis.jqGrid('setGridParam',{datatype:'json',loadonce:true, url: ''+new_url}).trigger('reloadGrid');
 			   }

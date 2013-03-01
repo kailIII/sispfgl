@@ -52,23 +52,28 @@
         
         var tabla=$("#actividades");
         tabla.jqGrid({
-            url:'<?php echo base_url('index.php/componente3/componente3/cargar_act_dsat') ?>',
+            url:'<?php echo base_url('componente3/componente3/cargar_act_dsat') ?>',
             //editurl: '<?php echo base_url('componente3/componente3/guardar_divu') ?>',
             datatype:'json',
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','Fecha','Actividad','Municipio','Observaciones','Archivo Reporte'],
+            colNames:['id','Fecha','Actividad','Sectores y Areas de Estudio','Municipio','Observaciones','Archivo Reporte'],
             colModel:[
                 {name:'act_id',index:'act__id', width:40,editable:false,editoptions:{size:15} },
-                {name:'dsat_fecha',index:'dsat_fecha',width:65,editable:true,
+                {name:'dsat_fecha',index:'dsat_fecha',width:60,editable:true,
                     editoptions:{size:25,maxlength:100}, 
                     formoptions:{label: "Fecha",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
-                {name:'dsat_actividad',index:'dsat_actividad',width:200,editable:true,
+                {name:'dsat_actividad',index:'dsat_actividad',width:180,editable:true,
                     editoptions:{size:25,maxlength:20}, 
                     formoptions:{label: "Actividad",elmprefix:"(*)"},
+                    editrules:{required:true} 
+                },
+                {name:'dsat_sector',index:'dsat_sector',width:250,editable:true,
+                    editoptions:{size:25,maxlength:20}, 
+                    formoptions:{label: "Sector",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
                 {name:'dsat_municipio',index:'dsat_municipio',editable:true,width:100,
@@ -81,7 +86,7 @@
                     formoptions:{ label: "Observaciones",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
-                {name:'dsat_archivo',index:'dsat_archivo',editable:true,edittype:"select",width:125,
+                {name:'dsat_archivo',index:'dsat_archivo',editable:true,width:87,
                     editoptions:{ ize:25,maxlength:200},
                     formoptions:{ label: "Archivo",elmprefix:"(*)"},
                     editrules:{required:true}
@@ -95,7 +100,7 @@
             pager: jQuery('#pagerActividades'),
             viewrecords: true,
             onSelectRow: function(id){
-				  var new_url= '<?php echo base_url('index.php/componente3/componente3/cargarAsistentes_dsat/') ?>'+'/'+id;
+				  var new_url= '<?php echo base_url('componente3/componente3/cargarAsistentes_dsat/') ?>'+'/'+id;
 				  asis.clearGridData(false);
 				  asis.jqGrid('setGridParam',{datatype:'json',loadonce:true, url: ''+new_url}).trigger('reloadGrid');
 			   }
