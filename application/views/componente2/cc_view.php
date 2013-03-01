@@ -250,7 +250,7 @@
 ?>
 <?php if(isset($aviso))
 	echo $aviso;?>
-<h1>CC</h1>
+<h1>Consulta Ciudadana</h1>
 <br/>
 <?php $attributes = array('id' => 'myform');
 echo form_open('componente3/componente3/guardar_dsat',$attributes);?>
@@ -268,14 +268,14 @@ echo form_open('componente3/componente3/guardar_dsat',$attributes);?>
     <label>Fecha de Convocatoria: </label>
 	<input readonly="readonly"  type="text" name="fecha_convocatoria" id="fecha_convocatoria"  size="4">
 	
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Hora: </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<input type="text" value="hh:mm" name="hora_convocatoria" id="hora_convocatoria"  size="4">
+	<!--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Hora: </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="text" value="hh:mm" name="hora_convocatoria" id="hora_convocatoria"  size="4">-->
 	
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Lugar: </label>
 	<input type="text" name="lugar_convocatoria" id="lugar_convocatoria"  size="8">
 	<br/><br/><br/>
 	
-	<label>Nombre del Proyecto: </label>&nbsp;&nbsp;
+	<label>Nombre del Subproyecto: </label>&nbsp;&nbsp;
 	<input type="text" name="nombre_proy" id="nombre_proy"  size="10">
 	
 	&nbsp;&nbsp;<label>Monto &#40;&#36;&#41;: </label>
@@ -284,8 +284,8 @@ echo form_open('componente3/componente3/guardar_dsat',$attributes);?>
 	<table>
 		<tr>
 			<td rowspan="2">
-				<input type="radio" name="tipo_proy" id="tipo_proy1" value="Cambio Proyecto" <?php echo set_radio('tipo_proy','Cambio Proyecto'); ?> />Cambio Proyecto<br/>
-				<input type="radio" name="tipo_proy" id="tipo_proy2" value="Nuevo Proyecto" <?php echo set_radio('tipo_proy','Nuevo Proyecto'); ?> />Nuevo Proyecto
+				<input type="radio" name="tipo_proy" id="tipo_proy1" value="Cambio Subproyecto" <?php echo set_radio('tipo_proy','Cambio Subproyecto'); ?> />Cambio Subproyecto<br/>
+				<input type="radio" name="tipo_proy" id="tipo_proy2" value="Nuevo Subproyecto" <?php echo set_radio('tipo_proy','Nuevo Subproyecto'); ?> />Nuevo Subproyecto
 			</td>
 		</tr>
 	</table>

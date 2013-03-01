@@ -454,11 +454,31 @@ class  componente3 extends CI_Controller {
 
     }
     
-    public function cargarAsistentes_dsat() {
-        $numfilas=0;
-        
-        $rows[0]['id'] = 0;
-        $rows[0]['cell'] = array(' ', ' ', ' ', ' ', ' ', ' ');
+    public function cargarAsistentes_dsat($dsat_id) {
+        if(!isset($dsat_id))
+			$dsat_id='';
+        $this->load->model('componente3/componente3_model');
+        $asistentes = $this->componente3_model->get_asistentes_dsat($dsat_id);
+        $numfilas = count($asistentes);
+
+        $i = 0;
+        foreach ($asistentes as $aux) {
+            $rows[$i]['id'] = $aux->asis_id;
+            $rows[$i]['cell'] = array($aux->asis_id,
+                $aux->asis_nombre,
+                $aux->asis_sexo,
+                $aux->asis_cargo,
+                $aux->asis_sector
+            );
+            $i++;
+        }
+
+        if ($numfilas != 0) {
+            array_multisort($rows, SORT_ASC);
+        } else {
+            //$rows[0]['id'] = 0;
+           // $rows[0]['cell'] = array('0', ' ', ' ', ' ', ' ', ' ');
+        }
 
         $datos = json_encode($rows);
         $pages = floor($numfilas / 10) + 1;
@@ -469,30 +489,159 @@ class  componente3 extends CI_Controller {
                "records":"' . $numfilas . '", 
                "rows":' . $datos . '}';
 
-/*	total:	total pages for the query
-	page:	current page of the query
-	records:	total number of records for the query
-	rows:	an array that contains the actual data
-	id:	the unique id of the row
-	cell: an array that contains the data for a row
-		
-		{ 
-		  "total": "xxx", 
-		  "page": "yyy", 
-		  "records": "zzz",
-		  "rows" : [
-			{"id" :"1", "cell" :["cell11", "cell12", "cell13"]},
-			{"id" :"2", "cell":["cell21", "cell22", "cell23"]},
-			  ...
-		  ]
-		}
-	*/
-
         echo $jsonresponse;
+
+     
     }
     
+     public function diag_sect_anal_tran_ssdt() {
+
+        $informacion['titulo'] = '3.1 Diagnostico Sectorial y Analisis Transversales';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente3/ingresar_dsat_ssdt');
+        $this->load->view('plantilla/footer', $informacion);
+    }
+    
+    public function form_conc_disc_poli_ssdt() {
+
+        $informacion['titulo'] = '3.2.1 Formacion de Concenso y Discusion de la Politica de Descentralizacion';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());                 
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente3/ingresar_fcdp_ssdt');
+        $this->load->view('plantilla/footer', $informacion);
+    }
+    
+    public function cargar_act_dsat(){
+		$this->load->model('componente3/componente3_model');
+        $actividades = $this->componente3_model->get_actividades_dsat();
+        $numfilas = count($actividades);
+
+        $i = 0;
+        foreach ($actividades as $aux) {
+            
+            if($aux->dsat_archivo!='')
+				$arch='<a href="'.base_url().''.$aux->dsat_archivo.'">Descargar</a>';
+            else $arch='No disponible';
+            
+            $rows[$i]['id'] = $aux->dsat_id;
+            $rows[$i]['cell'] = array($aux->dsat_id,
+                $aux->dsat_fecha,
+                $aux->dsat_actividad,
+                $this->componente3_model->get_mun_nombre($aux->dsat_municipio),
+                $aux->dsat_observaciones,
+                $arch
+            );
+            $i++;
+        }
+
+        if ($numfilas != 0) {
+            array_multisort($rows, SORT_ASC);
+        } else {
+            //$rows[0]['id'] = 0;
+           // $rows[0]['cell'] = array('0', ' ', ' ', ' ', ' ', ' ');
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+	}
+	
+	public function cargar_act_fcdp(){
+		$this->load->model('componente3/componente3_model');
+        $actividades = $this->componente3_model->get_actividades_fcdp();
+        $numfilas = count($actividades);
+
+        $i = 0;
+        foreach ($actividades as $aux) {
+            
+            if($aux->fcdp_archivo!='')
+				$arch='<a href="'.base_url().''.$aux->fcdp_archivo.'">Descargar</a>';
+            else $arch='No disponible';
+            
+            $rows[$i]['id'] = $aux->fcdp_id;
+            $rows[$i]['cell'] = array($aux->fcdp_id,
+                $aux->fcdp_fecha,
+                $aux->fcdp_tematica,
+                $aux->fcdp_ultima,
+                $aux->fcdp_observaciones,
+                $arch
+            );
+            $i++;
+        }
+
+        if ($numfilas != 0) {
+            array_multisort($rows, SORT_ASC);
+        } else {
+            //$rows[0]['id'] = 0;
+           // $rows[0]['cell'] = array('0', ' ', ' ', ' ', ' ', ' ');
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+	}
     
     
+    public function cargarAsistentes_fcdp($fcdp_id) {
+        if(!isset($fcdp_id))
+			$fcdp_id='';
+        $this->load->model('componente3/componente3_model');
+        $asistentes = $this->componente3_model->get_asistentes_fcdp($fcdp_id);
+        $numfilas = count($asistentes);
+
+        $i = 0;
+        foreach ($asistentes as $aux) {
+            $rows[$i]['id'] = $aux->asis_id;
+            $rows[$i]['cell'] = array($aux->asis_id,
+                $aux->asis_nombre,
+                $aux->asis_sexo,
+                $aux->asis_cargo,
+                $aux->asis_sector
+            );
+            $i++;
+        }
+
+        if ($numfilas != 0) {
+            array_multisort($rows, SORT_ASC);
+        } else {
+            //$rows[0]['id'] = 0;
+           // $rows[0]['cell'] = array('0', ' ', ' ', ' ', ' ', ' ');
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+
+     
+    }
 
 }
 

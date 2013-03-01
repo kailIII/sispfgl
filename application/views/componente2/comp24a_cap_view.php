@@ -198,7 +198,7 @@
 ?>
 <?php if(isset($aviso))
 	echo $aviso;?>
-<h1>Componente 2.4.a, Capacitaciones</h1>
+<h1>Componente 2.4.a Capacitaciones</h1>
 <br/>
 <?php $attributes = array('id' => 'myform');
 echo form_open('componente3/componente3/guardar_dsat',$attributes);?>
@@ -225,10 +225,10 @@ echo form_open('componente3/componente3/guardar_dsat',$attributes);?>
 	<label>Total de Hombres Participantes: &nbsp;&nbsp;</label>
 	<input type="text" name="total_hombres" id="total_hombres"  size="1" align="left"><br/><br/>
 	
-	<label>Fecha de Instalaci&oacute;n: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+	<label>Fecha de Instalaci&oacute;n del SAFIM: &nbsp;&nbsp;</label>
 	<input readonly="readonly"  type="text" name="fecha_inst" id="fecha_inst"  size="4" align="left"><br/><br/>
 	
-	<label>Fecha de Inicio de Operaci&oacute;n: </label>
+	<label>Fecha de Inicio de Operaci&oacute;n: </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<input readonly="readonly"  type="text" name="fecha_ope" id="fecha_ope"  size="4" align="left"><br/><br/>
 	
 	<label>Observaciones: </label><br/>

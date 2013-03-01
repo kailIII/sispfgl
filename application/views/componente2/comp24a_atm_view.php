@@ -155,7 +155,7 @@
 ?>
 <?php if(isset($aviso))
 	echo $aviso;?>
-<h1>Componente 2.4.a, Asistencia T&eacute;cnica a Municipios</h1>
+<h1>Componente 2.4.a Asistencia T&eacute;cnica a Municipios</h1>
 <br/>
 <?php $attributes = array('id' => 'myform');
 echo form_open('componente3/componente3/guardar_dsat',$attributes);?>
