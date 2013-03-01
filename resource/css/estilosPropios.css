@@ -208,8 +208,12 @@ form .campo label {
 
 }
 
-from .campo input {
+form .campo input {
     width: 200px;
+}
+
+.error{
+    display: inline-block;
 }
  
 #rpt {

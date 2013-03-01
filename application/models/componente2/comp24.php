@@ -7,16 +7,20 @@
  */
 Class comp24 extends CI_Model{
     
+    function changeDate($date){
+        $t = explode('/',$date);
+        return date('Y-m-d',mktime(0,0,0,$t[1],$t[0],$t[2]));
+    }
+    
     /**
      * Guarda los datos de 2.4-0-A
      */
     public function insert_solicitud_ayuda($municipio, $fecha_emision, $fecha_recepcion){
         $data_new = array(
             'mun_id'                    =>  $municipio,
-            'sol_ayu_fecha_emision'     =>  $fecha_emision,
-            'sol_ayu_fecha_recepcion'   =>  $fecha_recepcion
+            'sol_ayu_fecha_emision'     =>  $this->changeDate($fecha_emision),
+            'sol_ayu_fecha_recepcion'   =>  $this->changeDate($fecha_recepcion)
         );
-        
         return $this->db->insert('solicitud_ayuda', $data_new);
     }
     

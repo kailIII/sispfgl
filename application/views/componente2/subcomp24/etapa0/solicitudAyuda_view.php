@@ -15,9 +15,7 @@ $this->load->view('plantilla/menu', $menu);
         /*VARIABLES*/
  
        
-        $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/comp23_E0/guardarSolicitud'); ?>';
-        });
+        
         
         $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url(); ?>';
@@ -42,23 +40,7 @@ $this->load->view('plantilla/menu', $menu);
         });
         $('#selMun').change(function(){
             $('#Mensajito').hide();
-            $("#guardar").hide();
-            $.getJSON('<?php echo base_url('componente2/comp23_E1/verificarProyectoPep') . "/" ?>'+$('#selMun').val(), 
-            function(data) {
-                $('#Mensajito').hide();
-                $.each(data, function(key, val) {
-                    if(key=="records"){
-                        if(val=="0"){
-                            $('#Mensajito').show();
-                            $("#guardar").hide();
-                            $('#Mensajito').val("Este municipio no posee ningún Proyecto PEP asignado");
-                        }else{
-                            $('#Mensajito').hide();
-                            $("#guardar").show();
-                        }
-                    }
-                });
-            });              
+            $("#guardar").show();              
         });
                 
         /*PARA EL DATEPICKER*/
@@ -66,8 +48,12 @@ $this->load->view('plantilla/menu', $menu);
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd/mm/yy',
+            onClose: function( selectedDate ) {
+                $( "#f_recepcion" ).datepicker( "option", "minDate", selectedDate );
+            }
         });
+        var fe;
         $( "#f_recepcion" ).datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
@@ -88,10 +74,22 @@ $this->load->view('plantilla/menu', $menu);
         });
  
         /*FIN DIALOGOS VALIDACION*/
+        
+        <?php
+        //echo '//'.$this->session->keep_flashdata('message');
+        if($this->session->flashdata('message')=='Ok'){
+            echo "$('#efectivo').dialog('open');";
+        }
+        ?>
   
     });
 </script>
 
+<div id="efectivo" class="mensaje" title="Almacenado">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
+    </center>
+</div>
 
 <?php echo form_open() ?>
 
@@ -113,15 +111,18 @@ $this->load->view('plantilla/menu', $menu);
             <select id='selMun' name='selMun'>
                 <option value='0'>--Seleccione--</option>
             </select>
+            <?php echo form_error('selMun'); ?>
         </div>
         <div id="rpt-border"></div>
         <div class="campo">
             <label>Fecha de emision de solicitud:</label>
-            <input <?php if (isset($f_emision)) { ?> value='<?php echo date('d/m/Y', strtotime($f_emision)); ?>'<?php } ?>id="f_emision" name="f_emision" type="text" size="10" readonly="readonly"/>
+            <input id="f_emision" name="f_emision" type="text" readonly="readonly" value="<?php echo set_value('f_emision') ?>"/>
+            <?php echo form_error('f_emision'); ?>
         </div>
         <div class="campo">
             <label>Fecha de recepcion de solicitud:</label>
-            <input <?php if (isset($f_recepcion)) { ?> value='<?php echo date('d/m/Y', strtotime($f_recepcion)); ?>'<?php } ?>id="f_recepcion" name="f_recepcion" type="text" size="10" readonly="readonly"/>
+            <input id="f_recepcion" name="f_recepcion" type="text" readonly="readonly" value="<?php echo set_value('f_recepcion') ?>"/>
+            <?php echo form_error('f_recepcion'); ?>
         </div>
         
         <div id="actions" style="position: relative;top: 20px">
