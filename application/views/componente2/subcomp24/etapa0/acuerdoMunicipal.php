@@ -15,9 +15,7 @@ $this->load->view('plantilla/menu', $menu);
         /*VARIABLES*/
  
        
-        $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/comp23_E0/guardarSolicitud'); ?>';
-        });
+        $("#guardar").button();
         
         $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url(); ?>';
@@ -42,47 +40,40 @@ $this->load->view('plantilla/menu', $menu);
         });
         $('#selMun').change(function(){
             $('#Mensajito').hide();
-            $("#guardar").hide();
-            $.getJSON('<?php echo base_url('componente2/comp23_E1/verificarProyectoPep') . "/" ?>'+$('#selMun').val(), 
-            function(data) {
-                $('#Mensajito').hide();
-                $.each(data, function(key, val) {
-                    if(key=="records"){
-                        if(val=="0"){
-                            $('#Mensajito').show();
-                            $("#guardar").hide();
-                            $('#Mensajito').val("Este municipio no posee ningún Proyecto PEP asignado");
-                        }else{
-                            $('#Mensajito').hide();
-                            $("#guardar").show();
-                        }
-                    }
-                });
-            });              
+            $("#guardar").show();              
         });
                 
         /*PARA EL DATEPICKER*/
         $( "#f_conformacion" ).datepicker({
-            showOn: 'both',
-            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+            showOn:         'both',
+            maxDate:        '+1D',
+            buttonImage:    '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd/mm/yy',
+            onClose: function( selectedDate ) {
+                $( "#f_acuerdo" ).datepicker( "option", "minDate", selectedDate );
+            }
         });
         $( "#f_acuerdo" ).datepicker({
-            showOn: 'both',
-            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+            showOn:         'both',
+            maxDate:        '+1D',
+            buttonImage:    '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd/mm/yy',
+            onClose: function( selectedDate ) {
+                $( "#f_recepcion" ).datepicker( "option", "minDate", selectedDate );
+            }
         });
         $( "#f_recepcion" ).datepicker({
             showOn: 'both',
+            maxDate:    '+1D',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
             dateFormat: 'dd/mm/yy'
         });
         /*FIN DEL DATEPICKER*/
         
-        /*GRID*/
+        /*GRID*
         var tabla=$("#miembros");
         tabla.jqGrid({
             url:'<?php echo base_url('componente2/procesoAdministrativo/cargarConsultoraInteres') . '/' . $pro_id ?>',
@@ -122,7 +113,7 @@ $this->load->view('plantilla/menu', $menu);
                 tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
         }
     ).hideCol('con_int_id');
-        /* Funcion para regargar los JQGRID luego de agregar y editar*/
+        // Funcion para regargar los JQGRID luego de agregar y editar
         function despuesAgregarEditar() {
             tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');
             return[true,'']; //no error
@@ -141,10 +132,22 @@ $this->load->view('plantilla/menu', $menu);
         });
  
         /*FIN DIALOGOS VALIDACION*/
+        
+        <?php
+        //echo '//'.$this->session->keep_flashdata('message');
+        if($this->session->flashdata('message')=='Ok'){
+            echo "$('#efectivo').dialog('open');";
+        }
+        ?>
   
     });
 </script>
 
+<div id="efectivo" class="mensaje" title="Almacenado">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
+    </center>
+</div>
 
 <?php echo form_open() ?>
 
@@ -166,19 +169,23 @@ $this->load->view('plantilla/menu', $menu);
             <select id='selMun' name='selMun'>
                 <option value='0'>--Seleccione--</option>
             </select>
+            <?php echo form_error('selMun'); ?>
         </div>
         <div id="rpt-border"></div>
         <div class="campo">
             <label>Fecha de conformacion de comision municipal:</label>
-            <input <?php if (isset($f_conformacion)) { ?> value='<?php echo date('d/m/Y', strtotime($f_conformacion)); ?>'<?php } ?>id="f_conformacion" name="f_conformacion" type="text" size="10" readonly="readonly"/>
+            <input id="f_conformacion" name="f_conformacion" type="text" readonly="readonly" value="<?php echo set_value('f_conformacion') ?>"/>
+            <?php echo form_error('f_conformacion'); ?>
         </div>
         <div class="campo">
             <label>Fecha de acuerdo municipal:</label>
-            <input <?php if (isset($f_acuerdo)) { ?> value='<?php echo date('d/m/Y', strtotime($f_acuerdo)); ?>'<?php } ?>id="f_acuerdo" name="f_acuerdo" type="text" size="10" readonly="readonly"/>
+            <input id="f_acuerdo" name="f_acuerdo" type="text" readonly="readonly" value="<?php echo set_value('f_acuerdo') ?>"/>
+            <?php echo form_error('f_acuerdo'); ?>
         </div>
         <div class="campo">
             <label>Fecha de recepcion de acuerdo municipal:</label>
-            <input <?php if (isset($f_recepcion)) { ?> value='<?php echo date('d/m/Y', strtotime($f_recepcion)); ?>'<?php } ?>id="f_recepcion" name="f_recepcion" type="text" size="10" readonly="readonly"/>
+            <input id="f_recepcion" name="f_recepcion" type="text" readonly="readonly" value="<?php echo set_value('f_recepcion') ?>"/>
+            <?php echo form_error('f_recepcion'); ?>
         </div>
         <div class="tabla">
             <label>Miembros de la comision financiera municipal</label>
@@ -189,7 +196,8 @@ $this->load->view('plantilla/menu', $menu);
             <div style="width: 50%;">
                 <div class="campo">
                     <label>Observaciones</label>
-                    <textarea cols="30" rows="5" wrap="virtual" maxlength="100"></textarea>
+                    <textarea id="t_observaciones" name="t_observaciones" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('t_observaciones')?></textarea>
+                    <?php echo form_error('t_observaciones'); ?>
                 </div>
             </div>
             <div style="width: 50%;">

@@ -14,7 +14,7 @@ $this->load->view('plantilla/menu', $menu);
     $(document).ready(function(){
         /*VARIABLES*/
  
-       
+       $('#guardar').button();
         
         
         $("#cancelar").button().click(function() {
@@ -45,17 +45,18 @@ $this->load->view('plantilla/menu', $menu);
                 
         /*PARA EL DATEPICKER*/
         $( "#f_emision" ).datepicker({
-            showOn: 'both',
-            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+            showOn:         'both',
+            maxDate:        '+1D',
+            buttonImage:    '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
             dateFormat: 'dd/mm/yy',
             onClose: function( selectedDate ) {
                 $( "#f_recepcion" ).datepicker( "option", "minDate", selectedDate );
             }
         });
-        var fe;
         $( "#f_recepcion" ).datepicker({
             showOn: 'both',
+            maxDate:    '+1D',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
             dateFormat: 'dd/mm/yy'

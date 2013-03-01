@@ -15,9 +15,7 @@ $this->load->view('plantilla/menu', $menu);
         /*VARIABLES*/
  
        
-        $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/comp23_E0/guardarSolicitud'); ?>';
-        });
+        $("#guardar").button();
         
         $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url(); ?>';
@@ -42,46 +40,43 @@ $this->load->view('plantilla/menu', $menu);
         });
         $('#selMun').change(function(){
             $('#Mensajito').hide();
-            $("#guardar").hide();
-            $.getJSON('<?php echo base_url('componente2/comp23_E1/verificarProyectoPep') . "/" ?>'+$('#selMun').val(), 
-            function(data) {
-                $('#Mensajito').hide();
-                $.each(data, function(key, val) {
-                    if(key=="records"){
-                        if(val=="0"){
-                            $('#Mensajito').show();
-                            $("#guardar").hide();
-                            $('#Mensajito').val("Este municipio no posee ningún Proyecto PEP asignado");
-                        }else{
-                            $('#Mensajito').hide();
-                            $("#guardar").show();
-                        }
-                    }
-                });
-            });              
+            $("#guardar").show();              
         });
                 
         /*PARA EL DATEPICKER*/
         $( "#f_solicitud" ).datepicker({
             showOn: 'both',
+            maxDate: '+1D',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd/mm/yy',
+            onClose: function( selectedDate ) {
+                $( "#f_emision" ).datepicker( "option", "minDate", selectedDate );
+            }
         });
         $( "#f_emision" ).datepicker({
             showOn: 'both',
+            maxDate: '+1D',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd/mm/yy',
+            onClose: function( selectedDate ) {
+                $( "#f_envio" ).datepicker( "option", "minDate", selectedDate );
+            }
         });
         $( "#f_envio" ).datepicker({
             showOn: 'both',
+            maxDate: '+1D',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd/mm/yy',
+            onClose: function( selectedDate ) {
+                $( "#f_orden" ).datepicker( "option", "minDate", selectedDate );
+            }
         });
         $( "#f_orden" ).datepicker({
             showOn: 'both',
+            maxDate: '+1D',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
             dateFormat: 'dd/mm/yy'
@@ -127,29 +122,35 @@ $this->load->view('plantilla/menu', $menu);
             <select id='selMun' name='selMun'>
                 <option value='0'>--Seleccione--</option>
             </select>
+            <?php echo form_error('selMun'); ?>
         </div>
         <div id="rpt-border"></div>
         <div class="campo">
             <label>Fecha de solicitud de asistencia al ISDEM:</label>
-            <input <?php if (isset($f_solicitud)) { ?> value='<?php echo date('d/m/Y', strtotime($f_solicitud)); ?>'<?php } ?>id="f_solicitud" name="f_solicitud" type="text" size="10" readonly="readonly"/>
+            <input id="f_solicitud" name="f_solicitud" type="text" readonly="readonly" value="<?php echo set_value('f_solicitud') ?>"/>
+            <?php echo form_error('f_solicitud'); ?>
         </div>
         <div class="campo">
             <label>Fecha de emision de acuerdo municipal:</label>
-            <input <?php if (isset($f_emision)) { ?> value='<?php echo date('d/m/Y', strtotime($f_emision)); ?>'<?php } ?>id="f_emision" name="$f_emision" type="text" size="10" readonly="readonly"/>
+            <input id="f_emision" name="f_emision" type="text" readonly="readonly" value="<?php echo set_value('f_emision') ?>"/>
+            <?php echo form_error('f_emision'); ?>
         </div>
         <div class="campo">
             <label>Fecha de envio de acuerdo municipal al FISDL:</label>
-            <input <?php if (isset($f_envio)) { ?> value='<?php echo date('d/m/Y', strtotime($f_envio)); ?>'<?php } ?>id="f_envio" name="f_envio" type="text" size="10" readonly="readonly"/>
+            <input id="f_envio" name="f_envio" type="text" readonly="readonly" value="<?php echo set_value('f_envio') ?>"/>
+            <?php echo form_error('f_envio'); ?>
         </div>
         <div class="campo">
             <label>Fecha de orden de inicio:</label>
-            <input <?php if (isset($f_orden)) { ?> value='<?php echo date('d/m/Y', strtotime($f_orden)); ?>'<?php } ?>id="f_orden" name="f_orden" type="text" size="10" readonly="readonly"/>
+            <input id="f_orden" name="f_orden" type="text" readonly="readonly" value="<?php echo set_value('f_orden') ?>"/>
+            <?php echo form_error('f_orden'); ?>
         </div>
         <div class="campo">
             <label>Consultor:</label>
-            <select size="1">
+            <select id="t_consultor" name="t_consultor">
             	<option value="0">Select</option>
             </select>
+            <?php echo form_error('t_consultor'); ?>
         </div>
         <div id="rpt-border"></div>
         <div class="tabla">
@@ -162,7 +163,7 @@ $this->load->view('plantilla/menu', $menu);
             <div style="width: 50%;">
                 <div class="campo">
                     <label>Observaciones</label>
-                    <textarea cols="30" rows="5" wrap="virtual" maxlength="100"></textarea>
+                    <textarea id="t_observaciones" name="t_observaciones" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('t_observaciones') ?></textarea>
                 </div>
             </div>
             <div style="width: 50%;">
