@@ -95,6 +95,21 @@ class Municipio extends CI_Model {
         $consulta = $this->db->get($this->tabla);
         return $consulta->result();
     }
+    
+    public function obtenerIDVariable($campo,$mun_id) {
+        $query = "SELECT COALESCE(". $campo.",0) ".$campo." FROM ".
+                $this->tabla." WHERE mun_id=".$mun_id;
+        $consulta = $this->db->query($query);
+        return $consulta->result();
+   }
+   
+   public function actualizarIndices($campo, $valor, $mun_id) {
+        $datos = array(
+            $campo => $valor
+        );
+        $this->db->where('mun_id', $mun_id);
+        $this->db->update($this->tabla, $datos);
+    }
 
 }
 
