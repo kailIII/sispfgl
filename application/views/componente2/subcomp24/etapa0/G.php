@@ -106,7 +106,7 @@ $this->load->view('plantilla/menu', $menu);
 <?php echo form_open() ?>
 
     <h2 class="h2Titulos">Etapa 0: Condiciones Previas</h2>
-    <h2 class="h2Titulos">Indicadores de Desempeno Administrativo y Financiero Municipal</h2>
+    <h2 class="h2Titulos">Perfil del Municipio</h2>
     <br/>
     <div id="rpt_frm_bdy">
         <div class="campo">

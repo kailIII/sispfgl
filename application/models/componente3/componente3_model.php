@@ -253,6 +253,73 @@ Class componente3_model extends CI_Model{
         return $query->result();
 	}
 	
+	public function get_asistentes_dsat($dsat_id){
+		$this->db->where('dsat_id',$dsat_id);
+		$query = $this->db->get('asistente_dsat');
+        return $query->result();
+	}
+	
+	public function get_asistentes_fcdp($fcdp_id){
+		$this->db->where('fcdp_id',$fcdp_id);
+		$query = $this->db->get('asistente_fcdp');
+        return $query->result();
+	}
+	
+	public function get_actividades_dsat() {
+        $query = $this->db->get('dsat');
+        return $query->result();
+    }
+    
+    public function get_epi() {
+        $query = $this->db->get('epi');
+        return $query->result();
+    }
+    
+    public function get_act_epi($epi_id){
+		$this->db->where('epi_id',$epi_id);
+		$query = $this->db->get('actividades_epi');
+        return $query->result();
+	}
+    
+    public function get_actividades_fcdp() {
+        $query = $this->db->get('fcdp');
+        return $query->result();
+    }
+    
+    public function get_dd() {
+        $query = $this->db->get('dd');
+        return $query->result();
+    }
+    
+    public function get_sectores_dsat($dsat_id){
+		$this->db->where('dsat_id',$dsat_id);
+		$query = $this->db->get('dsat_sector');
+		$sectores = $query->result();
+		$r='';
+		foreach ($sectores as $aux) {
+			$r=$r.$this->get_sectores_nom($aux->sec_id).', ';
+		}
+		return $r;
+	}
+	
+	public function get_sectores_dd($dd_id){
+		$this->db->where('dd_id',$dd_id);
+		$query = $this->db->get('dd_sector');
+		$sectores = $query->result();
+		$r='';
+		foreach ($sectores as $aux) {
+			$r=$r.$this->get_sectores_nom($aux->sec_id).', ';
+		}
+		return $r;
+	}
+	
+	public function get_sectores_nom($sec_id){
+		$this->db->where('sec_id', $sec_id);
+		$query = $this->db->get('sector');
+		$row = $query->row();
+ 		return $row->sec_nombre;
+	}
+	
 	public function finalizar_pmatricula() {
 		/*$data = array(
             'estadoPeriodoMatricula' => 0

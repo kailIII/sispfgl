@@ -336,7 +336,7 @@
 ?>
 <?php if(isset($aviso))
 	echo $aviso;?>
-<h1>CC</h1>
+<h1>Comit&eacute; de Contralor&iacute;a Ciudadana</h1>
 <br/>
 <?php $attributes = array('id' => 'myform');
 echo form_open('componente3/componente3/guardar_dsat',$attributes);?>
