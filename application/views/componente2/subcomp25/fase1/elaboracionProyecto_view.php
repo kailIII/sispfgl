@@ -62,7 +62,7 @@
                             $('#ela_pro_observacion').val(registro['cell'][6]);
                             $('#recibidoMunicipalidad').setGridParam({
                                 url:'<?php echo base_url('componente2/comp25/recibidoMunicipalidad') ?>/'+registro['cell'][0],
-                                editurl:'<?php echo base_url('componente2/comp25/guardarRecibidoMunicipalidad')?>/'+registro['cell'][0],
+                                editurl:'<?php echo base_url('componente2/comp25/guardarRecibidoMunicipalidad') ?>/'+registro['cell'][0],
                                 datatype:'json'
                             }).trigger('reloadGrid');
                             $('#equipoTecnico').setGridParam({
@@ -100,8 +100,8 @@
         /*ZONA GRID*/
         var tabla=$("#recibidoMunicipalidad");
         tabla.jqGrid({
-            url:'<?php echo base_url('componente2/comp23_E1/cargarFuentes') . '/' . 0 . '/p' ?>',
-            editurl:'<?php echo base_url('componente2/comp23_E1/gestionarFuentes') . '/' . 0 . '/p' ?>',
+            url:'<?php echo base_url('componente2/comp25/cargarParticipantesET') ?>/ela_pro_id/'+$('#ela_pro_id').val(),
+            editurl:'<?php echo base_url('componente2/comp23_E1/gestionParticipantes') ?>/elaboracion_proyecto/ela_pro_id/'+$('#ela_pro_id').val(),
             datatype:'json',
             altRows:true,
             height: "100%",
