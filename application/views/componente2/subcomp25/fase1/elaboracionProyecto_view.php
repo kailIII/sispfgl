@@ -1,18 +1,72 @@
 <script type="text/javascript">        
     $(document).ready(function(){
         /*ZONA DE BOTONES*/
-        $("#guardar").button().click(function() {
-            $.ajax({
-                type: "POST",
-                url: '<?php echo base_url('componente2/comp25/guardarElaboracionProyecto') ?>',
-                data: $("#elaboracionProyectoForm").serialize(), // serializes the form's elements.
-                success: function(data)
-                {
-                    $('#efectivo').dialog('open');
+         $("#guardar").button().click(function() {
+            fecha1= $('#ela_pro_fentrega_idem').datepicker("getDate");
+            fecha2=$( "#ela_pro_fentrega_uep" ).datepicker("getDate");
+            fecha3=$( "#ela_pro_fconformacion" ).datepicker("getDate");
+            if(fecha1==null){
+                $( "#ela_pro_fentrega_uep" ).val('');
+                $( "#ela_pro_fconformacion" ).val('');
+                $.ajax({
+                    type: "POST",
+                    url: '<?php echo base_url('componente2/comp25/guardarElaboracionProyecto') ?>',
+                    data: $("#elaboracionProyectoForm").serialize(), // serializes the form's elements.
+                    success: function(data)
+                    {
+                        $('#efectivo').dialog('open');
+                    }
+                });
+                return false;
+            }else{
+                if(fecha2==null){
+                    $("#ela_pro_fconformacion" ).val('');
+                    $.ajax({
+                        type: "POST",
+                        url: '<?php echo base_url('componente2/comp25/guardarElaboracionProyecto') ?>',
+                        data: $("#elaboracionProyectoForm").serialize(), // serializes the form's elements.
+                        success: function(data)
+                        {
+                            $('#efectivo').dialog('open');
+                        }
+                    });
+                    return false;
+                }else{
+                    if(fecha1< fecha2){
+                        if(fecha3==null){
+                            $.ajax({
+                                type: "POST",
+                                url: '<?php echo base_url('componente2/comp25/guardarElaboracionProyecto') ?>',
+                                data: $("#elaboracionProyectoForm").serialize(), // serializes the form's elements.
+                                success: function(data)
+                                {
+                                    $('#efectivo').dialog('open');
+                                }
+                            });
+                            return false;
+                        }else{
+                            if(fecha2 < fecha3){
+                                $.ajax({
+                                    type: "POST",
+                                    url: '<?php echo base_url('componente2/comp25/guardarElaboracionProyecto') ?>',
+                                    data: $("#elaboracionProyectoForm").serialize(), // serializes the form's elements.
+                                    success: function(data)
+                                    {
+                                        $('#efectivo').dialog('open');
+                                    }
+                                });
+                                return false;
+                            }else{
+                                $('#fechaValidacion').dialog('open');
+                                return false
+                            }
+                        }
+                    }else{
+                        $('#fechaValidacion').dialog('open');
+                        return false
+                    }
                 }
-            });
-            return false;
-            
+            }  
         });
         $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url(); ?>';
@@ -59,7 +113,7 @@
                                     $('input:radio[name=ela_pro_carta_confirmacion]')[1].checked = true; 
                             }
                             $('#ela_pro_fconformacion').val(registro['cell'][5]);
-                            $('#ela_pro_observacion').val(registro['cell'][6]);
+                            $('#ela_pro_fecha2').val(registro['cell'][6]);
                             $('#recibidoMunicipalidad').setGridParam({
                                 url:'<?php echo base_url('componente2/comp25/recibidoMunicipalidad') ?>/'+registro['cell'][0],
                                 editurl:'<?php echo base_url('componente2/comp25/guardarRecibidoMunicipalidad') ?>/'+registro['cell'][0],
@@ -106,7 +160,7 @@
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','Correlativo','Fecha de recibido municipalidad','Observaciones'],
+            colNames:['id','Correlativo','Fecha de recibido municipalidad','fecha2es'],
             colModel:[
                 {name:'rec_mun_id',index:'rec_mun_id', width:40,editable:false,editoptions:{size:15} },
                 {name:'rec_mun_correlativo',index:'rec_mun_correlativo', width:100,editable:true,
@@ -129,10 +183,10 @@
                     formoptions:{label: "Fecha de recibido municipalidad",elmprefix:"(*)"},
                     editrules:{required:true}
                 },
-                {name:'rec_mun_observacion',index:'rec_mun_observacion',
+                {name:'rec_mun_fecha2',index:'rec_mun_fecha2',
                     editable:true,width:400,edittype:"textarea",
                     editoptions:{rows:"4",cols:"50"},
-                    formoptions:{label: "Observaciones"}
+                    formoptions:{label: "fecha2es"}
                 }
             ],
             multiselect: false,
