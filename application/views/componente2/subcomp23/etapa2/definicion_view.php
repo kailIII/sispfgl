@@ -244,7 +244,7 @@
         <tr><td colspan="2">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente. Solo se permiten archivos con extensión pdf, doc, docx</td></tr>
         <tr>
         <td><div id="btn_subir"></div></td>
-        <td><input class="letraazul" type="text" id="vinieta" readonly="readonly" value="Subir Informe de desarrollo de priorizacón" size="60" style="border: none"/></td>
+        <td><input class="letraazul" type="text" id="vinieta" readonly="readonly" value="Subir Informe de desarrollo de priorización" size="60" style="border: none"/></td>
         </tr>
         <tr>
         <td><a <?php if (isset($def_ruta_archivo) && $def_ruta_archivo != '') { ?> href="<?php echo base_url() . $def_ruta_archivo; ?>"<?php } ?>  id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>

@@ -1,5 +1,5 @@
 #slidedeck_frame {
-	background: url('imagenes/back2.png') 0 0 no-repeat;
+	/*background: url('../imagenes/back2.jpg') 0 0 no-repeat;*/
 	width: 600px;
 	height: 314px;
 	padding: 28px 30px;
@@ -53,7 +53,7 @@
 .slidedeck dt.active .index { color: #ffffff; }
 .slidedeck .activeCorner {
 	margin-left: -6px;
-	background-image: url('imagenes/corner.png');
+	background-image: url('../imagenes/corner.png');
 	width: 12px;
 	height: 25px;
 }

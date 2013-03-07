@@ -147,7 +147,7 @@
                 tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
         },//OPCIONES
         {closeAfterEdit:true,editCaption: "Editando Pequeños Proyectos Identificados",
-            align:'center',reloadAfterSubmit:true,width:500,
+            align:'center',reloadAfterSubmit:true,width:550,
             processData: "Cargando...",afterSubmit:despuesAgregarEditar,
             bottominfo:"Campos marcados con (*) son obligatorios", 
             onclickSubmit: function(rp_ge, postdata) {
@@ -155,7 +155,7 @@
             }    
         },//EDITAR
         {closeAfterAdd:true,addCaption: "Agregar Pequeños Proyectos Identificados",
-            align:'center',reloadAfterSubmit:true,width:500,
+            align:'center',reloadAfterSubmit:true,width:550,
             processData: "Cargando...",afterSubmit:despuesAgregarEditar,
             bottominfo:"Campos marcados con (*) son obligatorios", 
             onclickSubmit: function(rp_ge, postdata) {

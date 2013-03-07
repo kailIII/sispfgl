@@ -232,7 +232,7 @@
         </li>
     </ul>
     <fieldset style="width:500px;">
-        <legend><strong>¿En la elección de miembros de la instancia de participación permanente, se tomarón encuenta los criterios?</strong></legend>
+        <legend><strong>¿En la elección de miembros de la instancia de participación permanente, se tomaron encuenta los criterios?</strong></legend>
         <center>
             <table>
                 <?php foreach ($criterios as $aux) { ?>
