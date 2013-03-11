@@ -32,6 +32,15 @@ class Rubro extends CI_Model {
         $this->db->where('rub_id', $rub_id);
         $this->db->update($this->tabla, $datos);
     }
+    
+     public function actualizarRubro2($rub_id, $rub_nombre_proyecto,  $rub_observacion) {
+        $datos = array(
+            'rub_nombre_proyecto' => $rub_nombre_proyecto,
+            'rub_observacion' => $rub_observacion
+        );
+        $this->db->where('rub_id', $rub_id);
+        $this->db->update($this->tabla, $datos);
+    }
 }
 
 ?>

@@ -27,6 +27,15 @@ class Rubro_elegible extends CI_Model {
         $this->db->where('nom_rub_id', $nom_rub_id);
         $this->db->update($this->tabla, $datos);
     }
+    
+    public function actualizarRubroElegible2($rub_ele_monto, $rub_id, $nom_rub_id) {
+        $datos = array(
+            'rub_ele_monto' => $rub_ele_monto
+        );
+        $this->db->where('rub_id', $rub_id);
+        $this->db->where('nom_rub_id', $nom_rub_id);
+        $this->db->update($this->tabla, $datos);
+    }
 
     public function obtenerRubroElegible($rub_id) {
         $this->db->where('rub_id', $rub_id);

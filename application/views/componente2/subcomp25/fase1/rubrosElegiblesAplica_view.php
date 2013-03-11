@@ -59,6 +59,11 @@
                                     $("#det_obra_monto_"+j).val(valor3[0]); 
                                     j++;
                                 });
+                                 $('#totalEstimadoRubEle').val(registro['cell'][5]);
+                                 $('#totalEstimadoDetFor').val(registro['cell'][6]);
+                                 $('#totalEstimadoDetObra').val(registro['cell'][7]);
+                                 $('#rub_nombre_proyecto').val(registro['cell'][8]);
+                                 $('#rub_observacion').val(registro['cell'][9]);
                                 $("#RubroElegibleAplicaForm").show();
                             });                    
                         }
@@ -88,23 +93,23 @@
             $('#totalEstimadoDetFor').val(suma);
         });
         $('.montoDetObra').blur(function(){
-            suma=0;
+            suma2=0;
 <?php foreach ($obras as $obra) { ?>
-                suma+=parseFloat($('#det_obra_monto_<?php echo $obra->obr_id; ?>').val());    
+                suma2+=parseFloat($('#det_obra_monto_<?php echo $obra->obr_id; ?>').val());    
 <?php } ?>
-            $('#totalEstimadoDetObra').val(suma);
-            $('#rub_ele_monto_6').val(suma);
+            $('#totalEstimadoDetObra').val(suma2);
+            $('#rub_ele_monto_6').val(suma2);
             sumarRubEle.sumar();
         });
-        $('.montoRubEle').blur(function(){
+       
+       $('.montoRubEle').blur(function(){
             suma=0;
 <?php foreach ($nombreRubros as $rubro) { ?>
                 suma+=parseFloat($('#rub_ele_monto_<?php echo $rubro->nom_rub_id; ?>').val());    
 <?php } ?>
             $('#totalEstimadoRubEle').val(suma);
         });
-        
-        
+               
         sumarRubEle=function(){}
         sumarRubEle.sumar=function(){
             suma=0;
@@ -113,6 +118,8 @@
 <?php } ?>
             $('#totalEstimadoRubEle').val(suma);
         } 
+
+        
     });
 </script>
 <center>

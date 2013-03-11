@@ -683,24 +683,36 @@ class Comp25_fase1 extends CI_Controller {
         $resultado = $this->rubro->idPorMunicipio($mun_id);
         $rubros = $this->rubEle->obtenerLosRubros($resultado[0]->rub_id);
         $rubroE = array();
-        foreach ($rubros as $rubro)
+        $suma = 0;
+        foreach ($rubros as $rubro) {
             $rubroE[$rubro->nom_rub_id] = array($rubro->rub_ele_monto);
-        
+            $suma+=$rubro->rub_ele_monto;
+        }
         $categorias = $this->detFor->obtenerLosDetallesFortalecimiento($resultado[0]->rub_id);
         $detalles = array();
-        foreach ($categorias as $aux)
+        $suma2 = 0;
+        foreach ($categorias as $aux) {
             $detalles[$aux->cat_for_id] = array($aux->for_monto);
-        
+            $suma2+=$aux->for_monto;
+        }
         $obras = $this->detObra->obtenerLosDetallesObra($resultado[0]->rub_id);
         $detallesO = array();
-        foreach ($obras as $aux)
+        $suma3 = 0;
+        foreach ($obras as $aux) {
             $detallesO[$aux->obr_id] = array($aux->det_obr_monto);
+            $suma3+=$aux->det_obr_monto;
+        }
         $rows[0]['id'] = $resultado[0]->rub_id;
         $rows[0]['cell'] = array($resultado[0]->rub_id,
             $datosMunicipio[0]->mun_presupuesto,
             $rubroE,
             $detalles,
-            $detallesO
+            $detallesO,
+            $suma,
+            $suma2,
+            $suma3,
+            $resultado[0]->rub_nombre_proyecto,
+            $resultado[0]->rub_observacion
         );
         $datos = json_encode($rows);
         $pages = floor(1 / 10) + 1;
@@ -714,25 +726,33 @@ class Comp25_fase1 extends CI_Controller {
         echo $jsonresponse;
     }
 
-     public function guardarRubrosElegiblesAplica() {
+    public function guardarRubrosElegiblesAplica() {
         $this->load->model('fase1-sub25/rubro');
         $this->load->model('fase1-sub25/rubro_elegible', 'rubEle');
+        $this->load->model('fase1-sub25/detalle_fortalecimiento', 'detFor');
+        $this->load->model('fase1-sub25/detalle_obra', 'detObra');
+
         $rub_id = $this->input->post("rub_id");
-        $rub_observacion_general = $this->input->post("rub_observacion_general");
-        $rub_emite_nota = $this->input->post("rub_emite_nota");
-        if ($rub_emite_nota == '0')
-            $rub_emite_nota = null;
-        $rub_observacion = null;
-        $this->rubro->actualizarRubro($rub_id, $rub_observacion_general, $rub_emite_nota, $rub_observacion);
+        $rub_observacion = $this->input->post("rub_observacion");
+        $rub_nombre_proyecto = $this->input->post("rub_nombre_proyecto");
+        $this->rubro->actualizarRubro2($rub_id, $rub_nombre_proyecto, $rub_observacion);
         $rubros = $this->rubEle->obtenerLosRubros($rub_id);
         foreach ($rubros as $rubro) {
-            $valor = $this->input->post("rubro_$rubro->nom_rub_id");
-            if ($valor == '0')
-                $valor = null;
-            $conclusion = $this->input->post("conclusion_$rubro->nom_rub_id");
-            $this->rubEle->actualizarRubroElegible($valor, $rub_id, $rubro->nom_rub_id, $conclusion);
+            $valor = $this->input->post("rub_ele_monto_$rubro->nom_rub_id");
+            $this->rubEle->actualizarRubroElegible2($valor, $rub_id, $rubro->nom_rub_id);
+        }
+        $categorias = $this->detFor->obtenerLosDetallesFortalecimiento($rub_id);
+        foreach ($categorias as $aux) {
+            $valor = $this->input->post("for_monto_$aux->cat_for_id");
+            $this->detFor->actualizarDetalleFortalecimiento($valor, $rub_id, $aux->cat_for_id);
+        }
+        $obras = $this->detObra->obtenerLosDetallesObra($rub_id);
+        foreach ($obras as $aux) {
+            $valor = $this->input->post("det_obra_monto_$aux->obr_id");
+            $this->detObra->actualizarDetalleObra($valor, $rub_id, $aux->obr_id);
         }
     }
+
 }
 
 ?>
