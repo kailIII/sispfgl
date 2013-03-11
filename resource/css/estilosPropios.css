@@ -132,7 +132,36 @@ em {
     background-image:url(../imagenes/upload.png);
     cursor: pointer;
 }
-
+#btn_per_subir {
+    width:32px;
+    height:32px;
+    background-image:url(../imagenes/upload.png);
+    cursor: pointer;
+}
+#btn_tdr_subir {
+    width:32px;
+    height:32px;
+    background-image:url(../imagenes/upload.png);
+    cursor: pointer;
+}
+#btn_esp_subir {
+    width:32px;
+    height:32px;
+    background-image:url(../imagenes/upload.png);
+    cursor: pointer;
+}
+#btn_car_subir {
+    width:32px;
+    height:32px;
+    background-image:url(../imagenes/upload.png);
+    cursor: pointer;
+}
+#btn_acu_subir {
+    width:32px;
+    height:32px;
+    background-image:url(../imagenes/upload.png);
+    cursor: pointer;
+}
 #btn_subir2 {
     width:32px;
     height:32px;
