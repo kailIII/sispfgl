@@ -23,21 +23,21 @@ $this->load->view('plantilla/menu', $menu);
         	/*CARGAR MUNICIPIOS*/
         $('#selDepto').change(function(){   
             $("#guardar").hide();
-            $('#selMun').children().remove();
+            $('#mun_id').children().remove();
             $.getJSON('<?php echo base_url('componente2/proyectoPep/cargarMunicipios') ?>?dep_id='+$('#selDepto').val(), 
             function(data) {
                 var i=0;
                 $.each(data, function(key, val) {
                     if(key=='rows'){
-                        $('#selMun').append('<option value="0">--Seleccione Municipio--</option>');
+                        $('#mun_id').append('<option value="0">--Seleccione Municipio--</option>');
                         $.each(val, function(id, registro){
-                            $('#selMun').append('<option value="'+registro['cell'][0]+'">'+registro['cell'][1]+'</option>');
+                            $('#mun_id').append('<option value="'+registro['cell'][0]+'">'+registro['cell'][1]+'</option>');
                         });                    
                     }
                 });
             });              
         });
-        $('#selMun').change(function(){
+        $('#mun_id').change(function(){
             $('#Mensajito').hide();
             $("#guardar").show();              
         });
@@ -101,7 +101,7 @@ $this->load->view('plantilla/menu', $menu);
         </div>
         <div class="campo">
             <label>Municipio</label>
-            <select id='selMun' name='selMun'>
+            <select id='mun_id' name=' mun_id '>
                 <option value='0'>--Seleccione--</option>
             </select>
         </div>
