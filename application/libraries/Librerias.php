@@ -50,7 +50,8 @@ class Librerias {
         $extension = end($partes);
         //OBTERNER LA EXTENSIÒN DEL ARCHIVO SI HAY UNO YA GUARDADO EN LA BASE
         $this->ci->load->model('ayuda_archivo', 'ayuArc');
-        $nombreArchivoBase = $this->ci->ayuArc->obtenerRutaArchivo($campo, $campo_id, $tabla);
+        echo $nombreArchivoBase = $this->ci->ayuArc->obtenerRutaArchivo($campo, $campo_id, $tabla);
+        die();
         $extArchivoBase = end(explode(".", $nombreArchivoBase[0]['ruta_archivo']));
         if (strcasecmp($extension, $extArchivoBase) && $extArchivoBase != '0')
             unlink($nombreArchivoBase[0]['ruta_archivo']);
@@ -88,6 +89,46 @@ class Librerias {
             }
         } else {
             echo "error";
+        }
+    }
+    
+        function parse_input($tipo, $campo){
+        switch ($tipo){ 
+        	case 'phone':
+                $d = explode('-',$campo);
+                return $d[0] . $d[1];
+        	break;
+            
+            case 'date':
+            //d/m/Y a Y-m-d
+                if(!$campo) return null;
+                $t = explode('/',$campo);
+                return date('Y-m-d',mktime(0,0,0,$t[1],$t[0],$t[2]));
+            break;
+        
+        	default :
+        }
+    }
+    
+    function parse_output($tipo,$valor){
+        if(!$valor) return '';
+        switch ($tipo){ 
+        	case 'date':
+            //Y-m-d a d/m/Y
+                $t = explode('-',$valor);
+                return date('d/m/Y',mktime(0,0,0,$t[1],$t[2],$t[0]));
+        	break;
+        
+        	case 'phone':
+                $t = explode('',$valor,4);
+                return $t[0] . '-' . $t[1];
+        	break;
+        
+        	case 'money':
+        	break;
+        
+        	default :
+                    return $valor;
         }
     }
 
