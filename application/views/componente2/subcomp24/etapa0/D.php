@@ -79,14 +79,7 @@ $this->load->view('plantilla/menu', $menu);
         
         /* Calculos */
         $('.txtInput').change(function(){
-            
-            var d1_up   = parseFloat($('#ind_des_grupo1_pasCir').val()) + ( parseFloat($('#ind_des_grupo1_deuCorPla').val()) + parseFloat($('#ind_des_grupo1_interes').val()) );
-            var d1_down = parseFloat($('#ind_des_grupo1_ahoOper').val()) + parseFloat($('#ind_des_grupo1_intDueda').val());
-            $('#ind_des_grupo1_total').val(d1_up/d1_down);
-            
-            var ingOpePer = $('#ind_des_grupo2_ingOpePer').val();
-            var deuMunTotal = $('#ind_des_grupo2_deuMunTotal').val();
-            $('#ind_des_grupo2_total').val(deuMunTotal/ingOpePer);
+            cambios();
         });
         
         function formularioHide(){
@@ -98,6 +91,12 @@ $this->load->view('plantilla/menu', $menu);
             $('#listaContainer').hide();
             $('#formulario').show()
         }
+        
+        function cambios(){
+            var t;
+            $('#ind_des_grupo1_total').val(function(){if(isFinite(t=((parseFloat($('#ind_des_grupo1_pascir').val()) + ( parseFloat($('#ind_des_grupo1_deucorpla').val()) + parseFloat($('#ind_des_grupo1_int').val()) ))/(parseFloat($('#ind_des_grupo1_ahoope').val()) + parseFloat($('#ind_des_grupo1_intdeu').val()))))){return t;}else{return'';}});
+            $('#ind_des_grupo2_total').val(function(){if(isFinite(t=(parseFloat($('#ind_des_grupo2_deumuntot').val())/parseFloat($('#ind_des_grupo2_ingopeper').val())))){return t;}else{return'';}});
+        }
  
         
         <?php
@@ -106,12 +105,11 @@ $this->load->view('plantilla/menu', $menu);
             echo "$('#efectivo').dialog('open');";
         }
         if(isset($ind_des_id) && $ind_des_id > 0){
-            echo "formularioShow();";
+            echo "formularioShow();cambios();";
         }else{
             echo "formularioHide();";
         }
         ?>
-  
     });
 </script>
 
@@ -186,11 +184,11 @@ $this->load->view('plantilla/menu', $menu);
                         <div class="col">
                             <div class="row">
                                 <span>Pasivo Circulante</span>
-                                <input class="txtInput" id="ind_des_grupo1_pasCir" name="ind_des_grupo1_pasCir" value="<?php echo set_value('ind_des_grupo1_pasCir') ?>" />
-                                <?php echo form_error('ind_des_grupo1_pasCir'); ?>
+                                <input class="txtInput" id="ind_des_grupo1_pascir" name="ind_des_grupo1_pascir" value="<?php echo set_value('ind_des_grupo1_pascir') ?>" />
+                                <?php echo form_error('ind_des_grupo1_pascir'); ?>
                                 <span>+ ( Deuda a Corto Plazo</span>
-                                <input class="txtInput" id="ind_des_grupo1_deuCorPla" name="ind_des_grupo1_deuCorPla" value="<?php echo set_value('ind_des_grupo1_deuCorPla') ?>" />
-                                <?php echo form_error('ind_des_grupo1_deuCorPla'); ?>
+                                <input class="txtInput" id="ind_des_grupo1_deucorpla" name="ind_des_grupo1_deucorpla" value="<?php echo set_value('ind_des_grupo1_deucorpla') ?>" />
+                                <?php echo form_error('ind_des_grupo1_deucorpla'); ?>
                                 <span>+ Intereses</span>
                                 <input class="txtInput" id="ind_des_grupo1_int" name="ind_des_grupo1_int" value="<?php echo set_value('ind_des_grupo1_int') ?>" />
                                 <?php echo form_error('ind_des_grupo1_int'); ?>
@@ -200,11 +198,11 @@ $this->load->view('plantilla/menu', $menu);
                             <hr />
                             <div class="row">
                                 <span>Ahorro Operacional</span>
-                                <input class="txtInput" id="ind_des_grupo1_ahoOper" name="ind_des_grupo1_ahoOper" value="<?php echo set_value('ind_des_grupo1_ahoOper') ?>" />
-                                <?php echo form_error('ind_des_grupo1_ahoOper'); ?>
+                                <input class="txtInput" id="ind_des_grupo1_ahoope" name="ind_des_grupo1_ahoope" value="<?php echo set_value('ind_des_grupo1_ahoope') ?>" />
+                                <?php echo form_error('ind_des_grupo1_ahoope'); ?>
                                 <span>+ Intereses de la deuda</span>
-                                <input class="txtInput" id="ind_des_grupo1_intDueda" name="ind_des_grupo1_intDueda" value="<?php echo set_value('ind_des_grupo1_intDueda') ?>" />
-                                <?php echo form_error('ind_des_grupo1_intDueda'); ?>
+                                <input class="txtInput" id="ind_des_grupo1_intdeu" name="ind_des_grupo1_intdeu" value="<?php echo set_value('ind_des_grupo1_intdeu') ?>" />
+                                <?php echo form_error('ind_des_grupo1_intdeu'); ?>
                             </div>
                         </div>
                     </div>
@@ -212,6 +210,7 @@ $this->load->view('plantilla/menu', $menu);
                  <div class="result centrar">
                     <div class="hdr">Indice Capacidad de Pago</div>
                     <input id="ind_des_grupo1_total" name="ind_des_grupo1_total" type="text" size="100"  value="<?php echo set_value('ind_des_grupo1_total') ?>" readonly=""/>
+                    <?php echo form_error('ind_des_grupo1_total'); ?>
                  </div>
             </div>
             
@@ -228,14 +227,14 @@ $this->load->view('plantilla/menu', $menu);
                         <div class="col">
                             <div class="row">
                                 <span>Deuda Municipal Total</span>
-                                <input class="txtInput" id="ind_des_grupo2_deuMunTotal" name="ind_des_grupo2_deuMunTotal" value="<?php echo set_value('ind_des_grupo2_deuMunTotal') ?>" />
-                                <?php echo form_error('ind_des_grupo2_deuMunTotal'); ?>
+                                <input class="txtInput" id="ind_des_grupo2_deumuntot" name="ind_des_grupo2_deumuntot" value="<?php echo set_value('ind_des_grupo2_deumuntot') ?>" />
+                                <?php echo form_error('ind_des_grupo2_deumuntot'); ?>
                             </div>
                             <hr />
                             <div class="row">
                                 <span>Ingresos Operacionales Percibidos</span>
-                                <input class="txtInput" id="ind_des_grupo2_ingOpePer" name="ind_des_grupo2_ingOpePer" value="<?php echo set_value('ind_des_grupo2_ingOpePer') ?>" />
-                                <?php echo form_error('ind_des_grupo2_ingOpePer'); ?>
+                                <input class="txtInput" id="ind_des_grupo2_ingopeper" name="ind_des_grupo2_ingopeper" value="<?php echo set_value('ind_des_grupo2_ingopeper') ?>" />
+                                <?php echo form_error('ind_des_grupo2_ingopeper'); ?>
                             </div>
                         </div>
                     </div>

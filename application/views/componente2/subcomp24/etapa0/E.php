@@ -79,19 +79,7 @@ $this->load->view('plantilla/menu', $menu);
         
         /* Calculos */
         $('.txtInput').change(function(){
-            
-            $('#ind_des_grupo1_total').val(parseFloat($('#ind_des_grupo1_ingtotpre').val()) - parseFloat($('#ind_des_grupo1_gastotdev').val()));
-            
-            $('#ind_des_grupo2_total').val(parseFloat($('#ind_des_grupo2_ingprodev').val()) / parseFloat($('#ind_des_grupo2_totingdev').val()));
-            
-            $('#ind_des_grupo3_total').val(parseFloat($('#ind_des_grupo3_moningpro').val()) / parseFloat($('#ind_des_grupo3_totingdev').val()));
-            
-            $('#ind_des_grupo4_total').val(parseFloat($('#ind_des_grupo4_moningpro').val()) / parseFloat($('#ind_des_grupo4_moningpre').val()));
-            
-            $('#ind_des_grupo5_total').val(parseFloat($('#ind_des_grupo5_totingtas').val()) / parseFloat($('#ind_des_grupo5_totingpro').val()));
-            
-            $('#ind_des_grupo6_total').val(parseFloat($('#ind_des_grupo6_totingimp').val()) / parseFloat($('#ind_des_grupo6_totingpro').val()));
-            
+            cambios();
         });
         
         function formularioHide(){
@@ -103,6 +91,16 @@ $this->load->view('plantilla/menu', $menu);
             $('#listaContainer').hide();
             $('#formulario').show()
         }
+        
+        function cambios(){
+            var t;
+            $('#ind_des_grupo1_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo1_ingtotpre').val())-parseFloat($('#ind_des_grupo1_gastotdev').val()))){return t;}else{return'';}});
+            $('#ind_des_grupo2_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo2_ingprodev').val())/parseFloat($('#ind_des_grupo2_totingdev').val()))){return t;}else{return'';}});
+            $('#ind_des_grupo3_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo3_moningpro').val())/parseFloat($('#ind_des_grupo3_totingdev').val()))){return t;}else{return'';}});
+            $('#ind_des_grupo4_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo4_moningpro').val())/parseFloat($('#ind_des_grupo4_moningpre').val()))){return t;}else{return'';}});
+            $('#ind_des_grupo5_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo5_totingtas').val())/parseFloat($('#ind_des_grupo5_totingpro').val()))){return t;}else{return'';}});
+            $('#ind_des_grupo6_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo6_totingimp').val())/parseFloat($('#ind_des_grupo6_totingpro').val()))){return t;}else{return'';}});
+        }
  
         
         <?php
@@ -111,7 +109,7 @@ $this->load->view('plantilla/menu', $menu);
             echo "$('#efectivo').dialog('open');";
         }
         if(isset($ind_des_id) && $ind_des_id > 0){
-            echo "formularioShow();";
+            echo "formularioShow();cambios();";
         }else{
             echo "formularioHide();";
         }
