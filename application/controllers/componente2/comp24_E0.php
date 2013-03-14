@@ -163,11 +163,13 @@ class Comp24_E0 extends CI_Controller {
             $_POST['acu_mun_fecha_conformacion'] = $this->librerias->parse_output('date',$_POST['acu_mun_fecha_conformacion']);
             $_POST['acu_mun_fecha_acuerdo']      = $this->librerias->parse_output('date',$_POST['acu_mun_fecha_acuerdo']);
             $_POST['acu_mun_fecha_recepcion']    = $this->librerias->parse_output('date',$_POST['acu_mun_fecha_recepcion']);
-            $_POST['selDepto']                   = $this->comp24->getDepto($_POST['mun_id']);
+            $_POST['depto']                   = $this->comp24->getDepto($_POST['mun_id'])->dep_nombre;
+            $_POST['muni']                   = $this->comp24->get_by_Id('municipio','mun_id',$_POST['mun_id'])->mun_nombre;
         }
         
         $config = array(
-            array('field'   => 'selDepto',            'label' => 'Municipio',     'rules' => 'trim|xss_clean|is_natural_no_zero'),
+            array('field'   => 'depto',            'label' => 'Municipio',     'rules' => 'trim|xss_clean'),
+            array('field'   => 'muni',            'label' => 'Municipio',     'rules' => 'trim|xss_clean'),
             array('field'   => 'mun_id',            'label' => 'Municipio',     'rules' => 'trim|required|xss_clean|is_natural_no_zero'),
             array('field'   => 'acu_mun_fecha_conformacion',    'label' => 'Fecha',         'rules' => 'trim|required|xss_clean'),
             array('field'   => 'acu_mun_fecha_acuerdo',         'label' => 'Fecha',         'rules' => 'trim|xss_clean'),
@@ -289,11 +291,13 @@ class Comp24_E0 extends CI_Controller {
             $_POST[$prefix.'fecha_emision']      = $this->librerias->parse_output('date',$_POST[$prefix.'fecha_emision']);
             $_POST[$prefix.'fecha_envio']    = $this->librerias->parse_output('date',$_POST[$prefix.'fecha_envio']);
             $_POST[$prefix.'fecha_inicio']    = $this->librerias->parse_output('date',$_POST[$prefix.'fecha_inicio']);
-            $_POST[$prefix.'selDepto']                   = $this->comp24->getDepto($_POST['mun_id']);
+            $_POST['depto']                   = $this->comp24->getDepto($_POST['mun_id'])->dep_nombre;
+            $_POST['muni']                   = $this->comp24->get_by_Id('municipio','mun_id',$_POST['mun_id'])->mun_nombre;
         }
         
         $config = array(
-            array('field'   => 'mun_id',            'label' => 'Municipio',     'rules' => 'trim|xss_clean|is_natural_no_zero'),
+            array('field'   => 'depto',            'label' => 'Municipio',     'rules' => 'trim|xss_clean'),
+            array('field'   => 'muni',            'label' => 'Municipio',     'rules' => 'trim|xss_clean'),
             array('field'   => $prefix.'fecha_solicitud',    'label' => 'Fecha',         'rules' => 'trim|required|xss_clean'),
             array('field'   => $prefix.'fecha_emision',         'label' => 'Fecha',         'rules' => 'trim|xss_clean'),
             array('field'   => $prefix.'fecha_envio',       'label' => 'Fecha',         'rules' => 'trim|xss_clean'),
@@ -407,59 +411,88 @@ class Comp24_E0 extends CI_Controller {
         }
     }
     
+    public function periodo_check($a,$b=false){
+        $b = $this->form_validation->set_value($b);
+        if($b != false){
+            if($a > $b){
+                return true;
+            }
+        }
+        $this->form_validation->set_message('periodo_check','Debe ser mayor.');
+        return false;
+    }
+    
     /**
      * D. Indicadores de Desempeno Administrativo y Financiero Municipal 1
      */
-    public function indicadoresDesempenoAdmin(){
+    public function indicadoresDesempenoAdmin($id = false){
 		if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
+        $tabla = 'indicadores_desempeno1';
+        $campo = 'ind_des_id';
+        $prefix = 'ind_des_';
+        
+        if($id && !isset($_POST['mod'])){
+            if(!$tmp = $this->comp24->get_by_id($tabla, $campo, $id)){
+                $this->comp24->insert_row($tabla,array($campo=>$id,'mun_id'=>$id));
+                $tmp = $this->comp24->get_by_id($tabla, $campo, $id);
+            }
+            $_POST = get_object_vars($tmp);
+            $_POST[$prefix.'fecha'] = $this->librerias->parse_output('date',$_POST[$prefix.'fecha']);
+            $_POST['depto']                   = $this->comp24->getDepto($_POST['mun_id'])->dep_nombre;
+            $_POST['muni']                   = $this->comp24->get_by_Id('municipio','mun_id',$_POST['mun_id'])->mun_nombre;
+        }
         
         $this->form_validation->set_message('required', '*');
         $this->form_validation->set_message('decimal', '*');
         
         $config = array(
-            array('field'   => 'selMun',            'label' => 'Municipio',     'rules' => 'trim|required|xss_clean|is_natural_no_zero'),
-            array('field'   => 'fecha',    'label' => 'Fecha',         'rules' => 'trim|required|xss_clean'),
-            array('field'   => 'periodo_ini',         'label' => 'Fecha',         'rules' => 'trim|required|xss_clean'),
-            array('field'   => 'periodo_fin',       'label' => 'Fecha',         'rules' => 'trim|required|xss_clean'),
-            array('field'   => 't_pasCir',       'label' => 'Fecha',         'rules' => 'trim|required|xss_clean|decimal'),
-            array('field'   => 't_deuCorPla',       'label' => 'Fecha',         'rules' => 'trim|required|xss_clean|decimal'),
-            array('field'   => 't_interes',       'label' => 'Fecha',         'rules' => 'trim|required|xss_clean|decimal'),
-            array('field'   => 't_ahoOper',       'label' => 'Fecha',         'rules' => 'trim|required|xss_clean|decimal'),
-            array('field'   => 't_intDueda',       'label' => 'Fecha',         'rules' => 'trim|required|xss_clean|decimal'),
-            array('field'   => 't_icp',       'label' => 'Fecha',         'rules' => 'trim|required|xss_clean|decimal'),
-            array('field'   => 't_deuMunTotal',       'label' => 'Fecha',         'rules' => 'trim|required|xss_clean|decimal'),
-            array('field'   => 't_ingOpePer',       'label' => 'Fecha',         'rules' => 'trim|required|xss_clean|decimal'),
-            array('field'   => 't_iop',       'label' => 'Fecha',         'rules' => 'trim|required|xss_clean|decimal'),
-            array('field'   => 't_observaciones',   'label' => 'Fecha',         'rules' => 'trim|required|xss_clean')
+            array('field'   => 'depto',            'label' => 'Municipio',     'rules' => 'trim|xss_clean'),
+            array('field'   => 'muni',            'label' => 'Municipio',     'rules' => 'trim|xss_clean'),
+            array('field'   => 'mun_id',            'label' => 'Municipio',     'rules' => 'trim|xss_clean'),
+            array('field'   => $prefix.'fecha',    'label' => 'Fecha',         'rules' => 'trim|required|xss_clean'),
+            array('field'   => $prefix.'periodo_inicio',         'label' => 'Periodo',         'rules' => 'trim|required|integer|xss_clean'),
+            array('field'   => $prefix.'periodo_fin',       'label' => 'Periodo',         'rules' => 'trim|required|integer|xss_clean|callback_periodo_check[ind_des_periodo_inicio]'),
+            array('field'   => $prefix.'grupo1_pasCir',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
+            array('field'   => $prefix.'grupo1_deuCorPla',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
+            array('field'   => $prefix.'grupo1_int',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
+            array('field'   => $prefix.'grupo1_ahoOper',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
+            array('field'   => $prefix.'grupo1_intDueda',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
+            array('field'   => $prefix.'grupo1_total',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
+            array('field'   => $prefix.'grupo2_deuMunTotal',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
+            array('field'   => $prefix.'grupo2_ingOpePer',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
+            array('field'   => $prefix.'grupo2_total',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
+            array('field'   => $prefix.'observaciones',   'label' => 'Fecha',         'rules' => 'trim|xss_clean'),
+            array('field' => 'mod',             'label' => 'Mod',               'rules' => 'required|xss_clean' )
         );
              
         $this->form_validation->set_rules($config);
         
         $data['errors'] = array();
         $mensaje = false;
-        $tbl = 'ind_des_';
         
         if ($this->form_validation->run())
         {
-            if(!is_null($data = $this->comp24->insert_indicadores1(array(
-                'mun_id'                =>  $this->form_validation->set_value('selMun'),
-                $tbl.'fecha'            =>  $this->comp24->changeDate($this->form_validation->set_value('fecha')),
-                $tbl.'periodo_inicio'   =>  $this->form_validation->set_value('periodo_ini'),
-                $tbl.'periodo_fin'      =>  $this->form_validation->set_value('periodo_fin'),
-                $tbl.'grupo1_pascir'    =>  $this->form_validation->set_value('t_pasCir'),
-                $tbl.'grupo1_deucorpla' =>  $this->form_validation->set_value('t_deuCorPla'),
-                $tbl.'grupo1_int'       =>  $this->form_validation->set_value('t_interes'),
-                $tbl.'grupo1_ahoope'    =>  $this->form_validation->set_value('t_ahoOper'),
-                $tbl.'grupo1_intdeu'    =>  $this->form_validation->set_value('t_intDueda'),
-                $tbl.'grupo1_total'     =>  $this->form_validation->set_value('t_icp'),
-                $tbl.'grupo2_deumuntot' =>  $this->form_validation->set_value('t_deuMunTotal'),
-                $tbl.'grupo2_ingopeper' =>  $this->form_validation->set_value('t_ingOpePer'),
-                $tbl.'grupo2_total'     =>  $this->form_validation->set_value('t_iop'),
-                $tbl.'observaciones'    =>  $this->form_validation->set_value('t_observaciones')
-            ))))
+            $datos = array(
+                $prefix.'fecha'            =>  $this->comp24->changeDate($this->form_validation->set_value($prefix.'fecha')),
+                $prefix.'periodo_inicio'   =>  $this->form_validation->set_value($prefix.'periodo_inicio'),
+                $prefix.'periodo_fin'      =>  $this->form_validation->set_value($prefix.'periodo_fin'),
+                $prefix.'grupo1_pascir'    =>  $this->form_validation->set_value($prefix.'grupo1_pasCir'),
+                $prefix.'grupo1_deucorpla' =>  $this->form_validation->set_value($prefix.'grupo1_deuCorPla'),
+                $prefix.'grupo1_int'       =>  $this->form_validation->set_value($prefix.'grupo1_int'),
+                $prefix.'grupo1_ahoope'    =>  $this->form_validation->set_value($prefix.'grupo1_ahoOper'),
+                $prefix.'grupo1_intdeu'    =>  $this->form_validation->set_value($prefix.'grupo1_intDueda'),
+                $prefix.'grupo1_total'     =>  $this->form_validation->set_value($prefix.'grupo1_total'),
+                $prefix.'grupo2_deumuntot' =>  $this->form_validation->set_value($prefix.'grupo2_deuMunTotal'),
+                $prefix.'grupo2_ingopeper' =>  $this->form_validation->set_value($prefix.'grupo2_ingOpePer'),
+                $prefix.'grupo2_total'     =>  $this->form_validation->set_value($prefix.'grupo2_total'),
+                $prefix.'observaciones'    =>  $this->form_validation->set_value($prefix.'observaciones')
+            );
+            
+            if(!is_null($data = $this->comp24->update_row($tabla,$campo,$id,$datos)))
                 {
                     $this->session->set_flashdata('message', 'Ok');
-                    redirect(current_url());
+                    $t = explode('/' . $id,current_url());
+                    redirect($t[0]);
                 }
                 else
                 {
@@ -473,7 +506,8 @@ class Comp24_E0 extends CI_Controller {
                     'user_uid' => $this->tank_auth->get_user_id(),
                     'username' => $this->tank_auth->get_username(),
                     'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
-                    'departamentos' => $this->departamento->obtenerDepartamentos()
+                    'departamentos' => $this->departamento->obtenerDepartamentos(),
+                    $campo=>$id
                     ));
     }
     
@@ -483,13 +517,87 @@ class Comp24_E0 extends CI_Controller {
      */
     public function E(){
 		if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
+        $tabla = 'indicadores_desempeno2';
+        $campo = 'ind_des_id';
+        $prefix = 'ind_des_';
+        
+        if($id && !isset($_POST['mod'])){
+            if(!$tmp = $this->comp24->get_by_id($tabla, $campo, $id)){
+                $this->comp24->insert_row($tabla,array($campo=>$id,'mun_id'=>$id));
+                $tmp = $this->comp24->get_by_id($tabla, $campo, $id);
+            }
+            $_POST = get_object_vars($tmp);
+            $_POST[$prefix.'fecha'] = $this->librerias->parse_output('date',$_POST[$prefix.'fecha']);
+            $_POST['depto']                   = $this->comp24->getDepto($_POST['mun_id'])->dep_nombre;
+            $_POST['muni']                   = $this->comp24->get_by_Id('municipio','mun_id',$_POST['mun_id'])->mun_nombre;
+        }
+        
+        $this->form_validation->set_message('required', '*');
+        $this->form_validation->set_message('decimal', '*');
+        
+        $config = array(
+            array('field'   => 'depto',            'label' => 'Municipio',     'rules' => 'trim|xss_clean'),
+            array('field'   => 'muni',            'label' => 'Municipio',     'rules' => 'trim|xss_clean'),
+            array('field'   => 'mun_id',            'label' => 'Municipio',     'rules' => 'trim|xss_clean'),
+            array('field'   => $prefix.'fecha',    'label' => 'Fecha',         'rules' => 'trim|required|xss_clean'),
+            array('field'   => $prefix.'periodo_inicio',         'label' => 'Periodo',         'rules' => 'trim|required|integer|xss_clean'),
+            array('field'   => $prefix.'periodo_fin',       'label' => 'Periodo',         'rules' => 'trim|required|integer|xss_clean|callback_periodo_check[ind_des_periodo_inicio]'),
+            array('field'   => $prefix.'grupo1_pasCir',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
+            array('field'   => $prefix.'grupo1_deuCorPla',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
+            array('field'   => $prefix.'grupo1_int',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
+            array('field'   => $prefix.'grupo1_ahoOper',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
+            array('field'   => $prefix.'grupo1_intDueda',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
+            array('field'   => $prefix.'grupo1_total',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
+            array('field'   => $prefix.'grupo2_deuMunTotal',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
+            array('field'   => $prefix.'grupo2_ingOpePer',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
+            array('field'   => $prefix.'grupo2_total',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
+            array('field'   => $prefix.'observaciones',   'label' => 'Fecha',         'rules' => 'trim|xss_clean'),
+            array('field' => 'mod',             'label' => 'Mod',               'rules' => 'required|xss_clean' )
+        );
+             
+        $this->form_validation->set_rules($config);
+        
+        $data['errors'] = array();
+        $mensaje = false;
+        
+        if ($this->form_validation->run())
+        {
+            $datos = array(
+                $prefix.'fecha'            =>  $this->comp24->changeDate($this->form_validation->set_value($prefix.'fecha')),
+                $prefix.'periodo_inicio'   =>  $this->form_validation->set_value($prefix.'periodo_inicio'),
+                $prefix.'periodo_fin'      =>  $this->form_validation->set_value($prefix.'periodo_fin'),
+                $prefix.'grupo1_pascir'    =>  $this->form_validation->set_value($prefix.'grupo1_pasCir'),
+                $prefix.'grupo1_deucorpla' =>  $this->form_validation->set_value($prefix.'grupo1_deuCorPla'),
+                $prefix.'grupo1_int'       =>  $this->form_validation->set_value($prefix.'grupo1_int'),
+                $prefix.'grupo1_ahoope'    =>  $this->form_validation->set_value($prefix.'grupo1_ahoOper'),
+                $prefix.'grupo1_intdeu'    =>  $this->form_validation->set_value($prefix.'grupo1_intDueda'),
+                $prefix.'grupo1_total'     =>  $this->form_validation->set_value($prefix.'grupo1_total'),
+                $prefix.'grupo2_deumuntot' =>  $this->form_validation->set_value($prefix.'grupo2_deuMunTotal'),
+                $prefix.'grupo2_ingopeper' =>  $this->form_validation->set_value($prefix.'grupo2_ingOpePer'),
+                $prefix.'grupo2_total'     =>  $this->form_validation->set_value($prefix.'grupo2_total'),
+                $prefix.'observaciones'    =>  $this->form_validation->set_value($prefix.'observaciones')
+            );
+            
+            if(!is_null($data = $this->comp24->update_row($tabla,$campo,$id,$datos)))
+                {
+                    $this->session->set_flashdata('message', 'Ok');
+                    $t = explode('/' . $id,current_url());
+                    redirect($t[0]);
+                }
+                else
+                {
+                    $errors = $this->tank_auth->get_error_message();
+                    foreach ($errors as $k => $v)    $data['errors'][$k] = $this->lang->line($v);
+                }          
+        }
         
         $this->load->view($this->ruta.'E',
             array('titulo' => 'Elaboracion de Diagnostico',
                     'user_uid' => $this->tank_auth->get_user_id(),
                     'username' => $this->tank_auth->get_username(),
                     'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
-                    'departamentos' => $this->departamento->obtenerDepartamentos()
+                    'departamentos' => $this->departamento->obtenerDepartamentos(),
+                    $campo=>$id
                     ));
     }
     

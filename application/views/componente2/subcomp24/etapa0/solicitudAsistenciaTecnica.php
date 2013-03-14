@@ -271,6 +271,11 @@ $this->load->view('plantilla/menu', $menu);
     });
 </script>
 
+<div id="efectivo" class="mensaje" title="Almacenado">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
+    </center>
+</div>
 
 <?php echo form_open('',array('id'=>'frm')) ?>
 
@@ -278,94 +283,104 @@ $this->load->view('plantilla/menu', $menu);
     <h2 class="h2Titulos">Elaboracion de perfil y PRFM</h2>
     <br/>
     <div id="rpt_frm_bdy">
-        <div class="campo">
-            <label>Departamento</label>
-            <select id='selDepto'>
-                <option value='0'>--Seleccione--</option>
-                <?php foreach ($departamentos as $depto) { ?>
+        <div id="listaContainer">
+            <div class="campo">
+                <label>Departamento</label>
+                <select id='selDepto'>
+                    <option value='0'>--Seleccione--</option>
+                    <?php foreach ($departamentos as $depto) { ?>
                     <option value='<?php echo $depto->dep_id; ?>'><?php echo $depto->dep_nombre; ?></option>
-                <?php } ?>
-            </select>
-        </div>
-        <div class="campo">
-            <label>Municipio</label>
-            <select id='mun_id' name='mun_id'>
-                <option value='0'>--Seleccione--</option>
-            </select>
-            <?php echo form_error('mun_id'); ?>
-        </div>
-        <div id="rpt-border"></div>
-        <div id="listaContainer" style="margin-left: 300px;">
-            <table id="lista"></table>
-            <div id="pagerLista"></div>
-            <div id="btn_acuerdo_nuevo">Crear Nuevo</div>
+                    <?php } ?>
+                </select>
+            </div>
+            <div class="campo">
+                <label>Municipio</label>
+                <select id='mun_id' name='mun_id'>
+                    <option value='0'>--Seleccione--</option>
+                </select>
+                <?php echo form_error('mun_id'); ?>
+            </div>
+            <div id="rpt-border"></div>
+            <div style="margin-left: 300px;">
+                <table id="lista"></table>
+                <div id="pagerLista"></div>
+                <div id="btn_acuerdo_nuevo">Crear Nuevo</div>
+            </div>
         </div>
         <div id="formulario" style="display: none;">
-        <div class="campo">
-            <label>Fecha de solicitud de asistencia al ISDEM:</label>
-            <input id="asi_tec_fecha_solicitud" name="asi_tec_fecha_solicitud" type="text" readonly="readonly" value="<?php echo set_value('asi_tec_fecha_solicitud') ?>"/>
-            <?php echo form_error('asi_tec_fecha_solicitud'); ?>
-        </div>
-        <div class="campo">
-            <label>Fecha de emision de acuerdo municipal:</label>
-            <input id="asi_tec_fecha_emision" name="asi_tec_fecha_emision" type="text" readonly="readonly" value="<?php echo set_value('asi_tec_fecha_emision') ?>"/>
-            <?php echo form_error('asi_tec_fecha_emision'); ?>
-        </div>
-        <div class="campo">
-            <label>Fecha de envio de acuerdo municipal al FISDL:</label>
-            <input id="asi_tec_fecha_envio" name="asi_tec_fecha_envio" type="text" readonly="readonly" value="<?php echo set_value('asi_tec_fecha_envio') ?>"/>
-            <?php echo form_error('asi_tec_fecha_envio'); ?>
-        </div>
-        <div class="campo">
-            <label>Fecha de orden de inicio:</label>
-            <input id="asi_tec_fecha_inicio" name="asi_tec_fecha_inicio" type="text" readonly="readonly" value="<?php echo set_value('asi_tec_fecha_inicio') ?>"/>
-            <?php echo form_error('asi_tec_fecha_inicio'); ?>
-        </div>
-        <div class="campo">
-            <label>Consultor:</label>
-            <select id="asi_tec_onsultor" name="asi_tec_onsultor">
-            	<option value="0">Select</option>
-            </select>
-            <?php echo form_error('asi_tec_onsultor'); ?>
-        </div>
-        <div id="rpt-border"></div>
-        <div class="tabla">
-            <label>Miembros de la comision financiera municipal</label>
-            <table id="miembros"></table>
-            <div id="pagerMiembros"></div>
-        </div>
-        <div class="campo">
-            <label>Cantidad de Participantes:</label>
-            <span>Hombres</span>
-            <input id="hombres" name="count_male" readonly="" style="width: 50px; text-align: center;" value="0" />
-            <span>Mujeres</span>
-            <input id="mujeres" name="count_female" readonly="" style="width: 50px; text-align: center;" value="0" />
-            <span>Total</span>
-            <input id="total" name="count_female" readonly="" style="width: 50px; text-align: center;" value="0" />
-        </div>
-        <div style="width: 100%;">
-            <div style="width: 50%;">
-                <div class="campo1">
-                    <label style="text-align: left;">Observaciones</label>
-                    <textarea id="acu_mun_observaciones" name="acu_mun_observaciones" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('acu_mun_observaciones')?></textarea>
-                    <?php echo form_error('acu_mun_observaciones'); ?>
+            <div class="campo">
+                <label>Departamento:</label>
+                <input id="depto" name="depto" type="text" readonly="readonly" value="<?php echo set_value('depto') ?>" />
+            </div>
+            <div class="campo">
+                <label>Municipio:</label>
+                <input id="muni" name="muni" type="text" readonly="readonly" value="<?php echo set_value('muni') ?>" />
+            </div>
+            <div class="campo">
+                <label>Fecha de solicitud de asistencia al ISDEM:</label>
+                <input id="asi_tec_fecha_solicitud" name="asi_tec_fecha_solicitud" type="text" readonly="readonly" value="<?php echo set_value('asi_tec_fecha_solicitud') ?>"/>
+                <?php echo form_error('asi_tec_fecha_solicitud'); ?>
+            </div>
+            <div class="campo">
+                <label>Fecha de emision de acuerdo municipal:</label>
+                <input id="asi_tec_fecha_emision" name="asi_tec_fecha_emision" type="text" readonly="readonly" value="<?php echo set_value('asi_tec_fecha_emision') ?>"/>
+                <?php echo form_error('asi_tec_fecha_emision'); ?>
+            </div>
+            <div class="campo">
+                <label>Fecha de envio de acuerdo municipal al FISDL:</label>
+                <input id="asi_tec_fecha_envio" name="asi_tec_fecha_envio" type="text" readonly="readonly" value="<?php echo set_value('asi_tec_fecha_envio') ?>"/>
+                <?php echo form_error('asi_tec_fecha_envio'); ?>
+            </div>
+            <div class="campo">
+                <label>Fecha de orden de inicio:</label>
+                <input id="asi_tec_fecha_inicio" name="asi_tec_fecha_inicio" type="text" readonly="readonly" value="<?php echo set_value('asi_tec_fecha_inicio') ?>"/>
+                <?php echo form_error('asi_tec_fecha_inicio'); ?>
+            </div>
+            <div class="campo">
+                <label>Consultor:</label>
+                <select id="asi_tec_onsultor" name="asi_tec_onsultor">
+                	<option value="0">Select</option>
+                </select>
+                <?php echo form_error('asi_tec_onsultor'); ?>
+            </div>
+            <div id="rpt-border"></div>
+            <div class="tabla">
+                <label>Miembros de la comision financiera municipal</label>
+                <table id="miembros"></table>
+                <div id="pagerMiembros"></div>
+            </div>
+            <div class="campo">
+                <label>Cantidad de Participantes:</label>
+                <span>Hombres</span>
+                <input id="hombres" name="count_male" readonly="" style="width: 50px; text-align: center;" value="0" />
+                <span>Mujeres</span>
+                <input id="mujeres" name="count_female" readonly="" style="width: 50px; text-align: center;" value="0" />
+                <span>Total</span>
+                <input id="total" name="count_female" readonly="" style="width: 50px; text-align: center;" value="0" />
+            </div>
+            <div style="width: 100%;">
+                <div style="width: 50%;">
+                    <div class="campo1">
+                        <label style="text-align: left;">Observaciones</label>
+                        <textarea id="acu_mun_observaciones" name="acu_mun_observaciones" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('acu_mun_observaciones')?></textarea>
+                        <?php echo form_error('acu_mun_observaciones'); ?>
+                    </div>
+                </div>
+                <div style="display:inline; width: 50%;">
+                    <div>Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente. Solo se permiten archivos con extensión pdf, doc, docx</div>
+                    <div id="btn_subir"></div>
+                    <input class="letraazul" type="text" id="vinieta" readonly="readonly" value="Subir Solicitud" size="30" style="border: none"/>
+                    <a <?php if (isset($sol_asis_ruta_archivo) && $sol_asis_ruta_archivo != '') { ?> href="<?php echo base_url() . $sol_asis_ruta_archivo; ?>"<?php } ?>  id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a>
+                    <input class="letraazul" type="text" id="vinietaD" readonly="readonly" <?php if (isset($sol_asis_ruta_archivo) && $sol_asis_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo ?>"<?php } else { ?> value="No Hay Solicitudes Por Descargar" <?php } ?>size="35" style="border: none"/>
+                    <?php echo form_error('acu_mun_archivo'); ?>
                 </div>
             </div>
-            <div style="display:inline; width: 50%;">
-                <div>Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente. Solo se permiten archivos con extensión pdf, doc, docx</div>
-                <div id="btn_subir"></div>
-                <input class="letraazul" type="text" id="vinieta" readonly="readonly" value="Subir Solicitud" size="30" style="border: none"/>
-                <a <?php if (isset($sol_asis_ruta_archivo) && $sol_asis_ruta_archivo != '') { ?> href="<?php echo base_url() . $sol_asis_ruta_archivo; ?>"<?php } ?>  id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a>
-                <input class="letraazul" type="text" id="vinietaD" readonly="readonly" <?php if (isset($sol_asis_ruta_archivo) && $sol_asis_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo ?>"<?php } else { ?> value="No Hay Solicitudes Por Descargar" <?php } ?>size="35" style="border: none"/>
-                <?php echo form_error('acu_mun_archivo'); ?>
+            <input id="archivo" name="archivo" value="<?php echo set_value('archivo') ?>" type="text" size="100" readonly="readonly" style="visibility: hidden"/>
+            <div id="actions" style="position: relative;top: 20px">
+                <input type="submit" id="guardar" value="Guardar" />
+                <input type="button" id="cancelar" value="Cancelar" />
             </div>
-        </div>
-        <input id="archivo" name="archivo" value="<?php echo set_value('archivo') ?>" type="text" size="100" readonly="readonly" style="visibility: hidden"/>
-        <div id="actions" style="position: relative;top: 20px">
-            <input type="submit" id="guardar" value="Guardar" />
-            <input type="button" id="cancelar" value="Cancelar" />
-        </div>
-        <input type="hidden" value="modificado" name="mod" id="mod" />
+            <input type="hidden" value="modificado" name="mod" id="mod" />
         </div>
     </div>
 <?php echo form_close();
