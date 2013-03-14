@@ -515,7 +515,7 @@ class Comp24_E0 extends CI_Controller {
      * 
      * E. 
      */
-    public function E(){
+    public function E($id = false){
 		if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
         $tabla = 'indicadores_desempeno2';
         $campo = 'ind_des_id';
@@ -540,17 +540,26 @@ class Comp24_E0 extends CI_Controller {
             array('field'   => 'muni',            'label' => 'Municipio',     'rules' => 'trim|xss_clean'),
             array('field'   => 'mun_id',            'label' => 'Municipio',     'rules' => 'trim|xss_clean'),
             array('field'   => $prefix.'fecha',    'label' => 'Fecha',         'rules' => 'trim|required|xss_clean'),
-            array('field'   => $prefix.'periodo_inicio',         'label' => 'Periodo',         'rules' => 'trim|required|integer|xss_clean'),
-            array('field'   => $prefix.'periodo_fin',       'label' => 'Periodo',         'rules' => 'trim|required|integer|xss_clean|callback_periodo_check[ind_des_periodo_inicio]'),
-            array('field'   => $prefix.'grupo1_pasCir',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
-            array('field'   => $prefix.'grupo1_deuCorPla',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
-            array('field'   => $prefix.'grupo1_int',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
-            array('field'   => $prefix.'grupo1_ahoOper',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
-            array('field'   => $prefix.'grupo1_intDueda',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
+            array('field'   => $prefix.'periodo_inicio',         'label' => 'periodo',         'rules' => 'trim|required|integer|xss_clean'),
+            array('field'   => $prefix.'periodo_fin',       'label' => 'periodo',         'rules' => 'trim|required|integer|xss_clean|callback_periodo_check[ind_des_periodo_inicio]'),
+            array('field'   => $prefix.'grupo1_ingtotpre',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
+            array('field'   => $prefix.'grupo1_gastotdev',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
             array('field'   => $prefix.'grupo1_total',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
-            array('field'   => $prefix.'grupo2_deuMunTotal',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
-            array('field'   => $prefix.'grupo2_ingOpePer',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
+            array('field'   => $prefix.'grupo2_ingprodev',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
+            array('field'   => $prefix.'grupo2_totingdev',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
             array('field'   => $prefix.'grupo2_total',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
+            array('field'   => $prefix.'grupo3_moningpro',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
+            array('field'   => $prefix.'grupo3_totingdev',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
+            array('field'   => $prefix.'grupo3_total',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
+            array('field'   => $prefix.'grupo4_moningpro',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
+            array('field'   => $prefix.'grupo4_moningpre',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
+            array('field'   => $prefix.'grupo4_total',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
+            array('field'   => $prefix.'grupo5_totingtas',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
+            array('field'   => $prefix.'grupo5_totingpro',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
+            array('field'   => $prefix.'grupo5_total',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
+            array('field'   => $prefix.'grupo6_totingimp',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
+            array('field'   => $prefix.'grupo6_totingpro',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
+            array('field'   => $prefix.'grupo6_total',       'label' => 'Fecha',         'rules' => 'trim|xss_clean|decimal'),
             array('field'   => $prefix.'observaciones',   'label' => 'Fecha',         'rules' => 'trim|xss_clean'),
             array('field' => 'mod',             'label' => 'Mod',               'rules' => 'required|xss_clean' )
         );
@@ -566,15 +575,24 @@ class Comp24_E0 extends CI_Controller {
                 $prefix.'fecha'            =>  $this->comp24->changeDate($this->form_validation->set_value($prefix.'fecha')),
                 $prefix.'periodo_inicio'   =>  $this->form_validation->set_value($prefix.'periodo_inicio'),
                 $prefix.'periodo_fin'      =>  $this->form_validation->set_value($prefix.'periodo_fin'),
-                $prefix.'grupo1_pascir'    =>  $this->form_validation->set_value($prefix.'grupo1_pasCir'),
-                $prefix.'grupo1_deucorpla' =>  $this->form_validation->set_value($prefix.'grupo1_deuCorPla'),
-                $prefix.'grupo1_int'       =>  $this->form_validation->set_value($prefix.'grupo1_int'),
-                $prefix.'grupo1_ahoope'    =>  $this->form_validation->set_value($prefix.'grupo1_ahoOper'),
-                $prefix.'grupo1_intdeu'    =>  $this->form_validation->set_value($prefix.'grupo1_intDueda'),
+                $prefix.'grupo1_ingtotpre' =>  $this->form_validation->set_value($prefix.'grupo1_ingtotpre'),
+                $prefix.'grupo1_gastotdev' =>  $this->form_validation->set_value($prefix.'grupo1_gastotdev'),
                 $prefix.'grupo1_total'     =>  $this->form_validation->set_value($prefix.'grupo1_total'),
-                $prefix.'grupo2_deumuntot' =>  $this->form_validation->set_value($prefix.'grupo2_deuMunTotal'),
-                $prefix.'grupo2_ingopeper' =>  $this->form_validation->set_value($prefix.'grupo2_ingOpePer'),
+                $prefix.'grupo2_ingprodev' =>  $this->form_validation->set_value($prefix.'grupo2_ingprodev'),
+                $prefix.'grupo2_totingdev' =>  $this->form_validation->set_value($prefix.'grupo2_totingdev'),
                 $prefix.'grupo2_total'     =>  $this->form_validation->set_value($prefix.'grupo2_total'),
+                $prefix.'grupo3_moningpro' =>  $this->form_validation->set_value($prefix.'grupo3_moningpro'),
+                $prefix.'grupo3_totingdev' =>  $this->form_validation->set_value($prefix.'grupo3_totingdev'),
+                $prefix.'grupo3_total'     =>  $this->form_validation->set_value($prefix.'grupo3_total'),
+                $prefix.'grupo4_moningpro' =>  $this->form_validation->set_value($prefix.'grupo4_moningpro'),
+                $prefix.'grupo4_moningpre' =>  $this->form_validation->set_value($prefix.'grupo4_moningpre'),
+                $prefix.'grupo4_total'     =>  $this->form_validation->set_value($prefix.'grupo4_total'),
+                $prefix.'grupo5_totingtas' =>  $this->form_validation->set_value($prefix.'grupo5_totingtas'),
+                $prefix.'grupo5_totingpro' =>  $this->form_validation->set_value($prefix.'grupo5_totingpro'),
+                $prefix.'grupo5_total'     =>  $this->form_validation->set_value($prefix.'grupo5_total'),
+                $prefix.'grupo6_totingimp' =>  $this->form_validation->set_value($prefix.'grupo6_totingimp'),
+                $prefix.'grupo6_totingpro' =>  $this->form_validation->set_value($prefix.'grupo6_totingpro'),
+                $prefix.'grupo6_total'     =>  $this->form_validation->set_value($prefix.'grupo6_total'),
                 $prefix.'observaciones'    =>  $this->form_validation->set_value($prefix.'observaciones')
             );
             
