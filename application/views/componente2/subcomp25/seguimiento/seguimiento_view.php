@@ -1,18 +1,17 @@
 <script type="text/javascript">        
     $(document).ready(function(){
-        
-        $("#guardar").button().click(function(){
-            tabla.jqGrid('editGridRow',"new",
-            {closeAfterAdd:true,addCaption: "Guardar Seguimiento",width:350,
-                align:'center',reloadAfterSubmit:true,
-                processData: "Cargando...",afterSubmit:despuesAgregarEditar,
-                bottominfo:"Campos marcados con (*) son obligatorios", 
-                onclickSubmit: function(rp_ge, postdata) {
-                    $('#mensaje').dialog('open');
+        $("#guardar").button().click(function() {
+            $.ajax({
+                type: "POST",
+                url: '<?php echo base_url('componente2/comp25_seguimiento/guardarSeguimiento') ?>',
+                data: $("#seguimientoForm").serialize(), // serializes the form's elements.
+                success: function(data)
+                {
+                    $('#efectivo').dialog('open');
                 }
             });
+            return false;
         });
-        
         /*DIALOGOS DE VALIDACION*/
         $('.mensaje').dialog({
             autoOpen: false,
@@ -24,7 +23,7 @@
             }
         });
         
-        
+        $("#seguimientoForm").hide();
         /*CARGAR MUNICIPIOS*/
         $('#dep_id').change(function(){ 
             $('#mun_id').children().remove();
@@ -42,82 +41,107 @@
             });             
         });
         
-        
+        $('#mun_id').change(function(){
+            $('#seguimientoForm')[0].reset();
+            if($('#mun_id').val()!=0){
+                $.getJSON('<?php echo base_url('componente2/comp25_seguimiento/cargarSeguimiento') . "/" ?>'+$('#mun_id').val(), 
+                function(data) {
+                    $.each(data, function(key, val) {
+                        if(key=='rows'){
+                            $.each(val, function(id, registro){
+                                $('#seg_id').val(registro['cell'][0]);
+                                $('#seg_forden_preparacion').val(registro['cell'][1]);
+                                $('#seg_facta_recepcion').val(registro['cell'][2]);
+                                $('#seg_forden_diagnostico').val(registro['cell'][3]);
+                                $('#seg_fsocializacion').val(registro['cell'][4]);
+                                $('#seg_facta_aprobacion_d').val(registro['cell'][5]);
+                                $('#seg_forden_planificacion').val(registro['cell'][6]);
+                                $('#seg_facta_aprobacion_p').val(registro['cell'][7]);
+                                $('#seg_facuerdo_municipal').val(registro['cell'][8]);
+                                $('#seg_fpresentacion_publica').val(registro['cell'][9]);
+                                $('#seg_forden_seguimiento').val(registro['cell'][10]);
+                                $('#seg_comentario').val(registro['cell'][11]);
+                                /* tabla.setGridParam({
+                                    url:'<?php echo base_url('componente2/comp25_fase1/cargarNota') ?>/'+registro['cell'][0],
+                                    editurl:'<?php echo base_url('componente2/comp25_fase1/guardarNota') ?>/'+registro['cell'][0],
+                                    datatype:'json'
+                                }).trigger('reloadGrid');*/
+                                $("#seguimientoForm").show();
+                            });                    
+                        }
+                    });
+                });              
+            }else
+                $("#seguimientoForm").hide();
+        });
         
         /*ZONA DATEPICKER*/
-        $( "#fec_ord_ini" ).datepicker({
+        $( "#seg_forden_preparacion" ).datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
             dateFormat: 'dd-mm-yy'
         });
-        $( "#fec_act_rec" ).datepicker({
-            showOn: 'both',
-            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
-            dateFormat: 'dd-mm-yy'
-        });
-        
-        
-        $( "#fec_ord_ini_dia" ).datepicker({
-            showOn: 'both',
-            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
-            dateFormat: 'dd-mm-yy'
-        });
-        $( "#fec_soc" ).datepicker({
+        $( "#seg_facta_recepcion" ).datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
             dateFormat: 'dd-mm-yy'
         });
         
-        $( "#fec_act_apr" ).datepicker({
+        $( "#seg_forden_diagnostico" ).datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
             dateFormat: 'dd-mm-yy'
         });
-        $( "#fec_ini" ).datepicker({
-            showOn: 'both',
-            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
-            dateFormat: 'dd-mm-yy'
-        });
-       
-     
-        $( "#fec_act_apr_com_eva" ).datepicker({
+        $( "#seg_fsocializacion" ).datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
             dateFormat: 'dd-mm-yy'
         });
         
-        $( "#fec_acu_mun_apr_pla" ).datepicker({
+        $( "#seg_facta_aprobacion_d" ).datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
             dateFormat: 'dd-mm-yy'
         });
-        $( "#fec_pre_pub_pla" ).datepicker({
+        $( "#seg_forden_planificacion" ).datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
             dateFormat: 'dd-mm-yy'
         });
-        $( "#fec_ini_seg" ).datepicker({
+            
+        $( "#seg_facta_aprobacion_p" ).datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
             dateFormat: 'dd-mm-yy'
         });
-       
-       
-        var tabla=$("#seguimientoGrid");
         
-               
+        $( "#seg_facuerdo_municipal" ).datepicker({
+            showOn: 'both',
+            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+            buttonImageOnly: true, 
+            dateFormat: 'dd-mm-yy'
+        });
+        $( "#seg_fpresentacion_publica" ).datepicker({
+            showOn: 'both',
+            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+            buttonImageOnly: true, 
+            dateFormat: 'dd-mm-yy'
+        });
+        $( "#seg_forden_seguimiento" ).datepicker({
+            showOn: 'both',
+            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+            buttonImageOnly: true, 
+            dateFormat: 'dd-mm-yy'
+        });
         /*GRID CRITERIOS ETAPA 0*/
-        
+        var tabla=$("#seguimientoGrid");   
         tabla.jqGrid({
             //            url:'<?php echo base_url('componente2/comp23_E0/cargarCriterios') ?>',
             //            editurl:'<?php echo base_url('componente2/comp23_E0/gestionarCriterios') ?>',
@@ -197,7 +221,7 @@
             <strong>Fecha de orden de inicio</strong>
         </td>
         <td> 
-            <input id="fec_ord_ini" name="fec_ord_ini" type="text" size="10" readonly="readonly"/>        
+            <input id="seg_forden_preparacion" name="seg_forden_preparacion" type="text" size="10" readonly="readonly"/>        
         </td>
         </tr>
         <tr>
@@ -205,32 +229,32 @@
             <strong>Fecha de acta de recepción</strong>
         </td>
         <td>
-            <input id="fec_act_rec" name="fec_act_rec" type="text" size="10" readonly="readonly"/>
+            <input id="seg_facta_recepcion" name="seg_facta_recepcion" type="text" size="10" readonly="readonly"/>
         </td>
         </tr>
 
         <tr></tr>
         <tr>    
         <td colspan="2">
-            <strong>Diagnostico</strong> 
+            <strong>Diagnóstico</strong> 
             <hr size=2 width=100%/>
         </td>
         </tr>
 
         <tr>
         <td class="textD">
-            <strong>Fecha de orden de inicio del diagnostico</strong> 
+            <strong>Fecha de orden de inicio del diagnóstico</strong> 
         </td>
         <td>
-            <input id="fec_ord_ini_dia" name="fec_ord_ini_dia" type="text" size="10" readonly="readonly"/>        
+            <input id="seg_forden_diagnostico" name="seg_forden_diagnostico" type="text" size="10" readonly="readonly"/>        
         </td>
         </tr>
         <tr>
         <td class="textD"> 
-            <strong>Fecha de socializacion</strong>
+            <strong>Fecha de socialización</strong>
         </td>
         <td>
-            <input id="fec_soc" name="fec_soc" type="text" size="10" readonly="readonly"/>
+            <input id="seg_fsocializacion" name="seg_fsocializacion" type="text" size="10" readonly="readonly"/>
         </td>
         </tr>
 
@@ -245,16 +269,16 @@
 
         <tr>
         <td class="textD"> 
-            <strong>Fecha de acta de aprobacion</strong>
+            <strong>Fecha de acta de aprobación</strong>
         </td>
         <td>
-            <input id="fec_act_apr" name="fec_act_apr" type="text" size="10" readonly="readonly"/>
+            <input id="seg_facta_aprobacion_d" name="seg_facta_aprobacion_d" type="text" size="10" readonly="readonly"/>
         </td>
         </tr>
 
         <tr>    
         <td colspan="2">
-            <strong>Planificacion para la gestión de riesgos</strong> 
+            <strong>Planificación para la gestión de riesgos</strong> 
             <hr size=2 width=100%/>
         </td>
         </tr>
@@ -265,7 +289,7 @@
             <strong>Fecha de inicio</strong> 
         </td>
         <td>
-            <input id="fec_ini" name="fec_ini" type="text" size="10" readonly="readonly"/>        
+            <input id="seg_forden_planificacion" name="seg_forden_planificacion" type="text" size="10" readonly="readonly"/>        
         </td>
 
         <tr>
@@ -273,7 +297,7 @@
             <strong>Fecha de acta de aprobación(comite evaluador)</strong> 
         </td>
         <td>
-            <input id="fec_act_apr_com_eva" name="fec_act_apr_com_eva" type="text" size="10" readonly="readonly"/>        
+            <input id="seg_facta_aprobacion_p" name="seg_facta_aprobacion_p" type="text" size="10" readonly="readonly"/>        
         </td>
         </tr>
         <tr>
@@ -281,16 +305,16 @@
             <strong>Fecha de acuerdo municipal de aprobación de plan</strong>
         </td>
         <td>
-            <input id="fec_acu_mun_apr_pla" name="fec_acu_mun_apr_pla" type="text" size="10" readonly="readonly"/>
+            <input id="seg_facuerdo_municipal" name="seg_facuerdo_municipal" type="text" size="10" readonly="readonly"/>
         </td>
         </tr>
 
         <tr>
         <td class="textD"> 
-            <strong>Fecha de presentación publica del plan GDR</strong>
+            <strong>Fecha de presentación pública del plan GDR</strong>
         </td>
         <td>
-            <input id="fec_pre_pub_pla" name="fec_pre_pub_pla" type="text" size="10" readonly="readonly"/>
+            <input id="seg_fpresentacion_publica" name="seg_fpresentacion_publica" type="text" size="10" readonly="readonly"/>
         </td>
         </tr>
 
@@ -307,7 +331,7 @@
             <strong>Fecha de inicio</strong> 
         </td>
         <td>
-            <input id="fec_ini_seg" name="fec_ini_seg" type="text" size="10" readonly="readonly"/>        
+            <input id="seg_forden_seguimiento" name="seg_forden_seguimiento" type="text" size="10" readonly="readonly"/>        
         </td>
         </tr>
 
@@ -319,19 +343,16 @@
 
         <tr>
         <td colspan="2" style=" alignment-adjust: central">
-            <strong>Comentarios:</strong><br/><textarea id="seg_observaciones" name="seg_observaciones" cols="50" rows="3"></textarea>
+            <strong>Comentarios:</strong><br/><textarea id="seg_comentario" name="seg_comentario" cols="50" rows="3"></textarea>
         </td>
         </tr>
         <tr>
         <td colspan="2" align="center">
-        <input type="button" id="guardar" value="  guardar  " />  
+            <input type="button" id="guardar" value="  guardar  " />  
         </td>
         </tr>
     </table>
-
-
-
-
+    <input id="seg_id" name="seg_id" value="" type="text" size="100" readonly="readonly" style="visibility: hidden"/>
 </form>
 
 <div id="mensaje" class="mensaje" title="Aviso de la operación">
