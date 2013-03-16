@@ -191,9 +191,9 @@ $this->load->view('plantilla/menu', $menu);
         if(download_path_1==''){$('#btn_download_1').hide();}
         $('#btn_upload_1').button();
         $('#btn_download_1').button().click(function(e){
-            if(download_path != ''){
+            if(download_path_1 != ''){
                 e.preventDefault();  //stop the browser from following
-                window.location.href = download_path;
+                window.location.href = download_path_1;
             }
         });
         new AjaxUpload('#btn_upload_1', {
@@ -211,7 +211,7 @@ $this->load->view('plantilla/menu', $menu);
                 if(response!='error'){
                     $('#vineta_1').html('Ok');                    
                     this.enable();
-                    download_path = response;
+                    download_path_1 = response;
                      $('#btn_download_1').show();
                 }else{
                     $('#vineta_1').html('<span class="error">Error</span>');
@@ -224,9 +224,9 @@ $this->load->view('plantilla/menu', $menu);
         if(download_path_2==''){$('#btn_download_2').hide();}
         $('#btn_upload_2').button();
         $('#btn_download_2').button().click(function(e){
-            if(download_path != ''){
+            if(download_path_2 != ''){
                 e.preventDefault();  //stop the browser from following
-                window.location.href = download_path;
+                window.location.href = download_path_2;
             }
         });
         new AjaxUpload('#btn_upload_2', {
@@ -244,7 +244,7 @@ $this->load->view('plantilla/menu', $menu);
                 if(response!='error'){
                     $('#vineta_2').html('Ok');                    
                     this.enable();
-                    download_path = response;
+                    download_path_2 = response;
                      $('#btn_download_2').show();
                 }else{
                     $('#vineta_2').html('<span class="error">Error</span>');
@@ -257,9 +257,9 @@ $this->load->view('plantilla/menu', $menu);
         if(download_path_3==''){$('#btn_download_3').hide();}
         $('#btn_upload_3').button();
         $('#btn_download_3').button().click(function(e){
-            if(download_path != ''){
+            if(download_path_3 != ''){
                 e.preventDefault();  //stop the browser from following
-                window.location.href = download_path;
+                window.location.href = download_path_3;
             }
         });
         new AjaxUpload('#btn_upload_3', {
@@ -277,7 +277,7 @@ $this->load->view('plantilla/menu', $menu);
                 if(response!='error'){
                     $('#vineta_3').html('Ok');                    
                     this.enable();
-                    download_path = response;
+                    download_path_3 = response;
                      $('#btn_download_3').show();
                 }else{
                     $('#vineta_3').html('<span class="error">Error</span>');
