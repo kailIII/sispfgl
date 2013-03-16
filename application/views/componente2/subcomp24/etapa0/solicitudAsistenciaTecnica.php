@@ -186,49 +186,105 @@ $this->load->view('plantilla/menu', $menu);
         });
         /**/
         
-        /*ARCHIVOS*/
-        var button = $('#btn_subir'), interval;
-        new AjaxUpload('#btn_subir', {
-            action: '<?php echo base_url('componente2/comp23_E1/subirArchivo') . '/acuerdo_municipal2/1/acu_mun_id'; ?>',
+        /**/
+        var download_path_1 = '<?php $t=set_value('asi_tec_archivo_perfil'); if($t!=''){echo base_url($t);}?>';
+        if(download_path_1==''){$('#btn_download_1').hide();}
+        $('#btn_upload_1').button();
+        $('#btn_download_1').button().click(function(e){
+            if(download_path != ''){
+                e.preventDefault();  //stop the browser from following
+                window.location.href = download_path;
+            }
+        });
+        new AjaxUpload('#btn_upload_1', {
+            action: '<?php echo base_url('componente2/comp24_E0/uploadFile') . '/asistencia_tecnica/asi_tec_archivo_perfil/asi_tec_id/' . $asi_tec_id; ?>',
             onSubmit : function(file , ext){
                 if (! (ext && /^(pdf|doc|docx)$/.test(ext))){
-                    $('#extension').dialog('open');
+                    $('#vineta_1').html('<span class="error">Extension no Permitida</span>');
                     return false;
                 } else {
-                    $('#vinieta').val('Subiendo....');
+                    $('#vineta_1').html('Subiendo....');
                     this.disable();
                 }
             },
             onComplete: function(file, response,ext){
                 if(response!='error'){
-                    $('#vinieta').val('Subido con Exito');
-                    this.enable();			
-                    ext= (response.substring(response.lastIndexOf("."))).toLowerCase();
-                    nombre=response.substring(response.lastIndexOf("/")).toLowerCase().replace('/','');
-                    $('#vinietaD').val('Descargar '+nombre);
-                    $('#sol_asis_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO
-                    if (ext=='.pdf'){
-                        $('#btn_descargar').attr({
-                            'href': '<?php echo base_url(); ?>'+response,
-                            'target':'_blank'
-                        });
-                    }
-                    else{
-                        $('#btn_descargar').attr({
-                            'href': '<?php echo base_url(); ?>'+response,
-                            'target':'_self'
-                        });
-                    }
+                    $('#vineta_1').html('Ok');                    
+                    this.enable();
+                    download_path = response;
+                     $('#btn_download_1').show();
                 }else{
-                    $('#vinieta').val('El Archivo debe ser menor a 1 MB.');
+                    $('#vineta_1').html('<span class="error">Error</span>');
                     this.enable();			
                  
-                }
-                 
+                }/**/
             }	
         });
-        $('#btn_descargar').click(function() {
-            $.get($(this).attr('href'));
+        var download_path_2 = '<?php $t=set_value('asi_tec_archivo_trd'); if($t!=''){echo base_url($t);}?>';
+        if(download_path_2==''){$('#btn_download_2').hide();}
+        $('#btn_upload_2').button();
+        $('#btn_download_2').button().click(function(e){
+            if(download_path != ''){
+                e.preventDefault();  //stop the browser from following
+                window.location.href = download_path;
+            }
+        });
+        new AjaxUpload('#btn_upload_2', {
+            action: '<?php echo base_url('componente2/comp24_E0/uploadFile') . '/asistencia_tecnica/asi_tec_archivo_trd/asi_tec_id/' . $asi_tec_id; ?>',
+            onSubmit : function(file , ext){
+                if (! (ext && /^(pdf|doc|docx)$/.test(ext))){
+                    $('#vineta_2').html('<span class="error">Extension no Permitida</span>');
+                    return false;
+                } else {
+                    $('#vineta_2').html('Subiendo....');
+                    this.disable();
+                }
+            },
+            onComplete: function(file, response,ext){
+                if(response!='error'){
+                    $('#vineta_2').html('Ok');                    
+                    this.enable();
+                    download_path = response;
+                     $('#btn_download_2').show();
+                }else{
+                    $('#vineta_2').html('<span class="error">Error</span>');
+                    this.enable();			
+                 
+                }/**/
+            }	
+        });
+        var download_path_3 = '<?php $t=set_value('asi_tec_archivo_acuerdo'); if($t!=''){echo base_url($t);}?>';
+        if(download_path_3==''){$('#btn_download_3').hide();}
+        $('#btn_upload_3').button();
+        $('#btn_download_3').button().click(function(e){
+            if(download_path != ''){
+                e.preventDefault();  //stop the browser from following
+                window.location.href = download_path;
+            }
+        });
+        new AjaxUpload('#btn_upload_3', {
+            action: '<?php echo base_url('componente2/comp24_E0/uploadFile') . '/asistencia_tecnica/asi_tec_archivo_acuerdo/asi_tec_id/' . $asi_tec_id; ?>',
+            onSubmit : function(file , ext){
+                if (! (ext && /^(pdf|doc|docx)$/.test(ext))){
+                    $('#vineta_3').html('<span class="error">Extension no Permitida</span>');
+                    return false;
+                } else {
+                    $('#vineta_3').html('Subiendo....');
+                    this.disable();
+                }
+            },
+            onComplete: function(file, response,ext){
+                if(response!='error'){
+                    $('#vineta_3').html('Ok');                    
+                    this.enable();
+                    download_path = response;
+                     $('#btn_download_3').show();
+                }else{
+                    $('#vineta_3').html('<span class="error">Error</span>');
+                    this.enable();			
+                 
+                }/**/
+            }	
         });
         /**/
                
@@ -358,24 +414,30 @@ $this->load->view('plantilla/menu', $menu);
                 <span>Total</span>
                 <input id="total" name="count_female" readonly="" style="width: 50px; text-align: center;" value="0" />
             </div>
-            <div style="width: 100%;">
-                <div style="width: 50%;">
-                    <div class="campo1">
-                        <label style="text-align: left;">Observaciones</label>
-                        <textarea id="acu_mun_observaciones" name="acu_mun_observaciones" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('acu_mun_observaciones')?></textarea>
-                        <?php echo form_error('acu_mun_observaciones'); ?>
-                    </div>
+            <div class="campo" style="display: inline-block;">
+                <label>Cargar archivo:</label>
+                <div id="fileUpload" style="display: inline-block;">
+                    <div id="btn_upload_1" style="display: inline-block;">Subir Perfil</div>
+                    <a id="btn_download_1" href="#" style="display: inline-block;">Descargar</a>
+                    <div id="vineta_1" style="display: inline-block;"></div>
                 </div>
-                <div style="display:inline; width: 50%;">
-                    <div>Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente. Solo se permiten archivos con extensión pdf, doc, docx</div>
-                    <div id="btn_subir"></div>
-                    <input class="letraazul" type="text" id="vinieta" readonly="readonly" value="Subir Solicitud" size="30" style="border: none"/>
-                    <a <?php if (isset($sol_asis_ruta_archivo) && $sol_asis_ruta_archivo != '') { ?> href="<?php echo base_url() . $sol_asis_ruta_archivo; ?>"<?php } ?>  id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a>
-                    <input class="letraazul" type="text" id="vinietaD" readonly="readonly" <?php if (isset($sol_asis_ruta_archivo) && $sol_asis_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo ?>"<?php } else { ?> value="No Hay Solicitudes Por Descargar" <?php } ?>size="35" style="border: none"/>
-                    <?php echo form_error('acu_mun_archivo'); ?>
+                <div id="fileUpload" style="margin-left: 325px; margin-top: 10px;">
+                    <div id="btn_upload_2" style="display: inline-block;">Subir TRD</div>
+                    <a id="btn_download_2" href="#" style="display: inline-block;">Descargar</a>
+                    <div id="vineta_2" style="display: inline-block;"></div>
                 </div>
+                <div id="fileUpload" style="margin-left: 325px; margin-top: 10px;">
+                    <div id="btn_upload_3" style="display: inline-block;">Subir Acuerdo</div>
+                    <a id="btn_download_3" href="#" style="display: inline-block;">Descargar</a>
+                    <div id="vineta_3" style="display: inline-block;"></div>
+                </div>
+                <div class="uploadText" style="margin-left: 350px;">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente. Solo se permiten archivos con extensión pdf, doc, docx</div>
             </div>
-            <input id="archivo" name="archivo" value="<?php echo set_value('archivo') ?>" type="text" size="100" readonly="readonly" style="visibility: hidden"/>
+            <div class="campo">
+                <label style="text-align: left;">Observaciones</label>
+                <textarea id="acu_mun_observaciones" name="acu_mun_observaciones" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('acu_mun_observaciones')?></textarea>
+                <?php echo form_error('acu_mun_observaciones'); ?>
+            </div>
             <div id="actions" style="position: relative;top: 20px">
                 <input type="submit" id="guardar" value="Guardar" />
                 <input type="button" id="cancelar" value="Cancelar" />

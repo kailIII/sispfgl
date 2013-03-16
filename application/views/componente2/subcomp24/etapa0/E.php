@@ -49,9 +49,7 @@ $this->load->view('plantilla/menu', $menu);
             });              
         });
         $('#mun_id').change(function(){
-            window.location.href = '<?php echo current_url(); ?>/' + $('#mun_id').val();
-            $('#Mensajito').hide();
-            $("#guardar").show();              
+            window.location.href = '<?php echo current_url(); ?>/' + $('#mun_id').val();           
         });
                 
         /*PARA EL DATEPICKER*/

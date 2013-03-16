@@ -50,8 +50,7 @@ class Librerias {
         $extension = end($partes);
         //OBTERNER LA EXTENSIÒN DEL ARCHIVO SI HAY UNO YA GUARDADO EN LA BASE
         $this->ci->load->model('ayuda_archivo', 'ayuArc');
-        echo $nombreArchivoBase = $this->ci->ayuArc->obtenerRutaArchivo($campo, $campo_id, $tabla);
-        die();
+        $nombreArchivoBase = $this->ci->ayuArc->obtenerRutaArchivo($campo, $campo_id, $tabla);
         $extArchivoBase = end(explode(".", $nombreArchivoBase[0]['ruta_archivo']));
         if (strcasecmp($extension, $extArchivoBase) && $extArchivoBase != '0')
             unlink($nombreArchivoBase[0]['ruta_archivo']);
@@ -126,6 +125,10 @@ class Librerias {
         
         	case 'money':
         	break;
+            
+            case 'bool':
+                return ($valor == 't');
+            break;
         
         	default :
                     return $valor;

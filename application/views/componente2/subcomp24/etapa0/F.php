@@ -12,79 +12,49 @@ $this->load->view('plantilla/menu', $menu);
 ?>
 <script type="text/javascript">        
     $(document).ready(function(){
-        /*VARIABLES*/
- 
-       
-        $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/comp23_E0/guardarSolicitud'); ?>';
-        });
         
+        /*VARIABLES*/
+        $("#guardar").button();
         $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url(); ?>';
         });
-        
-        	/*CARGAR MUNICIPIOS*/
+       	/*CARGAR MUNICIPIOS*/
         $('#selDepto').change(function(){   
-            $("#guardar").hide();
-            $('#selMun').children().remove();
+            //$("#guardar").hide();
+            $('#mun_id').children().remove();
             $.getJSON('<?php echo base_url('componente2/proyectoPep/cargarMunicipios') ?>?dep_id='+$('#selDepto').val(), 
             function(data) {
                 var i=0;
                 $.each(data, function(key, val) {
                     if(key=='rows'){
-                        $('#selMun').append('<option value="0">--Seleccione Municipio--</option>');
+                        $('#mun_id').append('<option value="0">--Seleccione Municipio--</option>');
                         $.each(val, function(id, registro){
-                            $('#selMun').append('<option value="'+registro['cell'][0]+'">'+registro['cell'][1]+'</option>');
+                            var text = '<option ';
+                            if(registro['cell'][0]=='<?php echo set_value('mun_id'); ?>'){
+                                text = text + 'selected="" ';
+                            }
+                            text = text + 'value="'+registro['cell'][0]+'">'+registro['cell'][1]+'</option>'
+                            $('#mun_id').append(text);
                         });                    
                     }
                 });
             });              
         });
-        $('#selMun').change(function(){
+        $('#mun_id').change(function(){
+            window.location.href = '<?php echo current_url(); ?>/' + $('#mun_id').val();
             $('#Mensajito').hide();
-            $("#guardar").hide();
-            $.getJSON('<?php echo base_url('componente2/comp23_E1/verificarProyectoPep') . "/" ?>'+$('#selMun').val(), 
-            function(data) {
-                $('#Mensajito').hide();
-                $.each(data, function(key, val) {
-                    if(key=="records"){
-                        if(val=="0"){
-                            $('#Mensajito').show();
-                            $("#guardar").hide();
-                            $('#Mensajito').val("Este municipio no posee ningún Proyecto PEP asignado");
-                        }else{
-                            $('#Mensajito').hide();
-                            $("#guardar").show();
-                        }
-                    }
-                });
-            });              
+            $("#guardar").show();              
         });
                 
         /*PARA EL DATEPICKER*/
-        $( "#f_conformacion" ).datepicker({
-            showOn: 'both',
-            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
-        });
-        $( "#f_acuerdo" ).datepicker({
-            showOn: 'both',
-            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
-        });
-        $( "#f_recepcion" ).datepicker({
-            showOn: 'both',
-            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+        $( "#ind_des_fecha" ).datepicker({
+            showOn:         'both',
+            maxDate:        '+1D',
+            buttonImage:    '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
             dateFormat: 'dd/mm/yy'
         });
         /*FIN DEL DATEPICKER*/
-        
-        
-        /* Calculos */
-        
                
         /*DIALOGOS DE VALIDACION*/
         $('.mensaje').dialog({
@@ -98,9 +68,59 @@ $this->load->view('plantilla/menu', $menu);
         });
  
         /*FIN DIALOGOS VALIDACION*/
+        
+        /* Calculos */
+        $('.txtInput').change(function(){
+            cambios();
+        });
+        
+        function formularioHide(){
+            $('#listaContainer').show();
+            $('#formulario').hide()
+        }
+        
+        function formularioShow(){
+            $('#listaContainer').hide();
+            $('#formulario').show()
+        }
+        
+        function cambios(){
+            var t;
+            $('#ind_des_grupo1_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo1_ingcorpre').val())/parseFloat($('#ind_des_grupo1_gascordev').val()))){return t;}else{return'';}});
+            $('#ind_des_grupo2_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo2_gascordev').val())/parseFloat($('#ind_des_grupo2_totgascor').val()))){return t;}else{return'';}});
+            $('#ind_des_grupo3_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo3_ejegasinv').val())/parseFloat($('#ind_des_grupo3_totgasinv').val()))){return t;}else{return'';}});
+            $('#ind_des_grupo4_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo4_gascordev').val())/parseFloat($('#ind_des_grupo4_ingcorper').val()))){return t;}else{return'';}});
+            $('#ind_des_grupo5_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo5_armderdeu').val())/parseFloat($('#ind_des_grupo5_egrtotdev').val()))){return t;}else{return'';}});
+            $('#ind_des_grupo6_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo6_gascordev').val())/parseFloat($('#ind_des_grupo6_egrtotdev').val()))){return t;}else{return'';}});
+            $('#ind_des_grupo7_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo7_gastotinv').val())/parseFloat($('#ind_des_grupo7_egrtotdev').val()))){return t;}else{return'';}});
+            $('#ind_des_grupo8_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo8_gasinvinf').val())/parseFloat($('#ind_des_grupo8_ejegastot').val()))){return t;}else{return'';}});
+            $('#ind_des_grupo9_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo9_ingcorper').val())-parseFloat($('#ind_des_grupo9_gascordev').val()))){return t;}else{return'';}});
+            $('#ind_des_grupo10_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo10_gastotper').val())/parseFloat($('#ind_des_grupo10_ingcorper').val()))){return t;}else{return'';}});
+            $('#ind_des_grupo11_total').val(function(){if(isFinite(t=(1-(parseFloat($('#ind_des_grupo11_ingproper').val()))*100)/parseFloat($('#ind_des_grupo11_gascordev').val()))){return t;}else{return'';}});
+            $('#ind_des_grupo12_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo12_valdefser').val())/parseFloat($('#ind_des_grupo12_gastotser').val()))){return t;}else{return'';}});
+        }
+ 
+        
+        <?php
+        //echo '//'.$this->session->keep_flashdata('message');
+        if($this->session->flashdata('message')=='Ok'){
+            echo "$('#efectivo').dialog('open');";
+        }
+        if(isset($ind_des_id) && $ind_des_id > 0){
+            echo "formularioShow();cambios();";
+        }else{
+            echo "formularioHide();";
+        }
+        ?>
   
     });
 </script>
+
+<div id="efectivo" class="mensaje" title="Almacenado">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
+    </center>
+</div>
 
 
 <?php echo form_open() ?>
@@ -109,28 +129,50 @@ $this->load->view('plantilla/menu', $menu);
     <h2 class="h2Titulos">Indicadores de Desempeno Administrativo y Financiero Municipal</h2>
     <br/>
     <div id="rpt_frm_bdy">
-        <div class="campo">
-            <label>Departamento</label>
-            <select id='selDepto'>
-                <option value='0'>--Seleccione--</option>
-                <?php foreach ($departamentos as $depto) { ?>
+        <div id="listaContainer">
+            <div class="campo">
+                <label>Departamento</label>
+                <select id='selDepto'>
+                    <option value='0'>--Seleccione--</option>
+                    <?php foreach ($departamentos as $depto) { ?>
                     <option value='<?php echo $depto->dep_id; ?>'><?php echo $depto->dep_nombre; ?></option>
-                <?php } ?>
-            </select>
+                    <?php } ?>
+                </select>
+            </div>
+            <div class="campo">
+                <label>Municipio</label>
+                <select id='mun_id' name='mun_id'>
+                    <option value='0'>--Seleccione--</option>
+                </select>
+                <?php echo form_error('mun_id'); ?>
+            </div>
         </div>
-        <div class="campo">
-            <label>Municipio</label>
-            <select id='selMun' name='selMun'>
-                <option value='0'>--Seleccione--</option>
-            </select>
-        </div>
-        <div class="campo">
-            <label>Fecha:</label>
-            <input <?php if (isset($f_conformacion)) { ?> value='<?php echo date('d/m/Y', strtotime($f_conformacion)); ?>'<?php } ?>id="f_conformacion" name="f_conformacion" type="text" size="10" readonly="readonly"/>
-        </div>
-        <hr />
-        <div id="rpt-border"></div>
-        <!-- -->
+        <div id="formulario" style="display: none;">
+            <div class="campo">
+                <label>Departamento:</label>
+                <input id="depto" name="depto" type="text" readonly="readonly" value="<?php echo set_value('depto') ?>" />
+            </div>
+            <div class="campo">
+                <label>Municipio:</label>
+                <input id="muni" name="muni" type="text" readonly="readonly" value="<?php echo set_value('muni') ?>" />
+            </div>
+            <div class="campo">
+                <label>Fecha:</label>
+                <input id="ind_des_fecha" name="ind_des_fecha" type="text" readonly="readonly" value="<?php echo set_value('ind_des_fecha') ?>"/>
+                <?php echo form_error('ind_des_fecha'); ?>
+            </div>
+            <div class="campo">
+                <label>Periodo</label>
+                <span>Del </span>
+                <input id="ind_des_periodo_inicio" name="ind_des_periodo_inicio" type="text" value="<?php echo set_value('ind_des_periodo_inicio') ?>" style="width: 100px;"/>
+                <?php echo form_error('ind_des_periodo_inicio'); ?>
+                <span>Al</span>
+                <input id="ind_des_periodo_fin" name="ind_des_periodo_fin" type="text" value="<?php echo set_value('ind_des_periodo_fin') ?>" style="width: 100px;"/>
+                <?php echo form_error('ind_des_periodo_fin'); ?>
+            </div>
+            <hr />
+            <div id="rpt-border"></div>
+        <!-- F1 -->
         <div class="bigCampo">
             <label>Autonomia Operativa</label>
             <div class="comment">Mide la capacidad que tiene el municipio para financiar sus gastos operativos con sus recursos
@@ -144,19 +186,21 @@ $this->load->view('plantilla/menu', $menu);
                     <div class="col">
                         <div class="row">
                             <span>Ingresos Corrientes Precibidos</span>
-                            <input class="txtInput" id="t_ingTotPer" name="t_ingTotPer" />
+                            <input class="txtInput" id="ind_des_grupo1_ingcorpre" name="ind_des_grupo1_ingcorpre" value="<?php echo set_value('ind_des_grupo1_ingcorpre');?>" />
+                            <?php echo form_error('ind_des_grupo1_ingcorpre'); ?>
                         </div>
                         <hr />
                         <div class="row">
                             <span>Gastos Corrientes Devengados</span>
-                            <input class="txtInput" id="t_gasTotDev" name="t_gasTotDev" />
+                            <input class="txtInput" id="ind_des_grupo1_gascordev" name="ind_des_grupo1_gascordev" value="<?php echo set_value('ind_des_grupo1_gascordev');?>" />
+                            <?php echo form_error('ind_des_grupo1_gascordev'); ?>
                         </div>
                     </div>
                 </div>
              </div>
              <div class="result centrar">
                 <div class="hdr">Autonomia Operativa</div>
-                <input id="t_F1_total" name="t_F1_total" type="text" size="100" />
+                <input id="ind_des_grupo1_total" name="ind_des_grupo1_total" type="text" size="100" />
              </div>
         </div>
         <!-- F2 -->
@@ -171,19 +215,21 @@ $this->load->view('plantilla/menu', $menu);
                     <div class="col">
                         <div class="row">
                             <span>Gastos Corrientes Devengados</span>
-                            <input class="txtInput" id="t_ingProDev" name="t_ingProDev" />
+                            <input class="txtInput" id="ind_des_grupo2_gascordev" name="ind_des_grupo2_gascordev" value="<?php echo set_value('ind_des_grupo2_gascordev');?>" />
+                            <?php echo form_error('ind_des_grupo2_gascordev'); ?>
                         </div>
                         <hr />
                         <div class="row">
                             <span>Total Gastos Corrientes Presupuestados</span>
-                            <input class="txtInput" id="t_totIngDev" name="t_totIngDev" />
+                            <input class="txtInput" id="ind_des_grupo2_totgascor" name="ind_des_grupo2_totgascor" value="<?php echo set_value('ind_des_grupo2_totgascor');?>" />
+                            <?php echo form_error('ind_des_grupo2_totgascor'); ?>
                         </div>
                     </div>
                 </div>
              </div>
              <div class="result centrar">
                 <div class="hdr">Autonomia Administrativa</div>
-                <input id="t_F2_total" name="t_F2_total" type="text" size="100" />
+                <input id="ind_des_grupo2_total" name="ind_des_grupo2_total" type="text" size="100" />
              </div>
         </div>
         
@@ -198,19 +244,21 @@ $this->load->view('plantilla/menu', $menu);
                     <div class="col">
                         <div class="row">
                             <span>Ejecucion de Gastos de Inversion</span>
-                            <input class="txtInput" id="t_ingProDev" name="t_ingProDev" />
+                            <input class="txtInput" id="ind_des_grupo3_ejegasinv" name="ind_des_grupo3_ejegasinv" value="<?php echo set_value('ind_des_grupo3_ejegasinv');?>" />
+                            <?php echo form_error('ind_des_grupo3_ejegasinv'); ?>
                         </div>
                         <hr />
                         <div class="row">
                             <span>Total de Gastos de Inversion Presupuestados</span>
-                            <input class="txtInput" id="t_totIngDev" name="t_totIngDev" />
+                            <input class="txtInput" id="ind_des_grupo3_totgasinv" name="ind_des_grupo3_totgasinv" value="<?php echo set_value('ind_des_grupo3_totgasinv');?>" />
+                            <?php echo form_error('ind_des_grupo3_totgasinv'); ?>
                         </div>
                     </div>
                 </div>
              </div>
              <div class="result centrar">
                 <div class="hdr">Eficacia en la Recaudacion</div>
-                <input id="t_F3_total" name="t_F3_total" type="text" size="100" />
+                <input id="ind_des_grupo3_total" name="ind_des_grupo3_total" type="text" size="100" />
              </div>
         </div>
         
@@ -226,19 +274,21 @@ $this->load->view('plantilla/menu', $menu);
                     <div class="col">
                         <div class="row">
                             <span>Gastos Corrientes Devengados</span>
-                            <input class="txtInput" id="t_F4_monProPer" name="t_F4_monProPer" />
+                            <input class="txtInput" id="ind_des_grupo4_gascordev" name="ind_des_grupo4_gascordev" value="<?php echo set_value('ind_des_grupo4_gascordev');?>" />
+                            <?php echo form_error('ind_des_grupo4_gascordev'); ?>
                         </div>
                         <hr />
                         <div class="row">
                             <span>Ingresos Corrientes Percibidos</span>
-                            <input class="txtInput" id="t_F4_monProPre" name="t_F4_monProPre" />
+                            <input class="txtInput" id="ind_des_grupo4_ingcorper" name="ind_des_grupo4_ingcorper" value="<?php echo set_value('ind_des_grupo4_ingcorper');?>" />
+                            <?php echo form_error('ind_des_grupo4_ingcorper'); ?>
                         </div>
                     </div>
                 </div>
              </div>
              <div class="result centrar">
                 <div class="hdr">Eficacia del Gasto</div>
-                <input id="t_F4_total" name="t_F4_total" type="text" size="100" />
+                <input id="ind_des_grupo4_total" name="ind_des_grupo4_total" type="text" size="100" />
              </div>
         </div>
         
@@ -252,19 +302,21 @@ $this->load->view('plantilla/menu', $menu);
                     <div class="col">
                         <div class="row">
                             <span>Armotización del Servicio de la Deuda</span>
-                            <input class="txtInput" id="t_F5_ingTasPer" name="t_F5_ingTasPer" />
+                            <input class="txtInput" id="ind_des_grupo5_armderdeu" name="ind_des_grupo5_armderdeu" value="<?php echo set_value('ind_des_grupo5_armderdeu');?>" />
+                            <?php echo form_error('ind_des_grupo5_armderdeu'); ?>
                         </div>
                         <hr />
                         <div class="row">
                             <span>Egresos Totales Devengados</span>
-                            <input class="txtInput" id="t_F5_ingProPer" name="t_F5_ingProPer" />
+                            <input class="txtInput" id="ind_des_grupo5_egrtotdev" name="ind_des_grupo5_egrtotdev" value="<?php echo set_value('ind_des_grupo5_egrtotdev');?>" />
+                            <?php echo form_error('ind_des_grupo5_egrtotdev'); ?>
                         </div>
                     </div>
                 </div>
              </div>
              <div class="result centrar">
                 <div class="hdr">Servicio de la Deuda</div>
-                <input id="t_F5_total" name="t_F5_total" type="text" size="100" />
+                <input id="ind_des_grupo5_total" name="ind_des_grupo5_total" type="text" size="100" />
              </div>
         </div>
         
@@ -279,19 +331,21 @@ $this->load->view('plantilla/menu', $menu);
                     <div class="col">
                         <div class="row">
                             <span>Gastos Corrientes Devengados</span>
-                            <input class="txtInput" id="t_F6_ingImpPer" name="t_F6_ingImpPer" />
+                            <input class="txtInput" id="ind_des_grupo6_gascordev" name="ind_des_grupo6_gascordev" value="<?php echo set_value('ind_des_grupo6_gascordev');?>" />
+                            <?php echo form_error('ind_des_grupo6_gascordev'); ?>
                         </div>
                         <hr />
                         <div class="row">
                             <span>Egresos Totales Devengados</span>
-                            <input class="txtInput" id="t_F6_ingProPer" name="t_F6_ingProPer" />
+                            <input class="txtInput" id="ind_des_grupo6_egrtotdev" name="ind_des_grupo6_egrtotdev" value="<?php echo set_value('ind_des_grupo6_egrtotdev');?>" />
+                            <?php echo form_error('ind_des_grupo6_egrtotdev'); ?>
                         </div>
                     </div>
                 </div>
              </div>
              <div class="result centrar">
                 <div class="hdr">Participacion de los Gastos Operativos</div>
-                <input id="t_F6_total" name="t_F6_total" type="text" size="100" />
+                <input id="ind_des_grupo6_total" name="ind_des_grupo6_total" type="text" size="100" />
              </div>
         </div>
         
@@ -307,19 +361,21 @@ $this->load->view('plantilla/menu', $menu);
                     <div class="col">
                         <div class="row">
                             <span>Gastos Total de Inversión</span>
-                            <input class="txtInput" id="t_F6_ingImpPer" name="t_F6_ingImpPer" />
+                            <input class="txtInput" id="ind_des_grupo7_gastotinv" name="ind_des_grupo7_gastotinv" value="<?php echo set_value('ind_des_grupo7_gastotinv');?>" />
+                            <?php echo form_error('ind_des_grupo7_gastotinv'); ?>
                         </div>
                         <hr />
                         <div class="row">
                             <span>Egresos Totales Devengados</span>
-                            <input class="txtInput" id="t_F6_ingProPer" name="t_F6_ingProPer" />
+                            <input class="txtInput" id="ind_des_grupo7_egrtotdev" name="ind_des_grupo7_egrtotdev" value="<?php echo set_value('ind_des_grupo7_egrtotdev');?>" />
+                            <?php echo form_error('ind_des_grupo7_egrtotdev'); ?>
                         </div>
                     </div>
                 </div>
              </div>
              <div class="result centrar">
                 <div class="hdr">Participacion de la Inversión</div>
-                <input id="t_F7_total" name="t_F7_total" type="text" size="100" />
+                <input id="ind_des_grupo7_total" name="ind_des_grupo7_total" type="text" size="100" />
              </div>
         </div>
         
@@ -335,19 +391,21 @@ $this->load->view('plantilla/menu', $menu);
                     <div class="col">
                         <div class="row">
                             <span>Gastos de Inversión en Infraestructura</span>
-                            <input class="txtInput" id="t_F6_ingImpPer" name="t_F6_ingImpPer" />
+                            <input class="txtInput" id="ind_des_grupo8_gasinvinf" name="ind_des_grupo8_gasinvinf" value="<?php echo set_value('ind_des_grupo8_gasinvinf');?>" />
+                            <?php echo form_error('ind_des_grupo8_gasinvinf'); ?>
                         </div>
                         <hr />
                         <div class="row">
                             <span>Ejecución de Gastos Totales de Inversión</span>
-                            <input class="txtInput" id="t_F6_ingProPer" name="t_F6_ingProPer" />
+                            <input class="txtInput" id="ind_des_grupo8_ejegastot" name="ind_des_grupo8_ejegastot" value="<?php echo set_value('ind_des_grupo8_ejegastot');?>" />
+                            <?php echo form_error('ind_des_grupo8_ejegastot'); ?>
                         </div>
                     </div>
                 </div>
              </div>
              <div class="result centrar">
                 <div class="hdr">Inversión en Infraestructura</div>
-                <input id="t_F8_total" name="t_F8_total" type="text" size="100" />
+                <input id="ind_des_grupo8_total" name="ind_des_grupo8_total" type="text" size="100" />
              </div>
         </div>
         
@@ -363,16 +421,18 @@ $this->load->view('plantilla/menu', $menu);
                     <div class="col">
                         <div class="row">
                             <span>Ingresos Corrientes Percibios</span>
-                            <input class="txtInput" id="t_F6_ingImpPer" name="t_F6_ingImpPer" />
+                            <input class="txtInput" id="ind_des_grupo9_ingcorper" name="ind_des_grupo9_ingcorper" value="<?php echo set_value('ind_des_grupo9_ingcorper');?>" />
+                            <?php echo form_error('ind_des_grupo9_ingcorper'); ?>
                             <span>- Gastos Corrientes Devengados</span>
-                            <input class="txtInput" id="t_F6_ingProPer" name="t_F6_ingProPer" />
+                            <input class="txtInput" id="ind_des_grupo9_gascordev" name="ind_des_grupo9_gascordev" value="<?php echo set_value('ind_des_grupo9_gascordev');?>" />
+                            <?php echo form_error('ind_des_grupo9_gascordev'); ?>
                         </div>
                     </div>
                 </div>
              </div>
              <div class="result centrar">
                 <div class="hdr">Ahorro Corriente</div>
-                <input id="t_F9_total" name="t_F9_total" type="text" size="100" />
+                <input id="ind_des_grupo9_total" name="ind_des_grupo9_total" type="text" size="100" />
              </div>
         </div>
         
@@ -388,19 +448,21 @@ $this->load->view('plantilla/menu', $menu);
                     <div class="col">
                         <div class="row">
                             <span>Gasto Total en Personal del Ejercicio Fiscal</span>
-                            <input class="txtInput" id="t_F6_ingImpPer" name="t_F6_ingImpPer" />
+                            <input class="txtInput" id="ind_des_grupo10_gastotper" name="ind_des_grupo10_gastotper" value="<?php echo set_value('ind_des_grupo10_gastotper');?>" />
+                            <?php echo form_error('ind_des_grupo10_gastotper'); ?>
                         </div>
                         <hr />
                         <div class="row">
                             <span>Ingreso Corrientes Percibidos</span>
-                            <input class="txtInput" id="t_F6_ingProPer" name="t_F6_ingProPer" />
+                            <input class="txtInput" id="ind_des_grupo10_ingcorper" name="ind_des_grupo10_ingcorper" value="<?php echo set_value('ind_des_grupo10_ingcorper');?>" />
+                            <?php echo form_error('ind_des_grupo10_ingcorper'); ?>
                         </div>
                     </div>
                 </div>
              </div>
              <div class="result centrar">
                 <div class="hdr">Indice de gasto Personal</div>
-                <input id="t_F10_total" name="t_F10_total" type="text" size="100" />
+                <input id="ind_des_grupo10_total" name="ind_des_grupo10_total" type="text" size="100" />
              </div>
         </div>
         
@@ -416,12 +478,14 @@ $this->load->view('plantilla/menu', $menu);
                     <div class="col">
                         <div class="row">
                             <span>Ingresos Propios Percibidos</span>
-                            <input class="txtInput" id="t_F6_ingImpPer" name="t_F6_ingImpPer" />
+                            <input class="txtInput" id="ind_des_grupo11_ingproper" name="ind_des_grupo11_ingproper" value="<?php echo set_value('ind_des_grupo11_ingproper');?>" />
+                            <?php echo form_error('ind_des_grupo11_ingproper'); ?>
                         </div>
                         <hr />
                         <div class="row">
                             <span>Gasto Corriente Devengado</span>
-                            <input class="txtInput" id="t_F6_ingProPer" name="t_F6_ingProPer" />
+                            <input class="txtInput" id="ind_des_grupo11_gascordev" name="ind_des_grupo11_gascordev" value="<?php echo set_value('ind_des_grupo11_gascordev');?>" />
+                            <?php echo form_error('ind_des_grupo11_gascordev'); ?>
                         </div>
                     </div>
                     <div class="col">) x 100</div>
@@ -429,7 +493,7 @@ $this->load->view('plantilla/menu', $menu);
              </div>
              <div class="result centrar">
                 <div class="hdr">Indice de Subsidio</div>
-                <input id="t_F11_total" name="t_F11_total" type="text" size="100" />
+                <input id="ind_des_grupo11_total" name="ind_des_grupo11_total" type="text" size="100" />
              </div>
         </div>
         
@@ -445,19 +509,21 @@ $this->load->view('plantilla/menu', $menu);
                     <div class="col">
                         <div class="row">
                             <span>Valor del Deficit de los Servicios</span>
-                            <input class="txtInput" id="t_F6_ingImpPer" name="t_F6_ingImpPer" />
+                            <input class="txtInput" id="ind_des_grupo12_valdefser" name="ind_des_grupo12_valdefser" value="<?php echo set_value('ind_des_grupo12_valdefser');?>" />
+                            <?php echo form_error('ind_des_grupo12_valdefser'); ?>
                         </div>
                         <hr />
                         <div class="row">
                             <span>Gasto Total de los Servicios</span>
-                            <input class="txtInput" id="t_F6_ingProPer" name="t_F6_ingProPer" />
+                            <input class="txtInput" id="ind_des_grupo12_gastotser" name="ind_des_grupo12_gastotser" value="<?php echo set_value('ind_des_grupo12_gastotser');?>" />
+                            <?php echo form_error('ind_des_grupo12_gastotser'); ?>
                         </div>
                     </div>
                 </div>
              </div>
              <div class="result centrar">
                 <div class="hdr">Indice de Subsidio</div>
-                <input id="t_F12_total" name="t_F12_total" type="text" size="100" />
+                <input id="ind_des_grupo12_total" name="ind_des_grupo12_total" type="text" size="100" />
              </div>
         </div>
                
@@ -477,6 +543,7 @@ $this->load->view('plantilla/menu', $menu);
             <input type="submit" id="guardar" value="Guardar" />
             <input type="button" id="cancelar" value="Cancelar" />
         </div>
+        <input type="hidden" value="modificado" name="mod" id="mod" />
     </div>
 <?php echo form_close();
 $this->load->view('plantilla/footer'); ?>

@@ -176,49 +176,39 @@ $this->load->view('plantilla/menu', $menu);
         });
         /**/
         
-        /*ARCHIVOS*/
-        var button = $('#btn_subir'), interval;
-        new AjaxUpload('#btn_subir', {
-            action: '<?php echo base_url('componente2/comp23_E1/subirArchivo') . '/acuerdo_municipal2/1/acu_mun_id'; ?>',
+        /**/
+        var download_path = '<?php $t=set_value('acu_mun_archivo_acuerdo'); if($t!=''){echo base_url($t);}?>';
+        if(download_path==''){$('#btn_download').hide();}
+        $('#btn_upload').button();
+        $('#btn_download').button().click(function(e){
+            if(download_path != ''){
+                e.preventDefault();  //stop the browser from following
+                window.location.href = download_path;
+            }
+        });
+        new AjaxUpload('#btn_upload', {
+            action: '<?php echo base_url('componente2/comp24_E0/uploadFile') . '/acuerdo_municipal2/acu_mun_archivo_acuerdo/acu_mun_id/' . $acu_mun_id; ?>',
             onSubmit : function(file , ext){
                 if (! (ext && /^(pdf|doc|docx)$/.test(ext))){
-                    $('#extension').dialog('open');
+                    $('#vineta').html('<span class="error">Extension no Permitida</span>');
                     return false;
                 } else {
-                    $('#vinieta').val('Subiendo....');
+                    $('#vineta').html('Subiendo....');
                     this.disable();
                 }
             },
             onComplete: function(file, response,ext){
                 if(response!='error'){
-                    $('#vinieta').val('Subido con Exito');
-                    this.enable();			
-                    ext= (response.substring(response.lastIndexOf("."))).toLowerCase();
-                    nombre=response.substring(response.lastIndexOf("/")).toLowerCase().replace('/','');
-                    $('#vinietaD').val('Descargar '+nombre);
-                    $('#sol_asis_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO
-                    if (ext=='.pdf'){
-                        $('#btn_descargar').attr({
-                            'href': '<?php echo base_url(); ?>'+response,
-                            'target':'_blank'
-                        });
-                    }
-                    else{
-                        $('#btn_descargar').attr({
-                            'href': '<?php echo base_url(); ?>'+response,
-                            'target':'_self'
-                        });
-                    }
+                    $('#vineta').html('Ok');                    
+                    this.enable();
+                    download_path = response;
+                     $('#btn_download').show();
                 }else{
-                    $('#vinieta').val('El Archivo debe ser menor a 1 MB.');
+                    $('#vineta').html('<span class="error">Error</span>');
                     this.enable();			
                  
-                }
-                 
+                }/**/
             }	
-        });
-        $('#btn_descargar').click(function() {
-            $.get($(this).attr('href'));
         });
         /**/
                
@@ -336,20 +326,21 @@ $this->load->view('plantilla/menu', $menu);
                 <input id="total" name="count_female" readonly="" style="width: 50px; text-align: center;" value="0" />
             </div>
             <div style="width: 100%;">
-                <div style="width: 50%;">
-                    <div class="campo1">
+                <div style="width: 50%; display: inline-block;">
+                    <div class="campoUp">
                         <label style="text-align: left;">Observaciones</label>
                         <textarea id="acu_mun_observaciones" name="acu_mun_observaciones" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('acu_mun_observaciones')?></textarea>
                         <?php echo form_error('acu_mun_observaciones'); ?>
                     </div>
                 </div>
-                <div style="display:inline; width: 50%;">
-                    <div>Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente. Solo se permiten archivos con extensión pdf, doc, docx</div>
-                    <div id="btn_subir"></div>
-                    <input class="letraazul" type="text" id="vinieta" readonly="readonly" value="Subir Solicitud" size="30" style="border: none"/>
-                    <a <?php if (isset($sol_asis_ruta_archivo) && $sol_asis_ruta_archivo != '') { ?> href="<?php echo base_url() . $sol_asis_ruta_archivo; ?>"<?php } ?>  id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a>
-                    <input class="letraazul" type="text" id="vinietaD" readonly="readonly" <?php if (isset($sol_asis_ruta_archivo) && $sol_asis_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo ?>"<?php } else { ?> value="No Hay Solicitudes Por Descargar" <?php } ?>size="35" style="border: none"/>
-                    <?php echo form_error('acu_mun_archivo'); ?>
+                <div class="campoUp" style="display: inline-block;">
+                    <label>Cargar archivo:</label>
+                    <div id="fileUpload" style="margin-left: 20px;">
+                        <div id="btn_upload" style="display: inline-block;">Subir Acuerdo</div>
+                        <a id="btn_download" href="#" style="display: inline-block;">Descargar</a>
+                        <div id="vineta" style="display: inline-block;"></div>
+                        <div class="uploadText" style="width: 300px;">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente. Solo se permiten archivos con extensión pdf, doc, docx</div>
+                    </div>
                 </div>
             </div>
             <input id="archivo" name="archivo" value="<?php echo set_value('archivo') ?>" type="text" size="100" readonly="readonly" style="visibility: hidden"/>

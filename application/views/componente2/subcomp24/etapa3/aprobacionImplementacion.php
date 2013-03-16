@@ -12,11 +12,14 @@ $this->load->view('plantilla/menu', $menu);
 ?>
 <script type="text/javascript">        
     $(document).ready(function(){
+        
         /*VARIABLES*/
  
        
-        $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/comp23_E0/guardarSolicitud'); ?>';
+        $("#guardar").button();
+        
+        $("#btn_acuerdo_nuevo").button().click(function(){
+            $('#frm').submit();
         });
         
         $("#cancelar").button().click(function() {
@@ -25,58 +28,37 @@ $this->load->view('plantilla/menu', $menu);
         
         	/*CARGAR MUNICIPIOS*/
         $('#selDepto').change(function(){   
-            $("#guardar").hide();
-            $('#selMun').children().remove();
+            //$("#guardar").hide();
+            $('#mun_id').children().remove();
             $.getJSON('<?php echo base_url('componente2/proyectoPep/cargarMunicipios') ?>?dep_id='+$('#selDepto').val(), 
             function(data) {
                 var i=0;
                 $.each(data, function(key, val) {
                     if(key=='rows'){
-                        $('#selMun').append('<option value="0">--Seleccione Municipio--</option>');
+                        $('#mun_id').append('<option value="0">--Seleccione Municipio--</option>');
                         $.each(val, function(id, registro){
-                            $('#selMun').append('<option value="'+registro['cell'][0]+'">'+registro['cell'][1]+'</option>');
+                            var text = '<option ';
+                            if(registro['cell'][0]=='<?php echo set_value('mun_id'); ?>'){
+                                text = text + 'selected="" ';
+                            }
+                            text = text + 'value="'+registro['cell'][0]+'">'+registro['cell'][1]+'</option>'
+                            $('#mun_id').append(text);
                         });                    
                     }
                 });
             });              
         });
-        $('#selMun').change(function(){
+        $('#mun_id').change(function(){
+            window.location.href = '<?php echo current_url(); ?>/' + $('#mun_id').val();
             $('#Mensajito').hide();
-            $("#guardar").hide();
-            $.getJSON('<?php echo base_url('componente2/comp23_E1/verificarProyectoPep') . "/" ?>'+$('#selMun').val(), 
-            function(data) {
-                $('#Mensajito').hide();
-                $.each(data, function(key, val) {
-                    if(key=="records"){
-                        if(val=="0"){
-                            $('#Mensajito').show();
-                            $("#guardar").hide();
-                            $('#Mensajito').val("Este municipio no posee ningún Proyecto PEP asignado");
-                        }else{
-                            $('#Mensajito').hide();
-                            $("#guardar").show();
-                        }
-                    }
-                });
-            });              
+            $("#guardar").show();              
         });
                 
         /*PARA EL DATEPICKER*/
-        $( "#f_presentacion" ).datepicker({
-            showOn: 'both',
-            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
-        });
-        $( "#f_vistobueno" ).datepicker({
-            showOn: 'both',
-            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
-        });
-        $( "#f_aprobacion" ).datepicker({
-            showOn: 'both',
-            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+        $( "#ind_des_fecha" ).datepicker({
+            showOn:         'both',
+            maxDate:        '+1D',
+            buttonImage:    '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
             dateFormat: 'dd/mm/yy'
         });
@@ -94,9 +76,41 @@ $this->load->view('plantilla/menu', $menu);
         });
  
         /*FIN DIALOGOS VALIDACION*/
-  
+        
+        /* Calculos */
+        $('.txtInput').change(function(){
+            cambios();
+        });
+        
+        function formularioHide(){
+            $('#listaContainer').show();
+            $('#formulario').hide()
+        }
+        
+        function formularioShow(){
+            $('#listaContainer').hide();
+            $('#formulario').show()
+        }
+        
+        <?php
+        //echo '//'.$this->session->keep_flashdata('message');
+        if($this->session->flashdata('message')=='Ok'){
+            echo "$('#efectivo').dialog('open');";
+        }
+        if(isset($ind_des_id) && $ind_des_id > 0){
+            echo "formularioShow();cambios();";
+        }else{
+            echo "formularioHide();";
+        }
+        ?>
     });
 </script>
+
+<div id="efectivo" class="mensaje" title="Almacenado">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
+    </center>
+</div>
 
 <?php echo form_open() ?>
 
@@ -139,6 +153,7 @@ $this->load->view('plantilla/menu', $menu);
             
         <div class="campo">
             <label style="width: 400px;">Cargar archivo</label>
+            
         </div>
         
         <div class="campoUp">
