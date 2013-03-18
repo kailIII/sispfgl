@@ -31,9 +31,18 @@ class Comp25_fase1 extends CI_Controller {
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $this->load->model('tank_auth/users', 'usuarios');
+        $rol = $this->usuarios->obtenerCodigoRol($this->tank_auth->get_username());
         //OBTENER DEPARTAMENTOS
         $this->load->model('pais/departamento');
-        $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
+        $this->load->model('consultor/consultor');
+        $cons = $this->consultor->obtenerConsultorPorUsuario($this->tank_auth->get_username());
+
+        if (strcmp($rol[0]->rol_codigo, 'gdrc') == 0)
+            $informacion['departamentos'] = $this->departamento->obtenerDepartamentosPorGrupoGDR($cons[0]->cons_id);
+        else
+            $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
+
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp25/fase1/revisionInformacion_view');
@@ -324,9 +333,18 @@ class Comp25_fase1 extends CI_Controller {
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $this->load->model('tank_auth/users', 'usuarios');
+        $rol = $this->usuarios->obtenerCodigoRol($this->tank_auth->get_username());
         //OBTENER DEPARTAMENTOS
         $this->load->model('pais/departamento');
-        $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
+        $this->load->model('consultor/consultor');
+        $cons = $this->consultor->obtenerConsultorPorUsuario($this->tank_auth->get_username());
+
+        if (strcmp($rol[0]->rol_codigo, 'gdrc') == 0)
+            $informacion['departamentos'] = $this->departamento->obtenerDepartamentosPorGrupoGDR($cons[0]->cons_id);
+        else
+            $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
+
         $this->load->model('fase1-sub25/nombre_rubro', 'nomRub');
         $informacion['nombreRubros'] = $this->nomRub->obtenerNombresRubro();
         $this->load->view('plantilla/header', $informacion);
@@ -463,9 +481,18 @@ class Comp25_fase1 extends CI_Controller {
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $this->load->model('tank_auth/users', 'usuarios');
+        $rol = $this->usuarios->obtenerCodigoRol($this->tank_auth->get_username());
         //OBTENER DEPARTAMENTOS
         $this->load->model('pais/departamento');
-        $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
+        $this->load->model('consultor/consultor');
+        $cons = $this->consultor->obtenerConsultorPorUsuario($this->tank_auth->get_username());
+
+        if (strcmp($rol[0]->rol_codigo, 'gdrc') == 0)
+            $informacion['departamentos'] = $this->departamento->obtenerDepartamentosPorGrupoGDR($cons[0]->cons_id);
+        else
+            $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
+
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp25/fase1/aprobacionPerfil_view');
@@ -652,9 +679,18 @@ class Comp25_fase1 extends CI_Controller {
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $this->load->model('tank_auth/users', 'usuarios');
+        $rol = $this->usuarios->obtenerCodigoRol($this->tank_auth->get_username());
         //OBTENER DEPARTAMENTOS
         $this->load->model('pais/departamento');
-        $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
+        $this->load->model('consultor/consultor');
+        $cons = $this->consultor->obtenerConsultorPorUsuario($this->tank_auth->get_username());
+
+        if (strcmp($rol[0]->rol_codigo, 'gdrc') == 0)
+            $informacion['departamentos'] = $this->departamento->obtenerDepartamentosPorGrupoGDR($cons[0]->cons_id);
+        else
+            $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
+
         //RUBROS
         $this->load->model('fase1-sub25/nombre_rubro', 'nomRub');
         $informacion['nombreRubros'] = $this->nomRub->obtenerNombresRubro();
