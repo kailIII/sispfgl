@@ -50,8 +50,7 @@ class Librerias {
         $extension = end($partes);
         //OBTERNER LA EXTENSIÒN DEL ARCHIVO SI HAY UNO YA GUARDADO EN LA BASE
         $this->ci->load->model('ayuda_archivo', 'ayuArc');
-        echo $nombreArchivoBase = $this->ci->ayuArc->obtenerRutaArchivo($campo, $campo_id, $tabla);
-        die();
+        $nombreArchivoBase = $this->ci->ayuArc->obtenerRutaArchivo($campo, $campo_id, $tabla);
         $extArchivoBase = end(explode(".", $nombreArchivoBase[0]['ruta_archivo']));
         if (strcasecmp($extension, $extArchivoBase) && $extArchivoBase != '0')
             unlink($nombreArchivoBase[0]['ruta_archivo']);
@@ -126,10 +125,52 @@ class Librerias {
         
         	case 'money':
         	break;
+            
+            case 'bool':
+                return ($valor == 't');
+            break;
         
         	default :
                     return $valor;
         }
+    }
+    
+        function json_out($result, $index,$campos='all',$rows=10){
+        
+        //$consultoresInt = $this->conInt->obtenerConsultoresInteres($pro_id);
+        $numfilas = $result->num_rows();
+
+        $i = 0;
+        if ($numfilas != 0) {
+            foreach ($result->result() as $aux) {
+                $row = array();
+                foreach ($aux as $r => $v){
+                    //echo "r-$r;v-$v<br>\n";
+                    if($campos != 'all' && in_array($r,$campos)){
+                        array_push($row,$v);
+                    }else if($campos == 'all'){
+                        array_push($row,$v);
+                    }
+                }
+                $data[$i]['id'] = $aux->$index;
+                $data[$i]['cell'] = $row;
+                $i++;
+            }
+            array_multisort($data, SORT_ASC);
+        } else {
+            $data = array();
+        }
+
+        $datos = json_encode($data);
+        $pages = floor($numfilas / 10) + 1;
+        
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        return $jsonresponse;
     }
 
 }

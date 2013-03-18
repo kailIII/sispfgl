@@ -18,10 +18,6 @@ Class comp24 extends CI_Model{
         //return json_encode($data->result());
     }
     
-    public function getDepto($mun_id){
-        return $this->db->get_where('municipio',array('mun_id'=>$mun_id))->row()->mun_id;
-    }
-    
     public function count_sexo($tabla,$campo_sexo,$campo_index,$index){
         $male = $this->db->query('SELECT count(*) FROM ' . $tabla . ' WHERE ' . $campo_sexo . " = 'M' AND " . $campo_index . ' = ' . $index . ';' )->row()->count;
         $female = $this->db->query('SELECT count(*) FROM ' . $tabla . ' WHERE ' . $campo_sexo . " = 'F' AND " . $campo_index . ' = ' . $index . ';' )->row()->count;
@@ -56,6 +52,15 @@ Class comp24 extends CI_Model{
         );
         
         return $this->db->insert('acuerdo_municipal2', $data_new);
+    }
+    
+    public function getDepto($mun_id){
+        $sql = 'SELECT departamento.dep_nombre FROM
+departamento , municipio
+WHERE
+departamento.dep_id = (SELECT municipio.dep_id FROM municipio WHERE municipio.mun_id = ' . $mun_id . ')
+GROUP BY dep_nombre';
+        return $this->db->query($sql)->row();
     }
     
     public function get_by_Id($table,$index,$id){

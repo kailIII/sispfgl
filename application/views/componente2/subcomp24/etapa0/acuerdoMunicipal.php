@@ -176,49 +176,39 @@ $this->load->view('plantilla/menu', $menu);
         });
         /**/
         
-        /*ARCHIVOS*/
-        var button = $('#btn_subir'), interval;
-        new AjaxUpload('#btn_subir', {
-            action: '<?php echo base_url('componente2/comp23_E1/subirArchivo') . '/acuerdo_municipal2/1/acu_mun_id'; ?>',
+        /**/
+        var download_path = '<?php $t=set_value('acu_mun_archivo_acuerdo'); if($t!=''){echo base_url($t);}?>';
+        if(download_path==''){$('#btn_download').hide();}
+        $('#btn_upload').button();
+        $('#btn_download').button().click(function(e){
+            if(download_path != ''){
+                e.preventDefault();  //stop the browser from following
+                window.location.href = download_path;
+            }
+        });
+        new AjaxUpload('#btn_upload', {
+            action: '<?php echo base_url('componente2/comp24_E0/uploadFile') . '/acuerdo_municipal2/acu_mun_archivo_acuerdo/acu_mun_id/' . $acu_mun_id; ?>',
             onSubmit : function(file , ext){
                 if (! (ext && /^(pdf|doc|docx)$/.test(ext))){
-                    $('#extension').dialog('open');
+                    $('#vineta').html('<span class="error">Extension no Permitida</span>');
                     return false;
                 } else {
-                    $('#vinieta').val('Subiendo....');
+                    $('#vineta').html('Subiendo....');
                     this.disable();
                 }
             },
             onComplete: function(file, response,ext){
                 if(response!='error'){
-                    $('#vinieta').val('Subido con Exito');
-                    this.enable();			
-                    ext= (response.substring(response.lastIndexOf("."))).toLowerCase();
-                    nombre=response.substring(response.lastIndexOf("/")).toLowerCase().replace('/','');
-                    $('#vinietaD').val('Descargar '+nombre);
-                    $('#sol_asis_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO
-                    if (ext=='.pdf'){
-                        $('#btn_descargar').attr({
-                            'href': '<?php echo base_url(); ?>'+response,
-                            'target':'_blank'
-                        });
-                    }
-                    else{
-                        $('#btn_descargar').attr({
-                            'href': '<?php echo base_url(); ?>'+response,
-                            'target':'_self'
-                        });
-                    }
+                    $('#vineta').html('Ok');                    
+                    this.enable();
+                    download_path = response;
+                     $('#btn_download').show();
                 }else{
-                    $('#vinieta').val('El Archivo debe ser menor a 1 MB.');
+                    $('#vineta').html('<span class="error">Error</span>');
                     this.enable();			
                  
-                }
-                 
+                }/**/
             }	
-        });
-        $('#btn_descargar').click(function() {
-            $.get($(this).attr('href'));
         });
         /**/
                
@@ -273,81 +263,92 @@ $this->load->view('plantilla/menu', $menu);
     <h2 class="h2Titulos">Acuerdo Municipal</h2>
     <br/>
     <div id="rpt_frm_bdy">
-        <div class="campo">
-            <label>Departamento</label>
-            <select id='selDepto'>
-                <option value='0'>--Seleccione--</option>
-                <?php foreach ($departamentos as $depto) { ?>
-                    <option <?php echo ($depto->dep_id == set_value('selDepto'))?'selected=""':''; ?> value='<?php echo $depto->dep_id; ?>'><?php echo $depto->dep_nombre; ?></option>
-                <?php } ?>
-            </select>
-        </div>
-        <div class="campo">
-            <label>Municipio</label>
-            <select id='mun_id' name='mun_id'>
-                <option value='0'>--Seleccione--</option>
-            </select>
-            <?php echo form_error('mun_id'); ?>
-        </div>
-        <div id="rpt-border"></div>
-        <div id="listaContainer" style="margin-left: 300px;">
-            <table id="lista"></table>
-            <div id="pagerLista"></div>
-            <div id="btn_acuerdo_nuevo">Crear Nuevo</div>
+        <div id="listaContainer">
+            <div class="campo">
+                <label>Departamento</label>
+                <select id='selDepto'>
+                    <option value='0'>--Seleccione--</option>
+                    <?php foreach ($departamentos as $depto) { ?>
+                    <option value='<?php echo $depto->dep_id; ?>'><?php echo $depto->dep_nombre; ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+            <div class="campo">
+                <label>Municipio</label>
+                <select id='mun_id' name='mun_id'>
+                    <option value='0'>--Seleccione--</option>
+                </select>
+                <?php echo form_error('mun_id'); ?>
+            </div>
+            <div id="rpt-border"></div>
+            <div style="margin-left: 300px;">
+                <table id="lista"></table>
+                <div id="pagerLista"></div>
+                <div id="btn_acuerdo_nuevo">Crear Nuevo</div>
+            </div>
         </div>
         <div id="formulario" style="display: none;">
-        <div class="campo">
-            <label>Fecha de conformacion de comision municipal:</label>
-            <input id="acu_mun_fecha_conformacion" name="acu_mun_fecha_conformacion" type="text" readonly="readonly" value="<?php echo set_value('acu_mun_fecha_conformacion') ?>"/>
-            <?php echo form_error('acu_mun_fecha_conformacion'); ?>
-        </div>
-        <div class="campo">
-            <label>Fecha de acuerdo municipal:</label>
-            <input id="acu_mun_fecha_acuerdo" name="acu_mun_fecha_acuerdo" type="text" readonly="readonly" value="<?php echo set_value('acu_mun_fecha_acuerdo') ?>"/>
-            <?php echo form_error('acu_mun_fecha_acuerdo'); ?>
-        </div>
-        <div class="campo">
-            <label>Fecha de recepcion de acuerdo municipal:</label>
-            <input id="acu_mun_fecha_recepcion" name="acu_mun_fecha_recepcion" type="text" readonly="readonly" value="<?php echo set_value('acu_mun_fecha_recepcion') ?>"/>
-            <?php echo form_error('acu_mun_fecha_recepcion'); ?>
-        </div>
-        <div class="tabla">
-            <label>Miembros de la comision financiera municipal</label>
-            <table id="miembros"></table>
-            <div id="pagerMiembros"></div>
-        </div>
-        <div class="campo">
-            <label>Cantidad de Participantes:</label>
-            <span>Hombres</span>
-            <input id="hombres" name="count_male" readonly="" style="width: 50px; text-align: center;" value="0" />
-            <span>Mujeres</span>
-            <input id="mujeres" name="count_female" readonly="" style="width: 50px; text-align: center;" value="0" />
-            <span>Total</span>
-            <input id="total" name="count_female" readonly="" style="width: 50px; text-align: center;" value="0" />
-        </div>
-        <div style="width: 100%;">
-            <div style="width: 50%;">
-                <div class="campo1">
-                    <label style="text-align: left;">Observaciones</label>
-                    <textarea id="acu_mun_observaciones" name="acu_mun_observaciones" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('acu_mun_observaciones')?></textarea>
-                    <?php echo form_error('acu_mun_observaciones'); ?>
+            <div class="campo">
+                <label>Departamento:</label>
+                <input id="depto" name="depto" type="text" readonly="readonly" value="<?php echo set_value('depto') ?>" />
+            </div>
+            <div class="campo">
+                <label>Municipio:</label>
+                <input id="muni" name="muni" type="text" readonly="readonly" value="<?php echo set_value('muni') ?>" />
+            </div>
+            <div class="campo">
+                <label>Fecha de conformacion de comision municipal:</label>
+                <input id="acu_mun_fecha_conformacion" name="acu_mun_fecha_conformacion" type="text" readonly="readonly" value="<?php echo set_value('acu_mun_fecha_conformacion') ?>"/>
+                <?php echo form_error('acu_mun_fecha_conformacion'); ?>
+            </div>
+            <div class="campo">
+                <label>Fecha de acuerdo municipal:</label>
+                <input id="acu_mun_fecha_acuerdo" name="acu_mun_fecha_acuerdo" type="text" readonly="readonly" value="<?php echo set_value('acu_mun_fecha_acuerdo') ?>"/>
+                <?php echo form_error('acu_mun_fecha_acuerdo'); ?>
+            </div>
+            <div class="campo">
+                <label>Fecha de recepcion de acuerdo municipal:</label>
+                <input id="acu_mun_fecha_recepcion" name="acu_mun_fecha_recepcion" type="text" readonly="readonly" value="<?php echo set_value('acu_mun_fecha_recepcion') ?>"/>
+                <?php echo form_error('acu_mun_fecha_recepcion'); ?>
+            </div>
+            <div class="tabla">
+                <label>Miembros de la comision financiera municipal</label>
+                <table id="miembros"></table>
+                <div id="pagerMiembros"></div>
+            </div>
+            <div class="campo">
+                <label>Cantidad de Participantes:</label>
+                <span>Hombres</span>
+                <input id="hombres" name="count_male" readonly="" style="width: 50px; text-align: center;" value="0" />
+                <span>Mujeres</span>
+                <input id="mujeres" name="count_female" readonly="" style="width: 50px; text-align: center;" value="0" />
+                <span>Total</span>
+                <input id="total" name="count_female" readonly="" style="width: 50px; text-align: center;" value="0" />
+            </div>
+            <div style="width: 100%;">
+                <div style="width: 50%; display: inline-block;">
+                    <div class="campoUp">
+                        <label style="text-align: left;">Observaciones</label>
+                        <textarea id="acu_mun_observaciones" name="acu_mun_observaciones" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('acu_mun_observaciones')?></textarea>
+                        <?php echo form_error('acu_mun_observaciones'); ?>
+                    </div>
+                </div>
+                <div class="campoUp" style="display: inline-block;">
+                    <label>Cargar archivo:</label>
+                    <div id="fileUpload" style="margin-left: 20px;">
+                        <div id="btn_upload" style="display: inline-block;">Subir Acuerdo</div>
+                        <a id="btn_download" href="#" style="display: inline-block;">Descargar</a>
+                        <div id="vineta" style="display: inline-block;"></div>
+                        <div class="uploadText" style="width: 300px;">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente. Solo se permiten archivos con extensión pdf, doc, docx</div>
+                    </div>
                 </div>
             </div>
-            <div style="display:inline; width: 50%;">
-                <div>Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente. Solo se permiten archivos con extensión pdf, doc, docx</div>
-                <div id="btn_subir"></div>
-                <input class="letraazul" type="text" id="vinieta" readonly="readonly" value="Subir Solicitud" size="30" style="border: none"/>
-                <a <?php if (isset($sol_asis_ruta_archivo) && $sol_asis_ruta_archivo != '') { ?> href="<?php echo base_url() . $sol_asis_ruta_archivo; ?>"<?php } ?>  id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a>
-                <input class="letraazul" type="text" id="vinietaD" readonly="readonly" <?php if (isset($sol_asis_ruta_archivo) && $sol_asis_ruta_archivo != '') { ?>value="Descargar <?php echo $nombreArchivo ?>"<?php } else { ?> value="No Hay Solicitudes Por Descargar" <?php } ?>size="35" style="border: none"/>
-                <?php echo form_error('acu_mun_archivo'); ?>
+            <input id="archivo" name="archivo" value="<?php echo set_value('archivo') ?>" type="text" size="100" readonly="readonly" style="visibility: hidden"/>
+            <div id="actions" style="position: relative;top: 20px">
+                <input type="submit" id="guardar" value="Guardar" />
+                <input type="button" id="cancelar" value="Cancelar" />
             </div>
-        </div>
-        <input id="archivo" name="archivo" value="<?php echo set_value('archivo') ?>" type="text" size="100" readonly="readonly" style="visibility: hidden"/>
-        <div id="actions" style="position: relative;top: 20px">
-            <input type="submit" id="guardar" value="Guardar" />
-            <input type="button" id="cancelar" value="Cancelar" />
-        </div>
-        <input type="hidden" value="modificado" name="mod" id="mod" />
+            <input type="hidden" value="modificado" name="mod" id="mod" />
         </div>
     </div>
 <?php echo form_close();

@@ -12,9 +12,15 @@ $this->load->view('plantilla/menu', $menu);
 ?>
 <script type="text/javascript">        
     $(document).ready(function(){
+        
         /*VARIABLES*/
+ 
        
         $("#guardar").button();
+        
+        $("#btn_acuerdo_nuevo").button().click(function(){
+            $('#frm').submit();
+        });
         
         $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url(); ?>';
@@ -22,7 +28,7 @@ $this->load->view('plantilla/menu', $menu);
         
         	/*CARGAR MUNICIPIOS*/
         $('#selDepto').change(function(){   
-            $("#guardar").hide();
+            //$("#guardar").hide();
             $('#mun_id').children().remove();
             $.getJSON('<?php echo base_url('componente2/proyectoPep/cargarMunicipios') ?>?dep_id='+$('#selDepto').val(), 
             function(data) {
@@ -31,41 +37,32 @@ $this->load->view('plantilla/menu', $menu);
                     if(key=='rows'){
                         $('#mun_id').append('<option value="0">--Seleccione Municipio--</option>');
                         $.each(val, function(id, registro){
-                            $('#mun_id').append('<option value="'+registro['cell'][0]+'">'+registro['cell'][1]+'</option>');
+                            var text = '<option ';
+                            if(registro['cell'][0]=='<?php echo set_value('mun_id'); ?>'){
+                                text = text + 'selected="" ';
+                            }
+                            text = text + 'value="'+registro['cell'][0]+'">'+registro['cell'][1]+'</option>'
+                            $('#mun_id').append(text);
                         });                    
                     }
                 });
             });              
         });
         $('#mun_id').change(function(){
+            window.location.href = '<?php echo current_url(); ?>/' + $('#mun_id').val();
             $('#Mensajito').hide();
             $("#guardar").show();              
         });
-        
-        
                 
         /*PARA EL DATEPICKER*/
-        $( "#fecha" ).datepicker({
-            showOn: 'both',
-            maxDate: '+1D',
-            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+        $( "#ind_des_fecha" ).datepicker({
+            showOn:         'both',
+            maxDate:        '+1D',
+            buttonImage:    '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
             dateFormat: 'dd/mm/yy'
         });
         /*FIN DEL DATEPICKER*/
-        
-        /* Calculos */
-        $('.txtInput').change(function(){
-            
-            var d1_up   = parseFloat($('#t_pasCir').val()) + ( parseFloat($('#t_deuCorPla').val()) + parseFloat($('#t_interes').val()) );
-            var d1_down = parseFloat($('#t_ahoOper').val()) + parseFloat($('#t_intDueda').val());
-            $('#t_icp').val(d1_up/d1_down);
-            
-            var ingOpePer = $('#t_ingOpePer').val();
-            var deuMunTotal = $('#t_deuMunTotal').val();
-            $('#t_iop').val(deuMunTotal/ingOpePer);
-        });
-        
                
         /*DIALOGOS DE VALIDACION*/
         $('.mensaje').dialog({
@@ -79,10 +76,48 @@ $this->load->view('plantilla/menu', $menu);
         });
  
         /*FIN DIALOGOS VALIDACION*/
-  
+        
+        /* Calculos */
+        $('.txtInput').change(function(){
+            cambios();
+        });
+        
+        function formularioHide(){
+            $('#listaContainer').show();
+            $('#formulario').hide()
+        }
+        
+        function formularioShow(){
+            $('#listaContainer').hide();
+            $('#formulario').show()
+        }
+        
+        function cambios(){
+            var t;
+            $('#ind_des_grupo1_total').val(function(){if(isFinite(t=((parseFloat($('#ind_des_grupo1_pascir').val()) + ( parseFloat($('#ind_des_grupo1_deucorpla').val()) + parseFloat($('#ind_des_grupo1_int').val()) ))/(parseFloat($('#ind_des_grupo1_ahoope').val()) + parseFloat($('#ind_des_grupo1_intdeu').val()))))){return t;}else{return'';}});
+            $('#ind_des_grupo2_total').val(function(){if(isFinite(t=(parseFloat($('#ind_des_grupo2_deumuntot').val())/parseFloat($('#ind_des_grupo2_ingopeper').val())))){return t;}else{return'';}});
+        }
+ 
+        
+        <?php
+        //echo '//'.$this->session->keep_flashdata('message');
+        if($this->session->flashdata('message')=='Ok'){
+            echo "$('#efectivo').dialog('open');";
+        }
+        if(isset($ind_des_id) && $ind_des_id > 0){
+            echo "formularioShow();cambios();";
+        }else{
+            echo "formularioHide();";
+        }
+        ?>
     });
 </script>
 
+<div id="efectivo" class="mensaje" title="Almacenado">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
+    </center>
+</div>
 
 <?php echo form_open() ?>
 
@@ -90,121 +125,145 @@ $this->load->view('plantilla/menu', $menu);
     <h2 class="h2Titulos">Indicadores de Desempeno Administrativo y Financiero Municipal</h2>
     <br/>
     <div id="rpt_frm_bdy">
-        <div class="campo">
-            <label>Departamento</label>
-            <select id='selDepto'>
-                <option value='0'>--Seleccione--</option>
-                <?php foreach ($departamentos as $depto) { ?>
+        <div id="listaContainer">
+            <div class="campo">
+                <label>Departamento</label>
+                <select id='selDepto'>
+                    <option value='0'>--Seleccione--</option>
+                    <?php foreach ($departamentos as $depto) { ?>
                     <option value='<?php echo $depto->dep_id; ?>'><?php echo $depto->dep_nombre; ?></option>
-                <?php } ?>
-            </select>
+                    <?php } ?>
+                </select>
+            </div>
+            <div class="campo">
+                <label>Municipio</label>
+                <select id='mun_id' name='mun_id'>
+                    <option value='0'>--Seleccione--</option>
+                </select>
+                <?php echo form_error('mun_id'); ?>
+            </div>
         </div>
-        <div class="campo">
-            <label>Municipio</label>
-            <select id='mun_id' name=' mun_id '>
-                <option value='0'>--Seleccione--</option>
-            </select>
-        </div>
-        <div class="campo">
-            <label>Fecha:</label>
-            <input id="fecha" name="fecha" type="text" readonly="readonly" value="<?php echo set_value('fecha') ?>"/>
-            <?php echo form_error('fecha'); ?>
-        </div>
-        <div class="campo">
-            <label>Periodo</label>
-            <span>Del </span>
-            <input id="periodo_ini" name="periodo_ini" type="text" value="<?php echo set_value('periodo_ini') ?>" style="width: 150px;"/>
-            <?php echo form_error('periodo_ini'); ?>
-            <span>Al</span>
-            <input id="periodo_fin" name="periodo_fin" type="text" value="<?php echo set_value('periodo_fin') ?>" style="width: 150px;"/>
-            <?php echo form_error('periodo_fin'); ?>
-        </div>
-        <hr />
-        <div id="rpt-border"></div>
-        
-        <div class="bigCampo">
-            <label>Indice de Capacidad de Pago</label>
-            <div class="comment">Mide la disponibilidad de recursos financieros
-             con que cuenta la municipalidad para hacer frente al pago de la deuda 
-             de corto plazo y se considera escesivo cuando el indicador resultante
-             es un valor negativo, Art. 3 de la Ley de Endeudamiento Municipal:
-             No podra superar el limite maximo de 0.6 veces el ahorro operacional
-             obtenido por la municipalidad en el ejercicio fiscal anterior.</div>
-             <div class="bdy">
-                <div class="frm">
-                    <div class="hdr">Indice de Capacidad de Pago</div>
-                    <div class="igual">=</div>
-                    <div class="col">
-                        <div class="row">
-                            <span>Pasivo Circulante</span>
-                            <input class="txtInput" id="t_pasCir" name="t_pasCir" value="<?php echo set_value('t_pasCir') ?>" /><?php echo form_error('t_pasCir'); ?>
-                            <span>+ ( Deuda a Corto Plazo</span>
-                            <input class="txtInput" id="t_deuCorPla" name="t_deuCorPla" value="<?php echo set_value('t_deuCorPla') ?>" /><?php echo form_error('t_deuCorPla'); ?>
-                            <span>+ Intereses</span>
-                            <input class="txtInput" id="t_interes" name="t_interes" value="<?php echo set_value('t_interes') ?>" /><?php echo form_error('t_interes'); ?>
-                            <span>)</span>
-                        </div>
-                        <div></div>
-                        <hr />
-                        <div class="row">
-                            <span>Ahorro Operacional</span>
-                            <input class="txtInput" id="t_ahoOper" name="t_ahoOper" value="<?php echo set_value('t_ahoOper') ?>" /><?php echo form_error('t_ahoOper'); ?>
-                            <span>+ Intereses de la deuda</span>
-                            <input class="txtInput" id="t_intDueda" name="t_intDueda" value="<?php echo set_value('t_intDueda') ?>" /><?php echo form_error('t_intDueda'); ?>
+        <div id="formulario" style="display: none;">
+            <div class="campo">
+                <label>Departamento:</label>
+                <input id="depto" name="depto" type="text" readonly="readonly" value="<?php echo set_value('depto') ?>" />
+            </div>
+            <div class="campo">
+                <label>Municipio:</label>
+                <input id="muni" name="muni" type="text" readonly="readonly" value="<?php echo set_value('muni') ?>" />
+            </div>
+            <div class="campo">
+                <label>Fecha:</label>
+                <input id="ind_des_fecha" name="ind_des_fecha" type="text" readonly="readonly" value="<?php echo set_value('ind_des_fecha') ?>"/>
+                <?php echo form_error('ind_des_fecha'); ?>
+            </div>
+            <div class="campo">
+                <label>Periodo</label>
+                <span>Del </span>
+                <input id="ind_des_periodo_inicio" name="ind_des_periodo_inicio" type="text" value="<?php echo set_value('ind_des_periodo_inicio') ?>" style="width: 100px;"/>
+                <?php echo form_error('ind_des_periodo_inicio'); ?>
+                <span>Al</span>
+                <input id="ind_des_periodo_fin" name="ind_des_periodo_fin" type="text" value="<?php echo set_value('ind_des_periodo_fin') ?>" style="width: 100px;"/>
+                <?php echo form_error('ind_des_periodo_fin'); ?>
+            </div>
+            <hr />
+            <div id="rpt-border"></div>
+            
+            <div class="bigCampo">
+                <label>Indice de Capacidad de Pago</label>
+                <div class="comment">Mide la disponibilidad de recursos financieros
+                 con que cuenta la municipalidad para hacer frente al pago de la deuda 
+                 de corto plazo y se considera escesivo cuando el indicador resultante
+                 es un valor negativo, Art. 3 de la Ley de Endeudamiento Municipal:
+                 No podra superar el limite maximo de 0.6 veces el ahorro operacional
+                 obtenido por la municipalidad en el ejercicio fiscal anterior.</div>
+                 <div class="bdy">
+                    <div class="frm">
+                        <div class="hdr">Indice de Capacidad de Pago</div>
+                        <div class="igual">=</div>
+                        <div class="col">
+                            <div class="row">
+                                <span>Pasivo Circulante</span>
+                                <input class="txtInput" id="ind_des_grupo1_pascir" name="ind_des_grupo1_pascir" value="<?php echo set_value('ind_des_grupo1_pascir') ?>" />
+                                <?php echo form_error('ind_des_grupo1_pascir'); ?>
+                                <span>+ ( Deuda a Corto Plazo</span>
+                                <input class="txtInput" id="ind_des_grupo1_deucorpla" name="ind_des_grupo1_deucorpla" value="<?php echo set_value('ind_des_grupo1_deucorpla') ?>" />
+                                <?php echo form_error('ind_des_grupo1_deucorpla'); ?>
+                                <span>+ Intereses</span>
+                                <input class="txtInput" id="ind_des_grupo1_int" name="ind_des_grupo1_int" value="<?php echo set_value('ind_des_grupo1_int') ?>" />
+                                <?php echo form_error('ind_des_grupo1_int'); ?>
+                                <span>)</span>
+                            </div>
+                            <div></div>
+                            <hr />
+                            <div class="row">
+                                <span>Ahorro Operacional</span>
+                                <input class="txtInput" id="ind_des_grupo1_ahoope" name="ind_des_grupo1_ahoope" value="<?php echo set_value('ind_des_grupo1_ahoope') ?>" />
+                                <?php echo form_error('ind_des_grupo1_ahoope'); ?>
+                                <span>+ Intereses de la deuda</span>
+                                <input class="txtInput" id="ind_des_grupo1_intdeu" name="ind_des_grupo1_intdeu" value="<?php echo set_value('ind_des_grupo1_intdeu') ?>" />
+                                <?php echo form_error('ind_des_grupo1_intdeu'); ?>
+                            </div>
                         </div>
                     </div>
-                </div>
-             </div>
-             <div class="result centrar">
-                <div class="hdr">Indice Capacidad de Pago</div>
-                <input id="t_icp" name="t_icp" type="text" size="100"  value="<?php echo set_value('t_icp') ?>" readonly=""/>
-             </div>
-        </div>
-        
-        <div class="bigCampo">
-            <label>Limite de Endeudamiento Municipal</label>
-            <div class="comment">Mide el valor de dinero comprometido con relacion a cada dolar disponible,
-            el resultado no debera ser mayor que 1.70, (Art. 5 de la Ley de Endeudamiento Publico Municipal)
-            y se concidera aceptable, si cada vez que se determine el indicador, este resulta ser un valor
-            decreciente y menor que 1.70.</div>
-             <div class="bdy">
-                <div class="frm">
+                 </div>
+                 <div class="result centrar">
+                    <div class="hdr">Indice Capacidad de Pago</div>
+                    <input id="ind_des_grupo1_total" name="ind_des_grupo1_total" type="text" size="100"  value="<?php echo set_value('ind_des_grupo1_total') ?>" readonly=""/>
+                    <?php echo form_error('ind_des_grupo1_total'); ?>
+                 </div>
+            </div>
+            
+            <div class="bigCampo">
+                <label>Limite de Endeudamiento Municipal</label>
+                <div class="comment">Mide el valor de dinero comprometido con relacion a cada dolar disponible,
+                el resultado no debera ser mayor que 1.70, (Art. 5 de la Ley de Endeudamiento Publico Municipal)
+                y se concidera aceptable, si cada vez que se determine el indicador, este resulta ser un valor
+                decreciente y menor que 1.70.</div>
+                 <div class="bdy">
+                    <div class="frm">
+                        <div class="hdr">Limite de Endeudamiento Municipal</div>
+                        <div class="igual">=</div>
+                        <div class="col">
+                            <div class="row">
+                                <span>Deuda Municipal Total</span>
+                                <input class="txtInput" id="ind_des_grupo2_deumuntot" name="ind_des_grupo2_deumuntot" value="<?php echo set_value('ind_des_grupo2_deumuntot') ?>" />
+                                <?php echo form_error('ind_des_grupo2_deumuntot'); ?>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <span>Ingresos Operacionales Percibidos</span>
+                                <input class="txtInput" id="ind_des_grupo2_ingopeper" name="ind_des_grupo2_ingopeper" value="<?php echo set_value('ind_des_grupo2_ingopeper') ?>" />
+                                <?php echo form_error('ind_des_grupo2_ingopeper'); ?>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+                 <div class="result centrar">
                     <div class="hdr">Limite de Endeudamiento Municipal</div>
-                    <div class="igual">=</div>
-                    <div class="col">
-                        <div class="row">
-                            <span>Deuda Municipal Total</span>
-                            <input class="txtInput" id="t_deuMunTotal" name="t_deuMunTotal" value="<?php echo set_value('t_deuMunTotal') ?>" /><?php echo form_error('t_deuMunTotal'); ?>
-                        </div>
-                        <hr />
-                        <div class="row">
-                            <span>Ingresos Operacionales Percibidos</span>
-                            <input class="txtInput" id="t_ingOpePer" name="t_ingOpePer" value="<?php echo set_value('t_ingOpePer') ?>" /><?php echo form_error('t_ingOpePer'); ?>
-                        </div>
+                    <input id="ind_des_grupo2_total" name="ind_des_grupo2_total" type="text" size="100" value="<?php echo set_value('ind_des_grupo2_total') ?>" readonly=""/>
+                    <?php echo form_error('ind_des_grupo2_total'); ?>
+                 </div>
+            </div>
+            
+            <div style="width: 100%;">
+                <div style="width: 50%;">
+                    <div class="campo">
+                        <label>Observaciones</label>
+                        <textarea id="ind_des_observaciones" name="ind_des_observaciones" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('ind_des_observaciones') ?></textarea>
+                        <?php echo form_error('ind_des_observaciones'); ?>
                     </div>
                 </div>
-             </div>
-             <div class="result centrar">
-                <div class="hdr">Limite de Endeudamiento Municipal</div>
-                <input id="t_iop" name="t_iop" type="text" size="100" value="<?php echo set_value('t_iop') ?>" readonly=""/><?php echo form_error('t_iop'); ?>
-             </div>
-        </div>
-        
-        <div style="width: 100%;">
-            <div style="width: 50%;">
-                <div class="campo">
-                    <label>Observaciones</label>
-                    <textarea id="t_observaciones" name="t_observaciones" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('t_observaciones') ?></textarea>
+                <div style="width: 50%;">
+                    
                 </div>
             </div>
-            <div style="width: 50%;">
-                
+            
+            <div id="actions" style="position: relative;top: 20px">
+                <input type="submit" id="guardar" value="Guardar" />
+                <input type="button" id="cancelar" value="Cancelar" />
             </div>
-        </div>
-        
-        <div id="actions" style="position: relative;top: 20px">
-            <input type="submit" id="guardar" value="Guardar" />
-            <input type="button" id="cancelar" value="Cancelar" />
+            <input type="hidden" value="modificado" name="mod" id="mod" />
         </div>
     </div>
 <?php echo form_close();

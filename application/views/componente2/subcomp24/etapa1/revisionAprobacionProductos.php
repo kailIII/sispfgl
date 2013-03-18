@@ -12,11 +12,14 @@ $this->load->view('plantilla/menu', $menu);
 ?>
 <script type="text/javascript">        
     $(document).ready(function(){
+        
         /*VARIABLES*/
  
        
-        $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/comp23_E0/guardarSolicitud'); ?>';
+        $("#guardar").button();
+        
+        $("#btn_acuerdo_nuevo").button().click(function(){
+            $('#frm').submit();
         });
         
         $("#cancelar").button().click(function() {
@@ -25,57 +28,56 @@ $this->load->view('plantilla/menu', $menu);
         
         	/*CARGAR MUNICIPIOS*/
         $('#selDepto').change(function(){   
-            $("#guardar").hide();
-            $('#selMun').children().remove();
+            //$("#guardar").hide();
+            $('#mun_id').children().remove();
             $.getJSON('<?php echo base_url('componente2/proyectoPep/cargarMunicipios') ?>?dep_id='+$('#selDepto').val(), 
             function(data) {
                 var i=0;
                 $.each(data, function(key, val) {
                     if(key=='rows'){
-                        $('#selMun').append('<option value="0">--Seleccione Municipio--</option>');
+                        $('#mun_id').append('<option value="0">--Seleccione Municipio--</option>');
                         $.each(val, function(id, registro){
-                            $('#selMun').append('<option value="'+registro['cell'][0]+'">'+registro['cell'][1]+'</option>');
+                            var text = '<option ';
+                            if(registro['cell'][0]=='<?php echo set_value('mun_id'); ?>'){
+                                text = text + 'selected="" ';
+                            }
+                            text = text + 'value="'+registro['cell'][0]+'">'+registro['cell'][1]+'</option>'
+                            $('#mun_id').append(text);
                         });                    
                     }
                 });
             });              
         });
-        $('#selMun').change(function(){
+        $('#mun_id').change(function(){
+            window.location.href = '<?php echo current_url(); ?>/' + $('#mun_id').val();
             $('#Mensajito').hide();
-            $("#guardar").hide();
-            $.getJSON('<?php echo base_url('componente2/comp23_E1/verificarProyectoPep') . "/" ?>'+$('#selMun').val(), 
-            function(data) {
-                $('#Mensajito').hide();
-                $.each(data, function(key, val) {
-                    if(key=="records"){
-                        if(val=="0"){
-                            $('#Mensajito').show();
-                            $("#guardar").hide();
-                            $('#Mensajito').val("Este municipio no posee ning�n Proyecto PEP asignado");
-                        }else{
-                            $('#Mensajito').hide();
-                            $("#guardar").show();
-                        }
-                    }
-                });
-            });              
+            $("#guardar").show();              
         });
                 
         /*PARA EL DATEPICKER*/
-        $( "#f_presentacion" ).datepicker({
-            showOn: 'both',
-            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+        $( "#rea_pro_fecha_presentacion" ).datepicker({
+            showOn:         'both',
+            maxDate:        '+1D',
+            buttonImage:    '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd/mm/yy',
+            onClose: function( selectedDate ) {
+                $( "#rea_pro_fecha_vistobueno" ).datepicker( "option", "minDate", selectedDate );
+            }
         });
-        $( "#f_vistobueno" ).datepicker({
-            showOn: 'both',
-            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+        $( "#rea_pro_fecha_vistobueno" ).datepicker({
+            showOn:         'both',
+            maxDate:        '+1D',
+            buttonImage:    '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
+            dateFormat: 'dd/mm/yy',
+            onClose: function( selectedDate ) {
+                $( "#rea_pro_fecha_aprobacion" ).datepicker( "option", "minDate", selectedDate );
+            }
         });
-        $( "#f_aprobacion" ).datepicker({
+        $( "#rea_pro_fecha_aprobacion" ).datepicker({
             showOn: 'both',
+            maxDate:    '+1D',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
             dateFormat: 'dd/mm/yy'
@@ -94,9 +96,73 @@ $this->load->view('plantilla/menu', $menu);
         });
  
         /*FIN DIALOGOS VALIDACION*/
-  
+        
+        /**/
+        var download_path = '<?php $t=set_value('rea_pro_archivo_acta'); if($t!=''){echo base_url($t);}?>';
+        if(download_path==''){$('#btn_download').hide();}
+        $('#btn_upload').button();
+        $('#btn_download').button().click(function(e){
+            if(download_path != ''){
+                e.preventDefault();  //stop the browser from following
+                window.location.href = download_path;
+            }
+        });
+        new AjaxUpload('#btn_upload', {
+            action: '<?php echo base_url('componente2/comp24_E0/uploadFile') . '/revapro_productos/rea_pro_archivo_acta/rea_pro_id/' . $rea_pro_id; ?>',
+            onSubmit : function(file , ext){
+                if (! (ext && /^(pdf|doc|docx)$/.test(ext))){
+                    $('#vineta').html('<span class="error">Extension no Permitida</span>');
+                    return false;
+                } else {
+                    $('#vineta').html('Subiendo....');
+                    this.disable();
+                }
+            },
+            onComplete: function(file, response,ext){
+                if(response!='error'){
+                    $('#vineta').html('Ok');                    
+                    this.enable();
+                    download_path = response;
+                     $('#btn_download').show();
+                }else{
+                    $('#vineta').html('<span class="error">Error</span>');
+                    this.enable();			
+                 
+                }/**/
+                 
+            }	
+        });
+        /**/
+        
+        function formularioHide(){
+            $('#listaContainer').show();
+            $('#formulario').hide()
+        }
+        
+        function formularioShow(){
+            $('#listaContainer').hide();
+            $('#formulario').show()
+        } 
+        
+        <?php
+        //echo '//'.$this->session->keep_flashdata('message');
+        if($this->session->flashdata('message')=='Ok'){
+            echo "$('#efectivo').dialog('open');";
+        }
+        if(isset($rea_pro_id) && $rea_pro_id > 0){
+            echo "formularioShow();";
+        }else{
+            echo "formularioHide();";
+        }
+        ?>
     });
 </script>
+
+<div id="efectivo" class="mensaje" title="Almacenado">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
+    </center>
+</div>
 
 <?php echo form_open() ?>
 
@@ -104,58 +170,74 @@ $this->load->view('plantilla/menu', $menu);
     <h2 class="h2Titulos">Revision y Aprovacion de Productos</h2>
     <br/>
     <div id="rpt_frm_bdy">
-        <div class="campo">
-            <label>Departamento</label>
-            <select id='selDepto'>
-                <option value='0'>--Seleccione--</option>
-                <?php foreach ($departamentos as $depto) { ?>
+        <div id="listaContainer">
+            <div class="campo">
+                <label>Departamento</label>
+                <select id='selDepto'>
+                    <option value='0'>--Seleccione--</option>
+                    <?php foreach ($departamentos as $depto) { ?>
                     <option value='<?php echo $depto->dep_id; ?>'><?php echo $depto->dep_nombre; ?></option>
-                <?php } ?>
-            </select>
+                    <?php } ?>
+                </select>
+            </div>
+            <div class="campo">
+                <label>Municipio</label>
+                <select id='mun_id' name='mun_id'>
+                    <option value='0'>--Seleccione--</option>
+                </select>
+                <?php echo form_error('mun_id'); ?>
+            </div>
         </div>
-        <div class="campo">
-            <label>Municipio</label>
-            <select id='selMun' name='selMun'>
-                <option value='0'>--Seleccione--</option>
-            </select>
-        </div>
-        <hr />
-        <div id="rpt-border"></div>
+        <div id="formulario" style="display: none;">
+            <div class="campo">
+                <label>Departamento:</label>
+                <input id="depto" name="depto" type="text" readonly="readonly" value="<?php echo set_value('depto') ?>" />
+            </div>
+            <div class="campo">
+                <label>Municipio:</label>
+                <input id="muni" name="muni" type="text" readonly="readonly" value="<?php echo set_value('muni') ?>" />
+            </div>
         <!-- Lado Derecho -->
         <fieldset style="width: 450px; display: inline-block; vertical-align: top;">
             <legend>Productos</legend>
             <div class="campo">
                 <label style="text-align: left;">Plan de Trabajo</label>
-                <span>Si</span><input type="radio" name="t_planTrabajo" value="yes" />
-                <span>No</span><input type="radio" name="t_planTrabajo" value="no" checked="checked" />
+                <span>Si</span><input type="radio" name="rea_pro_is_plan_trabajo" value="t" <?php echo set_radio('rea_pro_is_plan_trabajo', 't'); ?>/>
+                <span>No</span><input type="radio" name="rea_pro_is_plan_trabajo" value="f" <?php echo set_radio('rea_pro_is_plan_trabajo', 'f', TRUE); ?>/>
+                <?php echo form_error('rea_pro_is_plan_trabajo'); ?>
             </div>
             <div class="campo">
                 <label style="text-align: left;">El Borrador del diagnostico contiene</label>
             </div>
             <div class="campo">
                 <label style="text-align: left; margin-left: 40px; width: 280px;">Perfil del municipio</label>
-                <span>Si</span><input type="radio" name="t_perfil" value="yes" />
-                <span>No</span><input type="radio" name="t_perfil" value="no" checked="checked" />
+                <span>Si</span><input type="radio" name="rea_pro_is_perfil" value="t" <?php echo set_radio('rea_pro_is_perfil', 't'); ?>/>
+                <span>No</span><input type="radio" name="rea_pro_is_perfil" value="f" <?php echo set_radio('rea_pro_is_perfil', 'f', TRUE); ?>/>
+                <?php echo form_error('rea_pro_is_perfil'); ?>
             </div>
             <div class="campo">
                 <label style="text-align: left; margin-left: 40px; width: 280px;">Indicadores de analisis de endeudamiento</label>
-                <span>Si</span><input type="radio" name="t_indAnaEnd" value="yes" />
-                <span>No</span><input type="radio" name="t_indAnaEnd" value="no" checked="checked" />
+                <span>Si</span><input type="radio" name="rea_pro_is_ind_endeudamiento" value="t" <?php echo set_radio('rea_pro_is_ind_endeudamiento', 't'); ?>/>
+                <span>No</span><input type="radio" name="rea_pro_is_ind_endeudamiento" value="f" <?php echo set_radio('rea_pro_is_ind_endeudamiento', 'f', TRUE); ?>/>
+                <?php echo form_error('rea_pro_is_ind_endeudamiento'); ?>
             </div>
             <div class="campo">
                 <label style="text-align: left; margin-left: 40px; width: 280px;">Indicadores del Comportamineto de ingresos</label>
-                <span>Si</span><input type="radio" name="t_indComIng" value="yes" />
-                <span>No</span><input type="radio" name="t_indComIng" value="no" checked="checked" />
+                <span>Si</span><input type="radio" name="rea_pro_is_ind_comp" value="t" <?php echo set_radio('rea_pro_is_ind_comp', 't'); ?>/>
+                <span>No</span><input type="radio" name="rea_pro_is_ind_comp" value="f" <?php echo set_radio('rea_pro_is_ind_comp', 'f', TRUE); ?>/>
+                <?php echo form_error('rea_pro_is_ind_comp'); ?>
             </div>
             <div class="campo">
                 <label style="text-align: left;">Informe de la etapa de diagnostico</label>
-                <span>Si</span><input type="radio" name="t_infEtaDia" value="yes" />
-                <span>No</span><input type="radio" name="t_infEtaDia" value="no" checked="checked" />
+                <span>Si</span><input type="radio" name="rea_pro_is_informe_diag" value="t" <?php echo set_radio('rea_pro_is_informe_diag', 't'); ?>/>
+                <span>No</span><input type="radio" name="rea_pro_is_informe_diag" value="f" <?php echo set_radio('rea_pro_is_informe_diag', 'f', TRUE); ?>/>
+                <?php echo form_error('rea_pro_is_informe_diag'); ?>
             </div>
             <div class="campo">
                 <label style="text-align: left;">Visto bueno de la municipalidad</label>
-                <span>Si</span><input type="radio" name="t_vistoBueno" value="yes" />
-                <span>No</span><input type="radio" name="t_vistoBueno" value="no" checked="checked" />
+                <span>Si</span><input type="radio" name="rea_pro_is_visto_bueno" value="t" <?php echo set_radio('rea_pro_is_visto_bueno', 't'); ?>/>
+                <span>No</span><input type="radio" name="rea_pro_is_visto_bueno" value="f" <?php echo set_radio('rea_pro_is_visto_bueno', 'f', TRUE); ?>/>
+                <?php echo form_error('rea_pro_is_visto_bueno'); ?>
             </div>
         </fieldset>
         
@@ -163,30 +245,40 @@ $this->load->view('plantilla/menu', $menu);
         <div style="display: inline-block; vertical-align: top;">
             <div class="campoUp">
                 <label>Fecha de presentacion de producto</label>
-                <input <?php if (isset($f_emision)) { ?> value='<?php echo date('d/m/Y', strtotime($f_emision)); ?>'<?php } ?>id="f_presentacion" name="f_presentacion" type="text" size="10" readonly="readonly"/>
+                <input id="rea_pro_fecha_presentacion" name="rea_pro_fecha_presentacion" type="text" readonly="readonly" value="<?php echo set_value('rea_pro_fecha_presentacion') ?>"/>
+                <?php echo form_error('rea_pro_fecha_presentacion'); ?>
             </div>
             <div class="campoUp">
                 <label>Fecha de visto bueno</label>
-                <input <?php if (isset($f_emision)) { ?> value='<?php echo date('d/m/Y', strtotime($f_emision)); ?>'<?php } ?>id="f_vistobueno" name="f_vistobueno" type="text" size="10" readonly="readonly"/>
+                <input id="rea_pro_fecha_vistobueno" name="rea_pro_fecha_vistobueno" type="text" readonly="readonly" value="<?php echo set_value('rea_pro_fecha_vistobueno') ?>"/>
+                <?php echo form_error('rea_pro_fecha_vistobueno'); ?>
             </div>
             <div class="campoUp">
                 <label>Fecha de aprobacion concejo Municipal</label>
-                <input <?php if (isset($f_emision)) { ?> value='<?php echo date('d/m/Y', strtotime($f_emision)); ?>'<?php } ?>id="f_aprobacion" name="f_aprobacion" type="text" size="10" readonly="readonly"/>
+                <input id="rea_pro_fecha_aprobacion" name="rea_pro_fecha_aprobacion" type="text" readonly="readonly" value="<?php echo set_value('rea_pro_fecha_aprobacion') ?>"/>
+                <?php echo form_error('rea_pro_fecha_aprobacion'); ?>
             </div>
-            
-            <div class="campo">
-                <label>Cargar archivo</label>
+            <div class="campoUp">
+                <label>Cargar archivo:</label>
+                <div id="fileUpload" style="margin-left: 20px;">
+                    <div id="btn_upload" style="display: inline-block;">Subir Acta</div>
+                    <a id="btn_download" href="#" style="display: inline-block;">Descargar</a>
+                    <div id="vineta" style="display: inline-block;"></div>
+                    <div class="uploadText" style="width: 300px;">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente. Solo se permiten archivos con extensión pdf, doc, docx</div>
+                </div>
             </div>
         </div>
         
-        <div class="campoUp">
+        <div class="campo">
             <label>Observaciones</label>
-            <textarea cols="30" rows="5" wrap="virtual" maxlength="100" style="margin-left: 20px;"></textarea>
+            <textarea id="rea_pro_observaciones" name="rea_pro_observaciones" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('rea_pro_observaciones') ?></textarea>
         </div>
         
         <div id="actions" style="position: relative;top: 20px">
             <input type="submit" id="guardar" value="Guardar" />
             <input type="button" id="cancelar" value="Cancelar" />
+        </div>
+        <input type="hidden" value="modificado" name="mod" id="mod" />
         </div>
     </div>
 <?php echo form_close();
