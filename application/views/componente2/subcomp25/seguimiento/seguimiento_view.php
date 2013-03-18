@@ -1,16 +1,326 @@
 <script type="text/javascript">        
     $(document).ready(function(){
+        var tabla2=$("#equipoTecnico");
+        tabla2.jqGrid({
+            url:'<?php echo base_url('componente2/comp25/cargarParticipantesSeg') ?>/seg_id/'+0,
+            editurl:'<?php echo base_url('componente2/comp23_E1/gestionParticipantes') ?>/seguimiento/seg_id/'+0,
+            datatype:'json',
+            altRows:true,
+            height: "100%",
+            hidegrid: false,
+            colNames:['id','Nombre','Apellido','Institución','Cargo'],
+            colModel:[
+                {name:'par_id',index:'par_id', width:40,editable:false,editoptions:{size:15} },
+                {name:'par_nombre',index:'par_nombre',width:200,editable:true,
+                    editoptions:{size:25,maxlength:50}, 
+                    formoptions:{label: "Nombres",elmprefix:"(*)"},
+                    editrules:{required:true} 
+                },
+                {name:'par_apellido',index:'par_apellido',width:200,editable:true,
+                    editoptions:{size:25,maxlength:50}, 
+                    formoptions:{label: "Apellidos",elmprefix:"(*)"},
+                    editrules:{required:true} 
+                },
+                {name:'par_institucion',index:'par_institucion',editable:true,
+                    edittype:"select",width:250,
+                    editoptions:{ dataUrl:'<?php echo base_url('componente2/comp23_E1/cargarInstituciones'); ?>'}, 
+                    formoptions:{ label: "Institución:",elmprefix:"(*)"},
+                    editrules:{custom:true, custom_func:validaInstitucion}
+                },
+                {name:'par_cargo',index:'par_cargo',width:250,editable:true,
+                    editoptions:{size:25,maxlength:30}, 
+                    formoptions:{ label: "Cargo",elmprefix:"(*)"},
+                    editrules:{required:true} 
+                },
+            ],
+            multiselect: false,
+         //   caption: "Equipo Técnico municipal o referente",
+            rowNum:10,
+            rowList:[10,20,30],
+            loadonce:true,
+            pager: jQuery('#pagerEquipoTecnico'),
+            viewrecords: true     
+        }).jqGrid('navGrid','#pagerEquipoTecnico',
+        {edit:true,add:true,del:true,search:false,refresh:false,
+            beforeRefresh: function() {
+                tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
+        },//OPCIONES
+        {closeAfterEdit:true,editCaption: "Editando participante",width:350,
+            align:'center',reloadAfterSubmit:true,
+            processData: "Cargando...",afterSubmit:despuesAgregarEditar2,
+            bottominfo:"Campos marcados con (*) son obligatorios", 
+            onclickSubmit: function(rp_ge, postdata) {
+                $('#mensaje').dialog('open');
+            }   
+        },//EDITAR
+        {closeAfterAdd:true,addCaption: "Agregar participante",width:350,
+            align:'center',reloadAfterSubmit:true,
+            processData: "Cargando...",afterSubmit:despuesAgregarEditar2,
+            bottominfo:"Campos marcados con (*) son obligatorios", 
+            onclickSubmit: function(rp_ge, postdata) {
+                $('#mensaje').dialog('open');
+            }
+        },//AGREGAR
+        {msg: "¿Desea Eliminar este participante?",caption:"Eliminando ",
+            align:'center',reloadAfterSubmit:true,
+            processData: "Cargando...",
+            onclickSubmit: function(rp_ge, postdata) {
+                $('#mensaje').dialog('open');                            
+            }
+        }//ELIMINAR
+    ).hideCol('par_id');
+        /* Funcion para regargar los JQGRID luego de agregar y editar*/
+        function despuesAgregarEditar2() {
+            tabla2.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');
+            return[true,'']; //no error
+        }
+        function validaInstitucion(value, colname) {
+            if (value == 0 ) return [false,"Seleccione la institucion del Participante"];
+            else return [true,""];
+        }
+        
         $("#guardar").button().click(function() {
-            $.ajax({
-                type: "POST",
-                url: '<?php echo base_url('componente2/comp25_seguimiento/guardarSeguimiento') ?>',
-                data: $("#seguimientoForm").serialize(), // serializes the form's elements.
-                success: function(data)
-                {
-                    $('#efectivo').dialog('open');
+            fecha1= $('#seg_forden_preparacion').datepicker("getDate");
+            fecha2=$( "#seg_facta_recepcion" ).datepicker("getDate");
+            fecha3=$( "#seg_forden_diagnostico" ).datepicker("getDate");
+            fecha4= $('#seg_fsocializacion').datepicker("getDate");
+            fecha5=$( "#seg_facta_aprobacion_d" ).datepicker("getDate");
+            fecha6=$( "#seg_forden_planificacion" ).datepicker("getDate");
+            fecha7=$('#seg_facta_aprobacion_p').datepicker("getDate");
+            fecha8=$('#seg_facuerdo_municipal').datepicker("getDate");
+            fecha9=$('#seg_fpresentacion_publica').datepicker("getDate");
+            fecha10=$('#seg_forden_seguimiento').datepicker("getDate");
+            if(fecha1==null){
+                $( "#seg_facta_recepcion" ).val('');
+                $( "#seg_forden_diagnostico" ).val('');
+                $('#seg_fsocializacion').val('');
+                $( "#seg_facta_aprobacion_d" ).val('');
+                $( "#seg_forden_planificacion" ).val('');
+                $('#seg_facta_aprobacion_p').val('');
+                $('#seg_facuerdo_municipal').val('');
+                $('#seg_fpresentacion_publica').val('');
+                $('#seg_forden_seguimiento').val('');
+                $.ajax({
+                    type: "POST",
+                    url: '<?php echo base_url('componente2/comp25_seguimiento/guardarSeguimiento') ?>',
+                    data: $("#seguimientoForm").serialize(), // serializes the form's elements.
+                    success: function(data)
+                    {
+                        $('#efectivo').dialog('open');
+                    }
+                });
+                return true;
+            }else{
+                if(fecha2==null){
+                    $( "#seg_forden_diagnostico" ).val('');
+                    $('#seg_fsocializacion').val('');
+                    $( "#seg_facta_aprobacion_d" ).val('');
+                    $( "#seg_forden_planificacion" ).val('');
+                    $('#seg_facta_aprobacion_p').val('');
+                    $('#seg_facuerdo_municipal').val('');
+                    $('#seg_fpresentacion_publica').val('');
+                    $('#seg_forden_seguimiento').val('');
+                    $.ajax({
+                        type: "POST",
+                        url: '<?php echo base_url('componente2/comp25_seguimiento/guardarSeguimiento') ?>',
+                        data: $("#seguimientoForm").serialize(), // serializes the form's elements.
+                        success: function(data)
+                        {
+                            $('#efectivo').dialog('open');
+                        }
+                    });
+                    return false;
+                }else{
+                    if(fecha1<fecha2){
+                        if(fecha3==null){
+                            $('#seg_fsocializacion').val('');
+                            $( "#seg_facta_aprobacion_d" ).val('');
+                            $( "#seg_forden_planificacion" ).val('');
+                            $('#seg_facta_aprobacion_p').val('');
+                            $('#seg_facuerdo_municipal').val('');
+                            $('#seg_fpresentacion_publica').val('');
+                            $('#seg_forden_seguimiento').val('');
+                            $.ajax({
+                                type: "POST",
+                                url: '<?php echo base_url('componente2/comp25_seguimiento/guardarSeguimiento') ?>',
+                                data: $("#seguimientoForm").serialize(), // serializes the form's elements.
+                                success: function(data)
+                                {
+                                    $('#efectivo').dialog('open');
+                                }
+                            });
+                            return false;
+                        }else{
+                            if(fecha2<fecha3){
+                                if(fecha4==null){
+                                    $( "#seg_facta_aprobacion_d" ).val('');
+                                    $( "#seg_forden_planificacion" ).val('');
+                                    $('#seg_facta_aprobacion_p').val('');
+                                    $('#seg_facuerdo_municipal').val('');
+                                    $('#seg_fpresentacion_publica').val('');
+                                    $('#seg_forden_seguimiento').val('');
+                                    $.ajax({
+                                        type: "POST",
+                                        url: '<?php echo base_url('componente2/comp25_seguimiento/guardarSeguimiento') ?>',
+                                        data: $("#seguimientoForm").serialize(), // serializes the form's elements.
+                                        success: function(data)
+                                        {
+                                            $('#efectivo').dialog('open');
+                                        }
+                                    });
+                                    return false;
+                                }else{
+                                    if(fecha3<fecha4){
+                                        if(fecha5==null){
+                                            $( "#seg_forden_planificacion" ).val('');
+                                            $('#seg_facta_aprobacion_p').val('');
+                                            $('#seg_facuerdo_municipal').val('');
+                                            $('#seg_fpresentacion_publica').val('');
+                                            $('#seg_forden_seguimiento').val('');
+                                            $.ajax({
+                                                type: "POST",
+                                                url: '<?php echo base_url('componente2/comp25_seguimiento/guardarSeguimiento') ?>',
+                                                data: $("#seguimientoForm").serialize(), // serializes the form's elements.
+                                                success: function(data)
+                                                {
+                                                    $('#efectivo').dialog('open');
+                                                }
+                                            });
+                                            return false;
+                                        }else{
+                                            if(fecha4<fecha5){
+                                                if(fecha6==null){
+                                                    $('#seg_facta_aprobacion_p').val('');
+                                                    $('#seg_facuerdo_municipal').val('');
+                                                    $('#seg_fpresentacion_publica').val('');
+                                                    $('#seg_forden_seguimiento').val('');
+                                                    $.ajax({
+                                                        type: "POST",
+                                                        url: '<?php echo base_url('componente2/comp25_seguimiento/guardarSeguimiento') ?>',
+                                                        data: $("#seguimientoForm").serialize(), // serializes the form's elements.
+                                                        success: function(data)
+                                                        {
+                                                            $('#efectivo').dialog('open');
+                                                        }
+                                                    });
+                                                    return false;
+                                                }else{
+                                                    if(fecha5<fecha6){
+                                                        if(fecha7==null){
+                                                            $('#seg_facuerdo_municipal').val('');
+                                                            $('#seg_fpresentacion_publica').val('');
+                                                            $('#seg_forden_seguimiento').val('');
+                                                            $.ajax({
+                                                                type: "POST",
+                                                                url: '<?php echo base_url('componente2/comp25_seguimiento/guardarSeguimiento') ?>',
+                                                                data: $("#seguimientoForm").serialize(), // serializes the form's elements.
+                                                                success: function(data)
+                                                                {
+                                                                    $('#efectivo').dialog('open');
+                                                                }
+                                                            });
+                                                            return false;
+                                                        }else{
+                                                            if(fecha6<fecha7){
+                                                                if(fecha8==null){
+                                                                    $('#seg_fpresentacion_publica').val('');
+                                                                    $('#seg_forden_seguimiento').val('');
+                                                                    $.ajax({
+                                                                        type: "POST",
+                                                                        url: '<?php echo base_url('componente2/comp25_seguimiento/guardarSeguimiento') ?>',
+                                                                        data: $("#seguimientoForm").serialize(), // serializes the form's elements.
+                                                                        success: function(data)
+                                                                        {
+                                                                            $('#efectivo').dialog('open');
+                                                                        }
+                                                                    });
+                                                                    return false;
+                                                                }else{
+                                                                    if(fecha7<fecha8){
+                                                                        if(fecha9==null){
+                                                                            $('#seg_forden_seguimiento').val('');
+                                                                            $.ajax({
+                                                                                type: "POST",
+                                                                                url: '<?php echo base_url('componente2/comp25_seguimiento/guardarSeguimiento') ?>',
+                                                                                data: $("#seguimientoForm").serialize(), // serializes the form's elements.
+                                                                                success: function(data)
+                                                                                {
+                                                                                    $('#efectivo').dialog('open');
+                                                                                }
+                                                                            });
+                                                                            return false;
+                                                                        }else{
+                                                                            if(fecha8<fecha9){
+                                                                                if(fecha10==null){ 
+                                                                                    $.ajax({
+                                                                                        type: "POST",
+                                                                                        url: '<?php echo base_url('componente2/comp25_seguimiento/guardarSeguimiento') ?>',
+                                                                                        data: $("#seguimientoForm").serialize(), // serializes the form's elements.
+                                                                                        success: function(data)
+                                                                                        {
+                                                                                            $('#efectivo').dialog('open');
+                                                                                        }
+                                                                                    });
+                                                                                    return false;
+                                                                                }else{
+                                                                                    if(fecha9<fecha10){
+                                                                                        $.ajax({
+                                                                                            type: "POST",
+                                                                                            url: '<?php echo base_url('componente2/comp25_seguimiento/guardarSeguimiento') ?>',
+                                                                                            data: $("#seguimientoForm").serialize(), // serializes the form's elements.
+                                                                                            success: function(data)
+                                                                                            {
+                                                                                                $('#efectivo').dialog('open');
+                                                                                            }
+                                                                                        });
+                                                                                        return false;
+                                                                                    }else{
+                                                                                        $('#fechaValidacion').dialog('open');
+                                                                                        return false; 
+                                                                                    }
+                                                                                }   
+                                                                            }else{
+                                                                                $('#fechaValidacion').dialog('open');
+                                                                                return false; 
+                                                                            }
+                                                                        }
+                                                                    }else{
+                                                                        $('#fechaValidacion').dialog('open');
+                                                                        return false;
+                                                                    }
+                                                                }
+                                                            }else{
+                                                                $('#fechaValidacion').dialog('open');
+                                                                return false;
+                                                            }
+                                                        }
+                                                        
+                                                    }else{
+                                                        $('#fechaValidacion').dialog('open');
+                                                        return false;
+                                                    }
+                                                }
+                                            }else{
+                                                $('#fechaValidacion').dialog('open');
+                                                return false;
+                                            }
+                                        }
+                                    }else{
+                                        $('#fechaValidacion').dialog('open');
+                                        return false;
+                                    }
+                                }
+                            }else{
+                                $('#fechaValidacion').dialog('open');
+                                return false;
+                            }
+                        }
+                    }else{
+                        $('#fechaValidacion').dialog('open');
+                        return false;
+                    }
                 }
-            });
-            return false;
+            }
         });
         /*DIALOGOS DE VALIDACION*/
         $('.mensaje').dialog({
@@ -61,11 +371,12 @@
                                 $('#seg_fpresentacion_publica').val(registro['cell'][9]);
                                 $('#seg_forden_seguimiento').val(registro['cell'][10]);
                                 $('#seg_comentario').val(registro['cell'][11]);
-                                /* tabla.setGridParam({
-                                    url:'<?php echo base_url('componente2/comp25_fase1/cargarNota') ?>/'+registro['cell'][0],
-                                    editurl:'<?php echo base_url('componente2/comp25_fase1/guardarNota') ?>/'+registro['cell'][0],
+                                $('#equipoTecnico').setGridParam({
+                                    url:'<?php echo base_url('componente2/comp25/cargarParticipantesSeg') ?>/seg_id/'+registro['cell'][0],
+                                    editurl:'<?php echo base_url('componente2/comp23_E1/gestionParticipantes') ?>/seguimiento/seg_id/'+registro['cell'][0],
                                     datatype:'json'
-                                }).trigger('reloadGrid');*/
+                                }).trigger('reloadGrid');
+                                
                                 $("#seguimientoForm").show();
                             });                    
                         }
@@ -140,45 +451,6 @@
             buttonImageOnly: true, 
             dateFormat: 'dd-mm-yy'
         });
-        /*GRID CRITERIOS ETAPA 0*/
-        var tabla=$("#seguimientoGrid");   
-        tabla.jqGrid({
-            //            url:'<?php echo base_url('componente2/comp23_E0/cargarCriterios') ?>',
-            //            editurl:'<?php echo base_url('componente2/comp23_E0/gestionarCriterios') ?>',
-            datatype:'json',
-            altRows:true,
-            height: "100%",
-            hidegrid: false,
-            colNames:['id','Criterios'],
-            colModel:[
-                {name:'criterio_id',index:'criterio_id', width:40,editable:false,editoptions:{size:15} },
-                {name:'criterio_nombre',index:'criterio_nombre',width:600,editable:true,
-                    editoptions:{size:25,maxlength:50}, 
-                    formoptions:{label: "Nombre",elmprefix:"(*)"},
-                    editrules:{required:true} 
-                }
-            ],
-            multiselect: false,
-            rowNum:15,
-            rowList:[15,30,45],
-            loadonce:true,
-            pager: jQuery('#pagerSeguimientoGrid'),
-            viewrecords: true
-        
-        }).jqGrid('navGrid','#pagerSeguimientoGrid',
-        {edit:false,add:false,del:false,search:true,refresh:false,
-            beforeRefresh: function() {
-                tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
-        }
-    ).hideCol('criterio_id');
-        /* Funcion para regargar los JQGRID luego de agregar y editar*/
-        function despuesAgregarEditar() {
-            tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');
-            return[true,'']; //no error
-        }
-        
-        
-        
         
     });
 </script>
@@ -262,8 +534,8 @@
         <tr></tr>
         <tr>
         <td colspan="2">
-            <table id="seguimientoGrid"></table>
-            <div id="pagerSeguimientoGrid"></div>
+            <table id="equipoTecnico"></table>
+            <div id="pagerEquipoTecnico"></div>
         </td>
         </tr>
 

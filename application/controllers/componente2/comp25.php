@@ -74,6 +74,43 @@ class Comp25 extends CI_Controller {
         echo $jsonresponse;
     }
 
+    public function cargarParticipantesSeg($campo, $id_campo) {
+        $this->load->model('participante');
+        $this->load->model('institucion');
+        $participantes = $this->participante->obtenerParticipantes($campo, $id_campo);
+        $numfilas = count($participantes);
+
+        $i = 0;
+        foreach ($participantes as $aux) {
+            $nombreInstitucion = $this->institucion->obtenerNombreInstitucion($aux->ins_id);
+            $rows[$i]['id'] = $aux->par_id;
+            $rows[$i]['cell'] = array($aux->par_id,
+                $aux->par_nombre,
+                $aux->par_apellido,
+                $nombreInstitucion[0]['ins_nombre'],
+                $aux->par_cargo
+            );
+            $i++;
+        }
+
+        if ($numfilas != 0) {
+            array_multisort($rows, SORT_ASC);
+        } else {
+            $rows = array();
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+
     public function cargarElaboracionProyecto($mun_id) {
         $this->load->model('pais/municipio');
         $this->load->model('fase1-sub25/elaboracion_proyecto', 'elaPro');
@@ -187,18 +224,17 @@ class Comp25 extends CI_Controller {
             $rec_mun_frecibido = null;
         $rec_mun_observacion = $this->input->post("rec_mun_observacion");
         $operacion = $this->input->post("oper");
-        switch ($operacion){
+        switch ($operacion) {
             case 'add':
                 $this->recMun->agregarRecibidoMunicipalidad($rec_mun_correlativo, $rec_mun_frecibido, $rec_mun_observacion, $ela_pro_id);
                 break;
             case 'edit':
-                $this->recMun->actualizarRecibidoMunicipalidad($rec_mun_id,$rec_mun_correlativo, $rec_mun_frecibido, $rec_mun_observacion); 
+                $this->recMun->actualizarRecibidoMunicipalidad($rec_mun_id, $rec_mun_correlativo, $rec_mun_frecibido, $rec_mun_observacion);
                 break;
             case 'del':
-                $this->recMun-> eliminarRecibidoMunicipalidad($rec_mun_id);
+                $this->recMun->eliminarRecibidoMunicipalidad($rec_mun_id);
                 break;
         }
-        
     }
 
 }
