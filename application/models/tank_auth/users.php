@@ -409,8 +409,8 @@ class Users extends CI_Model {
     function obtenerDepartamento($username) {
         
         $consulta='SELECT departamento.dep_nombre AS "Depto", municipio.mun_nombre AS "Muni",
-                            proyecto_pep.pro_pep_nombre AS "Proyecto",
-                             proyecto_pep.pro_pep_id AS "id"
+                          proyecto_pep.pro_pep_nombre AS "Proyecto",
+                          proyecto_pep.pro_pep_id AS "id"
                    FROM consultor, proyecto_pep, municipio, departamento
                    WHERE 
                         consultor.pro_pep_id = proyecto_pep.pro_pep_id AND
@@ -418,6 +418,13 @@ class Users extends CI_Model {
                         municipio.dep_id = departamento.dep_id AND
                         consultor."user" = ?';
         $query = $this->db->query($consulta,array($username));
+        return $query->result();
+    }
+    public function obtenerCodigoRol($username) {
+        $this->db->from($this->table_name);
+        $this->db->join('rol', "rol.rol_id=$this->table_name.rol_id");
+        $this->db->where("$this->table_name.username", $username);  
+        $query = $this->db->get();
         return $query->result();
     }
 
