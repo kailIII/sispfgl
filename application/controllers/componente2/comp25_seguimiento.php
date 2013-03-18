@@ -32,8 +32,18 @@ class comp25_seguimiento extends CI_Controller {
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
         //OBTENER DEPARTAMENTOS
+        $this->load->model('tank_auth/users', 'usuarios');
+        $rol = $this->usuarios->obtenerCodigoRol($this->tank_auth->get_username());
+        //OBTENER DEPARTAMENTOS
         $this->load->model('pais/departamento');
-        $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
+        $this->load->model('consultor/consultor');
+        $cons = $this->consultor->obtenerConsultorPorUsuario($this->tank_auth->get_username());
+
+        if (strcmp($rol[0]->rol_codigo, 'gdrc') == 0)
+            $informacion['departamentos'] = $this->departamento->obtenerDepartamentosPorGrupoGDR($cons[0]->cons_id);
+        else
+            $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
+
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp25/seguimiento/seguimiento_view');
@@ -117,7 +127,7 @@ class comp25_seguimiento extends CI_Controller {
 
         echo $jsonresponse;
     }
-    
+
     public function guardarSeguimiento() {
         $this->load->model('seguimiento-sub25/seguimiento');
         $seg_id = $this->input->post("seg_id");
@@ -152,9 +162,9 @@ class comp25_seguimiento extends CI_Controller {
         if ($seg_forden_seguimiento == "")
             $seg_forden_seguimiento = null;
         $seg_comentario = $this->input->post("seg_comentario");
-        $this->seguimiento->actualizarSeguimiento($seg_id, $seg_forden_preparacion, $seg_facta_recepcion,  $seg_forden_diagnostico
-            ,$seg_fsocializacion,$seg_facta_aprobacion_d,$seg_forden_planificacion,$seg_facta_aprobacion_p,$seg_facuerdo_municipal
-            ,$seg_fpresentacion_publica,$seg_forden_seguimiento,$seg_comentario);
+        $this->seguimiento->actualizarSeguimiento($seg_id, $seg_forden_preparacion, $seg_facta_recepcion, $seg_forden_diagnostico
+                , $seg_fsocializacion, $seg_facta_aprobacion_d, $seg_forden_planificacion, $seg_facta_aprobacion_p, $seg_facuerdo_municipal
+                , $seg_fpresentacion_publica, $seg_forden_seguimiento, $seg_comentario);
     }
 
 }
