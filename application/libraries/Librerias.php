@@ -172,6 +172,13 @@ class Librerias {
 
         return $jsonresponse;
     }
+    
+    function setNewId($tabla,$campo,$data){
+        $this->ci->db->insert($tabla,$data);
+        echo $this->ci->db->last_query();
+        $lastId = $this->ci->db->query("SELECT $campo FROM $tabla ORDER BY $campo DESC LIMIT 1;")->row()->$campo;
+        return $lastId;
+    }
 
 }
 

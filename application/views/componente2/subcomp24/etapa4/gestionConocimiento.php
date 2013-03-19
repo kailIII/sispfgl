@@ -38,7 +38,7 @@ $this->load->view('plantilla/menu', $menu);
         $('#mun_id').change(function(){
             jqLista.jqGrid('clearGridData')
                 .jqGrid('setGridParam', { 
-                    url: '<?php echo base_url('componente2/comp24_E3/getSegEvaluaciones'); ?>/' + $('#mun_id').val(), 
+                    url: '<?php echo base_url('componente2/comp24_E4/loadGescon'); ?>/' + $('#mun_id').val(), 
                     datatype: 'json', 
                     page:1 })
                 .trigger('reloadGrid');
@@ -46,40 +46,34 @@ $this->load->view('plantilla/menu', $menu);
         
         /*GRID*/
         $("#miembros").jqGrid({
-            url:'<?php echo base_url('componente2/comp24_E3/loadEmpleados') . '/' . $seg_eva_id; ?>',
-            editurl:'<?php echo base_url('componente2/comp24_E3/gestionEmpleados') . '/' . $seg_eva_id; ?>',
+            url:'<?php echo base_url('componente2/comp24_E4/loadParticipantes') . '/' . $gescon_id; ?>',
+            editurl:'<?php echo base_url('componente2/comp24_E4/gestionParticipantes') . '/' . $gescon_id; ?>',
             datatype:'json',
             altRows:true,
             gridview: true,
             hidegrid: false,
-            colNames:['id','Padre','Nombres','Apellidos','Sexo','Edad','Cargo','Telefono','Participa'],
+            colNames:['id','Padre','Nombres','Apellidos','Institución','Cargo','Telefono'],
             colModel:[
-                {name:'emp_id',index:'emp_id', width:30,editable:false,editoptions:{size:15},hidden:true },
+                {name:'par_id',index:'par_id', width:30,editable:false,editoptions:{size:15},hidden:true },
                 {name:'acu_mun_id',index:'acu_mun_id', width:30,editable:false,editoptions:{size:15},hidden:true },
-                {name:'emp_nombre',index:'emp_nombre', width:123,editable:false,
+                {name:'par_nombre',index:'par_nombre', width:123,editable:true,
                     edittype:'text',editoptions:{size:20,maxlength:50},
                     editrules:{required:true} },
-                {name:'emp_apellidos',index:'emp_apellidos', width:123,editable:false,
+                {name:'par_apellidos',index:'par_apellidos', width:123,editable:true,
                     edittypr:'text',editoptions:{size:20,maxlength:50},
                     editrules:{required:true} },
-                {name:'emp_sexo',index:'emp_sexo', width:90,editable:false,
-                    edittype:'select',formatter:'select',editoptions:{value:'M:Masculino;F:Femenino'},
-                    editrules:{required:true} },
-                {name:'emp_edad',index:'emp_edad', width:50,editable:false,align:'center',
-                    edittype:'text',editoptions:{size:5,maxlength:2},
-                    editrules:{number:true,minValue:18,maxValue:100} },
-                {name:'emp_cargo',index:'emp_cargo', width:123,editable:false,editoptions:{size:30},
+                {name:'par_institucion',index:'par_institucion', width:123,editable:true,editoptions:{size:30},
                     edittype:'text',editoptions:{size:20,maxlength:50},
                     editrules:{required:true} },
-                {name:'emp_telefono',index:'emp_telefono', width:80,editable:true,editoptions:{size:8},align:'center',
+                {name:'par_cargo',index:'par_cargo', width:123,editable:true,editoptions:{size:30},
+                    edittype:'text',editoptions:{size:20,maxlength:50},
+                    editrules:{required:true} },
+                {name:'par_telefono',index:'par_telefono', width:80,editable:true,editoptions:{size:8},align:'center',
                     edittype:'text',editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}
-                    },
-                {name:'participa',index:'participa', width:50,editable:true,align:'center',
-                    formatter:'checkbox',formatoptions:{disabled:false},
-                    edittype:'checkbox'}
+                    }
             ],
             multiselect: false,
-            caption: "Empleados Municipales",
+            caption: "Participantes",
             rowNum:20,
             rowList:[20,50],
             loadonce:true,
@@ -87,15 +81,6 @@ $this->load->view('plantilla/menu', $menu);
             viewrecords: true,
             ondblClickRow: function(rowid,iRow,iCol,e){
                  $('#miembros').jqGrid('editRow',rowid,true); 
-            },
-            gridComplete: 
-                function(){
-                $.getJSON('<?php echo base_url('componente2/comp24_E0/count_sexo/empleados/emp_sexo') ?>/emp_mun_id/<?php echo $seg_eva_id; ?>',
-                function(data) {
-                    $('#total').val(data['total']);
-                    $('#mujeres').val(data['female']);
-                    $('#hombres').val(data['male']);
-                }); 
             }
         });
         $("#miembros").jqGrid('navGrid','#pagerMiembros',
@@ -106,67 +91,9 @@ $this->load->view('plantilla/menu', $menu);
         );
         $("#miembros").jqGrid('inlineNav',"#pagerMiembros",{editParams:{keys:true}});
         
-        $("#otros").jqGrid({
-            url:'<?php echo base_url('componente2/comp24_E3/loadOtros') . '/' . $seg_eva_id; ?>',
-            editurl:'<?php echo base_url('componente2/comp24_E3/gestionOtros') . '/' . $seg_eva_id; ?>',
-            datatype:'json',
-            altRows:true,
-            gridview: true,
-            hidegrid: false,
-            colNames:['id','Padre','Nombres','Apellidos','Sexo','Edad','Cargo','Telefono'],
-            colModel:[
-                {name:'par_id',index:'par_id', width:30,editable:false,editoptions:{size:15},hidden:true },
-                {name:'acu_mun_id',index:'acu_mun_id', width:30,editable:false,editoptions:{size:15},hidden:true },
-                {name:'par_nombre',index:'par_nombre', width:123,editable:false,
-                    edittype:'text',editoptions:{size:20,maxlength:50},
-                    editrules:{required:true} },
-                {name:'par_apellidos',index:'par_apellidos', width:123,editable:false,
-                    edittypr:'text',editoptions:{size:20,maxlength:50},
-                    editrules:{required:true} },
-                {name:'par_sexo',index:'par_sexo', width:90,editable:false,
-                    edittype:'select',formatter:'select',editoptions:{value:'M:Masculino;F:Femenino'},
-                    editrules:{required:true} },
-                {name:'par_edad',index:'par_edad', width:50,editable:false,align:'center',
-                    edittype:'text',editoptions:{size:5,maxlength:2},
-                    editrules:{number:true,minValue:18,maxValue:100} },
-                {name:'par_cargo',index:'par_cargo', width:123,editable:false,editoptions:{size:30},
-                    edittype:'text',editoptions:{size:20,maxlength:50},
-                    editrules:{required:true} },
-                {name:'par_telefono',index:'par_telefono', width:80,editable:true,editoptions:{size:8},align:'center',
-                    edittype:'text',editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}
-                    }
-            ],
-            multiselect: false,
-            caption: "Otros Participantes",
-            rowNum:20,
-            rowList:[20,50],
-            loadonce:true,
-            pager: $('#pagerOtros'),
-            viewrecords: true,
-            ondblClickRow: function(rowid,iRow,iCol,e){
-                 $('#otros').jqGrid('editRow',rowid,true); 
-            },
-            gridComplete: 
-                function(){
-                $.getJSON('<?php echo base_url('componente2/comp24_E0/count_sexo/empleados/emp_sexo') ?>/emp_mun_id/<?php echo $seg_eva_id; ?>',
-                function(data) {
-                    $('#total').val(data['total']);
-                    $('#mujeres').val(data['female']);
-                    $('#hombres').val(data['male']);
-                }); 
-            }
-        });
-        $("#otros").jqGrid('navGrid','#pagerOtros',
-            {edit:false,add:false,del:false,search:true,refresh:false,
-            beforeRefresh: function() {
-                tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
-            }
-        );
-        $("#otros").jqGrid('inlineNav',"#pagerOtros",{editParams:{keys:true}});
-        
         var jqLista = $('#lista');
         jqLista.jqGrid({
-           	url: '<?php echo base_url('componente2/comp24_E3/getSegEvaluaciones/'); ?>/' + $('#mun_id').val(),
+           	url: '<?php echo base_url('componente2/comp24_E4/loadGescon/'); ?>/' + $('#mun_id').val(),
         	datatype: "json",
             width: 300,
            	colNames:['Id','Fecha'],
@@ -180,56 +107,20 @@ $this->load->view('plantilla/menu', $menu);
            	sortname: 'id',
             viewrecords: true,
             sortorder: "desc",
-            caption:"Seguimiento a Evaluaciones",
+            caption:"Reuniones",
             ondblClickRow: function(rowid, iRow, iCol, e){
                 window.location.href='<?php echo current_url(); ?>/' + rowid;
             }
         });
         /**/
         
-        $( "#seg_eva_fecha_presentacion" ).datepicker({
+        $( "#gescon_fecha" ).datepicker({
             showOn: 'both',
             maxDate:    '+1D',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
             dateFormat: 'dd/mm/yy'
         });
-        
-        /**/
-        var download_path = '<?php $t=set_value('seg_eva_archivo_informe'); if($t!=''){echo base_url($t);}?>';
-        if(download_path==''){$('#btn_download').hide();}
-        $('#btn_upload').button();
-        $('#btn_download').button().click(function(e){
-            if(download_path != ''){
-                e.preventDefault();  //stop the browser from following
-                window.location.href = download_path;
-            }
-        });
-        new AjaxUpload('#btn_upload', {
-            action: '<?php echo base_url('componente2/comp24_E0/uploadFile') . '/seguimiento_evaluacion/seg_eva_archivo_informe/seg_eva_id/' . $seg_eva_id; ?>',
-            onSubmit : function(file , ext){
-                if (! (ext && /^(pdf|doc|docx)$/.test(ext))){
-                    $('#vineta').html('<span class="error">Extension no Permitida</span>');
-                    return false;
-                } else {
-                    $('#vineta').html('Subiendo....');
-                    this.disable();
-                }
-            },
-            onComplete: function(file, response,ext){
-                if(response!='error'){
-                    $('#vineta').html('Ok');                    
-                    this.enable();
-                    download_path = response;
-                     $('#btn_download').show();
-                }else{
-                    $('#vineta').html('<span class="error">Error</span>');
-                    this.enable();			
-                 
-                }/**/
-            }	
-        });
-        /**/
                
         /*DIALOGOS DE VALIDACION*/
         $('.mensaje').dialog({
@@ -260,8 +151,8 @@ $this->load->view('plantilla/menu', $menu);
         if($this->session->flashdata('message')=='Ok'){
             echo "$('#efectivo').dialog('open');";
         }
-        if(isset($seg_eva_id) && $seg_eva_id > 0){
-            //echo "formularioShow();";
+        if(isset($gescon_id) && $gescon_id > 0){
+            echo "formularioShow();";
         }else{
             echo "formularioHide();";
         }
@@ -279,7 +170,6 @@ $this->load->view('plantilla/menu', $menu);
 <?php echo form_open('',array('id'=>'frm')) ?>
 
     <h2 class="h2Titulos">Etapa 4: Gestion del Conocimiento</h2>
-    <h2 class="h2Titulos">Registro de Empleados del Municipio</h2>
     <br/>
     <div id="rpt_frm_bdy">
         <div id="listaContainer">
@@ -306,6 +196,7 @@ $this->load->view('plantilla/menu', $menu);
                 <div id="btn_acuerdo_nuevo">Crear Nuevo</div>
             </div>
         </div>
+        <?php echo form_close(); echo form_open(); ?>
         <div id="formulario" style="display: none;">
             <div class="campo">
                 <label>Departamento:</label>
@@ -317,58 +208,24 @@ $this->load->view('plantilla/menu', $menu);
             </div>
             <div class="campo">
                 <label>Fecha de Presentación:</label>
-                <input id="seg_eva_fecha_presentacion" name="seg_eva_fecha_presentacion" type="text" readonly="readonly" value="<?php echo set_value('seg_eva_fecha_presentacion') ?>"/>
-                <?php echo form_error('seg_eva_fecha_presentacion'); ?>
+                <input id="gescon_fecha" name="gescon_fecha" type="text" readonly="readonly" value="<?php echo set_value('gescon_fecha') ?>"/>
+                <?php echo form_error('gescon_fecha'); ?>
             </div>
             <div class="campo">
-                <label>Lugar:</label>
-                <input id="seg_eva_lugar" name="seg_eva_lugar" type="text" value="<?php echo set_value('seg_eva_lugar') ?>"/>
-                <?php echo form_error('seg_eva_lugar'); ?>
+                <label>Tematica a tratar:</label>
+                <input id="gescon_tematica" name="gescon_tematica" type="text" value="<?php echo set_value('gescon_tematica') ?>"/>
+                <?php echo form_error('gescon_tematica'); ?>
             </div>
             <div class="tabla">
                 <label></label>
                 <table id="miembros"></table>
                 <div id="pagerMiembros"></div>
             </div>
-            <div class="tabla">
-                <label></label>
-                <table id="otros"></table>
-                <div id="pagerOtros"></div>
-            </div>
             <div class="campo">
-                <label>Cantidad de Empleados:</label>
-                <span>Hombres</span>
-                <input id="hombres" name="count_male" readonly="" style="width: 50px; text-align: center;" value="0" />
-                <span>Mujeres</span>
-                <input id="mujeres" name="count_female" readonly="" style="width: 50px; text-align: center;" value="0" />
-                <span>Total</span>
-                <input id="total" name="count_female" readonly="" style="width: 50px; text-align: center;" value="0" />
+                <label>Observaciones</label>
+                <textarea id="gescon_observaciones" name="gescon_observaciones" rows="5" wrap="virtual"><?php echo set_value('gescon_observaciones')?></textarea>
+                <?php echo form_error('gescon_observaciones'); ?>
             </div>
-            <div class="campo">
-                <label style="text-align: left; width: 620px;">Incorporo el informe de desempeño administrativo financiero en el informe anual de rendicion de cuenas?</label>
-                <span>Si</span><input type="radio" name="seg_eva_is_informe" value="t" <?php echo set_radio('seg_eva_is_informe', 't'); ?>/>
-                <span>No</span><input type="radio" name="seg_eva_is_informe" value="f" <?php echo set_radio('seg_eva_is_informe', 'f', TRUE); ?>/>
-                <?php echo form_error('seg_eva_is_informe'); ?>
-            </div>
-            <div style="width: 100%;">
-                <div style="width: 50%; display: inline-block;">
-                    <div class="campoUp">
-                        <label style="text-align: left;">Observaciones y/o Recomendaciones</label>
-                        <textarea id="seg_eva_observaciones" name="seg_eva_observaciones" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('seg_eva_observaciones')?></textarea>
-                        <?php echo form_error('seg_eva_observaciones'); ?>
-                    </div>
-                </div>
-                <div class="campoUp" style="display: inline-block;">
-                    <label>Cargar archivo:</label>
-                    <div id="fileUpload" style="margin-left: 20px;">
-                        <div id="btn_upload" style="display: inline-block;">Subir Informe</div>
-                        <a id="btn_download" href="#" style="display: inline-block;">Descargar</a>
-                        <div id="vineta" style="display: inline-block;"></div>
-                        <div class="uploadText" style="width: 300px;">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente. Solo se permiten archivos con extensión pdf, doc, docx</div>
-                    </div>
-                </div>
-            </div>
-            <input id="archivo" name="archivo" value="<?php echo set_value('archivo') ?>" type="text" size="100" readonly="readonly" style="visibility: hidden"/>
             <div id="actions" style="position: relative;top: 20px">
                 <input type="submit" id="guardar" value="Guardar" />
                 <input type="button" id="cancelar" value="Cancelar" />

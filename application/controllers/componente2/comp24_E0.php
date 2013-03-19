@@ -302,17 +302,9 @@ class Comp24_E0 extends CI_Controller {
         );
         
         switch ($this->input->post('oper')){ 
-        	case 'add':
-                $this->comp24->insert_row($tabla, $data);
-        	break;
-        
-        	case 'edit':
-                $this->comp24->update_row($tabla, $campo, $index, $data);
-        	break;
-        
-        	case 'del':
-                $r = $this->comp24->db_row_delete($tabla, $campo, $index);
-        	break;
+        	case 'add':  $this->comp24->insert_row($tabla, $data); break;
+        	case 'edit': $this->comp24->update_row($tabla, $campo, $index, $data); break;
+        	case 'del':  $this->comp24->db_row_delete($tabla, $campo, $index); break;
         }
     }
     
@@ -439,17 +431,9 @@ class Comp24_E0 extends CI_Controller {
         );
         
         switch ($this->input->post('oper')){ 
-        	case 'add':
-                $this->comp24->insert_row($tabla, $data);
-        	break;
-        
-        	case 'edit':
-                $this->comp24->update_row($tabla, $campo, $index, $data);
-        	break;
-        
-        	case 'del':
-                $r = $this->comp24->db_row_delete($tabla, $campo, $index);
-        	break;
+        	case 'add':  $this->comp24->insert_row($tabla, $data); break;
+        	case 'edit': $this->comp24->update_row($tabla, $campo, $index, $data); break;
+        	case 'del':  $this->comp24->db_row_delete($tabla, $campo, $index); break;
         }
     }
     
@@ -959,9 +943,7 @@ class Comp24_E0 extends CI_Controller {
     
     public function loadEmpleados($id){
         if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
-        
         $d = $this->comp24->select_data('empleados',array('emp_mun_id'=>$id));
-        
         echo $this->json_out($d,'emp_id');
     }
     
@@ -985,17 +967,9 @@ class Comp24_E0 extends CI_Controller {
         );
         
         switch ($this->input->post('oper')){ 
-        	case 'add':
-                $this->comp24->insert_row($tabla, $data);
-        	break;
-        
-        	case 'edit':
-                $this->comp24->update_row($tabla, $campo, $index, $data);
-        	break;
-        
-        	case 'del':
-                $r = $this->comp24->db_row_delete($tabla, $campo, $index);
-        	break;
+        	case 'add':  $this->comp24->insert_row($tabla, $data); break;
+        	case 'edit': $this->comp24->update_row($tabla, $campo, $index, $data); break;
+        	case 'del':  $this->comp24->db_row_delete($tabla, $campo, $index); break;
         }
     }
     

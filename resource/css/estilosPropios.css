@@ -286,6 +286,10 @@ form .campo input {
 #rpt_prt_bdy {
 }
 
+#rpt_frm_bdy{
+    min-height: 300px;
+}
+
 #rpt_frm_bdy .campo,
 #rpt_frm_bdy .campoUp, {
 	margin-bottom:	10px;

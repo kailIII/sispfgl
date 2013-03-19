@@ -10,6 +10,20 @@ $this->load->view('plantilla/header', $titulo);
 $this->load->view('plantilla/menu', $menu);
 
 ?>
+<style type="text/css">
+<!--
+.campoTitulo{
+    margin-left: 150px;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-decoration: underline;
+}
+#rpt_frm_bdy .tabla{
+    margin-left: 150px;
+}
+-->
+</style>
 <script type="text/javascript">        
     $(document).ready(function(){
         
@@ -38,7 +52,7 @@ $this->load->view('plantilla/menu', $menu);
         $('#mun_id').change(function(){
             jqLista.jqGrid('clearGridData')
                 .jqGrid('setGridParam', { 
-                    url: '<?php echo base_url('componente2/comp24_E3/getSegEvaluaciones'); ?>/' + $('#mun_id').val(), 
+                    url: '<?php echo base_url('componente2/comp24_Final/loadGesRie'); ?>/' + $('#mun_id').val(), 
                     datatype: 'json', 
                     page:1 })
                 .trigger('reloadGrid');
@@ -46,40 +60,28 @@ $this->load->view('plantilla/menu', $menu);
         
         /*GRID*/
         $("#miembros").jqGrid({
-            url:'<?php echo base_url('componente2/comp24_E3/loadEmpleados') . '/' . $seg_eva_id; ?>',
-            editurl:'<?php echo base_url('componente2/comp24_E3/gestionEmpleados') . '/' . $seg_eva_id; ?>',
+            url:'<?php echo base_url('componente2/comp24_Final/loadParticipantes') . '/' . $gesrie_id; ?>',
+            editurl:'<?php echo base_url('componente2/comp24_Final/gestionParticipantes') . '/' . $gesrie_id; ?>',
             datatype:'json',
             altRows:true,
             gridview: true,
             hidegrid: false,
-            colNames:['id','Padre','Nombres','Apellidos','Sexo','Edad','Cargo','Telefono','Participa'],
+            colNames:['id','Padre','Nombre','Institución','Cargo'],
             colModel:[
-                {name:'emp_id',index:'emp_id', width:30,editable:false,editoptions:{size:15},hidden:true },
-                {name:'acu_mun_id',index:'acu_mun_id', width:30,editable:false,editoptions:{size:15},hidden:true },
-                {name:'emp_nombre',index:'emp_nombre', width:123,editable:false,
-                    edittype:'text',editoptions:{size:20,maxlength:50},
+                {name:'par_id',index:'par_id', width:30,editable:false,editoptions:{size:15},hidden:true },
+                {name:'gesrie_id',index:'gesrie_id', width:30,editable:false,editoptions:{size:15},hidden:true },
+                {name:'par_nombre',index:'par_nombre', width:200,editable:true,
+                    edittype:'text',editoptions:{size:30,maxlength:50},
                     editrules:{required:true} },
-                {name:'emp_apellidos',index:'emp_apellidos', width:123,editable:false,
-                    edittypr:'text',editoptions:{size:20,maxlength:50},
+                {name:'par_institucion',index:'par_institucion', width:200,editable:true,editoptions:{size:30},
+                    edittype:'text',editoptions:{size:30,maxlength:50},
                     editrules:{required:true} },
-                {name:'emp_sexo',index:'emp_sexo', width:90,editable:false,
-                    edittype:'select',formatter:'select',editoptions:{value:'M:Masculino;F:Femenino'},
-                    editrules:{required:true} },
-                {name:'emp_edad',index:'emp_edad', width:50,editable:false,align:'center',
-                    edittype:'text',editoptions:{size:5,maxlength:2},
-                    editrules:{number:true,minValue:18,maxValue:100} },
-                {name:'emp_cargo',index:'emp_cargo', width:123,editable:false,editoptions:{size:30},
-                    edittype:'text',editoptions:{size:20,maxlength:50},
-                    editrules:{required:true} },
-                {name:'emp_telefono',index:'emp_telefono', width:80,editable:true,editoptions:{size:8},align:'center',
-                    edittype:'text',editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}
-                    },
-                {name:'participa',index:'participa', width:50,editable:true,align:'center',
-                    formatter:'checkbox',formatoptions:{disabled:false},
-                    edittype:'checkbox'}
+                {name:'par_cargo',index:'par_cargo', width:200,editable:true,editoptions:{size:30},
+                    edittype:'text',editoptions:{size:30,maxlength:50},
+                    editrules:{required:true} }
             ],
             multiselect: false,
-            caption: "Empleados Municipales",
+            caption: "Instituciones Participantes",
             rowNum:20,
             rowList:[20,50],
             loadonce:true,
@@ -87,15 +89,6 @@ $this->load->view('plantilla/menu', $menu);
             viewrecords: true,
             ondblClickRow: function(rowid,iRow,iCol,e){
                  $('#miembros').jqGrid('editRow',rowid,true); 
-            },
-            gridComplete: 
-                function(){
-                $.getJSON('<?php echo base_url('componente2/comp24_E0/count_sexo/empleados/emp_sexo') ?>/emp_mun_id/<?php echo $seg_eva_id; ?>',
-                function(data) {
-                    $('#total').val(data['total']);
-                    $('#mujeres').val(data['female']);
-                    $('#hombres').val(data['male']);
-                }); 
             }
         });
         $("#miembros").jqGrid('navGrid','#pagerMiembros',
@@ -106,67 +99,9 @@ $this->load->view('plantilla/menu', $menu);
         );
         $("#miembros").jqGrid('inlineNav',"#pagerMiembros",{editParams:{keys:true}});
         
-        $("#otros").jqGrid({
-            url:'<?php echo base_url('componente2/comp24_E3/loadOtros') . '/' . $seg_eva_id; ?>',
-            editurl:'<?php echo base_url('componente2/comp24_E3/gestionOtros') . '/' . $seg_eva_id; ?>',
-            datatype:'json',
-            altRows:true,
-            gridview: true,
-            hidegrid: false,
-            colNames:['id','Padre','Nombres','Apellidos','Sexo','Edad','Cargo','Telefono'],
-            colModel:[
-                {name:'par_id',index:'par_id', width:30,editable:false,editoptions:{size:15},hidden:true },
-                {name:'acu_mun_id',index:'acu_mun_id', width:30,editable:false,editoptions:{size:15},hidden:true },
-                {name:'par_nombre',index:'par_nombre', width:123,editable:false,
-                    edittype:'text',editoptions:{size:20,maxlength:50},
-                    editrules:{required:true} },
-                {name:'par_apellidos',index:'par_apellidos', width:123,editable:false,
-                    edittypr:'text',editoptions:{size:20,maxlength:50},
-                    editrules:{required:true} },
-                {name:'par_sexo',index:'par_sexo', width:90,editable:false,
-                    edittype:'select',formatter:'select',editoptions:{value:'M:Masculino;F:Femenino'},
-                    editrules:{required:true} },
-                {name:'par_edad',index:'par_edad', width:50,editable:false,align:'center',
-                    edittype:'text',editoptions:{size:5,maxlength:2},
-                    editrules:{number:true,minValue:18,maxValue:100} },
-                {name:'par_cargo',index:'par_cargo', width:123,editable:false,editoptions:{size:30},
-                    edittype:'text',editoptions:{size:20,maxlength:50},
-                    editrules:{required:true} },
-                {name:'par_telefono',index:'par_telefono', width:80,editable:true,editoptions:{size:8},align:'center',
-                    edittype:'text',editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}
-                    }
-            ],
-            multiselect: false,
-            caption: "Otros Participantes",
-            rowNum:20,
-            rowList:[20,50],
-            loadonce:true,
-            pager: $('#pagerOtros'),
-            viewrecords: true,
-            ondblClickRow: function(rowid,iRow,iCol,e){
-                 $('#otros').jqGrid('editRow',rowid,true); 
-            },
-            gridComplete: 
-                function(){
-                $.getJSON('<?php echo base_url('componente2/comp24_E0/count_sexo/empleados/emp_sexo') ?>/emp_mun_id/<?php echo $seg_eva_id; ?>',
-                function(data) {
-                    $('#total').val(data['total']);
-                    $('#mujeres').val(data['female']);
-                    $('#hombres').val(data['male']);
-                }); 
-            }
-        });
-        $("#otros").jqGrid('navGrid','#pagerOtros',
-            {edit:false,add:false,del:false,search:true,refresh:false,
-            beforeRefresh: function() {
-                tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
-            }
-        );
-        $("#otros").jqGrid('inlineNav',"#pagerOtros",{editParams:{keys:true}});
-        
         var jqLista = $('#lista');
         jqLista.jqGrid({
-           	url: '<?php echo base_url('componente2/comp24_E3/getSegEvaluaciones/'); ?>/' + $('#mun_id').val(),
+           	url: '<?php echo base_url('componente2/comp24_Final/loadGesRie/'); ?>/' + $('#mun_id').val(),
         	datatype: "json",
             width: 300,
            	colNames:['Id','Fecha'],
@@ -186,50 +121,103 @@ $this->load->view('plantilla/menu', $menu);
             }
         });
         /**/
-        
-        $( "#seg_eva_fecha_presentacion" ).datepicker({
+        $( "#gesrie_fecha_orden" ).datepicker({
+            showOn:         'both',
+            maxDate:        '+1D',
+            buttonImage:    '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+            buttonImageOnly: true, 
+            dateFormat: 'dd/mm/yy',
+            onClose: function( selectedDate ) {
+                $( "#gesrie_fecha_acta" ).datepicker( "option", "minDate", selectedDate );
+            }
+        });
+        $( "#gesrie_fecha_acta" ).datepicker({
+            showOn:         'both',
+            maxDate:        '+1D',
+            buttonImage:    '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+            buttonImageOnly: true, 
+            dateFormat: 'dd/mm/yy',
+            onClose: function( selectedDate ) {
+                $( "#gesrie_fecha_diagnostico" ).datepicker( "option", "minDate", selectedDate );
+            }
+        });
+        $( "#gesrie_fecha_diagnostico" ).datepicker({
+            showOn:         'both',
+            maxDate:        '+1D',
+            buttonImage:    '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+            buttonImageOnly: true, 
+            dateFormat: 'dd/mm/yy',
+            onClose: function( selectedDate ) {
+                $( "#gesrie_fecha_socializacion" ).datepicker( "option", "minDate", selectedDate );
+            }
+        });
+        $( "#gesrie_fecha_socializacion" ).datepicker({
+            showOn:         'both',
+            maxDate:        '+1D',
+            buttonImage:    '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+            buttonImageOnly: true, 
+            dateFormat: 'dd/mm/yy',
+            onClose: function( selectedDate ) {
+                $( "#gesrie_fecha_aprobacion" ).datepicker( "option", "minDate", selectedDate );
+            }
+        });
+        $( "#gesrie_fecha_aprobacion" ).datepicker({
+            showOn:         'both',
+            maxDate:        '+1D',
+            buttonImage:    '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+            buttonImageOnly: true, 
+            dateFormat: 'dd/mm/yy',
+            onClose: function( selectedDate ) {
+                $( "#gesrie_fecha_inicio" ).datepicker( "option", "minDate", selectedDate );
+            }
+        });
+        $( "#gesrie_fecha_inicio" ).datepicker({
+            showOn:         'both',
+            maxDate:        '+1D',
+            buttonImage:    '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+            buttonImageOnly: true, 
+            dateFormat: 'dd/mm/yy',
+            onClose: function( selectedDate ) {
+                $( "#gesrie_fecha_aprob_comite" ).datepicker( "option", "minDate", selectedDate );
+            }
+        });
+        $( "#gesrie_fecha_aprob_comite" ).datepicker({
+            showOn:         'both',
+            maxDate:        '+1D',
+            buttonImage:    '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+            buttonImageOnly: true, 
+            dateFormat: 'dd/mm/yy',
+            onClose: function( selectedDate ) {
+                $( "#gesrie_fecha_acuerdo" ).datepicker( "option", "minDate", selectedDate );
+            }
+        });
+        $( "#gesrie_fecha_acuerdo" ).datepicker({
+            showOn:         'both',
+            maxDate:        '+1D',
+            buttonImage:    '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+            buttonImageOnly: true, 
+            dateFormat: 'dd/mm/yy',
+            onClose: function( selectedDate ) {
+                $( "#gesrie_fecha_presentacion" ).datepicker( "option", "minDate", selectedDate );
+            }
+        });
+        $( "#gesrie_fecha_presentacion" ).datepicker({
+            showOn:         'both',
+            maxDate:        '+1D',
+            buttonImage:    '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+            buttonImageOnly: true, 
+            dateFormat: 'dd/mm/yy',
+            onClose: function( selectedDate ) {
+                $( "#gesrie_fecha_seguimiento" ).datepicker( "option", "minDate", selectedDate );
+            }
+        });
+        $( "#gesrie_fecha_seguimiento" ).datepicker({
             showOn: 'both',
             maxDate:    '+1D',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true, 
             dateFormat: 'dd/mm/yy'
         });
-        
-        /**/
-        var download_path = '<?php $t=set_value('seg_eva_archivo_informe'); if($t!=''){echo base_url($t);}?>';
-        if(download_path==''){$('#btn_download').hide();}
-        $('#btn_upload').button();
-        $('#btn_download').button().click(function(e){
-            if(download_path != ''){
-                e.preventDefault();  //stop the browser from following
-                window.location.href = download_path;
-            }
-        });
-        new AjaxUpload('#btn_upload', {
-            action: '<?php echo base_url('componente2/comp24_E0/uploadFile') . '/seguimiento_evaluacion/seg_eva_archivo_informe/seg_eva_id/' . $seg_eva_id; ?>',
-            onSubmit : function(file , ext){
-                if (! (ext && /^(pdf|doc|docx)$/.test(ext))){
-                    $('#vineta').html('<span class="error">Extension no Permitida</span>');
-                    return false;
-                } else {
-                    $('#vineta').html('Subiendo....');
-                    this.disable();
-                }
-            },
-            onComplete: function(file, response,ext){
-                if(response!='error'){
-                    $('#vineta').html('Ok');                    
-                    this.enable();
-                    download_path = response;
-                     $('#btn_download').show();
-                }else{
-                    $('#vineta').html('<span class="error">Error</span>');
-                    this.enable();			
-                 
-                }/**/
-            }	
-        });
-        /**/
                
         /*DIALOGOS DE VALIDACION*/
         $('.mensaje').dialog({
@@ -260,8 +248,8 @@ $this->load->view('plantilla/menu', $menu);
         if($this->session->flashdata('message')=='Ok'){
             echo "$('#efectivo').dialog('open');";
         }
-        if(isset($seg_eva_id) && $seg_eva_id > 0){
-            //echo "formularioShow();";
+        if(isset($gesrie_id) && $gesrie_id > 0){
+            echo "formularioShow();";
         }else{
             echo "formularioHide();";
         }
@@ -314,60 +302,70 @@ $this->load->view('plantilla/menu', $menu);
                 <label>Muncicipio:</label>
                 <input id="muni" name="muni" type="text" readonly="readonly" value="<?php echo set_value('muni') ?>" />
             </div>
+            <div class="campoTitulo">Preparación</div>
             <div class="campo">
-                <label>Fecha de Presentación:</label>
-                <input id="seg_eva_fecha_presentacion" name="seg_eva_fecha_presentacion" type="text" readonly="readonly" value="<?php echo set_value('seg_eva_fecha_presentacion') ?>"/>
-                <?php echo form_error('seg_eva_fecha_presentacion'); ?>
+                <label>Fecha de Orden de Inicio:</label>
+                <input id="gesrie_fecha_orden" name="gesrie_fecha_orden" type="text" readonly="readonly" value="<?php echo set_value('gesrie_fecha_orden') ?>"/>
+                <?php echo form_error('gesrie_fecha_orden'); ?>
             </div>
             <div class="campo">
-                <label>Lugar:</label>
-                <input id="seg_eva_lugar" name="seg_eva_lugar" type="text" value="<?php echo set_value('seg_eva_lugar') ?>"/>
-                <?php echo form_error('seg_eva_lugar'); ?>
+                <label>Fecha de Acta de Recepción:</label>
+                <input id="gesrie_fecha_acta" name="gesrie_fecha_acta" type="text" readonly="readonly" value="<?php echo set_value('gesrie_fecha_acta') ?>"/>
+                <?php echo form_error('gesrie_fecha_acta'); ?>
+            </div>
+            <div class="campoTitulo">Diagnóstico</div>
+            <div class="campo">
+                <label>Fecha de Orden de inicio del diagnóstico:</label>
+                <input id="gesrie_fecha_diagnostico" name="gesrie_fecha_diagnostico" type="text" readonly="readonly" value="<?php echo set_value('gesrie_fecha_diagnostico') ?>"/>
+                <?php echo form_error('gesrie_fecha_diagnostico'); ?>
+            </div>
+            <div class="campo">
+                <label>Fecha de Socializacion:</label>
+                <input id="gesrie_fecha_socializacion" name="gesrie_fecha_socializacion" type="text" readonly="readonly" value="<?php echo set_value('gesrie_fecha_socializacion') ?>"/>
+                <?php echo form_error('gesrie_fecha_socializacion'); ?>
             </div>
             <div class="tabla">
                 <label></label>
                 <table id="miembros"></table>
                 <div id="pagerMiembros"></div>
             </div>
-            <div class="tabla">
-                <label></label>
-                <table id="otros"></table>
-                <div id="pagerOtros"></div>
+            <div class="campo">
+                <label>Fecha de Acta de Aprobación:</label>
+                <input id="gesrie_fecha_aprobacion" name="gesrie_fecha_aprobacion" type="text" readonly="readonly" value="<?php echo set_value('gesrie_fecha_aprobacion') ?>"/>
+                <?php echo form_error('gesrie_fecha_aprobacion'); ?>
+            </div>
+            <div class="campoTitulo">Planificación para Gestión de Riesgo</div>
+            <div class="campo">
+                <label>Fecha de Incio:</label>
+                <input id="gesrie_fecha_inicio" name="gesrie_fecha_inicio" type="text" readonly="readonly" value="<?php echo set_value('gesrie_fecha_inicio') ?>"/>
+                <?php echo form_error('gesrie_fecha_inicio'); ?>
             </div>
             <div class="campo">
-                <label>Cantidad de Empleados:</label>
-                <span>Hombres</span>
-                <input id="hombres" name="count_male" readonly="" style="width: 50px; text-align: center;" value="0" />
-                <span>Mujeres</span>
-                <input id="mujeres" name="count_female" readonly="" style="width: 50px; text-align: center;" value="0" />
-                <span>Total</span>
-                <input id="total" name="count_female" readonly="" style="width: 50px; text-align: center;" value="0" />
+                <label>Fecha de Acta de aprobación(comite evaluador):</label>
+                <input id="gesrie_fecha_aprob_comite" name="gesrie_fecha_aprob_comite" type="text" readonly="readonly" value="<?php echo set_value('gesrie_fecha_aprob_comite') ?>"/>
+                <?php echo form_error('gesrie_fecha_aprob_comite'); ?>
             </div>
             <div class="campo">
-                <label style="text-align: left; width: 620px;">Incorporo el informe de desempeño administrativo financiero en el informe anual de rendicion de cuenas?</label>
-                <span>Si</span><input type="radio" name="seg_eva_is_informe" value="t" <?php echo set_radio('seg_eva_is_informe', 't'); ?>/>
-                <span>No</span><input type="radio" name="seg_eva_is_informe" value="f" <?php echo set_radio('seg_eva_is_informe', 'f', TRUE); ?>/>
-                <?php echo form_error('seg_eva_is_informe'); ?>
+                <label>Fecha de Acuerdo Municipal de aprobación de Plan:</label>
+                <input id="gesrie_fecha_acuerdo" name="gesrie_fecha_acuerdo" type="text" readonly="readonly" value="<?php echo set_value('gesrie_fecha_acuerdo') ?>"/>
+                <?php echo form_error('gesrie_fecha_acuerdo'); ?>
             </div>
-            <div style="width: 100%;">
-                <div style="width: 50%; display: inline-block;">
-                    <div class="campoUp">
-                        <label style="text-align: left;">Observaciones y/o Recomendaciones</label>
-                        <textarea id="seg_eva_observaciones" name="seg_eva_observaciones" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('seg_eva_observaciones')?></textarea>
-                        <?php echo form_error('seg_eva_observaciones'); ?>
-                    </div>
-                </div>
-                <div class="campoUp" style="display: inline-block;">
-                    <label>Cargar archivo:</label>
-                    <div id="fileUpload" style="margin-left: 20px;">
-                        <div id="btn_upload" style="display: inline-block;">Subir Informe</div>
-                        <a id="btn_download" href="#" style="display: inline-block;">Descargar</a>
-                        <div id="vineta" style="display: inline-block;"></div>
-                        <div class="uploadText" style="width: 300px;">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente. Solo se permiten archivos con extensión pdf, doc, docx</div>
-                    </div>
-                </div>
+            <div class="campo">
+                <label>Fecha de de Presentación publica del plan GDR:</label>
+                <input id="gesrie_fecha_presentacion" name="gesrie_fecha_presentacion" type="text" readonly="readonly" value="<?php echo set_value('gesrie_fecha_presentacion') ?>"/>
+                <?php echo form_error('gesrie_fecha_presentacion'); ?>
             </div>
-            <input id="archivo" name="archivo" value="<?php echo set_value('archivo') ?>" type="text" size="100" readonly="readonly" style="visibility: hidden"/>
+            <div class="campoTitulo">Seguimiento</div>
+            <div class="campo">
+                <label>Fecha de Inicio:</label>
+                <input id="gesrie_fecha_seguimiento" name="gesrie_fecha_seguimiento" type="text" readonly="readonly" value="<?php echo set_value('gesrie_fecha_seguimiento') ?>"/>
+                <?php echo form_error('gesrie_fecha_seguimiento'); ?>
+            </div>
+            <div class="campo">
+                <label>Observaciones:</label>
+                <textarea id="gesrie_observaciones" name="gesrie_observaciones" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('gesrie_observaciones')?></textarea>
+                <?php echo form_error('gesrie_observaciones'); ?>
+            </div>
             <div id="actions" style="position: relative;top: 20px">
                 <input type="submit" id="guardar" value="Guardar" />
                 <input type="button" id="cancelar" value="Cancelar" />
