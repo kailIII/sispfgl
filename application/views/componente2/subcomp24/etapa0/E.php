@@ -28,25 +28,12 @@ $this->load->view('plantilla/menu', $menu);
         
         	/*CARGAR MUNICIPIOS*/
         $('#selDepto').change(function(){   
-            //$("#guardar").hide();
             $('#mun_id').children().remove();
-            $.getJSON('<?php echo base_url('componente2/proyectoPep/cargarMunicipios') ?>?dep_id='+$('#selDepto').val(), 
-            function(data) {
-                var i=0;
-                $.each(data, function(key, val) {
-                    if(key=='rows'){
-                        $('#mun_id').append('<option value="0">--Seleccione Municipio--</option>');
-                        $.each(val, function(id, registro){
-                            var text = '<option ';
-                            if(registro['cell'][0]=='<?php echo set_value('mun_id'); ?>'){
-                                text = text + 'selected="" ';
-                            }
-                            text = text + 'value="'+registro['cell'][0]+'">'+registro['cell'][1]+'</option>'
-                            $('#mun_id').append(text);
-                        });                    
-                    }
-                });
-            });              
+            $.ajax({
+                url: '<?php echo base_url('componente2/comp24_E0/getMunicipios') ?>/'+$('#selDepto').val()
+            }).done(function(data){
+                $('#mun_id').html(data);
+            });           
         });
         $('#mun_id').change(function(){
             window.location.href = '<?php echo current_url(); ?>/' + $('#mun_id').val();           

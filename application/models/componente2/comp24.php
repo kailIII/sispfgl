@@ -65,11 +65,11 @@ GROUP BY dep_nombre';
     
     public function get_by_Id($table,$index,$id){
         $this->db->where($index, $id);
-
+        $this->db->order_by($index,'asc');
         $query = $this->db->get($table);
         if ($query->num_rows() == 1)
             return $query->row();
-        return null;
+        return $query;
     }
     
     public function insert_row($tabla, $data){

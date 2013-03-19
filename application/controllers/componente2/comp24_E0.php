@@ -23,6 +23,23 @@ class Comp24_E0 extends CI_Controller {
         $this->form_validation->set_message('is_natural_no_zero', '* Obligatorio');
     }
     
+    public function getMunicipios($depto_id, $selected = false){
+        if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
+        
+        $this->db->where('dep_id',$depto_id);
+        $this->db->order_by('mun_id','asc');
+        $res = $this->db->get('municipio');
+        $salida = "<option value=\"0\">-- Seleccione --</option>\n";
+        foreach ($res->result() as $row){
+            $salida = $salida . '<option value="' . $row->mun_id . '" ';
+            if($selected && $selected == $row->mun_id){
+                $salida = $salida . 'selected="selected"';
+            }
+            $salida = $salida . '>' . $row->mun_nombre . "</option>\n";
+        }
+        echo $salida;
+    }
+    
     function count_sexo($tabla,$campo_sexo,$campo_index,$index){
         if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
         echo json_encode($this->comp24->count_sexo($tabla,$campo_sexo,$campo_index,$index));
@@ -147,7 +164,7 @@ class Comp24_E0 extends CI_Controller {
         if ($this->form_validation->run())
         {
             if(!is_null($data = $this->comp24->insert_solicitud_ayuda(
-                $this->form_validation->set_value('selMun'),
+                $this->form_validation->set_value('mun_id'),
                 $this->form_validation->set_value('f_emision'),
                 $this->form_validation->set_value('f_recepcion')
                 )))
