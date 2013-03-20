@@ -85,7 +85,7 @@ class Comp24_E0 extends CI_Controller {
         if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
         
         $data = $this->comp24->select_data('acuerdo_municipal2',array('mun_id'=>$mun_id));
-        echo $this->json_out($data,'acu_mun_id',array('acu_mun_id','acu_mun_fecha_conformacion'));
+        echo $this->librerias->json_out($data,'acu_mun_id',array('acu_mun_id','acu_mun_fecha_conformacion'));
         
     }
     
@@ -94,47 +94,8 @@ class Comp24_E0 extends CI_Controller {
         
         $data = $this->comp24->select_data('acuerdo_municipal2',array('acu_mun_id'=>$id));
         
-        //echo $this->json_out($data,'acu_mun_id');
+        //echo $this->librerias->json_out($data,'acu_mun_id');
         
-    }
-    
-    function json_out($result, $index,$campos='all',$rows=10){
-        if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
-        
-        //$consultoresInt = $this->conInt->obtenerConsultoresInteres($pro_id);
-        $numfilas = $result->num_rows();
-
-        $i = 0;
-        if ($numfilas != 0) {
-            foreach ($result->result() as $aux) {
-                $row = array();
-                foreach ($aux as $r => $v){
-                    //echo "r-$r;v-$v<br>\n";
-                    if($campos != 'all' && in_array($r,$campos)){
-                        array_push($row,$v);
-                    }else if($campos == 'all'){
-                        array_push($row,$v);
-                    }
-                }
-                $data[$i]['id'] = $aux->$index;
-                $data[$i]['cell'] = $row;
-                $i++;
-            }
-            array_multisort($data, SORT_ASC);
-        } else {
-            $data = array();
-        }
-
-        $datos = json_encode($data);
-        $pages = floor($numfilas / 10) + 1;
-        
-        $jsonresponse = '{
-               "page":"1",
-               "total":"' . $pages . '",
-               "records":"' . $numfilas . '", 
-               "rows":' . $datos . '}';
-
-        return $jsonresponse;
     }
     
     function index()
@@ -277,7 +238,7 @@ class Comp24_E0 extends CI_Controller {
         
         $d = $this->comp24->select_data('acumun_miembros',array('acu_mun_id'=>$id));
         
-        echo $this->json_out($d,'mie_id');
+        echo $this->librerias->json_out($d,'mie_id');
     }
     
     /**
@@ -380,11 +341,9 @@ class Comp24_E0 extends CI_Controller {
                     foreach ($errors as $k => $v)    $data['errors'][$k] = $this->lang->line($v);
                 }
             }           
-        }else if($mun = $this->form_validation->set_value('mun_id') != 0 && $id == 0){
+        }else if(($mun = $this->input->post('mun_id')) != 0 && $id == false){
             //
-            //$id = $this->setNewId($this->tbl_acuerdo_municipal,'acu_mun_id');
-            $t = explode('/0',current_url());
-            redirect($t[0] . '/' . $this->setNewId($tabla,$campo,array('mun_id'=>$mun)));
+            redirect(current_url() . '/' . $this->setNewId($tabla,$campo,array('mun_id'=>$mun)));
         }
 	
         $this->load->view($this->ruta.'solicitudAsistenciaTecnica',
@@ -401,7 +360,7 @@ class Comp24_E0 extends CI_Controller {
         if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
         
         $data = $this->comp24->select_data('asistencia_tecnica',array('mun_id'=>$mun_id));
-        echo $this->json_out($data,'asi_tec_id',array('asi_tec_id','asi_tec_fecha_solicitud'));
+        echo $this->librerias->json_out($data,'asi_tec_id',array('asi_tec_id','asi_tec_fecha_solicitud'));
     }
     
     public function asiTec_loadMiembros($id){
@@ -409,7 +368,7 @@ class Comp24_E0 extends CI_Controller {
         
         $d = $this->comp24->select_data('asitec_miembros',array('asi_tec_id'=>$id));
         
-        echo $this->json_out($d,'mie_id');
+        echo $this->librerias->json_out($d,'mie_id');
     }
     
     public function asitec_gestionMiembros($id){
@@ -938,13 +897,13 @@ class Comp24_E0 extends CI_Controller {
         if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
         
         $data = $this->comp24->select_data('asistencia_tecnica',array('mun_id'=>$emp_mun_id));
-        echo $this->json_out($data,'asi_tec_id',array('emp_mun_id','asi_tec_fecha_solicitud'));
+        echo $this->librerias->json_out($data,'asi_tec_id',array('emp_mun_id','asi_tec_fecha_solicitud'));
     }
     
     public function loadEmpleados($id){
         if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
         $d = $this->comp24->select_data('empleados',array('emp_mun_id'=>$id));
-        echo $this->json_out($d,'emp_id');
+        echo $this->librerias->json_out($d,'emp_id');
     }
     
     public function gestionEmpleados($id){
@@ -1052,7 +1011,7 @@ class Comp24_E0 extends CI_Controller {
         if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
         
         $data = $this->comp24->select_data('manuales_administrativos',array('mun_id'=>$mun_id));
-        echo $this->json_out($data,'man_adm_id',array('man_adm_id','man_adm_nombre'));
+        echo $this->librerias->json_out($data,'man_adm_id',array('man_adm_id','man_adm_nombre'));
     }
     
     function _show_message($path, $message)
