@@ -63,13 +63,15 @@ GROUP BY dep_nombre';
         return $this->db->query($sql)->row();
     }
     
-    public function get_by_Id($table,$index,$id){
+    public function get_by_Id($table,$index,$id,$limit=true){
         $this->db->where($index, $id);
         $this->db->order_by($index,'asc');
         $query = $this->db->get($table);
+        if (!$limit) return $query;
         if ($query->num_rows() == 1)
             return $query->row();
-        return $query;
+        else
+            return false;
     }
     
     public function insert_row($tabla, $data){

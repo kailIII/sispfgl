@@ -23,6 +23,29 @@ class Comp24_E0 extends CI_Controller {
         $this->form_validation->set_message('is_natural_no_zero', '* Obligatorio');
     }
     
+    /**
+     * Funciones Generales de la etapa
+     */
+    
+    /**
+     * Compueba si el elemento a es mayor que el a.
+     * Form_validation Callback
+     */
+    public function periodo_check($a,$b=false){
+        $b = $this->form_validation->set_value($b);
+        if($b != false){
+            if($a > $b){
+                return true;
+            }
+        }
+        $this->form_validation->set_message('periodo_check','Debe ser mayor.');
+        return false;
+    }
+    
+    /**
+     * Genera un listado de los municipio que posee un departameneto
+     * para se ingresado en un select.
+     */
     public function getMunicipios($depto_id, $selected = false){
         if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
         
@@ -40,11 +63,20 @@ class Comp24_E0 extends CI_Controller {
         echo $salida;
     }
     
+    /**
+     * Cuenta la cantidad de personas por sexo
+     */
     function count_sexo($tabla,$campo_sexo,$campo_index,$index){
         if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
         echo json_encode($this->comp24->count_sexo($tabla,$campo_sexo,$campo_index,$index));
     }
     
+    /**
+     * Subir un archivo.
+     * Library upload
+     * 
+     * @return ruta del archivo guardado.
+     */
     function uploadFile($tabla, $campo, $index, $id){
         if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
         
@@ -69,7 +101,6 @@ class Comp24_E0 extends CI_Controller {
             $ruta = "/documentos/$tabla/" . $config['file_name'];
             $this->comp24->update_row($tabla,$index,$id,array($campo=>$ruta));
             echo base_url().$ruta;
-			//echo json_encode($data);
 		}
     }
 
@@ -79,23 +110,6 @@ class Comp24_E0 extends CI_Controller {
         echo $this->db->last_query();
         $lastId = $this->db->query("SELECT $campo FROM $tabla ORDER BY $campo DESC LIMIT 1;")->row()->$campo;
         return $lastId;
-    }
-    
-    function getAcuerdosMunicipales($mun_id){
-        if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
-        
-        $data = $this->comp24->select_data('acuerdo_municipal2',array('mun_id'=>$mun_id));
-        echo $this->librerias->json_out($data,'acu_mun_id',array('acu_mun_id','acu_mun_fecha_conformacion'));
-        
-    }
-    
-    function getAcuerdoMunicipal($id){
-        if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
-        
-        $data = $this->comp24->select_data('acuerdo_municipal2',array('acu_mun_id'=>$id));
-        
-        //echo $this->librerias->json_out($data,'acu_mun_id');
-        
     }
     
     function index()
@@ -152,6 +166,9 @@ class Comp24_E0 extends CI_Controller {
 	   
 	}
     
+    /**
+     * B. Acuerdos Municipales
+     */
     public function acuerdoMunicipal($id = false){
 		if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
         $tabla = 'acuerdo_municipal2';
@@ -215,11 +232,9 @@ class Comp24_E0 extends CI_Controller {
                     foreach ($errors as $k => $v)    $data['errors'][$k] = $this->lang->line($v);
                 }
             }           
-        }else if($mun = $this->form_validation->set_value('mun_id') != 0 && $id == 0){
+        }else if(($mun = $this->input->post('mun_id')) != 0 && $id == false){
             //
-            //$id = $this->setNewId($this->tbl_acuerdo_municipal,'acu_mun_id');
-            $t = explode('/0',current_url());
-            redirect($t[0] . '/' . $this->setNewId($tabla,$campo,array('mun_id'=>$mun)));
+            redirect(current_url() . '/' . $this->setNewId($tabla,$campo,array('mun_id'=>$mun)));
         }
 	
         $this->load->view($this->ruta.'acuerdoMunicipal',
@@ -231,6 +246,12 @@ class Comp24_E0 extends CI_Controller {
                     $campo => $id
                     ));
 					
+    }
+    
+    function getAcuerdosMunicipales($mun_id){
+        if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
+        $data = $this->comp24->select_data('acuerdo_municipal2',array('mun_id'=>$mun_id));
+        echo $this->librerias->json_out($data,'acu_mun_id',array('acu_mun_id','acu_mun_fecha_conformacion'));
     }
     
     public function acuMun_loadMiembros($id){
@@ -365,9 +386,7 @@ class Comp24_E0 extends CI_Controller {
     
     public function asiTec_loadMiembros($id){
         if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
-        
         $d = $this->comp24->select_data('asitec_miembros',array('asi_tec_id'=>$id));
-        
         echo $this->librerias->json_out($d,'mie_id');
     }
     
@@ -396,17 +415,6 @@ class Comp24_E0 extends CI_Controller {
         }
     }
     
-    public function periodo_check($a,$b=false){
-        $b = $this->form_validation->set_value($b);
-        if($b != false){
-            if($a > $b){
-                return true;
-            }
-        }
-        $this->form_validation->set_message('periodo_check','Debe ser mayor.');
-        return false;
-    }
-    
     /**
      * D. Indicadores de Desempeno Administrativo y Financiero Municipal 1
      */
@@ -417,16 +425,17 @@ class Comp24_E0 extends CI_Controller {
         $prefix = 'ind_des_';
         
         if($id && !isset($_POST['mod'])){
-            if(!$tmp = $this->comp24->get_by_id($tabla, $campo, $id)){
+            if(!($tmp = $this->comp24->get_by_id($tabla, $campo, $id))){
                 $this->comp24->insert_row($tabla,array($campo=>$id,'mun_id'=>$id));
                 $tmp = $this->comp24->get_by_id($tabla, $campo, $id);
             }
             $_POST = get_object_vars($tmp);
+            //print_r($_POST);die();    //test
             $_POST[$prefix.'fecha'] = $this->librerias->parse_output('date',$_POST[$prefix.'fecha']);
-            $_POST['depto']                   = $this->comp24->getDepto($_POST['mun_id'])->dep_nombre;
-            $_POST['muni']                   = $this->comp24->get_by_Id('municipio','mun_id',$_POST['mun_id'])->mun_nombre;
+            $_POST['depto']         = $this->comp24->getDepto($id)->dep_nombre;
+            $_POST['muni']          = $this->comp24->get_by_Id('municipio','mun_id',$id)->mun_nombre;
         }
-        
+ 
         $this->form_validation->set_message('required', '*');
         $this->form_validation->set_message('numeric', '*');
         

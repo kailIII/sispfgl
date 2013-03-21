@@ -135,7 +135,7 @@ class Librerias {
         }
     }
     
-        function json_out($result, $index,$campos='all',$rows=10){
+    function json_out($result, $index,$campos='all',$rows=10){
         
         //$consultoresInt = $this->conInt->obtenerConsultoresInteres($pro_id);
         $numfilas = $result->num_rows();
