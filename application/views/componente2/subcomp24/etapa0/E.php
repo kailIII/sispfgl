@@ -11,99 +11,66 @@ $this->load->view('plantilla/menu', $menu);
 
 ?>
 <script type="text/javascript">        
-    $(document).ready(function(){
-        
-        /*VARIABLES*/
- 
-       
-        $("#guardar").button();
-        
-        $("#btn_acuerdo_nuevo").button().click(function(){
-            $('#frm').submit();
-        });
-        
-        $("#cancelar").button().click(function() {
-            document.location.href='<?php echo base_url(); ?>';
-        });
-        
-        	/*CARGAR MUNICIPIOS*/
-        $('#selDepto').change(function(){   
-            $('#mun_id').children().remove();
-            $.ajax({
-                url: '<?php echo base_url('componente2/comp24_E0/getMunicipios') ?>/'+$('#selDepto').val()
-            }).done(function(data){
-                $('#mun_id').html(data);
-            });           
-        });
-        $('#mun_id').change(function(){
-            window.location.href = '<?php echo current_url(); ?>/' + $('#mun_id').val();           
-        });
-                
-        /*PARA EL DATEPICKER*/
-        $( "#ind_des_fecha" ).datepicker({
-            showOn:         'both',
-            maxDate:        '+1D',
-            buttonImage:    '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
-        });
-        /*FIN DEL DATEPICKER*/
-               
-        /*DIALOGOS DE VALIDACION*/
-        $('.mensaje').dialog({
-            autoOpen: false,
-            width: 300,
-            buttons: {
-                "Ok": function() {
-                    $(this).dialog("close");
-                }
-            }
-        });
- 
-        /*FIN DIALOGOS VALIDACION*/
-        
-        /* Calculos */
-        $('.txtInput').change(function(){
-            cambios();
-        });
-        
-        function formularioHide(){
-            $('#listaContainer').show();
-            $('#formulario').hide()
-        }
-        
-        function formularioShow(){
-            $('#listaContainer').hide();
-            $('#formulario').show()
-        }
-        
-        function cambios(){
-            var t;
-            $('#ind_des_grupo1_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo1_ingtotpre').val())-parseFloat($('#ind_des_grupo1_gastotdev').val()))){return t;}else{return'';}});
-            $('#ind_des_grupo2_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo2_ingprodev').val())/parseFloat($('#ind_des_grupo2_totingdev').val()))){return t;}else{return'';}});
-            $('#ind_des_grupo3_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo3_moningpro').val())/parseFloat($('#ind_des_grupo3_totingdev').val()))){return t;}else{return'';}});
-            $('#ind_des_grupo4_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo4_moningpro').val())/parseFloat($('#ind_des_grupo4_moningpre').val()))){return t;}else{return'';}});
-            $('#ind_des_grupo5_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo5_totingtas').val())/parseFloat($('#ind_des_grupo5_totingpro').val()))){return t;}else{return'';}});
-            $('#ind_des_grupo6_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo6_totingimp').val())/parseFloat($('#ind_des_grupo6_totingpro').val()))){return t;}else{return'';}});
-        }
- 
-        
-        <?php
-        //echo '//'.$this->session->keep_flashdata('message');
-        if($this->session->flashdata('message')=='Ok'){
-            echo "$('#efectivo').dialog('open');";
-        }
-        if(isset($ind_des_id) && $ind_des_id > 0){
-            echo "formularioShow();cambios();";
-        }else{
-            echo "formularioHide();";
-        }
-        ?>
-  
+$(document).ready(function(){
+    /*BASICO*/
+    function formularioHide(){$('#listaContainer').show();$('#formulario').hide()}
+    function formularioShow(){$('#listaContainer').hide();$('#formulario').show()}
+    $("#guardar").button();
+    $("#btn_acuerdo_nuevo").button().click(function(){$('#frm').submit();});
+    $("#btn_seleccionar").button().click(function(){document.location.href='<?php echo current_url(); ?>/' + jQuery("#lista").jqGrid('getGridParam','selrow');});
+    $("#cancelar").button().click(function() {document.location.href='<?php echo base_url(); ?>';});
+    $('.mensaje').dialog({autoOpen: false,width: 300,
+        buttons: {"Ok": function() {$(this).dialog("close");}}
     });
+    $('#selDepto').change(function(){   
+        $.ajax({url: '<?php echo base_url('componente2/comp24_E0/getMunicipios') ?>/'+$('#selDepto').val()
+        }).done(function(data){$('#mun_id').children().remove();$('#mun_id').html(data);});           
+    });
+    /**/
+    $('#mun_id').change(function(){
+        window.location.href = '<?php echo current_url(); ?>/' + $('#mun_id').val();           
+    });
+            
+    /*PARA EL DATEPICKER*/
+    $( "#ind_des_fecha" ).datepicker({
+        showOn:         'both',
+        maxDate:        '+1D',
+        buttonImage:    '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+        buttonImageOnly: true, 
+        dateFormat: 'dd/mm/yy'
+    });
+    /*FIN DEL DATEPICKER*/
+           
+    /*DIALOGOS DE VALIDACION*/
+    $('.mensaje').dialog({
+        autoOpen: false,
+        width: 300,
+        buttons: {
+            "Ok": function() {
+                $(this).dialog("close");
+            }
+        }
+    });
+    /* Calculos */
+    $('.txtInput').change(function(){cambios();});
+    function cambios(){
+        var t;
+        $('#ind_des_grupo1_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo1_ingtotpre').val())-parseFloat($('#ind_des_grupo1_gastotdev').val()))){return t;}else{return'';}});
+        $('#ind_des_grupo2_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo2_ingprodev').val())/parseFloat($('#ind_des_grupo2_totingdev').val()))){return t;}else{return'';}});
+        $('#ind_des_grupo3_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo3_moningpro').val())/parseFloat($('#ind_des_grupo3_totingdev').val()))){return t;}else{return'';}});
+        $('#ind_des_grupo4_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo4_moningpro').val())/parseFloat($('#ind_des_grupo4_moningpre').val()))){return t;}else{return'';}});
+        $('#ind_des_grupo5_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo5_totingtas').val())/parseFloat($('#ind_des_grupo5_totingpro').val()))){return t;}else{return'';}});
+        $('#ind_des_grupo6_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo6_totingimp').val())/parseFloat($('#ind_des_grupo6_totingpro').val()))){return t;}else{return'';}});
+    }
+    <?php
+    //Muestra los dialogos.
+    if($this->session->flashdata('message')=='Ok'){echo "$('#efectivo').dialog('open');";}
+    if(isset($ind_des_id) && $ind_des_id > 0){echo "formularioShow();cambios();";}else{echo "formularioHide();";}
+    ?>
+});
 </script>
 
-<div id="efectivo" class="mensaje" title="Almacenado">
+<div id="efectivo" class="mensaje" title="Almacenado" style="display: none;">
     <center>
         <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
     </center>
@@ -113,6 +80,7 @@ $this->load->view('plantilla/menu', $menu);
 
     <h2 class="h2Titulos">Etapa 0: Condiciones Previas</h2>
     <h2 class="h2Titulos">Indicadores de Desempeno Administrativo y Financiero Municipal</h2>
+    <h2 class="h2Titulos">Indicadores para el Análisis del Comportamiento de los Ingresos</h2>
     <br/>
     <div id="rpt_frm_bdy">
         <div id="listaContainer">
@@ -161,7 +129,9 @@ $this->load->view('plantilla/menu', $menu);
         
             <div class="bigCampo">
                 <label>Resultado Presupuestario</label>
-                <div class="comment">Determina el comportamiento de la ejecucion</div>
+                <div class="comment">Determina el comportamiento de la ejecución presupuestal durante un 
+                periodo de tiempo (vigencia fiscal) refleja la aplicación de una gestión presupuestaria
+                sana y equilibrada <span style="color: red;">se manifiesta mediante el déficit o superávit.</span></div>
                  <div class="bdy">
                     <div class="frm">
                         <div class="hdr">Resultado Presupuestario</div>
@@ -187,10 +157,11 @@ $this->load->view('plantilla/menu', $menu);
             
             <div class="bigCampo">
                 <label>Autonomia Financiera</label>
-                <div class="comment">Mide el valor de dinero comprometido con relacion a cada dolar disponible,
-                el resultado no debera ser mayor que 1.70, (Art. 5 de la Ley de Endeudamiento Publico Municipal)
-                y se concidera aceptable, si cada vez que se determine el indicador, este resulta ser un valor
-                decreciente y menor que 1.70.</div>
+                <div class="comment">Determina el peso relativo de los ingresos propios dentro de la estructura
+                total de ingresos; a mayor peso relativo más posibilidad de maniobra financiera, de planificación
+                confiable o apalancamiento de nuevos recursos; a menor peso relativo mayor dependencia de recursos
+                externos y menor posibilidad de inversión, <span style="color: red;"> el índice debe ser igual o
+                mayor que 0.25.</span></div>
                  <div class="bdy">
                     <div class="frm">
                         <div class="hdr">Autonomia Financiera</div>
@@ -219,10 +190,10 @@ $this->load->view('plantilla/menu', $menu);
             
             <div class="bigCampo">
                 <label>Eficacia en la Recaudacion</label>
-                <div class="comment">Mide el valor de dinero comprometido con relacion a cada dolar disponible,
-                el resultado no debera ser mayor que 1.70, (Art. 5 de la Ley de Endeudamiento Publico Municipal)
-                y se concidera aceptable, si cada vez que se determine el indicador, este resulta ser un valor
-                decreciente y menor que 1.70.</div>
+                <div class="comment">Mide el % de eficiencia en la recaudación de ingresos propios al crédito
+                (aseo, alumbrado, pavimentación, mercados, agua potable, etc. y de impuestos), con relación a
+                lo que debió ingresar en el año fiscal.<span style="color: red;"> Entre más se acerque a 1, 
+                denota que ha mejorado la eficacia en la recaudación.</span></div>
                  <div class="bdy">
                     <div class="frm">
                         <div class="hdr">Eficacia en la Recaudacion</div>
@@ -339,19 +310,11 @@ $this->load->view('plantilla/menu', $menu);
                                 <?php echo form_error('ind_des_grupo6_total'); ?>
                  </div>
             </div>
-            
-            <div style="width: 100%;">
-                <div style="width: 50%;">
-                    <div class="campo">
-                        <label>Observaciones</label>
-                        <textarea cols="30" rows="5" wrap="virtual" maxlength="100"></textarea>
-                    </div>
-                </div>
-                <div style="width: 50%;">
-                    
-                </div>
+            <div class="campo">
+                <label>Observaciones:</label>
+                <textarea id="ind_des_observaciones" name="ind_des_observaciones" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('ind_des_observaciones') ?></textarea>
+                <?php echo form_error('ind_des_observaciones'); ?>
             </div>
-            
             <div id="actions" style="position: relative;top: 20px">
                 <input type="submit" id="guardar" value="Guardar" />
                 <input type="button" id="cancelar" value="Cancelar" />

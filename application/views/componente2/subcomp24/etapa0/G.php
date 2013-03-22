@@ -11,90 +11,46 @@ $this->load->view('plantilla/menu', $menu);
 
 ?>
 <script type="text/javascript">        
-    $(document).ready(function(){
-        
-        /*VARIABLES*/
- 
-       
-        $("#guardar").button();
-        
-        $("#btn_acuerdo_nuevo").button().click(function(){
-            $('#frm_acuerdo_municipal2').submit();
-        });
-        
-        $("#cancelar").button().click(function() {
-            document.location.href='<?php echo base_url(); ?>';
-        });
-        
-        	/*CARGAR MUNICIPIOS*/
-        $('#selDepto').change(function(){   
-            $('#mun_id').children().remove();
-            $.ajax({
-                url: '<?php echo base_url('componente2/comp24_E0/getMunicipios') ?>/'+$('#selDepto').val()
-            }).done(function(data){
-                $('#mun_id').html(data);
-            });           
-        });
-        $('#mun_id').change(function(){
-            window.location.href = '<?php echo current_url(); ?>/' + $('#mun_id').val();
-            $('#Mensajito').hide();
-            $("#guardar").show();              
-        });
-        $('.txtInput').change(function(){
-            cambios();
-        });
-               
-        /*DIALOGOS DE VALIDACION*/
-        $('.mensaje').dialog({
-            autoOpen: false,
-            width: 300,
-            buttons: {
-                "Ok": function() {
-                    $(this).dialog("close");
-                }
-            }
-        });
- 
-        /*FIN DIALOGOS VALIDACION*/
-        
-        function formularioHide(){
-            $('#listaContainer').show();
-            $('#formulario').hide()
-        }
-        
-        function formularioShow(){
-            $('#listaContainer').hide();
-            $('#formulario').show()
-        }
-        
-        function cambios(){
-            $('#per_mun_poblacion').val(function(){
-                var t;
-                if(isFinite(t=parseInt($('#per_mun_urbana_hombres').val())+parseInt($('#per_mun_urbana_mujeres').val())+parseInt($('#per_mun_rural_hombres').val())+parseInt($('#per_mun_rural_mujeres').val()))){
-                    return t;
-                }else{
-                    return '';
-                }
-            });
-        }
- 
-        
-        <?php
-        //echo '//'.$this->session->keep_flashdata('message');
-        if($this->session->flashdata('message')=='Ok'){
-            echo "$('#efectivo').dialog('open');";
-        }
-        if(isset($mun_id) && $mun_id > 0){
-            echo "formularioShow();cambios();";
-        }else{
-            echo "formularioHide();";
-        }
-        ?>
-  
+$(document).ready(function(){
+    /*BASICO*/
+    function formularioHide(){$('#listaContainer').show();$('#formulario').hide()}
+    function formularioShow(){$('#listaContainer').hide();$('#formulario').show()}
+    $("#guardar").button();
+    $("#btn_acuerdo_nuevo").button().click(function(){$('#frm').submit();});
+    $("#btn_seleccionar").button().click(function(){document.location.href='<?php echo current_url(); ?>/' + jQuery("#lista").jqGrid('getGridParam','selrow');});
+    $("#cancelar").button().click(function() {document.location.href='<?php echo base_url(); ?>';});
+    $('.mensaje').dialog({autoOpen: false,width: 300,
+        buttons: {"Ok": function() {$(this).dialog("close");}}
     });
+    $('#selDepto').change(function(){   
+        $.ajax({url: '<?php echo base_url('componente2/comp24_E0/getMunicipios') ?>/'+$('#selDepto').val()
+        }).done(function(data){$('#mun_id').children().remove();$('#mun_id').html(data);});           
+    });
+    /**/
+    $('#mun_id').change(function(){
+        window.location.href = '<?php echo current_url(); ?>/' + $('#mun_id').val();
+        $('#Mensajito').hide();
+        $("#guardar").show();              
+    });
+    /*CALCULOS*/
+    $('.txtInput').change(function(){cambios();});
+    function cambios(){
+        $('#per_mun_poblacion').val(function(){
+            var t;
+            if(isFinite(t=parseInt($('#per_mun_urbana_hombres').val())+parseInt($('#per_mun_urbana_mujeres').val())+parseInt($('#per_mun_rural_hombres').val())+parseInt($('#per_mun_rural_mujeres').val()))){
+                return t;
+            }else{return '';}
+        });
+    }
+    <?php
+    //Muestra los dialogos.
+    if($this->session->flashdata('message')=='Ok'){echo "$('#efectivo').dialog('open');";}
+    if(isset($mun_id) && $mun_id > 0){echo "formularioShow();";}else{echo "formularioHide();";}
+    ?>
+});
 </script>
 
-<div id="efectivo" class="mensaje" title="Almacenado">
+<div id="efectivo" class="mensaje" title="Almacenado" style="display: none;">
     <center>
         <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
     </center>
@@ -154,8 +110,8 @@ $this->load->view('plantilla/menu', $menu);
             </div>
             
             <div class="campo">
-                <label>Poblacion</label>
-                <table>
+                <label>Población</label>
+                <table style="margin-left: 213px;">
                 <tr>
                 	<td></td>
                 	<td style="text-align: center;">Hombres</td>
@@ -176,24 +132,16 @@ $this->load->view('plantilla/menu', $menu);
                         <?php echo form_error('per_mun_rural_mujeres'); ?></td>
                 </tr>
                 <tr>
-                	<td>Total de Poblacion</td>
+                	<td>Total de Población</td>
                 	<td colspan="2"><input class="txtInput" id="per_mun_poblacion" name="per_mun_poblacion" type="text" style="width: 150px; text-align: center;" readonly="readonly" value="<?php echo set_value('per_mun_poblacion') ?>" /></td>
                 </tr>
                 </table>
             </div>
-                   
-            <div style="width: 100%;">
-                <div style="width: 50%;">
-                    <div class="campo">
-                        <label>Observaciones</label>
-                        <textarea cols="30" rows="5" wrap="virtual" maxlength="100"></textarea>
-                    </div>
-                </div>
-                <div style="width: 50%;">
-                    
-                </div>
-            </div>
-            
+            <div class="campo">
+                <label>Observaciones:</label>
+                <textarea id="per_mun_observaciones" name="per_mun_observaciones" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('per_mun_observaciones')?></textarea>
+                <?php echo form_error('per_mun_observaciones'); ?>
+            </div>       
             <div id="actions" style="position: relative;top: 20px">
                 <input type="submit" id="guardar" value="Guardar" />
                 <input type="button" id="cancelar" value="Cancelar" />

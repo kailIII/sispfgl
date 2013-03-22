@@ -294,6 +294,8 @@ form .campo input {
 #rpt_frm_bdy .campoUp, {
 	margin-bottom:	10px;
 	display: 		block;
+    min-height:     35px;
+    margin-top:     10px;
 }
 
 #rpt_frm_bdy .campoUp label {
@@ -307,10 +309,12 @@ form .campo input {
 #rpt_frm_bdy .campo label {
 	width: 			300px;
 	margin-left:	20px;
+    margin-right:   10px;
 	display:        inline-block;
 	line-height: 	35px;
 	cursor: 		pointer;
     text-align:     right;
+    vertical-align: top;
 }
 
 #rpt_frm_bdy .campoUp input[type=text] {
@@ -334,6 +338,27 @@ form .campo input {
     margin-bottom: 0px;
     height: 20px;
     width: 251px;
+}
+
+#rpt_frm_bdy .campo select {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin-left: -3;
+    margin-right: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    height: 28px;
+    width: 251px;
+}
+
+#rpt_frm_bdy .campo textarea{
+    width: 400px;
+    display: inline;
+}
+
+#rpt_frm_bdy .campoUp textarea{
+    margin-left: 20px;
+    width: 400px;
 }
 
 #rpt_frm_bdy .tabla{

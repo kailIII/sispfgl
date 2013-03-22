@@ -11,74 +11,52 @@ $this->load->view('plantilla/menu', $menu);
 
 ?>
 <script type="text/javascript">        
-    $(document).ready(function(){
-        /*VARIABLES*/
- 
-       $('#guardar').button();
-        
-        
-        $("#cancelar").button().click(function() {
-            document.location.href='<?php echo base_url(); ?>';
-        });
-        
-        	/*CARGAR MUNICIPIOS*/
-        $('#selDepto').change(function(){   
-            $('#mun_id').children().remove();
-            $.ajax({
-                url: '<?php echo base_url('componente2/comp24_E0/getMunicipios') ?>/'+$('#selDepto').val()
-            }).done(function(data){
-                $('#mun_id').html(data);
-            });           
-        });
-        $('#selMun').change(function(){
-            $('#Mensajito').hide();
-            $("#guardar").show();              
-        });
-                
-        /*PARA EL DATEPICKER*/
-        $( "#f_emision" ).datepicker({
-            showOn:         'both',
-            maxDate:        '+1D',
-            buttonImage:    '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy',
-            onClose: function( selectedDate ) {
-                $( "#f_recepcion" ).datepicker( "option", "minDate", selectedDate );
-            }
-        });
-        $( "#f_recepcion" ).datepicker({
-            showOn: 'both',
-            maxDate:    '+1D',
-            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
-        });
-        /*FIN DEL DATEPICKER*/
-               
-        /*DIALOGOS DE VALIDACION*/
-        $('.mensaje').dialog({
-            autoOpen: false,
-            width: 300,
-            buttons: {
-                "Ok": function() {
-                    $(this).dialog("close");
-                }
-            }
-        });
- 
-        /*FIN DIALOGOS VALIDACION*/
-        
-        <?php
-        //echo '//'.$this->session->keep_flashdata('message');
-        if($this->session->flashdata('message')=='Ok'){
-            echo "$('#efectivo').dialog('open');";
-        }
-        ?>
-  
+$(document).ready(function(){
+    /*BASICO*/
+    function formularioHide(){$('#listaContainer').show();$('#formulario').hide()}
+    function formularioShow(){$('#listaContainer').hide();$('#formulario').show()}
+    $("#guardar").button();
+    $("#btn_acuerdo_nuevo").button().click(function(){$('#frm').submit();});
+    $("#btn_seleccionar").button().click(function(){document.location.href='<?php echo current_url(); ?>/' + jQuery("#lista").jqGrid('getGridParam','selrow');});
+    $("#cancelar").button().click(function() {document.location.href='<?php echo base_url(); ?>';});
+    $('.mensaje').dialog({autoOpen: false,width: 300,
+        buttons: {"Ok": function() {$(this).dialog("close");}}
     });
+    $('#selDepto').change(function(){   
+        $.ajax({url: '<?php echo base_url('componente2/comp24_E0/getMunicipios') ?>/'+$('#selDepto').val()
+        }).done(function(data){$('#mun_id').children().remove();$('#mun_id').html(data);});           
+    });
+    /**/
+    $('#selMun').change(function(){             
+    });
+            
+    /*PARA EL DATEPICKER*/
+    $( "#f_emision" ).datepicker({
+        showOn:         'both',
+        maxDate:        '+1D',
+        buttonImage:    '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+        buttonImageOnly: true, 
+        dateFormat: 'dd/mm/yy',
+        onClose: function( selectedDate ) {
+            $( "#f_recepcion" ).datepicker( "option", "minDate", selectedDate );
+        }
+    });
+    $( "#f_recepcion" ).datepicker({
+        showOn: 'both',
+        maxDate:    '+1D',
+        buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+        buttonImageOnly: true, 
+        dateFormat: 'dd/mm/yy'
+    });
+    <?php
+    //Muestra los dialogos.
+    if($this->session->flashdata('message')=='Ok'){echo "$('#efectivo').dialog('open');";}
+    if(isset($mun_id) && $mun_id > 0){echo "formularioShow();";}else{echo "formularioHide();";}
+    ?>
+});
 </script>
 
-<div id="efectivo" class="mensaje" title="Almacenado">
+<div id="efectivo" class="mensaje" title="Almacenado" style="display: none;">
     <center>
         <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
     </center>
@@ -87,7 +65,7 @@ $this->load->view('plantilla/menu', $menu);
 <?php echo form_open() ?>
 
     <h2 class="h2Titulos">Etapa 0: Condiciones Previas</h2>
-    <h2 class="h2Titulos">Registro de Solicitud</h2>
+    <h2 class="h2Titulos">Registro de Solicitudes</h2>
     <br/>
     <div id="rpt_frm_bdy">
         <div class="campo">
@@ -108,12 +86,12 @@ $this->load->view('plantilla/menu', $menu);
         </div>
         <div id="rpt-border"></div>
         <div class="campo">
-            <label>Fecha de emision de solicitud:</label>
+            <label>Fecha de emisión de solicitud:</label>
             <input id="f_emision" name="f_emision" type="text" readonly="readonly" value="<?php echo set_value('f_emision') ?>"/>
             <?php echo form_error('f_emision'); ?>
         </div>
         <div class="campo">
-            <label>Fecha de recepcion de solicitud:</label>
+            <label>Fecha de recepción de solicitud:</label>
             <input id="f_recepcion" name="f_recepcion" type="text" readonly="readonly" value="<?php echo set_value('f_recepcion') ?>"/>
             <?php echo form_error('f_recepcion'); ?>
         </div>

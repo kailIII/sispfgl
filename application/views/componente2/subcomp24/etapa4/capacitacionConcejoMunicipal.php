@@ -16,283 +16,241 @@ $this->load->view('plantilla/menu', $menu);
 }
 </style>
 <script type="text/javascript">        
-    $(document).ready(function(){
-        
-        /*VARIABLES*/
- 
-       
-        $("#guardar").button();
-        
-        $("#btn_acuerdo_nuevo").button().click(function(){
-            $('#frm').submit();
-        });
-        
-        $("#cancelar").button().click(function() {
-            document.location.href='<?php echo base_url(); ?>';
-        });
-        
-        	/*CARGAR MUNICIPIOS*/
-        $('#selDepto').change(function(){   
-            $('#mun_id').children().remove();
-            $.ajax({
-                url: '<?php echo base_url('componente2/comp24_E0/getMunicipios') ?>/'+$('#selDepto').val()
-            }).done(function(data){
-                $('#mun_id').html(data);
-            });           
-        });
-        $('#mun_id').change(function(){
-            jqLista.jqGrid('clearGridData')
-                .jqGrid('setGridParam', { 
-                    url: '<?php echo base_url('componente2/comp24_E4/getCapacitaciones'); ?>/' + $('#mun_id').val(), 
-                    datatype: 'json', 
-                    page:1 })
-                .trigger('reloadGrid');
-        });
-        
-        /*GRID*/
-        $("#concejo").jqGrid({
-            url:'<?php echo base_url('componente2/comp24_E4/loadConcejo') . '/' . $cap_id; ?>',
-            editurl:'<?php echo base_url('componente2/comp24_E4/gestionConcejo') . '/' . $cap_id; ?>',
-            datatype:'json',
-            altRows:true,
-            gridview: true,
-            hidegrid: false,
-            colNames:['id','Padre','Nombres','Apellidos','Sexo','Edad','Cargo','Telefono','Participa'],
-            colModel:[
-                {name:'emp_id',index:'emp_id', width:30,editable:false,editoptions:{size:15},hidden:true },
-                {name:'acu_mun_id',index:'acu_mun_id', width:30,editable:false,editoptions:{size:15},hidden:true },
-                {name:'emp_nombre',index:'emp_nombre', width:123,editable:false,
-                    edittype:'text',editoptions:{size:20,maxlength:50},
-                    editrules:{required:true} },
-                {name:'emp_apellidos',index:'emp_apellidos', width:123,editable:false,
-                    edittypr:'text',editoptions:{size:20,maxlength:50},
-                    editrules:{required:true} },
-                {name:'emp_sexo',index:'emp_sexo', width:90,editable:false,
-                    edittype:'select',formatter:'select',editoptions:{value:'M:Masculino;F:Femenino'},
-                    editrules:{required:true} },
-                {name:'emp_edad',index:'emp_edad', width:50,editable:false,align:'center',
-                    edittype:'text',editoptions:{size:5,maxlength:2},
-                    editrules:{number:true,minValue:18,maxValue:100} },
-                {name:'emp_cargo',index:'emp_cargo', width:123,editable:false,editoptions:{size:30},
-                    edittype:'text',editoptions:{size:20,maxlength:50},
-                    editrules:{required:true} },
-                {name:'emp_telefono',index:'emp_telefono', width:80,editable:true,editoptions:{size:8},align:'center',
-                    edittype:'text',editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}
-                    },
-                {name:'participa',index:'participa', width:80,editable:true,align:'center',
-                    formatter:'checkbox',formatoptions:{disabled:false},
-                    edittype:'checkbox'}
-            ],
-            multiselect: false,
-            caption: "Participantes Miembros del Concejo Municipal",
-            rowNum:20,
-            rowList:[20,50],
-            loadonce:true,
-            pager: $('#pagerConcejo'),
-            viewrecords: true,
-            gridComplete: 
-                function(){
-                $.getJSON('<?php echo base_url('componente2/comp24_E4/count_sexo/') ?>',
-                function(data) {
-                    $('#total').val(data['total']);
-                    $('#mujeres').val(data['female']);
-                    $('#hombres').val(data['male']);
-                }); 
-            }
-        });
-        $("#concejo").jqGrid('navGrid','#pagerConcejo',
-            {edit:false,add:false,del:false,search:true,refresh:false,
-            beforeRefresh: function() {
-                tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
-            }
-        );
-        
-        $("#comision").jqGrid({
-            url:'<?php echo base_url('componente2/comp24_E4/loadComision') . '/' . $cap_id; ?>',
-            editurl:'<?php echo base_url('componente2/comp24_E4/gestionComision') . '/' . $cap_id; ?>',
-            datatype:'json',
-            altRows:true,
-            gridview: true,
-            hidegrid: false,
-            colNames:['id','Padre','Nombres','Apellidos','Sexo','Edad','Cargo','Telefono','Participa'],
-            colModel:[
-                {name:'mie_id',index:'mie_id', width:30,editable:false,editoptions:{size:15},hidden:true },
-                {name:'cap_id',index:'cap_id', width:30,editable:false,editoptions:{size:15},hidden:true },
-                {name:'mie_nombre',index:'mie_nombre', width:123,editable:false,
-                    edittype:'text',editoptions:{size:20,maxlength:50},
-                    editrules:{required:true} },
-                {name:'mie_apellidos',index:'mie_apellidos', width:123,editable:false,
-                    edittypr:'text',editoptions:{size:20,maxlength:50},
-                    editrules:{required:true} },
-                {name:'mie_sexo',index:'mie_sexo', width:90,editable:false,
-                    edittype:'select',formatter:'select',editoptions:{value:'M:Masculino;F:Femenino'},
-                    editrules:{required:true} },
-                {name:'mie_edad',index:'mie_edad', width:50,editable:false,align:'center',
-                    edittype:'text',editoptions:{size:5,maxlength:2},
-                    editrules:{number:true,minValue:18,maxValue:100} },
-                {name:'mie_cargo',index:'mie_cargo', width:123,editable:false,editoptions:{size:30},
-                    edittype:'text',editoptions:{size:20,maxlength:50},
-                    editrules:{required:true} },
-                {name:'mie_telefono',index:'mie_telefono', width:80,editable:true,editoptions:{size:8},align:'center',
-                    edittype:'text',editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}
-                    },
-                {name:'participa',index:'participa', width:80,editable:true,align:'center',
-                    formatter:'checkbox',formatoptions:{disabled:false},
-                    edittype:'checkbox'}
-            ],
-            multiselect: false,
-            caption: "Participantes Miembros de la Comision Financiera",
-            rowNum:20,
-            rowList:[20,50],
-            loadonce:true,
-            pager: $('#pagerComision'),
-            viewrecords: true,
-            gridComplete: 
-                function(){
-                $.getJSON('<?php echo base_url('componente2/comp24_E4/count_sexo/') ?>',
-                function(data) {
-                    $('#total').val(data['total']);
-                    $('#mujeres').val(data['female']);
-                    $('#hombres').val(data['male']);
-                }); 
-            }
-        });
-        $("#comision").jqGrid('navGrid','#pagerComision',
-            {edit:false,add:false,del:false,search:true,refresh:false,
-            beforeRefresh: function() {
-                tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
-            }
-        );
-        
-        $("#otros").jqGrid({
-            url:'<?php echo base_url('componente2/comp24_E4/loadOtros') . '/' . $cap_id; ?>',
-            editurl:'<?php echo base_url('componente2/comp24_E4/gestionOtros') . '/' . $cap_id; ?>',
-            datatype:'json',
-            altRows:true,
-            gridview: true,
-            hidegrid: false,
-            colNames:['id','Padre','Nombres','Apellidos','Sexo','Edad','Cargo','Telefono'],
-            colModel:[
-                {name:'par_id',index:'par_id', width:30,editable:false,editoptions:{size:15},hidden:true },
-                {name:'acu_mun_id',index:'acu_mun_id', width:30,editable:false,editoptions:{size:15},hidden:true },
-                {name:'par_nombre',index:'par_nombre', width:123,editable:true,
-                    edittype:'text',editoptions:{size:20,maxlength:50},
-                    editrules:{required:true} },
-                {name:'par_apellidos',index:'par_apellidos', width:123,editable:true,
-                    edittypr:'text',editoptions:{size:20,maxlength:50},
-                    editrules:{required:true} },
-                {name:'par_sexo',index:'par_sexo', width:90,editable:true,
-                    edittype:'select',formatter:'select',editoptions:{value:'M:Masculino;F:Femenino'},
-                    editrules:{required:true} },
-                {name:'par_edad',index:'par_edad', width:50,editable:true,align:'center',
-                    edittype:'text',editoptions:{size:5,maxlength:2},
-                    editrules:{number:true,minValue:18,maxValue:100} },
-                {name:'par_cargo',index:'par_cargo', width:123,editable:true,editoptions:{size:30},
-                    edittype:'text',editoptions:{size:20,maxlength:50},
-                    editrules:{required:true} },
-                {name:'par_telefono',index:'par_telefono', width:80,editable:true,editoptions:{size:8},align:'center',
-                    edittype:'text',editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}
-                    }
-            ],
-            multiselect: false,
-            caption: "Otros Participantes",
-            rowNum:20,
-            rowList:[20,50],
-            loadonce:true,
-            pager: $('#pagerOtros'),
-            viewrecords: true,
-            ondblClickRow: function(rowid,iRow,iCol,e){
-                 $('#otros').jqGrid('editRow',rowid,true); 
-            },
-            gridComplete: 
-                function(){
-                $.getJSON('<?php echo base_url('componente2/comp24_E4/count_sexo/') ?>',
-                function(data) {
-                    $('#total').val(data['total']);
-                    $('#mujeres').val(data['female']);
-                    $('#hombres').val(data['male']);
-                }); 
-            }
-        });
-        $("#otros").jqGrid('navGrid','#pagerOtros',
-            {edit:false,add:false,del:false,search:true,refresh:false,
-            beforeRefresh: function() {
-                tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
-            }
-        );
-        $("#otros").jqGrid('inlineNav',"#pagerOtros",{editParams:{keys:true}});
-        
-        var jqLista = $('#lista');
-        jqLista.jqGrid({
-           	url: '<?php echo base_url('componente2/comp24_E4/getCapacitaciones/'); ?>/' + $('#mun_id').val(),
-        	datatype: "json",
-            width: 300,
-           	colNames:['Id','Fecha'],
-           	colModel:[
-           		{name:'id',index:'id', width:55},
-           		{name:'fecha',index:'fecha', width:90}		
-           	],
-           	rowNum:10,
-           	rowList:[10,20,30],
-           	pager: '#pagerLista',
-           	sortname: 'id',
-            viewrecords: true,
-            sortorder: "desc",
-            caption:"Seguimiento a Evaluaciones",
-            ondblClickRow: function(rowid, iRow, iCol, e){
-                window.location.href='<?php echo current_url(); ?>/' + rowid;
-            }
-        });
-        /**/
-        
-        $( "#cap_fecha" ).datepicker({
-            showOn: 'both',
-            maxDate:    '+1D',
-            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
-        });
-               
-        /*DIALOGOS DE VALIDACION*/
-        $('.mensaje').dialog({
-            autoOpen: false,
-            width: 300,
-            buttons: {
-                "Ok": function() {
-                    $(this).dialog("close");
-                }
-            }
-        });
- 
-        /*FIN DIALOGOS VALIDACION*/
-        
-        function formularioHide(){
-            $('#listaContainer').show();
-            $('#formulario').hide()
-        }
-        
-        function formularioShow(){
-            $('#listaContainer').hide();
-            $('#formulario').show()
-        }
- 
-        
-        <?php
-        //echo '//'.$this->session->keep_flashdata('message');
-        if($this->session->flashdata('message')=='Ok'){
-            echo "$('#efectivo').dialog('open');";
-        }
-        if(isset($cap_id) && $cap_id > 0){
-            echo "formularioShow();";
-        }else{
-            echo "formularioHide();";
-        }
-        ?>
-  
+$(document).ready(function(){
+    /*BASICO*/
+    function formularioHide(){$('#listaContainer').show();$('#formulario').hide()}
+    function formularioShow(){$('#listaContainer').hide();$('#formulario').show()}
+    $("#guardar").button();
+    $("#btn_acuerdo_nuevo").button().click(function(){$('#frm').submit();});
+    $("#btn_seleccionar").button().click(function(){document.location.href='<?php echo current_url(); ?>/' + jQuery("#lista").jqGrid('getGridParam','selrow');});
+    $("#cancelar").button().click(function() {document.location.href='<?php echo base_url(); ?>';});
+    $('.mensaje').dialog({autoOpen: false,width: 300,
+        buttons: {"Ok": function() {$(this).dialog("close");}}
     });
+    $('#selDepto').change(function(){   
+        $.ajax({url: '<?php echo base_url('componente2/comp24_E0/getMunicipios') ?>/'+$('#selDepto').val()
+        }).done(function(data){$('#mun_id').children().remove();$('#mun_id').html(data);});           
+    });
+    /**/
+    $('#mun_id').change(function(){
+        jqLista.jqGrid('clearGridData')
+            .jqGrid('setGridParam', { 
+                url: '<?php echo base_url('componente2/comp24_E4/getCapacitaciones'); ?>/' + $('#mun_id').val(), 
+                datatype: 'json', 
+                page:1 })
+            .trigger('reloadGrid');
+    });
+    
+    /*GRID*/
+    $("#concejo").jqGrid({
+        url:'<?php echo base_url('componente2/comp24_E4/loadConcejo') . '/' . $cap_id; ?>',
+        editurl:'<?php echo base_url('componente2/comp24_E4/gestionConcejo') . '/' . $cap_id; ?>',
+        datatype:'json',
+        altRows:true,
+        gridview: true,
+        hidegrid: false,
+        colNames:['id','Padre','Nombres','Apellidos','Sexo','Edad','Cargo','Telefono','Participa'],
+        colModel:[
+            {name:'emp_id',index:'emp_id', width:30,editable:false,editoptions:{size:15},hidden:true },
+            {name:'acu_mun_id',index:'acu_mun_id', width:30,editable:false,editoptions:{size:15},hidden:true },
+            {name:'emp_nombre',index:'emp_nombre', width:123,editable:false,
+                edittype:'text',editoptions:{size:20,maxlength:50},
+                editrules:{required:true} },
+            {name:'emp_apellidos',index:'emp_apellidos', width:123,editable:false,
+                edittypr:'text',editoptions:{size:20,maxlength:50},
+                editrules:{required:true} },
+            {name:'emp_sexo',index:'emp_sexo', width:90,editable:false,
+                edittype:'select',formatter:'select',editoptions:{value:'M:Masculino;F:Femenino'},
+                editrules:{required:true} },
+            {name:'emp_edad',index:'emp_edad', width:50,editable:false,align:'center',
+                edittype:'text',editoptions:{size:5,maxlength:2},
+                editrules:{number:true,minValue:18,maxValue:100} },
+            {name:'emp_cargo',index:'emp_cargo', width:123,editable:false,editoptions:{size:30},
+                edittype:'text',editoptions:{size:20,maxlength:50},
+                editrules:{required:true} },
+            {name:'emp_telefono',index:'emp_telefono', width:80,editable:true,editoptions:{size:8},align:'center',
+                edittype:'text',editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}
+                },
+            {name:'participa',index:'participa', width:80,editable:true,align:'center',
+                formatter:'checkbox',formatoptions:{disabled:false},
+                edittype:'checkbox'}
+        ],
+        multiselect: false,
+        caption: "Participantes Miembros del Concejo Municipal",
+        rowNum:20,
+        rowList:[20,50],
+        loadonce:true,
+        pager: $('#pagerConcejo'),
+        viewrecords: true,
+        gridComplete: 
+            function(){
+            $.getJSON('<?php echo base_url('componente2/comp24_E4/count_sexo/') ?>',
+            function(data) {
+                $('#total').val(data['total']);
+                $('#mujeres').val(data['female']);
+                $('#hombres').val(data['male']);
+            }); 
+        }
+    });
+    $("#concejo").jqGrid('navGrid','#pagerConcejo',
+        {edit:false,add:false,del:false,search:true,refresh:false,
+        beforeRefresh: function() {
+            tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
+        }
+    );
+    
+    $("#comision").jqGrid({
+        url:'<?php echo base_url('componente2/comp24_E4/loadComision') . '/' . $cap_id; ?>',
+        editurl:'<?php echo base_url('componente2/comp24_E4/gestionComision') . '/' . $cap_id; ?>',
+        datatype:'json',
+        altRows:true,
+        gridview: true,
+        hidegrid: false,
+        colNames:['id','Padre','Nombres','Apellidos','Sexo','Edad','Cargo','Telefono','Participa'],
+        colModel:[
+            {name:'mie_id',index:'mie_id', width:30,editable:false,editoptions:{size:15},hidden:true },
+            {name:'cap_id',index:'cap_id', width:30,editable:false,editoptions:{size:15},hidden:true },
+            {name:'mie_nombre',index:'mie_nombre', width:123,editable:false,
+                edittype:'text',editoptions:{size:20,maxlength:50},
+                editrules:{required:true} },
+            {name:'mie_apellidos',index:'mie_apellidos', width:123,editable:false,
+                edittypr:'text',editoptions:{size:20,maxlength:50},
+                editrules:{required:true} },
+            {name:'mie_sexo',index:'mie_sexo', width:90,editable:false,
+                edittype:'select',formatter:'select',editoptions:{value:'M:Masculino;F:Femenino'},
+                editrules:{required:true} },
+            {name:'mie_edad',index:'mie_edad', width:50,editable:false,align:'center',
+                edittype:'text',editoptions:{size:5,maxlength:2},
+                editrules:{number:true,minValue:18,maxValue:100} },
+            {name:'mie_cargo',index:'mie_cargo', width:123,editable:false,editoptions:{size:30},
+                edittype:'text',editoptions:{size:20,maxlength:50},
+                editrules:{required:true} },
+            {name:'mie_telefono',index:'mie_telefono', width:80,editable:true,editoptions:{size:8},align:'center',
+                edittype:'text',editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}
+                },
+            {name:'participa',index:'participa', width:80,editable:true,align:'center',
+                formatter:'checkbox',formatoptions:{disabled:false},
+                edittype:'checkbox'}
+        ],
+        multiselect: false,
+        caption: "Participantes Miembros de la Comision Financiera",
+        rowNum:20,
+        rowList:[20,50],
+        loadonce:true,
+        pager: $('#pagerComision'),
+        viewrecords: true,
+        gridComplete: 
+            function(){
+            $.getJSON('<?php echo base_url('componente2/comp24_E4/count_sexo/') ?>',
+            function(data) {
+                $('#total').val(data['total']);
+                $('#mujeres').val(data['female']);
+                $('#hombres').val(data['male']);
+            }); 
+        }
+    });
+    $("#comision").jqGrid('navGrid','#pagerComision',
+        {edit:false,add:false,del:false,search:true,refresh:false,
+        beforeRefresh: function() {
+            tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
+        }
+    );
+    
+    $("#otros").jqGrid({
+        url:'<?php echo base_url('componente2/comp24_E4/loadOtros') . '/' . $cap_id; ?>',
+        editurl:'<?php echo base_url('componente2/comp24_E4/gestionOtros') . '/' . $cap_id; ?>',
+        datatype:'json',
+        altRows:true,
+        gridview: true,
+        hidegrid: false,
+        colNames:['id','Padre','Nombres','Apellidos','Sexo','Edad','Cargo','Telefono'],
+        colModel:[
+            {name:'par_id',index:'par_id', width:30,editable:false,editoptions:{size:15},hidden:true },
+            {name:'acu_mun_id',index:'acu_mun_id', width:30,editable:false,editoptions:{size:15},hidden:true },
+            {name:'par_nombre',index:'par_nombre', width:123,editable:true,
+                edittype:'text',editoptions:{size:20,maxlength:50},
+                editrules:{required:true} },
+            {name:'par_apellidos',index:'par_apellidos', width:123,editable:true,
+                edittypr:'text',editoptions:{size:20,maxlength:50},
+                editrules:{required:true} },
+            {name:'par_sexo',index:'par_sexo', width:90,editable:true,
+                edittype:'select',formatter:'select',editoptions:{value:'M:Masculino;F:Femenino'},
+                editrules:{required:true} },
+            {name:'par_edad',index:'par_edad', width:50,editable:true,align:'center',
+                edittype:'text',editoptions:{size:5,maxlength:2},
+                editrules:{number:true,minValue:18,maxValue:100} },
+            {name:'par_cargo',index:'par_cargo', width:123,editable:true,editoptions:{size:30},
+                edittype:'text',editoptions:{size:20,maxlength:50},
+                editrules:{required:true} },
+            {name:'par_telefono',index:'par_telefono', width:80,editable:true,editoptions:{size:8},align:'center',
+                edittype:'text',editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}
+                }
+        ],
+        multiselect: false,
+        caption: "Otros Participantes",
+        rowNum:20,
+        rowList:[20,50],
+        loadonce:true,
+        pager: $('#pagerOtros'),
+        viewrecords: true,
+        ondblClickRow: function(rowid,iRow,iCol,e){
+             $('#otros').jqGrid('editRow',rowid,true); 
+        },
+        gridComplete: 
+            function(){
+            $.getJSON('<?php echo base_url('componente2/comp24_E4/count_sexo/') ?>',
+            function(data) {
+                $('#total').val(data['total']);
+                $('#mujeres').val(data['female']);
+                $('#hombres').val(data['male']);
+            }); 
+        }
+    });
+    $("#otros").jqGrid('navGrid','#pagerOtros',
+        {edit:false,add:false,del:false,search:true,refresh:false,
+        beforeRefresh: function() {
+            tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
+        }
+    );
+    $("#otros").jqGrid('inlineNav',"#pagerOtros",{editParams:{keys:true}});
+    
+    var jqLista = $('#lista');
+    jqLista.jqGrid({
+       	url: '<?php echo base_url('componente2/comp24_E4/getCapacitaciones/'); ?>/' + $('#mun_id').val(),
+    	datatype: "json",
+        width: 300,
+       	colNames:['Id','Fecha'],
+       	colModel:[
+       		{name:'id',index:'id', width:55},
+       		{name:'fecha',index:'fecha', width:90}		
+       	],
+       	rowNum:10,
+       	rowList:[10,20,30],
+       	pager: '#pagerLista',
+       	sortname: 'id',
+        viewrecords: true,
+        sortorder: "desc",
+        caption:"Seguimiento a Evaluaciones",
+        ondblClickRow: function(rowid, iRow, iCol, e){
+            window.location.href='<?php echo current_url(); ?>/' + rowid;
+        }
+    });
+    <?php
+    //echo '//'.$this->session->keep_flashdata('message');
+    if($this->session->flashdata('message')=='Ok'){
+        echo "$('#efectivo').dialog('open');";
+    }
+    if(isset($cap_id) && $cap_id > 0){
+        echo "formularioShow();";
+    }else{
+        echo "formularioHide();";
+    }
+    ?>
+
+});
 </script>
 
-<div id="efectivo" class="mensaje" title="Almacenado">
+<div id="efectivo" class="mensaje" title="Almacenado" style="display: none;">
     <center>
         <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
     </center>

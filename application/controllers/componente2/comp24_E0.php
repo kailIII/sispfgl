@@ -112,14 +112,16 @@ class Comp24_E0 extends CI_Controller {
         return $lastId;
     }
     
-    function index()
-    {/*
-        if ($message = $this->session->flashdata('message')) {
-            $this->load->view('mensaje', array('message' => $message));
-        } else {
-            redirect('/');
-        }*/
+    public function index(){
+        if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
         
+        $this->load->view('componente2/subcomp24/front',
+            array('titulo' => 'Componente',
+                'user_uid' => $this->tank_auth->get_user_id(),
+                'username' => $this->tank_auth->get_username(),
+                'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
+                'departamentos' => $this->departamento->obtenerDepartamentos()
+                ));
     }
 	
     public function solicitudAyuda(){
@@ -176,12 +178,19 @@ class Comp24_E0 extends CI_Controller {
         $prefix = 'acu_mun_';
         
         if($id && !isset($_POST['mod'])){
-            $_POST = get_object_vars($this->comp24->get_by_id($tabla, $campo, $id));
+            if(!($tmp = $this->comp24->get_by_id($tabla, $campo, $id))){
+                $this->comp24->insert_row($tabla,array($campo=>$id,'mun_id'=>$id));
+                $tmp = $this->comp24->get_by_id($tabla, $campo, $id);
+            }
+            $_POST = get_object_vars($tmp);
             $_POST['acu_mun_fecha_conformacion'] = $this->librerias->parse_output('date',$_POST['acu_mun_fecha_conformacion']);
             $_POST['acu_mun_fecha_acuerdo']      = $this->librerias->parse_output('date',$_POST['acu_mun_fecha_acuerdo']);
             $_POST['acu_mun_fecha_recepcion']    = $this->librerias->parse_output('date',$_POST['acu_mun_fecha_recepcion']);
-            $_POST['depto']                   = $this->comp24->getDepto($_POST['mun_id'])->dep_nombre;
-            $_POST['muni']                   = $this->comp24->get_by_Id('municipio','mun_id',$_POST['mun_id'])->mun_nombre;
+        }
+        
+        if(isset($_POST['mun_id']) && $_POST['mun_id'] > 0){
+            $_POST['depto'] = $this->comp24->getDepto($_POST['mun_id'])->dep_nombre;
+            $_POST['muni']  = $this->comp24->get_by_Id('municipio','mun_id',$_POST['mun_id'])->mun_nombre;    
         }
         
         $config = array(
@@ -300,13 +309,20 @@ class Comp24_E0 extends CI_Controller {
         $prefix = 'asi_tec_';
         
         if($id && !isset($_POST['mod'])){
-            $_POST = get_object_vars($this->comp24->get_by_id($tabla, $campo, $id));
+            if(!($tmp = $this->comp24->get_by_id($tabla, $campo, $id))){
+                $this->comp24->insert_row($tabla,array($campo=>$id,'mun_id'=>$id));
+                $tmp = $this->comp24->get_by_id($tabla, $campo, $id);
+            }
+            $_POST = get_object_vars($tmp);
             $_POST[$prefix.'fecha_solicitud'] = $this->librerias->parse_output('date',$_POST[$prefix.'fecha_solicitud']);
             $_POST[$prefix.'fecha_emision']      = $this->librerias->parse_output('date',$_POST[$prefix.'fecha_emision']);
             $_POST[$prefix.'fecha_envio']    = $this->librerias->parse_output('date',$_POST[$prefix.'fecha_envio']);
             $_POST[$prefix.'fecha_inicio']    = $this->librerias->parse_output('date',$_POST[$prefix.'fecha_inicio']);
-            $_POST['depto']                   = $this->comp24->getDepto($_POST['mun_id'])->dep_nombre;
-            $_POST['muni']                   = $this->comp24->get_by_Id('municipio','mun_id',$_POST['mun_id'])->mun_nombre;
+        }
+        
+        if(isset($_POST['mun_id']) && $_POST['mun_id'] > 0){
+            $_POST['depto'] = $this->comp24->getDepto($_POST['mun_id'])->dep_nombre;
+            $_POST['muni']  = $this->comp24->get_by_Id('municipio','mun_id',$_POST['mun_id'])->mun_nombre;    
         }
         
         $config = array(
@@ -432,8 +448,11 @@ class Comp24_E0 extends CI_Controller {
             $_POST = get_object_vars($tmp);
             //print_r($_POST);die();    //test
             $_POST[$prefix.'fecha'] = $this->librerias->parse_output('date',$_POST[$prefix.'fecha']);
-            $_POST['depto']         = $this->comp24->getDepto($id)->dep_nombre;
-            $_POST['muni']          = $this->comp24->get_by_Id('municipio','mun_id',$id)->mun_nombre;
+        }
+        
+        if(isset($_POST['mun_id']) && $_POST['mun_id'] > 0){
+            $_POST['depto'] = $this->comp24->getDepto($_POST['mun_id'])->dep_nombre;
+            $_POST['muni']  = $this->comp24->get_by_Id('municipio','mun_id',$_POST['mun_id'])->mun_nombre;    
         }
  
         $this->form_validation->set_message('required', '*');
@@ -522,8 +541,11 @@ class Comp24_E0 extends CI_Controller {
             }
             $_POST = get_object_vars($tmp);
             $_POST[$prefix.'fecha'] = $this->librerias->parse_output('date',$_POST[$prefix.'fecha']);
-            $_POST['depto']                   = $this->comp24->getDepto($_POST['mun_id'])->dep_nombre;
-            $_POST['muni']                   = $this->comp24->get_by_Id('municipio','mun_id',$_POST['mun_id'])->mun_nombre;
+        }
+        
+        if(isset($_POST['mun_id']) && $_POST['mun_id'] > 0){
+            $_POST['depto'] = $this->comp24->getDepto($_POST['mun_id'])->dep_nombre;
+            $_POST['muni']  = $this->comp24->get_by_Id('municipio','mun_id',$_POST['mun_id'])->mun_nombre;    
         }
         
         $this->form_validation->set_message('required', '*');
@@ -623,14 +645,17 @@ class Comp24_E0 extends CI_Controller {
         $prefix = 'ind_des_';
         
         if($id && !isset($_POST['mod'])){
-            if(!$tmp = $this->comp24->get_by_id($tabla, $campo, $id)){
+            if(!($tmp = $this->comp24->get_by_id($tabla, $campo, $id))){
                 $this->comp24->insert_row($tabla,array($campo=>$id,'mun_id'=>$id));
                 $tmp = $this->comp24->get_by_id($tabla, $campo, $id);
             }
             $_POST = get_object_vars($tmp);
             $_POST[$prefix.'fecha'] = $this->librerias->parse_output('date',$_POST[$prefix.'fecha']);
-            $_POST['depto']                   = $this->comp24->getDepto($_POST['mun_id'])->dep_nombre;
-            $_POST['muni']                   = $this->comp24->get_by_Id('municipio','mun_id',$_POST['mun_id'])->mun_nombre;
+        }
+        
+        if(isset($_POST['mun_id']) && $_POST['mun_id'] > 0){
+            $_POST['depto'] = $this->comp24->getDepto($_POST['mun_id'])->dep_nombre;
+            $_POST['muni']  = $this->comp24->get_by_Id('municipio','mun_id',$_POST['mun_id'])->mun_nombre;    
         }
         
         $this->form_validation->set_message('required', '*');
@@ -769,13 +794,16 @@ class Comp24_E0 extends CI_Controller {
         $prefix = 'per_mun_';
         
         if($id && !isset($_POST['mod'])){
-            if(!$tmp = $this->comp24->get_by_id($tabla, $campo, $id)){
+            if(!($tmp = $this->comp24->get_by_id($tabla, $campo, $id))){
                 $this->comp24->insert_row($tabla,array($campo=>$id));
                 $tmp = $this->comp24->get_by_id($tabla, $campo, $id);
             }
             $_POST = get_object_vars($tmp);
-            $_POST['depto']                   = $this->comp24->getDepto($_POST['mun_id'])->dep_nombre;
-            $_POST['muni']                   = $this->comp24->get_by_Id('municipio','mun_id',$_POST['mun_id'])->mun_nombre;
+        }
+        
+        if(isset($_POST['mun_id']) && $_POST['mun_id'] > 0){
+            $_POST['depto'] = $this->comp24->getDepto($_POST['mun_id'])->dep_nombre;
+            $_POST['muni']  = $this->comp24->get_by_Id('municipio','mun_id',$_POST['mun_id'])->mun_nombre;    
         }
         
         $this->form_validation->set_message('required', '*');
@@ -850,13 +878,16 @@ class Comp24_E0 extends CI_Controller {
         $prefix = 'emp_mun_';
         
         if($id && !isset($_POST['mod'])){
-            if(!$tmp = $this->comp24->get_by_id($tabla, $campo, $id)){
+            if(!($tmp = $this->comp24->get_by_id($tabla, $campo, $id))){
                 $this->comp24->insert_row($tabla,array($campo=>$id,'mun_id'=>$id));
                 $tmp = $this->comp24->get_by_id($tabla, $campo, $id);
             }
             $_POST = get_object_vars($tmp);
-            $_POST['depto']                   = $this->comp24->getDepto($_POST['mun_id'])->dep_nombre;
-            $_POST['muni']                   = $this->comp24->get_by_Id('municipio','mun_id',$_POST['mun_id'])->mun_nombre;
+        }
+        
+        if(isset($_POST['mun_id']) && $_POST['mun_id'] > 0){
+            $_POST['depto'] = $this->comp24->getDepto($_POST['mun_id'])->dep_nombre;
+            $_POST['muni']  = $this->comp24->get_by_Id('municipio','mun_id',$_POST['mun_id'])->mun_nombre;    
         }
         
         $config = array(

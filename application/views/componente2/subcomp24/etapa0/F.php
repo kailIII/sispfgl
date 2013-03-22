@@ -11,99 +11,62 @@ $this->load->view('plantilla/menu', $menu);
 
 ?>
 <script type="text/javascript">        
-    $(document).ready(function(){
-        
-        /*VARIABLES*/
-        $("#guardar").button();
-        $("#cancelar").button().click(function() {
-            document.location.href='<?php echo base_url(); ?>';
-        });
-       	/*CARGAR MUNICIPIOS*/
-        $('#selDepto').change(function(){   
-            $('#mun_id').children().remove();
-            $.ajax({
-                url: '<?php echo base_url('componente2/comp24_E0/getMunicipios') ?>/'+$('#selDepto').val()
-            }).done(function(data){
-                $('#mun_id').html(data);
-            });           
-        });
-        $('#mun_id').change(function(){
-            window.location.href = '<?php echo current_url(); ?>/' + $('#mun_id').val();
-            $('#Mensajito').hide();
-            $("#guardar").show();              
-        });
-                
-        /*PARA EL DATEPICKER*/
-        $( "#ind_des_fecha" ).datepicker({
-            showOn:         'both',
-            maxDate:        '+1D',
-            buttonImage:    '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
-            dateFormat: 'dd/mm/yy'
-        });
-        /*FIN DEL DATEPICKER*/
-               
-        /*DIALOGOS DE VALIDACION*/
-        $('.mensaje').dialog({
-            autoOpen: false,
-            width: 300,
-            buttons: {
-                "Ok": function() {
-                    $(this).dialog("close");
-                }
-            }
-        });
- 
-        /*FIN DIALOGOS VALIDACION*/
-        
-        /* Calculos */
-        $('.txtInput').change(function(){
-            cambios();
-        });
-        
-        function formularioHide(){
-            $('#listaContainer').show();
-            $('#formulario').hide()
-        }
-        
-        function formularioShow(){
-            $('#listaContainer').hide();
-            $('#formulario').show()
-        }
-        
-        function cambios(){
-            var t;
-            $('#ind_des_grupo1_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo1_ingcorpre').val())/parseFloat($('#ind_des_grupo1_gascordev').val()))){return t;}else{return'';}});
-            $('#ind_des_grupo2_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo2_gascordev').val())/parseFloat($('#ind_des_grupo2_totgascor').val()))){return t;}else{return'';}});
-            $('#ind_des_grupo3_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo3_ejegasinv').val())/parseFloat($('#ind_des_grupo3_totgasinv').val()))){return t;}else{return'';}});
-            $('#ind_des_grupo4_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo4_gascordev').val())/parseFloat($('#ind_des_grupo4_ingcorper').val()))){return t;}else{return'';}});
-            $('#ind_des_grupo5_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo5_armderdeu').val())/parseFloat($('#ind_des_grupo5_egrtotdev').val()))){return t;}else{return'';}});
-            $('#ind_des_grupo6_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo6_gascordev').val())/parseFloat($('#ind_des_grupo6_egrtotdev').val()))){return t;}else{return'';}});
-            $('#ind_des_grupo7_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo7_gastotinv').val())/parseFloat($('#ind_des_grupo7_egrtotdev').val()))){return t;}else{return'';}});
-            $('#ind_des_grupo8_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo8_gasinvinf').val())/parseFloat($('#ind_des_grupo8_ejegastot').val()))){return t;}else{return'';}});
-            $('#ind_des_grupo9_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo9_ingcorper').val())-parseFloat($('#ind_des_grupo9_gascordev').val()))){return t;}else{return'';}});
-            $('#ind_des_grupo10_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo10_gastotper').val())/parseFloat($('#ind_des_grupo10_ingcorper').val()))){return t;}else{return'';}});
-            $('#ind_des_grupo11_total').val(function(){if(isFinite(t=(1-(parseFloat($('#ind_des_grupo11_ingproper').val()))*100)/parseFloat($('#ind_des_grupo11_gascordev').val()))){return t;}else{return'';}});
-            $('#ind_des_grupo12_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo12_valdefser').val())/parseFloat($('#ind_des_grupo12_gastotser').val()))){return t;}else{return'';}});
-        }
- 
-        
-        <?php
-        //echo '//'.$this->session->keep_flashdata('message');
-        if($this->session->flashdata('message')=='Ok'){
-            echo "$('#efectivo').dialog('open');";
-        }
-        if(isset($ind_des_id) && $ind_des_id > 0){
-            echo "formularioShow();cambios();";
-        }else{
-            echo "formularioHide();";
-        }
-        ?>
-  
+$(document).ready(function(){
+    /*BASICO*/
+    function formularioHide(){$('#listaContainer').show();$('#formulario').hide()}
+    function formularioShow(){$('#listaContainer').hide();$('#formulario').show()}
+    $("#guardar").button();
+    $("#btn_acuerdo_nuevo").button().click(function(){$('#frm').submit();});
+    $("#btn_seleccionar").button().click(function(){document.location.href='<?php echo current_url(); ?>/' + jQuery("#lista").jqGrid('getGridParam','selrow');});
+    $("#cancelar").button().click(function() {document.location.href='<?php echo base_url(); ?>';});
+    $('.mensaje').dialog({autoOpen: false,width: 300,
+        buttons: {"Ok": function() {$(this).dialog("close");}}
     });
+    $('#selDepto').change(function(){   
+        $.ajax({url: '<?php echo base_url('componente2/comp24_E0/getMunicipios') ?>/'+$('#selDepto').val()
+        }).done(function(data){$('#mun_id').children().remove();$('#mun_id').html(data);});           
+    });
+    /**/
+    $('#mun_id').change(function(){
+        window.location.href = '<?php echo current_url(); ?>/' + $('#mun_id').val();
+        $('#Mensajito').hide();
+        $("#guardar").show();              
+    });
+            
+    /*PARA EL DATEPICKER*/
+    $( "#ind_des_fecha" ).datepicker({
+        showOn:         'both',
+        maxDate:        '+1D',
+        buttonImage:    '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+        buttonImageOnly: true, 
+        dateFormat: 'dd/mm/yy'
+    });
+    /* Calculos */
+    $('.txtInput').change(function(){cambios();});
+    function cambios(){
+        var t;
+        $('#ind_des_grupo1_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo1_ingcorpre').val())/parseFloat($('#ind_des_grupo1_gascordev').val()))){return t;}else{return'';}});
+        $('#ind_des_grupo2_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo2_gascordev').val())/parseFloat($('#ind_des_grupo2_totgascor').val()))){return t;}else{return'';}});
+        $('#ind_des_grupo3_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo3_ejegasinv').val())/parseFloat($('#ind_des_grupo3_totgasinv').val()))){return t;}else{return'';}});
+        $('#ind_des_grupo4_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo4_gascordev').val())/parseFloat($('#ind_des_grupo4_ingcorper').val()))){return t;}else{return'';}});
+        $('#ind_des_grupo5_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo5_armderdeu').val())/parseFloat($('#ind_des_grupo5_egrtotdev').val()))){return t;}else{return'';}});
+        $('#ind_des_grupo6_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo6_gascordev').val())/parseFloat($('#ind_des_grupo6_egrtotdev').val()))){return t;}else{return'';}});
+        $('#ind_des_grupo7_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo7_gastotinv').val())/parseFloat($('#ind_des_grupo7_egrtotdev').val()))){return t;}else{return'';}});
+        $('#ind_des_grupo8_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo8_gasinvinf').val())/parseFloat($('#ind_des_grupo8_ejegastot').val()))){return t;}else{return'';}});
+        $('#ind_des_grupo9_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo9_ingcorper').val())-parseFloat($('#ind_des_grupo9_gascordev').val()))){return t;}else{return'';}});
+        $('#ind_des_grupo10_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo10_gastotper').val())/parseFloat($('#ind_des_grupo10_ingcorper').val()))){return t;}else{return'';}});
+        $('#ind_des_grupo11_total').val(function(){if(isFinite(t=(1-(parseFloat($('#ind_des_grupo11_ingproper').val()))*100)/parseFloat($('#ind_des_grupo11_gascordev').val()))){return t;}else{return'';}});
+        $('#ind_des_grupo12_total').val(function(){if(isFinite(t=parseFloat($('#ind_des_grupo12_valdefser').val())/parseFloat($('#ind_des_grupo12_gastotser').val()))){return t;}else{return'';}});
+    }
+    <?php
+    //Muestra los dialogos.
+    if($this->session->flashdata('message')=='Ok'){echo "$('#efectivo').dialog('open');";}
+    if(isset($ind_des_id) && $ind_des_id > 0){echo "formularioShow();cambios();";}else{echo "formularioHide();";}
+    ?>
+});
 </script>
 
-<div id="efectivo" class="mensaje" title="Almacenado">
+<div id="efectivo" class="mensaje" title="Almacenado" style="display: none;">
     <center>
         <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
     </center>
@@ -114,6 +77,7 @@ $this->load->view('plantilla/menu', $menu);
 
     <h2 class="h2Titulos">Etapa 0: Condiciones Previas</h2>
     <h2 class="h2Titulos">Indicadores de Desempeno Administrativo y Financiero Municipal</h2>
+    <h2 class="h2Titulos">Indicadores para el Análisis del Comportamiento de los Gastos</h2>
     <br/>
     <div id="rpt_frm_bdy">
         <div id="listaContainer">
@@ -513,19 +477,11 @@ $this->load->view('plantilla/menu', $menu);
                 <input id="ind_des_grupo12_total" name="ind_des_grupo12_total" type="text" size="100" />
              </div>
         </div>
-               
-        <div style="width: 100%;">
-            <div style="width: 50%;">
-                <div class="campo">
-                    <label>Observaciones</label>
-                    <textarea cols="30" rows="5" wrap="virtual" maxlength="100"></textarea>
-                </div>
-            </div>
-            <div style="width: 50%;">
-                
-            </div>
+        <div class="campo">
+            <label>Observaciones:</label>
+            <textarea id="ind_des_observaciones" name="ind_des_observaciones" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('ind_des_observaciones') ?></textarea>
+            <?php echo form_error('ind_des_observaciones'); ?>
         </div>
-        
         <div id="actions" style="position: relative;top: 20px">
             <input type="submit" id="guardar" value="Guardar" />
             <input type="button" id="cancelar" value="Cancelar" />
