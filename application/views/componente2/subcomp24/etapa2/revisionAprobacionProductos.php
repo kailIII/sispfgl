@@ -119,8 +119,8 @@ $(document).ready(function(){
 
 <?php echo form_open() ?>
 
-    <h2 class="h2Titulos">Etapa 2: Diagnostico y Plan</h2>
-    <h2 class="h2Titulos">Revision y Aprovacion de Productos</h2>
+    <h2 class="h2Titulos">Etapa 2: Diagnóstico y Plan</h2>
+    <h2 class="h2Titulos">Revisión y Aprovación de Productos</h2>
     <br/>
     <div id="rpt_frm_bdy">
         <div id="listaContainer">
@@ -176,7 +176,7 @@ $(document).ready(function(){
         <!-- Lado Izquierdo -->
         <div style="display: inline-block; vertical-align: top;">
             <div class="campoUp">
-                <label>Fecha de presentacion de producto</label>
+                <label>Fecha de presentación de producto</label>
                 <input id="rea_pro_fecha_presentacion" name="rea_pro_fecha_presentacion" type="text" readonly="readonly" value="<?php echo set_value('rea_pro_fecha_presentacion') ?>"/>
                 <?php echo form_error('rea_pro_fecha_presentacion'); ?>
             </div>
@@ -186,7 +186,7 @@ $(document).ready(function(){
                 <?php echo form_error('rea_pro_fecha_vistobueno'); ?>
             </div>
             <div class="campoUp">
-                <label>Fecha de aprobacion concejo Municipal</label>
+                <label>Fecha de aprobación concejo Municipal</label>
                 <input id="rea_pro_fecha_aprobacion" name="rea_pro_fecha_aprobacion" type="text" readonly="readonly" value="<?php echo set_value('rea_pro_fecha_aprobacion') ?>"/>
                 <?php echo form_error('rea_pro_fecha_aprobacion'); ?>
             </div>

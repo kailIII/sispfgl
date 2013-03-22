@@ -120,8 +120,8 @@ $(document).ready(function(){
 
 <?php echo form_open() ?>
 
-    <h2 class="h2Titulos">Etapa 1: Diagnostico y Plan</h2>
-    <h2 class="h2Titulos">Revision y Aprovacion de Productos</h2>
+    <h2 class="h2Titulos">Etapa 1: Diagnóstico y Plan</h2>
+    <h2 class="h2Titulos">Revisión y Aprovación de Productos</h2>
     <br/>
     <div id="rpt_frm_bdy">
         <div id="listaContainer">
@@ -161,7 +161,7 @@ $(document).ready(function(){
                 <?php echo form_error('rea_pro_is_plan_trabajo'); ?>
             </div>
             <div class="campo">
-                <label style="text-align: left;">El Borrador del diagnostico contiene</label>
+                <label style="text-align: left;">El Borrador del diagnóstico contiene</label>
             </div>
             <div class="campo">
                 <label style="text-align: left; margin-left: 40px; width: 280px;">Perfil del municipio</label>
@@ -182,7 +182,7 @@ $(document).ready(function(){
                 <?php echo form_error('rea_pro_is_ind_comp'); ?>
             </div>
             <div class="campo">
-                <label style="text-align: left;">Informe de la etapa de diagnostico</label>
+                <label style="text-align: left;">Informe de la etapa de diagnóstico</label>
                 <span>Si</span><input type="radio" name="rea_pro_is_informe_diag" value="t" <?php echo set_radio('rea_pro_is_informe_diag', 't'); ?>/>
                 <span>No</span><input type="radio" name="rea_pro_is_informe_diag" value="f" <?php echo set_radio('rea_pro_is_informe_diag', 'f', TRUE); ?>/>
                 <?php echo form_error('rea_pro_is_informe_diag'); ?>
@@ -198,7 +198,7 @@ $(document).ready(function(){
         <!-- Lado Izquierdo -->
         <div style="display: inline-block; vertical-align: top;">
             <div class="campoUp">
-                <label>Fecha de presentacion de producto</label>
+                <label>Fecha de presentación de producto</label>
                 <input id="rea_pro_fecha_presentacion" name="rea_pro_fecha_presentacion" type="text" readonly="readonly" value="<?php echo set_value('rea_pro_fecha_presentacion') ?>"/>
                 <?php echo form_error('rea_pro_fecha_presentacion'); ?>
             </div>
@@ -208,7 +208,7 @@ $(document).ready(function(){
                 <?php echo form_error('rea_pro_fecha_vistobueno'); ?>
             </div>
             <div class="campoUp">
-                <label>Fecha de aprobacion concejo Municipal</label>
+                <label>Fecha de aprobación concejo Municipal</label>
                 <input id="rea_pro_fecha_aprobacion" name="rea_pro_fecha_aprobacion" type="text" readonly="readonly" value="<?php echo set_value('rea_pro_fecha_aprobacion') ?>"/>
                 <?php echo form_error('rea_pro_fecha_aprobacion'); ?>
             </div>
