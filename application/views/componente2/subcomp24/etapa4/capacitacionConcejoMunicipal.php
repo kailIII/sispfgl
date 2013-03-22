@@ -283,6 +283,7 @@ $(document).ready(function(){
             <div style="margin-left: 300px;">
                 <table id="lista"></table>
                 <div id="pagerLista"></div>
+                <div id="btn_seleccionar">Seleccionar</div>
                 <div id="btn_acuerdo_nuevo">Crear Nuevo</div>
             </div>
         </div>

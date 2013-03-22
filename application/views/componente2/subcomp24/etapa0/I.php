@@ -75,7 +75,7 @@ $(document).ready(function(){
     <?php
     //Muestra los dialogos.
     if($this->session->flashdata('message')=='Ok'){echo "$('#efectivo').dialog('open');";}
-    if(isset($mun_id) && $mun_id > 0){echo "formularioShow();";}else{echo "formularioHide();";}
+    if(isset($man_adm_id) && $man_adm_id > 0){echo "formularioShow();";}else{echo "formularioHide();";}
     ?>
 });
 </script>
