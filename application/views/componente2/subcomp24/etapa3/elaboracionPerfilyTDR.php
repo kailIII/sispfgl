@@ -186,7 +186,7 @@ $(document).ready(function(){
 <?php echo form_open() ?>
 
     <h2 class="h2Titulos">Etapa 3: Seguimiento</h2>
-    <h2 class="h2Titulos">Elaboracion de perfil y TDR's para la actividad del plan</h2>
+    <h2 class="h2Titulos">Elaboración de perfil y TDR's para la actividad del plan</h2>
     <br/>
     <div id="rpt_frm_bdy">
         <div id="listaContainer">
@@ -220,28 +220,28 @@ $(document).ready(function(){
         
         
             <div class="campo">
-                <label>Fecha de emision de acuerdo municipal</label>
+                <label>Fecha de emisión de acuerdo municipal:</label>
                 <input id="seg_fecha_emision" name="seg_fecha_emision" type="text" readonly="readonly" value="<?php echo set_value('seg_fecha_emision') ?>"/>
                     <?php echo form_error('seg_fecha_emision'); ?>
             </div>
             <div class="campo">
-                <label>Fecha de recepcion de acuero municipal</label>
+                <label>Fecha de recepción de acuero municipal:</label>
                 <input id="seg_fecha_recepcion" name="seg_fecha_recepcion" type="text" readonly="readonly" value="<?php echo set_value('seg_fecha_recepcion') ?>"/>
                     <?php echo form_error('seg_fecha_recepcion'); ?>
             </div>
             <div class="campo">
-                <label>Fecha de envio de acuerdo municipal</label>
+                <label>Fecha de envio de acuerdo municipal:</label>
                 <input id="seg_fecha_envio" name="seg_fecha_envio" type="text" readonly="readonly" value="<?php echo set_value('seg_fecha_envio') ?>"/>
                     <?php echo form_error('seg_fecha_envio'); ?>
             </div>
             <div class="campo">
-                <label>Registro de Rubros a invertir</label>
+                <label>Registro de Rubros a invertir:</label>
                 <span>Asistencia Tecnica</span><input type="radio" name="seg_rubros" value="t" <?php echo set_radio('seg_rubros', 't'); ?>/>
                 <span>Equipamiento</span><input type="radio" name="seg_rubros" value="f" <?php echo set_radio('seg_rubros', 'f', TRUE); ?>/>
                 <?php echo form_error('seg_rubros'); ?>
             </div>
             <div class="campo">
-                <label>Descripcion</label>
+                <label>Descripcion:</label>
                 <textarea id="seg_descripcion" name="seg_descripcion" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('seg_descripcion')?></textarea>
                 <?php echo form_error('seg_descripcion'); ?>
             </div>
@@ -265,7 +265,7 @@ $(document).ready(function(){
                 <div class="uploadText" style="margin-left: 350px;">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente. Solo se permiten archivos con extensión pdf, doc, docx</div>
             </div>
             <div class="campo">
-                <label>Observaciones;</label>
+                <label>Observaciones:</label>
                 <textarea id="seg_observaciones" name="seg_observaciones" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('seg_observaciones')?></textarea>
                 <?php echo form_error('seg_observaciones'); ?>
             </div>

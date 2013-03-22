@@ -122,7 +122,7 @@ $(document).ready(function(){
 <?php echo form_open() ?>
 
     <h2 class="h2Titulos">Etapa 3: Seguimiento</h2>
-    <h2 class="h2Titulos">Recepcion del Producto de la ejecucion del plan</h2>
+    <h2 class="h2Titulos">Recepción del Producto de la ejecución del plan</h2>
     <br/>
     <div id="rpt_frm_bdy">
         <div id="listaContainer">
@@ -156,17 +156,17 @@ $(document).ready(function(){
         
         
             <div class="campo">
-                <label>Fecha de recepcion del producto</label>
+                <label>Fecha de recepción del producto:</label>
                 <input id="seg_fecha_recepcion" name="seg_fecha_recepcion" type="text" readonly="readonly" value="<?php echo set_value('seg_fecha_recepcion') ?>"/>
                 <?php echo form_error('seg_fecha_recepcion'); ?>
             </div>
             <div class="campo">
-                <label>Fecha de visto bueno</label>
+                <label>Fecha de visto bueno:</label>
                 <input id="seg_fecha_vistobueno" name="seg_fecha_vistobueno" type="text" readonly="readonly" value="<?php echo set_value('seg_fecha_vistobueno') ?>"/>
                 <?php echo form_error('seg_fecha_vistobueno'); ?>
             </div>
             <div class="campo">
-                <label>Fecha de aprobacion</label>
+                <label>Fecha de aprobación:</label>
                 <input id="seg_fecha_aprobacion" name="seg_fecha_aprobacion" type="text" readonly="readonly" value="<?php echo set_value('seg_fecha_aprobacion') ?>"/>
                 <?php echo form_error('seg_fecha_aprobacion'); ?>
             </div>
@@ -174,7 +174,7 @@ $(document).ready(function(){
             <div style="width: 100%;">
                 <div style="width: 50%; display: inline-block;">
                     <div class="campoUp">
-                        <label style="text-align: left;">Observaciones</label>
+                        <label style="text-align: left;">Observaciones:</label>
                         <textarea id="seg_observaciones" name="seg_observaciones" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('seg_observaciones')?></textarea>
                         <?php echo form_error('seg_observaciones'); ?>
                     </div>

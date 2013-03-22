@@ -110,7 +110,7 @@ $(document).ready(function(){
 <?php echo form_open() ?>
 
     <h2 class="h2Titulos">Etapa 3: Seguimiento</h2>
-    <h2 class="h2Titulos">Aprobacion e Implementacion</h2>
+    <h2 class="h2Titulos">Aprobación e Implementación</h2>
     <br/>
     <div id="rpt_frm_bdy">
         <div id="listaContainer">
@@ -143,26 +143,26 @@ $(document).ready(function(){
             <div id="rpt-border"></div>
             
             <div class="campo">
-                <label style="width: auto;">Conoce el Concejo Municipal, y esta de acuerdo con la aprobacion
-                e implementacion de PRFM?</label>
+                <label style="width: auto;">Conoce el Concejo Municipal, y esta de acuerdo con la aprobación
+                e implementación de PRFM?</label>
                 <span>Si</span><input type="radio" name="seg_is_ok" value="t" <?php echo set_radio('seg_is_ok', 't'); ?>/>
                 <span>No</span><input type="radio" name="seg_is_ok" value="f" <?php echo set_radio('seg_is_ok', 'f', TRUE); ?>/>
                 <?php echo form_error('seg_is_ok'); ?>
             </div>
             <div class="campo">
-                <label style="width: 400px;">Fecha de emision de acuerdo municipal</label>
+                <label style="width: 400px;">Fecha de emisión de acuerdo municipal:</label>
                 <input id="seg_fecha_emision" name="seg_fecha_emision" type="text" readonly="readonly" value="<?php echo set_value('seg_fecha_emision') ?>"/>
                 <?php echo form_error('seg_fecha_emision'); ?>
             </div>
             <div class="campo">
-                <label style="width: 400px;">Fecha de recepcion de acuero municipal</label>
+                <label style="width: 400px;">Fecha de recepción de acuero municipal:</label>
                 <input id="seg_fecha_recepcion" name="seg_fecha_recepcion" type="text" readonly="readonly" value="<?php echo set_value('seg_fecha_recepcion') ?>"/>
                 <?php echo form_error('seg_fecha_recepcion'); ?>
             </div>
             <div style="width: 100%;">
                 <div style="width: 50%; display: inline-block;">
                     <div class="campoUp">
-                        <label style="text-align: left;">Observaciones</label>
+                        <label style="text-align: left;">Observaciones:</label>
                         <textarea id="seg_observaciones" name="seg_observaciones" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('seg_observaciones')?></textarea>
                         <?php echo form_error('seg_observaciones'); ?>
                     </div>

@@ -244,8 +244,8 @@ $(document).ready(function(){
 
 <?php echo form_open('',array('id'=>'frm')) ?>
 
-    <h2 class="h2Titulos">Etapa 0: Condiciones Previas</h2>
-    <h2 class="h2Titulos">Registro de Empleados del Municipio</h2>
+    <h2 class="h2Titulos">Etapa 3: Seguimiento</h2>
+    <h2 class="h2Titulos">Divulgación del informe de Resultados de Desempeño Administrativo y Financiero</h2>
     <br/>
     <div id="rpt_frm_bdy">
         <div id="listaContainer">
@@ -269,6 +269,7 @@ $(document).ready(function(){
             <div style="margin-left: 300px;">
                 <table id="lista"></table>
                 <div id="pagerLista"></div>
+                <div id="btn_seleccionar">Seleccionar</div>
                 <div id="btn_acuerdo_nuevo">Crear Nuevo</div>
             </div>
         </div>

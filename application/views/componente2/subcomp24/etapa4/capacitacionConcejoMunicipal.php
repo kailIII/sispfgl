@@ -258,8 +258,8 @@ $(document).ready(function(){
 
 <?php echo form_open('',array('id'=>'frm')) ?>
 
-    <h2 class="h2Titulos">Etapa 4: Gestion del Conocimiento</h2>
-    <h2 class="h2Titulos">Capacitacion al Concejo Municipal y Comision Financiera</h2>
+    <h2 class="h2Titulos">Etapa 4: Gestión del Conocimiento</h2>
+    <h2 class="h2Titulos">Capacitación al Concejo Municipal y Comisión Financiera</h2>
     <br/>
     <div id="rpt_frm_bdy">
         <div id="listaContainer">
