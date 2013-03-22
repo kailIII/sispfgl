@@ -41,6 +41,15 @@ $(document).ready(function(){
             .trigger('reloadGrid');
     });
     
+    /**/
+    $( "#cap_fecha" ).datepicker({
+        showOn: 'both',
+        maxDate:    '+1D',
+        buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+        buttonImageOnly: true, 
+        dateFormat: 'dd/mm/yy'
+    });
+    
     /*GRID*/
     $("#concejo").jqGrid({
         url:'<?php echo base_url('componente2/comp24_E4/loadConcejo') . '/' . $cap_id; ?>',

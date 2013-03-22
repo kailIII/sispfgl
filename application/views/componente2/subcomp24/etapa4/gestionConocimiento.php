@@ -36,6 +36,16 @@ $(document).ready(function(){
             .trigger('reloadGrid');
     });
     
+    /*FEchas*/
+    $( "#gescon_fecha" ).datepicker({
+        showOn: 'both',
+        maxDate:    '+1D',
+        buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+        buttonImageOnly: true, 
+        dateFormat: 'dd/mm/yy'
+    });
+    
+    
     /*GRID*/
     $("#miembros").jqGrid({
         url:'<?php echo base_url('componente2/comp24_E4/loadParticipantes') . '/' . $gescon_id; ?>',

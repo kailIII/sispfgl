@@ -257,7 +257,7 @@ class Comp24_E3 extends CI_Controller {
         
         if($id && !isset($_POST['mod'])){
             if(!$tmp = $this->comp24->get_by_id($tabla, $campo, $id)){
-                $this->comp24->insert_row($tabla,array('mun_id'=>$id));
+                $this->comp24->insert_row($tabla,array($campo=>$id,'mun_id'=>$id));
                 $tmp = $this->comp24->get_by_id($tabla, $campo, $id);
             }
             $_POST = get_object_vars($tmp);

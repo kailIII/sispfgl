@@ -26,7 +26,10 @@ $(document).ready(function(){
         $.ajax({url: '<?php echo base_url('componente2/comp24_E0/getMunicipios') ?>/'+$('#selDepto').val()
         }).done(function(data){$('#mun_id').children().remove();$('#mun_id').html(data);});           
     });
-    /**/
+    $('#mun_id').change(function(){
+        window.location.href = '<?php echo current_url(); ?>/' + $('#mun_id').val();           
+    });
+    /**
     $('#mun_id').change(function(){
         jqLista.jqGrid('clearGridData')
             .jqGrid('setGridParam', { 
@@ -34,7 +37,7 @@ $(document).ready(function(){
                 datatype: 'json', 
                 page:1 })
             .trigger('reloadGrid');
-    });
+    });/**/
     
     /*GRID*/
     $("#miembros").jqGrid({
@@ -63,10 +66,10 @@ $(document).ready(function(){
             {name:'emp_cargo',index:'emp_cargo', width:123,editable:false,editoptions:{size:30},
                 edittype:'text',editoptions:{size:20,maxlength:50},
                 editrules:{required:true} },
-            {name:'emp_telefono',index:'emp_telefono', width:80,editable:true,editoptions:{size:8},align:'center',
+            {name:'emp_telefono',index:'emp_telefono', width:100,editable:true,editoptions:{size:8},align:'center',
                 edittype:'text',editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}
                 },
-            {name:'participa',index:'participa', width:50,editable:true,align:'center',
+            {name:'participa',index:'participa', width:100,editable:true,align:'center',
                 formatter:'checkbox',formatoptions:{disabled:false},
                 edittype:'checkbox'}
         ],
@@ -156,6 +159,7 @@ $(document).ready(function(){
     );
     $("#otros").jqGrid('inlineNav',"#pagerOtros",{editParams:{keys:true}});
     
+    /**
     var jqLista = $('#lista');
     jqLista.jqGrid({
        	url: '<?php echo base_url('componente2/comp24_E3/getSegEvaluaciones/'); ?>/' + $('#mun_id').val(),
@@ -266,7 +270,7 @@ $(document).ready(function(){
                 <?php echo form_error('mun_id'); ?>
             </div>
             <div id="rpt-border"></div>
-            <div style="margin-left: 300px;">
+            <div style="margin-left: 300px;display: none;">
                 <table id="lista"></table>
                 <div id="pagerLista"></div>
                 <div id="btn_seleccionar">Seleccionar</div>
