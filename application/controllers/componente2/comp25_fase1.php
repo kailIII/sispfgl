@@ -31,9 +31,18 @@ class Comp25_fase1 extends CI_Controller {
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $this->load->model('tank_auth/users', 'usuarios');
+        $rol = $this->usuarios->obtenerCodigoRol($this->tank_auth->get_username());
         //OBTENER DEPARTAMENTOS
         $this->load->model('pais/departamento');
-        $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
+        $this->load->model('consultor/consultor');
+        $cons = $this->consultor->obtenerConsultorPorUsuario($this->tank_auth->get_username());
+
+        if (strcmp($rol[0]->rol_codigo, 'gdrc') == 0)
+            $informacion['departamentos'] = $this->departamento->obtenerDepartamentosPorGrupoGDR($cons[0]->cons_id);
+        else
+            $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
+
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp25/fase1/revisionInformacion_view');
@@ -316,6 +325,467 @@ class Comp25_fase1 extends CI_Controller {
             case 'del':
                 $this->plaCon->eliminarPlanContingencial($pla_con_id);
                 break;
+        }
+    }
+
+    public function rubrosElegibles() {
+        $informacion['titulo'] = 'Componente 2.5 Registro de datos del componente';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $this->load->model('tank_auth/users', 'usuarios');
+        $rol = $this->usuarios->obtenerCodigoRol($this->tank_auth->get_username());
+        //OBTENER DEPARTAMENTOS
+        $this->load->model('pais/departamento');
+        $this->load->model('consultor/consultor');
+        $cons = $this->consultor->obtenerConsultorPorUsuario($this->tank_auth->get_username());
+
+        if (strcmp($rol[0]->rol_codigo, 'gdrc') == 0)
+            $informacion['departamentos'] = $this->departamento->obtenerDepartamentosPorGrupoGDR($cons[0]->cons_id);
+        else
+            $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
+
+        $this->load->model('fase1-sub25/nombre_rubro', 'nomRub');
+        $informacion['nombreRubros'] = $this->nomRub->obtenerNombresRubro();
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/subcomp25/fase1/rubrosElegibles_view');
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function cargarRubrosElegibles($mun_id) {
+        $this->load->model('pais/municipio');
+        $this->load->model('fase1-sub25/rubro');
+        $this->load->model('fase1-sub25/rubro_elegible', 'rubEle');
+        $this->load->model('fase1-sub25/detalle_fortalecimiento', 'detFor');
+        $this->load->model('fase1-sub25/detalle_obra', 'detObra');
+        $this->load->model('fase1-sub25/nombre_rubro', 'nomRub');
+        $this->load->model('fase1-sub25/categoria_fortalecimiento', 'catFor');
+        $this->load->model('fase1-sub25/obra');
+        $resultado = $this->municipio->obtenerIDVariable('rub_id', $mun_id);
+
+        if ($resultado[0]->rub_id == 0) {
+            $this->rubro->agregarRubro($mun_id);
+            $resultado = $this->rubro->idPorMunicipio($mun_id);
+            $this->municipio->actualizarIndices('rub_id', $resultado[0]->rub_id, $mun_id);
+            $rubros = $this->nomRub->obtenerNombresRubro();
+            foreach ($rubros as $rubro)
+                $this->rubEle->insertarRubroElegible($resultado[0]->rub_id, $rubro->nom_rub_id);
+            $categorias = $this->catFor->obtenerCategoriasFortalecimiento();
+            foreach ($categorias as $categoria)
+                $this->detFor->insertarDetalleFortalecimiento($resultado[0]->rub_id, $categoria->cat_for_id);
+            $obras = $this->obra->obtenerObras();
+            foreach ($obras as $obra)
+                $this->detObra->insertarDetalleObra($resultado[0]->rub_id, $obra->obr_id);
+        }
+        $resultado = $this->rubro->idPorMunicipio($mun_id);
+        $rubros = $this->rubEle->obtenerLosRubros($resultado[0]->rub_id);
+        $rubroE = array();
+        foreach ($rubros as $rubro)
+            $rubroE[$rubro->nom_rub_id] = array($rubro->rub_ele_seleccionado, $rubro->rub_ele_observacion);
+
+        $rows[0]['id'] = $resultado[0]->rub_id;
+        $rows[0]['cell'] = array($resultado[0]->rub_id,
+            $resultado[0]->rub_observacion_general,
+            $resultado[0]->rub_emite_nota,
+            $rubroE
+        );
+        $datos = json_encode($rows);
+        $pages = floor(1 / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . 1 . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+
+    public function guardarRubrosElegibles() {
+        $this->load->model('fase1-sub25/rubro');
+        $this->load->model('fase1-sub25/rubro_elegible', 'rubEle');
+        $rub_id = $this->input->post("rub_id");
+        $rub_observacion_general = $this->input->post("rub_observacion_general");
+        $rub_emite_nota = $this->input->post("rub_emite_nota");
+        if ($rub_emite_nota == '0')
+            $rub_emite_nota = null;
+        $rub_observacion = null;
+        $this->rubro->actualizarRubro($rub_id, $rub_observacion_general, $rub_emite_nota, $rub_observacion);
+        $rubros = $this->rubEle->obtenerLosRubros($rub_id);
+        foreach ($rubros as $rubro) {
+            $valor = $this->input->post("rubro_$rubro->nom_rub_id");
+            if ($valor == '0')
+                $valor = null;
+            $conclusion = $this->input->post("conclusion_$rubro->nom_rub_id");
+            $this->rubEle->actualizarRubroElegible($valor, $rub_id, $rubro->nom_rub_id, $conclusion);
+        }
+    }
+
+    public function cargarNota($rub_id) {
+        $this->load->model('fase1-sub25/nota');
+        $notas = $this->nota->obtenerNotas($rub_id);
+        $numfilas = count($notas);
+
+        if ($numfilas != 0) {
+            $i = 0;
+            foreach ($notas as $aux) {
+                $rows[$i]['id'] = $aux->not_id;
+                $rows[$i]['cell'] = array($aux->not_id,
+                    $aux->not_correlativo,
+                    date('d-m-Y', strtotime($aux->not_fnota)),
+                    $aux->not_observacion
+                );
+                $i++;
+            }
+            array_multisort($rows, SORT_ASC);
+        } else {
+            $rows = array();
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+
+    public function guardarNota($rub_id) {
+        $this->load->model('fase1-sub25/nota');
+        $not_id = $this->input->post("id");
+        $not_correlativo = $this->input->post("not_correlativo");
+        $not_fnota = $this->input->post("not_fnota");
+        $not_observacion = $this->input->post("not_observacion");
+
+        $operacion = $this->input->post("oper");
+        switch ($operacion) {
+            case 'add':
+                $this->nota->agregarNota($not_correlativo, $not_fnota, $not_observacion, $rub_id);
+                break;
+            case 'edit':
+                $this->nota->actualizarNota($not_id, $not_correlativo, $not_fnota, $not_observacion);
+                break;
+            case 'del':
+                $this->nota->eliminarNota($not_id);
+                break;
+        }
+    }
+
+    public function aprobacionPerfil() {
+        $informacion['titulo'] = 'Componente 2.5 Registro de datos del componente';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $this->load->model('tank_auth/users', 'usuarios');
+        $rol = $this->usuarios->obtenerCodigoRol($this->tank_auth->get_username());
+        //OBTENER DEPARTAMENTOS
+        $this->load->model('pais/departamento');
+        $this->load->model('consultor/consultor');
+        $cons = $this->consultor->obtenerConsultorPorUsuario($this->tank_auth->get_username());
+
+        if (strcmp($rol[0]->rol_codigo, 'gdrc') == 0)
+            $informacion['departamentos'] = $this->departamento->obtenerDepartamentosPorGrupoGDR($cons[0]->cons_id);
+        else
+            $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
+
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/subcomp25/fase1/aprobacionPerfil_view');
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function cargarAprobacionPerfil($mun_id) {
+        $this->load->model('pais/municipio');
+        $this->load->model('fase1-sub25/perfil_proyecto', 'perPro');
+        $resultado = $this->municipio->obtenerIDVariable('per_pro_id', $mun_id);
+
+        if ($resultado[0]->per_pro_id == 0) {
+            $this->perPro->agregarPerfilProyecto($mun_id);
+            $resultado = $this->perPro->idPorMunicipio($mun_id);
+            $this->municipio->actualizarIndices('per_pro_id', $resultado[0]->per_pro_id, $mun_id);
+        }
+        $revision = $this->perPro->idPorMunicipio($mun_id);
+        $per_pro_fentrega_isdem = $revision[0]->per_pro_fentrega_isdem;
+        if ($per_pro_fentrega_isdem != "")
+            $per_pro_fentrega_isdem = date('d-m-Y', strtotime($per_pro_fentrega_isdem));
+        $per_pro_fentrega_uep = $revision[0]->per_pro_fentrega_uep;
+        if ($per_pro_fentrega_uep != "")
+            $per_pro_fentrega_uep = date('d-m-Y', strtotime($per_pro_fentrega_uep));
+        $per_pro_fnota_autorizacion = $revision[0]->per_pro_fnota_autorizacion;
+        if ($per_pro_fnota_autorizacion != "")
+            $per_pro_fnota_autorizacion = date('d-m-Y', strtotime($per_pro_fnota_autorizacion));
+        $per_pro_fentrega_u_i = $revision[0]->per_pro_fentrega_u_i;
+        if ($per_pro_fentrega_u_i != "")
+            $per_pro_fentrega_u_i = date('d-m-Y', strtotime($per_pro_fentrega_u_i));
+        $per_pro_ftdr = $revision[0]->per_pro_ftdr;
+        if ($per_pro_ftdr != "")
+            $per_pro_ftdr = date('d-m-Y', strtotime($per_pro_ftdr));
+        $per_pro_fespecificacion = $revision[0]->per_pro_fespecificacion;
+        if ($per_pro_fespecificacion != "")
+            $per_pro_fespecificacion = date('d-m-Y', strtotime($per_pro_fespecificacion));
+        $per_pro_fcarpeta_reducida = $revision[0]->per_pro_fcarpeta_reducida;
+        if ($per_pro_fcarpeta_reducida != "")
+            $per_pro_fcarpeta_reducida = date('d-m-Y', strtotime($per_pro_fcarpeta_reducida));
+        $per_pro_frecibe_municipio = $revision[0]->per_pro_frecibe_municipio;
+        if ($per_pro_frecibe_municipio != "")
+            $per_pro_frecibe_municipio = date('d-m-Y', strtotime($per_pro_frecibe_municipio));
+        $per_pro_femision_acuerdo = $revision[0]->per_pro_femision_acuerdo;
+        if ($per_pro_femision_acuerdo != "")
+            $per_pro_femision_acuerdo = date('d-m-Y', strtotime($per_pro_femision_acuerdo));
+        $per_pro_fcertificacion = $revision[0]->per_pro_fcertificacion;
+        if ($per_pro_fcertificacion != "")
+            $per_pro_fcertificacion = date('d-m-Y', strtotime($per_pro_fcertificacion));
+        $per_pro_frecibe = $revision[0]->per_pro_frecibe;
+        if ($per_pro_frecibe != "")
+            $per_pro_frecibe = date('d-m-Y', strtotime($per_pro_frecibe));
+        $per_pro_fencio_fisdl = $revision[0]->per_pro_fencio_fisdl;
+        if ($per_pro_fencio_fisdl != "")
+            $per_pro_fencio_fisdl = date('d-m-Y', strtotime($per_pro_fencio_fisdl));
+        if ($revision[0]->per_pro_per_ruta_archivo == NULL || $revision[0]->per_pro_per_ruta_archivo == '0')
+            $nPerfil = 'No hay Perfil para descargar';
+        else
+            $nPerfil = 'Descargar ' . end(explode("/", $revision[0]->per_pro_per_ruta_archivo));
+        if ($revision[0]->per_pro_tdr_ruta_archivo == NULL || $revision[0]->per_pro_tdr_ruta_archivo == '0')
+            $nTdr = 'No hay TDR para descargar';
+        else
+            $nTdr = 'Descargar ' . end(explode("/", $revision[0]->per_pro_tdr_ruta_archivo));
+        if ($revision[0]->per_pro_esp_ruta_archivo == NULL || $revision[0]->per_pro_esp_ruta_archivo == '0')
+            $nEsp = 'No hay Especificaciones para descargar';
+        else
+            $nEsp = 'Descargar ' . end(explode("/", $revision[0]->per_pro_esp_ruta_archivo));
+        if ($revision[0]->per_pro_car_ruta_archivo == NULL || $revision[0]->per_pro_car_ruta_archivo == '0')
+            $nCar = 'No hay Carpeta para descargar';
+        else
+            $nCar = 'Descargar ' . end(explode("/", $revision[0]->per_pro_car_ruta_archivo));
+        if ($revision[0]->per_pro_acu_ruta_archivo == NULL || $revision[0]->per_pro_acu_ruta_archivo == '0')
+            $nAcu = 'No hay Acuerdo para descargar';
+        else
+            $nAcu = 'Descargar ' . end(explode("/", $revision[0]->per_pro_acu_ruta_archivo));
+        $rows[0]['id'] = $revision[0]->per_pro_id;
+        $rows[0]['cell'] = array($revision[0]->per_pro_id,
+            $per_pro_fentrega_isdem,
+            $per_pro_fentrega_uep,
+            $per_pro_fnota_autorizacion,
+            $per_pro_fentrega_u_i,
+            $per_pro_ftdr,
+            $per_pro_fespecificacion,
+            $per_pro_fcarpeta_reducida,
+            $per_pro_frecibe_municipio,
+            $per_pro_femision_acuerdo,
+            $per_pro_fcertificacion,
+            $per_pro_frecibe,
+            $per_pro_fencio_fisdl,
+            $revision[0]->per_pro_consultor_individual,
+            $revision[0]->per_pro_firma,
+            $revision[0]->per_pro_ong,
+            $revision[0]->per_pro_observacion,
+            $revision[0]->per_pro_per_ruta_archivo,
+            $nPerfil,
+            $revision[0]->per_pro_tdr_ruta_archivo,
+            $nTdr,
+            $revision[0]->per_pro_esp_ruta_archivo,
+            $nEsp,
+            $revision[0]->per_pro_car_ruta_archivo,
+            $nCar,
+            $revision[0]->per_pro_acu_ruta_archivo,
+            $nAcu
+        );
+        $datos = json_encode($rows);
+        $pages = floor(1 / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . 1 . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+
+    public function guardarAprobacionPerfil() {
+        $this->load->model('fase1-sub25/perfil_proyecto', 'perPro');
+        $per_pro_id = $this->input->post("per_pro_id");
+        $per_pro_fentrega_isdem = $this->input->post("per_pro_fentrega_isdem");
+        if ($per_pro_fentrega_isdem == "")
+            $per_pro_fentrega_isdem = null;
+        $per_pro_fentrega_uep = $this->input->post("per_pro_fentrega_uep");
+        if ($per_pro_fentrega_uep == "")
+            $per_pro_fentrega_uep = null;
+        $per_pro_fnota_autorizacion = $this->input->post("per_pro_fnota_autorizacion");
+        if ($per_pro_fnota_autorizacion == "")
+            $per_pro_fnota_autorizacion = null;
+        $per_pro_fentrega_u_i = $this->input->post("per_pro_fentrega_u_i");
+        if ($per_pro_fentrega_u_i == "")
+            $per_pro_fentrega_u_i = null;
+        $per_pro_ftdr = $this->input->post("per_pro_ftdr");
+        if ($per_pro_ftdr == "")
+            $per_pro_ftdr = null;
+        $per_pro_fespecificacion = $this->input->post("per_pro_fespecificacion");
+        if ($per_pro_fespecificacion == "")
+            $per_pro_fespecificacion = null;
+        $per_pro_fcarpeta_reducida = $this->input->post("per_pro_fcarpeta_reducida");
+        if ($per_pro_fcarpeta_reducida == "")
+            $per_pro_fcarpeta_reducida = null;
+        $per_pro_frecibe_municipio = $this->input->post("per_pro_frecibe_municipio");
+        if ($per_pro_frecibe_municipio == "")
+            $per_pro_frecibe_municipio = null;
+        $per_pro_femision_acuerdo = $this->input->post("per_pro_femision_acuerdo");
+        if ($per_pro_femision_acuerdo == "")
+            $per_pro_femision_acuerdo = null;
+        $per_pro_fcertificacion = $this->input->post("per_pro_fcertificacion");
+        if ($per_pro_fcertificacion == "")
+            $per_pro_fcertificacion = null;
+        $per_pro_frecibe = $this->input->post("per_pro_frecibe");
+        if ($per_pro_frecibe == "")
+            $per_pro_frecibe = null;
+        $per_pro_fencio_fisdl = $this->input->post("per_pro_fencio_fisdl");
+        if ($per_pro_fencio_fisdl == "")
+            $per_pro_fencio_fisdl = null;
+        $per_pro_consultor_individual = $this->input->post("per_pro_consultor_individual");
+        if ($per_pro_consultor_individual == '0')
+            $per_pro_consultor_individual = null;
+
+        $per_pro_firma = $this->input->post("per_pro_firma");
+        if ($per_pro_firma == '0')
+            $per_pro_firma = null;
+
+        $per_pro_ong = $this->input->post("per_pro_ong");
+        if ($per_pro_ong == '0')
+            $per_pro_ong = null;
+
+        $per_pro_observacion = $this->input->post("per_pro_observacion");
+        $per_pro_tdr_ruta_archivo = $this->input->post("per_pro_tdr_ruta_archivo");
+        $per_pro_esp_ruta_archivo = $this->input->post("per_pro_esp_ruta_archivo");
+        $per_pro_car_ruta_archivo = $this->input->post("per_pro_car_ruta_archivo");
+        $per_pro_acu_ruta_archivo = $this->input->post("per_pro_acu_ruta_archivo");
+        $per_pro_per_ruta_archivo = $this->input->post("per_pro_per_ruta_archivo");
+        $this->perPro->actualizarPerfilProyecto($per_pro_id, $per_pro_fentrega_isdem, $per_pro_fentrega_uep, $per_pro_fnota_autorizacion
+                , $per_pro_fentrega_u_i, $per_pro_ftdr, $per_pro_fespecificacion
+                , $per_pro_fcarpeta_reducida, $per_pro_frecibe_municipio, $per_pro_femision_acuerdo
+                , $per_pro_fcertificacion, $per_pro_frecibe, $per_pro_fencio_fisdl
+                , $per_pro_consultor_individual, $per_pro_firma, $per_pro_ong
+                , $per_pro_observacion, $per_pro_tdr_ruta_archivo, $per_pro_esp_ruta_archivo
+                , $per_pro_car_ruta_archivo, $per_pro_acu_ruta_archivo, $per_pro_per_ruta_archivo
+        );
+    }
+
+    public function rubrosElegiblesAplica() {
+        $informacion['titulo'] = 'Componente 2.5 Registro de datos del componente';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $this->load->model('tank_auth/users', 'usuarios');
+        $rol = $this->usuarios->obtenerCodigoRol($this->tank_auth->get_username());
+        //OBTENER DEPARTAMENTOS
+        $this->load->model('pais/departamento');
+        $this->load->model('consultor/consultor');
+        $cons = $this->consultor->obtenerConsultorPorUsuario($this->tank_auth->get_username());
+
+        if (strcmp($rol[0]->rol_codigo, 'gdrc') == 0)
+            $informacion['departamentos'] = $this->departamento->obtenerDepartamentosPorGrupoGDR($cons[0]->cons_id);
+        else
+            $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
+
+        //RUBROS
+        $this->load->model('fase1-sub25/nombre_rubro', 'nomRub');
+        $informacion['nombreRubros'] = $this->nomRub->obtenerNombresRubro();
+        //CATEGORIA_FORTALECIMIENTO
+        $this->load->model('fase1-sub25/categoria_fortalecimiento', 'catFor');
+        $informacion['categorias'] = $this->catFor->obtenerCategoriasFortalecimiento();
+        //OBRA
+        $this->load->model('fase1-sub25/obra');
+        $informacion['obras'] = $this->obra->obtenerObras();
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/subcomp25/fase1/rubrosElegiblesAplica_view');
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function cargarRubrosElegiblesAplica($mun_id) {
+        $this->load->model('pais/municipio');
+        $this->load->model('fase1-sub25/rubro');
+        $this->load->model('fase1-sub25/rubro_elegible', 'rubEle');
+        $this->load->model('fase1-sub25/detalle_fortalecimiento', 'detFor');
+        $this->load->model('fase1-sub25/detalle_obra', 'detObra');
+        $this->load->model('fase1-sub25/nombre_rubro', 'nomRub');
+        $this->load->model('fase1-sub25/categoria_fortalecimiento', 'catFor');
+        $this->load->model('fase1-sub25/obra');
+        $datosMunicipio = $this->municipio->obtenerMunicipio($mun_id);
+        $resultado = $this->rubro->idPorMunicipio($mun_id);
+        $rubros = $this->rubEle->obtenerLosRubros($resultado[0]->rub_id);
+        $rubroE = array();
+        $suma = 0;
+        foreach ($rubros as $rubro) {
+            $rubroE[$rubro->nom_rub_id] = array($rubro->rub_ele_monto);
+            $suma+=$rubro->rub_ele_monto;
+        }
+        $categorias = $this->detFor->obtenerLosDetallesFortalecimiento($resultado[0]->rub_id);
+        $detalles = array();
+        $suma2 = 0;
+        foreach ($categorias as $aux) {
+            $detalles[$aux->cat_for_id] = array($aux->for_monto);
+            $suma2+=$aux->for_monto;
+        }
+        $obras = $this->detObra->obtenerLosDetallesObra($resultado[0]->rub_id);
+        $detallesO = array();
+        $suma3 = 0;
+        foreach ($obras as $aux) {
+            $detallesO[$aux->obr_id] = array($aux->det_obr_monto);
+            $suma3+=$aux->det_obr_monto;
+        }
+        $rows[0]['id'] = $resultado[0]->rub_id;
+        $rows[0]['cell'] = array($resultado[0]->rub_id,
+            $datosMunicipio[0]->mun_presupuesto,
+            $rubroE,
+            $detalles,
+            $detallesO,
+            $suma,
+            $suma2,
+            $suma3,
+            $resultado[0]->rub_nombre_proyecto,
+            $resultado[0]->rub_observacion
+        );
+        $datos = json_encode($rows);
+        $pages = floor(1 / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . 1 . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+
+    public function guardarRubrosElegiblesAplica() {
+        $this->load->model('fase1-sub25/rubro');
+        $this->load->model('fase1-sub25/rubro_elegible', 'rubEle');
+        $this->load->model('fase1-sub25/detalle_fortalecimiento', 'detFor');
+        $this->load->model('fase1-sub25/detalle_obra', 'detObra');
+
+        $rub_id = $this->input->post("rub_id");
+        $rub_observacion = $this->input->post("rub_observacion");
+        $rub_nombre_proyecto = $this->input->post("rub_nombre_proyecto");
+        $this->rubro->actualizarRubro2($rub_id, $rub_nombre_proyecto, $rub_observacion);
+        $rubros = $this->rubEle->obtenerLosRubros($rub_id);
+        foreach ($rubros as $rubro) {
+            $valor = $this->input->post("rub_ele_monto_$rubro->nom_rub_id");
+            $this->rubEle->actualizarRubroElegible2($valor, $rub_id, $rubro->nom_rub_id);
+        }
+        $categorias = $this->detFor->obtenerLosDetallesFortalecimiento($rub_id);
+        foreach ($categorias as $aux) {
+            $valor = $this->input->post("for_monto_$aux->cat_for_id");
+            $this->detFor->actualizarDetalleFortalecimiento($valor, $rub_id, $aux->cat_for_id);
+        }
+        $obras = $this->detObra->obtenerLosDetallesObra($rub_id);
+        foreach ($obras as $aux) {
+            $valor = $this->input->post("det_obra_monto_$aux->obr_id");
+            $this->detObra->actualizarDetalleObra($valor, $rub_id, $aux->obr_id);
         }
     }
 

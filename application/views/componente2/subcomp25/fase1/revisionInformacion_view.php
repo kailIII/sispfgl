@@ -2,39 +2,129 @@
     $(document).ready(function(){
         $("#etapas").hide();
         $("#guardar").button().click(function() {
-            $.ajax({
-                type: "POST",
-                url: '<?php echo base_url('componente2/comp25_fase1/guardarRevisionInformacion') . '/1' ?>',
-                data: $("#revisionInformacion1").serialize(), // serializes the form's elements.
-                success: function(data)
-                {
-                    $('#efectivo').dialog('open');
+            fecha1= $('#rev_inf_fregistro_asesor').datepicker("getDate");
+            fecha2=$( "#rev_inf_frevision_uep" ).datepicker("getDate");
+            if(fecha1==null){
+                $( "#rev_inf_frevision_uep" ).val('');
+                $.ajax({
+                    type: "POST",
+                    url: '<?php echo base_url('componente2/comp25_fase1/guardarRevisionInformacion') . '/1' ?>',
+                    data: $("#revisionInformacion1").serialize(), // serializes the form's elements.
+                    success: function(data)
+                    {
+                        $('#efectivo').dialog('open');
+                        $.ajax({
+                            type: "POST",
+                            url: '<?php echo base_url('componente2/comp25_fase1/guardarRevisionInformacion') . '/3' ?>',
+                            data: $("#revisionInformacionGeneral").serialize()
+                        });
+                    }
+                });
+                return false;
+            }else{
+                if(fecha2==null){
                     $.ajax({
                         type: "POST",
-                        url: '<?php echo base_url('componente2/comp25_fase1/guardarRevisionInformacion') . '/3' ?>',
-                        data: $("#revisionInformacionGeneral").serialize()
+                        url: '<?php echo base_url('componente2/comp25_fase1/guardarRevisionInformacion') . '/1' ?>',
+                        data: $("#revisionInformacion1").serialize(), // serializes the form's elements.
+                        success: function(data)
+                        {
+                            $('#efectivo').dialog('open');
+                            $.ajax({
+                                type: "POST",
+                                url: '<?php echo base_url('componente2/comp25_fase1/guardarRevisionInformacion') . '/3' ?>',
+                                data: $("#revisionInformacionGeneral").serialize()
+                            });
+                        }
                     });
+                    return false;
+            
+                }else{
+                    if(fecha1< fecha2){
+                        $.ajax({
+                            type: "POST",
+                            url: '<?php echo base_url('componente2/comp25_fase1/guardarRevisionInformacion') . '/1' ?>',
+                            data: $("#revisionInformacion1").serialize(), // serializes the form's elements.
+                            success: function(data)
+                            {
+                                $('#efectivo').dialog('open');
+                                $.ajax({
+                                    type: "POST",
+                                    url: '<?php echo base_url('componente2/comp25_fase1/guardarRevisionInformacion') . '/3' ?>',
+                                    data: $("#revisionInformacionGeneral").serialize()
+                                });
+                            }
+                        });
+                        return false;
+                    }else{
+                        $('#fechaValidacion').dialog('open');
+                        return false
+                    }
                 }
-            });
-            return false;
-             
+            }
         });
+        
         $("#guardar2").button().click(function() {
-            $.ajax({
-                type: "POST",
-                url: '<?php echo base_url('componente2/comp25_fase1/guardarRevisionInformacion') . '/2' ?>',
-                data: $("#revisionInformacion2").serialize(), // serializes the form's elements.
-                success: function(data)
-                {
-                    $('#efectivo').dialog('open');
+            fecha1= $('#rev_inf_fregistro_asesor').datepicker("getDate");
+            fecha2=$( "#rev_inf_frevision_uep" ).datepicker("getDate");
+            if(fecha1==null){
+                $( "#rev_inf_frevision_uep" ).val('');
+                $.ajax({
+                    type: "POST",
+                    url: '<?php echo base_url('componente2/comp25_fase1/guardarRevisionInformacion') . '/2' ?>',
+                    data: $("#revisionInformacion2").serialize(), // serializes the form's elements.
+                    success: function(data)
+                    {
+                        $('#efectivo').dialog('open');
+                        $.ajax({
+                            type: "POST",
+                            url: '<?php echo base_url('componente2/comp25_fase1/guardarRevisionInformacion') . '/3' ?>',
+                            data: $("#revisionInformacionGeneral").serialize()
+                        });
+                    }
+                });
+                return false;
+            }else{
+                if(fecha2==null){
                     $.ajax({
                         type: "POST",
-                        url: '<?php echo base_url('componente2/comp25_fase1/guardarRevisionInformacion') . '/3' ?>',
-                        data: $("#revisionInformacionGeneral").serialize()
+                        url: '<?php echo base_url('componente2/comp25_fase1/guardarRevisionInformacion') . '/2' ?>',
+                        data: $("#revisionInformacion2").serialize(), // serializes the form's elements.
+                        success: function(data)
+                        {
+                            $('#efectivo').dialog('open');
+                            $.ajax({
+                                type: "POST",
+                                url: '<?php echo base_url('componente2/comp25_fase1/guardarRevisionInformacion') . '/3' ?>',
+                                data: $("#revisionInformacionGeneral").serialize()
+                            });
+                        }
                     });
+                    return false;
+            
+                }else{
+                    if(fecha1< fecha2){
+                        $.ajax({
+                            type: "POST",
+                            url: '<?php echo base_url('componente2/comp25_fase1/guardarRevisionInformacion') . '/2' ?>',
+                            data: $("#revisionInformacion2").serialize(), // serializes the form's elements.
+                            success: function(data)
+                            {
+                                $('#efectivo').dialog('open');
+                                $.ajax({
+                                    type: "POST",
+                                    url: '<?php echo base_url('componente2/comp25_fase1/guardarRevisionInformacion') . '/3' ?>',
+                                    data: $("#revisionInformacionGeneral").serialize()
+                                });
+                            }
+                        });
+                        return false;
+                    }else{
+                        $('#fechaValidacion').dialog('open');
+                        return false
+                    }
                 }
-            });
-            return false;
+            }
         });
         /*DIALOGOS DE VALIDACION*/
         $('.mensaje').dialog({

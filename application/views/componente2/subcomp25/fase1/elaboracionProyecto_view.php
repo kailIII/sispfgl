@@ -1,7 +1,7 @@
 <script type="text/javascript">        
     $(document).ready(function(){
         /*ZONA DE BOTONES*/
-         $("#guardar").button().click(function() {
+        $("#guardar").button().click(function() {
             fecha1= $('#ela_pro_fentrega_idem').datepicker("getDate");
             fecha2=$( "#ela_pro_fentrega_uep" ).datepicker("getDate");
             fecha3=$( "#ela_pro_fconformacion" ).datepicker("getDate");
@@ -154,13 +154,13 @@
         /*ZONA GRID*/
         var tabla=$("#recibidoMunicipalidad");
         tabla.jqGrid({
-            url:'<?php echo base_url('componente2/comp25/cargarParticipantesET') ?>/ela_pro_id/'+$('#ela_pro_id').val(),
-            editurl:'<?php echo base_url('componente2/comp23_E1/gestionParticipantes') ?>/elaboracion_proyecto/ela_pro_id/'+$('#ela_pro_id').val(),
+            url:'<?php echo base_url('componente2/comp25/cargarParticipantesET') ?>/ela_pro_id/'+0,
+            editurl:'<?php echo base_url('componente2/comp23_E1/gestionParticipantes') ?>/elaboracion_proyecto/ela_pro_id/'+0,
             datatype:'json',
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','Correlativo','Fecha de recibido municipalidad','fecha2es'],
+            colNames:['id','Correlativo','Fecha de recibido municipalidad','Observaciones'],
             colModel:[
                 {name:'rec_mun_id',index:'rec_mun_id', width:40,editable:false,editoptions:{size:15} },
                 {name:'rec_mun_correlativo',index:'rec_mun_correlativo', width:100,editable:true,
@@ -183,10 +183,10 @@
                     formoptions:{label: "Fecha de recibido municipalidad",elmprefix:"(*)"},
                     editrules:{required:true}
                 },
-                {name:'rec_mun_fecha2',index:'rec_mun_fecha2',
+                {name:'rec_mun_observacion',index:'rec_mun_observacion',
                     editable:true,width:400,edittype:"textarea",
                     editoptions:{rows:"4",cols:"50"},
-                    formoptions:{label: "fecha2es"}
+                    formoptions:{label: "Observaciones"}
                 }
             ],
             multiselect: false,

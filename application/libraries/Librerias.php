@@ -90,6 +90,95 @@ class Librerias {
             echo "error";
         }
     }
+    
+        function parse_input($tipo, $campo){
+        switch ($tipo){ 
+        	case 'phone':
+                $d = explode('-',$campo);
+                return $d[0] . $d[1];
+        	break;
+            
+            case 'date':
+            //d/m/Y a Y-m-d
+                if(!$campo) return null;
+                $t = explode('/',$campo);
+                return date('Y-m-d',mktime(0,0,0,$t[1],$t[0],$t[2]));
+            break;
+        
+        	default :
+        }
+    }
+    
+    function parse_output($tipo,$valor){
+        if(!$valor) return '';
+        switch ($tipo){ 
+        	case 'date':
+            //Y-m-d a d/m/Y
+                $t = explode('-',$valor);
+                return date('d/m/Y',mktime(0,0,0,$t[1],$t[2],$t[0]));
+        	break;
+        
+        	case 'phone':
+                $t = explode('',$valor,4);
+                return $t[0] . '-' . $t[1];
+        	break;
+        
+        	case 'money':
+        	break;
+            
+            case 'bool':
+                return ($valor == 't');
+            break;
+        
+        	default :
+                    return $valor;
+        }
+    }
+    
+    function json_out($result, $index,$campos='all',$rows=10){
+        
+        //$consultoresInt = $this->conInt->obtenerConsultoresInteres($pro_id);
+        $numfilas = $result->num_rows();
+
+        $i = 0;
+        if ($numfilas != 0) {
+            foreach ($result->result() as $aux) {
+                $row = array();
+                foreach ($aux as $r => $v){
+                    //echo "r-$r;v-$v<br>\n";
+                    if($campos != 'all' && in_array($r,$campos)){
+                        array_push($row,$v);
+                    }else if($campos == 'all'){
+                        array_push($row,$v);
+                    }
+                }
+                $data[$i]['id'] = $aux->$index;
+                $data[$i]['cell'] = $row;
+                $i++;
+            }
+            array_multisort($data, SORT_ASC);
+        } else {
+            $data = array();
+        }
+
+        $datos = json_encode($data);
+        $pages = floor($numfilas / 10) + 1;
+        
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        return $jsonresponse;
+    }
+    
+    function setNewId($tabla,$campo,$data){
+        $this->ci->db->insert($tabla,$data);
+        echo $this->ci->db->last_query();
+        $lastId = $this->ci->db->query("SELECT $campo FROM $tabla ORDER BY $campo DESC LIMIT 1;")->row()->$campo;
+        return $lastId;
+    }
 
 }
 

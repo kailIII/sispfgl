@@ -58,6 +58,14 @@ class Municipio extends CI_Model {
         $consulta = $this->db->get($this->tabla);
         return $consulta->result();
     }
+    
+    public function obtenerMunicipioGDR($gru_id,$dep_id) {
+        $this->db->where('gru_id', $gru_id);
+        $this->db->where('dep_id', $dep_id);
+        $this->db->order_by('mun_id', 'asc');
+        $consulta = $this->db->get($this->tabla);
+        return $consulta->result();
+    }
 
     public function actualizarConsultoraMuni($cons_id, $mun_id) {
         $datos = array(

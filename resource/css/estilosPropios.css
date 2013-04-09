@@ -132,7 +132,36 @@ em {
     background-image:url(../imagenes/upload.png);
     cursor: pointer;
 }
-
+#btn_per_subir {
+    width:32px;
+    height:32px;
+    background-image:url(../imagenes/upload.png);
+    cursor: pointer;
+}
+#btn_tdr_subir {
+    width:32px;
+    height:32px;
+    background-image:url(../imagenes/upload.png);
+    cursor: pointer;
+}
+#btn_esp_subir {
+    width:32px;
+    height:32px;
+    background-image:url(../imagenes/upload.png);
+    cursor: pointer;
+}
+#btn_car_subir {
+    width:32px;
+    height:32px;
+    background-image:url(../imagenes/upload.png);
+    cursor: pointer;
+}
+#btn_acu_subir {
+    width:32px;
+    height:32px;
+    background-image:url(../imagenes/upload.png);
+    cursor: pointer;
+}
 #btn_subir2 {
     width:32px;
     height:32px;
@@ -209,7 +238,7 @@ form .campo label {
 }
 
 form .campo input {
-    width: 200px;
+    /*width: 200px;*/
 }
 
 .error{
@@ -257,10 +286,16 @@ form .campo input {
 #rpt_prt_bdy {
 }
 
+#rpt_frm_bdy{
+    min-height: 300px;
+}
+
 #rpt_frm_bdy .campo,
 #rpt_frm_bdy .campoUp, {
 	margin-bottom:	10px;
 	display: 		block;
+    min-height:     35px;
+    margin-top:     10px;
 }
 
 #rpt_frm_bdy .campoUp label {
@@ -274,10 +309,12 @@ form .campo input {
 #rpt_frm_bdy .campo label {
 	width: 			300px;
 	margin-left:	20px;
+    margin-right:   10px;
 	display:        inline-block;
 	line-height: 	35px;
 	cursor: 		pointer;
     text-align:     right;
+    vertical-align: top;
 }
 
 #rpt_frm_bdy .campoUp input[type=text] {
@@ -303,9 +340,29 @@ form .campo input {
     width: 251px;
 }
 
-#rpt_frm_bdy .tabla{
+#rpt_frm_bdy .campo select {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin-left: -3;
+    margin-right: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    height: 28px;
+    width: 251px;
+}
+
+#rpt_frm_bdy .campo textarea{
+    width: 400px;
+    display: inline;
+}
+
+#rpt_frm_bdy .campoUp textarea{
     margin-left: 20px;
-    margin-right: 20px;    
+    width: 400px;
+}
+
+#rpt_frm_bdy .tabla{
+    margin: 20px;
 }
 
 #rpt_frm_bdy .tabla label{

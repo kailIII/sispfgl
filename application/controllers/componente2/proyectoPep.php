@@ -116,15 +116,20 @@ class ProyectoPep extends CI_Controller {
     }
 
     public function cargarMunicipios() {
+        $this->load->model('tank_auth/users', 'usuarios');
+        $rol = $this->usuarios->obtenerCodigoRol($this->tank_auth->get_username());
+        $this->load->model('consultor/consultor');
+        $cons = $this->consultor->obtenerConsultorPorUsuario($this->tank_auth->get_username());
+
         $dep_id = $this->input->get("dep_id");
         $this->load->model('pais/municipio', 'mun');
-        $municipios = $this->mun->obtenerMunicipioPorDepartamento($dep_id);
-
+        if (strcmp($rol[0]->rol_codigo, 'gdrc') == 0)
+            $municipios = $this->mun->obtenerMunicipioGDR($cons[0]->cons_id, $dep_id);
+        else
+            $municipios = $this->mun->obtenerMunicipioPorDepartamento($dep_id);
         $numfilas = count($municipios);
-
         $i = 0;
         $rows = array();
-
         if ($numfilas != 0) {
             foreach ($municipios as $aux) {
                 $rows[$i]['id'] = $aux->mun_id;

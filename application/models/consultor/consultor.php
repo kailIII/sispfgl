@@ -63,9 +63,14 @@ class Consultor extends CI_Model {
         $consulta = $this->db->get($this->tabla);
         return $consulta->result_array();
     }
+    
+     public function obtenerConsultorPorUsuario($user) {
+        $this->db->where('user', $user);
+        $consulta = $this->db->get($this->tabla);
+        return $consulta->result();
+    }
 
     function obtenerIdDepartamento($pro_pep_id) {
-
         $consulta = 'SELECT departamento.dep_nombre AS "Depto", municipio.mun_nombre AS "Muni",
                             region.reg_nombre AS "Region",proyecto_pep.pro_pep_nombre AS "Nombre"
                      FROM proyecto_pep, municipio, departamento, region
