@@ -566,6 +566,10 @@ class Comp25_fase1 extends CI_Controller {
             $nAcu = 'No hay Acuerdo para descargar';
         else
             $nAcu = 'Descargar ' . end(explode("/", $revision[0]->per_pro_acu_ruta_archivo));
+        if ($revision[0]->per_pro_doc_ruta_archivo == NULL || $revision[0]->per_pro_doc_ruta_archivo == '0')
+            $nDoc = 'No hay documentos de aprobación';
+        else
+            $nDoc = 'Descargar ' . end(explode("/", $revision[0]->per_pro_doc_ruta_archivo));
         $rows[0]['id'] = $revision[0]->per_pro_id;
         $rows[0]['cell'] = array($revision[0]->per_pro_id,
             $per_pro_fentrega_isdem,
@@ -593,7 +597,9 @@ class Comp25_fase1 extends CI_Controller {
             $revision[0]->per_pro_car_ruta_archivo,
             $nCar,
             $revision[0]->per_pro_acu_ruta_archivo,
-            $nAcu
+            $nAcu,
+            $revision[0]->per_pro_doc_ruta_archivo,
+            $nDoc
         );
         $datos = json_encode($rows);
         $pages = floor(1 / 10) + 1;

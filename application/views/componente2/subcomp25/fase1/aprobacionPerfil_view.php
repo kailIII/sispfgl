@@ -1,25 +1,25 @@
-<script type="text/javascript">        
-    $(document).ready(function(){
+<script type="text/javascript">
+    $(document).ready(function() {
         /*ZONA DE BOTONES*/
         $("#guardar").button().click(function() {
-            fecha1= $('#per_pro_fentrega_isdem').datepicker("getDate");
-            fecha2=$( "#per_pro_fentrega_uep" ).datepicker("getDate");
-            fecha3=$( "#per_pro_fnota_autorizacion" ).datepicker("getDate");
-            fecha4= $('#per_pro_fentrega_u_i').datepicker("getDate");
-            fecha5=$( "#per_pro_ftdr" ).datepicker("getDate");
-            fecha6=$( "#per_pro_fespecificacion" ).datepicker("getDate");
-            fecha7=$('#per_pro_fcarpeta_reducida').datepicker("getDate");
-            fecha8=$('#per_pro_frecibe_municipio').datepicker("getDate");
-            fecha9=$('#per_pro_femision_acuerdo').datepicker("getDate");
-            fecha10=$('#per_pro_fcertificacion').datepicker("getDate");
-            fecha11=$('#per_pro_frecibe').datepicker("getDate");
-            fecha12=$('#per_pro_fencio_fisdl').datepicker("getDate");
-            if(fecha1==null){
-                $( "#per_pro_fentrega_uep" ).val('');
-                $( "#per_pro_fnota_autorizacion" ).val('');
+            fecha1 = $('#per_pro_fentrega_isdem').datepicker("getDate");
+            fecha2 = $("#per_pro_fentrega_uep").datepicker("getDate");
+            fecha3 = $("#per_pro_fnota_autorizacion").datepicker("getDate");
+            fecha4 = $('#per_pro_fentrega_u_i').datepicker("getDate");
+            fecha5 = $("#per_pro_ftdr").datepicker("getDate");
+            fecha6 = $("#per_pro_fespecificacion").datepicker("getDate");
+            fecha7 = $('#per_pro_fcarpeta_reducida').datepicker("getDate");
+            fecha8 = $('#per_pro_frecibe_municipio').datepicker("getDate");
+            fecha9 = $('#per_pro_femision_acuerdo').datepicker("getDate");
+            fecha10 = $('#per_pro_fcertificacion').datepicker("getDate");
+            fecha11 = $('#per_pro_frecibe').datepicker("getDate");
+            fecha12 = $('#per_pro_fencio_fisdl').datepicker("getDate");
+            if (fecha1 == null) {
+                $("#per_pro_fentrega_uep").val('');
+                $("#per_pro_fnota_autorizacion").val('');
                 $('#per_pro_fentrega_u_i').val('');
-                $( "#per_pro_ftdr" ).val('');
-                $( "#per_pro_fespecificacion" ).val('');
+                $("#per_pro_ftdr").val('');
+                $("#per_pro_fespecificacion").val('');
                 $('#per_pro_fcarpeta_reducida').val('');
                 $('#per_pro_frecibe_municipio').val('');
                 $('#per_pro_femision_acuerdo').val('');
@@ -36,12 +36,12 @@
                     }
                 });
                 return true;
-            }else{
-                if(fecha2==null){
-                    $( "#per_pro_fnota_autorizacion" ).val('');
+            } else {
+                if (fecha2 == null) {
+                    $("#per_pro_fnota_autorizacion").val('');
                     $('#per_pro_fentrega_u_i').val('');
-                    $( "#per_pro_ftdr" ).val('');
-                    $( "#per_pro_fespecificacion" ).val('');
+                    $("#per_pro_ftdr").val('');
+                    $("#per_pro_fespecificacion").val('');
                     $('#per_pro_fcarpeta_reducida').val('');
                     $('#per_pro_frecibe_municipio').val('');
                     $('#per_pro_femision_acuerdo').val('');
@@ -58,12 +58,12 @@
                         }
                     });
                     return false;
-                }else{
-                    if(fecha1<fecha2){
-                        if(fecha3==null){
+                } else {
+                    if (fecha1 < fecha2) {
+                        if (fecha3 == null) {
                             $('#per_pro_fentrega_u_i').val('');
-                            $( "#per_pro_ftdr" ).val('');
-                            $( "#per_pro_fespecificacion" ).val('');
+                            $("#per_pro_ftdr").val('');
+                            $("#per_pro_fespecificacion").val('');
                             $('#per_pro_fcarpeta_reducida').val('');
                             $('#per_pro_frecibe_municipio').val('');
                             $('#per_pro_femision_acuerdo').val('');
@@ -80,11 +80,11 @@
                                 }
                             });
                             return false;
-                        }else{
-                            if(fecha2<fecha3){
-                                if(fecha4==null){
-                                    $( "#per_pro_ftdr" ).val('');
-                                    $( "#per_pro_fespecificacion" ).val('');
+                        } else {
+                            if (fecha2 < fecha3) {
+                                if (fecha4 == null) {
+                                    $("#per_pro_ftdr").val('');
+                                    $("#per_pro_fespecificacion").val('');
                                     $('#per_pro_fcarpeta_reducida').val('');
                                     $('#per_pro_frecibe_municipio').val('');
                                     $('#per_pro_femision_acuerdo').val('');
@@ -101,10 +101,10 @@
                                         }
                                     });
                                     return false;
-                                }else{
-                                    if(fecha3<fecha4){
-                                        if(fecha5==null){
-                                            $( "#per_pro_fespecificacion" ).val('');
+                                } else {
+                                    if (fecha3 < fecha4) {
+                                        if (fecha5 == null) {
+                                            $("#per_pro_fespecificacion").val('');
                                             $('#per_pro_fcarpeta_reducida').val('');
                                             $('#per_pro_frecibe_municipio').val('');
                                             $('#per_pro_femision_acuerdo').val('');
@@ -121,9 +121,9 @@
                                                 }
                                             });
                                             return false;
-                                        }else{
-                                            if(fecha4<fecha5){
-                                                if(fecha6==null){
+                                        } else {
+                                            if (fecha4 < fecha5) {
+                                                if (fecha6 == null) {
                                                     $('#per_pro_fcarpeta_reducida').val('');
                                                     $('#per_pro_frecibe_municipio').val('');
                                                     $('#per_pro_femision_acuerdo').val('');
@@ -140,10 +140,25 @@
                                                         }
                                                     });
                                                     return false;
-                                                }else{
-                                                    if(fecha5<fecha6){
-                                                        if(fecha7==null){
-                                                            $('#per_pro_frecibe_municipio').val('');
+                                                } else {
+                                                    if (fecha7 == null) {
+                                                        $('#per_pro_frecibe_municipio').val('');
+                                                        $('#per_pro_femision_acuerdo').val('');
+                                                        $('#per_pro_fcertificacion').val('');
+                                                        $('#per_pro_frecibe').val('');
+                                                        $('#per_pro_fencio_fisdl').val('');
+                                                        $.ajax({
+                                                            type: "POST",
+                                                            url: '<?php echo base_url('componente2/comp25_fase1/guardarAprobacionPerfil') ?>',
+                                                            data: $("#aprobacionPerfilForm").serialize(), // serializes the form's elements.
+                                                            success: function(data)
+                                                            {
+                                                                $('#efectivo').dialog('open');
+                                                            }
+                                                        });
+                                                        return false;
+                                                    } else {
+                                                        if (fecha8 == null) {
                                                             $('#per_pro_femision_acuerdo').val('');
                                                             $('#per_pro_fcertificacion').val('');
                                                             $('#per_pro_frecibe').val('');
@@ -158,10 +173,9 @@
                                                                 }
                                                             });
                                                             return false;
-                                                        }else{
-                                                            if(fecha6<fecha7){
-                                                                if(fecha8==null){
-                                                                    $('#per_pro_femision_acuerdo').val('');
+                                                        } else {
+                                                            if (fecha7 < fecha8) {
+                                                                if (fecha9 == null) {
                                                                     $('#per_pro_fcertificacion').val('');
                                                                     $('#per_pro_frecibe').val('');
                                                                     $('#per_pro_fencio_fisdl').val('');
@@ -175,10 +189,9 @@
                                                                         }
                                                                     });
                                                                     return false;
-                                                                }else{
-                                                                    if(fecha7<fecha8){
-                                                                        if(fecha9==null){
-                                                                            $('#per_pro_fcertificacion').val('');
+                                                                } else {
+                                                                    if (fecha8 < fecha9) {
+                                                                        if (fecha10 == null) {
                                                                             $('#per_pro_frecibe').val('');
                                                                             $('#per_pro_fencio_fisdl').val('');
                                                                             $.ajax({
@@ -191,10 +204,9 @@
                                                                                 }
                                                                             });
                                                                             return false;
-                                                                        }else{
-                                                                            if(fecha8<fecha9){
-                                                                                if(fecha10==null){
-                                                                                    $('#per_pro_frecibe').val('');
+                                                                        } else {
+                                                                            if (fecha9 < fecha10) {
+                                                                                if (fecha11 == null) {
                                                                                     $('#per_pro_fencio_fisdl').val('');
                                                                                     $.ajax({
                                                                                         type: "POST",
@@ -206,10 +218,9 @@
                                                                                         }
                                                                                     });
                                                                                     return false;
-                                                                                }else{
-                                                                                    if(fecha9<fecha10){
-                                                                                        if(fecha11==null){
-                                                                                            $('#per_pro_fencio_fisdl').val('');
+                                                                                } else {
+                                                                                    if (fecha10 < fecha11) {
+                                                                                        if (fecha12 == null) {
                                                                                             $.ajax({
                                                                                                 type: "POST",
                                                                                                 url: '<?php echo base_url('componente2/comp25_fase1/guardarAprobacionPerfil') ?>',
@@ -220,172 +231,149 @@
                                                                                                 }
                                                                                             });
                                                                                             return false;
-                                                                                        }else{
-                                                                                            if(fecha10<fecha11){
-                                                                                                if(fecha12==null){
-                                                                                                    $.ajax({
-                                                                                                        type: "POST",
-                                                                                                        url: '<?php echo base_url('componente2/comp25_fase1/guardarAprobacionPerfil') ?>',
-                                                                                                        data: $("#aprobacionPerfilForm").serialize(), // serializes the form's elements.
-                                                                                                        success: function(data)
-                                                                                                        {
-                                                                                                            $('#efectivo').dialog('open');
-                                                                                                        }
-                                                                                                    });
-                                                                                                    return false;
-                                                                                                }else{
-                                                                                                    if(fecha11<fecha12){
-                                                                                                        $.ajax({
-                                                                                                            type: "POST",
-                                                                                                            url: '<?php echo base_url('componente2/comp25_fase1/guardarAprobacionPerfil') ?>',
-                                                                                                            data: $("#aprobacionPerfilForm").serialize(), // serializes the form's elements.
-                                                                                                            success: function(data)
-                                                                                                            {
-                                                                                                                $('#efectivo').dialog('open');
-                                                                                                            }
-                                                                                                        });
-                                                                                                        return false;
+                                                                                        } else {
+                                                                                            if (fecha11 < fecha12) {
+                                                                                                $.ajax({
+                                                                                                    type: "POST",
+                                                                                                    url: '<?php echo base_url('componente2/comp25_fase1/guardarAprobacionPerfil') ?>',
+                                                                                                    data: $("#aprobacionPerfilForm").serialize(), // serializes the form's elements.
+                                                                                                    success: function(data)
+                                                                                                    {
+                                                                                                        $('#efectivo').dialog('open');
                                                                                                     }
-                                                                                                    else{
-                                                                                                        $('#fechaValidacion').dialog('open');
-                                                                                                        return false; 
-                                                                                                    }
-                                                                                                } 
+                                                                                                });
+                                                                                                return false;
                                                                                             }
-                                                                                            else{
+                                                                                            else {
                                                                                                 $('#fechaValidacion').dialog('open');
-                                                                                                return false; 
+                                                                                                return false;
                                                                                             }
                                                                                         }
-                                                                                    }else{
-                                                                                        $('#fechaValidacion').dialog('open');
-                                                                                        return false; 
                                                                                     }
-                                                                                }   
-                                                                            }else{
+                                                                                    else {
+                                                                                        $('#fechaValidacion').dialog('open');
+                                                                                        return false;
+                                                                                    }
+                                                                                }
+                                                                            } else {
                                                                                 $('#fechaValidacion').dialog('open');
-                                                                                return false; 
+                                                                                return false;
                                                                             }
                                                                         }
-                                                                    }else{
+                                                                    } else {
                                                                         $('#fechaValidacion').dialog('open');
                                                                         return false;
                                                                     }
                                                                 }
-                                                            }else{
+                                                            } else {
                                                                 $('#fechaValidacion').dialog('open');
                                                                 return false;
                                                             }
                                                         }
-                                                        
-                                                    }else{
-                                                        $('#fechaValidacion').dialog('open');
-                                                        return false;
                                                     }
                                                 }
-                                            }else{
-                                                $('#fechaValidacion').dialog('open');
-                                                return false;
                                             }
                                         }
-                                    }else{
+                                    } else {
                                         $('#fechaValidacion').dialog('open');
                                         return false;
                                     }
                                 }
-                            }else{
+                            } else {
                                 $('#fechaValidacion').dialog('open');
                                 return false;
                             }
                         }
-                    }else{
+                    } else {
                         $('#fechaValidacion').dialog('open');
                         return false;
                     }
                 }
             }
         });
-        
+
         $("#aprobacionPerfilForm").hide();
         /*CARGAR MUNICIPIOS*/
-        $('#dep_id').change(function(){ 
+        $('#dep_id').change(function() {
             $("#aprobacionPerfilForm").hide();
             $('#mun_id').children().remove();
-            $.getJSON('<?php echo base_url('componente2/proyectoPep/cargarMunicipios') ?>?dep_id='+$('#dep_id').val(), 
-            function(data) {
-                var i=0;
-                $.each(data, function(key, val) {
-                    if(key=='rows'){
-                        $('#mun_id').append('<option value="0">--Seleccione Municipio--</option>');
-                        $.each(val, function(id, registro){
-                            $('#mun_id').append('<option value="'+registro['cell'][0]+'">'+registro['cell'][1]+'</option>');
-                        });                    
-                    }
-                });
-            });              
+            $.getJSON('<?php echo base_url('componente2/proyectoPep/cargarMunicipios') ?>?dep_id=' + $('#dep_id').val(),
+                    function(data) {
+                        var i = 0;
+                        $.each(data, function(key, val) {
+                            if (key == 'rows') {
+                                $('#mun_id').append('<option value="0">--Seleccione Municipio--</option>');
+                                $.each(val, function(id, registro) {
+                                    $('#mun_id').append('<option value="' + registro['cell'][0] + '">' + registro['cell'][1] + '</option>');
+                                });
+                            }
+                        });
+                    });
         });
-        
-        $('#mun_id').change(function(){
+
+        $('#mun_id').change(function() {
             $('#aprobacionPerfilForm')[0].reset();
             $('input:checkbox').removeAttr('checked');
-            if($('#mun_id').val()!=0){
-                $.getJSON('<?php echo base_url('componente2/comp25_fase1/cargarAprobacionPerfil') . "/" ?>'+$('#mun_id').val(), 
-                function(data) {
-                    $.each(data, function(key, val) {
-                        if(key=='rows'){
-                            $.each(val, function(id, registro){
-                                $('#per_pro_id').val(registro['cell'][0]);
-                                $('#per_pro_fentrega_isdem').val(registro['cell'][1]);
-                                $('#per_pro_fentrega_uep').val(registro['cell'][2]);
-                                $('#per_pro_fnota_autorizacion').val(registro['cell'][3]);
-                                $('#per_pro_fentrega_u_i').val(registro['cell'][4]);
-                                $('#per_pro_ftdr').val(registro['cell'][5]);
-                                $('#per_pro_fespecificacion').val(registro['cell'][6]);
-                                $('#per_pro_fcarpeta_reducida').val(registro['cell'][7]);
-                                $('#per_pro_frecibe_municipio').val(registro['cell'][8]);
-                                $('#per_pro_femision_acuerdo').val(registro['cell'][9]);
-                                $('#per_pro_fcertificacion').val(registro['cell'][10]);
-                                $('#per_pro_frecibe').val(registro['cell'][11]);
-                                $('#per_pro_fencio_fisdl').val(registro['cell'][12]);
-                                if(registro['cell'][13]!=null){
-                                    if(registro['cell'][13]=="t")
-                                        $('input:checkbox[name=per_pro_consultor_individual]').attr("checked","checked");
-                                    else
-                                        $('input:checkbox[name=per_pro_consultor_individual]').attr("checked",false); 
+            if ($('#mun_id').val() != 0) {
+                $.getJSON('<?php echo base_url('componente2/comp25_fase1/cargarAprobacionPerfil') . "/" ?>' + $('#mun_id').val(),
+                        function(data) {
+                            $.each(data, function(key, val) {
+                                if (key == 'rows') {
+                                    $.each(val, function(id, registro) {
+                                        $('#per_pro_id').val(registro['cell'][0]);
+                                        $('#per_pro_fentrega_isdem').val(registro['cell'][1]);
+                                        $('#per_pro_fentrega_uep').val(registro['cell'][2]);
+                                        $('#per_pro_fnota_autorizacion').val(registro['cell'][3]);
+                                        $('#per_pro_fentrega_u_i').val(registro['cell'][4]);
+                                        $('#per_pro_ftdr').val(registro['cell'][5]);
+                                        $('#per_pro_fespecificacion').val(registro['cell'][6]);
+                                        $('#per_pro_fcarpeta_reducida').val(registro['cell'][7]);
+                                        $('#per_pro_frecibe_municipio').val(registro['cell'][8]);
+                                        $('#per_pro_femision_acuerdo').val(registro['cell'][9]);
+                                        $('#per_pro_fcertificacion').val(registro['cell'][10]);
+                                        $('#per_pro_frecibe').val(registro['cell'][11]);
+                                        $('#per_pro_fencio_fisdl').val(registro['cell'][12]);
+                                        if (registro['cell'][13] != null) {
+                                            if (registro['cell'][13] == "t")
+                                                $('input:checkbox[name=per_pro_consultor_individual]').attr("checked", "checked");
+                                            else
+                                                $('input:checkbox[name=per_pro_consultor_individual]').attr("checked", false);
+                                        }
+                                        if (registro['cell'][14] != null) {
+                                            if (registro['cell'][14] == "t")
+                                                $('input:checkbox[name=per_pro_firma]').attr("checked", "checked");
+                                            else
+                                                $('input:checkbox[name=per_pro_firma]').attr("checked", false);
+                                        }
+                                        if (registro['cell'][15] != null) {
+                                            if (registro['cell'][15] == "t")
+                                                $('input:checkbox[name=per_pro_ong]').attr("checked", "checked");
+                                            else
+                                                $('input:checkbox[name=per_pro_ong]').attr("checked", false);
+                                        }
+                                        $('#per_pro_observacion').val(registro['cell'][16]);
+                                        $('#per_pro_per_ruta_archivo').val(registro['cell'][17]);
+                                        $('#per_pro_perD').val(registro['cell'][18]);
+                                        $('#per_pro_tdr_ruta_archivo').val(registro['cell'][19]);
+                                        $('#per_pro_tdrD').val(registro['cell'][20]);
+                                        $('#per_pro_esp_ruta_archivo').val(registro['cell'][21]);
+                                        $('#per_pro_espD').val(registro['cell'][22]);
+                                        $('#per_pro_car_ruta_archivo').val(registro['cell'][23]);
+                                        $('#per_pro_carD').val(registro['cell'][24]);
+                                        $('#per_pro_acu_ruta_archivo').val(registro['cell'][25]);
+                                        $('#per_pro_acuD').val(registro['cell'][26]);
+                                        $('#per_pro_doc_ruta_archivo').val(registro['cell'][27]);
+                                        $('#per_pro_docD').val(registro['cell'][28]);
+                                        $("#aprobacionPerfilForm").show();
+                                    });
                                 }
-                                if(registro['cell'][14]!=null){
-                                    if(registro['cell'][14]=="t")
-                                        $('input:checkbox[name=per_pro_firma]').attr("checked","checked");
-                                    else
-                                        $('input:checkbox[name=per_pro_firma]').attr("checked",false); 
-                                }
-                                if(registro['cell'][15]!=null){
-                                    if(registro['cell'][15]=="t")
-                                        $('input:checkbox[name=per_pro_ong]').attr("checked","checked");
-                                    else
-                                        $('input:checkbox[name=per_pro_ong]').attr("checked",false); 
-                                }
-                                $('#per_pro_observacion').val(registro['cell'][16]);
-                                $('#per_pro_per_ruta_archivo').val(registro['cell'][17]);
-                                $('#per_pro_perD').val(registro['cell'][18]);
-                                $('#per_pro_tdr_ruta_archivo').val(registro['cell'][19]);
-                                $('#per_pro_tdrD').val(registro['cell'][20]);
-                                $('#per_pro_esp_ruta_archivo').val(registro['cell'][21]);
-                                $('#per_pro_espD').val(registro['cell'][22]);
-                                $('#per_pro_car_ruta_archivo').val(registro['cell'][23]);
-                                $('#per_pro_carD').val(registro['cell'][24]);
-                                $('#per_pro_acu_ruta_archivo').val(registro['cell'][25]);
-                                $('#per_pro_acuD').val(registro['cell'][26]);
-                                $("#aprobacionPerfilForm").show();
-                            });                    
-                        }
-                    });
-                });              
-            }else
+                            });
+                        });
+            } else
                 $("#aprobacionPerfilForm").hide();
         });
         /*ZONA DATEPICKER*/
-       
+
         /*DIALOGOS DE VALIDACION*/
         $('.mensaje').dialog({
             autoOpen: false,
@@ -396,84 +384,84 @@
                 }
             }
         });
-        $( "#per_pro_fentrega_isdem" ).datepicker({
+        $("#per_pro_fentrega_isdem").datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
+            buttonImageOnly: true,
             dateFormat: 'dd-mm-yy'
         });
-        $( "#per_pro_fentrega_uep" ).datepicker({
+        $("#per_pro_fentrega_uep").datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
+            buttonImageOnly: true,
             dateFormat: 'dd-mm-yy'
         });
-        $( "#per_pro_fnota_autorizacion" ).datepicker({
+        $("#per_pro_fnota_autorizacion").datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
+            buttonImageOnly: true,
             dateFormat: 'dd-mm-yy'
         });
-        $( "#per_pro_fentrega_u_i" ).datepicker({
+        $("#per_pro_fentrega_u_i").datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
+            buttonImageOnly: true,
             dateFormat: 'dd-mm-yy'
         });
-        $( "#per_pro_ftdr" ).datepicker({
+        $("#per_pro_ftdr").datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
+            buttonImageOnly: true,
             dateFormat: 'dd-mm-yy'
         });
-        $( "#per_pro_fespecificacion" ).datepicker({
+        $("#per_pro_fespecificacion").datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
+            buttonImageOnly: true,
             dateFormat: 'dd-mm-yy'
         });
-        $( "#per_pro_fcarpeta_reducida" ).datepicker({
+        $("#per_pro_fcarpeta_reducida").datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
+            buttonImageOnly: true,
             dateFormat: 'dd-mm-yy'
         });
-        $( "#per_pro_frecibe_municipio" ).datepicker({
+        $("#per_pro_frecibe_municipio").datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
+            buttonImageOnly: true,
             dateFormat: 'dd-mm-yy'
         });
-        $( "#per_pro_femision_acuerdo" ).datepicker({
+        $("#per_pro_femision_acuerdo").datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
+            buttonImageOnly: true,
             dateFormat: 'dd-mm-yy'
         });
-        $( "#per_pro_fcertificacion" ).datepicker({
+        $("#per_pro_fcertificacion").datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
+            buttonImageOnly: true,
             dateFormat: 'dd-mm-yy'
         });
-        $( "#per_pro_frecibe" ).datepicker({
+        $("#per_pro_frecibe").datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
+            buttonImageOnly: true,
             dateFormat: 'dd-mm-yy'
         });
-        $( "#per_pro_fencio_fisdl" ).datepicker({
+        $("#per_pro_fencio_fisdl").datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
+            buttonImageOnly: true,
             dateFormat: 'dd-mm-yy'
         });
         /*ZONA DE BOTONES DE DESCARGA*/
         var button1 = $('#btn_per_subir'), interval;
         new AjaxUpload('#btn_per_subir', {
-            action: '<?php echo base_url('componente2/procesoAdministrativo/subirArchivo2') . '/perfil_proyecto/'; ?>' + $('#per_pro_id').val()+  '/per_pro_id/per_pro_per_',
-            onSubmit : function(file , ext){
-                if (! (ext && /^(pdf|doc|docx)$/.test(ext))){
+            action: '<?php echo base_url('componente2/procesoAdministrativo/subirArchivo2') . '/perfil_proyecto/'; ?>' + $('#per_pro_id').val() + '/per_pro_id/per_pro_per_',
+            onSubmit: function(file, ext) {
+                if (!(ext && /^(pdf|doc|docx)$/.test(ext))) {
                     $('#extension').dialog('open');
                     return false;
                 } else {
@@ -481,43 +469,43 @@
                     this.disable();
                 }
             },
-            onComplete: function(file, response,ext){
-                if(response!='error'){
+            onComplete: function(file, response, ext) {
+                if (response != 'error') {
                     $('#per_pro_per').val('Subido con Exito');
                     this.enable();
-                    ext= (response.substring(response.lastIndexOf("."))).toLowerCase();
-                    nombre=response.substring(response.lastIndexOf("/")).toLowerCase().replace('/','');
-                    $('#per_pro_perD').val('Descargar '+nombre);
+                    ext = (response.substring(response.lastIndexOf("."))).toLowerCase();
+                    nombre = response.substring(response.lastIndexOf("/")).toLowerCase().replace('/', '');
+                    $('#per_pro_perD').val('Descargar ' + nombre);
                     $('#per_pro_per_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO
-                    if (ext=='.pdf'){
+                    if (ext == '.pdf') {
                         $('#btn_per_descargar').attr({
-                            'href': '<?php echo base_url(); ?>'+response,
-                            'target':'_blank'
+                            'href': '<?php echo base_url(); ?>' + response,
+                            'target': '_blank'
                         });
                     }
-                    else{
+                    else {
                         $('#btn_per_descargar').attr({
-                            'href': '<?php echo base_url(); ?>'+response,
-                            'target':'_self'
+                            'href': '<?php echo base_url(); ?>' + response,
+                            'target': '_self'
                         });
                     }
-                }else{
+                } else {
                     $('#per_pro_per').val('El Archivo debe ser menor a 1 MB.');
-                    this.enable();			
-                 
+                    this.enable();
+
                 }
-                 
-            }	
+
+            }
         });
         $('#btn_per_descargar').click(function() {
             $.get($(this).attr('href'));
         });
-        
+
         var button2 = $('#btn_tdr_subir'), interval;
         new AjaxUpload('#btn_tdr_subir', {
-            action: '<?php echo base_url('componente2/procesoAdministrativo/subirArchivo2') . '/perfil_proyecto/'; ?>' + $('#per_pro_id').val()+  '/per_pro_id/per_pro_tdr_',
-            onSubmit : function(file , ext){
-                if (! (ext && /^(pdf|doc|docx)$/.test(ext))){
+            action: '<?php echo base_url('componente2/procesoAdministrativo/subirArchivo2') . '/perfil_proyecto/'; ?>' + $('#per_pro_id').val() + '/per_pro_id/per_pro_tdr_',
+            onSubmit: function(file, ext) {
+                if (!(ext && /^(pdf|doc|docx)$/.test(ext))) {
                     $('#extension').dialog('open');
                     return false;
                 } else {
@@ -525,43 +513,43 @@
                     this.disable();
                 }
             },
-            onComplete: function(file, response,ext){
-                if(response!='error'){
+            onComplete: function(file, response, ext) {
+                if (response != 'error') {
                     $('#per_pro_tdr').val('Subido con Exito');
                     this.enable();
-                    ext= (response.substring(response.lastIndexOf("."))).toLowerCase();
-                    nombre=response.substring(response.lastIndexOf("/")).toLowerCase().replace('/','');
-                    $('#per_pro_tdrD').val('Descargar '+nombre);
+                    ext = (response.substring(response.lastIndexOf("."))).toLowerCase();
+                    nombre = response.substring(response.lastIndexOf("/")).toLowerCase().replace('/', '');
+                    $('#per_pro_tdrD').val('Descargar ' + nombre);
                     $('#per_pro_tdr_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO
-                    if (ext=='.pdf'){
+                    if (ext == '.pdf') {
                         $('#btn_tdr_descargar').attr({
-                            'href': '<?php echo base_url(); ?>'+response,
-                            'target':'_blank'
+                            'href': '<?php echo base_url(); ?>' + response,
+                            'target': '_blank'
                         });
                     }
-                    else{
+                    else {
                         $('#btn_tdr_descargar').attr({
-                            'href': '<?php echo base_url(); ?>'+response,
-                            'target':'_self'
+                            'href': '<?php echo base_url(); ?>' + response,
+                            'target': '_self'
                         });
                     }
-                }else{
+                } else {
                     $('#per_pro_tdr').val('El Archivo debe ser menor a 1 MB.');
-                    this.enable();			
-                 
+                    this.enable();
+
                 }
-                 
-            }	
+
+            }
         });
         $('#btn_tdr_descargar').click(function() {
             $.get($(this).attr('href'));
         });
-        
+
         var button3 = $('#btn_esp_subir'), interval;
         new AjaxUpload('#btn_esp_subir', {
-            action: '<?php echo base_url('componente2/procesoAdministrativo/subirArchivo2') . '/perfil_proyecto/'; ?>' + $('#per_pro_id').val()+  '/per_pro_id/per_pro_esp_',
-            onSubmit : function(file , ext){
-                if (! (ext && /^(pdf|doc|docx)$/.test(ext))){
+            action: '<?php echo base_url('componente2/procesoAdministrativo/subirArchivo2') . '/perfil_proyecto/'; ?>' + $('#per_pro_id').val() + '/per_pro_id/per_pro_esp_',
+            onSubmit: function(file, ext) {
+                if (!(ext && /^(pdf|doc|docx)$/.test(ext))) {
                     $('#extension').dialog('open');
                     return false;
                 } else {
@@ -569,42 +557,42 @@
                     this.disable();
                 }
             },
-            onComplete: function(file, response,ext){
-                if(response!='error'){
+            onComplete: function(file, response, ext) {
+                if (response != 'error') {
                     $('#per_pro_esp').val('Subido con Exito');
                     this.enable();
-                    ext= (response.substring(response.lastIndexOf("."))).toLowerCase();
-                    nombre=response.substring(response.lastIndexOf("/")).toLowerCase().replace('/','');
-                    $('#per_pro_espD').val('Descargar '+nombre);
+                    ext = (response.substring(response.lastIndexOf("."))).toLowerCase();
+                    nombre = response.substring(response.lastIndexOf("/")).toLowerCase().replace('/', '');
+                    $('#per_pro_espD').val('Descargar ' + nombre);
                     $('#per_pro_esp_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO
-                    if (ext=='.pdf'){
+                    if (ext == '.pdf') {
                         $('#btn_esp_descargar').attr({
-                            'href': '<?php echo base_url(); ?>'+response,
-                            'target':'_blank'
+                            'href': '<?php echo base_url(); ?>' + response,
+                            'target': '_blank'
                         });
                     }
-                    else{
+                    else {
                         $('#btn_esp_descargar').attr({
-                            'href': '<?php echo base_url(); ?>'+response,
-                            'target':'_self'
+                            'href': '<?php echo base_url(); ?>' + response,
+                            'target': '_self'
                         });
                     }
-                }else{
+                } else {
                     $('#per_pro_esp').val('El Archivo debe ser menor a 1 MB.');
-                    this.enable();			
-                 
+                    this.enable();
+
                 }
-                 
-            }	
+
+            }
         });
         $('#btn_esp_descargar').click(function() {
             $.get($(this).attr('href'));
         });
         var button4 = $('#btn_car_subir'), interval;
         new AjaxUpload('#btn_car_subir', {
-            action: '<?php echo base_url('componente2/procesoAdministrativo/subirArchivo2') . '/perfil_proyecto/'; ?>' + $('#per_pro_id').val()+  '/per_pro_id/per_pro_car_',
-            onSubmit : function(file , ext){
-                if (! (ext && /^(pdf|doc|docx)$/.test(ext))){
+            action: '<?php echo base_url('componente2/procesoAdministrativo/subirArchivo2') . '/perfil_proyecto/'; ?>' + $('#per_pro_id').val() + '/per_pro_id/per_pro_car_',
+            onSubmit: function(file, ext) {
+                if (!(ext && /^(pdf|doc|docx)$/.test(ext))) {
                     $('#extension').dialog('open');
                     return false;
                 } else {
@@ -612,42 +600,43 @@
                     this.disable();
                 }
             },
-            onComplete: function(file, response,ext){
-                if(response!='error'){
+            onComplete: function(file, response, ext) {
+                if (response != 'error') {
                     $('#per_pro_car').val('Subido con Exito');
                     this.enable();
-                    ext= (response.substring(response.lastIndexOf("."))).toLowerCase();
-                    nombre=response.substring(response.lastIndexOf("/")).toLowerCase().replace('/','');
-                    $('#per_pro_carD').val('Descargar '+nombre);
+                    ext = (response.substring(response.lastIndexOf("."))).toLowerCase();
+                    nombre = response.substring(response.lastIndexOf("/")).toLowerCase().replace('/', '');
+                    $('#per_pro_carD').val('Descargar ' + nombre);
                     $('#per_pro_car_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO
-                    if (ext=='.pdf'){
+                    if (ext == '.pdf') {
                         $('#btn_car_descargar').attr({
-                            'href': '<?php echo base_url(); ?>'+response,
-                            'target':'_blank'
+                            'href': '<?php echo base_url(); ?>' + response,
+                            'target': '_blank'
                         });
                     }
-                    else{
+                    else {
                         $('#btn_car_descargar').attr({
-                            'href': '<?php echo base_url(); ?>'+response,
-                            'target':'_self'
+                            'href': '<?php echo base_url(); ?>' + response,
+                            'target': '_self'
                         });
                     }
-                }else{
+                } else {
                     $('#per_pro_car').val('El Archivo debe ser menor a 1 MB.');
-                    this.enable();			
-                 
+                    this.enable();
+
                 }
-                 
-            }	
+
+            }
         });
         $('#btn_car_descargar').click(function() {
             $.get($(this).attr('href'));
         });
+
         var button5 = $('#btn_acu_subir'), interval;
         new AjaxUpload('#btn_acu_subir', {
-            action: '<?php echo base_url('componente2/procesoAdministrativo/subirArchivo2') . '/perfil_proyecto/'; ?>' + $('#per_pro_id').val()+  '/per_pro_id/per_pro_acu_',
-            onSubmit : function(file , ext){
-                if (! (ext && /^(pdf|doc|docx)$/.test(ext))){
+            action: '<?php echo base_url('componente2/procesoAdministrativo/subirArchivo2') . '/perfil_proyecto/'; ?>' + $('#per_pro_id').val() + '/per_pro_id/per_pro_acu_',
+            onSubmit: function(file, ext) {
+                if (!(ext && /^(pdf|doc|docx)$/.test(ext))) {
                     $('#extension').dialog('open');
                     return false;
                 } else {
@@ -655,35 +644,79 @@
                     this.disable();
                 }
             },
-            onComplete: function(file, response,ext){
-                if(response!='error'){
+            onComplete: function(file, response, ext) {
+                if (response != 'error') {
                     $('#per_pro_acu').val('Subido con Exito');
                     this.enable();
-                    ext= (response.substring(response.lastIndexOf("."))).toLowerCase();
-                    nombre=response.substring(response.lastIndexOf("/")).toLowerCase().replace('/','');
-                    $('#per_pro_acuD').val('Descargar '+nombre);
+                    ext = (response.substring(response.lastIndexOf("."))).toLowerCase();
+                    nombre = response.substring(response.lastIndexOf("/")).toLowerCase().replace('/', '');
+                    $('#per_pro_acuD').val('Descargar ' + nombre);
                     $('#per_pro_acu_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO 
-                    if (ext=='.pdf'){
+                    if (ext == '.pdf') {
                         $('#btn_acu_descargar').attr({
-                            'href': '<?php echo base_url(); ?>'+response,
-                            'target':'_blank'
+                            'href': '<?php echo base_url(); ?>' + response,
+                            'target': '_blank'
                         });
                     }
-                    else{
+                    else {
                         $('#btn_acu_descargar').attr({
-                            'href': '<?php echo base_url(); ?>'+response,
-                            'target':'_self'
+                            'href': '<?php echo base_url(); ?>' + response,
+                            'target': '_self'
                         });
                     }
-                }else{
+                } else {
                     $('#per_pro_acu').val('El Archivo debe ser menor a 1 MB.');
-                    this.enable();			
-                 
+                    this.enable();
+
                 }
-                 
-            }	
+
+            }
         });
         $('#btn_acu_descargar').click(function() {
+            $.get($(this).attr('href'));
+        });
+
+        var button6 = $('#btn_doc_subir'), interval;
+        new AjaxUpload('#btn_doc_subir', {
+            action: '<?php echo base_url('componente2/procesoAdministrativo/subirArchivo2') . '/perfil_proyecto/'; ?>' + $('#per_pro_id').val() + '/per_pro_id/per_pro_doc_',
+            onSubmit: function(file, ext) {
+                if (!(ext && /^(pdf|doc|docx)$/.test(ext))) {
+                    $('#extension').dialog('open');
+                    return false;
+                } else {
+                    $('#per_pro_doc').val('Subiendo....');
+                    this.disable();
+                }
+            },
+            onComplete: function(file, response, ext) {
+                if (response != 'error') {
+                    $('#per_pro_doc').val('Subido con Exito');
+                    this.enable();
+                    ext = (response.substring(response.lastIndexOf("."))).toLowerCase();
+                    nombre = response.substring(response.lastIndexOf("/")).toLowerCase().replace('/', '');
+                    $('#per_pro_docD').val('Descargar ' + nombre);
+                    $('#per_pro_doc_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO 
+                    if (ext == '.pdf') {
+                        $('#btn_doc_descargar').attr({
+                            'href': '<?php echo base_url(); ?>' + response,
+                            'target': '_blank'
+                        });
+                    }
+                    else {
+                        $('#btn_doc_descargar').attr({
+                            'href': '<?php echo base_url(); ?>' + response,
+                            'target': '_self'
+                        });
+                    }
+                } else {
+                    $('#per_pro_doc').val('El Archivo debe ser menor a 1 MB.');
+                    this.enable();
+
+                }
+
+            }
+        });
+        $('#btn_doc_descargar').click(function() {
             $.get($(this).attr('href'));
         });
     });
@@ -834,15 +867,15 @@
         <td><div id="btn_acu_subir"></div></td>
         <td><input class="letraazul" type="text" id="per_pro_acu" readonly="readonly" value="Subir Acuerdo Municipal" size="30" readonly="readonly" style="border: none"/></td>
         <td class="tdEspacio"></td>
-        <td></td>
-        <td></td>
+        <td><div id="btn_doc_subir"></div></td>
+        <td><input class="letraazul" type="text" id="per_pro_doc" readonly="readonly" value="Subir Documento Aprobación" size="30" readonly="readonly" style="border: none"/></td>
         </tr>
         <tr>
         <td><a id="btn_acu_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/></a></td>
         <td><input class="letraazul" type="text" id="per_pro_acuD" readonly="readonly" value="No hay Acuerdo para descargar" size="30" style="border: none"/></td>
         <td class="tdEspacio"></td>    
-        <td></td>
-        <td></td>
+        <td><a id="btn_doc_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/></a></td>
+        <td><input class="letraazul" type="text" id="per_pro_docD" readonly="readonly" value="No hay Documento de Aprobación" size="30" style="border: none"/></td>
         </tr>
     </table>
     <input id="per_pro_id" name="per_pro_id" value="" type="text" size="100" readonly="readonly" style="visibility: hidden"/>
@@ -862,4 +895,7 @@
     <center>
         <p><img src="<?php echo base_url('resource/imagenes/cancel.png'); ?>" class="imagenError" />Las fechas deben de ir en orden ascendente</p>
     </center>
+</div>
+<div id="extension" class="mensaje" title="Error">
+    <p>Solo se permiten archivos con la extensión pdf|doc|docx</p>
 </div>

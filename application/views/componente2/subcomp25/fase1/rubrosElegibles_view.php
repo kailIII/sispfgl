@@ -202,7 +202,7 @@
             <td><input type="radio" name="rubro_<?php echo $rubro->nom_rub_id; ?>" value="true" > SI </input>
                 <input type="radio" name="rubro_<?php echo $rubro->nom_rub_id; ?>" value="false"> NO</input>
             </td>
-            <td><input name="conclusion_<?php echo $rubro->nom_rub_id; ?>" id="conclusion_<?php echo $rubro->nom_rub_id; ?>" value="" type="text" size="25" /></td>
+            <td><input name="conclusion_<?php echo $rubro->nom_rub_id; ?>" id="conclusion_<?php echo $rubro->nom_rub_id; ?>" value="" type="text" size="25" maxlength="255" /></td>
             </tr>
         <?php } ?>
     </table>

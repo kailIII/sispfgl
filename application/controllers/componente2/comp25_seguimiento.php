@@ -101,7 +101,10 @@ class comp25_seguimiento extends CI_Controller {
             $seg_forden_seguimiento = date('d-m-Y', strtotime($seg[0]->seg_forden_seguimiento));
         else
             $seg_forden_seguimiento = $seg[0]->seg_forden_seguimiento;
-
+        if ($seg[0]->seg_ruta_archivo == NULL || $seg[0]->seg_ruta_archivo == '0')
+            $nombreRuta = 'No hay listado para descargar';
+        else
+            $nombreRuta = 'Descargar ' . end(explode("/", $seg[0]->seg_ruta_archivo));
         $rows[0]['id'] = $seg[0]->seg_id;
         $rows[0]['cell'] = array($seg[0]->seg_id,
             $seg_forden_preparacion,
@@ -114,7 +117,9 @@ class comp25_seguimiento extends CI_Controller {
             $seg_facuerdo_municipal,
             $seg_fpresentacion_publica,
             $seg_forden_seguimiento,
-            $seg [0]->seg_comentario
+            $seg [0]->seg_comentario,
+            $seg[0]->seg_forden_seguimiento,
+            $nombreRuta
         );
         $datos = json_encode($rows);
         $pages = floor(1 / 10) + 1;

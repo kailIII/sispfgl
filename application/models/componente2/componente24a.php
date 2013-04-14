@@ -12,5 +12,5 @@ public function get_capacitaciones() {
         return $query->result();
     }
     
-    
+}
 ?>
