@@ -170,6 +170,38 @@
 			 }
 			 else $('#mensaje2').dialog('open');
         });
+        
+        $('#myform').submit(function() {
+				
+			var numberOfRecords = $("#Proyectos").getGridParam("records");
+			for(i=0;i<numberOfRecords;i++)
+			{
+				
+				var rowId = $("#Proyectos").getRowData(i);
+						  
+						  //put all rows for your grid
+				 
+						  
+				$('<input type="hidden" />').attr('name', 'nombre_proy'+i).attr('value',rowId['nombre_proy']).appendTo('#divpost');
+				$('<input type="hidden" />').attr('name', 'monto_proy'+i).attr('value',rowId['monto_proy']).appendTo('#divpost');
+				$('<input type="hidden" />').attr('name', 'com_beneficiadas'+i).attr('value',rowId['com_beneficiadas']).appendTo('#divpost');
+				$('<input type="hidden" />').attr('name', 'pob_beneficiada'+i).attr('value',rowId['pob_beneficiada']).appendTo('#divpost');
+				$('<input type="hidden" />').attr('name', 'tipo_proy'+i).attr('value',rowId['tipo_proy']).appendTo('#divpost');
+				
+			}
+			$('<input type="hidden" />').attr('name', 'cant_proy').attr('value',numberOfRecords).appendTo('#divpost');
+			if ($('#acta_final').val()!='')
+				$('<input type="hidden" />').attr('name', 'acta').attr('value','si').appendTo('#divpost');
+			else
+				$('<input type="hidden" />').attr('name', 'acta').attr('value','no').appendTo('#divpost');
+			if ($('#lista_asis').val()!='')
+				$('<input type="hidden" />').attr('name', 'lista').attr('value','si').appendTo('#divpost');
+			else
+				$('<input type="hidden" />').attr('name', 'lista').attr('value','no').appendTo('#divpost');
+
+			return true;
+			
+		});
        
        /*Grid Capacitaciones*/
        
@@ -253,7 +285,7 @@
 <h1>Consulta Ciudadana</h1>
 <br/>
 <?php $attributes = array('id' => 'myform');
-echo form_open('componente3/componente3/guardar_dsat',$attributes);?>
+echo form_open_multipart('componente2/componente21/guardar_cc',$attributes);?>
 	
 	<label>Departamento: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 	<?php echo form_dropdown_from_db('dep_id','selDepto' ,"SELECT dep_id,dep_nombre FROM departamento");?>
@@ -327,10 +359,10 @@ echo form_open('componente3/componente3/guardar_dsat',$attributes);?>
 		<label>Listado de Asistencia: </label>
 		<input type="file" id="lista_asis" name="lista_asis" size="20" /><br/><br/>
 		
-		<input type="button" id="guardar" name="guardar" value="Guardar" align="right">
+		<input type="submit" id="guardar" name="guardar" value="Guardar" align="right">
 	</div>
 	
-	
+	<div id="divpost" ></div>
 <?php echo form_close();?>
 <div id="mensaje" class="mensaje" title="Aviso">
     <p>Ok.</p>
