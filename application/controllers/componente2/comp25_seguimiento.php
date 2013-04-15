@@ -117,8 +117,8 @@ class comp25_seguimiento extends CI_Controller {
             $seg_facuerdo_municipal,
             $seg_fpresentacion_publica,
             $seg_forden_seguimiento,
-            $seg [0]->seg_comentario,
-            $seg[0]->seg_forden_seguimiento,
+            $seg[0]->seg_comentario,
+            $seg[0]->seg_ruta_archivo,
             $nombreRuta
         );
         $datos = json_encode($rows);

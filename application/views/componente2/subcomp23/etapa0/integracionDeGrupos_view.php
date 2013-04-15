@@ -3,12 +3,12 @@
         /*CARGAR REGIONES DISPONIBLES*/
         $('#selConsul').change(function(){   
             $('#municipios').setGridParam({
-                url:'<?php echo base_url('componente2/comp23_E0/cargarMunicipiosConsultora') . '/' ?>'+$('#selConsul').val(),
+                url:'<?php echo base_url('componente2/comp23_E0/cargarMunicipiosGrupo') . '/' ?>'+$('#selConsul').val(),
                 datatype:'json'
             }).trigger("reloadGrid"); 
             
             $('#selRegion').children().remove();
-            $.getJSON('<?php echo base_url('componente2/comp23_E0/cargarRegionesDisponibles') ?>', 
+            $.getJSON('<?php echo base_url('componente2/comp23_E0/cargarRegionesGrupo') ?>', 
             function(data) {
                 var i=0;
                 $.each(data, function(key, val) {
@@ -29,7 +29,7 @@
         /*CARGAR DEPARTAMENTOS*/
         $('#selRegion').change(function(){   
             $('#selDepto').children().remove();
-            $.getJSON('<?php echo base_url('componente2/comp23_E0/cargarDeptosDisponibles') ?>/'+$('#selRegion').val(), 
+            $.getJSON('<?php echo base_url('componente2/comp23_E0/cargarDeptosDisponiblesGrupo') ?>/'+$('#selRegion').val(), 
             function(data) {
                 var i=0;
                 $.each(data, function(key, val) {
@@ -45,7 +45,7 @@
         /*CARGAR MUNICIPIOS*/
         $('#selDepto').change(function(){   
             $('#selMun').children().remove();
-            $.getJSON('<?php echo base_url('componente2/comp23_E0/cargarMuniDisponibles') ?>/'+$('#selDepto').val(), 
+            $.getJSON('<?php echo base_url('componente2/comp23_E0/cargarMuniDisponiblesGrupo') ?>/'+$('#selDepto').val(), 
             function(data) {
                 var i=0;
                 $.each(data, function(key, val) {
@@ -61,8 +61,8 @@
                               
         var tabla=$("#municipios");
         tabla.jqGrid({
-            url:'<?php echo base_url('componente2/comp23_E0/cargarMunicipiosConsultora') . '/' ?>'+$('#selMun').val(),
-            editurl:'<?php echo base_url('componente2/comp23_E0/actualizarMunicipio') ?>/'+$('#selMun').val()+'/'+$('#selConsul').val(),
+            url:'<?php echo base_url('componente2/comp23_E0/cargarMuniDisponiblesGrupo') . '/' ?>'+$('#selMun').val(),
+            editurl:'<?php echo base_url('componente2/comp23_E0/actualizarMunicipioGrupo') ?>/'+$('#selMun').val()+'/'+$('#selConsul').val(),
             datatype:'json',
             altRows:true,
             height: "100%",
@@ -95,7 +95,7 @@
         //AGREGAR
         $("#agregar").button().click(function(){
             if($('#selMun').val()!='0'){
-                $.getJSON('<?php echo base_url('componente2/comp23_E0/actualizarMunicipio') ?>/'+$('#selMun').val()+'/'+$('#selConsul').val(), 
+                $.getJSON('<?php echo base_url('componente2/comp23_E0/actualizarMunicipioGrupo') ?>/'+$('#selMun').val()+'/'+$('#selConsul').val(), 
                 function(data) {
                     $.each(data, function(key, val) {
                         if(key=='rows'){
@@ -109,7 +109,7 @@
                     });
                 });
                 $('#selMun').children().remove();
-                $.getJSON('<?php echo base_url('componente2/comp23_E0/cargarMuniDisponibles') ?>/'+$('#selDepto').val(), 
+                $.getJSON('<?php echo base_url('componente2/comp23_E0/cargarMuniDisponiblesGrupo') ?>/'+$('#selDepto').val(), 
                 function(data) {
                     var i=0;
                     $.each(data, function(key, val) {
@@ -136,7 +136,7 @@
                 onclickSubmit: function(rp_ge, postdata) {
                     $('#mensaje').dialog('open');
                     $('#selMun').children().remove();
-                    $.getJSON('<?php echo base_url('componente2/comp23_E0/cargarMuniDisponibles') ?>/'+$('#selDepto').val(), 
+                    $.getJSON('<?php echo base_url('componente2/comp23_E0/cargarMuniDisponiblesGrupo') ?>/'+$('#selDepto').val(), 
                     function(data) {
                         var i=0;
                         $.each(data, function(key, val) {
@@ -157,6 +157,35 @@
             tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');
             return[true,'']; //no error
         }
+        
+        //BOTON DE AGREGAR GRUPO
+        $("#agregarGrupo").button().click(function(){
+            $('#selMun').children().remove();
+            $.getJSON('<?php echo base_url('componente2/comp23_E0/cargarMuniDisponibles') ?>/'+$('#selDepto').val(), 
+            function(data) {
+                var i=0;
+                $.each(data, function(key, val) {
+                    if(key=='rows'){
+                        $('#selMun').append('<option value="0">--Seleccione --</option>');
+                        $.each(val, function(id, registro){
+                            $('#selMun').append('<option value="'+registro['cell'][0]+'">'+registro['cell'][1]+'</option>');
+                        });                    
+                    }
+                });
+            });  
+            $.ajax({
+                type: "POST",
+                url: '<?php echo base_url('componente2/comp23_E0/nuevoGrupo') ?>',
+                data: $("#grupoForm").serialize,
+                success: function(response)
+                {
+                    $('#selConsul').append('<option value="'+response+'">'+response+'</option>');
+                }
+                    
+                
+            });
+            return false;
+        });
         /*DIALOGOS DE VALIDACION*/
         $('.mensaje').dialog({
             autoOpen: false,
@@ -173,21 +202,31 @@
 </script>
 
 <h3 align="Center">Etapa 0: Seleccion de Municipios</h3>
-<h3 align="Center">Registro de la integracion de grupos</h3>
+<h3 align="Center">Registro de la integración de grupos</h3>
+<form id="grupoForm" method="post"></form>
 <center>
     <table>
         <tr>
-        <td class="textD" ><strong>Consultora</strong></td>
+        <td class="textD" ><strong>Seleccione el grupo</strong></td>
         <td> <select id='selConsul'>
-                <option value='0'>--Seleccione Consultora--</option>
-                <?php foreach ($consultoras as $consultora) { ?>
-                    <option value='<?php echo $consultora->cons_id; ?>'><?php echo $consultora->cons_nombre; ?></option>
+                <option value='0'>--Seleccione Grupo--</option>
+                <?php foreach ($grupos as $grupo) { ?>
+                    <option value='<?php echo $grupo->gru_id; ?>'><?php echo $grupo->gru_numero; ?></option>
                 <?php } ?>
             </select>
         </td>
         </tr>
         <tr>
-        <td colspan="2">Si desea agregar un municipio a esta consultora realice los siguientes pasos:
+        <td colspan="2">
+            <br/>
+            <center>
+                <input type="button" id="agregarGrupo" value="Agregar Nuevo Grupo" />
+            </center>
+            <br/>
+        </td>
+        </tr>
+        <tr>
+        <td colspan="2">Si desea agregar un municipio a un grupo realice los siguientes pasos:
             <ol>
                 <li>La región.</li>
                 <li>El departamento.</li>

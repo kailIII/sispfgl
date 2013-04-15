@@ -44,6 +44,19 @@ class Municipio extends CI_Model {
         return $consulta->result();
     }
 
+    public function obtenerMunicipiosSinGrupo($dep_id) {
+        $query = "SELECT municipio.mun_id, 
+                         municipio.mun_nombre
+                  FROM 	 municipio,departamento,region
+                  WHERE  municipio.dep_id = departamento.dep_id AND
+                         departamento.reg_id = region.reg_id AND
+                         municipio.grup_id_pep is null AND
+                         municipio.dep_id = ?
+                  ORDER BY municipio.mun_id";
+        $consulta = $this->db->query($query, array($dep_id));
+        return $consulta->result();
+    }
+
     public function obtenerMunicipioPorConsultora($cons_id) {
         $this->db->where('cons_id', $cons_id);
         $this->db->order_by('mun_id', 'asc');
@@ -51,15 +64,30 @@ class Municipio extends CI_Model {
         return $consulta->result();
     }
 
-    public function obtenerMunicipioPorConsultoraDepto($cons_id,$dep_id) {
+    public function obtenerMunicipioPorGrupo($gru_id) {
+        $this->db->where('grup_id_pep', $gru_id);
+        $this->db->order_by('mun_id', 'asc');
+        $consulta = $this->db->get($this->tabla);
+        return $consulta->result();
+    }
+
+    public function obtenerMunicipioPorConsultoraDepto($cons_id, $dep_id) {
         $this->db->where('cons_id', $cons_id);
         $this->db->where('dep_id', $dep_id);
         $this->db->order_by('mun_id', 'asc');
         $consulta = $this->db->get($this->tabla);
         return $consulta->result();
     }
-    
-    public function obtenerMunicipioGDR($gru_id,$dep_id) {
+
+    public function obtenerMunicipioPorGrupoDepto($gru_id, $dep_id) {
+        $this->db->where('grup_id_pep', $gru_id);
+        $this->db->where('dep_id', $dep_id);
+        $this->db->order_by('mun_id', 'asc');
+        $consulta = $this->db->get($this->tabla);
+        return $consulta->result();
+    }
+
+    public function obtenerMunicipioGDR($gru_id, $dep_id) {
         $this->db->where('gru_id', $gru_id);
         $this->db->where('dep_id', $dep_id);
         $this->db->order_by('mun_id', 'asc');
@@ -74,8 +102,16 @@ class Municipio extends CI_Model {
         $this->db->where('mun_id', $mun_id);
         $this->db->update($this->tabla, $datos);
     }
-    
-    public function obtenerMunicipiosSeleccionado($dep_id){
+
+    public function actualizarGrupoMuni($gru_id, $mun_id) {
+        $datos = array(
+            'grup_id_pep' => $gru_id
+        );
+        $this->db->where('mun_id', $mun_id);
+        $this->db->update($this->tabla, $datos);
+    }
+
+    public function obtenerMunicipiosSeleccionado($dep_id) {
         $query = "SELECT municipio.mun_id, 
                          municipio.mun_nombre
                   FROM 	 seleccion_comite, solicitud_asistencia, municipio
@@ -87,36 +123,42 @@ class Municipio extends CI_Model {
         $consulta = $this->db->query($query, array($dep_id));
         return $consulta->result();
     }
-    
-    public function actualizarMunicipioComInt($mun_id,$mun_com_observacion,$mun_fseleccion) {
+
+    public function actualizarMunicipioComInt($mun_id, $mun_com_observacion, $mun_fseleccion) {
         $datos = array(
             'mun_com_observacion' => $mun_com_observacion,
-            'mun_fseleccion'=> $mun_fseleccion
-            
+            'mun_fseleccion' => $mun_fseleccion
         );
         $this->db->where('mun_id', $mun_id);
         $this->db->update($this->tabla, $datos);
     }
-    
-    public function obtenerMunicipio($mun_id){
+
+    public function obtenerMunicipio($mun_id) {
         $this->db->where('mun_id', $mun_id);
         $consulta = $this->db->get($this->tabla);
         return $consulta->result();
     }
-    
-    public function obtenerIDVariable($campo,$mun_id) {
-        $query = "SELECT COALESCE(". $campo.",0) ".$campo." FROM ".
-                $this->tabla." WHERE mun_id=".$mun_id;
+
+    public function obtenerIDVariable($campo, $mun_id) {
+        $query = "SELECT COALESCE(" . $campo . ",0) " . $campo . " FROM " .
+                $this->tabla . " WHERE mun_id=" . $mun_id;
         $consulta = $this->db->query($query);
         return $consulta->result();
-   }
-   
-   public function actualizarIndices($campo, $valor, $mun_id) {
+    }
+
+    public function actualizarIndices($campo, $valor, $mun_id) {
         $datos = array(
             $campo => $valor
         );
         $this->db->where('mun_id', $mun_id);
         $this->db->update($this->tabla, $datos);
+    }
+
+    public function obtenerMaxMuniProceso($gru_id) {
+        $this->db->select_max('mun_id');
+        $this->db->where('grup_id_pep', $gru_id);
+        $consulta = $this->db->get($this->tabla);
+        return $consulta->result();
     }
 
 }

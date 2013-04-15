@@ -49,6 +49,19 @@ class Departamento extends CI_Model {
         return $consulta->result();
     }
 
+    public function obtenerDepartamentosSinGrupo($reg_id) {
+        $query = "SELECT distinct(departamento.dep_id), 
+                         departamento.dep_nombre
+                  FROM 	 municipio,departamento,region
+                  WHERE  municipio.dep_id = departamento.dep_id AND
+                         departamento.reg_id = region.reg_id AND
+                         municipio.grup_id_pep is null AND
+                         departamento.reg_id = ?
+                  ORDER BY departamento.dep_id";
+        $consulta = $this->db->query($query, array($reg_id));
+        return $consulta->result();
+    }
+
     public function obtenerDepartamentosPorConsultora($cons_id) {
         $query = "SELECT distinct(departamento.dep_id), 
                          departamento.dep_nombre
@@ -60,7 +73,19 @@ class Departamento extends CI_Model {
         $consulta = $this->db->query($query, array($cons_id));
         return $consulta->result();
     }
-    
+
+    public function obtenerDepartamentosPorGrupo($gru_id) {
+        $query = "SELECT distinct(departamento.dep_id), 
+                         departamento.dep_nombre
+                  FROM 	 municipio,departamento,region
+                  WHERE  municipio.dep_id = departamento.dep_id AND
+                         departamento.reg_id = region.reg_id AND
+                         municipio.grup_id_pep = ?
+                  ORDER BY departamento.dep_id";
+        $consulta = $this->db->query($query, array($gru_id));
+        return $consulta->result();
+    }
+
     public function obtenerDepartamentosSeleccionado() {
         $query = "SELECT distinct(departamento.dep_id), 
                          departamento.dep_nombre
@@ -73,8 +98,8 @@ class Departamento extends CI_Model {
         $consulta = $this->db->query($query, array());
         return $consulta->result();
     }
-    
-     public function obtenerDepartamentosPorGrupoGDR($gru_id) {
+
+    public function obtenerDepartamentosPorGrupoGDR($gru_id) {
         $query = "SELECT distinct(departamento.dep_id), 
                          departamento.dep_nombre
                   FROM 	 municipio,departamento

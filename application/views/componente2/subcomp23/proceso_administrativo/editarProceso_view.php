@@ -258,6 +258,7 @@
 <form id="AdquisicionyContratacionForm" method="post" style="left: 70px;position: relative;">
     <h2 class="h2Titulos">Proceso de Adquisición y Contrataciones</h2>
     <br/>
+    <!--
     <table>
         <tr>
         <td class="tdLugar" ><strong>Departamento:</strong></td>
@@ -267,8 +268,11 @@
         <td ><?php echo $municipio ?></td>    
         </tr>
     </table>
+    -->
     <br/><br/>
     <strong>No. Proceso </strong><input value="<?php echo $pro_numero ?>" id="pro_numero" name="pro_numero" type="text" size="10"/>
+    <br/><br/>
+    <strong>Grupo No. </strong><input value="<?php echo $grupo_numero ?>" readonly="readonly" type="text" size="10"/>
     <br/>
     <br/>
 
@@ -334,6 +338,7 @@
     <input id="pro_pub_ruta_archivo" name="pro_pub_ruta_archivo" <?php if (isset($pro_pub_ruta_archivo) && $pro_pub_ruta_archivo != '') { ?>value="<?php echo $pro_pub_ruta_archivo; ?>"<?php } ?> type="text" size="100" readonly="readonly" style="visibility: hidden"/>
     <input id="pro_exp_ruta_archivo" name="pro_exp_ruta_archivo" <?php if (isset($pro_exp_ruta_archivo) && $pro_exp_ruta_archivo != '') { ?>value="<?php echo $pro_exp_ruta_archivo; ?>"<?php } ?> type="text" size="100" readonly="readonly" style="visibility: hidden"/>
     <input id="pro_id" name="pro_id" value="<?php echo $pro_id; ?>" style="visibility: hidden"/>
+    <input id="grup_id_pep" name="grup_id_pep" value="<?php echo $grupo_id; ?>" style="visibility: hidden"/>
 </form>
 <div id="mensaje" class="mensaje" title="Aviso de la operación">
     <p>La acción fue realizada con satisfacción</p>

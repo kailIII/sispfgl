@@ -459,7 +459,7 @@
 
         var button = $('#btn_subir'), interval;
         new AjaxUpload('#btn_subir', {
-            action: '<?php echo base_url('componente2/comp23_E1/subirArchivo') ?>/seguimiento/' + $('#seg_id').val() + '/seg_id',
+            action: "<?php echo base_url('componente2/comp23_E1/subirArchivo/seguimiento') ; ?>/" + $('#seg_id').val() + "/seg_id",
             onSubmit: function(file, ext) {
                 if (!(ext && /^(pdf|doc|docx)$/.test(ext))) {
                     $('#extension').dialog('open');
@@ -472,6 +472,7 @@
             onComplete: function(file, response, ext) {
                 if (response != 'error') {
                     $('#vinieta').val('Subido con Exito');
+                    $('#ayuda').val("<?php echo base_url('componente2/comp23_E1/subirArchivo') ; ?>/seguimiento/" + $('#seg_id').val() + "/seg_id");
                     this.enable();
                     ext = (response.substring(response.lastIndexOf("."))).toLowerCase();
                     nombre = response.substring(response.lastIndexOf("/")).toLowerCase().replace('/', '');
@@ -685,6 +686,7 @@
     </table>
     <input id="seg_id" name="seg_id" type="text" size="100" readonly="readonly"/>
     <input id="seg_ruta_archivo" name="seg_ruta_archivo" type="text" size="100" readonly="readonly"/>
+    <input id="ayuda" name="ayuda" type="text" size="100" readonly="readonly"/>
 </form>
 
 <div id="mensaje" class="mensaje" title="Aviso de la operación">

@@ -98,7 +98,7 @@
             });              
         });
         
-        $('#selMun').change(function(){
+        $('#selGrupo').change(function(){
             $("#SeleccionConsultoraForm").hide();
             $('#consultoresInteres').setGridParam({
                 url:'<?php echo base_url('componente2/procesoAdministrativo/cargarConsultoraInteres3') . '/0' ?>',
@@ -106,14 +106,15 @@
             }).trigger('reloadGrid');
             $('#SeleccionConsultoraForm')[0].reset();
             $("#SeleccionConsultoraForm").hide();
-            $.getJSON('<?php echo base_url('componente2/procesoAdministrativo/cargarSeleccionConsultora') . "/" ?>'+$('#selMun').val(), 
+            $("#grup_id_pep").val($('#selGrupo').val());
+            $.getJSON('<?php echo base_url('componente2/procesoAdministrativo/cargarSeleccionConsultora') . "/" ?>'+$('#selGrupo').val(), 
             function(data) {
                 var i=0;
                 $.each(data, function(key, val) {
                     if(key=="records"){
                         if(val=="0"){
                             $('#Mensajito').show();
-                            $('#Mensajito').val("Este proyecto no esta registrado");
+                            $('#Mensajito').val("Este proyecto no esta registrado para el grupo seleccionado");
                         }
                     }
                     if(key=='rows'){
@@ -193,7 +194,7 @@
     <h2 class="h2Titulos">Selección de consultoras</h2>
     <br/>
     <table>
-        <tr>
+<!--        <tr>
         <td><strong>Departamento</strong></td>
         <td><select id='selDepto'>
                 <option value='0'>--Seleccione--</option>
@@ -206,6 +207,19 @@
         <td><strong>Municipio</strong></td>
         <td><select id='selMun' name='selMun'>
                 <option value='0'>--Seleccione--</option>
+            </select>
+        </td>
+        </tr>-->
+        <tr>
+        <td colspan="2">Seleccione el grupo para agregarle las consultoras</td>
+        </tr>
+        <tr>
+        <td><strong>Grupo</strong></td>
+        <td><select name='selGrupo' id="selGrupo">
+                <option value='0'>--Seleccione--</option>
+                <?php foreach ($grupos as $grupo) { ?>
+                    <option value='<?php echo $grupo->gru_id; ?>'><?php echo $grupo->gru_numero; ?></option>
+                <?php } ?>
             </select>
         </td>
         </tr>
@@ -242,6 +256,7 @@
         </div>
     </center>
     <input id="pro_id" name="pro_id" value="" style="visibility: hidden"/>
+    <input id="grup_id_pep" name="grup_id_pep" style="visibility: hidden"/>
 </form>
 <div id="mensaje" class="mensaje" title="Aviso de la operación">
     <p>La acción fue realizada con satisfacción</p>

@@ -115,9 +115,9 @@ class Comp23_E0 extends CI_Controller {
     public function gestionSolicitudAsistencia() {
 
         $informacion['titulo'] = 'Solicitud de Asistencia Técnica';
-        $informacion['user_id'] = $this->tank_auth->get_user_id();
-        $informacion['username'] = $this->tank_auth->get_username();
-        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        //$informacion['user_id'] = $this->tank_auth->get_user_id();
+        //$informacion['username'] = $this->tank_auth->get_username();
+        //$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
         $this->load->model('pais/departamento', 'depar');
         $departamentos = $this->depar->obtenerDepartamentos();
         $informacion['departamentos'] = $departamentos;
@@ -129,9 +129,9 @@ class Comp23_E0 extends CI_Controller {
 
     public function modificarSolicitudAsistencia() {
         $informacion['titulo'] = 'Solicitud de Asistencia Técnica';
-        $informacion['user_id'] = $this->tank_auth->get_user_id();
-        $informacion['username'] = $this->tank_auth->get_username();
-        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+      //  $informacion['user_id'] = $this->tank_auth->get_user_id();
+       // $informacion['username'] = $this->tank_auth->get_username();
+        //$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
 
         $this->load->model('pais/municipio');
 
@@ -165,9 +165,9 @@ class Comp23_E0 extends CI_Controller {
 
     public function agregarSolicitudAsistencia() {
         $informacion['titulo'] = 'Solicitud de Asistencia Técnica';
-        $informacion['user_id'] = $this->tank_auth->get_user_id();
-        $informacion['username'] = $this->tank_auth->get_username();
-        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        //$informacion['user_id'] = $this->tank_auth->get_user_id();
+        //$informacion['username'] = $this->tank_auth->get_username();
+        //$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
         $this->load->model('pais/municipio');
         $nombre = $this->municipio->obtenerNomMunDep($this->input->post('selMun'));
         $informacion['departamento'] = $nombre[0]->depto;
@@ -237,8 +237,8 @@ class Comp23_E0 extends CI_Controller {
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
-        $this->load->model('consultor/consultora');
-        $informacion['consultoras'] = $this->consultora->obtenerConsultora();
+        $this->load->model('etapa0-sub23/grupo');
+        $informacion['grupos'] = $this->grupo->obtenerGrupos();
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/etapa0/integracionDeGrupos_view');
@@ -248,6 +248,36 @@ class Comp23_E0 extends CI_Controller {
     public function cargarRegionesDisponibles() {
         $this->load->model('pais/region');
         $regiones = $this->region->obtenerRegionSinConsultora();
+        $numfilas = count($regiones);
+
+        $i = 0;
+        $rows = array();
+        if ($numfilas != 0) {
+            foreach ($regiones as $aux) {
+                $rows[$i]['id'] = $aux->reg_id;
+                $rows[$i]['cell'] = array($aux->reg_id,
+                    $aux->reg_nombre
+                );
+                $i++;
+            }
+            array_multisort($rows, SORT_ASC);
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+
+    public function cargarRegionesGrupo() {
+        $this->load->model('pais/region');
+        $regiones = $this->region->obtenerRegionSinGrupo();
         $numfilas = count($regiones);
 
         $i = 0;
@@ -305,9 +335,99 @@ class Comp23_E0 extends CI_Controller {
         echo $jsonresponse;
     }
 
+    public function cargarDeptosDisponiblesGrupo($reg_id) {
+        $this->load->model('pais/departamento');
+        $deptos = $this->departamento->obtenerDepartamentosSinGrupo($reg_id);
+        $numfilas = count($deptos);
+
+        $i = 0;
+        $rows = array();
+        if ($numfilas != 0) {
+            foreach ($deptos as $aux) {
+                $rows[$i]['id'] = $aux->dep_id;
+                $rows[$i]['cell'] = array($aux->dep_id,
+                    $aux->dep_nombre
+                );
+                $i++;
+            }
+            array_multisort($rows, SORT_ASC);
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+
     public function cargarMuniDisponibles($dep_id) {
         $this->load->model('pais/municipio');
         $municipios = $this->municipio->obtenerMunicipiosSinConsultora($dep_id);
+        $numfilas = count($municipios);
+
+        $i = 0;
+        $rows = array();
+        if ($numfilas != 0) {
+            foreach ($municipios as $aux) {
+                $rows[$i]['id'] = $aux->mun_id;
+                $rows[$i]['cell'] = array($aux->mun_id,
+                    $aux->mun_nombre
+                );
+                $i++;
+            }
+            array_multisort($rows, SORT_ASC);
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+
+      public function cargarMunicipios($dep_id) {
+        $this->load->model('pais/municipio');
+        $municipios = $this->municipio->obtenerMunicipioPorDepartamento($dep_id);
+        $numfilas = count($municipios);
+
+        $i = 0;
+        $rows = array();
+        if ($numfilas != 0) {
+            foreach ($municipios as $aux) {
+                $rows[$i]['id'] = $aux->mun_id;
+                $rows[$i]['cell'] = array($aux->mun_id,
+                    $aux->mun_nombre
+                );
+                $i++;
+            }
+            array_multisort($rows, SORT_ASC);
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+    
+    public function cargarMuniDisponiblesGrupo($dep_id) {
+        $this->load->model('pais/municipio');
+        $municipios = $this->municipio->obtenerMunicipiosSinGrupo($dep_id);
         $numfilas = count($municipios);
 
         $i = 0;
@@ -365,6 +485,36 @@ class Comp23_E0 extends CI_Controller {
         echo $jsonresponse;
     }
 
+    public function cargarMunicipiosGrupo($gru_id) {
+        $this->load->model('pais/municipio');
+        $municipios = $this->municipio->obtenerMunicipioPorGrupo($gru_id);
+        $numfilas = count($municipios);
+
+        $i = 0;
+        $rows = array();
+        if ($numfilas != 0) {
+            foreach ($municipios as $aux) {
+                $rows[$i]['id'] = $aux->mun_id;
+                $rows[$i]['cell'] = array($aux->mun_id,
+                    $aux->mun_nombre
+                );
+                $i++;
+            }
+            array_multisort($rows, SORT_ASC);
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+
     public function actualizarMunicipio($mun_id, $cons_id) {
         $operacion = $this->input->post('oper');
         $this->load->model('pais/municipio');
@@ -394,6 +544,35 @@ class Comp23_E0 extends CI_Controller {
             echo $jsonresponse;
     }
 
+    public function actualizarMunicipioGrupo($mun_id, $gru_id) {
+        $operacion = $this->input->post('oper');
+        $this->load->model('pais/municipio');
+        if ($operacion == 'del') {
+            $mun_id = $this->input->post('id');
+            $gru_id = null;
+        } else {
+            $muni = $this->municipio->obtenerNomMunDep($mun_id);
+            $numfilas = 1;
+            $rows[0]['id'] = $mun_id;
+            $rows[0]['cell'] = array($mun_id, $muni[0]->muni);
+            $datos = json_encode($rows);
+            $pages = floor($numfilas / 15) + 1;
+
+            $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+        }
+
+        $this->municipio->actualizarGrupoMuni($gru_id, $mun_id);
+
+        if ($operacion == 'edit')
+            return false;
+        else
+            echo $jsonresponse;
+    }
+
     /* Fin de Integracion de Grupos
      */
 
@@ -404,8 +583,8 @@ class Comp23_E0 extends CI_Controller {
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
-        $this->load->model('consultor/consultora');
-        $informacion['consultoras'] = $this->consultora->obtenerConsultora();
+        $this->load->model('etapa0-sub23/grupo');
+        $informacion['grupos'] = $this->grupo->obtenerGrupos();
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/etapa0/planTrabajoConsul_view');
@@ -548,7 +727,35 @@ class Comp23_E0 extends CI_Controller {
 
         echo $jsonresponse;
     }
+  public function cargarDeptosPorGrupo($gru_id) {
+        $this->load->model('pais/departamento');
+        $deptos = $this->departamento->obtenerDepartamentosPorGrupo($gru_id);
+        $numfilas = count($deptos);
 
+        $i = 0;
+        $rows = array();
+        if ($numfilas != 0) {
+            foreach ($deptos as $aux) {
+                $rows[$i]['id'] = $aux->dep_id;
+                $rows[$i]['cell'] = array($aux->dep_id,
+                    $aux->dep_nombre
+                );
+                $i++;
+            }
+            array_multisort($rows, SORT_ASC);
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
     public function cargarMuniPorConsultora($dep_id, $cons_id) {
         $this->load->model('pais/municipio');
         $municipios = $this->municipio->obtenerMunicipioPorConsultoraDepto($cons_id, $dep_id);
@@ -578,7 +785,35 @@ class Comp23_E0 extends CI_Controller {
 
         echo $jsonresponse;
     }
+public function cargarMuniPorGrupo($dep_id, $gru_id) {
+        $this->load->model('pais/municipio');
+        $municipios = $this->municipio->obtenerMunicipioPorGrupoDepto($gru_id, $dep_id);
+        $numfilas = count($municipios);
 
+        $i = 0;
+        $rows = array();
+        if ($numfilas != 0) {
+            foreach ($municipios as $aux) {
+                $rows[$i]['id'] = $aux->mun_id;
+                $rows[$i]['cell'] = array($aux->mun_id,
+                    $aux->mun_nombre
+                );
+                $i++;
+            }
+            array_multisort($rows, SORT_ASC);
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
     /* Registro de aporte de la Municipalidad */
 
     public function registroAporteMunicipal() {
@@ -823,6 +1058,13 @@ class Comp23_E0 extends CI_Controller {
         $sel_com_seleccionado = $this->input->post("sel_com_seleccionado");
         $this->load->model('etapa0-sub23/seleccion_comite', 'selCom');
         $this->selCom->actualizarSeleccionComite($sel_com_id, $sel_com_seleccionado, $sel_com_fverificacion, $mun_id);
+    }
+
+    public function nuevoGrupo() {
+        $this->load->model('etapa0-sub23/grupo');
+        $numero = $this->grupo->ultimoGrupo();
+        $this->grupo->insertarGrupo($numero[0]->gru_numero + 1);
+        echo $numero[0]->gru_numero + 1;
     }
 
 }

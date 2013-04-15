@@ -28,6 +28,18 @@ class Region extends CI_Model {
         return $consulta->result();
     }
 
+    public function obtenerRegionSinGrupo() {
+        $query = "SELECT distinct(region.reg_id),  
+                         region.reg_nombre
+                  FROM 	 municipio,departamento,region
+                  WHERE  municipio.dep_id = departamento.dep_id AND
+                         departamento.reg_id = region.reg_id AND
+                         municipio.grup_id_pep is null
+                  ORDER BY region.reg_id";
+        $consulta = $this->db->query($query, array());
+        return $consulta->result();
+    }
+
 }
 
 ?>

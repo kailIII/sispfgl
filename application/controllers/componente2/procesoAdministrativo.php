@@ -31,9 +31,9 @@ class ProcesoAdministrativo extends CI_Controller {
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
-        //OBTENER DEPARTAMENTOS
-        $this->load->model('pais/departamento');
-        $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
+//OBTENER DEPARTAMENTOS
+        $this->load->model('etapa0-sub23/grupo');
+        $informacion['grupos'] = $this->grupo->obtenerGrupos();
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/proceso_administrativo/adquisicionyContrataciones_view');
@@ -46,26 +46,37 @@ class ProcesoAdministrativo extends CI_Controller {
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
 
-        $mun_id = $this->input->post("selMun");
+//$mun_id = $this->input->post("selMun");
+        $gru_id = $this->input->post("selGrupo");
         $this->load->model('procesoAdministrativo/proceso');
+        $this->load->model('pais/municipio');
         $this->load->model('procesoAdministrativo/pestania_proceso', 'pesPro');
         $this->load->model('procesoAdministrativo/proceso_etapa', 'proEta');
         $this->load->model('procesoAdministrativo/nombre_fecha_aprobacion', 'nomFecApr');
         $this->load->model('procesoAdministrativo/nombrefecha_procesoetapa', 'fechaPro');
-        $resultado = $this->proceso->contarProPorMuni($mun_id);
-        if ($resultado == '0') {
-            $this->proceso->agregarPro($mun_id);
-            $pestanias = $this->pesPro->obtenerPestaniaProcesos();
-            foreach ($pestanias as $aux) {
-                $this->proEta->insertarProcesoEtapa($mun_id, $aux->pes_pro_id);
-                $nombresFechas = $this->nomFecApr->obtenerNombresFechas();
-                $etapaId = $this->proEta->obtenerMaxId();
-                foreach ($nombresFechas as $aux2) {
-                    $this->fechaPro->insertarFechaProceso($etapaId[0]->pro_eta_id, $aux2->nom_fec_apr_id);
+        $this->load->model('etapa0-sub23/grupo');
+        $municipios = $this->municipio->obtenerMunicipioPorGrupo($gru_id);
+        foreach ($municipios as $mun) {
+            $resultado = $this->proceso->contarProPorMuni($mun->mun_id);
+            if ($resultado == '0') {
+                $this->proceso->agregarPro($mun->mun_id);
+                $pestanias = $this->pesPro->obtenerPestaniaProcesos();
+                foreach ($pestanias as $aux) {
+                    $this->proEta->insertarProcesoEtapa($mun->mun_id, $aux->pes_pro_id);
+                    $nombresFechas = $this->nomFecApr->obtenerNombresFechas();
+                    $etapaId = $this->proEta->obtenerMaxId();
+                    foreach ($nombresFechas as $aux2) {
+                        $this->fechaPro->insertarFechaProceso($etapaId[0]->pro_eta_id, $aux2->nom_fec_apr_id);
+                    }
                 }
             }
+            $mun_id = $mun->mun_id;
         }
+
         $resultado = $this->proceso->obtenerPro($mun_id);
+        $grupo = $this->grupo->obtenerGrupo($gru_id);
+        $informacion['grupo_id'] = $grupo[0]->gru_id;
+        $informacion['grupo_numero'] = $grupo[0]->gru_numero;
         $informacion['pro_id'] = $resultado[0]->pro_id;
         $informacion['pro_numero'] = $resultado[0]->pro_numero;
         $informacion['pro_fpublicacion'] = $resultado[0]->pro_fpublicacion;
@@ -74,10 +85,9 @@ class ProcesoAdministrativo extends CI_Controller {
         $informacion['pro_observacion1'] = $resultado[0]->pro_observacion1;
         $informacion['pro_pub_ruta_archivo'] = $resultado[0]->pro_pub_ruta_archivo;
         $informacion['pro_exp_ruta_archivo'] = $resultado[0]->pro_exp_ruta_archivo;
-        $this->load->model('pais/municipio');
-        $resultado = $this->municipio->obtenerNomMunDep($mun_id);
-        $informacion['departamento'] = $resultado[0]->depto;
-        $informacion['municipio'] = $resultado[0]->muni;
+        /* $resultado = $this->municipio->obtenerNomMunDep($mun_id);
+          $informacion['departamento'] = $resultado[0]->depto;
+          $informacion['municipio'] = $resultado[0]->muni; */
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/proceso_administrativo/editarProceso_view');
@@ -86,7 +96,10 @@ class ProcesoAdministrativo extends CI_Controller {
 
     public function guardarProceso($tipo) {
         $this->load->model('procesoAdministrativo/proceso');
-        $pro_id = $this->input->post("pro_id");
+        //$pro_id = $this->input->post("pro_id");
+        $gru_id = $this->input->post("grup_id_pep");
+        $this->load->model('pais/municipio');
+        $municipios = $this->municipio->obtenerMunicipioPorGrupo($gru_id);
         switch ($tipo) {
             case 1:
                 $pro_numero = $this->input->post("pro_numero");
@@ -102,10 +115,11 @@ class ProcesoAdministrativo extends CI_Controller {
                 $pro_observacion1 = $this->input->post("pro_observacion1");
                 $pro_pub_ruta_archivo = $this->input->post("pro_pub_ruta_archivo");
                 $pro_exp_ruta_archivo = $this->input->post("pro_exp_ruta_archivo");
-
-                $this->proceso->editarPro($pro_id, $pro_exp_ruta_archivo, $pro_faclara_dudas, $pro_fexpresion_interes, $pro_fpublicacion, $pro_numero, $pro_observacion1, $pro_pub_ruta_archivo);
+                foreach ($municipios as $mun) {
+                    //$this->proceso->editarPro($pro_id, $pro_exp_ruta_archivo, $pro_faclara_dudas, $pro_fexpresion_interes, $pro_fpublicacion, $pro_numero, $pro_observacion1, $pro_pub_ruta_archivo);
+                    $this->proceso->editarProGrup($mun->mun_id, $pro_exp_ruta_archivo, $pro_faclara_dudas, $pro_fexpresion_interes, $pro_fpublicacion, $pro_numero, $pro_observacion1, $pro_pub_ruta_archivo);
+                }
                 break;
-
             case 2:
                 $pro_finicio = $this->input->post("pro_finicio");
                 if ($pro_finicio == "")
@@ -113,9 +127,12 @@ class ProcesoAdministrativo extends CI_Controller {
                 $pro_ffinalizacion = $this->input->post("pro_ffinalizacion");
                 if ($pro_ffinalizacion == "")
                     $pro_ffinalizacion = null;
-                $this->proceso->editarPro2($pro_id, $pro_ffinalizacion, $pro_finicio);
+                foreach ($municipios as $mun) {
+                    //$this->proceso->editarPro2($pro_id, $pro_ffinalizacion, $pro_finicio);
+                    $this->proceso->editarPro2Grup($mun->mun_id, $pro_ffinalizacion, $pro_finicio);
+                    ;
+                }
                 break;
-
             case 3:
                 $pro_flimite_recepcion = $this->input->post("pro_flimite_recepcion");
                 if ($pro_flimite_recepcion == "")
@@ -123,7 +140,10 @@ class ProcesoAdministrativo extends CI_Controller {
                 $pro_fenvio_informacion = $this->input->post("pro_fenvio_informacion");
                 if ($pro_fenvio_informacion == "")
                     $pro_fenvio_informacion = null;
-                $this->proceso->editarPro3($pro_id, $pro_fenvio_informacion, $pro_flimite_recepcion);
+                foreach ($municipios as $mun) {
+                    //$this->proceso->editarPro3($pro_id, $pro_fenvio_informacion, $pro_flimite_recepcion);
+                    $this->proceso->editarPro3Grup($mun->mun_id, $pro_fenvio_informacion, $pro_flimite_recepcion);
+                }
                 break;
             case 4:
                 $pro_fsolicitud = $this->input->post("pro_fsolicitud");
@@ -145,7 +165,10 @@ class ProcesoAdministrativo extends CI_Controller {
                 if ($pro_faperturafinanciera == "")
                     $pro_faperturafinanciera = null;
                 $pro_observacion2 = $this->input->post("pro_observacion2");
-                $this->proceso->editarPro4($pro_id, $pro_fsolicitud, $pro_frecepcion, $pro_fcierre_negociacion, $pro_ffirma_contrato, $pro_faperturatecnica, $pro_faperturafinanciera, $pro_observacion2);
+                foreach ($municipios as $mun) {
+                    //$this->proceso->editarPro4($pro_id, $pro_fsolicitud, $pro_frecepcion, $pro_fcierre_negociacion, $pro_ffirma_contrato, $pro_faperturatecnica, $pro_faperturafinanciera, $pro_observacion2);
+                    $this->proceso->editarPro4Grup($mun->mun_id, $pro_fsolicitud, $pro_frecepcion, $pro_fcierre_negociacion, $pro_ffirma_contrato, $pro_faperturatecnica, $pro_faperturafinanciera, $pro_observacion2);
+                }
                 break;
         }
     }
@@ -225,8 +248,10 @@ class ProcesoAdministrativo extends CI_Controller {
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
         //OBTENER DEPARTAMENTOS
-        $this->load->model('pais/departamento');
-        $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
+        /* $this->load->model('pais/departamento');
+          $informacion['departamentos'] = $this->departamento->obtenerDepartamentos(); */
+        $this->load->model('etapa0-sub23/grupo');
+        $informacion['grupos'] = $this->grupo->obtenerGrupos();
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/proceso_administrativo/evaluacionDeclaracion_view');
@@ -272,8 +297,10 @@ class ProcesoAdministrativo extends CI_Controller {
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
         //OBTENER DEPARTAMENTOS
-        $this->load->model('pais/departamento');
-        $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
+        /* $this->load->model('pais/departamento');
+          $informacion['departamentos'] = $this->departamento->obtenerDepartamentos(); */
+        $this->load->model('etapa0-sub23/grupo');
+        $informacion['grupos'] = $this->grupo->obtenerGrupos();
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/proceso_administrativo/seleccionConsultoras_view');
@@ -281,7 +308,7 @@ class ProcesoAdministrativo extends CI_Controller {
     }
 
     public function cargarConsultoras($pro_id) {
-        //PARA CREAR LA LISTA DESPLEGABLE DE LA INSTITUCION
+//PARA CREAR LA LISTA DESPLEGABLE DE LA INSTITUCION
         $this->load->model('consultor/consultora');
         $consultoras = $this->consultora->obtenerConsultoraNoRegistradas($pro_id);
         $combo = "<select name='con_int_nombre'>";
@@ -331,7 +358,7 @@ class ProcesoAdministrativo extends CI_Controller {
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
-        //OBTENER DEPARTAMENTOS
+//OBTENER DEPARTAMENTOS
         $this->load->model('pais/departamento');
         $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
         $this->load->view('plantilla/header', $informacion);
@@ -340,12 +367,14 @@ class ProcesoAdministrativo extends CI_Controller {
         $this->load->view('plantilla/footer', $informacion);
     }
 
-    public function cargarEvaluacionDeclaracion($mun_id) {
+    public function cargarEvaluacionDeclaracion($gru_id) {
         $this->load->model('procesoAdministrativo/proceso');
+        $this->load->model('pais/municipio');
         $rows = array();
         $numfilas = 0;
-        if ($this->proceso->contarProPorMuni($mun_id) != 0) {
-            $resultado = $this->proceso->obtenerPro($mun_id);
+        $muni = $this->municipio->obtenerMaxMuniProceso($gru_id);
+        if ($this->proceso->contarProPorMuni($muni[0]->mun_id) != 0) {
+            $resultado = $this->proceso->obtenerPro($muni[0]->mun_id);
             $id = $resultado[0]->pro_id;
             $numero = $resultado[0]->pro_numero;
             if ($resultado[0]->pro_fexpresion_interes != "")
@@ -383,12 +412,14 @@ class ProcesoAdministrativo extends CI_Controller {
         echo $jsonresponse;
     }
 
-    public function cargarSeleccionConsultora($mun_id) {
+    public function cargarSeleccionConsultora($gru_id) {
         $this->load->model('procesoAdministrativo/proceso');
+        $this->load->model('pais/municipio');
         $rows = array();
         $numfilas = 0;
-        if ($this->proceso->contarProPorMuni($mun_id) != 0) {
-            $resultado = $this->proceso->obtenerPro($mun_id);
+        $muni = $this->municipio->obtenerMaxMuniProceso($gru_id);
+        if ($this->proceso->contarProPorMuni($muni[0]->mun_id) != 0) {
+            $resultado = $this->proceso->obtenerPro($muni[0]->mun_id);
             $id = $resultado[0]->pro_id;
             $numero = $resultado[0]->pro_numero;
             if ($resultado[0]->pro_ffinalizacion != "")
@@ -492,7 +523,7 @@ class ProcesoAdministrativo extends CI_Controller {
         $resultado = $this->proceso->obtenerPro($mun_id);
         $id = $resultado[0]->pro_id;
         if ($resultado[0]->pro_ffirma_contrato != "")
-            $pro_ffirma_contrato = date('d-m-Y', strtotime($resultado[0]->pro_ffirma_contrato."1 Day"));
+            $pro_ffirma_contrato = date('d-m-Y', strtotime($resultado[0]->pro_ffirma_contrato . "1 Day"));
         else
             $pro_ffirma_contrato = $resultado[0]->pro_ffirma_contrato;
         $rows[0]['id'] = $id;
@@ -518,7 +549,7 @@ class ProcesoAdministrativo extends CI_Controller {
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
-        //OBTENER DEPARTAMENTOS
+//OBTENER DEPARTAMENTOS
         $this->load->model('pais/departamento');
         $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
         $this->load->model('procesoAdministrativo/proceso_etapa', 'proEta');
