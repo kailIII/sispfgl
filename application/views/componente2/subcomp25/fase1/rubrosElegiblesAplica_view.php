@@ -209,9 +209,11 @@
     <br/>
 
     <p><strong>Observaciones:</strong><br/><textarea name="rub_observacion" cols="48" rows="5"></textarea></p>
+ <?php if (strcmp($rol, 'gdrc') == 0) {?>
     <center>
         <input type="submit" id="guardar" value="Guardar" />
     </center>
+    <?php } ?>
     <input id="rub_id" name="rub_id" value="" type="text" size="100" readonly="readonly" style="visibility: hidden"/>
 </form>
 <div id="mensaje" class="mensaje" title="Aviso de la operación">

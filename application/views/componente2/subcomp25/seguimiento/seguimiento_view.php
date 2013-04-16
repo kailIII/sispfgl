@@ -663,6 +663,7 @@
             <strong>Comentarios:</strong><br/><textarea id="seg_comentario" name="seg_comentario" cols="50" rows="3"></textarea>
         </td>
         </tr>
+        <!--
         <tr>
         <td colspan="2">
             <table>
@@ -677,6 +678,7 @@
                 </tr>
             </table>
         </td>
+        -->
         </tr>
         <tr>
         <td colspan="2" align="center">
@@ -684,9 +686,9 @@
         </td>
         </tr>
     </table>
-    <input id="seg_id" name="seg_id" type="text" size="100" readonly="readonly"/>
-    <input id="seg_ruta_archivo" name="seg_ruta_archivo" type="text" size="100" readonly="readonly"/>
-    <input id="ayuda" name="ayuda" type="text" size="100" readonly="readonly"/>
+    <input id="seg_id" name="seg_id" type="text" size="100" readonly="readonly" hidden="hidden"/>
+    <input id="seg_ruta_archivo" name="seg_ruta_archivo" type="text" size="100" hidden="hidden" readonly="readonly"/>
+    <input id="ayuda" name="ayuda" type="text" size="100" hidden="hidden" readonly="readonly"/>
 </form>
 
 <div id="mensaje" class="mensaje" title="Aviso de la operación">

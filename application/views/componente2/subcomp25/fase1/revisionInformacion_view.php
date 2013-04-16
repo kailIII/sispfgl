@@ -882,10 +882,12 @@
             </p>
             <p><strong>Conclusiones:</strong><br/><textarea id="rev_inf_conclusion" name="rev_inf_conclusion" cols="48" rows="5"></textarea></p>
             <input id="rev_inf_id" name="rev_inf_id" value="" type="text" size="100" readonly="readonly" style="visibility: hidden"/>
+             <?php if (strcmp($rol, 'gdrc') == 0) {?>
             <center>
                 <p><input type="submit" id="guardar" value="Guardar" />
                 </p>
             </center>
+            <?php } ?>
         </form>
 
     </div>
@@ -929,10 +931,12 @@
             <p id="prev_inf_dpresentof">Descripción:<br/><textarea name="rev_inf_dpresentof" cols="48" rows="5"></textarea></p>
 
             <input id="rev_inf_id2" name="rev_inf_id2" value="" type="text" size="100" readonly="readonly" style="visibility: hidden"/>
+             <?php if (strcmp($rol, 'gdrc') == 0) {?>
             <center>
                 <p><input type="submit" id="guardar2" value="Guardar" />
                 </p>
             </center>
+            <?php } ?>
         </form>
     </div>
 

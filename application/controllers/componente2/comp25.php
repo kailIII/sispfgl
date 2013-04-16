@@ -43,6 +43,7 @@ class Comp25 extends CI_Controller {
         else
             $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
         
+        $informacion['rol'] = $rol[0]->rol_codigo;
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp25/fase1/elaboracionProyecto_view');

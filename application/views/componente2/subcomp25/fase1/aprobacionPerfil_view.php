@@ -879,9 +879,11 @@
         </tr>
     </table>
     <input id="per_pro_id" name="per_pro_id" value="" type="text" size="100" readonly="readonly" style="visibility: hidden"/>
+    <?php if (strcmp($rol, 'gdrc') == 0) {?>
     <center>
-        <input type="submit" id="guardar" value="Guardar" />       
+        <input type="submit" id="guardar" value="Guardar" />
     </center>
+    <?php } ?>
 </form>
 <div id="mensaje" class="mensaje" title="Aviso de la operación">
     <p>La acción fue realizada con satisfacción</p>
