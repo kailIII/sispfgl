@@ -367,14 +367,14 @@
         <div id="pagerEquipoTecnico"></div>
     </center>
     <p><strong>Observaciones:</strong><br/><textarea id="ela_pro_observacion" name="ela_pro_observacion" cols="48" rows="5"></textarea></p>
-    <?php if (strcmp($rol, 'gdrc') == 0) {?>
+    <?php //if (strcmp($rol, 'gdrc') == 0) {?>
     <center style="position: relative;top: 20px">
         <div>
             <p><input type="submit" id="guardar" value="Guardar" />
             </p>
         </div>
     </center>
-     <?php } ?>
+     <?php //} ?>
     <input id="ela_pro_id" name="ela_pro_id" value="" type="text" size="100" readonly="readonly" style="visibility: hidden"/>
 </form>
 <div id="mensaje" class="mensaje" title="Aviso de la operación">

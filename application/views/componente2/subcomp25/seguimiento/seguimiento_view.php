@@ -34,18 +34,18 @@
                 },
             ],
             multiselect: false,
-            //   caption: "Equipo Técnico municipal o referente",
+            caption: "Miembros de la comisión de seguimiento",
             rowNum: 10,
             rowList: [10, 20, 30],
             loadonce: true,
             pager: jQuery('#pagerEquipoTecnico'),
             viewrecords: true
         }).jqGrid('navGrid', '#pagerEquipoTecnico',
-                {edit: true, add: true, del: true, search: false, refresh: false,
-                    beforeRefresh: function() {
-                        tabla.jqGrid('setGridParam', {datatype: 'json', loadonce: true}).trigger('reloadGrid');
-                    }
-                }, //OPCIONES
+        {edit: true, add: true, del: true, search: false, refresh: false,
+            beforeRefresh: function() {
+                tabla.jqGrid('setGridParam', {datatype: 'json', loadonce: true}).trigger('reloadGrid');
+            }
+        }, //OPCIONES
         {closeAfterEdit: true, editCaption: "Editando participante", width: 350,
             align: 'center', reloadAfterSubmit: true,
             processData: "Cargando...", afterSubmit: despuesAgregarEditar2,
@@ -69,7 +69,7 @@
                 $('#mensaje').dialog('open');
             }
         }//ELIMINAR
-        ).hideCol('par_id');
+    ).hideCol('par_id');
         /* Funcion para regargar los JQGRID luego de agregar y editar*/
         function despuesAgregarEditar2() {
             tabla2.jqGrid('setGridParam', {datatype: 'json', loadonce: true}).trigger('reloadGrid');
@@ -341,52 +341,90 @@
         $('#dep_id').change(function() {
             $('#mun_id').children().remove();
             $.getJSON('<?php echo base_url('componente2/proyectoPep/cargarMunicipios') ?>?dep_id=' + $('#dep_id').val(),
-                    function(data) {
-                        var i = 0;
-                        $.each(data, function(key, val) {
-                            if (key == 'rows') {
-                                $('#mun_id').append('<option value="0">--Seleccione Municipio--</option>');
-                                $.each(val, function(id, registro) {
-                                    $('#mun_id').append('<option value="' + registro['cell'][0] + '">' + registro['cell'][1] + '</option>');
-                                });
-                            }
+            function(data) {
+                var i = 0;
+                $.each(data, function(key, val) {
+                    if (key == 'rows') {
+                        $('#mun_id').append('<option value="0">--Seleccione Municipio--</option>');
+                        $.each(val, function(id, registro) {
+                            $('#mun_id').append('<option value="' + registro['cell'][0] + '">' + registro['cell'][1] + '</option>');
                         });
-                    });
+                    }
+                });
+            });
         });
 
         $('#mun_id').change(function() {
             $('#seguimientoForm')[0].reset();
             if ($('#mun_id').val() != 0) {
                 $.getJSON('<?php echo base_url('componente2/comp25_seguimiento/cargarSeguimiento') . "/" ?>' + $('#mun_id').val(),
-                        function(data) {
-                            $.each(data, function(key, val) {
-                                if (key == 'rows') {
-                                    $.each(val, function(id, registro) {
-                                        $('#seg_id').val(registro['cell'][0]);
-                                        $('#seg_forden_preparacion').val(registro['cell'][1]);
-                                        $('#seg_facta_recepcion').val(registro['cell'][2]);
-                                        $('#seg_forden_diagnostico').val(registro['cell'][3]);
-                                        $('#seg_fsocializacion').val(registro['cell'][4]);
-                                        $('#seg_facta_aprobacion_d').val(registro['cell'][5]);
-                                        $('#seg_forden_planificacion').val(registro['cell'][6]);
-                                        $('#seg_facta_aprobacion_p').val(registro['cell'][7]);
-                                        $('#seg_facuerdo_municipal').val(registro['cell'][8]);
-                                        $('#seg_fpresentacion_publica').val(registro['cell'][9]);
-                                        $('#seg_forden_seguimiento').val(registro['cell'][10]);
-                                        $('#seg_comentario').val(registro['cell'][11]);
-                                        $('#seg_ruta_archivo').val(registro['cell'][12]);
-                                        $('#vinietaD').val(registro['cell'][13]);
-                                        $('#equipoTecnico').setGridParam({
-                                            url: '<?php echo base_url('componente2/comp25/cargarParticipantesSeg') ?>/seg_id/' + registro['cell'][0],
-                                            editurl: '<?php echo base_url('componente2/comp23_E1/gestionParticipantes') ?>/seguimiento/seg_id/' + registro['cell'][0],
-                                            datatype: 'json'
-                                        }).trigger('reloadGrid');
+                function(data) {
+                    $.each(data, function(key, val) {
+                        if (key == 'rows') {
+                            $.each(val, function(id, registro) {
+                                $('#seg_id').val(registro['cell'][0]);
+                                $('#seg_forden_preparacion').val(registro['cell'][1]);
+                                $('#seg_facta_recepcion').val(registro['cell'][2]);
+                                $('#seg_forden_diagnostico').val(registro['cell'][3]);
+                                $('#seg_fsocializacion').val(registro['cell'][4]);
+                                $('#seg_facta_aprobacion_d').val(registro['cell'][5]);
+                                $('#seg_forden_planificacion').val(registro['cell'][6]);
+                                $('#seg_facta_aprobacion_p').val(registro['cell'][7]);
+                                $('#seg_facuerdo_municipal').val(registro['cell'][8]);
+                                $('#seg_fpresentacion_publica').val(registro['cell'][9]);
+                                $('#seg_forden_seguimiento').val(registro['cell'][10]);
+                                $('#seg_comentario').val(registro['cell'][11]);
+                                $('#seg_ruta_archivo').val(registro['cell'][12]);
+                                $('#vinietaD').val(registro['cell'][13]);
+                                $('#equipoTecnico').setGridParam({
+                                    url: '<?php echo base_url('componente2/comp25/cargarParticipantesSeg') ?>/seg_id/' + registro['cell'][0],
+                                    editurl: '<?php echo base_url('componente2/comp23_E1/gestionParticipantes') ?>/seguimiento/seg_id/' + registro['cell'][0],
+                                    datatype: 'json'
+                                }).trigger('reloadGrid');
+                                new AjaxUpload('#btn_subir', {
+                                    action: "<?php echo base_url('componente2/comp23_E1/subirArchivo'); ?>"+"/seguimiento/" +  registro['cell'][0] + "/seg_id",
+                                    onSubmit: function(file, ext) {
+                                        if (!(ext && /^(pdf|doc|docx)$/.test(ext))) {
+                                            $('#extension').dialog('open');
+                                            return false;
+                                        } else {
+                                            $('#vinieta').val('Subiendo....');
+                                            this.disable();
+                                        }
+                                    },
+                                    onComplete: function(file, response, ext) {
+                                        if (response != 'error') {
+                                            $('#vinieta').val('Subido con Exito');
+                                            this.enable();
+                                            ext = (response.substring(response.lastIndexOf("."))).toLowerCase();
+                                            nombre = response.substring(response.lastIndexOf("/")).toLowerCase().replace('/', '');
+                                            $('#vinietaD').val('Descargar ' + nombre);
+                                            $('#seg_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO
+                                            if (ext == '.pdf') {
+                                                $('#btn_descargar').attr({
+                                                    'href': '<?php echo base_url(); ?>' + response,
+                                                    'target': '_blank'
+                                                });
+                                            }
+                                            else {
+                                                $('#btn_descargar').attr({
+                                                    'href': '<?php echo base_url(); ?>' + response,
+                                                    'target': '_self'
+                                                });
+                                            }
+                                        } else {
+                                            $('#vinieta').val('El Archivo debe ser menor a 1 MB.');
+                                            this.enable();
 
-                                        $("#seguimientoForm").show();
-                                    });
-                                }
+                                        }
+
+                                    }
+                                });
+                                $("#seguimientoForm").show();
                             });
-                        });
+                        }
+                    });
+                });
             } else
                 $("#seguimientoForm").hide();
         });
@@ -457,47 +495,7 @@
             dateFormat: 'dd-mm-yy'
         });
 
-        var button = $('#btn_subir'), interval;
-        new AjaxUpload('#btn_subir', {
-            action: "<?php echo base_url('componente2/comp23_E1/subirArchivo/seguimiento') ; ?>/" + $('#seg_id').val() + "/seg_id",
-            onSubmit: function(file, ext) {
-                if (!(ext && /^(pdf|doc|docx)$/.test(ext))) {
-                    $('#extension').dialog('open');
-                    return false;
-                } else {
-                    $('#vinieta').val('Subiendo....');
-                    this.disable();
-                }
-            },
-            onComplete: function(file, response, ext) {
-                if (response != 'error') {
-                    $('#vinieta').val('Subido con Exito');
-                    $('#ayuda').val("<?php echo base_url('componente2/comp23_E1/subirArchivo') ; ?>/seguimiento/" + $('#seg_id').val() + "/seg_id");
-                    this.enable();
-                    ext = (response.substring(response.lastIndexOf("."))).toLowerCase();
-                    nombre = response.substring(response.lastIndexOf("/")).toLowerCase().replace('/', '');
-                    $('#vinietaD').val('Descargar ' + nombre);
-                    $('#seg_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO
-                    if (ext == '.pdf') {
-                        $('#btn_descargar').attr({
-                            'href': '<?php echo base_url(); ?>' + response,
-                            'target': '_blank'
-                        });
-                    }
-                    else {
-                        $('#btn_descargar').attr({
-                            'href': '<?php echo base_url(); ?>' + response,
-                            'target': '_self'
-                        });
-                    }
-                } else {
-                    $('#vinieta').val('El Archivo debe ser menor a 1 MB.');
-                    this.enable();
-
-                }
-
-            }
-        });
+ 
         $('#btn_descargar').click(function() {
             $.get($(this).attr('href'));
         });
@@ -578,16 +576,7 @@
             <input id="seg_fsocializacion" name="seg_fsocializacion" type="text" size="10" readonly="readonly"/>
         </td>
         </tr>
-
-
         <tr></tr>
-        <tr>
-        <td colspan="2">
-            <table id="equipoTecnico"></table>
-            <div id="pagerEquipoTecnico"></div>
-        </td>
-        </tr>
-
         <tr>
         <td class="textD"> 
             <strong>Fecha de acta de aprobación</strong>
@@ -654,6 +643,12 @@
             <input id="seg_forden_seguimiento" name="seg_forden_seguimiento" type="text" size="10" readonly="readonly"/>        
         </td>
         </tr>
+        <tr>
+        <td colspan="2">
+            <table id="equipoTecnico"></table>
+            <div id="pagerEquipoTecnico"></div>
+        </td>
+        </tr>
         <tr>    
         <td colspan="2">
         </td>
@@ -663,7 +658,6 @@
             <strong>Comentarios:</strong><br/><textarea id="seg_comentario" name="seg_comentario" cols="50" rows="3"></textarea>
         </td>
         </tr>
-        <!--
         <tr>
         <td colspan="2">
             <table>
@@ -678,7 +672,6 @@
                 </tr>
             </table>
         </td>
-        -->
         </tr>
         <tr>
         <td colspan="2" align="center">
@@ -686,9 +679,8 @@
         </td>
         </tr>
     </table>
-    <input id="seg_id" name="seg_id" type="text" size="100" readonly="readonly" hidden="hidden"/>
+    <input id="seg_id" type="text" size="100" />
     <input id="seg_ruta_archivo" name="seg_ruta_archivo" type="text" size="100" hidden="hidden" readonly="readonly"/>
-    <input id="ayuda" name="ayuda" type="text" size="100" hidden="hidden" readonly="readonly"/>
 </form>
 
 <div id="mensaje" class="mensaje" title="Aviso de la operación">

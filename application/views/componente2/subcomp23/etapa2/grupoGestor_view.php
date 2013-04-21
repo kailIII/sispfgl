@@ -1,9 +1,5 @@
 <script type="text/javascript">        
     $(document).ready(function(){
-        /*VARIABLES*/
-          <?php if (isset($guardo)){?>
-                $('#guardo').dialog();
-                <?php }?>
         var tabla=$("#participantes");
         /*ZONA DE BOTONES*/
         $("#agregar").button().click(function(){
@@ -46,7 +42,17 @@
         });
         
         $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/comp23_E2/guardarGrupoGestor'); ?>';
+            $.ajax({
+                type: "POST",
+                url: '<?php echo base_url('componente2/comp23_E2/guardarGrupoGestor'); ?>',
+                data: $("#grupoGestorForm").serialize(), // serializes the form's elements.
+                success: function(data)
+                {
+                    $('#efectivo').dialog('open');
+                }
+            });
+            return false;
+            
         });
         $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url('componente2/comp23_E2'); ?>';
@@ -155,7 +161,7 @@
     
 </script>
 
-<form method="post">
+<form id="grupoGestorForm" method="post">
 
     <h2 class="h2Titulos">Etapa 2: Diagnóstico del Municipio</h2>
     <h2 class="h2Titulos">Producto 2: Integración del Grupo Gestor</h2>
@@ -173,7 +179,7 @@
     <table>
         <tr>
         <td ><strong>Lugar:</strong><input id="gru_ges_lugar" <?php if (isset($gru_ges_lugar)) { ?> value='<?php echo $gru_ges_lugar; ?>'<?php } ?> name="gru_ges_lugar" type="text" size="40"/></td>
-         <td style="width: 150px"></td>
+        <td style="width: 150px"></td>
         <td  ><strong>Fecha: </strong><input readonly="readonly" <?php if (isset($gru_ges_fecha)) { ?> value='<?php echo date('d-m-Y', strtotime($gru_ges_fecha)); ?>'<?php } ?>id="gru_ges_fecha" name="gru_ges_fecha" type="text" size="10"/></td>
         </tr>
         <tr>
@@ -231,7 +237,7 @@
 <div id="mensaje2" class="mensaje" title="Aviso">
     <p>Debe Seleccionar una fila para continuar</p>
 </div>
-<div id="guardo" class="mensaje" title="Almacenado">
+<div id="efectivo" class="mensaje" title="Almacenado">
     <center>
         <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
     </center>

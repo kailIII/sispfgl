@@ -2,7 +2,7 @@
     $(document).ready(function() {
         /*ZONA DE BOTONES*/
         $("#guardar").button().click(function() {
-            fecha1 = $('#per_pro_fentrega_isdem').datepicker("getDate");
+            /*  fecha1 = $('#per_pro_fentrega_isdem').datepicker("getDate");
             fecha2 = $("#per_pro_fentrega_uep").datepicker("getDate");
             fecha3 = $("#per_pro_fnota_autorizacion").datepicker("getDate");
             fecha4 = $('#per_pro_fentrega_u_i').datepicker("getDate");
@@ -90,17 +90,17 @@
                                     $('#per_pro_femision_acuerdo').val('');
                                     $('#per_pro_fcertificacion').val('');
                                     $('#per_pro_frecibe').val('');
-                                    $('#per_pro_fencio_fisdl').val('');
-                                    $.ajax({
-                                        type: "POST",
-                                        url: '<?php echo base_url('componente2/comp25_fase1/guardarAprobacionPerfil') ?>',
-                                        data: $("#aprobacionPerfilForm").serialize(), // serializes the form's elements.
-                                        success: function(data)
-                                        {
-                                            $('#efectivo').dialog('open');
-                                        }
-                                    });
-                                    return false;
+                                    $('#per_pro_fencio_fisdl').val('');*/
+            $.ajax({
+                type: "POST",
+                url: '<?php echo base_url('componente2/comp25_fase1/guardarAprobacionPerfil') ?>',
+                data: $("#aprobacionPerfilForm").serialize(), // serializes the form's elements.
+                success: function(data)
+                {
+                    $('#efectivo').dialog('open');
+                }
+            });
+            return false;/*
                                 } else {
                                     if (fecha3 < fecha4) {
                                         if (fecha5 == null) {
@@ -289,7 +289,7 @@
                         return false;
                     }
                 }
-            }
+            }*/
         });
 
         $("#aprobacionPerfilForm").hide();
@@ -298,17 +298,17 @@
             $("#aprobacionPerfilForm").hide();
             $('#mun_id').children().remove();
             $.getJSON('<?php echo base_url('componente2/proyectoPep/cargarMunicipios') ?>?dep_id=' + $('#dep_id').val(),
-                    function(data) {
-                        var i = 0;
-                        $.each(data, function(key, val) {
-                            if (key == 'rows') {
-                                $('#mun_id').append('<option value="0">--Seleccione Municipio--</option>');
-                                $.each(val, function(id, registro) {
-                                    $('#mun_id').append('<option value="' + registro['cell'][0] + '">' + registro['cell'][1] + '</option>');
-                                });
-                            }
+            function(data) {
+                var i = 0;
+                $.each(data, function(key, val) {
+                    if (key == 'rows') {
+                        $('#mun_id').append('<option value="0">--Seleccione Municipio--</option>');
+                        $.each(val, function(id, registro) {
+                            $('#mun_id').append('<option value="' + registro['cell'][0] + '">' + registro['cell'][1] + '</option>');
                         });
-                    });
+                    }
+                });
+            });
         });
 
         $('#mun_id').change(function() {
@@ -316,59 +316,59 @@
             $('input:checkbox').removeAttr('checked');
             if ($('#mun_id').val() != 0) {
                 $.getJSON('<?php echo base_url('componente2/comp25_fase1/cargarAprobacionPerfil') . "/" ?>' + $('#mun_id').val(),
-                        function(data) {
-                            $.each(data, function(key, val) {
-                                if (key == 'rows') {
-                                    $.each(val, function(id, registro) {
-                                        $('#per_pro_id').val(registro['cell'][0]);
-                                        $('#per_pro_fentrega_isdem').val(registro['cell'][1]);
-                                        $('#per_pro_fentrega_uep').val(registro['cell'][2]);
-                                        $('#per_pro_fnota_autorizacion').val(registro['cell'][3]);
-                                        $('#per_pro_fentrega_u_i').val(registro['cell'][4]);
-                                        $('#per_pro_ftdr').val(registro['cell'][5]);
-                                        $('#per_pro_fespecificacion').val(registro['cell'][6]);
-                                        $('#per_pro_fcarpeta_reducida').val(registro['cell'][7]);
-                                        $('#per_pro_frecibe_municipio').val(registro['cell'][8]);
-                                        $('#per_pro_femision_acuerdo').val(registro['cell'][9]);
-                                        $('#per_pro_fcertificacion').val(registro['cell'][10]);
-                                        $('#per_pro_frecibe').val(registro['cell'][11]);
-                                        $('#per_pro_fencio_fisdl').val(registro['cell'][12]);
-                                        if (registro['cell'][13] != null) {
-                                            if (registro['cell'][13] == "t")
-                                                $('input:checkbox[name=per_pro_consultor_individual]').attr("checked", "checked");
-                                            else
-                                                $('input:checkbox[name=per_pro_consultor_individual]').attr("checked", false);
-                                        }
-                                        if (registro['cell'][14] != null) {
-                                            if (registro['cell'][14] == "t")
-                                                $('input:checkbox[name=per_pro_firma]').attr("checked", "checked");
-                                            else
-                                                $('input:checkbox[name=per_pro_firma]').attr("checked", false);
-                                        }
-                                        if (registro['cell'][15] != null) {
-                                            if (registro['cell'][15] == "t")
-                                                $('input:checkbox[name=per_pro_ong]').attr("checked", "checked");
-                                            else
-                                                $('input:checkbox[name=per_pro_ong]').attr("checked", false);
-                                        }
-                                        $('#per_pro_observacion').val(registro['cell'][16]);
-                                        $('#per_pro_per_ruta_archivo').val(registro['cell'][17]);
-                                        $('#per_pro_perD').val(registro['cell'][18]);
-                                        $('#per_pro_tdr_ruta_archivo').val(registro['cell'][19]);
-                                        $('#per_pro_tdrD').val(registro['cell'][20]);
-                                        $('#per_pro_esp_ruta_archivo').val(registro['cell'][21]);
-                                        $('#per_pro_espD').val(registro['cell'][22]);
-                                        $('#per_pro_car_ruta_archivo').val(registro['cell'][23]);
-                                        $('#per_pro_carD').val(registro['cell'][24]);
-                                        $('#per_pro_acu_ruta_archivo').val(registro['cell'][25]);
-                                        $('#per_pro_acuD').val(registro['cell'][26]);
-                                        $('#per_pro_doc_ruta_archivo').val(registro['cell'][27]);
-                                        $('#per_pro_docD').val(registro['cell'][28]);
-                                        $("#aprobacionPerfilForm").show();
-                                    });
+                function(data) {
+                    $.each(data, function(key, val) {
+                        if (key == 'rows') {
+                            $.each(val, function(id, registro) {
+                                $('#per_pro_id').val(registro['cell'][0]);
+                                $('#per_pro_fentrega_isdem').val(registro['cell'][1]);
+                                $('#per_pro_fentrega_uep').val(registro['cell'][2]);
+                                $('#per_pro_fnota_autorizacion').val(registro['cell'][3]);
+                                $('#per_pro_fentrega_u_i').val(registro['cell'][4]);
+                                $('#per_pro_ftdr').val(registro['cell'][5]);
+                                $('#per_pro_fespecificacion').val(registro['cell'][6]);
+                                $('#per_pro_fcarpeta_reducida').val(registro['cell'][7]);
+                                $('#per_pro_frecibe_municipio').val(registro['cell'][8]);
+                                $('#per_pro_femision_acuerdo').val(registro['cell'][9]);
+                                $('#per_pro_fcertificacion').val(registro['cell'][10]);
+                                $('#per_pro_frecibe').val(registro['cell'][11]);
+                                $('#per_pro_fencio_fisdl').val(registro['cell'][12]);
+                                if (registro['cell'][13] != null) {
+                                    if (registro['cell'][13] == "t")
+                                        $('input:checkbox[name=per_pro_consultor_individual]').attr("checked", "checked");
+                                    else
+                                        $('input:checkbox[name=per_pro_consultor_individual]').attr("checked", false);
                                 }
+                                if (registro['cell'][14] != null) {
+                                    if (registro['cell'][14] == "t")
+                                        $('input:checkbox[name=per_pro_firma]').attr("checked", "checked");
+                                    else
+                                        $('input:checkbox[name=per_pro_firma]').attr("checked", false);
+                                }
+                                if (registro['cell'][15] != null) {
+                                    if (registro['cell'][15] == "t")
+                                        $('input:checkbox[name=per_pro_ong]').attr("checked", "checked");
+                                    else
+                                        $('input:checkbox[name=per_pro_ong]').attr("checked", false);
+                                }
+                                $('#per_pro_observacion').val(registro['cell'][16]);
+                                $('#per_pro_per_ruta_archivo').val(registro['cell'][17]);
+                                $('#per_pro_perD').val(registro['cell'][18]);
+                                $('#per_pro_tdr_ruta_archivo').val(registro['cell'][19]);
+                                $('#per_pro_tdrD').val(registro['cell'][20]);
+                                $('#per_pro_esp_ruta_archivo').val(registro['cell'][21]);
+                                $('#per_pro_espD').val(registro['cell'][22]);
+                                $('#per_pro_car_ruta_archivo').val(registro['cell'][23]);
+                                $('#per_pro_carD').val(registro['cell'][24]);
+                                $('#per_pro_acu_ruta_archivo').val(registro['cell'][25]);
+                                $('#per_pro_acuD').val(registro['cell'][26]);
+                                $('#per_pro_doc_ruta_archivo').val(registro['cell'][27]);
+                                $('#per_pro_docD').val(registro['cell'][28]);
+                                $("#aprobacionPerfilForm").show();
                             });
-                        });
+                        }
+                    });
+                });
             } else
                 $("#aprobacionPerfilForm").hide();
         });
@@ -879,11 +879,11 @@
         </tr>
     </table>
     <input id="per_pro_id" name="per_pro_id" value="" type="text" size="100" readonly="readonly" style="visibility: hidden"/>
-    <?php if (strcmp($rol, 'gdrc') == 0) {?>
+    <?php //if (strcmp($rol, 'gdrc') == 0) {?>
     <center>
         <input type="submit" id="guardar" value="Guardar" />
     </center>
-    <?php } ?>
+    <?php // } ?>
 </form>
 <div id="mensaje" class="mensaje" title="Aviso de la operación">
     <p>La acción fue realizada con satisfacción</p>

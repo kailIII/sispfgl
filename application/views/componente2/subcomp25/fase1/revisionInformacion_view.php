@@ -16,6 +16,7 @@
                     });
                 }
             });
+            return false;
         });
 
         $("#guardar2").button().click(function() {
@@ -882,12 +883,12 @@
             </p>
             <p><strong>Conclusiones:</strong><br/><textarea id="rev_inf_conclusion" name="rev_inf_conclusion" cols="48" rows="5"></textarea></p>
             <input id="rev_inf_id" name="rev_inf_id" value="" type="text" size="100" readonly="readonly" style="visibility: hidden"/>
-             <?php if (strcmp($rol, 'gdrc') == 0) {?>
+             <?php //if (strcmp($rol, 'gdrc') == 0) {?>
             <center>
                 <p><input type="submit" id="guardar" value="Guardar" />
                 </p>
             </center>
-            <?php } ?>
+            <?php //} ?>
         </form>
 
     </div>
