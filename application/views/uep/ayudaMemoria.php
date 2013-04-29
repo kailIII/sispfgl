@@ -148,7 +148,7 @@ $(document).ready(function(){
     <?php
     //Muestra los dialogos.
     if($this->session->flashdata('message')=='Ok'){echo "$('#efectivo').dialog('open');";}
-    if(isset($emp_mun_id) && $emp_mun_id > 0){echo "formularioShow();";}else{echo "formularioHide();";}
+    //if(isset($emp_mun_id) && $emp_mun_id > 0){echo "formularioShow();";}else{echo "formularioHide();";}
     ?>
 });
 </script>
@@ -183,7 +183,7 @@ $(document).ready(function(){
                 <?php echo form_error('mun_id'); ?>
             </div>
         </div>
-        <div id="formulario" style="display: none;">
+        <div id="formulario">
             <div class="campo">
                 <label>Departamento:</label>
                 <input id="depto" name="depto" type="text" readonly="readonly" value="<?php echo set_value('depto') ?>" />
