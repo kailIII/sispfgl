@@ -105,6 +105,15 @@ $(document).ready(function(){
                 <label>Tipologia</label>
                 <select id='per_mun_tipologia'>
                     <option value='0'>--Seleccione--</option>
+                    <?php
+                    for($i=1;$i<=5;$i++){
+                        echo "<option value='$i'";
+                        if(set_value('per_mun_tipologia')==$i){
+                            echo ' selected="selected" ';
+                        }
+                        echo ">$i</option>\n";
+                    }
+                     ?>
                 </select>
                 <?php echo form_error('per_mun_tipologia'); ?>
             </div>

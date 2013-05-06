@@ -5,7 +5,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-Class comp24 extends CI_Model{
+Class model22 extends CI_Model{
     
     function changeDate($date){
         $t = explode('/',$date);
@@ -74,13 +74,8 @@ GROUP BY dep_nombre';
             return false;
     }
     
-    public function insert_row($tabla, $data,$last_id = false){
-        $r = $this->db->insert($tabla, $data);
-        if($last_id){
-            return $this->db->insert_id();
-        }else{
-            return $r;
-        }
+    public function insert_row($tabla, $data){
+        return $this->db->insert($tabla, $data);
     }
     
     public function update_row($tabla,$campo,$index,$data){
@@ -91,9 +86,28 @@ GROUP BY dep_nombre';
         return $this->db->delete($tabla,array($campo=>$index));
     }
     
-    public function insert_indicadores1($data){
-        
-        return $this->db->insert('indicadores_desempeno1',$data);
+    public function getParticipantes($capacitacion){
+        $query = 'Select p.par_id,p.par_nombres,p.par_apellidos,p.par_sexo,p.par_nivel,p.par_ins_municipio,p.par_ins_cargo,p.par_telefono 
+            FROM c22_participantes as p WHERE p.par_id IN 
+            (Select par_id From c22_cxp_solicitud Where c22_cxp_solicitud.par_id NOT IN  
+                (SELECT cxp_par_id FROM c22_cxp_inscritos WHERE cxp_cap_id = '.$capacitacion.' ) AND c22_cxp_solicitud.cap_id = '.$capacitacion.')';
+        return $this->db->query($query);
+    }
+    
+    public function getInscritos($capacitacion){
+        $this->db->select('cxp_id, par_nombres, par_apellidos, par_sexo, par_nivel, 
+            par_ins_municipio, par_ins_cargo, par_telefono');
+        $this->db->from('c22_cxp_inscritos');
+        $this->db->join('c22_participantes','cxp_par_id = par_id','inner');
+        $this->db->where('cxp_cap_id',$capacitacion);
+        return $this->db->get();
+    }
+    
+    public function getResultados($capacitacion){
+        $this->db->select('cxp_id,par_nombres,par_apellidos,par_ins_municipio,cxp_estado,cxp_promedio,cxp_constancia,cxp_observaciones')
+        ->from('c22_participantes')->join('c22_cxp_inscritos','cxp_par_id=par_id','inner')
+        ->where('cxp_cap_id',$capacitacion);
+        return $this->db->get();
     }
 
 	
