@@ -4,12 +4,12 @@
             document.location.href='<?php echo base_url(); ?>';
         });
         
-        /*CARGAR MUNICIPIOS*/
+        /*CARGAR MUNICIPIOS
         $('#selDepto').change(function(){
             $('#Mensajito').hide();
             $("#propuestaTecnicaForm").hide();
             $('#selMun').children().remove();
-            $.getJSON('<?php echo base_url('componente2/proyectoPep/cargarMunicipios') ?>?dep_id='+$('#selDepto').val(), 
+            $.getJSON('<php echo base_url('componente2/proyectoPep/cargarMunicipios') ?>?dep_id='+$('#selDepto').val(), 
             function(data) {
                 var i=0;
                 $.each(data, function(key, val) {
@@ -21,48 +21,55 @@
                     }
                 });
             });              
-        });
+        });*/
         
-        $('#selMun').change(function(){
-            $('#propuestaTecnicaForm')[0].reset();
-            $("#propuestaTecnicaForm").hide();
-            $.getJSON('<?php echo base_url('componente2/procesoAdministrativo/cargarPropuestaTecnica') . "/" ?>'+$('#selMun').val(), 
-            function(data) {
-                var i=0;
-                $.each(data, function(key, val) {
-                    if(key=="records"){
-                        if(val=="0"){
-                            $('#Mensajito').show();
-                            $('#Mensajito').val("Este proyecto no esta registrado");
-                        }
-                    }
-                    if(key=='rows'){
-                        $.each(val, function(id, registro){
-                            if(registro['cell'][9]!=null){
-                                $( "#pro_fsolicitud" ).datepicker( "option", "minDate", registro['cell'][9] ); 
-                                $( "#pro_frecepcion" ).datepicker( "option", "minDate", registro['cell'][9] ); 
-                                $( "#pro_faperturatecnica" ).datepicker( "option", "minDate", registro['cell'][9] ); 
-                                $( "#pro_fcierre_negociacion" ).datepicker( "option", "minDate", registro['cell'][9] ); 
-                                $( "#pro_ffirma_contrato" ).datepicker( "option", "minDate", registro['cell'][9] );
-                                $('#Mensajito').hide();
-                                $('#pro_id').val(registro['cell'][0]);
-                                $('#pro_numero').val(registro['cell'][1]);
-                                $('#pro_fsolicitud').val(registro['cell'][2]);
-                                $('#pro_frecepcion').val(registro['cell'][3]);
-                                $('#pro_faperturatecnica').val(registro['cell'][4]);
-                                $('#pro_faperturafinanciera').val(registro['cell'][5]);
-                                $('#pro_fcierre_negociacion').val(registro['cell'][6]);
-                                $('#pro_ffirma_contrato').val(registro['cell'][7]);
-                                $('#pro_observacion2').val(registro['cell'][8]);
-                                $("#propuestaTecnicaForm").show();
-                            }else{
+        $('#selGrupo').change(function(){
+            if($('#selGrupo').val()!='0'){
+                $('#propuestaTecnicaForm')[0].reset();
+                $("#propuestaTecnicaForm").hide();
+                $.getJSON('<?php echo base_url('componente2/procesoAdministrativo/cargarPropuestaTecnica') . "/" ?>'+$('#selGrupo').val(), 
+                function(data) {
+                    var i=0;
+                    $.each(data, function(key, val) {
+                        if(key=="records"){
+                            if(val=="0"){
                                 $('#Mensajito').show();
-                                $('#Mensajito').val("Debe de registrar primero las fechas de la etapa: Selección de consultoras");
+                                $('#Mensajito').val("Este proyecto no esta registrado");
                             }
-                        });                    
-                    }
-                });
-            });              
+                        }
+                        if(key=='rows'){
+                            $.each(val, function(id, registro){
+                                if(registro['cell'][9]!=null){
+                                    $( "#pro_fsolicitud" ).datepicker( "option", "minDate", registro['cell'][9] ); 
+                                    $( "#pro_frecepcion" ).datepicker( "option", "minDate", registro['cell'][9] ); 
+                                    $( "#pro_faperturatecnica" ).datepicker( "option", "minDate", registro['cell'][9] ); 
+                                    $( "#pro_fcierre_negociacion" ).datepicker( "option", "minDate", registro['cell'][9] ); 
+                                    $( "#pro_ffirma_contrato" ).datepicker( "option", "minDate", registro['cell'][9] );
+                                    $('#Mensajito').hide();
+                                    $('#pro_id').val(registro['cell'][0]);
+                                    $('#pro_numero').val(registro['cell'][1]);
+                                    $('#pro_fsolicitud').val(registro['cell'][2]);
+                                    $('#pro_frecepcion').val(registro['cell'][3]);
+                                    $('#pro_faperturatecnica').val(registro['cell'][4]);
+                                    $('#pro_faperturafinanciera').val(registro['cell'][5]);
+                                    $('#pro_fcierre_negociacion').val(registro['cell'][6]);
+                                    $('#pro_ffirma_contrato').val(registro['cell'][7]);
+                                    $('#pro_observacion2').val(registro['cell'][8]);
+                                    $('#consultora').val(registro['cell'][10]);
+                                    $("#propuestaTecnicaForm").show();
+                                }else{
+                                    $('#Mensajito').show();
+                                    $('#Mensajito').val("Debe de registrar primero las fechas de la etapa: Selección de consultoras");
+                                }
+                            });                    
+                        }
+                    });
+                });  
+            }else{
+                $('#propuestaTecnicaForm')[0].reset();
+                $("#propuestaTecnicaForm").hide();
+                 $('#Mensajito').hide();
+            }            
         });
         
         $("#pro_fsolicitud" ).datepicker({
@@ -108,6 +115,7 @@
         });
         /*FIN DEL DATEPICKER*/
         $("#guardar").button().click(function() {
+            $('#grup_id_pep').val($('#selGrupo').val());
             fSolicitud= $('#pro_fsolicitud').datepicker("getDate");
             fRecepcion=$( "#pro_frecepcion" ).datepicker("getDate");
             fApertura=$( "#pro_faperturatecnica" ).datepicker("getDate");
@@ -264,19 +272,32 @@
     <h2 class="h2Titulos">Pedido de propuesta técnica y financiera</h2>
     <br/>
     <table>
-        <tr>
+<!--        <tr>
         <td><strong>Departamento</strong></td>
         <td><select id='selDepto'>
                 <option value='0'>--Seleccione--</option>
-                <?php foreach ($departamentos as $depto) { ?>
-                    <option value='<?php echo $depto->dep_id; ?>'><?php echo $depto->dep_nombre; ?></option>
-                <?php } ?>
+        <?php foreach ($departamentos as $depto) { ?>
+                                        <option value='<?php echo $depto->dep_id; ?>'><?php echo $depto->dep_nombre; ?></option>
+        <?php } ?>
             </select>
         </td>
         </tr>
         <td><strong>Municipio</strong></td>
         <td><select id='selMun' name='selMun'>
                 <option value='0'>--Seleccione--</option>
+            </select>
+        </td>
+        </tr>-->
+        <tr>
+        <td colspan="2">Seleccione el grupo para configurar el pédido de propuesta técnica</td>
+        </tr>
+        <tr>
+        <td><strong>Grupo</strong></td>
+        <td><select name='selGrupo' id="selGrupo">
+                <option value='0'>--Seleccione--</option>
+                <?php foreach ($grupos as $grupo) { ?>
+                    <option value='<?php echo $grupo->gru_id; ?>'><?php echo $grupo->gru_numero; ?></option>
+                <?php } ?>
             </select>
         </td>
         </tr>
@@ -286,6 +307,13 @@
 <input value="" class="error" id="Mensajito" type="text" size="100" readonly="readonly" style="border: none;"/>
 <form id="propuestaTecnicaForm" method="post">
     <table class="procesoAdmin" border="0" cellspacing="0" >
+        <tr>
+        <td class="textD"><strong>Consultora seleccionada: </strong></td>
+        <td> <textarea id="consultora" name="consultora" type="text" cols="30" rows="2" readonly="readonly" style="border: none; background: white;"></textarea></td>
+        </tr>
+        <tr>
+        <td colspan="2"><br/></td>
+        </tr>
         <tr>
         <td class="textD"><strong>No. Proceso: </strong></td>
         <td> <input value="" id="pro_numero" name="pro_numero" type="text" size="10" readonly="readonly" style="border: none; background: white;"/></td>
@@ -334,7 +362,9 @@
         <input type="submit" id="guardar" value="Guardar" />
         <input type="button" id="cancelar" value="Cancelar" />
     </center>
-    <input id="pro_id" name="pro_id" value="" style="visibility: hidden"/>    
+    <input id="pro_id" name="pro_id" value="" style="visibility: hidden"/>
+    <input id="grup_id_pep" name="grup_id_pep" value="" style="visibility: hidden"/>
+
 </form>
 
 <div id="mensaje" class="mensaje" title="Aviso de la operación">

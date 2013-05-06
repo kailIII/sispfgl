@@ -358,9 +358,11 @@ class ProcesoAdministrativo extends CI_Controller {
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
-//OBTENER DEPARTAMENTOS
-        $this->load->model('pais/departamento');
-        $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
+        //OBTENER DEPARTAMENTOS
+        /* $this->load->model('pais/departamento');
+          $informacion['departamentos'] = $this->departamento->obtenerDepartamentos(); */
+        $this->load->model('etapa0-sub23/grupo');
+        $informacion['grupos'] = $this->grupo->obtenerGrupos();
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/proceso_administrativo/propuestaTecnica_view');
@@ -455,13 +457,14 @@ class ProcesoAdministrativo extends CI_Controller {
         echo $jsonresponse;
     }
 
-    public function cargarPropuestaTecnica($mun_id) {
+    public function cargarPropuestaTecnica($gru_id) {
         $this->load->model('procesoAdministrativo/proceso');
-
+        $this->load->model('pais/municipio');
         $rows = array();
         $numfilas = 0;
-        if ($this->proceso->contarProPorMuni($mun_id) != 0) {
-            $resultado = $this->proceso->obtenerPro($mun_id);
+        $muni = $this->municipio->obtenerMaxMuniProceso($gru_id);
+        if ($this->proceso->contarProPorMuni($muni[0]->mun_id) != 0) {
+            $resultado = $this->proceso->obtenerPro($muni[0]->mun_id);
             $id = $resultado[0]->pro_id;
             $numero = $resultado[0]->pro_numero;
             if ($resultado[0]->pro_flimite_recepcion != "")
@@ -492,6 +495,7 @@ class ProcesoAdministrativo extends CI_Controller {
                 $pro_ffirma_contrato = date('d-m-Y', strtotime($resultado[0]->pro_ffirma_contrato));
             else
                 $pro_ffirma_contrato = $resultado[0]->pro_ffirma_contrato;
+            $consultora=$this->proceso->consultarSeleccionadaProceso($gru_id);
             $rows[0]['id'] = $id;
             $rows[0]['cell'] = array($id,
                 $numero,
@@ -502,7 +506,8 @@ class ProcesoAdministrativo extends CI_Controller {
                 $pro_fcierre_negociacion,
                 $pro_ffirma_contrato,
                 $resultado[0]->pro_observacion2,
-                $pro_flimite_recepcion
+                $pro_flimite_recepcion,
+                $consultora[0]->consultora
             );
             $numfilas = 1;
         }

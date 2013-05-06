@@ -121,6 +121,19 @@ class Proceso extends CI_Model {
         $this->db->where('mun_id', $mun_id);
         $this->db->update($this->tabla, $datos);
     }
+    
+    public function consultarSeleccionadaProceso($grupo_id_pep){
+        $sql="SELECT consultora.cons_nombre  consultora
+              FROM municipio, grupo,$this->tabla,consultores_interes,consultora
+              WHERE municipio.grup_id_pep=grupo.gru_id 
+                    AND proceso.mun_id=municipio.mun_id
+                    AND consultores_interes.pro_id=$this->tabla.pro_id
+                    AND consultora.cons_id=consultores_interes.cons_id
+                    AND municipio.grup_id_pep=$grupo_id_pep 
+                    AND consultores_interes.con_int_seleccionada='Si'";
+        $consulta = $this->db->query($sql);
+        return $consulta->result();
+    }
 
 }
 
