@@ -3,6 +3,5 @@ application/views/plantilla/menu.php
 application/config/database.php
 application/config/config.php
 tmp/ms_tmp/*
-
-
 *.log
+application/logs/*

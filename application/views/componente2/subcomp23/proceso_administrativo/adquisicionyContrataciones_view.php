@@ -35,19 +35,34 @@
     <h2 class="h2Titulos">Proceso de Adquisición y Contrataciones</h2>
     <br/>
     <table>
+        <!--
         <tr>
         <td><strong>Departamento</strong></td>
         <td><select id='selDepto'>
                 <option value='0'>--Seleccione--</option>
-                <?php foreach ($departamentos as $depto) { ?>
-                    <option value='<?php echo $depto->dep_id; ?>'><?php echo $depto->dep_nombre; ?></option>
-                <?php } ?>
+                <php foreach ($grupos as $grupo) { ?>
+                    <option value='<php echo $grupo->dep_id; ?>'><php echo $grupo->dep_nombre; ?></option>
+                <php } ?>
             </select>
         </td>
         </tr>
         <td><strong>Municipio</strong></td>
         <td><select id='selMun' name='selMun'>
                 <option value='0'>--Seleccione--</option>
+            </select>
+        </td>
+        </tr>
+        -->
+        <tr>
+        <td colspan="2">Seleccione el grupo para agregarle las consultoras</td>
+        </tr>
+        <tr>
+        <td><strong>Grupo</strong></td>
+        <td><select name='selGrupo'>
+                <option value='0'>--Seleccione--</option>
+                <?php foreach ($grupos as $grupo) { ?>
+                    <option value='<?php echo $grupo->gru_id; ?>'><?php echo $grupo->gru_numero; ?></option>
+                <?php } ?>
             </select>
         </td>
         </tr>

@@ -15,7 +15,8 @@ $(document).ready(function(){
     /*BASICO*/
     function formularioHide(){$('#listaContainer').show();$('#formulario').hide()}
     function formularioShow(){$('#listaContainer').hide();$('#formulario').show()}
-    $("#guardar").button();
+    $("#guardar").button();btn_consultor_add
+    $("#btn_consultor_add").button();
     $("#btn_acuerdo_nuevo").button().click(function(){$('#frm').submit();});
     $("#btn_seleccionar").button().click(function(){document.location.href='<?php echo current_url(); ?>/' + jQuery("#lista").jqGrid('getGridParam','selrow');});
     $("#cancelar").button().click(function() {document.location.href='<?php echo base_url(); ?>';});
@@ -209,6 +210,8 @@ $(document).ready(function(){
         <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
     </center>
 </div>
+<div id="from_consultor_nuevo" title="Crear Consultor">
+</div>
 
 <?php echo form_open('',array('id'=>'frm')) ?>
 
@@ -272,8 +275,9 @@ $(document).ready(function(){
             <div class="campo">
                 <label>Consultor:</label>
                 <select id="asi_tec_onsultor" name="asi_tec_onsultor">
-                	<option value="0">Select</option>
+                	<?php echo $consultores; ?>
                 </select>
+                <div id="btn_consultor_add">+</div>
                 <?php echo form_error('asi_tec_onsultor'); ?>
             </div>
             <div class="campo" style="display: inline-block;">

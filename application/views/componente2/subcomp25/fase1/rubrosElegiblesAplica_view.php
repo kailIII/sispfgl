@@ -59,11 +59,11 @@
                                     $("#det_obra_monto_"+j).val(valor3[0]); 
                                     j++;
                                 });
-                                 $('#totalEstimadoRubEle').val(registro['cell'][5]);
-                                 $('#totalEstimadoDetFor').val(registro['cell'][6]);
-                                 $('#totalEstimadoDetObra').val(registro['cell'][7]);
-                                 $('#rub_nombre_proyecto').val(registro['cell'][8]);
-                                 $('#rub_observacion').val(registro['cell'][9]);
+                                $('#totalEstimadoRubEle').val(registro['cell'][5]);
+                                $('#totalEstimadoDetFor').val(registro['cell'][6]);
+                                $('#totalEstimadoDetObra').val(registro['cell'][7]);
+                                $('#rub_nombre_proyecto').val(registro['cell'][8]);
+                                $('#rub_observacion').val(registro['cell'][9]);
                                 $("#RubroElegibleAplicaForm").show();
                             });                    
                         }
@@ -84,6 +84,8 @@
             }
         });
         //TODO LO NUMERICO
+        
+        /*PARA LAS CATEGORIAS*/
         $(".numeric").numeric();
         $('.montoDetFor').blur(function(){
             suma=0;
@@ -91,7 +93,19 @@
                 suma+=parseFloat($('#for_monto_<?php echo $categoria->cat_for_id; ?>').val());    
 <?php } ?>
             $('#totalEstimadoDetFor').val(suma);
+            $('#rub_ele_monto_2').val(suma);
+            sumarCategorias.sumar();
         });
+        sumarCategorias=function(){}
+        sumarCategorias.sumar=function(){
+            suma=0;
+<?php foreach ($categorias as $categoria) { ?>
+                suma+=parseFloat($('#for_monto_<?php echo $categoria->cat_for_id; ?>').val());    
+<?php } ?>
+            $('#totalEstimadoDetFor').val(suma);
+        } 
+        
+        /*PARA LOS RUBROS*/
         $('.montoDetObra').blur(function(){
             suma2=0;
 <?php foreach ($obras as $obra) { ?>
@@ -102,7 +116,7 @@
             sumarRubEle.sumar();
         });
        
-       $('.montoRubEle').blur(function(){
+        $('.montoRubEle').blur(function(){
             suma=0;
 <?php foreach ($nombreRubros as $rubro) { ?>
                 suma+=parseFloat($('#rub_ele_monto_<?php echo $rubro->nom_rub_id; ?>').val());    
@@ -163,7 +177,7 @@
         <?php foreach ($nombreRubros as $rubro) { ?>
             <tr>
             <td><?php echo $rubro->nom_rub_nombre; ?></td>
-            <td><input <?php if ($rubro->nom_rub_id == 6) echo 'readonly="readonly"' ?>class="montoRubEle numeric" name="rub_ele_monto_<?php echo $rubro->nom_rub_id; ?>" value="0" id="rub_ele_monto_<?php echo $rubro->nom_rub_id; ?>" value="" type="text" size="25" /></td>
+            <td><input <?php if ($rubro->nom_rub_id == 6 || $rubro->nom_rub_id == 2 ) echo 'readonly="readonly"' ?>class="montoRubEle numeric" name="rub_ele_monto_<?php echo $rubro->nom_rub_id; ?>" value="0" id="rub_ele_monto_<?php echo $rubro->nom_rub_id; ?>" value="" type="text" size="25" /></td>
             </tr>
         <?php } ?>
         <tr>
@@ -209,9 +223,11 @@
     <br/>
 
     <p><strong>Observaciones:</strong><br/><textarea name="rub_observacion" cols="48" rows="5"></textarea></p>
+    <?php //if (strcmp($rol, 'gdrc') == 0) {?>
     <center>
         <input type="submit" id="guardar" value="Guardar" />
     </center>
+    <?php //} ?>
     <input id="rub_id" name="rub_id" value="" type="text" size="100" readonly="readonly" style="visibility: hidden"/>
 </form>
 <div id="mensaje" class="mensaje" title="Aviso de la operación">

@@ -615,9 +615,6 @@ class Comp23_E2 extends CI_Controller {
     public function grupoGestor() {
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
-        $g = $this->input->get('g');
-        if ($g)
-            $informacion['guardo'] = true;
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $username = $this->tank_auth->get_username();
         $informacion['username'] = $username;
@@ -647,15 +644,14 @@ class Comp23_E2 extends CI_Controller {
             $criterios = $this->criterio->obtenerCriterios();
             foreach ($criterios as $criteAux)
                 $this->criterioGruGes->insertarCriterioGruGes($gru_ges_id, $criteAux->cri_id);
-        } else {
-            $idGruGes = $this->gruGes->obtenerIdGruGes($pro_pep_id);
-            $gru_ges_id = $idGruGes[0]['gru_ges_id'];
-            $grupoGestor = $this->gruGes->obtenerGruGes($gru_ges_id);
-            $informacion['gru_ges_lugar'] = $grupoGestor[0]['gru_ges_lugar'];
-            $informacion['gru_ges_fecha'] = $grupoGestor[0]['gru_ges_fecha'];
-            $informacion['gru_ges_observacion'] = $grupoGestor[0]['gru_ges_observacion'];
-            $informacion['gru_ges_acuerdo'] = $grupoGestor[0]['gru_ges_acuerdo'];
         }
+        $idGruGes = $this->gruGes->obtenerIdGruGes($pro_pep_id);
+        $gru_ges_id = $idGruGes[0]['gru_ges_id'];
+        $grupoGestor = $this->gruGes->obtenerGruGes($gru_ges_id);
+        $informacion['gru_ges_lugar'] = $grupoGestor[0]['gru_ges_lugar'];
+        $informacion['gru_ges_fecha'] = $grupoGestor[0]['gru_ges_fecha'];
+        $informacion['gru_ges_observacion'] = $grupoGestor[0]['gru_ges_observacion'];
+        $informacion['gru_ges_acuerdo'] = $grupoGestor[0]['gru_ges_acuerdo'];
         $informacion['gru_ges_id'] = $gru_ges_id;
         $informacion['criterios'] = $this->criterioGruGes->obtenerLosCriteriosGruGes($gru_ges_id);
         /* CARGA DE PLANTILLAS */
@@ -689,7 +685,6 @@ class Comp23_E2 extends CI_Controller {
 
         $this->load->model('etapa2-sub23/grupo_gestor', 'gruGes');
         $this->gruGes->actualizarGruGes($gru_ges_id, $gru_ges_lugar, $gru_ges_fecha, $gru_ges_acuerdo, $gru_ges_observacion);
-        redirect('componente2/comp23_E2/grupoGestor?g=true');
     }
 
     public function capacitacionGrupoGestor() {

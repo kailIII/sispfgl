@@ -78,7 +78,7 @@ class Librerias {
         if (strcasecmp($extension, $extArchivoBase) && $extArchivoBase != '0')
             unlink($nombreArchivoBase[0]['ruta_archivo']);
         $directorio = 'documentos/' . $tabla . '/';
-        $archivoSubir = $directorio . ($tabla . $campo_id.substr($ext,3,4)) . '.' . $extension;
+        $archivoSubir = $directorio . ($tabla . $campo_id.substr($ext,-4,3)) . '.' . $extension;
         if ($archivo['userfile']['size'] < 1050000) {
             if (move_uploaded_file($archivo['userfile']['tmp_name'], $archivoSubir)) {
                 $this->ci->ayuArc->actualizarArchivo2($campo, $campo_id, $tabla, $archivoSubir,$ext);

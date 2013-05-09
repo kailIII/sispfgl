@@ -170,7 +170,7 @@
         $('#selConsul').change(function(){ 
             $("#planTrabajoConsulForm").hide();
             $('#selDepto').children().remove();
-            $.getJSON('<?php echo base_url('componente2/comp23_E0/cargarDeptosPorConsultora') ?>/'+$('#selConsul').val(), 
+            $.getJSON('<?php echo base_url('componente2/comp23_E0/cargarDeptosPorGrupo') ?>/'+$('#selConsul').val(), 
             function(data) {
                 var i=0;
                 $.each(data, function(key, val) {
@@ -197,7 +197,7 @@
         /*CARGAR MUNICIPIOS*/
         $('#selDepto').change(function(){   
             $('#selMun').children().remove();
-            $.getJSON('<?php echo base_url('componente2/comp23_E0/cargarMuniPorConsultora') ?>/'+$('#selDepto').val()+'/'+$('#selConsul').val(),  
+            $.getJSON('<?php echo base_url('componente2/comp23_E0/cargarMuniPorGrupo') ?>/'+$('#selDepto').val()+'/'+$('#selConsul').val(),  
             function(data) {
                 var i=0;
                 $.each(data, function(key, val) {
@@ -352,11 +352,11 @@
 <center>
     <table>
         <tr>
-        <td class="textD" ><strong>Consultora</strong></td>
+        <td class="textD" ><strong>Grupo</strong></td>
         <td> <select id='selConsul'>
-                <option value='0'>--Seleccione Consultora--</option>
-                <?php foreach ($consultoras as $consultora) { ?>
-                    <option value='<?php echo $consultora->cons_id; ?>'><?php echo $consultora->cons_nombre; ?></option>
+                <option value='0'>--Seleccione el Grupo--</option>
+                <?php foreach ($grupos as $grupo) { ?>
+                    <option value='<?php echo $grupo->gru_id; ?>'><?php echo $grupo->gru_numero; ?></option>
                 <?php } ?>
             </select>
         </td>

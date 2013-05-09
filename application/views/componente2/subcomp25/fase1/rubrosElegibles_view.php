@@ -202,7 +202,7 @@
             <td><input type="radio" name="rubro_<?php echo $rubro->nom_rub_id; ?>" value="true" > SI </input>
                 <input type="radio" name="rubro_<?php echo $rubro->nom_rub_id; ?>" value="false"> NO</input>
             </td>
-            <td><input name="conclusion_<?php echo $rubro->nom_rub_id; ?>" id="conclusion_<?php echo $rubro->nom_rub_id; ?>" value="" type="text" size="25" /></td>
+            <td><input name="conclusion_<?php echo $rubro->nom_rub_id; ?>" id="conclusion_<?php echo $rubro->nom_rub_id; ?>" value="" type="text" size="25" maxlength="255" /></td>
             </tr>
         <?php } ?>
     </table>
@@ -218,10 +218,11 @@
         <div id="pagerNotas"></div>
     </center>
     <p>Conclusión General:<br/><textarea name="rub_observacion_general" cols="48" rows="5"></textarea></p>
-    <center>
-        <p><input type="submit" id="guardar" value="Guardar" />
-        </p>
-    </center>
+    <?php //if (strcmp($rol, 'gdrc') == 0) { ?>
+        <center>
+            <input type="submit" id="guardar" value="Guardar" />
+        </center>
+    <?php //} ?>
     <input id="rub_id" name="rub_id" value="" type="text" size="100" readonly="readonly" style="visibility: hidden"/>
 </form>
 <div id="mensaje" class="mensaje" title="Aviso de la operación">

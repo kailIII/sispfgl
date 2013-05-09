@@ -83,7 +83,7 @@ $(document).ready(function(){
                 editrules:{number:true,minValue:1,maxValue:100} }
         ],
         multiselect: false,
-        caption: "Empleados Municipales",
+        caption: "Empleados municipales a nivel de jefatura",
         rowNum:20,
         rowList:[20,50],
         loadonce:true,
@@ -218,7 +218,7 @@ $(document).ready(function(){
                 <div class="campoUp" style="display: inline-block;">
                     <label>Cargar archivo:</label>
                     <div id="fileUpload" style="margin-left: 20px;">
-                        <div id="btn_upload" style="display: inline-block;">Subir Acta</div>
+                        <div id="btn_upload" style="display: inline-block;">Subir Organigrama Municipal</div>
                         <a id="btn_download" href="#" style="display: inline-block;">Descargar</a>
                         <div id="vineta" style="display: inline-block;"></div>
                         <div class="uploadText" style="width: 300px;">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente. Solo se permiten archivos con extensión pdf, doc, docx</div>

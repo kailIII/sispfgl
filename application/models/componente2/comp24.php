@@ -12,7 +12,7 @@ Class comp24 extends CI_Model{
         return date('Y-m-d',mktime(0,0,0,$t[1],$t[0],$t[2]));
     }
     
-    public function select_data($tabla, $where='', $out='json'){
+    public function select_data($tabla, $where=null, $out='json'){
         
         return $data = $this->db->get_where($tabla,$where);
         //return json_encode($data->result());
@@ -74,8 +74,13 @@ GROUP BY dep_nombre';
             return false;
     }
     
-    public function insert_row($tabla, $data){
-        return $this->db->insert($tabla, $data);
+    public function insert_row($tabla, $data,$last_id = false){
+        $r = $this->db->insert($tabla, $data);
+        if($last_id){
+            return $this->db->insert_id();
+        }else{
+            return $r;
+        }
     }
     
     public function update_row($tabla,$campo,$index,$data){

@@ -64,6 +64,25 @@ class Comp24_E0 extends CI_Controller {
     }
     
     /**
+     * @param 
+     */
+    function getConsultores($selected = false){
+        if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
+        
+        $this->db->order_by('con_nombre','asc');
+        $res = $this->db->get('cat_consultores');
+        $salida = "<option value=\"0\">-- Seleccione --</option>\n";
+        foreach ($res->result() as $row){
+            $salida = $salida . '<option value="' . $row->con_id . '" ';
+            if($selected && $selected == $row->con_id){
+                $salida = $salida . 'selected="selected"';
+            }
+            $salida = $salida . ">$row->con_id| $row->con_nombre</option>\n";
+        }
+        return $salida;        
+    }
+    
+    /**
      * Cuenta la cantidad de personas por sexo
      */
     function count_sexo($tabla,$campo_sexo,$campo_index,$index){
@@ -98,7 +117,7 @@ class Comp24_E0 extends CI_Controller {
 		{
 			$res = $this->upload->data();
             //meter en db
-            $ruta = "/documentos/$tabla/" . $config['file_name'];
+            $ruta = "documentos/$tabla/" . $config['file_name'];
             $this->comp24->update_row($tabla,$index,$id,array($campo=>$ruta));
             echo base_url().$ruta;
 		}
@@ -389,6 +408,7 @@ class Comp24_E0 extends CI_Controller {
                     'username' => $this->tank_auth->get_username(),
                     'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
                     'departamentos' => $this->departamento->obtenerDepartamentos(),
+                    'consultores' => $this->getConsultores(),
                     $campo => $id
                     ));
     }

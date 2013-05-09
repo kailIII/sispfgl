@@ -42,7 +42,7 @@ class Comp25_fase1 extends CI_Controller {
             $informacion['departamentos'] = $this->departamento->obtenerDepartamentosPorGrupoGDR($cons[0]->cons_id);
         else
             $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
-
+        $informacion['rol'] = $rol[0]->rol_codigo;
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp25/fase1/revisionInformacion_view');
@@ -344,7 +344,7 @@ class Comp25_fase1 extends CI_Controller {
             $informacion['departamentos'] = $this->departamento->obtenerDepartamentosPorGrupoGDR($cons[0]->cons_id);
         else
             $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
-
+        $informacion['rol'] = $rol[0]->rol_codigo;
         $this->load->model('fase1-sub25/nombre_rubro', 'nomRub');
         $informacion['nombreRubros'] = $this->nomRub->obtenerNombresRubro();
         $this->load->view('plantilla/header', $informacion);
@@ -492,7 +492,7 @@ class Comp25_fase1 extends CI_Controller {
             $informacion['departamentos'] = $this->departamento->obtenerDepartamentosPorGrupoGDR($cons[0]->cons_id);
         else
             $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
-
+        $informacion['rol'] = $rol[0]->rol_codigo;
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp25/fase1/aprobacionPerfil_view');
@@ -566,6 +566,10 @@ class Comp25_fase1 extends CI_Controller {
             $nAcu = 'No hay Acuerdo para descargar';
         else
             $nAcu = 'Descargar ' . end(explode("/", $revision[0]->per_pro_acu_ruta_archivo));
+        if ($revision[0]->per_pro_doc_ruta_archivo == NULL || $revision[0]->per_pro_doc_ruta_archivo == '0')
+            $nDoc = 'No hay documentos de aprobación';
+        else
+            $nDoc = 'Descargar ' . end(explode("/", $revision[0]->per_pro_doc_ruta_archivo));
         $rows[0]['id'] = $revision[0]->per_pro_id;
         $rows[0]['cell'] = array($revision[0]->per_pro_id,
             $per_pro_fentrega_isdem,
@@ -593,7 +597,9 @@ class Comp25_fase1 extends CI_Controller {
             $revision[0]->per_pro_car_ruta_archivo,
             $nCar,
             $revision[0]->per_pro_acu_ruta_archivo,
-            $nAcu
+            $nAcu,
+            $revision[0]->per_pro_doc_ruta_archivo,
+            $nDoc
         );
         $datos = json_encode($rows);
         $pages = floor(1 / 10) + 1;
@@ -690,7 +696,7 @@ class Comp25_fase1 extends CI_Controller {
             $informacion['departamentos'] = $this->departamento->obtenerDepartamentosPorGrupoGDR($cons[0]->cons_id);
         else
             $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
-
+        $informacion['rol'] = $rol[0]->rol_codigo;
         //RUBROS
         $this->load->model('fase1-sub25/nombre_rubro', 'nomRub');
         $informacion['nombreRubros'] = $this->nomRub->obtenerNombresRubro();
