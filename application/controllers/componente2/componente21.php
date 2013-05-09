@@ -18,9 +18,9 @@ class  componente21 extends CI_Controller {
     public function cc() {
 
         $informacion['titulo'] = 'CC';
-        //$informacion['user_id'] = $this->tank_auth->get_user_id();
-        //$informacion['username'] = $this->tank_auth->get_username();
-        //$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/cc_view');
@@ -30,9 +30,9 @@ class  componente21 extends CI_Controller {
     public function ccc() {
 
         $informacion['titulo'] = 'CCC';
-        //$informacion['user_id'] = $this->tank_auth->get_user_id();
-        //$informacion['username'] = $this->tank_auth->get_username();
-        //$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/ccc_view');
@@ -58,9 +58,9 @@ class  componente21 extends CI_Controller {
 			{
 				$error_upload = $this->upload->display_errors('<p style="color:red">Error: ', '</p>');
 				$informacion['titulo'] = 'CC';
-				//$informacion['user_id'] = $this->tank_auth->get_user_id();
-				//$informacion['username'] = $this->tank_auth->get_username();
-				//$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username()); 
+				$informacion['user_id'] = $this->tank_auth->get_user_id();
+				$informacion['username'] = $this->tank_auth->get_username();
+				$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username()); 
 				$informacion['aviso'] = $error_upload; 
 				$this->load->view('plantilla/header', $informacion);
 				$this->load->view('plantilla/menu', $informacion);
@@ -82,9 +82,9 @@ class  componente21 extends CI_Controller {
 			{
 				$error_upload = $this->upload->display_errors('<p style="color:red">Error: ', '</p>');
 				$informacion['titulo'] = 'CC';
-				//$informacion['user_id'] = $this->tank_auth->get_user_id();
-				//$informacion['username'] = $this->tank_auth->get_username();
-				//$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username()); 
+				$informacion['user_id'] = $this->tank_auth->get_user_id();
+				$informacion['username'] = $this->tank_auth->get_username();
+				$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username()); 
 				$informacion['aviso'] = $error_upload; 
 				$this->load->view('plantilla/header', $informacion);
 				$this->load->view('plantilla/menu', $informacion);
@@ -103,19 +103,38 @@ class  componente21 extends CI_Controller {
 			$this->load->model('componente2/comp21_model');
 			$this->comp21_model->insertar_cc($datos_cc,$ruta1,$ruta2);				
 			
-			$informacion['titulo'] = '3.1 Diagnostico Sectorial y Analisis Transversales';
-			//$informacion['user_id'] = $this->tank_auth->get_user_id();
-			//$informacion['username'] = $this->tank_auth->get_username();
-			//$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username()); 
+			$informacion['titulo'] = 'CCC';
+			$informacion['user_id'] = $this->tank_auth->get_user_id();
+			$informacion['username'] = $this->tank_auth->get_username();
+			$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username()); 
+			$informacion['aviso'] = '<p style="color:blue">Se ha realziado el registro correctamete.</p>';         
+			$this->load->view('plantilla/header', $informacion);
+			$this->load->view('plantilla/menu', $informacion);
+			$this->load->view('componente2/ccc_view');
+			$this->load->view('plantilla/footer', $informacion);
+			
+	}
+	
+	
+	public function guardar_ccc() {
+
+        $datos_ccc = $_POST;
+		unset($datos_ccc['guardar']);
+		
+		$this->load->model('componente2/comp21_model');
+		$this->comp21_model->insertar_ccc($datos_ccc);
+		
+		$informacion['titulo'] = '3.1 Diagnostico Sectorial y Analisis Transversales';
+			$informacion['user_id'] = $this->tank_auth->get_user_id();
+			$informacion['username'] = $this->tank_auth->get_username();
+			$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username()); 
 			$informacion['aviso'] = '<p style="color:blue">Se ha realziado el registro correctamete.</p>';         
 			$this->load->view('plantilla/header', $informacion);
 			$this->load->view('plantilla/menu', $informacion);
 			$this->load->view('componente2/cc_view');
 			$this->load->view('plantilla/footer', $informacion);
-			
-	}
-	
 		
+	}
     
     
 }
