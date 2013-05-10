@@ -115,9 +115,9 @@ class Comp23_E0 extends CI_Controller {
     public function gestionSolicitudAsistencia() {
 
         $informacion['titulo'] = 'Solicitud de Asistencia Técnica';
-        //$informacion['user_id'] = $this->tank_auth->get_user_id();
-        //$informacion['username'] = $this->tank_auth->get_username();
-        //$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
         $this->load->model('pais/departamento', 'depar');
         $departamentos = $this->depar->obtenerDepartamentos();
         $informacion['departamentos'] = $departamentos;

@@ -242,4 +242,3 @@ foreach ($contrapartidas as $aux) {
         <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
     </center>
 </div>
-

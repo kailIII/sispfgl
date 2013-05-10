@@ -16,9 +16,9 @@
             </li>
             <li><a>Reportes</a></li>
             <li><a>Contáctenos</a></li>
-            <li><a href="http://localhost/limesurvey">Encuestas</a></li>
+            <li><a href="http://sis-pfgl.gob.sv/limesurvey">Encuestas</a></li>
             <!--
-            <li><a href="<?php echo base_url('componente2/comp23_E0/gestionsolicitudAsistencia');?>">Solicitud Asistencia</a>-->
+            <li><a href="<php echo base_url('componente2/comp23_E0/gestionsolicitudAsistencia');?>">Solicitud Asistencia</a>-->
             <?php
         }
         ?>
