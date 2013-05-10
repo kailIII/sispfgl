@@ -29,10 +29,7 @@
             pager: jQuery('#pager'),
             viewrecords: true     
         }).jqGrid('navGrid','#pager',
-        {edit:false,add:false,del:false,search:false,refresh:false,
-            beforeRefresh: function() {
-                tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}
-            ).trigger('reloadGrid');}
+        {edit:false,add:false,del:false,search:false,refresh:false
         }
     ).hideCol(['id']);
         /* BOTON DE EDITAR*/

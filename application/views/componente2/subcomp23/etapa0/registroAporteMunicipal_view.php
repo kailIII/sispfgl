@@ -23,7 +23,8 @@
         });
 
         /*CARGAR MUNICIPIOS*/
-        $('#selDepto').change(function(){   
+        $('#selDepto').change(function(){
+            $('#selEta').val(0);
             $('#selMun').children().remove();
             $.getJSON('<?php echo base_url('componente2/comp23_E0/cargarMuniSeleccionados') ?>/'+$('#selDepto').val(), 
             function(data) {
@@ -37,6 +38,13 @@
                     }
                 });
             });              
+        });
+        $('#selMun').change(function(){
+            $('#registroAporteMunicipalForm')[0].reset();
+            $(".ck:checkbox:checked").removeAttr("checked");
+            $('#especifique_6').hide();
+            $('#lespecifique').hide();
+            $('#selEta').val(0);
         });
         $('#selEta').change(function(){
             $('#registroAporteMunicipalForm')[0].reset();
@@ -111,9 +119,6 @@ foreach ($contrapartidas as $aux) {
         $(".numeric").numeric();
     });
 </script>
-
-
-<h2 class="h2Titulos">Etapa 0: Selección de Municipios</h2>
 <h2 class="h2Titulos">Registro de Aportes de la Municipalidad</h2>
 <br/>
 <center>

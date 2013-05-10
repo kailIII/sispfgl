@@ -32,7 +32,7 @@
 <!--<form id="AdquisicionyContratacionForm" method="post" style="left: 100px;position: relative;">-->
 <form id="AdquisicionyContratacionForm" method="post">
     <center>
-    <h2 class="h2Titulos">Proceso de Adquisición y Contrataciones</h2>
+    <h2 class="h2Titulos">Expresiones de Interes</h2>
     <br/>
     <table>
         <!--

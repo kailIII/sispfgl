@@ -191,7 +191,7 @@
             <p><strong>¿Acta de aceptación contiene firmas?</strong></p>
             <table>
                 <tr>
-                <td><strong>concejo municipalidad</strong></td>
+                <td><strong>Concejo Municipal</strong></td>
                 <td><input type="radio" name="pro_pep_firmacm" value="true" <?php if (!strcasecmp($pro_pep_firmacm, 't')) { ?>checked <?php } ?>>SI </input></td>
                 <td><input type="radio" name="pro_pep_firmacm" value="false" <?php if (!strcasecmp($pro_pep_firmacm, 'f')) { ?>checked <?php } ?>>NO </input></td>
                 </tr>

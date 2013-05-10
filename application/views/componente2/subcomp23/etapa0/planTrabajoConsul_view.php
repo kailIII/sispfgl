@@ -346,7 +346,6 @@
   
     });
 </script>
-<h2 class="h2Titulos">Etapa 0: Selección de Municipios</h2>
 <h2 class="h2Titulos">Plan de trabajo de las consultoras</h2>
 <br/>
 <center>
@@ -401,7 +400,7 @@
         </td>
         </tr>  
         <tr><td style="width: 100px"> 
-        <td class="textD"><strong>Fecha de visto bueno: </strong> </td>
+        <td class="textD"><strong>Fecha de superación de observaciones: </strong> </td>
         <td>
             <input id="pla_tra_fsuperacion_obs" name="pla_tra_fsuperacion_obs" type="text" size="10" readonly="readonly"/>
         </td>

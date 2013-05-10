@@ -197,7 +197,7 @@
 
 <center>
     <h2 class="h2Titulos">Evaluación de expresión de interés</h2>
-    <h2 class="h2Titulos">Proceso de evaluación</h2>
+    <h2 class="h2Titulos">Lista Corta</h2>
     <br/>
     <table>
 <!--        <tr>

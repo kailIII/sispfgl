@@ -161,7 +161,7 @@
 
 <form id="informePreliminarForm" method="post">
     <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
-    <h2 class="h2Titulos">Producto 6: Informe Preliminar del Municipio</h2>
+    <h2 class="h2Titulos">Informe Preliminar del Municipio</h2>
 
     <br/><br/>
     <table>
