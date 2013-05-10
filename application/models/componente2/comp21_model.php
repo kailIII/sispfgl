@@ -50,6 +50,39 @@ Class comp21_model extends CI_Model{
 		//$this->db->update('gestionperiodos', $data);
 	}
 	
+	
+	public function insertar_ccc($new_ccc) {
+		
+		$data_ccc = array(
+		  'mun_id' => $new_ccc['mun_id'],
+          'fecha_conformacion' => $new_ccc['fecha_conformacion'],
+          'lugar_conformacion' => $new_ccc['lugar_convocatoria']
+        );
+        
+        $this->db->insert('ccc', $data_ccc);
+        $query = $this->db->query("select currval('ccc_ccc_id_seq') as id;");
+		$row = $query->row();
+		$id= $row->id;
+              
+        $k=0;
+        for($i=0;$i<$new_ccc['cant_proy'];$i++){
+			
+				$data_proy[$k] = array(
+				  'ccc_id' => $id,
+				  'nom_subproy' => $new_ccc['nombre_proy'.$i],
+				  'nom_com_beneficiadas' => $new_ccc['com_beneficiadas'.$i],
+				  'num_com_beneficiadas' => $new_ccc['pob_beneficiada'.$i],
+				);
+				$k++;
+		}// ingresa los asistentes al un array
+		
+		
+		if($k!=0)
+			for($i=0;$i<$k;$i++){
+				$this->db->insert('subproy_segui', $data_proy[$i]);
+			}
+		
+	}
 
 }
 

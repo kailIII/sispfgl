@@ -322,7 +322,7 @@ echo form_open_multipart('componente2/componente21/guardar_cc',$attributes);?>
 		</tr>
 	</table>
 	
-	<label>N&uacute;mero de Comunidades Beneficiadas: </label>
+	<label>N&uacute;mero Aprox. de Comunidades Beneficiadas: </label>
 	<input type="text" name="com_beneficiadas" id="com_beneficiadas"  size="5">
 	
 	<label>Poblaci&oacute;n Beneficiada: </label>
