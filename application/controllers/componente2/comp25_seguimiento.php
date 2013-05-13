@@ -39,7 +39,7 @@ class comp25_seguimiento extends CI_Controller {
         $this->load->model('consultor/consultor');
         $cons = $this->consultor->obtenerConsultorPorUsuario($this->tank_auth->get_username());
 
-        if (strcmp($rol[0]->rol_codigo, 'gdrc') == 0)
+        if (strcmp(trim($rol[0]->rol_codigo), 'gdrc') == 0)
             $informacion['departamentos'] = $this->departamento->obtenerDepartamentosPorGrupoGDR($cons[0]->cons_id);
         else
             $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();

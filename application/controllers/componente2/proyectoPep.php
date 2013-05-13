@@ -123,7 +123,7 @@ class ProyectoPep extends CI_Controller {
 
         $dep_id = $this->input->get("dep_id");
         $this->load->model('pais/municipio', 'mun');
-        if (strcmp($rol[0]->rol_codigo, 'gdrc') == 0)
+        if (strcmp(trim($rol[0]->rol_codigo), 'gdrc') == 0)
             $municipios = $this->mun->obtenerMunicipioGDR($cons[0]->cons_id, $dep_id);
         else
             $municipios = $this->mun->obtenerMunicipioPorDepartamento($dep_id);

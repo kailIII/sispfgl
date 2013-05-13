@@ -85,6 +85,18 @@ class Departamento extends CI_Model {
         $consulta = $this->db->query($query, array($gru_id));
         return $consulta->result();
     }
+    
+    public function obtenerDepartamentosPorGrupoRegion($gru_id,$reg_id) {
+        $query = "SELECT distinct(departamento.dep_id), 
+                         departamento.dep_nombre
+                  FROM 	 municipio,departamento
+                  WHERE  municipio.dep_id = departamento.dep_id AND
+                         municipio.grup_id_pep = ? AND
+                         departamento.reg_id = ?
+                  ORDER BY departamento.dep_id";
+        $consulta = $this->db->query($query, array($reg_id,$gru_id));
+        return $consulta->result();
+    }
 
     public function obtenerDepartamentosSeleccionado() {
         $query = "SELECT distinct(departamento.dep_id), 

@@ -118,9 +118,13 @@ class Comp23_E0 extends CI_Controller {
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $this->load->model('tank_auth/users', 'usuarios');
         $this->load->model('pais/departamento', 'depar');
-        $departamentos = $this->depar->obtenerDepartamentos();
-        $informacion['departamentos'] = $departamentos;
+        $rol = $this->usuarios->obtenerCodigoRol($this->tank_auth->get_username());
+        if (strcmp(trim($rol[0]->rol_codigo), 'apr') == 0)
+            $informacion['departamentos'] = $this->depar->obtenerDepartamentosPorRegion($rol[0]->reg_id);
+        else
+            $informacion['departamentos'] = $this->depar->obtenerDepartamentos();
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/etapa0/gestionSolicitudAsistencia_view');
@@ -232,7 +236,6 @@ class Comp23_E0 extends CI_Controller {
     /* Integracion de Grupos     */
 
     public function integracionDeGrupos() {
-
         $informacion['titulo'] = 'Registro de Intregación de Grupos';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
@@ -894,10 +897,10 @@ class Comp23_E0 extends CI_Controller {
             }
             $i = 0;
             $numfilas = 1;
-            if($aporteMunicipal[0]->apo_mun_faprobacion=='')
-                $fechaAprobacion=null;
+            if ($aporteMunicipal[0]->apo_mun_faprobacion == '')
+                $fechaAprobacion = null;
             else
-                $fechaAprobacion=date('d/m/Y', strtotime($aporteMunicipal[0]->apo_mun_faprobacion));
+                $fechaAprobacion = date('d/m/Y', strtotime($aporteMunicipal[0]->apo_mun_faprobacion));
             $rows[$i]['id'] = $aporteMunicipal[0]->apo_mun_id;
             $rows[$i]['cell'] = array($aporteMunicipal[0]->apo_mun_id,
                 $aporteMunicipal[0]->apo_mun_monto_estimado,
