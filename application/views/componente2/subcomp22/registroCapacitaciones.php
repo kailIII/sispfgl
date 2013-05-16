@@ -149,7 +149,9 @@ $(document).ready(function(){
             </div>
             <div class="campo">
                 <label>Nombre de la Sede:</label>
-                <?php echo form_dropdown('sed_id',$cap_sede,set_value('sed_id','0')); echo form_error('sed_id'); ?>
+                <input id="cap_sede" name="cap_sede" type="text" value="<?php echo set_value('cap_sede') ?>"/>
+                <?php echo form_error('cap_sede'); ?>
+                <?php //echo form_dropdown('sed_id',$cap_sede,set_value('sed_id','0')); echo form_error('sed_id'); ?>
             </div>
             <div class="campo">
                 <label>Modalidad del proceso:</label>
