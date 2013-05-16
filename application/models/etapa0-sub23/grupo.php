@@ -75,6 +75,17 @@ class Grupo extends CI_Model {
         $this->db->update($this->tabla, $datos);
     }
 
+    public function obtenerGruposPorRegion($reg_id) {
+        $query = "SELECT distinct(grupo.gru_id), grupo.gru_numero
+                  FROM   municipio,departamento,grupo
+                  WHERE  municipio.dep_id = departamento.dep_id AND
+                         grupo.gru_id=municipio.grup_id_pep AND
+                         departamento.reg_id=?
+                  ORDER BY grupo.gru_numero";
+        $consulta = $this->db->query($query, array($reg_id));
+        return $consulta->result();
+    }
+
 }
 
 ?>

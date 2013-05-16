@@ -31,9 +31,13 @@ class ProcesoAdministrativo extends CI_Controller {
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
-//OBTENER DEPARTAMENTOS
         $this->load->model('etapa0-sub23/grupo');
-        $informacion['grupos'] = $this->grupo->obtenerGrupos();
+        $this->load->model('tank_auth/users', 'usuarios');
+        $rol = $this->usuarios->obtenerCodigoRol($this->tank_auth->get_username());
+        if (strcmp(trim($rol[0]->rol_codigo), 'apr') == 0)
+            $informacion['grupos'] = $this->grupo->obtenerGruposPorRegion($rol[0]->reg_id);
+        else
+            $informacion['grupos'] = $this->grupo->obtenerGrupos();
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/proceso_administrativo/adquisicionyContrataciones_view');
@@ -247,11 +251,13 @@ class ProcesoAdministrativo extends CI_Controller {
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
-        //OBTENER DEPARTAMENTOS
-        /* $this->load->model('pais/departamento');
-          $informacion['departamentos'] = $this->departamento->obtenerDepartamentos(); */
         $this->load->model('etapa0-sub23/grupo');
-        $informacion['grupos'] = $this->grupo->obtenerGrupos();
+        $this->load->model('tank_auth/users', 'usuarios');
+        $rol = $this->usuarios->obtenerCodigoRol($this->tank_auth->get_username());
+        if (strcmp(trim($rol[0]->rol_codigo), 'apr') == 0)
+            $informacion['grupos'] = $this->grupo->obtenerGruposPorRegion($rol[0]->reg_id);
+        else
+            $informacion['grupos'] = $this->grupo->obtenerGrupos();
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/proceso_administrativo/evaluacionDeclaracion_view');
@@ -296,11 +302,13 @@ class ProcesoAdministrativo extends CI_Controller {
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
-        //OBTENER DEPARTAMENTOS
-        /* $this->load->model('pais/departamento');
-          $informacion['departamentos'] = $this->departamento->obtenerDepartamentos(); */
         $this->load->model('etapa0-sub23/grupo');
-        $informacion['grupos'] = $this->grupo->obtenerGrupos();
+        $this->load->model('tank_auth/users', 'usuarios');
+        $rol = $this->usuarios->obtenerCodigoRol($this->tank_auth->get_username());
+        if (strcmp(trim($rol[0]->rol_codigo), 'apr') == 0)
+            $informacion['grupos'] = $this->grupo->obtenerGruposPorRegion($rol[0]->reg_id);
+        else
+            $informacion['grupos'] = $this->grupo->obtenerGrupos();
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/proceso_administrativo/seleccionConsultoras_view');
@@ -359,10 +367,13 @@ class ProcesoAdministrativo extends CI_Controller {
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
         //OBTENER DEPARTAMENTOS
-        /* $this->load->model('pais/departamento');
-          $informacion['departamentos'] = $this->departamento->obtenerDepartamentos(); */
         $this->load->model('etapa0-sub23/grupo');
-        $informacion['grupos'] = $this->grupo->obtenerGrupos();
+        $this->load->model('tank_auth/users', 'usuarios');
+        $rol = $this->usuarios->obtenerCodigoRol($this->tank_auth->get_username());
+        if (strcmp(trim($rol[0]->rol_codigo), 'apr') == 0)
+            $informacion['grupos'] = $this->grupo->obtenerGruposPorRegion($rol[0]->reg_id);
+        else
+            $informacion['grupos'] = $this->grupo->obtenerGrupos();
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/proceso_administrativo/propuestaTecnica_view');

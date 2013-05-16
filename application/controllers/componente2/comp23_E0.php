@@ -241,7 +241,19 @@ class Comp23_E0 extends CI_Controller {
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
         $this->load->model('etapa0-sub23/grupo');
-        $informacion['grupos'] = $this->grupo->obtenerGrupos();
+        $this->load->model('tank_auth/users', 'usuarios');
+        $this->load->model('pais/departamento', 'depar');
+        $this->load->model('pais/region');
+        $rol = $this->usuarios->obtenerCodigoRol($this->tank_auth->get_username());
+        if (strcmp(trim($rol[0]->rol_codigo), 'apr') == 0) {
+            $informacion['grupos'] = $this->grupo->obtenerGruposPorRegion($rol[0]->reg_id);
+            $region = $this->region->obtenerRegion($rol[0]->reg_id);
+            $informacion['reg_id'] = $region[0]->reg_id;
+            $informacion['reg_nombre'] = $region[0]->reg_nombre;
+        }
+        else
+            $informacion['grupos'] = $this->grupo->obtenerGrupos();
+        $informacion['rol'] = trim($rol[0]->rol_codigo);
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/etapa0/integracionDeGrupos_view');
@@ -587,7 +599,12 @@ class Comp23_E0 extends CI_Controller {
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
         $this->load->model('etapa0-sub23/grupo');
-        $informacion['grupos'] = $this->grupo->obtenerGrupos();
+        $this->load->model('tank_auth/users', 'usuarios');
+        $rol = $this->usuarios->obtenerCodigoRol($this->tank_auth->get_username());
+        if (strcmp(trim($rol[0]->rol_codigo), 'apr') == 0)
+            $informacion['grupos'] = $this->grupo->obtenerGruposPorRegion($rol[0]->reg_id);
+        else
+            $informacion['grupos'] = $this->grupo->obtenerGrupos();
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/etapa0/planTrabajoConsul_view');
@@ -829,10 +846,14 @@ class Comp23_E0 extends CI_Controller {
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
         $this->load->model('pais/departamento', 'depar');
-        $departamentos = $this->depar->obtenerDepartamentos();
         $this->load->model('etapa1-sub23/contrapartida');
         $contrapartidas = $this->contrapartida->obtenerContrapartidas();
-        $informacion['departamentos'] = $departamentos;
+        $this->load->model('tank_auth/users', 'usuarios');
+        $rol = $this->usuarios->obtenerCodigoRol($this->tank_auth->get_username());
+        if (strcmp(trim($rol[0]->rol_codigo), 'apr') == 0)
+            $informacion['departamentos'] = $this->depar->obtenerDepartamentosPorRegion($rol[0]->reg_id);
+        else
+            $informacion['departamentos'] = $this->depar->obtenerDepartamentos();
         $informacion['contrapartidas'] = $contrapartidas;
 
         $this->load->model('etapa', 'eta');
@@ -957,8 +978,12 @@ class Comp23_E0 extends CI_Controller {
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
         $this->load->model('pais/departamento', 'depar');
-        $departamentos = $this->depar->obtenerDepartamentos();
-        $informacion['departamentos'] = $departamentos;
+        $this->load->model('tank_auth/users', 'usuarios');
+        $rol = $this->usuarios->obtenerCodigoRol($this->tank_auth->get_username());
+        if (strcmp(trim($rol[0]->rol_codigo), 'apr') == 0)
+            $informacion['departamentos'] = $this->depar->obtenerDepartamentosPorRegion($rol[0]->reg_id);
+        else
+            $informacion['departamentos'] = $this->depar->obtenerDepartamentos();
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/etapa0/comiteInterinstitucional_view');
