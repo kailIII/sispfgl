@@ -18,14 +18,7 @@ $(document).ready(function(){
     $('.mensaje').dialog({autoOpen: false,width: 300,
         buttons: {"Ok": function() {$(this).dialog("close");}}
     });
-    $('#selDepto').change(function(){   
-        $.ajax({url: '<?php echo base_url('componente2/comp24_E0/getMunicipios') ?>/'+$('#selDepto').val()
-        }).done(function(data){$('#mun_id').children().remove();$('#mun_id').html(data);});           
-    });
     /**/
-    $('#mun_id').change(function(){
-        window.location.href = '<?php echo current_url(); ?>/' + $('#mun_id').val();
-    });
     
     /*GRID*/
     /*desabilitado para activas completar comentario de esta linea y retirar display:none; del elemento */
@@ -34,12 +27,12 @@ $(document).ready(function(){
        	url: '<?php echo base_url('componente2/comp24_E0/loadUserRol8'); ?>/',
         editurl: '<?php echo base_url('componente2/comp24_E0/gestionUserRol8'); ?>/', 
     	datatype: "json",
-        width: 300,
-       	colNames:['Id','Usuario','Fecha'],
+        width: 500,
+       	colNames:['Usuario','deptos','id'],
        	colModel:[
-       		{name:'id',index:'id', width:55},
-            {name:'user_id',index:'user_id', width:90},
-       		{name:'deptos',index:'deptos', width:90}		
+       		{name:'user_id',index:'user_id', width:55,editable:true},
+            {name:'deptos',index:'deptos', width:90,editable:true},
+       		{name:'id',index:'id', width:90,editable:true}		
        	],
        	rowNum:10,
        	rowList:[10,20,30],
@@ -49,9 +42,16 @@ $(document).ready(function(){
         sortorder: "desc",
         caption:"Usuarios Rol 8",
         ondblClickRow: function(rowid, iRow, iCol, e){
-            /*window.location.href='<?php echo current_url(); ?>/' + rowid;/*
+            $('#lista').jqGrid('editRow',rowid,true); 
         }
     });
+	$("#lista").jqGrid('navGrid','#pagerLista',
+        {edit:false,add:false,del:true,search:true,refresh:false,
+        beforeRefresh: function() {
+            tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
+        }
+    );
+    $("#lista").jqGrid('inlineNav',"#pagerLista",{editParams:{keys:true}});
     /**/
     <?php
     //Muestra los dialogos.
@@ -81,6 +81,7 @@ $(document).ready(function(){
                 <table id="lista"></table>
                 <div id="pagerLista"></div>
             </div>
+            <div><?php echo $users; ?></div>
         </div>
         <div id="formulario" style="display: none;">
             <div class="campo">

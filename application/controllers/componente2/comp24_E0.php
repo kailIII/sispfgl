@@ -160,18 +160,23 @@ class Comp24_E0 extends CI_Controller {
     public function setUserDepto(){
         if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
         
+        $users = '';
+        foreach($this->comp24->select_data('users',array('rol_id'=>8))->result() as $row){
+            $users .= $row->username . '!' . $row->id . "<br/>\n";
+        }
+        
         $this->load->view('componente2/subcomp24/admin',
             array('titulo' => 'Componente',
                 'user_uid' => $this->tank_auth->get_user_id(),
                 'username' => $this->tank_auth->get_username(),
                 'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
-                'departamentos' => $this->getDepartamentos()
+				'users' => $users
                 ));
     }
     
     public function loadUserRol8(){
         if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
-        $data = $this->comp24->select_data('c24_user_depto');
+		$data = $this->comp24->select_data('c24_user_depto');
         echo $this->librerias->json_out($data,'uxd_id',array('uxd_id','user_id','deptos'));
     }
     
@@ -183,6 +188,7 @@ class Comp24_E0 extends CI_Controller {
         $index = $this->input->post('id');
         
         $data = array(
+            $campo => $lastId = $this->db->query("SELECT $campo FROM $tabla ORDER BY $campo DESC LIMIT 1;")->row()->$campo + 1,
             'user_id'      => $this->input->post('user_id'),
             'deptos'      => $this->input->post('deptos')
         );
