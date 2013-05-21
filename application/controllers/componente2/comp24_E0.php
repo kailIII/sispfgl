@@ -42,11 +42,20 @@ class Comp24_E0 extends CI_Controller {
         return false;
     }
     
+    /**
+     * Obtener Departamentos por permiso.
+     * by Alexis Beltran
+     * 
+     * Retorna un array con id,dep_nombre, si posee permiso.
+     */
     public function getDepartamentos(){
         if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
         
         $deptos = $this->db->get_where('c24_user_depto',array('user_id'=>$this->tank_auth->get_user_id()))->row()->deptos;
-        $this->db->where_in('dep_id',explode(',',$deptos));
+        $deptos = explode(',',$deptos);
+        if(count($deptos) > 0){
+        	$this->db->where_in('dep_id',$deptos);
+        }
         $this->db->order_by('dep_id','ASC');
         $salida['0'] = 'Seleccione';
         foreach($this->db->get('departamento')->result() as $row){
