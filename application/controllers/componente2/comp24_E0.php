@@ -51,10 +51,10 @@ class Comp24_E0 extends CI_Controller {
     public function getDepartamentos(){
         if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
         
-        $deptos = $this->db->get_where('c24_user_depto',array('user_id'=>$this->tank_auth->get_user_id()))->row()->deptos;
-        $deptos = explode(',',$deptos);
-        if(count($deptos) > 0){
-        	$this->db->where_in('dep_id',$deptos);
+        $deptos = $this->db->get_where('c24_user_depto',array('user_id'=>$this->tank_auth->get_user_id()));
+        if($deptos->num_rows() > 0){
+            $deptos = explode(',',$deptos);
+            $this->db->where_in('dep_id',$deptos);
         }
         $this->db->order_by('dep_id','ASC');
         $salida['0'] = 'Seleccione';
