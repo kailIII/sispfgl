@@ -74,7 +74,7 @@ GROUP BY dep_nombre';
             return false;
     }
     
-    public function insert_row($tabla, $data,$last_id = false){
+    public function insert_row($tabla, $data, $last_id = false){
         $r = $this->db->insert($tabla, $data);
         if($last_id){
             return $this->db->insert_id();
@@ -94,6 +94,11 @@ GROUP BY dep_nombre';
     public function insert_indicadores1($data){
         
         return $this->db->insert('indicadores_desempeno1',$data);
+    }
+    
+    public function last_id($tabla, $campo){
+        $this->db->order_by($campo,'desc');
+        return  $this->db->get($tabla,'1')->row()->$campo;
     }
     
     /**

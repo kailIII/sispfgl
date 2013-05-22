@@ -47,74 +47,144 @@ class uep extends CI_Controller {
                     'user_uid' => $this->tank_auth->get_user_id(),
                     'username' => $this->tank_auth->get_username(),
                     'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
-                    'departamentos' => $this->departamento->obtenerDepartamentos()
+                    'departamentos' => $this->comp24->getDepartamentos()
                     ));
     }
     
     /**
      * 
      */
-    public function loadParticipantesSolicitud($id){
+    public function loadActividades($id){
         if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
-        $data = $this->model22->getParticipantes($id);
-        echo $this->librerias->json_out($data,'par_id');
+        $d = $this->comp24->select_data('uep_mem_actividades',array('acs_id'=>$id));
+        echo $this->librerias->json_out($d,'acs_id');
     }
     
-    public function loadParticipantesInscritos($id){
+    public function gestionActividades($id){
         if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
-        $data = $this->model22->getInscritos($id);
-        echo $this->librerias->json_out($data,'cxp_id');
+        
+        $tabla = 'uep_mem_actividades';
+        $campo = 'acs_id';
+        $index = $this->input->post('id');
+        
+        $data = array(
+            'acs_mem_id'       => $id,          //id padre
+            'acs_correlativo'   => $this->input->post('acs_correlativo'),
+            'acs_descripcion'=> $this->input->post('acs_descripcion')
+        );
+        
+        switch ($this->input->post('oper')){ 
+        	case 'add':  $this->comp24->insert_row($tabla, $data); break;
+        	case 'edit': $this->comp24->update_row($tabla, $campo, $index, $data); break;
+        	case 'del':  $this->comp24->db_row_delete($tabla, $campo, $index); break;
+        }
+    }
+    
+    public function loadAcuerdos($id){
+        if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
+        $d = $this->comp24->select_data('uep_mem_acuerdos',array('acu_id'=>$id));
+        echo $this->librerias->json_out($d,'acu_id');
+    }
+    
+    public function gestionAcuerdos($id){
+        if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
+        
+        $tabla = 'uep_mem_acuerdos';
+        $campo = 'acu_id';
+        $index = $this->input->post('id');
+        
+        $data = array(
+            'acu_mem_id'       => $id,          //id padre
+            'acu_correlativo'   => $this->input->post('acu_correlativo'),
+            'acu_descripcion'=> $this->input->post('acu_descripcion')
+        );
+        
+        switch ($this->input->post('oper')){ 
+        	case 'add':  $this->comp24->insert_row($tabla, $data); break;
+        	case 'edit': $this->comp24->update_row($tabla, $campo, $index, $data); break;
+        	case 'del':  $this->comp24->db_row_delete($tabla, $campo, $index); break;
+        }
+    }
+    
+    public function loadAyudas($id){
+        if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
+        $d = $this->comp24->select_data($this->dbPrefix.'memorias',array('mem_mun_id'=>$id));
+        echo $this->librerias->json_out($d,'mem_id',array('mem_id','mem_fecha','mem_nombre'));
+    }
+    
+    public function gestionAyudas($id){
+        if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
+        
+        $tabla = $this->dbPrefix.'memorias';
+        $campo = 'mem_id';
+        $index = $this->input->post('id');
+        
+        $data = array(
+            'acu_mem_id'       => $id,          //id padre
+            'acu_correlativo'   => $this->input->post('acu_correlativo'),
+            'acu_descripcion'=> $this->input->post('acu_descripcion')
+        );
+        
+        switch ($this->input->post('oper')){ 
+        	//case 'add':  $this->comp24->insert_row($tabla, $data); break;
+        	//case 'edit': $this->comp24->update_row($tabla, $campo, $index, $data); break;
+        	case 'del':  $this->comp24->db_row_delete($tabla, $campo, $index); break;
+        }
     }
     
     /**
      * B. 
      */
-    public function ayudaMemorias($id=false){
+    public function ayudaMemorias($id=false, $mun_id = false){
         if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
-        $tabla = $this->dbPrefix.'capacitaciones';
-        $campo = 'cap_id';
-        $prefix = 'cap_';
+        $tabla = $this->dbPrefix.'memorias';
+        $campo = 'mem_id';
+        $prefix = 'mem_';
         
         $view = array(
             'titulo'        => 'Componente UEP',
             'user_uid'      => $this->tank_auth->get_user_id(),
             'username'      => $this->tank_auth->get_username(),
             'menu'          => $this->librerias->creaMenu($this->tank_auth->get_username()),
-            'departamentos' => $this->departamento->obtenerDepartamentos(),
+            'departamentos' => $this->comp24->getDepartamentos(),
             'tabla_id'      => $id,
             'prefix'        => $prefix
         );
         
-        if($id && !isset($_POST['mod'])){
-            if(!($tmp = $this->comp24->get_by_id($tabla, $campo, $id))){
-                $id = $this->comp24->insert_row($tabla,array('cap_add'=>date('Y-m-d')));
-                $tmp = $this->comp24->get_by_id($tabla, $campo, $id);
-            }
+        //si es nuevo crear
+        if($id == 'new' && $mun_id > 0){
+            $this->comp24->insert_row($tabla,array($prefix.'mun_id'=>$mun_id));
+            $id = $this->comp24->last_id($tabla,$campo);
+            $t = explode('/new/' . $mun_id,current_url());
+            redirect($t[0].'/'.$id);
+        }
+        
+        if($id > 0 && !isset($_POST['mod']) | $mun_id > 0 ){
+            $tmp = $this->comp24->get_by_id($tabla, $campo, $id);
             $_POST = get_object_vars($tmp);
             //print_r($_POST);die();    //test
-            $_POST[$prefix.'fecha_ini'] = $this->librerias->parse_output('date',$_POST[$prefix.'fecha_ini']);
+            $_POST[$prefix.'fecha'] = $this->librerias->parse_output('date',$_POST[$prefix.'fecha']);
+        }
+        
+        //Cargamos el municipio y departamento
+        if(isset($_POST['mem_mun_id']) && $_POST['mem_mun_id'] > 0){
+            $_POST['depto'] = $this->comp24->getDepto($_POST['mem_mun_id'])->dep_nombre;
+            $_POST['muni']  = $this->comp24->get_by_Id('municipio','mun_id',$_POST['mem_mun_id'])->mun_nombre;    
         }
         
         $this->form_validation->set_message('required', '*');
         $this->form_validation->set_message('numeric', '*');
         
         $config = array(
+            array('field' => 'depto', 'label' => 'Municipio', 'rules' => 'trim|xss_clean'),
+            array('field' => 'muni', 'label' => 'Municipio', 'rules' => 'trim|xss_clean'),
             array('field' => 'mod', 'label' => 'Mod', 'rules' => 'required|xss_clean' ),
             array('field' => $prefix.'id'           , 'label' => '', 'rules' => 'trim|xss_clean'),
-            array('field' => 'sed_id'               , 'label' => '', 'rules' => 'trim|required|xss_clean'),
-            array('field' => 'mod_id'               , 'label' => '', 'rules' => 'trim|required|xss_clean'),
-            array('field' => $prefix.'proceso'      , 'label' => '', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix.'area'         , 'label' => '', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix.'nombre'       , 'label' => '', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix.'entidad'      , 'label' => '', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix.'nivel'        , 'label' => '', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix.'facilitador'  , 'label' => '', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix.'fecha_ini'    , 'label' => '', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix.'duracion'     , 'label' => '', 'rules' => 'trim|xss_clean|numeric'),
-            array('field' => $prefix.'duracion_tipo', 'label' => '', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix.'descripcion'  , 'label' => '', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix.'observaciones', 'label' => '', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix.'archivo'      , 'label' => '', 'rules' => 'trim|xss_clean'),
+            array('field' => $prefix.'area'         , 'label' => '', 'rules' => 'trim|xss_clean|required'),
+            array('field' => $prefix.'nombre'       , 'label' => '', 'rules' => 'trim|xss_clean|required'),
+            array('field' => $prefix.'fecha'    , 'label' => '', 'rules' => 'trim|xss_clean|required'),
+            array('field' => $prefix.'comentarios', 'label' => '', 'rules' => 'trim|xss_clean'),
+
         );
         
         $this->form_validation->set_rules($config);
@@ -125,24 +195,19 @@ class uep extends CI_Controller {
         if ($this->form_validation->run())
         {
             $datos = array(
-                'sed_id'                =>  $this->form_validation->set_value('sed_id'),
-                'mod_id'                =>  $this->form_validation->set_value('mod_id'),
-                $prefix.'proceso'       =>  $this->form_validation->set_value($prefix.'proceso'),
                 $prefix.'area'          =>  $this->form_validation->set_value($prefix.'area'),
                 $prefix.'nombre'        =>  $this->form_validation->set_value($prefix.'nombre'),
-                $prefix.'entidad'       =>  $this->form_validation->set_value($prefix.'entidad'),
-                $prefix.'nivel'         =>  $this->form_validation->set_value($prefix.'nivel'),
-                $prefix.'facilitador'   =>  $this->form_validation->set_value($prefix.'facilitador'),
-                $prefix.'fecha_ini'     =>  $this->comp24->changeDate($this->form_validation->set_value($prefix.'fecha_ini')),
-                $prefix.'duracion'      =>  $this->form_validation->set_value($prefix.'duracion'),
-                $prefix.'duracion_tipo' =>  $this->form_validation->set_value($prefix.'duracion_tipo'),
-                $prefix.'descripcion'   =>  $this->form_validation->set_value($prefix.'descripcion'),
-                $prefix.'archivo'       =>  $this->form_validation->set_value($prefix.'archivo'),
+                $prefix.'fecha'     =>  $this->comp24->changeDate($this->form_validation->set_value($prefix.'fecha')),
+                $prefix.'comentarios'   =>  $this->form_validation->set_value($prefix.'comentarios')
             );
             
             if(!is_null($data = $this->comp24->update_row($tabla,$campo,$id,$datos)))
                 {
                     $this->session->set_flashdata('message', 'Ok');
+                    if($mun_id > 0){
+                        $t = explode('/new/' . $mun_id,current_url());
+                        redirect($t[0].'/'.$id);
+                    }
                     $t = explode('/' . $id,current_url());
                     redirect($t[0]);
                 }
@@ -153,8 +218,8 @@ class uep extends CI_Controller {
                 }          
         }
         
-        //Cargar Sedes
-        //$view['cap_sede'] = $this->getDataDropbox('sedes','sed_id','sed_nombre',true);
+        //Cargar Areas
+        $view['mem_area'] = $this->getDataDropbox('mem_areas','are_id','are_nombre',true);
         
         //Cargar Modalidades
         //$view['cap_modalidad'] = $this->getDataDropbox('modalidades','mod_id','mod_nombre');

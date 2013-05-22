@@ -87,7 +87,7 @@ class Comp22 extends CI_Controller {
             'user_uid'      => $this->tank_auth->get_user_id(),
             'username'      => $this->tank_auth->get_username(),
             'menu'          => $this->librerias->creaMenu($this->tank_auth->get_username()),
-            'departamentos' => $this->departamento->obtenerDepartamentos(),
+            'departamentos' => $this->comp24->getDepartamentos(),
             'tabla_id'      => $id,
             'prefix'        => $prefix
         );
@@ -182,7 +182,7 @@ class Comp22 extends CI_Controller {
             'user_uid'      => $this->tank_auth->get_user_id(),
             'username'      => $this->tank_auth->get_username(),
             'menu'          => $this->librerias->creaMenu($this->tank_auth->get_username()),
-            'departamentos' => $this->departamento->obtenerDepartamentos(),
+            'departamentos' => $this->comp24->getDepartamentos(),
             'tabla_id'      => $id,
             'prefix'        => $prefix
         );
@@ -271,7 +271,7 @@ class Comp22 extends CI_Controller {
             'user_uid'      => $this->tank_auth->get_user_id(),
             'username'      => $this->tank_auth->get_username(),
             'menu'          => $this->librerias->creaMenu($this->tank_auth->get_username()),
-            'departamentos' => $this->departamento->obtenerDepartamentos(),
+            'departamentos' => $this->comp24->getDepartamentos(),
             'tabla_id'      => $id,
             'prefix'        => $prefix
         );
@@ -347,7 +347,7 @@ class Comp22 extends CI_Controller {
     /**
      * A. 
      */
-    public function solicitudInscripcion($id=false){
+    public function solicitudInscripcion($id=false,$mun_id=false){
         if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
         $tabla = $this->dbPrefix . 'participantes';
         $campo = 'par_id';
@@ -357,20 +357,29 @@ class Comp22 extends CI_Controller {
             'user_uid'      => $this->tank_auth->get_user_id(),
             'username'      => $this->tank_auth->get_username(),
             'menu'          => $this->librerias->creaMenu($this->tank_auth->get_username()),
-            'departamentos' => $this->departamento->obtenerDepartamentos(),
+            'departamentos' => $this->comp24->getDepartamentos(),
             'tabla_id'      => $id,
             'prefix'        => $prefix
         );
         
-        if($id && !isset($_POST['mod'])){
+        //si es nuevo crear
+        if($id == 'new' && $mun_id > 0){
+            $this->comp24->insert_row($tabla,array('par_ins_municipio'=>$mun_id,'mun_id'=>$mun_id));
+            $id = $this->comp24->last_id($tabla,$campo);
+        }
+        
+        if($id > 0 && !isset($_POST['mod']) | $mun_id > 0 ){
+            //die('true');
             if(!($tmp = $this->comp24->get_by_id($tabla, $campo, $id))){
-                $id = $this->comp24->insert_row($tabla,array('par_ins_municipio'=>$this->input->post('mun_id')));
-                $tmp = $this->comp24->get_by_id($tabla, $campo, $id);
+                die('id invalido');
             }
+            //print_r($tmp);
+            //die('true');
             $_POST = get_object_vars($tmp);
             //print_r($_POST);die();    //test
             $_POST[$prefix.'birthday'] = $this->librerias->parse_output('date',$_POST[$prefix.'birthday']);
         }
+        //
         
         //Cargamos el municipio y departamento
         if(isset($_POST['mun_id']) && $_POST['mun_id'] > 0){

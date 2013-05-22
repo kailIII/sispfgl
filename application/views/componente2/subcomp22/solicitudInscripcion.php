@@ -45,7 +45,10 @@ $(document).ready(function(){
     });
     $('#par_acepta').click(function () {
         $("#guardar3").toggle(this.checked);
-        window.location.href = '<?php echo current_url(); ?>/-1';
+        //window.location.href = '<?php echo current_url(); ?>/-1';
+    });
+    $('#guardar3').click(function(){
+        window.location.href = '<?php echo current_url(); ?> /new/' + $('#mun_id').val();
     });
             
     /*PARA EL DATEPICKER*/
@@ -229,12 +232,7 @@ $(document).ready(function(){
             </div>
             <div class="campo">
                 <label>Departamento</label>
-                <select id='selDepto'>
-                    <option value='0'>--Seleccione--</option>
-                    <?php foreach ($departamentos as $depto) { ?>
-                    <option value='<?php echo $depto->dep_id; ?>'><?php echo $depto->dep_nombre; ?></option>
-                    <?php } ?>
-                </select>
+                <?php echo form_dropdown('selDepto',$departamentos,'','id="selDepto"'); ?>
             </div>
             <div class="campo">
                 <label>Municipio</label>
