@@ -154,12 +154,12 @@ class uep extends CI_Controller {
         }
         
         //Cargar Sedes
-        $view['cap_sede'] = $this->getDataDropbox('sedes','sed_id','sed_nombre',true);
+        //$view['cap_sede'] = $this->getDataDropbox('sedes','sed_id','sed_nombre',true);
         
         //Cargar Modalidades
-        $view['cap_modalidad'] = $this->getDataDropbox('modalidades','mod_id','mod_nombre');
+        //$view['cap_modalidad'] = $this->getDataDropbox('modalidades','mod_id','mod_nombre');
         
-        $this->load->view($this->ruta.'ayudaMemorias',$view);
+        $this->load->view($this->ruta.'ayudaMemoria',$view);
     }
     
     /**

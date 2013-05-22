@@ -58,31 +58,28 @@ $(document).ready(function(){
         altRows:true,
         gridview: true,
         hidegrid: false,
-        colNames:['id','Padre','Nombres','Apellidos','Sexo','Edad','Cargo','Telefono','Participa'],
+        colNames:['id','Padre','Nombres','Apellidos','Sexo','Edad','Cargo','Telefono'],
         colModel:[
-            {name:'emp_id',index:'emp_id', width:30,editable:false,editoptions:{size:15},hidden:true },
-            {name:'acu_mun_id',index:'acu_mun_id', width:30,editable:false,editoptions:{size:15},hidden:true },
-            {name:'emp_nombre',index:'emp_nombre', width:123,editable:false,
+            {name:'par_id',index:'par_id', width:30,editable:false,editoptions:{size:15},hidden:true },
+            {name:'cap_id',index:'cap_id', width:30,editable:false,editoptions:{size:15},hidden:true },
+            {name:'par_nombre',index:'par_nombre', width:123,editable:true,
                 edittype:'text',editoptions:{size:20,maxlength:50},
                 editrules:{required:true} },
-            {name:'emp_apellidos',index:'emp_apellidos', width:123,editable:false,
+            {name:'par_apellidos',index:'par_apellidos', width:123,editable:true,
                 edittypr:'text',editoptions:{size:20,maxlength:50},
                 editrules:{required:true} },
-            {name:'emp_sexo',index:'emp_sexo', width:90,editable:false,
+            {name:'par_sexo',index:'par_sexo', width:90,editable:true,
                 edittype:'select',formatter:'select',editoptions:{value:'M:Masculino;F:Femenino'},
                 editrules:{required:true} },
-            {name:'emp_edad',index:'emp_edad', width:50,editable:false,align:'center',
+            {name:'par_edad',index:'par_edad', width:50,editable:true,align:'center',
                 edittype:'text',editoptions:{size:5,maxlength:2},
                 editrules:{number:true,minValue:18,maxValue:100} },
-            {name:'emp_cargo',index:'emp_cargo', width:123,editable:false,editoptions:{size:30},
+            {name:'par_cargo',index:'par_cargo', width:123,editable:true,editoptions:{size:30},
                 edittype:'text',editoptions:{size:20,maxlength:50},
                 editrules:{required:true} },
-            {name:'emp_telefono',index:'emp_telefono', width:80,editable:true,editoptions:{size:8},align:'center',
+            {name:'par_telefono',index:'par_telefono', width:80,editable:true,editoptions:{size:8},align:'center',
                 edittype:'text',editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}
-                },
-            {name:'participa',index:'participa', width:80,editable:true,align:'center',
-                formatter:'checkbox',formatoptions:{disabled:false},
-                edittype:'checkbox'}
+                }
         ],
         multiselect: false,
         caption: "Participantes Miembros del Concejo Municipal",
@@ -91,6 +88,9 @@ $(document).ready(function(){
         loadonce:true,
         pager: $('#pagerConcejo'),
         viewrecords: true,
+        ondblClickRow: function(rowid,iRow,iCol,e){
+             $('#concejo').jqGrid('editRow',rowid,true); 
+        },
         gridComplete: 
             function(){
             $.getJSON('<?php echo base_url('componente2/comp24_E4/count_sexo/') ?>',
@@ -102,7 +102,7 @@ $(document).ready(function(){
         }
     });
     $("#concejo").jqGrid('navGrid','#pagerConcejo',
-        {edit:false,add:false,del:false,search:true,refresh:false,
+        {edit:true,add:true,del:true,search:true,refresh:false,
         beforeRefresh: function() {
             tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
         }

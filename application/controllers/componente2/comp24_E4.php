@@ -212,15 +212,15 @@ class Comp24_E4 extends CI_Controller {
     
     public function loadConcejo($id){
         if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
-        $d = $this->comp24->select_data('cap_participante',array('gescon_id'=>$id));
-        echo $this->librerias->json_out($d,'gescon_id');
+        $d = $this->comp24->select_data('cap_concejo',array('cap_id'=>$id));
+        echo $this->librerias->json_out($d,'cap_id');
     }
     
     public function gestionConcejo($id){
         if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
         
-        $tabla = 'cap_participante';
-        $campo = 'par_id';
+        $tabla = 'cap_concejo';
+        $campo = 'cap_id';
         $index = $this->input->post('id');
         
         $data = array(
