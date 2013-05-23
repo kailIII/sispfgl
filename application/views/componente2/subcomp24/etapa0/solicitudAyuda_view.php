@@ -17,6 +17,7 @@ $(document).ready(function(){
     function formularioShow(){$('#listaContainer').hide();$('#formulario').show()}
     $("#guardar").button();
     $("#btn_acuerdo_nuevo").button().click(function(){$('#frm').submit();});
+    $("#btn_delete").button();
     $("#btn_seleccionar").button().click(function(){document.location.href='<?php echo current_url(); ?>/' + jQuery("#lista").jqGrid('getGridParam','selrow');});
     $("#cancelar").button().click(function() {document.location.href='<?php echo base_url(); ?>';});
     $('.mensaje').dialog({autoOpen: false,width: 300,

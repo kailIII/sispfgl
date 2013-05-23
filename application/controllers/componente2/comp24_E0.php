@@ -1131,7 +1131,8 @@ class Comp24_E0 extends CI_Controller {
                     'username' => $this->tank_auth->get_username(),
                     'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
                     'departamentos' => $this->comp24->getDepartamentos(),
-                    'mun_id'=>$this->form_validation->set_value('mun_id')
+                    'mun_id'=>$this->form_validation->set_value('mun_id'),
+                    $campo => $id
                     ));
     }
     

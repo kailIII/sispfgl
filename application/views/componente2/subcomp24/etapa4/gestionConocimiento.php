@@ -180,7 +180,7 @@ $(document).ready(function(){
                 <input id="gescon_tematica" name="gescon_tematica" type="text" value="<?php echo set_value('gescon_tematica') ?>"/>
                 <?php echo form_error('gescon_tematica'); ?>
             </div>
-            <div class="tabla">
+            <div class="tabla" style="margin-left: 150px;">
                 <label></label>
                 <table id="miembros"></table>
                 <div id="pagerMiembros"></div>

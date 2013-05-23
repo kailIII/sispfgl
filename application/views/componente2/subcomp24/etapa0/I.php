@@ -110,6 +110,7 @@ $(document).ready(function(){
                 <div id="pagerLista"></div>
                 <div id="btn_seleccionar">Seleccionar</div>
                 <div id="btn_acuerdo_nuevo">Crear Nuevo</div>
+                <div id="btn_delete">Eliminar</div>
             </div>
         </div>
         <?php echo form_close(); echo form_open(); ?>
