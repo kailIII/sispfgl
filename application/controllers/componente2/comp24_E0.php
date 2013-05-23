@@ -162,7 +162,7 @@ class Comp24_E0 extends CI_Controller {
                 'user_uid' => $this->tank_auth->get_user_id(),
                 'username' => $this->tank_auth->get_username(),
                 'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
-                'departamentos' => $this->getDepartamentos()
+                'departamentos' => $this->comp24->getDepartamentos()
                 ));
     }
     
@@ -249,7 +249,7 @@ class Comp24_E0 extends CI_Controller {
                     'user_uid' => $this->tank_auth->get_user_id(),
                     'username' => $this->tank_auth->get_username(),
                     'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
-                    'departamentos' => $this->getDepartamentos(),
+                    'departamentos' => $this->comp24->getDepartamentos(),
                     'mensaje'   =>  $mensaje
                     ));
 	   
@@ -338,7 +338,7 @@ class Comp24_E0 extends CI_Controller {
                     'user_uid' => $this->tank_auth->get_user_id(),
                     'username' => $this->tank_auth->get_username(),
                     'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
-                    'departamentos' => $this->getDepartamentos(),
+                    'departamentos' => $this->comp24->getDepartamentos(),
                     $campo => $id
                     ));
 					
@@ -475,7 +475,7 @@ class Comp24_E0 extends CI_Controller {
                     'user_uid' => $this->tank_auth->get_user_id(),
                     'username' => $this->tank_auth->get_username(),
                     'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
-                    'departamentos' => $this->getDepartamentos(),
+                    'departamentos' => $this->comp24->getDepartamentos(),
                     'consultores' => $this->getConsultores(),
                     $campo => $id
                     ));
@@ -607,7 +607,7 @@ class Comp24_E0 extends CI_Controller {
                     'user_uid' => $this->tank_auth->get_user_id(),
                     'username' => $this->tank_auth->get_username(),
                     'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
-                    'departamentos' => $this->getDepartamentos(),
+                    'departamentos' => $this->comp24->getDepartamentos(),
                     $campo=>$id
                     ));
     }
@@ -718,7 +718,7 @@ class Comp24_E0 extends CI_Controller {
                     'user_uid' => $this->tank_auth->get_user_id(),
                     'username' => $this->tank_auth->get_username(),
                     'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
-                    'departamentos' => $this->getDepartamentos(),
+                    'departamentos' => $this->comp24->getDepartamentos(),
                     $campo=>$id
                     ));
     }
@@ -866,7 +866,7 @@ class Comp24_E0 extends CI_Controller {
                     'user_uid' => $this->tank_auth->get_user_id(),
                     'username' => $this->tank_auth->get_username(),
                     'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
-                    'departamentos' => $this->getDepartamentos(),
+                    'departamentos' => $this->comp24->getDepartamentos(),
                     $campo=>$id
                     ));
     }
@@ -951,7 +951,7 @@ class Comp24_E0 extends CI_Controller {
                     'user_uid' => $this->tank_auth->get_user_id(),
                     'username' => $this->tank_auth->get_username(),
                     'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
-                    'departamentos' => $this->getDepartamentos(),
+                    'departamentos' => $this->comp24->getDepartamentos(),
                     $campo=>$id
                     ));
     }
@@ -1016,7 +1016,7 @@ class Comp24_E0 extends CI_Controller {
                     'user_uid' => $this->tank_auth->get_user_id(),
                     'username' => $this->tank_auth->get_username(),
                     'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
-                    'departamentos' => $this->getDepartamentos(),
+                    'departamentos' => $this->comp24->getDepartamentos(),
                     $campo => $id
                     ));
     }
@@ -1130,7 +1130,7 @@ class Comp24_E0 extends CI_Controller {
                     'user_uid' => $this->tank_auth->get_user_id(),
                     'username' => $this->tank_auth->get_username(),
                     'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
-                    'departamentos' => $this->getDepartamentos(),
+                    'departamentos' => $this->comp24->getDepartamentos(),
                     'mun_id'=>$this->form_validation->set_value('mun_id')
                     ));
     }

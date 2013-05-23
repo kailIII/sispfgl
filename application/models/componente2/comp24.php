@@ -112,6 +112,7 @@ GROUP BY dep_nombre';
         
         $deptos = $this->db->get_where('c24_user_depto',array('user_id'=>$this->tank_auth->get_user_id()));
         if($deptos->num_rows() > 0){
+            $deptos = $deptos->row()->deptos;
             $deptos = explode(',',$deptos);
             $this->db->where_in('dep_id',$deptos);
         }

@@ -204,7 +204,7 @@ $(document).ready(function(){
                 <label>Municipio:</label>
                 <input id="muni" name="muni" type="text" readonly="readonly" value="<?php echo set_value('muni') ?>" />
             </div>
-            <?php// echo form_open(); ?>
+            <?php // echo form_open(); ?>
             <div class="campo">
                 <label>Actividad</label>
                 <input id="mem_nombre" name="mem_nombre" type="text" value="<?php echo set_value('mem_nombre') ?>" />
