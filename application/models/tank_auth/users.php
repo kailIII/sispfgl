@@ -17,7 +17,7 @@ if (!defined('BASEPATH'))
  * 
  * ***************************************
  * @modify By:      Ing. Karen Peñate   *
- * @date:       02/Septiembre/2012      *
+ * @date:       12/Mayo/2013      *
  * ***************************************
  * 
  * 

@@ -221,9 +221,13 @@ class Comp23_E3 extends CI_Controller {
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
-        //OBTENER DEPARTAMENTOS
         $this->load->model('pais/departamento');
-        $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
+        $this->load->model('tank_auth/users', 'usuarios');
+        $rol = $this->usuarios->obtenerCodigoRol($this->tank_auth->get_username());
+        if (strcmp(trim($rol[0]->rol_codigo), 'apr') == 0)
+            $informacion['departamentos'] = $this->departamento->obtenerDepartamentosPorRegion($rol[0]->reg_id);
+        else
+            $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/etapa3/seleccionCumplimientos_view');
@@ -311,7 +315,6 @@ class Comp23_E3 extends CI_Controller {
         /* ACTUALIZANDO ACUERDO MUNICIPAL */
         $this->load->model('proyectoPep/proyecto_pep', 'proPep');
         $this->proPep->actualizarProyectoPep($pro_pep_id, $pro_pep_firmacm, $pro_pep_firmais, $pro_pep_firmaue, $pro_pep_fecha_borrador, $pro_pep_fecha_observacion, $pro_pep_fecha_aprobacion, $pro_pep_ruta_archivo, $pro_pep_observacion);
-
     }
 
     public function mostrarPortafolioProyecto() {

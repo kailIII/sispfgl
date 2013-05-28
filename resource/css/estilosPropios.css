@@ -163,6 +163,27 @@ em {
     cursor: pointer;
 }
 
+#btn_act_subir {
+    width:32px;
+    height:32px;
+    background-image:url(../imagenes/upload.png);
+    cursor: pointer;
+}
+
+#btn_poa_subir {
+    width:32px;
+    height:32px;
+    background-image:url(../imagenes/upload.png);
+    cursor: pointer;
+}
+
+#btn_pip_subir {
+    width:32px;
+    height:32px;
+    background-image:url(../imagenes/upload.png);
+    cursor: pointer;
+}
+
 #btn_doc_subir {
     width:32px;
     height:32px;

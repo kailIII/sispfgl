@@ -43,23 +43,35 @@ $(document).ready(function(){
     $('#mun_id').change(function(){
         jqLista.jqGrid('clearGridData')
             .jqGrid('setGridParam', { 
-                url: '<?php echo base_url('uep/uep/loadAyudas'); ?>/' + $('#mun_id').val(), 
+                url: '<?php echo base_url('uep/uep/loadPerfiles'); ?>/' + $('#mun_id').val(), 
                 datatype: 'json', 
                 page:1 })
             .trigger('reloadGrid');
     });
-    $( "#mem_fecha" ).datepicker({
+    /*PARA EL DATEPICKER*/
+    $( "#per_fecha_ini" ).datepicker({
+        showOn:         'both',
+        maxDate:        '+1D',
+        buttonImage:    '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+        buttonImageOnly: true, 
+        dateFormat: 'dd/mm/yy',
+        onClose: function( selectedDate ) {
+            $( "#per_fecha_fin" ).datepicker( "option", "minDate", selectedDate );
+        }
+    });
+    $( "#per_fecha_fin" ).datepicker({
         showOn: 'both',
         maxDate:    '+1D',
         buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
         buttonImageOnly: true, 
         dateFormat: 'dd/mm/yy'
     });
+    /*FIN DEL DATEPICKER*/
     
     /*GRID*/
     $("#actividades").jqGrid({
-        url:'<?php echo base_url('uep/uep/loadActividades') . '/' . $tabla_id; ?>',
-        editurl:'<?php echo base_url('uep/uep/gestionActividades') . '/' . $tabla_id; ?>',
+        url:'<?php echo base_url('uep/uep/loadObjetivos') . '/' . $tabla_id; ?>',
+        editurl:'<?php echo base_url('uep/uep/gestionObjetivos') . '/' . $tabla_id; ?>',
         datatype:'json',
         altRows:true,
         gridview: true,
@@ -67,17 +79,17 @@ $(document).ready(function(){
         hidegrid: false,
         colNames:['id','Padre','Correlativo','Descripción'],
         colModel:[
-            {name:'acs_id',index:'acs_id', width:30,editable:false,editoptions:{size:15},hidden:true },
-            {name:'acs_mem_id',index:'acs_mem_id', width:30,editable:false,editoptions:{size:15},hidden:true },
-            {name:'acs_correlativo',index:'acs_correlativo', width:123,editable:true,
+            {name:'obj_id',index:'obj_id', width:30,editable:false,editoptions:{size:15},hidden:true },
+            {name:'obj_mem_id',index:'obj_mem_id', width:30,editable:false,editoptions:{size:15},hidden:true },
+            {name:'obj_correlativo',index:'obj_correlativo', width:123,editable:true,
                 edittype:'text',editoptions:{size:20,maxlength:50},
                 editrules:{required:true} },
-            {name:'acs_descripcion',index:'acs_descripcion', width:500,editable:true,
+            {name:'obj_descripcion',index:'obj_descripcion', width:500,editable:true,
                 edittypr:'text',editoptions:{size:20,maxlength:50},
                 editrules:{required:true} }
         ],
         multiselect: false,
-        caption: "Informe de Actividades",
+        caption: "Objetivos Especificos",
         rowNum:20,
         rowList:[20,50],
         loadonce:true,
@@ -97,26 +109,29 @@ $(document).ready(function(){
     /**/
     /*GRID*/
     $("#acuerdos").jqGrid({
-        url:'<?php echo base_url('uep/uep/loadAcuerdos') . '/' . $tabla_id; ?>',
-        editurl:'<?php echo base_url('uep/uep/gestionAcuerdos') . '/' . $tabla_id; ?>',
+        url:'<?php echo base_url('uep/uep/loadEventos') . '/' . $tabla_id; ?>',
+        editurl:'<?php echo base_url('uep/uep/gestionEventos') . '/' . $tabla_id; ?>',
         datatype:'json',
         altRows:true,
         gridview: true,
         height: 300,
         hidegrid: false,
-        colNames:['id','Padre','Correlativo','Descripción'],
+        colNames:['id','Padre','Hora','Actividad','Responsables'],
         colModel:[
-            {name:'acs_id',index:'acs_id', width:30,editable:false,editoptions:{size:15},hidden:true },
-            {name:'acs_mem_id',index:'acs_mem_id', width:30,editable:false,editoptions:{size:15},hidden:true },
-            {name:'acu_correlativo',index:'acu_correlativo', width:123,editable:true,
+            {name:'des_id',index:'des_id', width:30,editable:false,editoptions:{size:15},hidden:true },
+            {name:'des_mem_id',index:'des_mem_id', width:30,editable:false,editoptions:{size:15},hidden:true },
+            {name:'des_correlativo',index:'des_correlativo', width:123,editable:true,
                 edittype:'text',editoptions:{size:20,maxlength:50},
                 editrules:{required:true} },
-            {name:'acu_descripcion',index:'acu_descripcion', width:500,editable:true,
+            {name:'des_correlativo',index:'des_correlativo', width:300,editable:true,
+                edittype:'text',editoptions:{size:20,maxlength:50},
+                editrules:{required:true} },
+            {name:'des_responsable',index:'des_responsable', width:200,editable:true,
                 edittypr:'text',editoptions:{size:20,maxlength:50},
                 editrules:{required:true} }
         ],
         multiselect: false,
-        caption: "Registro de Acuerdos",
+        caption: "Desarrollo del Evento",
         rowNum:20,
         rowList:[20,50],
         loadonce:true,
@@ -136,7 +151,7 @@ $(document).ready(function(){
     /**/
     var jqLista = $('#lista');
     jqLista.jqGrid({
-       	url: '<?php echo base_url('uep/uep/loadAyudas'); ?>/' + $('#mun_id').val(),
+       	url: '<?php echo base_url('uep/uep/loadPerfiles'); ?>/' + $('#mun_id').val(),
     	datatype: "json",
         width: 300,
        	colNames:['Id','Fecha','Nombre'],
@@ -172,8 +187,8 @@ $(document).ready(function(){
 
 <?php echo form_open('',array('id'=>'frm')) ?>
 
-    <h2 class="h2Titulos">Etapa 0: Condiciones Previas</h2>
-    <h2 class="h2Titulos">Registro de Empleados del Municipio</h2>
+    <h2 class="h2Titulos">UEP</h2>
+    <h2 class="h2Titulos">Ayuda Memoria</h2>
     <br/>
     <div id="rpt_frm_bdy">
         <div id="listaContainer">
@@ -204,21 +219,36 @@ $(document).ready(function(){
                 <label>Municipio:</label>
                 <input id="muni" name="muni" type="text" readonly="readonly" value="<?php echo set_value('muni') ?>" />
             </div>
-            <?php // echo form_open(); ?>
+            <?php// echo form_open(); ?>
             <div class="campo">
-                <label>Actividad</label>
-                <input id="mem_nombre" name="mem_nombre" type="text" value="<?php echo set_value('mem_nombre') ?>" />
-                <?php echo form_error('mem_nombre'); ?>
+                <label>Denominación del Evento</label>
+                <input id="per_nombre" name="per_nombre" type="text" value="<?php echo set_value('per_nombre') ?>" />
+                <?php echo form_error('per_nombre'); ?>
             </div>
             <div class="campo">
-                <label>Fecha</label>
-                <input id="mem_fecha" name="mem_fecha" type="text" value="<?php echo set_value('mem_fecha') ?>" />
-                <?php echo form_error('mem_fecha'); ?>
+                <label>Fecha inicio</label>
+                <input id="per_fecha_ini" name="per_fecha_ini" type="text" value="<?php echo set_value('per_fecha_ini') ?>" />
+                <?php echo form_error('per_fecha_ini'); ?>
             </div>
             <div class="campo">
-                <label>Area</label>
-                <?php echo form_dropdown('mem_area',$mem_area,set_value('mem_area','0'),'id="mem_area"'); ?>
-                <?php echo form_error('mem_area'); ?>
+                <label>Fecha fin</label>
+                <input id="per_fecha_fin" name="per_fecha_fin" type="text" value="<?php echo set_value('per_fecha_fin') ?>" />
+                <?php echo form_error('per_fecha_fin'); ?>
+            </div>
+            <div class="campo">
+                <label>Lugar</label>
+                <input id="per_lugar" name="per_lugar" type="text" value="<?php echo set_value('per_lugar') ?>" />
+                <?php echo form_error('per_lugar'); ?>
+            </div>
+            <div class="campo">
+                <label>Participantes</label>
+                <input id="per_participantes" name="per_participantes" type="text" value="<?php echo set_value('per_participantes') ?>" />
+                <?php echo form_error('per_participantes'); ?>
+            </div>
+            <div class="campo">
+                <label>Objetivo del Evento</label>
+                <input id="per_objetivo" name="per_objetivo" type="text" value="<?php echo set_value('per_objetivo') ?>" />
+                <?php echo form_error('per_objetivo'); ?>
             </div>
             <div class="tabla" style="margin-left: 100px;">
                 <label></label>
@@ -232,8 +262,8 @@ $(document).ready(function(){
             </div>
             <div class="campo">
                 <label>Observaciones:</label>
-                <textarea id="mem_comentarios" name="mem_comentarios" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('mem_comentarios')?></textarea>
-                <?php echo form_error('mem_comentarios'); ?>
+                <textarea id="mem_observaciones" name="mem_observaciones" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('mem_observaciones')?></textarea>
+                <?php echo form_error('mem_observaciones'); ?>
             </div>
             <div id="actions" style="position: relative;top: 20px">
                 <input type="submit" id="guardar" value="Guardar" />

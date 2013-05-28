@@ -31,9 +31,13 @@ class ProcesoAdministrativo extends CI_Controller {
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
-//OBTENER DEPARTAMENTOS
         $this->load->model('etapa0-sub23/grupo');
-        $informacion['grupos'] = $this->grupo->obtenerGrupos();
+        $this->load->model('tank_auth/users', 'usuarios');
+        $rol = $this->usuarios->obtenerCodigoRol($this->tank_auth->get_username());
+        if (strcmp(trim($rol[0]->rol_codigo), 'apr') == 0)
+            $informacion['grupos'] = $this->grupo->obtenerGruposPorRegion($rol[0]->reg_id);
+        else
+            $informacion['grupos'] = $this->grupo->obtenerGrupos();
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/proceso_administrativo/adquisicionyContrataciones_view');
@@ -247,11 +251,13 @@ class ProcesoAdministrativo extends CI_Controller {
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
-        //OBTENER DEPARTAMENTOS
-        /* $this->load->model('pais/departamento');
-          $informacion['departamentos'] = $this->departamento->obtenerDepartamentos(); */
         $this->load->model('etapa0-sub23/grupo');
-        $informacion['grupos'] = $this->grupo->obtenerGrupos();
+        $this->load->model('tank_auth/users', 'usuarios');
+        $rol = $this->usuarios->obtenerCodigoRol($this->tank_auth->get_username());
+        if (strcmp(trim($rol[0]->rol_codigo), 'apr') == 0)
+            $informacion['grupos'] = $this->grupo->obtenerGruposPorRegion($rol[0]->reg_id);
+        else
+            $informacion['grupos'] = $this->grupo->obtenerGrupos();
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/proceso_administrativo/evaluacionDeclaracion_view');
@@ -296,11 +302,13 @@ class ProcesoAdministrativo extends CI_Controller {
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
-        //OBTENER DEPARTAMENTOS
-        /* $this->load->model('pais/departamento');
-          $informacion['departamentos'] = $this->departamento->obtenerDepartamentos(); */
         $this->load->model('etapa0-sub23/grupo');
-        $informacion['grupos'] = $this->grupo->obtenerGrupos();
+        $this->load->model('tank_auth/users', 'usuarios');
+        $rol = $this->usuarios->obtenerCodigoRol($this->tank_auth->get_username());
+        if (strcmp(trim($rol[0]->rol_codigo), 'apr') == 0)
+            $informacion['grupos'] = $this->grupo->obtenerGruposPorRegion($rol[0]->reg_id);
+        else
+            $informacion['grupos'] = $this->grupo->obtenerGrupos();
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/proceso_administrativo/seleccionConsultoras_view');
@@ -359,10 +367,13 @@ class ProcesoAdministrativo extends CI_Controller {
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
         //OBTENER DEPARTAMENTOS
-        /* $this->load->model('pais/departamento');
-          $informacion['departamentos'] = $this->departamento->obtenerDepartamentos(); */
         $this->load->model('etapa0-sub23/grupo');
-        $informacion['grupos'] = $this->grupo->obtenerGrupos();
+        $this->load->model('tank_auth/users', 'usuarios');
+        $rol = $this->usuarios->obtenerCodigoRol($this->tank_auth->get_username());
+        if (strcmp(trim($rol[0]->rol_codigo), 'apr') == 0)
+            $informacion['grupos'] = $this->grupo->obtenerGruposPorRegion($rol[0]->reg_id);
+        else
+            $informacion['grupos'] = $this->grupo->obtenerGrupos();
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/proceso_administrativo/propuestaTecnica_view');
@@ -495,7 +506,7 @@ class ProcesoAdministrativo extends CI_Controller {
                 $pro_ffirma_contrato = date('d-m-Y', strtotime($resultado[0]->pro_ffirma_contrato));
             else
                 $pro_ffirma_contrato = $resultado[0]->pro_ffirma_contrato;
-            $consultora=$this->proceso->consultarSeleccionadaProceso($gru_id);
+            $consultora = $this->proceso->consultarSeleccionadaProceso($gru_id);
             $rows[0]['id'] = $id;
             $rows[0]['cell'] = array($id,
                 $numero,
@@ -632,6 +643,137 @@ class ProcesoAdministrativo extends CI_Controller {
 
     function subirArchivo2($tabla, $campo_id, $campo, $ext) {
         echo $this->librerias->subirDocumento2($tabla, $campo_id, $_FILES, $campo, $ext);
+    }
+
+    /* NUEVO FORMULARIO GESTION DE SEGUIMIENTO */
+
+    public function gestionSeguimiento() {
+        $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
+            Planeación Estratégica Participativa';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        //OBTENER DEPARTAMENTOS
+        $this->load->model('pais/departamento');
+        $this->load->model('tank_auth/users', 'usuarios');
+        $rol = $this->usuarios->obtenerCodigoRol($this->tank_auth->get_username());
+        if (strcmp(trim($rol[0]->rol_codigo), 'apr') == 0)
+            $informacion['departamentos'] = $this->departamento->obtenerDepartamentosPorRegion($rol[0]->reg_id);
+        else
+            $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/subcomp23/proceso_administrativo/seleccionGestionSeguimiento_view');
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function cargarGestionSeguimiento() {
+        $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
+            Planeación Estratégica Participativa';
+
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $username = $this->tank_auth->get_username();
+        $informacion['username'] = $username;
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        /* OBTENER DEPARTAMENTO Y MUNICIPIO DEL USUARIO */
+        $mun_id = $this->input->post("selMun");
+        $this->load->model('proyectoPep/proyecto_pep', 'proPep');
+        $this->load->model('pais/municipio', 'muni');
+        $pep = $this->proPep->obtenerProyectoPepPorMun($mun_id);
+        $municipio = $this->muni->obtenerNomMunDep($mun_id);
+        $informacion['departamento'] = $municipio[0]->depto;
+        $informacion['municipio'] = $municipio[0]->muni;
+        //PROYECTO PEP ASOCIADO
+        $pro_pep_id = $pep[0]->pro_pep_id;
+        // $informacion['proyectoPep'] = $datos[0]->Proyecto;
+        $informacion['pro_pep_id'] = $pro_pep_id;
+        $datos = $this->proPep->obtenerProyectoPep($pro_pep_id);
+        $this->load->model('procesoAdministrativo/gestion_seguimiento', 'gesGes');
+        $cant = $this->gesGes->contarGesSegPorMuni($mun_id);
+        if ($cant == 0) {
+            $this->gesGes->agregarGesSeg($mun_id);
+        }
+        $datos = $this->gesGes->obtenerGesSeg($mun_id);
+        $informacion['ges_seg_id'] = $datos[0]->ges_seg_id;
+        $informacion['ges_seg_op1'] = $datos[0]->ges_seg_op1;
+        $informacion['ges_seg_op2'] = $datos[0]->ges_seg_op2;
+        $informacion['ges_seg_op3'] = $datos[0]->ges_seg_op3;
+        $informacion['ges_seg_op4'] = $datos[0]->ges_seg_op4;
+        $informacion['ges_seg_op5'] = $datos[0]->ges_seg_op5;
+        $informacion['ges_seg_op6'] = $datos[0]->ges_seg_op6;
+        $informacion['ges_seg_op7'] = $datos[0]->ges_seg_op7;
+        $informacion['ges_seg_fentrega'] = $datos[0]->ges_seg_fentrega;
+        $informacion['ges_seg_fvobo'] = $datos[0]->ges_seg_fvobo;
+        $informacion['ges_seg_fconcejo'] = $datos[0]->ges_seg_fconcejo;
+        $informacion['ges_seg_concejo_mun'] = $datos[0]->ges_seg_concejo_mun;
+        $informacion['ges_seg_isdem'] = $datos[0]->ges_seg_isdem;
+        $informacion['ges_seg_uep'] = $datos[0]->ges_seg_uep;
+        $informacion['ges_seg_acu_ruta_archivo'] = $datos[0]->ges_seg_acu_ruta_archivo;
+        $informacion['nombre_acu'] = end(explode("/", $datos[0]->ges_seg_acu_ruta_archivo));
+        $informacion['ges_seg_act_ruta_archivo'] = $datos[0]->ges_seg_act_ruta_archivo;
+        $informacion['nombre_act'] = end(explode("/", $datos[0]->ges_seg_act_ruta_archivo));
+        $informacion['ges_seg_poa_ruta_archivo'] = $datos[0]->ges_seg_poa_ruta_archivo;
+        $informacion['nombre_poa'] = end(explode("/", $datos[0]->ges_seg_poa_ruta_archivo));
+        $informacion['ges_seg_pip_ruta_archivo'] = $datos[0]->ges_seg_pip_ruta_archivo;
+        $informacion['nombre_pip'] = end(explode("/", $datos[0]->ges_seg_pip_ruta_archivo));
+        $informacion['ges_seg_doc_ruta_archivo'] = $datos[0]->ges_seg_doc_ruta_archivo;
+        $informacion['nombre_doc'] = end(explode("/", $datos[0]->ges_seg_doc_ruta_archivo));
+        $informacion['ges_seg_observacion'] = $datos[0]->ges_seg_observacion;
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/subcomp23/proceso_administrativo/gestionSeguimiento_view', $informacion);
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function guardarGestionSeguimiento() {
+        $ges_seg_id = $this->input->post("ges_seg_id");
+        $ges_seg_op1 = $this->input->post("ges_seg_op1");
+        if ($ges_seg_op1 == '0')
+            $ges_seg_op1 = null;
+        $ges_seg_op2 = $this->input->post("ges_seg_op2");
+        if ($ges_seg_op2 == '0')
+            $ges_seg_op2 = null;
+        $ges_seg_op3 = $this->input->post("ges_seg_op3");
+        if ($ges_seg_op3 == '0')
+            $ges_seg_op3 = null;
+        $ges_seg_op4 = $this->input->post("ges_seg_op4");
+        if ($ges_seg_op4 == '0')
+            $ges_seg_op4 = null;
+        $ges_seg_op5 = $this->input->post("ges_seg_op5");
+        if ($ges_seg_op5 == '0')
+            $ges_seg_op5 = null;
+        $ges_seg_op6 = $this->input->post("ges_seg_op6");
+        if ($ges_seg_op6 == '0')
+            $ges_seg_op6 = null;
+        $ges_seg_op7 = $this->input->post("ges_seg_op7");
+        if ($ges_seg_op7 == '0')
+            $ges_seg_op7 = null;
+        $ges_seg_fentrega = $this->input->post("ges_seg_fentrega");
+        if ($ges_seg_fentrega == "")
+            $ges_seg_fentrega = null;
+        $ges_seg_fvobo = $this->input->post("ges_seg_fvobo");
+        if ($ges_seg_fvobo == "")
+            $ges_seg_fvobo = null;
+        $ges_seg_fconcejo = $this->input->post("ges_seg_fconcejo");
+        if ($ges_seg_fconcejo == "")
+            $ges_seg_fconcejo = null;
+        $ges_seg_concejo_mun = $this->input->post("ges_seg_concejo_mun");
+        if ($ges_seg_concejo_mun == '0')
+            $ges_seg_concejo_mun = null;
+        $ges_seg_isdem = $this->input->post("ges_seg_isdem");
+        if ($ges_seg_isdem == '0')
+            $ges_seg_isdem = null;
+        $ges_seg_uep = $this->input->post("ges_seg_uep");
+        if ($ges_seg_uep == '0')
+            $ges_seg_uep = null;
+        $ges_seg_acu_ruta_archivo = $this->input->post("ges_seg_acu_ruta_archivo");
+        $ges_seg_act_ruta_archivo = $this->input->post("ges_seg_act_ruta_archivo");
+        $ges_seg_poa_ruta_archivo = $this->input->post("ges_seg_poa_ruta_archivo");
+        $ges_seg_pip_ruta_archivo = $this->input->post("ges_seg_pip_ruta_archivo");
+        $ges_seg_doc_ruta_archivo = $this->input->post("ges_seg_doc_ruta_archivo");
+        $ges_seg_observacion = $this->input->post("ges_seg_observacion");
+        $this->load->model('procesoAdministrativo/gestion_seguimiento', 'gesGes');
+        $this->gesGes->editarGesSeg($ges_seg_id, $ges_seg_op1, $ges_seg_op2, $ges_seg_op3, $ges_seg_op4, $ges_seg_op5, $ges_seg_op6, $ges_seg_op7, $ges_seg_fentrega, $ges_seg_fvobo, $ges_seg_fconcejo, $ges_seg_concejo_mun, $ges_seg_isdem, $ges_seg_uep, $ges_seg_acu_ruta_archivo, $ges_seg_act_ruta_archivo, $ges_seg_poa_ruta_archivo, $ges_seg_pip_ruta_archivo, $ges_seg_doc_ruta_archivo, $ges_seg_observacion);
     }
 
 }

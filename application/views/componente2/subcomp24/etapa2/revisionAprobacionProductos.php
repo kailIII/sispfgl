@@ -126,12 +126,7 @@ $(document).ready(function(){
         <div id="listaContainer">
             <div class="campo">
                 <label>Departamento</label>
-                <select id='selDepto'>
-                    <option value='0'>--Seleccione--</option>
-                    <?php foreach ($departamentos as $depto) { ?>
-                    <option value='<?php echo $depto->dep_id; ?>'><?php echo $depto->dep_nombre; ?></option>
-                    <?php } ?>
-                </select>
+                <?php echo form_dropdown('selDepto',$departamentos,'','id="selDepto"'); ?>
             </div>
             <div class="campo">
                 <label>Municipio</label>

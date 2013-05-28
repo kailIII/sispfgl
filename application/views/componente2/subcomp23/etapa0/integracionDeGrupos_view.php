@@ -8,6 +8,7 @@
             }).trigger("reloadGrid"); 
             
             $('#selRegion').children().remove();
+            <?php if($rol!='apr') {?>
             $.getJSON('<?php echo base_url('componente2/comp23_E0/cargarRegionesGrupo') ?>', 
             function(data) {
                 var i=0;
@@ -19,11 +20,27 @@
                         });                    
                     }
                 });
-            }); 
+            });
             $('#selDepto').children().remove();
             $('#selDepto').append('<option value="0">-- Seleccione --</option>');
             $('#selMun').children().remove();
             $('#selMun').append('<option value="0">-- Seleccione --</option>');
+            <?php }else{?>
+                $('#selRegion').append('<option value="<?php if(isset($reg_id)) echo $reg_id; ?>"><?php if(isset($reg_nombre)) echo $reg_nombre; ?></option>');
+                $('#selDepto').children().remove();
+                 $.getJSON('<?php echo base_url('componente2/comp23_E0/cargarDeptosDisponiblesGrupo') ?>/'+$('#selRegion').val(), 
+            function(data) {
+                var i=0;
+                $.each(data, function(key, val) {
+                    if(key=='rows'){
+                        $('#selDepto').append('<option value="0">--Seleccione --</option>');
+                        $.each(val, function(id, registro){
+                            $('#selDepto').append('<option value="'+registro['cell'][0]+'">'+registro['cell'][1]+'</option>');
+                        });                    
+                    }
+                });
+            }); 
+            <?php }?>
         });
         
         /*CARGAR DEPARTAMENTOS*/
@@ -216,6 +233,7 @@
             </select>
         </td>
         </tr>
+        <?php if( $rol!='apr') {?>
         <tr>
         <td colspan="2">
             <br/>
@@ -225,6 +243,7 @@
             <br/>
         </td>
         </tr>
+        <?php } ?>
         <tr>
         <td colspan="2">Si desea agregar un municipio a un grupo realice los siguientes pasos:
             <ol>

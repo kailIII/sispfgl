@@ -95,12 +95,7 @@ $(document).ready(function(){
         <div id="listaContainer">
             <div class="campo">
                 <label>Departamento</label>
-                <select id='selDepto'>
-                    <option value='0'>--Seleccione--</option>
-                    <?php foreach ($departamentos as $depto) { ?>
-                    <option value='<?php echo $depto->dep_id; ?>'><?php echo $depto->dep_nombre; ?></option>
-                    <?php } ?>
-                </select>
+                <?php echo form_dropdown('selDepto',$departamentos,'','id="selDepto"'); ?>
             </div>
             <div class="campo">
                 <label>Municipio</label>
@@ -115,6 +110,7 @@ $(document).ready(function(){
                 <div id="pagerLista"></div>
                 <div id="btn_seleccionar">Seleccionar</div>
                 <div id="btn_acuerdo_nuevo">Crear Nuevo</div>
+                <div id="btn_delete">Eliminar</div>
             </div>
         </div>
         <?php echo form_close(); echo form_open(); ?>

@@ -115,12 +115,16 @@ class Comp23_E0 extends CI_Controller {
     public function gestionSolicitudAsistencia() {
 
         $informacion['titulo'] = 'Solicitud de Asistencia Técnica';
-        //$informacion['user_id'] = $this->tank_auth->get_user_id();
-        //$informacion['username'] = $this->tank_auth->get_username();
-        //$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $this->load->model('tank_auth/users', 'usuarios');
         $this->load->model('pais/departamento', 'depar');
-        $departamentos = $this->depar->obtenerDepartamentos();
-        $informacion['departamentos'] = $departamentos;
+        $rol = $this->usuarios->obtenerCodigoRol($this->tank_auth->get_username());
+        if (strcmp(trim($rol[0]->rol_codigo), 'apr') == 0)
+            $informacion['departamentos'] = $this->depar->obtenerDepartamentosPorRegion($rol[0]->reg_id);
+        else
+            $informacion['departamentos'] = $this->depar->obtenerDepartamentos();
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/etapa0/gestionSolicitudAsistencia_view');
@@ -129,8 +133,8 @@ class Comp23_E0 extends CI_Controller {
 
     public function modificarSolicitudAsistencia() {
         $informacion['titulo'] = 'Solicitud de Asistencia Técnica';
-      //  $informacion['user_id'] = $this->tank_auth->get_user_id();
-       // $informacion['username'] = $this->tank_auth->get_username();
+        //  $informacion['user_id'] = $this->tank_auth->get_user_id();
+        // $informacion['username'] = $this->tank_auth->get_username();
         //$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
 
         $this->load->model('pais/municipio');
@@ -232,13 +236,24 @@ class Comp23_E0 extends CI_Controller {
     /* Integracion de Grupos     */
 
     public function integracionDeGrupos() {
-
         $informacion['titulo'] = 'Registro de Intregación de Grupos';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
         $this->load->model('etapa0-sub23/grupo');
-        $informacion['grupos'] = $this->grupo->obtenerGrupos();
+        $this->load->model('tank_auth/users', 'usuarios');
+        $this->load->model('pais/departamento', 'depar');
+        $this->load->model('pais/region');
+        $rol = $this->usuarios->obtenerCodigoRol($this->tank_auth->get_username());
+        if (strcmp(trim($rol[0]->rol_codigo), 'apr') == 0) {
+            $informacion['grupos'] = $this->grupo->obtenerGruposPorRegion($rol[0]->reg_id);
+            $region = $this->region->obtenerRegion($rol[0]->reg_id);
+            $informacion['reg_id'] = $region[0]->reg_id;
+            $informacion['reg_nombre'] = $region[0]->reg_nombre;
+        }
+        else
+            $informacion['grupos'] = $this->grupo->obtenerGrupos();
+        $informacion['rol'] = trim($rol[0]->rol_codigo);
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/etapa0/integracionDeGrupos_view');
@@ -395,7 +410,7 @@ class Comp23_E0 extends CI_Controller {
         echo $jsonresponse;
     }
 
-      public function cargarMunicipios($dep_id) {
+    public function cargarMunicipios($dep_id) {
         $this->load->model('pais/municipio');
         $municipios = $this->municipio->obtenerMunicipioPorDepartamento($dep_id);
         $numfilas = count($municipios);
@@ -424,7 +439,7 @@ class Comp23_E0 extends CI_Controller {
 
         echo $jsonresponse;
     }
-    
+
     public function cargarMuniDisponiblesGrupo($dep_id) {
         $this->load->model('pais/municipio');
         $municipios = $this->municipio->obtenerMunicipiosSinGrupo($dep_id);
@@ -584,7 +599,12 @@ class Comp23_E0 extends CI_Controller {
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
         $this->load->model('etapa0-sub23/grupo');
-        $informacion['grupos'] = $this->grupo->obtenerGrupos();
+        $this->load->model('tank_auth/users', 'usuarios');
+        $rol = $this->usuarios->obtenerCodigoRol($this->tank_auth->get_username());
+        if (strcmp(trim($rol[0]->rol_codigo), 'apr') == 0)
+            $informacion['grupos'] = $this->grupo->obtenerGruposPorRegion($rol[0]->reg_id);
+        else
+            $informacion['grupos'] = $this->grupo->obtenerGrupos();
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/etapa0/planTrabajoConsul_view');
@@ -727,7 +747,8 @@ class Comp23_E0 extends CI_Controller {
 
         echo $jsonresponse;
     }
-  public function cargarDeptosPorGrupo($gru_id) {
+
+    public function cargarDeptosPorGrupo($gru_id) {
         $this->load->model('pais/departamento');
         $deptos = $this->departamento->obtenerDepartamentosPorGrupo($gru_id);
         $numfilas = count($deptos);
@@ -756,6 +777,7 @@ class Comp23_E0 extends CI_Controller {
 
         echo $jsonresponse;
     }
+
     public function cargarMuniPorConsultora($dep_id, $cons_id) {
         $this->load->model('pais/municipio');
         $municipios = $this->municipio->obtenerMunicipioPorConsultoraDepto($cons_id, $dep_id);
@@ -785,7 +807,8 @@ class Comp23_E0 extends CI_Controller {
 
         echo $jsonresponse;
     }
-public function cargarMuniPorGrupo($dep_id, $gru_id) {
+
+    public function cargarMuniPorGrupo($dep_id, $gru_id) {
         $this->load->model('pais/municipio');
         $municipios = $this->municipio->obtenerMunicipioPorGrupoDepto($gru_id, $dep_id);
         $numfilas = count($municipios);
@@ -814,6 +837,7 @@ public function cargarMuniPorGrupo($dep_id, $gru_id) {
 
         echo $jsonresponse;
     }
+
     /* Registro de aporte de la Municipalidad */
 
     public function registroAporteMunicipal() {
@@ -822,10 +846,14 @@ public function cargarMuniPorGrupo($dep_id, $gru_id) {
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
         $this->load->model('pais/departamento', 'depar');
-        $departamentos = $this->depar->obtenerDepartamentosSeleccionado();
         $this->load->model('etapa1-sub23/contrapartida');
         $contrapartidas = $this->contrapartida->obtenerContrapartidas();
-        $informacion['departamentos'] = $departamentos;
+        $this->load->model('tank_auth/users', 'usuarios');
+        $rol = $this->usuarios->obtenerCodigoRol($this->tank_auth->get_username());
+        if (strcmp(trim($rol[0]->rol_codigo), 'apr') == 0)
+            $informacion['departamentos'] = $this->depar->obtenerDepartamentosPorRegion($rol[0]->reg_id);
+        else
+            $informacion['departamentos'] = $this->depar->obtenerDepartamentos();
         $informacion['contrapartidas'] = $contrapartidas;
 
         $this->load->model('etapa', 'eta');
@@ -840,7 +868,7 @@ public function cargarMuniPorGrupo($dep_id, $gru_id) {
 
     public function cargarMuniSeleccionados($dep_id) {
         $this->load->model('pais/municipio');
-        $municipios = $this->municipio->obtenerMunicipiosSeleccionado($dep_id);
+        $municipios = $this->municipio->obtenerMunicipioPorDepartamento($dep_id);
         $numfilas = count($municipios);
 
         $i = 0;
@@ -885,16 +913,19 @@ public function cargarMuniPorGrupo($dep_id, $gru_id) {
             $contrapartidaAportes = $this->contraAporte->obtenerLasContrapartidoAporte($aporteMunicipal[0]->apo_mun_id);
             $j = 0;
             foreach ($contrapartidaAportes as $aux) {
-
                 $contrapartida[$j] = array($aux->con_id, $aux->con_apo_valor, $aux->con_apo_especifique, $aux->con_nombre);
                 $j++;
             }
             $i = 0;
             $numfilas = 1;
+            if ($aporteMunicipal[0]->apo_mun_faprobacion == '')
+                $fechaAprobacion = null;
+            else
+                $fechaAprobacion = date('d/m/Y', strtotime($aporteMunicipal[0]->apo_mun_faprobacion));
             $rows[$i]['id'] = $aporteMunicipal[0]->apo_mun_id;
             $rows[$i]['cell'] = array($aporteMunicipal[0]->apo_mun_id,
                 $aporteMunicipal[0]->apo_mun_monto_estimado,
-                date('d/m/Y', strtotime($aporteMunicipal[0]->apo_mun_faprobacion)),
+                $fechaAprobacion,
                 $aporteMunicipal[0]->apo_mun_observaciones,
                 $contrapartida
             );
@@ -947,8 +978,12 @@ public function cargarMuniPorGrupo($dep_id, $gru_id) {
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
         $this->load->model('pais/departamento', 'depar');
-        $departamentos = $this->depar->obtenerDepartamentos();
-        $informacion['departamentos'] = $departamentos;
+        $this->load->model('tank_auth/users', 'usuarios');
+        $rol = $this->usuarios->obtenerCodigoRol($this->tank_auth->get_username());
+        if (strcmp(trim($rol[0]->rol_codigo), 'apr') == 0)
+            $informacion['departamentos'] = $this->depar->obtenerDepartamentosPorRegion($rol[0]->reg_id);
+        else
+            $informacion['departamentos'] = $this->depar->obtenerDepartamentos();
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/subcomp23/etapa0/comiteInterinstitucional_view');

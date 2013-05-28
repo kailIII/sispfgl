@@ -154,7 +154,7 @@
 
 <form id="diagnosticoForm" method="post">
     <h2 class="h2Titulos">Etapa 2: Diagnóstico del municipio</h2>
-    <h2 class="h2Titulos">Producto 6:Elementos mínimos del diagnóstico</h2>
+    <h2 class="h2Titulos">Elementos mínimos del diagnóstico</h2>
 
     <br/><br/>
     <table>
