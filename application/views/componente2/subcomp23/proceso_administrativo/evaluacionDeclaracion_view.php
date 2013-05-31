@@ -196,8 +196,7 @@
 </script>
 
 <center>
-    <h2 class="h2Titulos">Evaluación de expresión de interés</h2>
-    <h2 class="h2Titulos">Lista Corta</h2>
+    <h2 class="h2Titulos">Integración de Lista Corta</h2>
     <br/>
     <table>
 <!--        <tr>
@@ -215,10 +214,9 @@
                 <option value='0'>--Seleccione--</option>
             </select>
         </td>
-        </tr>-->
         <tr>
         <td colspan="2">Seleccione el grupo para agregarle las consultoras</td>
-        </tr>
+        </tr>        </tr>-->
         <tr>
         <td><strong>Grupo</strong></td>
         <td><select name='selGrupo' id="selGrupo">

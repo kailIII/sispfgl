@@ -7251,7 +7251,7 @@ COPY consultor (con_id, con_nombre, con_apellido, con_telefono, con_email, pro_p
 29	Coordinador 1	Apellido Coordinado1	1111-1111	karensita_2410@hotmail.com	27	7	mi09178
 32	Coordinador 1	Apellido Coordinado1	9999-9999	karensita_2410@hotmail.com	30	7	un07124
 40	Coordinador 1	Apellido Coordinado1	5555-5555	karensita_2410@hotmail.com	36	6	ca02021
-41	Consultor GDR	Gestion Riesgos	5555-9999	karensita_2410@hotmail.com	\N	9	eaviles
+41	Consultor GRD	Gestion Riesgos	5555-9999	karensita_2410@hotmail.com	\N	9	eaviles
 \.
 
 
@@ -8391,7 +8391,7 @@ COPY municipio (mun_id, dep_id, mun_nombre, mun_presupuesto, cons_id, mun_com_ob
 1	1	Ahuachapan	\N	1	\N	\N	\N	\N	2	\N	\N	2	\N	\N	\N
 303	15	Municipio 3	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	9	\N
 304	16	Municipio 4	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N	9	\N
-300	9	Nuevo Municipio GDR	40000.60	\N	\N	\N	\N	\N	4	3	1	1	1	9	\N
+300	9	Nuevo Municipio GRD	40000.60	\N	\N	\N	\N	\N	4	3	1	1	1	9	\N
 301	15	Municipio 1	10000.00	\N	\N	\N	\N	\N	5	4	3	3	2	9	\N
 \.
 

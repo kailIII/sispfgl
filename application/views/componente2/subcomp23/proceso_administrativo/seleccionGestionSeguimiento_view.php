@@ -53,8 +53,7 @@
 <!--<form id="AdquisicionyContratacionForm" method="post" style="left: 100px;position: relative;">-->
 <form id="selInforPreliminarD" method="post">
     <center>
-        <h2 class="h2Titulos">Revisión de productos</h2>
-        <h2 class="h2Titulos">Etapa 4: Gestión y Seguimiento del Plan</h2>
+        <h2 class="h2Titulos">Gestión y Seguimiento</h2>
         <br/>
         <table>
             <tr>

@@ -257,10 +257,7 @@
     });
 </script>
 <form id="seguimientoForm" method="post">
-    <h2 class="h2Titulos">Revisión de productos</h2>
-    <h2 class="h2Titulos">Etapa 4: Gestión y Seguimiento del Plan</h2>
-
-    <br/><br/>
+   <h2 class="h2Titulos">Gestión y Seguimiento</h2> <br/><br/>
     <table>
         <tr>
         <td class="tdLugar" ><strong>Departamento:</strong></td>
@@ -311,7 +308,7 @@
             <input type="radio" name="ges_seg_op4" value="false"<?php if (!strcasecmp($ges_seg_op4, 'f')) { ?>checked <?php } ?>>NO </input>
         </td>
         <td></td>
-        <td><strong>¿Acta de aceptación contiene firmas? </strong>
+        <td><strong>¿Acta de recepción contiene firmas? </strong>
         </td>
         </tr>
         <tr>

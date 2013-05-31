@@ -351,7 +351,7 @@ $this->load->view('plantilla/menu', $menu);
                 <?php echo form_error('gesrie_fecha_acuerdo'); ?>
             </div>
             <div class="campo">
-                <label>Fecha de de Presentación publica del plan GDR:</label>
+                <label>Fecha de de Presentación publica del plan GRD:</label>
                 <input id="gesrie_fecha_presentacion" name="gesrie_fecha_presentacion" type="text" readonly="readonly" value="<?php echo set_value('gesrie_fecha_presentacion') ?>"/>
                 <?php echo form_error('gesrie_fecha_presentacion'); ?>
             </div>

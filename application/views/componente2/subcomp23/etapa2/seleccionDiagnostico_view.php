@@ -53,9 +53,7 @@
 <!--<form id="AdquisicionyContratacionForm" method="post" style="left: 100px;position: relative;">-->
 <form id="selInforPreliminarD" method="post">
     <center>
-        <h2 class="h2Titulos">Revisión de productos</h2>
-        <h2 class="h2Titulos">Etapa 2: Diagnóstico del municipio</h2>
-        <h2 class="h2Titulos">Producto 6:Elementos mínimos del diagnóstico</h2>
+        <h2 class="h2Titulos">Diagnóstico del municipio</h2>
         <br/>
         <table>
             <tr>

@@ -426,7 +426,7 @@
 
     </table>
     <br/>
-    <table><tr><td style="width: 50px"> <td><p><strong>¿Acta de aceptación contiene firmas?</strong></p></td></tr></table>
+    <table><tr><td style="width: 50px"> <td><p><strong>¿Acta de recepción contiene firmas?</strong></p></td></tr></table>
     <table>
         <tr><td style="width: 100px"> 
         <td>Municipalidad</td>

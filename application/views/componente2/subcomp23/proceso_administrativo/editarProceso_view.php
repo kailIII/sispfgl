@@ -256,7 +256,7 @@
     });
 </script>
 <form id="AdquisicionyContratacionForm" method="post" style="left: 70px;position: relative;">
-    <h2 class="h2Titulos">Proceso de Adquisición y Contrataciones</h2>
+    <h2 class="h2Titulos">Expresiones de Interés</h2>
     <br/>
     <!--
     <table>
@@ -330,7 +330,7 @@
 
     <center style="position: relative;top: 20px">
         <div>
-            <p><input type="submit" id="guardar" value="Guardar Adquisición y Contratación" />
+            <p><input type="submit" id="guardar" value="Guardar Expresión de Interés" />
                 <input type="button" id="cancelar" value="Regresar" />
             </p>
         </div>

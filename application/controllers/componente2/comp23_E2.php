@@ -1225,6 +1225,10 @@ class Comp23_E2 extends CI_Controller {
         $informacion['dia_observacion'] = $resultado[0]['dia_observacion'];
         $informacion['dia_ruta_archivo'] = $resultado[0]['dia_ruta_archivo'];
         $informacion['nombreArchivo'] = end(explode("/", $resultado[0]['dia_ruta_archivo']));
+        $informacion['dia_firmam'] = $resultado[0]['dia_firmam'];
+        $informacion['dia_firmai'] = $resultado[0]['dia_firmai'];
+        $informacion['dia_firmau'] = $resultado[0]['dia_firmau'];
+        
         $informacion['cumplimientosMinimos'] = $this->cumDia->obtenerLosCumplimientosDiagnostico($resultado[0]['dia_id']);
         /* FIN DE INFORME PRELIMINAR */
         $this->load->view('plantilla/header', $informacion);
@@ -1247,6 +1251,16 @@ class Comp23_E2 extends CI_Controller {
         $dia_vision = $this->input->post("dia_vision");
         if ($dia_vision == '0')
             $dia_vision = null;
+        $dia_firmau = $this->input->post("dia_firmau");
+        if ($dia_firmau == '0')
+            $dia_firmau = null;
+        $dia_firmai = $this->input->post("dia_firmai");
+        if ($dia_firmai == '0')
+            $dia_firmai = null;
+        $dia_firmam = $this->input->post("dia_firmam");
+        if ($dia_firmam == '0')
+            $dia_firmam = null;
+        
         $dia_observacion = $this->input->post("dia_observacion");
         $dia_ruta_archivo = $this->input->post("dia_ruta_archivo");
         /* OBTENIENDO VALORES DE LOS CRITERIOS */
@@ -1262,7 +1276,7 @@ class Comp23_E2 extends CI_Controller {
 
         /* ACTUALIZANDO ACUERDO MUNICIPAL */
         $this->load->model('etapa2-sub23/diagnostico', 'Dia');
-        $this->Dia->actualizarDia($dia_id, $dia_fecha_borrador, $dia_fecha_concejo_muni, $dia_fecha_observacion, $dia_observacion, $dia_ruta_archivo, $dia_vision);
+        $this->Dia->actualizarDia($dia_id, $dia_fecha_borrador, $dia_fecha_concejo_muni, $dia_fecha_observacion, $dia_observacion, $dia_ruta_archivo, $dia_vision,$dia_firmam, $dia_firmau, $dia_firmai);
     }
 
 }

@@ -53,10 +53,8 @@
 <!--<form id="AdquisicionyContratacionForm" method="post" style="left: 100px;position: relative;">-->
 <form id="selInforPreliminarD" method="post">
     <center>
-        <h2 class="h2Titulos">Revisión de productos</h2>
-        <h2 class="h2Titulos">Etapa 3: Plan Estratégico Participativo</h2>
-        <h2 class="h2Titulos">Cumplimientos de los elementos mínimos del PEP</h2>
-        <br/>
+       <h2 class="h2Titulos">Plan Estratégico Participativo</h2>
+       <br/>
         <table>
             <tr>
             <td><strong>Departamento</strong></td>
