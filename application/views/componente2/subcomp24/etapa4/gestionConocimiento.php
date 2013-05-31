@@ -143,12 +143,7 @@ $(document).ready(function(){
         <div id="listaContainer">
             <div class="campo">
                 <label>Departamento</label>
-                <select id='selDepto'>
-                    <option value='0'>--Seleccione--</option>
-                    <?php foreach ($departamentos as $depto) { ?>
-                    <option value='<?php echo $depto->dep_id; ?>'><?php echo $depto->dep_nombre; ?></option>
-                    <?php } ?>
-                </select>
+                <?php echo form_dropdown('selDepto',$departamentos,'','id="selDepto"'); ?>
             </div>
             <div class="campo">
                 <label>Municipio</label>
@@ -185,7 +180,7 @@ $(document).ready(function(){
                 <input id="gescon_tematica" name="gescon_tematica" type="text" value="<?php echo set_value('gescon_tematica') ?>"/>
                 <?php echo form_error('gescon_tematica'); ?>
             </div>
-            <div class="tabla">
+            <div class="tabla" style="margin-left: 150px;">
                 <label></label>
                 <table id="miembros"></table>
                 <div id="pagerMiembros"></div>

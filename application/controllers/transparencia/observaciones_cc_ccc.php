@@ -1,0 +1,164 @@
+<?php
+
+/**
+ * Controlador para componente 3
+ *
+ * @author Carlos Romero
+ */
+
+if (!defined('BASEPATH'))
+    exit('No direct script access allowed');
+
+class  observaciones_cc_ccc extends CI_Controller {
+	
+	public function index() {
+
+    }
+	
+    public function agregar_obs() {
+		
+		$informacion['titulo'] = 'Agregar Observaci&oacute;n a CC o CCC';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('transparencia/agregar_obs_cc_ccc');
+        $this->load->view('plantilla/footer', $informacion);
+        
+    }
+    
+    public function guardar_nueva_obs(){
+		//Verificacion del captcha
+				require_once('resource/recaptcha-php-1.11/recaptchalib.php');
+				$privatekey = "6Lfi_-ESAAAAAEm23hZQntP1t9POUWRNOMoXYpCV";
+				$resp = recaptcha_check_answer ($privatekey,
+											$_SERVER["REMOTE_ADDR"],
+											$_POST["recaptcha_challenge_field"],
+											$_POST["recaptcha_response_field"]);
+
+				if (!$resp->is_valid) {
+					// What happens when the CAPTCHA was entered incorrectly
+					$msg="El c&oacute;digo de CAPTCHA no fue ingresado correctamente. Intente nuevamente." .
+					"(reCAPTCHA said: " . $resp->error . ")";
+					
+					$informacion['titulo'] = 'Agregar Observaci&oacute;n a CC o CCC';
+					$informacion['user_id'] = $this->tank_auth->get_user_id();
+					$informacion['username'] = $this->tank_auth->get_username();
+					$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+					$informacion['aviso'] = '<p style="color:blue">'.$msg.'.</p>';         
+					$this->load->view('plantilla/header', $informacion);
+					$this->load->view('plantilla/menu', $informacion);
+					$this->load->view('transparencia/agregar_obs_cc_ccc');
+					$this->load->view('plantilla/footer', $informacion);
+				} else {
+					// Your code here to handle a successful verification
+					$this->load->model('transparencia/transparencia_model');
+					$datos_obs = $_POST;
+					unset($datos_obs['guardar']);
+					if($datos_obs['tipo_obs']=='cc')
+					$this->transparencia_model->insertar_obs_cc($datos_obs);
+					else
+					$this->transparencia_model->insertar_obs_ccc($datos_obs);
+					
+					$informacion['titulo'] = 'Agregar Observaci&oacute;n a CC o CCC';
+					$informacion['user_id'] = $this->tank_auth->get_user_id();
+					$informacion['username'] = $this->tank_auth->get_username();
+					$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+					$informacion['aviso'] = '<p style="color:blue">Se ha realziado el registro correctamete.</p>';         
+					$this->load->view('plantilla/header', $informacion);
+					$this->load->view('plantilla/menu', $informacion);
+					$this->load->view('transparencia/agregar_obs_cc_ccc');
+					$this->load->view('plantilla/footer', $informacion);
+					
+				}
+		
+	}
+	
+	public function cargar_cc($id_mun){
+		$this->load->model('transparencia/transparencia_model');
+        $cc = $this->transparencia_model->get_cc($id_mun);
+        $numfilas = count($cc);
+
+        $i = 0;
+        foreach ($cc as $aux) {
+			
+			if($aux->acta_final!='')
+				$arch1='<a href="'.base_url().''.$aux->acta_final.'">Descargar</a>';
+            else $arch1='No disponible';
+            
+            if($aux->listado_asistencia!='')
+				$arch2='<a href="'.base_url().''.$aux->listado_asistencia.'">Descargar</a>';
+            else $arch2='No disponible';
+            
+            $rows[$i]['id'] = $aux->cc_id;
+            $rows[$i]['cell'] = array($aux->cc_id,
+                $this->transparencia_model->get_mun_nombre($aux->mun_id),
+                $aux->cc_fecha,
+                $aux->cc_lugar,
+                $aux->total_mujeres,
+                $aux->total_hombres,
+                $arch1,
+                $arch2
+            );
+            $i++;
+        }
+
+        if ($numfilas != 0) {
+            array_multisort($rows, SORT_ASC);
+        } else {
+            $rows[0]['id'] = 0;
+            $rows[0]['cell'] = array('0', 'No hay Registros', ' ', ' ', ' ', ' ',' ',' ',' ');
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+	}
+	
+	public function cargar_ccc($id_mun){
+		$this->load->model('transparencia/transparencia_model');
+        $ccc = $this->transparencia_model->get_ccc($id_mun);
+        $numfilas = count($ccc);
+
+        $i = 0;
+        foreach ($ccc as $aux) {
+            
+            $rows[$i]['id'] = $aux->ccc_id;
+            $rows[$i]['cell'] = array($aux->ccc_id,
+                $this->transparencia_model->get_mun_nombre($aux->mun_id),
+                $aux->fecha_conformacion,
+                $aux->lugar_conformacion
+            );
+            $i++;
+        }
+
+        if ($numfilas != 0) {
+            array_multisort($rows, SORT_ASC);
+        } else {
+            $rows[0]['id'] = 0;
+            $rows[0]['cell'] = array('0', 'No hay Registros', ' ', ' ');
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+	}
+
+
+}
+?>

@@ -17,6 +17,7 @@ $(document).ready(function(){
     function formularioShow(){$('#listaContainer').hide();$('#formulario').show()}
     $("#guardar").button();
     $("#btn_acuerdo_nuevo").button().click(function(){$('#frm').submit();});
+    $("#btn_delete").button();
     $("#btn_seleccionar").button().click(function(){document.location.href='<?php echo current_url(); ?>/' + jQuery("#lista").jqGrid('getGridParam','selrow');});
     $("#cancelar").button().click(function() {document.location.href='<?php echo base_url(); ?>';});
     $('.mensaje').dialog({autoOpen: false,width: 300,
@@ -70,12 +71,7 @@ $(document).ready(function(){
     <div id="rpt_frm_bdy">
         <div class="campo">
             <label>Departamento</label>
-            <select id='selDepto'>
-                <option value='0'>--Seleccione--</option>
-                <?php foreach ($departamentos as $depto) { ?>
-                    <option value='<?php echo $depto->dep_id; ?>'><?php echo $depto->dep_nombre; ?></option>
-                <?php } ?>
-            </select>
+            <?php echo form_dropdown('selDepto',$departamentos,'','id="selDepto"'); ?>
         </div>
         <div class="campo">
             <label>Municipio</label>

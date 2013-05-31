@@ -17,6 +17,7 @@ $(document).ready(function(){
     function formularioShow(){$('#listaContainer').hide();$('#formulario').show()}
     $("#guardar").button();btn_consultor_add
     $("#btn_consultor_add").button();
+    $("#btn_delete").button();
     $("#btn_acuerdo_nuevo").button().click(function(){$('#frm').submit();});
     $("#btn_seleccionar").button().click(function(){document.location.href='<?php echo current_url(); ?>/' + jQuery("#lista").jqGrid('getGridParam','selrow');});
     $("#cancelar").button().click(function() {document.location.href='<?php echo base_url(); ?>';});
@@ -222,12 +223,7 @@ $(document).ready(function(){
         <div id="listaContainer">
             <div class="campo">
                 <label>Departamento</label>
-                <select id='selDepto'>
-                    <option value='0'>--Seleccione--</option>
-                    <?php foreach ($departamentos as $depto) { ?>
-                    <option value='<?php echo $depto->dep_id; ?>'><?php echo $depto->dep_nombre; ?></option>
-                    <?php } ?>
-                </select>
+                <?php echo form_dropdown('selDepto',$departamentos,'','id="selDepto"'); ?>
             </div>
             <div class="campo">
                 <label>Municipio</label>
@@ -240,7 +236,9 @@ $(document).ready(function(){
             <div style="margin-left: 300px;display: none;">
                 <table id="lista"></table>
                 <div id="pagerLista"></div>
+                <div id="btn_seleccionar">Seleccionar</div>
                 <div id="btn_acuerdo_nuevo">Crear Nuevo</div>
+                <div id="btn_delete">Eliminar</div>
             </div>
         </div>
         <div id="formulario" style="display: none;">

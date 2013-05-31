@@ -86,7 +86,7 @@ class Comp24_E3 extends CI_Controller {
                     'user_uid' => $this->tank_auth->get_user_id(),
                     'username' => $this->tank_auth->get_username(),
                     'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
-                    'departamentos' => $this->departamento->obtenerDepartamentos(),
+                    'departamentos' => $this->comp24->getDepartamentos(),
                     $campo=>$id
                     ));
     }
@@ -166,7 +166,7 @@ class Comp24_E3 extends CI_Controller {
                     'user_uid' => $this->tank_auth->get_user_id(),
                     'username' => $this->tank_auth->get_username(),
                     'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
-                    'departamentos' => $this->departamento->obtenerDepartamentos(),
+                    'departamentos' => $this->comp24->getDepartamentos(),
                     $campo=>$id
                     ));
     }
@@ -241,7 +241,7 @@ class Comp24_E3 extends CI_Controller {
                     'user_uid' => $this->tank_auth->get_user_id(),
                     'username' => $this->tank_auth->get_username(),
                     'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
-                    'departamentos' => $this->departamento->obtenerDepartamentos(),
+                    'departamentos' => $this->comp24->getDepartamentos(),
                     $campo=>$id
                     ));
     }
@@ -317,7 +317,7 @@ class Comp24_E3 extends CI_Controller {
                     'user_uid' => $this->tank_auth->get_user_id(),
                     'username' => $this->tank_auth->get_username(),
                     'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
-                    'departamentos' => $this->departamento->obtenerDepartamentos(),
+                    'departamentos' => $this->comp24->getDepartamentos(),
                     $campo=>$id
                     ));
     }

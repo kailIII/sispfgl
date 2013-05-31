@@ -74,7 +74,7 @@ GROUP BY dep_nombre';
             return false;
     }
     
-    public function insert_row($tabla, $data,$last_id = false){
+    public function insert_row($tabla, $data, $last_id = false){
         $r = $this->db->insert($tabla, $data);
         if($last_id){
             return $this->db->insert_id();
@@ -94,6 +94,35 @@ GROUP BY dep_nombre';
     public function insert_indicadores1($data){
         
         return $this->db->insert('indicadores_desempeno1',$data);
+    }
+    
+    public function last_id($tabla, $campo){
+        $this->db->order_by($campo,'desc');
+        return  $this->db->get($tabla,'1')->row()->$campo;
+    }
+    
+    /**
+     * Obtener Departamentos por permiso.
+     * by Alexis Beltran
+     * 
+     * Retorna un array con id,dep_nombre, si posee permiso.
+     */
+    public function getDepartamentos(){
+        if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
+        
+        $deptos = $this->db->get_where('c24_user_depto',array('user_id'=>$this->tank_auth->get_user_id()));
+        if($deptos->num_rows() > 0){
+            $deptos = $deptos->row()->deptos;
+            $deptos = explode(',',$deptos);
+            $this->db->where_in('dep_id',$deptos);
+        }
+        $this->db->order_by('dep_id','ASC');
+        $salida['0'] = 'Seleccione';
+        foreach($this->db->get('departamento')->result() as $row){
+            $salida[$row->dep_id] = $row->dep_nombre;
+        }
+        //print_r($salida);
+        return $salida;
     }
 
 	
