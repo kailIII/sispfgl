@@ -160,9 +160,7 @@
 </script>
 
 <form id="informePreliminarForm" method="post">
-    <h2 class="h2Titulos">Etapa 1: Condiciones Previas</h2>
-    <h2 class="h2Titulos">Informe Preliminar del Municipio</h2>
-
+    <h2 class="h2Titulos">Condiciones Previas</h2>
     <br/><br/>
     <table>
         <tr>
@@ -198,7 +196,7 @@
                 <tr><td><strong>Fecha de visto bueno: </strong><input id="inf_pre_fecha_observacion" <?php if (isset($inf_pre_fecha_observacion)) { ?>value="<?php echo date('d-m-Y', strtotime($inf_pre_fecha_observacion)); ?>"<?php } ?>  name="inf_pre_fecha_observacion" type="text" size="7" /></td></tr>
                 <tr><td><strong>Fecha de aprobación del concejo municipal: </strong><input id="inf_pre_aceptacion" <?php if (isset($inf_pre_aceptacion)) { ?> value="<?php echo date('d-m-Y', strtotime($inf_pre_aceptacion)); ?>"<?php } ?>  name="inf_pre_aceptacion" type="text" size="7" /></td></tr>
             </table>
-            <p><strong>¿Acta de aceptación contiene firmas?</strong></p>
+            <p><strong>¿Acta de recepción contiene firmas?</strong></p>
             <table>
                 <tr>
                 <td>Municipalidad</td>

@@ -262,7 +262,6 @@
   
     });
 </script>
-<h2 class="h2Titulos">Etapa 0: Selección de Municipios</h2>
 <h2 class="h2Titulos">Selección de municipios por el comite Interinstitucional</h2>
 <br/>
 <br/>

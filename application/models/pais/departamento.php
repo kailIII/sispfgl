@@ -111,7 +111,7 @@ class Departamento extends CI_Model {
         return $consulta->result();
     }
 
-    public function obtenerDepartamentosPorGrupoGDR($gru_id) {
+    public function obtenerDepartamentosPorGrupoGRD($gru_id) {
         $query = "SELECT distinct(departamento.dep_id), 
                          departamento.dep_nombre
                   FROM 	 municipio,departamento

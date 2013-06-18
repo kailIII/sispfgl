@@ -269,7 +269,7 @@
 
 
 <center>
-    <h2 class="h2Titulos">Pedido de propuesta técnica y financiera</h2>
+    <h2 class="h2Titulos">Revisión de Propuesta Técnica y Financiera</h2>
     <br/>
     <table>
 <!--        <tr>
@@ -287,10 +287,10 @@
                 <option value='0'>--Seleccione--</option>
             </select>
         </td>
-        </tr>-->
+        </tr>
         <tr>
         <td colspan="2">Seleccione el grupo para configurar el pédido de propuesta técnica</td>
-        </tr>
+        </tr>-->
         <tr>
         <td><strong>Grupo</strong></td>
         <td><select name='selGrupo' id="selGrupo">
@@ -341,11 +341,11 @@
         <td colspan="2" class="fechaAdmin" ></td>
         </tr>
         <tr>
-        <td class="textD"> <strong>Fecha de cierre de negociación: </strong></td>
+        <td class="textD"> <strong>Fecha de firma de contrato: </strong></td>
         <td><input value="" id="pro_fcierre_negociacion" name="pro_fcierre_negociacion" type="text" size="10" readonly="readonly"/></td>
         </tr>
         <tr>
-        <td class="textD"> <strong>Fecha de firma de contrato: </strong></td>
+        <td class="textD"> <strong>Fecha de orden de inicio: </strong></td>
         <td><input value="" id="pro_ffirma_contrato" name="pro_ffirma_contrato" type="text" size="10" readonly="readonly"/></td>
         </tr>
     </table>

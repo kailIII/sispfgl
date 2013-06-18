@@ -39,7 +39,7 @@ class Comp25_fase1 extends CI_Controller {
         $cons = $this->consultor->obtenerConsultorPorUsuario($this->tank_auth->get_username());
 
         if (strcmp(trim($rol[0]->rol_codigo), 'gdrc') == 0)
-            $informacion['departamentos'] = $this->departamento->obtenerDepartamentosPorGrupoGDR($cons[0]->cons_id);
+            $informacion['departamentos'] = $this->departamento->obtenerDepartamentosPorGrupoGRD($cons[0]->cons_id);
         else
             $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
         $informacion['rol'] = $rol[0]->rol_codigo;
@@ -341,7 +341,7 @@ class Comp25_fase1 extends CI_Controller {
         $cons = $this->consultor->obtenerConsultorPorUsuario($this->tank_auth->get_username());
 
         if (strcmp(trim($rol[0]->rol_codigo), 'gdrc') == 0)
-            $informacion['departamentos'] = $this->departamento->obtenerDepartamentosPorGrupoGDR($cons[0]->cons_id);
+            $informacion['departamentos'] = $this->departamento->obtenerDepartamentosPorGrupoGRD($cons[0]->cons_id);
         else
             $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
         $informacion['rol'] = $rol[0]->rol_codigo;
@@ -361,9 +361,9 @@ class Comp25_fase1 extends CI_Controller {
         $this->load->model('fase1-sub25/detalle_obra', 'detObra');
         $this->load->model('fase1-sub25/nombre_rubro', 'nomRub');
         $this->load->model('fase1-sub25/categoria_fortalecimiento', 'catFor');
+        $this->load->model('fase1-sub25/revision_informacion', 'revInf');
         $this->load->model('fase1-sub25/obra');
         $resultado = $this->municipio->obtenerIDVariable('rub_id', $mun_id);
-
         if ($resultado[0]->rub_id == 0) {
             $this->rubro->agregarRubro($mun_id);
             $resultado = $this->rubro->idPorMunicipio($mun_id);
@@ -381,8 +381,52 @@ class Comp25_fase1 extends CI_Controller {
         $resultado = $this->rubro->idPorMunicipio($mun_id);
         $rubros = $this->rubEle->obtenerLosRubros($resultado[0]->rub_id);
         $rubroE = array();
-        foreach ($rubros as $rubro)
-            $rubroE[$rubro->nom_rub_id] = array($rubro->rub_ele_seleccionado, $rubro->rub_ele_observacion);
+        $revisionInfo=  $this->revInf->idPorMunicipio($mun_id);
+        $i=1;
+        foreach ($rubros as $rubro){
+            switch ($i){
+                case 1:
+                    if($revisionInfo[0]->rev_inf_plan_municipalidad== true)
+                        $rubroE[$rubro->nom_rub_id] = array('t', $rubro->rub_ele_observacion);
+                    else
+                        $rubroE[$rubro->nom_rub_id] = array('f', $rubro->rub_ele_observacion);
+                    break;
+                case 2:
+                    if($revisionInfo[0]->rev_inf_presento== true)
+                        $rubroE[$rubro->nom_rub_id] = array('t', $rubro->rub_ele_observacion);
+                    else
+                        $rubroE[$rubro->nom_rub_id] = array('f', $rubro->rub_ele_observacion);
+                    break;
+                case 3:
+                    if($revisionInfo[0]->rev_inf_presentoc== true)
+                        $rubroE[$rubro->nom_rub_id] = array('t', $rubro->rub_ele_observacion);
+                    else
+                        $rubroE[$rubro->nom_rub_id] = array('f', $rubro->rub_ele_observacion);
+                    break;
+                      break;
+                case 4:
+                    if($revisionInfo[0]->rev_inf_presentod== true)
+                        $rubroE[$rubro->nom_rub_id] = array('t', $rubro->rub_ele_observacion);
+                    else
+                        $rubroE[$rubro->nom_rub_id] = array('f', $rubro->rub_ele_observacion);
+                    break;
+                      break;
+                case 5:
+                    if($revisionInfo[0]->rev_inf_presentoe== true)
+                        $rubroE[$rubro->nom_rub_id] = array('t', $rubro->rub_ele_observacion);
+                    else
+                        $rubroE[$rubro->nom_rub_id] = array('f', $rubro->rub_ele_observacion);
+                    break;
+                case 6:
+                    if($revisionInfo[0]->rev_inf_presentof== true)
+                        $rubroE[$rubro->nom_rub_id] = array('t', $rubro->rub_ele_observacion);
+                    else
+                        $rubroE[$rubro->nom_rub_id] = array(FALSE, $rubro->rub_ele_observacion);
+                    break;
+            }
+            $i++;
+        }
+            
 
         $rows[0]['id'] = $resultado[0]->rub_id;
         $rows[0]['cell'] = array($resultado[0]->rub_id,
@@ -489,7 +533,7 @@ class Comp25_fase1 extends CI_Controller {
         $cons = $this->consultor->obtenerConsultorPorUsuario($this->tank_auth->get_username());
 
         if (strcmp(trim($rol[0]->rol_codigo), 'gdrc') == 0)
-            $informacion['departamentos'] = $this->departamento->obtenerDepartamentosPorGrupoGDR($cons[0]->cons_id);
+            $informacion['departamentos'] = $this->departamento->obtenerDepartamentosPorGrupoGRD($cons[0]->cons_id);
         else
             $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
         $informacion['rol'] = $rol[0]->rol_codigo;
@@ -693,7 +737,7 @@ class Comp25_fase1 extends CI_Controller {
         $cons = $this->consultor->obtenerConsultorPorUsuario($this->tank_auth->get_username());
 
         if (strcmp(trim($rol[0]->rol_codigo), 'gdrc') == 0)
-            $informacion['departamentos'] = $this->departamento->obtenerDepartamentosPorGrupoGDR($cons[0]->cons_id);
+            $informacion['departamentos'] = $this->departamento->obtenerDepartamentosPorGrupoGRD($cons[0]->cons_id);
         else
             $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
         $informacion['rol'] = $rol[0]->rol_codigo;

@@ -150,9 +150,7 @@
     });
 </script>
 <form id="cumplimientosForm" method="post">
-    <h2 class="h2Titulos">Etapa 3: Plan Estratégico Participativo</h2>
-    <h2 class="h2Titulos">Cumplimientos de los elementos mínimos del PEP</h2>
-
+    <h2 class="h2Titulos">Plan Estratégico Participativo</h2>
     <br/><br/>
     <table>
         <tr>
@@ -188,7 +186,7 @@
                 <tr><td><strong>Fecha de visto bueno: </strong><input id="pro_pep_fecha_observacion" <?php if (isset($pro_pep_fecha_observacion)) { ?>value="<?php echo date('d-m-Y', strtotime($pro_pep_fecha_observacion)); ?>"<?php } ?>  name="pro_pep_fecha_observacion" type="text" size="7" /></td></tr>
                 <tr> <td><strong>Fecha de aprobacion del concejo municipal: </strong><input id="pro_pep_fecha_aprobacion" <?php if (isset($pro_pep_fecha_aprobacion)) { ?> value="<?php echo date('d-m-Y', strtotime($pro_pep_fecha_aprobacion)); ?>"<?php } ?>  name="pro_pep_fecha_aprobacion" type="text" size="7" /></td></tr>
             </table>
-            <p><strong>¿Acta de aceptación contiene firmas?</strong></p>
+            <p><strong>¿Acta de recepción contiene firmas?</strong></p>
             <table>
                 <tr>
                 <td><strong>Concejo Municipal</strong></td>

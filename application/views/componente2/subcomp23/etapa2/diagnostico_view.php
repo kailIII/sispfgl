@@ -153,9 +153,7 @@
 </script>
 
 <form id="diagnosticoForm" method="post">
-    <h2 class="h2Titulos">Etapa 2: Diagnóstico del municipio</h2>
-    <h2 class="h2Titulos">Elementos mínimos del diagnóstico</h2>
-
+    <h2 class="h2Titulos">Diagnóstico del municipio</h2>
     <br/><br/>
     <table>
         <tr>
@@ -190,6 +188,28 @@
                 <tr> <td ><strong>Fecha de entrega de producto: </strong><input id="dia_fecha_borrador" <?php if (isset($dia_fecha_borrador)) { ?>  value="<?php echo date('d-m-Y', strtotime($dia_fecha_borrador)); ?>" <?php } ?> name="dia_fecha_borrador" type="text" size="7" /></td></tr>
                 <tr><td><strong>Fecha de visto bueno: </strong><input id="dia_fecha_observacion" <?php if (isset($dia_fecha_observacion)) { ?>value="<?php echo date('d-m-Y', strtotime($dia_fecha_observacion)); ?>"<?php } ?>  name="dia_fecha_observacion" type="text" size="7" /></td></tr>
                 <tr> <td><strong>Fecha de aprobacion del concejo municipal: </strong><input id="dia_fecha_concejo_muni" <?php if (isset($dia_fecha_concejo_muni)) { ?> value="<?php echo date('d-m-Y', strtotime($dia_fecha_concejo_muni)); ?>"<?php } ?>  name="dia_fecha_concejo_muni" type="text" size="7" /></td></tr>
+            <tr>
+            <td>
+                <p><strong>¿Acta de recepción contiene firmas?</strong></p>
+            <table>
+                <tr>
+                <td>Municipalidad</td>
+                <td><input type="radio" name="dia_firmam" value="true" <?php if (!strcasecmp($dia_firmam, 't')) { ?>checked <?php } ?>>SI </input></td>
+                <td><input type="radio" name="dia_firmam" value="false" <?php if (!strcasecmp($dia_firmam, 'f')) { ?>checked <?php } ?>>NO </input></td>
+                </tr>
+                <tr>
+                <td>ISDEM </td>
+                <td><input type="radio" name="dia_firmai" value="true" <?php if (!strcasecmp($dia_firmai, 't')) { ?>checked <?php } ?>>SI </input></td>
+                <td><input type="radio" name="dia_firmai" value="false"<?php if (!strcasecmp($dia_firmai, 'f')) { ?>checked <?php } ?>>NO </input></td>    
+                </tr>
+                <tr>
+                <td>UEP</td>
+                <td><input type="radio" name="dia_firmau" value="true" <?php if (!strcasecmp($dia_firmau, 't')) { ?>checked <?php } ?>>SI </input></td>
+                <td><input type="radio" name="dia_firmau" value="false" <?php if (!strcasecmp($dia_firmau, 'f')) { ?>checked <?php } ?>>NO </input></td> 
+                </tr>
+            </table> 
+            </td>
+            </tr>
             </table>
             </tr>
     </table>

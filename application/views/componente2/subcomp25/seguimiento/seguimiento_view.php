@@ -562,7 +562,7 @@
 
         <tr>
         <td class="textD">
-            <strong>Fecha de orden de inicio del diagnóstico</strong> 
+            <strong>Fecha de inicio del diagnóstico</strong> 
         </td>
         <td>
             <input id="seg_forden_diagnostico" name="seg_forden_diagnostico" type="text" size="10" readonly="readonly"/>        
@@ -621,7 +621,7 @@
 
         <tr>
         <td class="textD"> 
-            <strong>Fecha de presentación pública del plan GDR</strong>
+            <strong>Fecha de presentación pública del plan GRD</strong>
         </td>
         <td>
             <input id="seg_fpresentacion_publica" name="seg_fpresentacion_publica" type="text" size="10" readonly="readonly"/>
@@ -679,7 +679,7 @@
         </td>
         </tr>
     </table>
-    <input id="seg_id" type="text" size="100" />
+    <input id="seg_id" type="text" size="100" hidden="hidden"  />
     <input id="seg_ruta_archivo" name="seg_ruta_archivo" type="text" size="100" hidden="hidden" readonly="readonly"/>
 </form>
 

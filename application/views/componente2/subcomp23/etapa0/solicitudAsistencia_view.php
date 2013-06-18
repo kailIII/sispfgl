@@ -122,9 +122,7 @@
 
 
 <form id="seleccionMunicipiosForm" method="post" action="">
-
-    <h2 class="h2Titulos">Etapa 0: Selección de Municipios</h2>
-    <h2 class="h2Titulos">Solicitud de asistencia técnica para la elaboración de planes estratégicos participadtivos</h2>
+    <h2 class="h2Titulos">Solicitud de asistencia técnica para la elaboración de planes estratégicos participativos</h2>
     <br/>
     <br/>
     <table>

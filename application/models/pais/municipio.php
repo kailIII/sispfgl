@@ -87,7 +87,7 @@ class Municipio extends CI_Model {
         return $consulta->result();
     }
 
-    public function obtenerMunicipioGDR($gru_id, $dep_id) {
+    public function obtenerMunicipioGRD($gru_id, $dep_id) {
         $this->db->where('gru_id', $gru_id);
         $this->db->where('dep_id', $dep_id);
         $this->db->order_by('mun_id', 'asc');

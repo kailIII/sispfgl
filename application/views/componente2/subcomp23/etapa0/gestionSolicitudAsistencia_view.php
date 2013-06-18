@@ -97,8 +97,7 @@
     });               
 </script>     
 <form id="gestionSolicitudForm" method="post">
-    <h2 class="h2Titulos">Etapa 0: Selección de Municipios</h2>
-    <h2 class="h2Titulos">Solicitud de asistencia técnica para la elaboración de planes estratégicos participadtivos</h2>
+    <h2 class="h2Titulos">Solicitud de asistencia técnica para la elaboración de planes estratégicos participativos</h2>
     <br/>
     <p>A continuación se presentan todas las solicitudes técnicas registradas para cada municipio en donde se requiere realizar un proyecto PEP</p>
     <br/>

@@ -30,14 +30,17 @@ class Diagnostico extends CI_Model {
         return $consulta->result_array();
     }
     
-     public function actualizarDia($dia_id, $dia_fecha_borrador, $dia_fecha_concejo_muni, $dia_fecha_observacion, $dia_observacion, $dia_ruta_archivo,$dia_vision) {
+     public function actualizarDia($dia_id, $dia_fecha_borrador, $dia_fecha_concejo_muni, $dia_fecha_observacion, $dia_observacion, $dia_ruta_archivo,$dia_vision,$dia_firmam, $dia_firmau, $dia_firmai) {
         $datos = array(
             'dia_fecha_borrador' => $dia_fecha_borrador,
             'dia_fecha_observacion' => $dia_fecha_observacion,
             'dia_fecha_concejo_muni' => $dia_fecha_concejo_muni,
             'dia_vision' => $dia_vision,
             'dia_observacion' => $dia_observacion,
-            'dia_ruta_archivo' => $dia_ruta_archivo
+            'dia_ruta_archivo' => $dia_ruta_archivo,
+            'dia_firmam' => $dia_firmam,
+            'dia_firmai' => $dia_firmai,
+            'dia_firmau' => $dia_firmau
         );
         $this->db->where('dia_id', $dia_id);
         $this->db->update($this->tabla, $datos);

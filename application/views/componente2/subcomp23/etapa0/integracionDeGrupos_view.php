@@ -217,8 +217,6 @@
      
     });
 </script>
-
-<h3 align="Center">Etapa 0: Seleccion de Municipios</h3>
 <h3 align="Center">Registro de la integración de grupos</h3>
 <form id="grupoForm" method="post"></form>
 <center>

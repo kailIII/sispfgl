@@ -135,7 +135,7 @@
                                 $("#SeleccionConsultoraForm").show();
                             }else{
                                 $('#Mensajito').show();
-                                $('#Mensajito').val("Debe de registrar primero las fechas de la etapa: Evaluación de expresión de interés");
+                                $('#Mensajito').val("Debe de registrar primero las fechas de la etapa: Expresión de Interés");
                             }
                         });                    
                     }
@@ -209,10 +209,10 @@
                 <option value='0'>--Seleccione--</option>
             </select>
         </td>
-        </tr>-->
         <tr>
         <td colspan="2">Seleccione el grupo para agregarle las consultoras</td>
-        </tr>
+        </tr>        </tr>-->
+
         <tr>
         <td><strong>Grupo</strong></td>
         <td><select name='selGrupo' id="selGrupo">
