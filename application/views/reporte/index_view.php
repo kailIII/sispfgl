@@ -33,6 +33,8 @@
     <input type="submit" id="reporte1" value="AVANCE 2.5:  FORTALECIMIENTO DE LAS CAPACIDADES MUNICIPALES EN GESTIÓN DE RIESGO DE DESASTRES (GRD)" />
     
 </form>
+<br/>
+<br/>
 <form method="post" action="<?php echo base_url('reportes/seguimientoReporte'); ?>">
     <input type="submit" id="reporte2" value="SEGUIMIENTO GESTIÓN DE RIESGO DE DESASTRES DE TODOS LOS DEPARTAMENTOS" />
 </form>
