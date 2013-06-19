@@ -21,6 +21,18 @@ public function get_ccc($id_mun) {
         return $query->result();
     }
     
+public function get_coment_cc($id){
+		$this->db->where('cc_id', $id);
+        $query = $this->db->get('comentario_publico_cc');
+        return $query->result();
+}
+
+public function get_coment_ccc($id){
+		$this->db->where('ccc_id', $id);
+        $query = $this->db->get('comentario_publico_ccc');
+        return $query->result();
+}
+    
 public function insertar_obs_cc($datos_obs){
 	
 		$data_obs = array(
@@ -46,6 +58,18 @@ public function insertar_obs_ccc($datos_obs){
         
         $this->db->insert('comentario_publico_ccc', $data_obs);
 }
+
+public function eliminar_obs_cc($id){
+		$this->db->where('coment_id', $id);
+		$this->db->delete('comentario_publico_cc');
+}
+
+public function eliminar_obs_ccc($id){
+		$this->db->where('coment_id', $id);
+		$this->db->delete('comentario_publico_ccc');
+}
+
+
     
 
 }

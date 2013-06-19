@@ -18,15 +18,42 @@ class  observaciones_cc_ccc extends CI_Controller {
     public function agregar_obs() {
 		
 		$informacion['titulo'] = 'Agregar Observaci&oacute;n a CC o CCC';
-        $informacion['user_id'] = $this->tank_auth->get_user_id();
-        $informacion['username'] = $this->tank_auth->get_username();
-        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
+        //$informacion['user_id'] = $this->tank_auth->get_user_id();
+        //$informacion['username'] = $this->tank_auth->get_username();
+        //$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('transparencia/agregar_obs_cc_ccc');
         $this->load->view('plantilla/footer', $informacion);
         
     }
+    
+    public function gestion_obs_cc_ccc() {
+		
+		$informacion['titulo'] = 'Observaciones Realizadas a CC y CCC';
+        //$informacion['user_id'] = $this->tank_auth->get_user_id();
+        //$informacion['username'] = $this->tank_auth->get_username();
+        //$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('transparencia/gestion_obs_cc_ccc');
+        $this->load->view('plantilla/footer', $informacion);
+        
+    }
+    
+    public function validar_email(){
+		$this->load->helper('email');
+		$email=$this->input->post("email");
+
+		if (valid_email($email))
+			{
+				echo '1';
+			}
+		else
+			{
+				echo '0';
+			}
+	}
     
     public function guardar_nueva_obs(){
 		//Verificacion del captcha
@@ -43,9 +70,9 @@ class  observaciones_cc_ccc extends CI_Controller {
 					"(reCAPTCHA said: " . $resp->error . ")";
 					
 					$informacion['titulo'] = 'Agregar Observaci&oacute;n a CC o CCC';
-					$informacion['user_id'] = $this->tank_auth->get_user_id();
-					$informacion['username'] = $this->tank_auth->get_username();
-					$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+					//$informacion['user_id'] = $this->tank_auth->get_user_id();
+					//$informacion['username'] = $this->tank_auth->get_username();
+					//$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
 					$informacion['aviso'] = '<p style="color:blue">'.$msg.'.</p>';         
 					$this->load->view('plantilla/header', $informacion);
 					$this->load->view('plantilla/menu', $informacion);
@@ -62,9 +89,9 @@ class  observaciones_cc_ccc extends CI_Controller {
 					$this->transparencia_model->insertar_obs_ccc($datos_obs);
 					
 					$informacion['titulo'] = 'Agregar Observaci&oacute;n a CC o CCC';
-					$informacion['user_id'] = $this->tank_auth->get_user_id();
-					$informacion['username'] = $this->tank_auth->get_username();
-					$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+					//$informacion['user_id'] = $this->tank_auth->get_user_id();
+					//$informacion['username'] = $this->tank_auth->get_username();
+					//$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
 					$informacion['aviso'] = '<p style="color:blue">Se ha realziado el registro correctamete.</p>';         
 					$this->load->view('plantilla/header', $informacion);
 					$this->load->view('plantilla/menu', $informacion);
@@ -158,7 +185,98 @@ class  observaciones_cc_ccc extends CI_Controller {
 
         echo $jsonresponse;
 	}
+	
+	public function cargar_comentarios_cc($id){
+		$this->load->model('transparencia/transparencia_model');
+		$comentarios = $this->transparencia_model->get_coment_cc($id);
+			
+        $numfilas = count($comentarios);
 
+        $i = 0;
+        
+			foreach ($comentarios as $aux) {
+				
+				$rows[$i]['id'] = $aux->coment_id;
+				$rows[$i]['cell'] = array($aux->coment_id,
+					$aux->cc_id,
+					$aux->nombre_persona,
+					$aux->email,
+					$aux->comentario,
+					$aux->fecha_coment
+				);
+				$i++;
+			}
+
+        if ($numfilas != 0) {
+            array_multisort($rows, SORT_ASC);
+        } else {
+            $rows[0]['id'] = 0;
+            $rows[0]['cell'] = array('0', ' ', 'No hay comentarios aun.', ' ');
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+	}
+
+	public function cargar_comentarios_ccc($id){
+		$this->load->model('transparencia/transparencia_model');
+		$comentarios = $this->transparencia_model->get_coment_ccc($id);
+			
+        $numfilas = count($comentarios);
+
+        $i = 0;
+        
+        foreach ($comentarios as $aux) {
+				
+				$rows[$i]['id'] = $aux->coment_id;
+				$rows[$i]['cell'] = array($aux->coment_id,
+					$aux->ccc_id,
+					$aux->nombre_persona,
+					$aux->email,
+					$aux->comentario,
+					$aux->fecha_coment
+				);
+				$i++;
+			}
+
+        if ($numfilas != 0) {
+            array_multisort($rows, SORT_ASC);
+        } else {
+            $rows[0]['id'] = 0;
+            $rows[0]['cell'] = array('0', ' ', 'No hay comentarios aun.', ' ');
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+	}
+	
+	public function eliminar_coment_cc(){
+			$coment_id=$this->input->post("coment_id");
+			$this->load->model('transparencia/transparencia_model');
+			$this->transparencia_model->eliminar_obs_cc($coment_id);
+	}
+	
+	public function eliminar_coment_ccc(){
+			$coment_id=$this->input->post("coment_id");
+			$this->load->model('transparencia/transparencia_model');
+			$this->transparencia_model->eliminar_obs_ccc($coment_id);
+	}
 
 }
 ?>
