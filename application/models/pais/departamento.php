@@ -28,6 +28,13 @@ class Departamento extends CI_Model {
         return $consulta->result();
     }
 
+    public function obtenerDepartamentosOrdenadosRegion() {
+        $this->db->order_by('reg_id');
+        $this->db->order_by('dep_id');
+        $consulta = $this->db->get($this->tabla);
+        return $consulta->result();
+    }
+
     public function obtenerIdPorNombre($dep_nombre) {
         $this->db->select('dep_id');
         $this->db->where('dep_nombre', $dep_nombre);
@@ -85,8 +92,8 @@ class Departamento extends CI_Model {
         $consulta = $this->db->query($query, array($gru_id));
         return $consulta->result();
     }
-    
-    public function obtenerDepartamentosPorGrupoRegion($gru_id,$reg_id) {
+
+    public function obtenerDepartamentosPorGrupoRegion($gru_id, $reg_id) {
         $query = "SELECT distinct(departamento.dep_id), 
                          departamento.dep_nombre
                   FROM 	 municipio,departamento
@@ -94,7 +101,7 @@ class Departamento extends CI_Model {
                          municipio.grup_id_pep = ? AND
                          departamento.reg_id = ?
                   ORDER BY departamento.dep_id";
-        $consulta = $this->db->query($query, array($reg_id,$gru_id));
+        $consulta = $this->db->query($query, array($reg_id, $gru_id));
         return $consulta->result();
     }
 
