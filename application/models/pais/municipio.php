@@ -17,8 +17,7 @@ class Municipio extends CI_Model {
     }
 
     public function obtenerTodosLosMunicipios() {
-        $cadena = "SELECT mun_id mun_id,reg_nombre,dep_nombre,mun_nombre FROM departamento,municipio,region WHERE departamento.dep_id = municipio.dep_id AND region.reg_id = departamento.reg_id;";
-        $consulta = $this->db->get($cadena);
+        $consulta = $this->db->get($this->tabla);
         return $consulta->result();
     }
 
@@ -160,6 +159,61 @@ class Municipio extends CI_Model {
         $consulta = $this->db->get($this->tabla);
         return $consulta->result();
     }
+    
+      public function gdrReporte1() {
+        $sql = "SELECT A.reg_nombre, A.dep_nombre, A.mun_nombre, 
+	B.ela_pro_fentrega_idem, 
+	MAX (C.rec_mun_frecibido) rec_mun_frecibido,
+	D.rev_inf_adjunto_doc,D.rev_inf_frevision_uep,
+	E.per_pro_fentrega_isdem, E.per_pro_fentrega_u_i,E.per_pro_frecibe_municipio,
+	F.rub_id
+FROM 
+	(SELECT 
+	  region.reg_nombre, 
+	  departamento.dep_nombre, 
+	  $this->tabla.mun_nombre,
+	  region.reg_id, 
+	  departamento.dep_id, 
+	  $this->tabla.mun_id
+	FROM region, departamento, $this->tabla
+	WHERE region.reg_id = departamento.reg_id AND departamento.dep_id = $this->tabla.dep_id
+	)A 
+	LEFT OUTER JOIN elaboracion_proyecto B
+	ON A.mun_id=B.mun_id LEFT OUTER JOIN recibido_municipalidad C
+	ON B.ela_pro_id=C.ela_pro_id
+	LEFT OUTER JOIN revision_informacion D ON A.mun_id=D.mun_id
+	LEFT OUTER JOIN perfil_proyecto E ON A.mun_id=E.mun_id
+        LEFT OUTER JOIN rubro F ON A.mun_id=F.mun_id
+GROUP BY A.reg_nombre, A.dep_nombre, A.mun_nombre, 
+	B.ela_pro_fentrega_idem,
+	D.rev_inf_adjunto_doc,D.rev_inf_frevision_uep,
+	E.per_pro_fentrega_isdem,E.per_pro_fentrega_u_i,E.per_pro_frecibe_municipio,
+	F.rub_id
+ORDER BY A.reg_nombre ASC";
+        $consulta = $this->db->query($sql, array());
+        return $consulta->result();
+    }
+
+      public function gdrReporte2() {
+        $sql = "SELECT A.reg_nombre, A.dep_nombre, A.mun_nombre,B.*
+FROM 
+	(SELECT 
+	  region.reg_nombre, 
+	  departamento.dep_nombre, 
+	  municipio.mun_nombre,
+	  region.reg_id, 
+	  departamento.dep_id, 
+	  municipio.mun_id
+	FROM region, departamento, $this->tabla
+	WHERE region.reg_id = departamento.reg_id AND departamento.dep_id = municipio.dep_id
+	ORDER BY region.reg_id ASC, departamento.dep_id ASC, $this->tabla.mun_id ASC
+	)A 
+	LEFT OUTER JOIN seguimiento B
+	ON A.mun_id=B.mun_id ";
+        $consulta = $this->db->query($sql, array());
+        return $consulta->result();
+    }
+
 
 }
 
