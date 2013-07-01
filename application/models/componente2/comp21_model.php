@@ -119,6 +119,36 @@ Class comp21_model extends CI_Model{
 		
 		
 	}
+	
+	public function ccc_por_depto(){
+		$query = $this->db->query("select D.dep_nombre as depto, count(Mun.ccc_id) cant
+									from (select dep_id, C.mun_id, ccc_id
+											from ccc C, municipio M 
+											where C.mun_id=M.mun_id) as Mun
+									right outer join departamento D 
+									on (Mun.dep_id=D.dep_id)
+									group by D.dep_nombre
+									order by D.dep_nombre;");
+		return $query->result();
+	}
+	
+	public function ccc_por_region(){
+		$query = $this->db->query("select R.reg_nombre reg,sum(cant) suma
+									from (select D.dep_nombre as depto, D.reg_id regid, count(Mun.ccc_id) cant
+											from (select dep_id, C.mun_id, ccc_id
+													from ccc C, municipio M 
+													where C.mun_id=M.mun_id) as Mun
+											right outer join departamento D 
+											on (Mun.dep_id=D.dep_id)
+											group by D.dep_nombre,D.reg_id
+											order by D.dep_nombre) as cccdepto
+									right outer join region R
+									on (cccdepto.regid=R.reg_id)
+									group by R.reg_nombre
+									order by R.reg_nombre;");
+		return $query->result();
+	}
+
 
 }
 

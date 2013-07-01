@@ -165,6 +165,110 @@ class  componente21 extends CI_Controller {
 		$this->load->view('componente2/ccc_guia_socioamb_view', $informacion);
 		$this->load->view('plantilla/footer', $informacion);
 	}
+	
+	public function reportes_ccc(){
+		/*Inicio*/
+		$this->load->library('PHPExcel');
+		$this->phpexcel->setActiveSheetIndex(0);
+        $this->phpexcel->getActiveSheet()->setTitle('Reporte General CCC');
+        
+        /*Definicion de Estilos de Celdas*/
+        $estTitulos = array(
+            'font' => array('bold' => true, 'size' => 12, 'name' => 'Arial'),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => 'C5E0EB')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        
+        $estSubTitulos = array(
+            'font' => array('bold' => true, 'size' => 12, 'name' => 'Arial'),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => 'E0F3FC')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        
+         $estEncabezado = array(
+            'font' => array('bold' => true, 'size' => 12, 'name' => 'Arial'),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => 'E6E6F0')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        
+        $estCells = array(
+            'font' => array('size' => 10, 'name' => 'Arial'),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_JUSTIFY,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        
+        /*Reporte*/
+        $this->phpexcel->getActiveSheet()->setCellValue('E2', 'Comites de Contraloria Ciudadana por Area Geografica');
+        $this->phpexcel->getActiveSheet()->mergeCells('E2:G2');
+        $this->phpexcel->getActiveSheet()->getStyle('E2:G2')->applyFromArray($estTitulos);
+        $this->phpexcel->getActiveSheet()->getColumnDimension('A')->setWidth(12);
+        
+					/*CCC por departamento*/
+        $this->phpexcel->getActiveSheet()->setCellValue('A3', 'Por Departamento');
+        $this->phpexcel->getActiveSheet()->getStyle('A3:A3')->applyFromArray($estSubTitulos);
+        
+        $this->phpexcel->getActiveSheet()->setCellValue('A4', 'Departamento');
+        $this->phpexcel->getActiveSheet()->setCellValue('B4', 'Cantidad');
+        $this->phpexcel->getActiveSheet()->setCellValue('C4', '%');
+        $this->phpexcel->getActiveSheet()->getStyle('A4:C4')->applyFromArray($estEncabezado);
+        
+        $this->load->model('componente2/comp21_model');
+        $consulta = $this->comp21_model->ccc_por_depto();
+        $i=5;
+        foreach ($consulta as $row) {
+			$this->phpexcel->getActiveSheet()->setCellValue("A$i", $row->depto);
+            $this->phpexcel->getActiveSheet()->setCellValue("B$i", $row->cant);
+            $i++;
+		}
+		$i--;
+        $this->phpexcel->getActiveSheet()->getStyle("A5:C$i")->applyFromArray($estCells);
+        
+				/*CCC por Region*/
+		$i=$i+4;
+		$this->phpexcel->getActiveSheet()->setCellValue('A20', 'Por Region');
+        $this->phpexcel->getActiveSheet()->getStyle('A20:A20')->applyFromArray($estSubTitulos);
+        
+        $this->phpexcel->getActiveSheet()->setCellValue('A21', 'Region');
+        $this->phpexcel->getActiveSheet()->setCellValue('B21', 'Cantidad');
+        $this->phpexcel->getActiveSheet()->setCellValue('C21', '%');
+        $this->phpexcel->getActiveSheet()->getStyle('A21:C21')->applyFromArray($estEncabezado);
+        
+        $consulta = $this->comp21_model->ccc_por_region();
+        foreach ($consulta as $row) {
+			$this->phpexcel->getActiveSheet()->setCellValue("A$i", $row->reg);
+            $this->phpexcel->getActiveSheet()->setCellValue("B$i", $row->suma);
+            $i++;
+		}
+		$i--;
+        $this->phpexcel->getActiveSheet()->getStyle("A22:C$i")->applyFromArray($estCells);
+        
+        /*Finalizacion y Descarga*/
+        $filename = "rg_ccc" . date("d-m-y") . ".xls"; //GUARDANDO CON ESTE NOMBRE
+        header('Content-Type: application/vnd.ms-excel');
+        header("Content-Disposition: attachment;filename=$filename");
+        header('Cache-Control: max-age=0');
+        $objWriter = PHPExcel_IOFactory::createWriter($this->phpexcel, 'Excel5');
+        $objWriter->save('php://output');
+	}
     
     
 }
