@@ -56,7 +56,8 @@ Class comp21_model extends CI_Model{
 		$data_ccc = array(
 		  'mun_id' => $new_ccc['mun_id'],
           'fecha_conformacion' => $new_ccc['fecha_conformacion'],
-          'lugar_conformacion' => $new_ccc['lugar_convocatoria']
+          'lugar_conformacion' => $new_ccc['lugar_convocatoria'],
+          'fase' => $new_ccc['fase_ccc']
         );
         
         $this->db->insert('ccc', $data_ccc);
@@ -81,6 +82,41 @@ Class comp21_model extends CI_Model{
 			for($i=0;$i<$k;$i++){
 				$this->db->insert('subproy_segui', $data_proy[$i]);
 			}
+		
+	}
+	
+	public function insertar_guia($guia) {
+		
+		if(isset($guia['recibida'])){
+			if($guia['recibida']=='si')
+				$recibida=1;
+			else
+				$recibida=0;
+		}
+		else $recibida=0;
+		
+		
+		if($guia['posee_guia']=='si'){
+			$posee=1;
+			$fecha=$guia['fecha_entrega'];
+		}
+		else{
+			$posee=0;
+			$recibida=0;
+			$fecha=null;
+		}
+				
+			
+		$data_guia = array(
+		'ccc_id' => $guia['id'],
+		'posee_guia' => $posee,
+		'fecha_entrega' => $fecha,
+		'recibida' => $recibida
+		);
+	
+		if($guia['id']!=null)
+			$this->db->insert('guia_socioambiental', $data_guia);
+		
 		
 	}
 

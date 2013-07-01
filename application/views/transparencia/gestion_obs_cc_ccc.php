@@ -121,6 +121,24 @@
 			 } 
             else $('#mensaje1').dialog('open');
         });
+        
+        $("#res_cc").button().click(function(){
+            var rowid = tab3.jqGrid('getGridParam','selrow');
+            if( rowid != null ){
+				var id=tab3.jqGrid('getCell',rowid,'coment_id');
+				window.location = '<?php echo base_url('transparencia/observaciones_cc_ccc/responder_obs_cc') ?>'+'/'+id;
+			 } 
+            else $('#mensaje1').dialog('open');
+        });
+        
+        $("#res_ccc").button().click(function(){
+            var rowid = tab3.jqGrid('getGridParam','selrow');
+            if( rowid != null ){
+				var id=tab3.jqGrid('getCell',rowid,'coment_id');
+				window.location = '<?php echo base_url('transparencia/observaciones_cc_ccc/responder_obs_ccc') ?>'+'/'+id;
+			 } 
+            else $('#mensaje1').dialog('open');
+        });
        
              
        var tab=$("#cc");

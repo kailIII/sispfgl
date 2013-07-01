@@ -58,6 +58,17 @@
             }
         });
         
+        $('#si_posee').change(function(){
+			if($('#si_posee').is(':checked'))
+				$('#monto_ap').prop('disabled', false);
+		});
+		
+		 $('#no_posee').change(function(){
+			if($('#no_posee').is(':checked'))
+				$('#monto_ap').prop('disabled', true);
+		});
+
+        
          /*suma de totales*/
         $('#total_mujeres_etm').change(function(){   
             var m = $('#total_mujeres_etm').val();
@@ -307,16 +318,34 @@
 			 var nombre_proy = $('#nombre_proy').val();
 			 var com_beneficiadas = $('#com_beneficiadas').val();
 			 var pob_beneficiada = $('#pob_beneficiada').val();
+			 
+			 if($('#si_posee').is(':checked')){
+				if($('#monto_ap').val()==""){
+					$('#mensaje7').dialog('open');
+					return false;
+				}
+				else{
+					var monto_ap = $('#monto_ap').val();
+					var posee_ap = 'Si';
+				}
+			}
+			else{
+				var monto_ap = '0';
+				var posee_ap = 'No';
+			}
+					
 			 		 
 			 if ( nombre_proy!="" && com_beneficiadas!="" && pob_beneficiada!="") {
 				 				
-				 var newrow = {id:""+records, nombre_proy:""+nombre_proy, com_beneficiadas:""+com_beneficiadas, pob_beneficiada:""+pob_beneficiada};
+				 var newrow = {id:""+records, nombre_proy:""+nombre_proy, com_beneficiadas:""+com_beneficiadas, pob_beneficiada:""+pob_beneficiada, posee_ap:""+posee_ap, monto_ap:""+monto_ap};
 				 
 				$("#Proyectos").addRowData(""+records, newrow);
 				
 				$('#nombre_proy').val("");
 				$('#com_beneficiadas').val("");
 				$('#pob_beneficiada').val("");
+				$('#monto_ap').val("");
+				$('#monto_ap').prop('disabled', true);
 				
 			 }
 			 else $('#mensaje2').dialog('open');
@@ -479,7 +508,7 @@
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','Nombre del Proyecto','Comunidades Beneficiadas','Poblacion Beneficiada'],
+            colNames:['id','Nombre del Proyecto','Comunidades Beneficiadas','Poblacion Beneficiada','Asignacion Presupuestaria','Monto'],
             colModel:[
                 {name:'id',index:'id', width:40,editable:false,editoptions:{size:15} },
                 {name:'nombre_proy',index:'nombre_proy',width:200,editable:true,
@@ -492,9 +521,19 @@
                     formoptions:{ label: "Comunidades Beneficiadas",elmprefix:"(*)"},
                     editrules:{required:true}
                 },
-                {name:'pob_beneficiada',index:'pob_beneficiada',width:140,editable:true,
+                {name:'pob_beneficiada',index:'pob_beneficiada',width:120,editable:true,
                     editoptions:{size:25,maxlength:100}, 
                     formoptions:{ label: "Poblacion Beneficiada",elmprefix:"(*)"},
+                    editrules:{required:true} 
+                },
+                {name:'posee_ap',index:'posee_ap',width:150,editable:true,
+                    editoptions:{size:25,maxlength:100}, 
+                    formoptions:{ label: "Asignacion Presupuestaria",elmprefix:"(*)"},
+                    editrules:{required:true} 
+                },
+                {name:'monto_ap',index:'monto_ap',width:120,editable:true,
+                    editoptions:{size:25,maxlength:100}, 
+                    formoptions:{ label: "Monto",elmprefix:"(*)"},
                     editrules:{required:true} 
                 }
             ],
@@ -599,9 +638,8 @@ echo form_open('componente2/componente21/guardar_ccc',$attributes);?>
 	
 	<label>Departamento: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 	<?php echo form_dropdown_from_db('dep_id','selDepto' ,"SELECT dep_id,dep_nombre FROM departamento");?>
-	<br/><br/>
 		
-	<label>Nombre del Municipio: </label>&nbsp;
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Nombre del Municipio: </label>&nbsp;
 	<select id='selMun' name='mun_id'>
                 <option value='0'>--Seleccione--</option>
     </select>
@@ -612,8 +650,17 @@ echo form_open('componente2/componente21/guardar_ccc',$attributes);?>
 	
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Lugar de Conformaci&oacute;n: </label>
 	<input type="text" name="lugar_convocatoria" id="lugar_convocatoria"  size="8">
-	<br/><br/><br/>
 	
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<label>Fase: </label>
+		<select name="fase_ccc" size="1" id="fase_ccc">
+			<option value="Preinscripcion"<?php echo set_select('fase_ccc', 'Preinscripcion'); ?>>Preinscripci&oacute;n</option>
+			<option value="Ejecucion"<?php echo set_select('fase_ccc', 'Ejecucion'); ?>>Ejecuci&oacute;n</option>
+			<option value="Cierre"<?php echo set_select('fase_ccc', 'Cierre'); ?>>Cierre</option>
+			<option value="Mantenimiento"<?php echo set_select('fase_ccc', 'Mantenimiento'); ?>>Mantenimiento</option>
+	</select>
+	<br/><br/><br/>
+	<hr color="green" size=1 width="700"><br/>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Nuevo ETM: </label>
 	<br/>
 	<input type="radio" name="etm" id="etm" value="Nuevo Nombramiento" <?php echo set_radio('etm', 'Nuevo Nombramiento'); ?> />Nuevo Nombramiento
@@ -656,8 +703,7 @@ echo form_open('componente2/componente21/guardar_ccc',$attributes);?>
 		<div id="pagerAsisETM"></div>
 	
 		<br/>
-		
-		
+		<hr color="green" size=1 width="700"><br/>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Nuevo CCC: </label>
 		<br/>
 		<input type="radio" name="ccc" id="ccc" value="Nuevo Nombramiento" <?php echo set_radio('ccc', 'Nuevo Nombramiento'); ?> />Nuevo Nombramiento
@@ -696,7 +742,7 @@ echo form_open('componente2/componente21/guardar_ccc',$attributes);?>
 	
 		<br/>
 		
-		
+		<hr color="green" size=1 width="700"><br/>
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Comisi&oacute;n Mantenimiento: </label>
 		<br/>
 		<input type="radio" name="cm" id="cm" value="Nuevo Nombramiento" <?php echo set_radio('cm', 'Nuevo Nombramiento'); ?> />Nuevo Nombramiento
@@ -730,16 +776,23 @@ echo form_open('componente2/componente21/guardar_ccc',$attributes);?>
 		<table id="cm_asis"></table>
 		<div id="pagerAsisCM"></div>
 	
-		<br/>
-		
+		<br/><br/>
+		<hr color="green" size=1 width="700"><br/>
 		<label>Nombre de Subproyecto a seguimiento: </label>
 		<input type="text" name="nombre_proy" id="nombre_proy"  size="10"><br/>
 		
 		<label>Nombres Comunidades: </label>
-		<input type="text" name="com_beneficiadas" id="com_beneficiadas"  size="5">
+		<input type="text" name="com_beneficiadas" id="com_beneficiadas"  size="21">
 		
 		<label>N&uacute;mero Aprox. de Comunidades Beneficiadas: </label>
-		<input type="text" name="pob_beneficiada" id="pob_beneficiada"  size="5">
+		<input type="text" name="pob_beneficiada" id="pob_beneficiada"  size="2">
+		
+		<br/><label>&#191;Posee Asignaci&oacute;n Presupuestaria</b></label>
+		<input type="radio" name="posee_ap" id="si_posee" value="si" <?php echo set_radio('posee_ap', 'si'); ?> />S&iacute;
+		&nbsp;<input type="radio" name="posee_ap" id="no_posee" value="no" <?php echo set_radio('posee_ap', 'no'); ?> />No
+		
+		&nbsp;&nbsp;&nbsp;&nbsp;<label>Monto: </label>
+		<input disabled type="text" name="monto_ap" id="monto_ap"  size="5">
 		
 		<input type="button" value="Agregar" name="agregar_proy" id="agregar_proy"><br/>
 		
@@ -748,7 +801,7 @@ echo form_open('componente2/componente21/guardar_ccc',$attributes);?>
 		<table id="Proyectos"></table>
 		<div id="pagerProyectos"></div>
 		<br/><br/>
-		
+		<hr color="green" size=1 width="700"><br/>
 		<div style="float:left;height:200px;width:300px;">
 			&nbsp;&nbsp;&nbsp;&nbsp;<label>Conformaci&oacute;n del ETM: </label>
 			<br/><br/>
@@ -820,4 +873,7 @@ echo form_open('componente2/componente21/guardar_ccc',$attributes);?>
 </div>
 <div id="mensaje6" class="mensaje" title="Aviso">
     <p>La cantidad de hombres no es valida.</p>
+</div>
+<div id="mensaje7" class="mensaje" title="Aviso">
+    <p>Especifique el Monto del Subproyecto a seguimiento.</p>
 </div>

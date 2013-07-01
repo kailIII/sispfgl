@@ -31,15 +31,78 @@ class  observaciones_cc_ccc extends CI_Controller {
     public function gestion_obs_cc_ccc() {
 		
 		$informacion['titulo'] = 'Observaciones Realizadas a CC y CCC';
-        //$informacion['user_id'] = $this->tank_auth->get_user_id();
-        //$informacion['username'] = $this->tank_auth->get_username();
-        //$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('transparencia/gestion_obs_cc_ccc');
         $this->load->view('plantilla/footer', $informacion);
         
     }
+    
+    public function responder_obs_cc($id) {
+		
+		$informacion['id']=$id;
+		$informacion['tipo']='cc';
+		$informacion['titulo'] = 'Responder Observacion Realizada';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('transparencia/responder_obs_cc_ccc', $informacion);
+        $this->load->view('plantilla/footer', $informacion);
+        
+    }
+    
+    public function responder_obs_ccc($id) {
+		
+		$informacion['id']=$id;
+		$informacion['tipo']='ccc';
+		$informacion['titulo'] = 'Responder Observacion Realizada';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('transparencia/responder_obs_cc_ccc', $informacion);
+        $this->load->view('plantilla/footer', $informacion);
+        
+    }
+    
+    public function enviar_respuesta($id){
+		$this->load->library('email');
+		$envio=$_POST;
+		
+		$this->load->model('transparencia/transparencia_model');
+		if($envio['tipo']=='cc')
+			$datos=$this->transparencia_model->get_datos_obs_cc($id);
+		else
+			$datos=$this->transparencia_model->get_datos_obs_ccc($id);
+		
+		$informacion['nombre_persona']=$datos->nombre_persona;
+		$informacion['email']=$datos->email;
+		$informacion['comentario']=$datos->comentario;
+		
+		$this->email->from($envio['email'], $envio['nombre_persona']);
+		$this->email->to($datos->email);
+		$this->email->subject('SISPFGL - Respuesta a su Comentario Publico realizado.');
+		$this->email->message($envio['resp']);	
+		if(!$this->email->send())
+			$informacion['estatus']='<span style="color:red">Se ha producido un error en el env&iacute;o del Mensaje. Intente nuevamente.</span>';
+		else
+			$informacion['estatus']='<span style="color:blue">Su mensaje ha sido enviado con exito.</span>';
+		
+		$informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+		$this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('transparencia/respuesta_enviada', $informacion);
+        $this->load->view('plantilla/footer', $informacion);
+		
+		}   
     
     public function validar_email(){
 		$this->load->helper('email');

@@ -27,6 +27,18 @@ class  componente21 extends CI_Controller {
         $this->load->view('plantilla/footer', $informacion);
     }
     
+    public function ccc_guia_socio_amb() {
+
+        $informacion['titulo'] = 'Gu&iacute;a Socio-Ambiental CCC';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/ccc_guia_socioamb_view');
+        $this->load->view('plantilla/footer', $informacion);
+    }
+    
     public function ccc() {
 
         $informacion['titulo'] = 'CCC';
@@ -107,7 +119,7 @@ class  componente21 extends CI_Controller {
 			$informacion['user_id'] = $this->tank_auth->get_user_id();
 			$informacion['username'] = $this->tank_auth->get_username();
 			$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username()); 
-			$informacion['aviso'] = '<p style="color:blue">Se ha realziado el registro correctamete.</p>';         
+			$informacion['aviso'] = '<p style="color:blue">Se ha realizado el registro correctamete.</p>';         
 			$this->load->view('plantilla/header', $informacion);
 			$this->load->view('plantilla/menu', $informacion);
 			$this->load->view('componente2/ccc_view');
@@ -131,9 +143,27 @@ class  componente21 extends CI_Controller {
 			$informacion['aviso'] = '<p style="color:blue">Se ha realziado el registro correctamete.</p>';         
 			$this->load->view('plantilla/header', $informacion);
 			$this->load->view('plantilla/menu', $informacion);
-			$this->load->view('componente2/cc_view');
+			$this->load->view('componente2/ccc_view');
 			$this->load->view('plantilla/footer', $informacion);
 		
+	}
+	
+	public function guardar_info_guia(){
+		$datos_guia = $_POST;
+		unset($datos_guia['guardar']);
+		
+		$this->load->model('componente2/comp21_model');
+		$this->comp21_model->insertar_guia($datos_guia);
+		
+		$informacion['titulo'] = 'Gu&iacute;a Socio-Ambiental CCC';
+		$informacion['user_id'] = $this->tank_auth->get_user_id();
+		$informacion['username'] = $this->tank_auth->get_username();
+		$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username()); 
+		$informacion['aviso'] = '<p style="color:blue">Se ha realizado el registro correctamete.</p>';         
+		$this->load->view('plantilla/header', $informacion);
+		$this->load->view('plantilla/menu', $informacion);
+		$this->load->view('componente2/ccc_guia_socioamb_view', $informacion);
+		$this->load->view('plantilla/footer', $informacion);
 	}
     
     

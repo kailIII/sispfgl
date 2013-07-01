@@ -69,8 +69,18 @@ public function eliminar_obs_ccc($id){
 		$this->db->delete('comentario_publico_ccc');
 }
 
-
-    
+public function get_datos_obs_cc($id){
+		$this->db->where('coment_id', $id);
+		$query = $this->db->get('comentario_publico_cc');
+		$row = $query->row();
+ 		return $row;
+	}
+public function get_datos_obs_ccc($id){
+		$this->db->where('coment_id', $id);
+		$query = $this->db->get('comentario_publico_ccc');
+		$row = $query->row();
+ 		return $row;
+	}   
 
 }
 ?>
