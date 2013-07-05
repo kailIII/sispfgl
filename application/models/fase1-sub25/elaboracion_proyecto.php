@@ -35,6 +35,16 @@ class Elaboracion_proyecto extends CI_Model {
         $this->db->where('ela_pro_id', $ela_pro_id);
         $this->db->update($this->tabla, $datos);
     }
+    
+    public function obtenerTotalCartaElaboracionGDR() {
+        $sql = "SELECT count(B.ela_pro_carta_exp) si
+                FROM municipio A,$this->tabla B
+                WHERE A.mun_id = B.mun_id
+                        AND B.ela_pro_carta_exp IS TRUE";
+        $consulta = $this->db->query($sql, array());
+        $resultado=$consulta->result();
+        return $resultado[0]->si;
+    }
 
 }
 

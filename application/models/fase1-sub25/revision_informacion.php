@@ -81,7 +81,7 @@ class Revision_informacion extends CI_Model {
         $this->db->update($this->tabla, $datos);
     }
 
-    public function actualizarRevisionInformacionP3($rev_inf_id, $rev_inf_fregistro_asesor, $rev_inf_frevision_uep,$rev_inf_adjunto_doc) {
+    public function actualizarRevisionInformacionP3($rev_inf_id, $rev_inf_fregistro_asesor, $rev_inf_frevision_uep, $rev_inf_adjunto_doc) {
         $datos = array(
             'rev_inf_fregistro_asesor' => $rev_inf_fregistro_asesor,
             'rev_inf_frevision_uep' => $rev_inf_frevision_uep,
@@ -89,6 +89,16 @@ class Revision_informacion extends CI_Model {
         );
         $this->db->where('rev_inf_id', $rev_inf_id);
         $this->db->update($this->tabla, $datos);
+    }
+
+    public function obtenerTotalNoTieneInformacionGDR() {
+        $sql = "SELECT COUNT(*) si 
+                FROM municipio A,$this->tabla B, elaboracion_proyecto C
+                WHERE A.mun_id = B.mun_id AND A.mun_id = C.mun_id
+                        AND C.ela_pro_carta_exp IS TRUE AND B.rev_inf_adjunto_doc IS TRUE";
+        $consulta = $this->db->query($sql, array());
+        $resultado = $consulta->result();
+        return $resultado[0]->si;
     }
 
 }

@@ -1,20 +1,21 @@
-<script type="text/javascript">        
-    $(document).ready(function(){
-        $("#reporte1").button().click(function() {
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#reporte").button().click(function() {
+
+            if ($('input[name="tipo"]:checked').val() == 1)
+                $("#formulario").attr('action', '<?php echo base_url('reportes/gdrGeneral'); ?>');
+            else
+            if ($('input[name="tipo"]:checked').val() == 2)
+                $("#formulario").attr('action', '<?php echo base_url('reportes/seguimientoReporte'); ?>');
+            else
+            if ($('input[name="tipo"]:checked').val() == 3)
+                $("#formulario").attr('action', '<?php echo base_url('reportes/resumenEjecutivoReporte'); ?>');
+            else
+            if ($('input[name="tipo"]:checked').val() == 4)
+                $("#formulario").attr('action', '<?php echo base_url('reportes/avancesConsolidadosReporte'); ?>');
+
             $.ajax({
                 type: "POST",
-                url: '<?php echo base_url('reportes/gdrGeneral'); ?>',
-                cache: false,
-                success: function(response)
-                {
-                    window.open(response);
-                }
-            });
-        });
-        $("#reporte2").button().click(function() {
-            $.ajax({
-                type: "POST",
-                url: '<?php echo base_url('reportes/seguimientoReporte'); ?>',
                 cache: false,
                 success: function(response)
                 {
@@ -29,12 +30,18 @@
 <center>
     <h1>REPORTES</h1>
 </center>
-<form method="post" action="<?php echo base_url('reportes/gdrGeneral'); ?>">
-    <input type="submit" id="reporte1" value="AVANCE 2.5:  FORTALECIMIENTO DE LAS CAPACIDADES MUNICIPALES EN GESTIÓN DE RIESGO DE DESASTRES (GRD)" />
-    
+<form id="formulario" method="post" action="">
+    <input type="radio" name="tipo" value="1" > Avance 2.5: Fortalecimiento de las capacidades municipales en Gestión de Riesgo de Desastres (GRD) </input>
+    <br/>
+    <input type="radio" name="tipo" value="2"> Seguimiento de Gestión de Riesgos de Desastres de todos los Departamentos </input>
+    <br/>
+    <input type="radio" name="tipo" value="3"> Resumen Ejecutivo de la Gestión de Riesgos de Desastres </input>
+    <br/>
+    <input type="radio" name="tipo" value="4"> Avances Consolidados de la Gestión de Riesgos de Desastres </input>
+    <br/>
+    <br/>
+    <input type="submit" id="reporte" value="Generar Reporte" />
+
 </form>
 <br/>
 <br/>
-<form method="post" action="<?php echo base_url('reportes/seguimientoReporte'); ?>">
-    <input type="submit" id="reporte2" value="SEGUIMIENTO GESTIÓN DE RIESGO DE DESASTRES DE TODOS LOS DEPARTAMENTOS" />
-</form>

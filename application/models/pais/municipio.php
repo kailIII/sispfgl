@@ -159,8 +159,8 @@ class Municipio extends CI_Model {
         $consulta = $this->db->get($this->tabla);
         return $consulta->result();
     }
-    
-      public function gdrReporte1() {
+
+    public function gdrReporte1() {
         $sql = "SELECT A.reg_nombre, A.dep_nombre, A.mun_nombre, 
 	B.ela_pro_fentrega_idem, 
 	MAX (C.rec_mun_frecibido) rec_mun_frecibido,
@@ -194,7 +194,7 @@ ORDER BY A.reg_nombre ASC";
         return $consulta->result();
     }
 
-      public function gdrReporte2() {
+    public function gdrReporte2() {
         $sql = "SELECT A.reg_nombre, A.dep_nombre, A.mun_nombre,B.*
 FROM 
 	(SELECT 
@@ -214,7 +214,7 @@ FROM
         return $consulta->result();
     }
 
-
+    
 }
 
 ?>
