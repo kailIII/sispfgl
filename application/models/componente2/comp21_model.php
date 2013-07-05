@@ -148,6 +148,29 @@ Class comp21_model extends CI_Model{
 									order by R.reg_nombre;");
 		return $query->result();
 	}
+	
+	public function get_deptos(){
+		$query = $this->db->query("select dep_id, dep_nombre
+									from departamento
+									order by dep_nombre;");
+		return $query->result();
+	}
+	
+	public function muni_depto($dep_id){
+		$query = $this->db->query("select mun_id, mun_nombre
+									from municipio
+									where dep_id=".$dep_id."
+									order by mun_nombre;");
+		return $query->result();
+	}
+	
+	public function ccc_por_muni($mun_id){
+		$query = $this->db->query("select count(ccc_id) as cant
+									from ccc
+									where mun_id=".$mun_id.";");
+		return $query->row();
+	}
+
 
 
 }
