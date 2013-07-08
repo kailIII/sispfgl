@@ -27,7 +27,7 @@
 <br/>
 <br/>
 <center>
-    <h1>Reportes Componente 2.1</h1>
+    <h1>Reportes Componente 2.1 CCC</h1>
 </center>
 <form method="post" action="<?php echo base_url('componente2/componente21/reporte_ccc_por_region'); ?>">
     <input type="submit" id="reporte1" value="CCC por Departamento y Region" />
