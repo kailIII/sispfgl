@@ -43,6 +43,26 @@ class Seguimiento extends CI_Model {
         $this->db->update($this->tabla, $datos);
     }
     
+    public function contarGDRTerminados($reg_id){
+        $sql="SELECT count(*) si
+              FROM municipio A,departamento B, region C, $this->tabla D
+              WHERE A.dep_id = B.dep_id AND C.reg_id=B.reg_id AND D.mun_id=A.mun_id
+              	AND D.seg_forden_seguimiento IS NOT NULL AND C.reg_id=$reg_id";
+        $consulta = $this->db->query($sql, array());
+        $resultado=$consulta->result();
+        return $resultado[0]->si;
+    }
+    
+    public function contarGDRDesarrollo($reg_id){
+        $sql="SELECT count(*) si
+              FROM municipio A,departamento B, region C, $this->tabla D
+              WHERE A.dep_id = B.dep_id AND C.reg_id=B.reg_id AND D.mun_id=A.mun_id
+              	AND D.seg_forden_preparacion IS NOT NULL AND C.reg_id=$reg_id";
+        $consulta = $this->db->query($sql, array());
+        $resultado=$consulta->result();
+        return $resultado[0]->si;
+    }
+    
 }
 
 ?>

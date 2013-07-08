@@ -58,6 +58,36 @@ class Perfil_proyecto extends CI_Model {
         $this->db->update($this->tabla, $datos);
     }
 
+    public function obtenerTotalDocumentosAprobadoGDR() {
+        $sql = "SELECT count(*) si
+                FROM municipio A,$this->tabla B
+                WHERE A.mun_id = B.mun_id 
+                        AND B.per_pro_fnota_autorizacion IS NOT NULL";
+        $consulta = $this->db->query($sql, array());
+        $resultado = $consulta->result();
+        return $resultado[0]->si;
+    }
+
+    public function obtenerTotalProcesoAdquisicionGDR() {
+        $sql = "SELECT count(*) si
+                FROM municipio A,$this->tabla B
+                WHERE A.mun_id = B.mun_id 
+                        AND B.per_pro_frecibe_municipio IS NOT NULL";
+        $consulta = $this->db->query($sql, array());
+        $resultado = $consulta->result();
+        return $resultado[0]->si;
+    }
+    
+     public function obtenerTotalFisdlIsdemGDR() {
+        $sql = "SELECT count(*) si
+                FROM municipio A,$this->tabla B
+                WHERE A.mun_id = B.mun_id 
+                        AND B.per_pro_fencio_fisdl IS NOT NULL";
+        $consulta = $this->db->query($sql, array());
+        $resultado = $consulta->result();
+        return $resultado[0]->si;
+    }
+
 }
 
 ?>
