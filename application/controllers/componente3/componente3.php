@@ -81,9 +81,9 @@ class  componente3 extends CI_Controller {
 		$estado = $this->componente3_model->get_estado_comp3();
 		
         $informacion['titulo'] = '3.1 Diagnostico Sectorial y Analisis Transversales';
-        //$informacion['user_id'] = $this->tank_auth->get_user_id();
-        //$informacion['username'] = $this->tank_auth->get_username();
-        //$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente3/reporte_estado_comp3_view',$estado);
