@@ -169,9 +169,9 @@ class  componente21 extends CI_Controller {
 	public function reportes_comp21_ccc() {
 
         $informacion['titulo'] = 'Reportes Componente 2.1 CCC';
-        $informacion['user_id'] = $this->tank_auth->get_user_id();
-        $informacion['username'] = $this->tank_auth->get_username();
-        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
+        //$informacion['user_id'] = $this->tank_auth->get_user_id();
+        //$informacion['username'] = $this->tank_auth->get_username();
+        //$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente2/reportes_comp21_ccc_view');
