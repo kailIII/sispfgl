@@ -60,17 +60,19 @@
 <div id="divestado" style="float:left;height:250px;width:250px;">
 	<?php 
 		if(isset($img))
-		echo $img;
+			echo $img;
 	?>
 </div>
 <div id="info" >
 	<?php 
 		if(isset($msg))
-		echo $msg;
+			echo $msg;
 		if(isset($info))
-		echo $info;
+			echo $info;
 		if(isset($pb))
-		echo $pb;
+			echo $pb;//progress bar
+		if(isset($rpt_detalle))
+			echo $rpt_detalle;
 	?>
 </div>
 

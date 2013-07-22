@@ -90,6 +90,268 @@ class  componente3 extends CI_Controller {
         $this->load->view('plantilla/footer', $informacion);
     }
     
+    public function reporte_epp(){
+		/*Inicio*/
+		$this->load->library('PHPExcel');
+		$this->phpexcel->setActiveSheetIndex(0);
+        $this->phpexcel->getActiveSheet()->setTitle('Detalles de Actividades PP');
+        
+        /*Definicion de Estilos de Celdas*/
+        $estTitulos = array(
+            'font' => array('bold' => true, 'size' => 11, 'name' => 'Arial'),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => 'C5E0EB')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+                'shrinkToFit' => false
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        
+        $estSubTitulos = array(
+            'font' => array('bold' => true, 'size' => 10, 'name' => 'Arial'),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => 'E0F3FC')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+                'shrinkToFit' => false
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        
+         $estEncabezado = array(
+            'font' => array('bold' => true, 'size' => 10, 'name' => 'Arial'),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => 'E6E6F0')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        
+        $estCells = array(
+            'font' => array('size' => 10, 'name' => 'Arial'),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_JUSTIFY,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        
+        /*Reporte*/
+        $this->phpexcel->getActiveSheet()->setCellValue('D2', 'Componente 3 - Reporte de Elaboracion de Plan Piloto');
+        $this->phpexcel->getActiveSheet()->mergeCells('D2:J2');
+        $this->phpexcel->getActiveSheet()->getStyle('D2:J2')->applyFromArray($estTitulos);
+        
+        $this->load->model('componente3/componente3_model');
+        $epp = $this->componente3_model->get_epi();
+        $this->phpexcel->getActiveSheet()->getColumnDimension('B')->setWidth(18);
+        $i=4;
+        foreach ($epp as $row) {
+			$inicialP=$i;
+			$costoT=0;
+			
+			$this->phpexcel->getActiveSheet()->setCellValue("A$i", 'Nombre por defecto del Plan Piloto:');
+			$this->phpexcel->getActiveSheet()->setCellValue("A".($i+1), 'Cantidad de Actividades que comprende:');
+			$this->phpexcel->getActiveSheet()->setCellValue("A".($i+2), 'Costo total de todas las Actividades:');
+			
+			$this->phpexcel->getActiveSheet()->mergeCells("A".$i.":B".$i);
+			$this->phpexcel->getActiveSheet()->mergeCells("A".($i+1).":B".($i+1));
+			$this->phpexcel->getActiveSheet()->mergeCells("A".($i+2).":B".($i+2));
+			$this->phpexcel->getActiveSheet()->getStyle("A".$i.":A".($i+2))->applyFromArray($estSubTitulos);
+				
+			$this->phpexcel->getActiveSheet()->setCellValue("C$i", $row->epi_nombre);//imprime el nombre del epi
+			$this->phpexcel->getActiveSheet()->mergeCells("C$i:F$i");
+			$this->phpexcel->getActiveSheet()->mergeCells("C".($i+1).":F".($i+1));
+			$this->phpexcel->getActiveSheet()->mergeCells("C".($i+2).":F".($i+2));
+            $this->phpexcel->getActiveSheet()->getStyle("C$i:F".($i+2))->applyFromArray($estCells);
+            
+            
+            $act_epi = $this->componente3_model->get_act_epi($row->epi_id);//devuelve las actividades del epp
+            
+            $cant_act=count($act_epi);
+            $plural=($cant_act==1) ? " Actividad":" Actividades";
+            $cant_act=$cant_act.$plural;
+            
+            $this->phpexcel->getActiveSheet()->setCellValue("C".($i+1), $cant_act);//imprime la cant de act del epp
+            
+            $i=$i+4;
+            //$inicial=$i;
+            foreach($act_epi as $act){
+				$inicial=$i;
+				
+				$this->phpexcel->getActiveSheet()->setCellValue("B$i", 'Nombre de la Actividad');
+				$this->phpexcel->getActiveSheet()->setCellValue("C$i", $act->act_nombre);
+				$this->phpexcel->getActiveSheet()->mergeCells("C$i:D$i");
+				$i++;
+				
+				$this->phpexcel->getActiveSheet()->setCellValue("B$i", 'Fecha de Inicio');
+				$this->phpexcel->getActiveSheet()->setCellValue("C$i", $act->act_fecha_ini);
+				$this->phpexcel->getActiveSheet()->mergeCells("C$i:D$i");
+				$i++;
+				
+				$this->phpexcel->getActiveSheet()->setCellValue("B$i", 'Fecha de Fin');
+				$this->phpexcel->getActiveSheet()->setCellValue("C$i", $act->act_fecha_fin);
+				$this->phpexcel->getActiveSheet()->mergeCells("C$i:D$i");
+				$i++;
+				
+				$this->phpexcel->getActiveSheet()->setCellValue("B$i", 'Costo ($)');
+				$this->phpexcel->getActiveSheet()->setCellValue("C$i", $act->act_recursos);
+				$this->phpexcel->getActiveSheet()->mergeCells("C$i:D$i");
+				$i++;
+				
+				$this->phpexcel->getActiveSheet()->setCellValue("B$i", 'Responsable');
+				$this->phpexcel->getActiveSheet()->setCellValue("C$i", $act->act_responsable);
+				$this->phpexcel->getActiveSheet()->mergeCells("C$i:D$i");
+				$i++;
+				
+				$this->phpexcel->getActiveSheet()->setCellValue("B$i", 'Descripcion de la Actividad');
+				$this->phpexcel->getActiveSheet()->setCellValue("C$i", $act->act_descripcion);
+				$this->phpexcel->getActiveSheet()->mergeCells("C$i:D$i");
+				
+				$this->phpexcel->getActiveSheet()->getStyle("B$inicial:B$i")->applyFromArray($estEncabezado);
+				$this->phpexcel->getActiveSheet()->getStyle("C$inicial:C$i")->applyFromArray($estCells);
+				$this->phpexcel->getActiveSheet()->getStyle("D$inicial:D$i")->applyFromArray($estCells);
+				
+				$costoT=$costoT+$act->act_recursos;
+				$i=$i+2;
+			}
+			//$final=$i-1;
+			//$this->phpexcel->getActiveSheet()->mergeCells("A$inicial".":"."A$final");
+            //$i++;*/
+            $this->phpexcel->getActiveSheet()->setCellValue("C".($inicialP+2), "($) ".$costoT);
+            $i++;
+		}
+        
+        
+        
+       
+        
+        /*Finalizacion y Descarga*/
+        $filename = "RepteComp3_EPP_" . date("d-m-y") . ".xls"; //GUARDANDO CON ESTE NOMBRE
+        header('Content-Type: application/vnd.ms-excel');
+        header("Content-Disposition: attachment;filename=$filename");
+        header('Cache-Control: max-age=0');
+        $objWriter = PHPExcel_IOFactory::createWriter($this->phpexcel, 'Excel5');
+        $objWriter->save('php://output');
+	}
+	
+	public function reporte_divu(){
+		$this->load->library('PHPExcel');
+		$this->phpexcel->setActiveSheetIndex(0);
+        $this->phpexcel->getActiveSheet()->setTitle('Detalles de Actividades PP');
+        
+        /*Definicion de Estilos de Celdas*/
+        $estTitulos = array(
+            'font' => array('bold' => true, 'size' => 11, 'name' => 'Arial'),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => 'C5E0EB')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+                'shrinkToFit' => false
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        
+        $estSubTitulos = array(
+            'font' => array('bold' => true, 'size' => 10, 'name' => 'Arial'),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => 'E0F3FC')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+                'shrinkToFit' => false
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        
+         $estEncabezado = array(
+            'font' => array('bold' => true, 'size' => 10, 'name' => 'Arial'),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => 'E6E6F0')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        
+        $estCells = array(
+            'font' => array('size' => 10, 'name' => 'Arial'),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_JUSTIFY,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        
+        $this->phpexcel->getActiveSheet()->setCellValue('D2', 'Componente 3 - Reporte Etapa de Divulgacion');
+        $this->phpexcel->getActiveSheet()->mergeCells('D2:J2');
+        $this->phpexcel->getActiveSheet()->getStyle('D2:J2')->applyFromArray($estTitulos);
+        
+        $this->load->model('componente3/componente3_model');
+        $act_divu = $this->componente3_model->get_actividades_divu();
+        $this->phpexcel->getActiveSheet()->getColumnDimension('B')->setWidth(18);
+        $i=4;
+        
+        $this->phpexcel->getActiveSheet()->setCellValue("A$i", 'Cantidad de Actividades Registradas:');
+		$this->phpexcel->getActiveSheet()->mergeCells("A$i:B$i");
+		$this->phpexcel->getActiveSheet()->getStyle("A$i:B$i")->applyFromArray($estSubTitulos);
+		$this->phpexcel->getActiveSheet()->mergeCells("C$i:F$i");
+		$this->phpexcel->getActiveSheet()->getStyle("C$i:F$i")->applyFromArray($estCells);
+		
+			$cant_act=count($act_divu);
+			$plural=($cant_act==1) ? " Actividad":" Actividades";
+			$cant_act=$cant_act.$plural;
+        
+        $this->phpexcel->getActiveSheet()->setCellValue("C$i", $cant_act);//imprime la cant de act de divulgacion
+        
+        $i=$i+2;
+        foreach ($act_divu as $act) {
+			$inicialA=$i;
+				
+			$this->phpexcel->getActiveSheet()->setCellValue("B$i", 'Nombre de la Actividad');
+			$this->phpexcel->getActiveSheet()->setCellValue("C$i", $act->divu_nombre);
+			$this->phpexcel->getActiveSheet()->mergeCells("C$i:D$i");
+			$i++;
+			
+			$this->phpexcel->getActiveSheet()->setCellValue("B$i", 'Fecha');
+			$this->phpexcel->getActiveSheet()->setCellValue("C$i", $act->divu_fecha);
+			$this->phpexcel->getActiveSheet()->mergeCells("C$i:D$i");
+			$i++;
+			
+			$this->phpexcel->getActiveSheet()->setCellValue("B$i", 'Tipo de Actividad');
+			$this->phpexcel->getActiveSheet()->setCellValue("C$i", $act->divu_tipo);
+			$this->phpexcel->getActiveSheet()->mergeCells("C$i:D$i");
+			$i++;
+			
+			$this->phpexcel->getActiveSheet()->setCellValue("B$i", 'Responsable de la Actividad');
+			$this->phpexcel->getActiveSheet()->setCellValue("C$i", $act->divu_responsable);
+			$this->phpexcel->getActiveSheet()->mergeCells("C$i:D$i");
+			$i++;
+			
+			$this->phpexcel->getActiveSheet()->setCellValue("B$i", 'Municipio en que se realiza');
+			$this->phpexcel->getActiveSheet()->setCellValue("C$i", $this->componente3_model->get_mun_nombre($act->divu_municipio));
+			$this->phpexcel->getActiveSheet()->mergeCells("C$i:D$i");
+			
+			$this->phpexcel->getActiveSheet()->getStyle("B$inicialA:B$i")->applyFromArray($estEncabezado);
+			$this->phpexcel->getActiveSheet()->getStyle("C$inicialA:C$i")->applyFromArray($estCells);
+			$this->phpexcel->getActiveSheet()->getStyle("D$inicialA:D$i")->applyFromArray($estCells);
+			
+			$i=$i+2;
+        }
+        
+        /*Finalizacion y Descarga*/
+        $filename = "RepteComp3_DIVU_" . date("d-m-y") . ".xls"; //GUARDANDO CON ESTE NOMBRE
+        header('Content-Type: application/vnd.ms-excel');
+        header("Content-Disposition: attachment;filename=$filename");
+        header('Cache-Control: max-age=0');
+        $objWriter = PHPExcel_IOFactory::createWriter($this->phpexcel, 'Excel5');
+        $objWriter->save('php://output');
+        
+	}
     
     public function guardar_dsat() {
 
