@@ -166,15 +166,15 @@ class  componente21 extends CI_Controller {
 		$this->load->view('plantilla/footer', $informacion);
 	}
 	
-	public function reportes_comp21() {
+	public function reportes_comp21_ccc() {
 
-        $informacion['titulo'] = 'Reportes Componente 2.1';
+        $informacion['titulo'] = 'Reportes Componente 2.1 CCC';
         //$informacion['user_id'] = $this->tank_auth->get_user_id();
         //$informacion['username'] = $this->tank_auth->get_username();
         //$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
-        $this->load->view('componente2/reportes_comp21_view');
+        $this->load->view('componente2/reportes_comp21_ccc_view');
         $this->load->view('plantilla/footer', $informacion);
     }
 	
@@ -275,7 +275,7 @@ class  componente21 extends CI_Controller {
         $this->phpexcel->getActiveSheet()->getStyle("B22:D$i")->applyFromArray($estCells);
         
         /*Finalizacion y Descarga*/
-        $filename = "rg_ccc" . date("d-m-y") . ".xls"; //GUARDANDO CON ESTE NOMBRE
+        $filename = "RepteGral_CCC_Area_" . date("d-m-y") . ".xls"; //GUARDANDO CON ESTE NOMBRE
         header('Content-Type: application/vnd.ms-excel');
         header("Content-Disposition: attachment;filename=$filename");
         header('Cache-Control: max-age=0');
@@ -351,21 +351,24 @@ class  componente21 extends CI_Controller {
         $deptos = $this->comp21_model->get_deptos();
         $i=5;
         foreach ($deptos as $row) {
-			$this->phpexcel->getActiveSheet()->setCellValue("A$i", $row->dep_nombre);//imprime los deptos
+			$inicial=$i;
+			$this->phpexcel->getActiveSheet()->setCellValue("A$i", $row->dep_nombre);//imprime el depto
             $munic = $this->comp21_model->muni_depto($row->dep_id);
             foreach($munic as $mun){
 				$ccc_muni = $this->comp21_model->ccc_por_muni($mun->mun_id);
-				$this->phpexcel->getActiveSheet()->setCellValue("B$i", $mun->mun_nombre);
-				$this->phpexcel->getActiveSheet()->setCellValue("C$i", $ccc_muni->cant);
+				$this->phpexcel->getActiveSheet()->setCellValue("B$i", $mun->mun_nombre);//imprime el municipio
+				$this->phpexcel->getActiveSheet()->setCellValue("C$i", $ccc_muni->cant);//imprime la cant de ccc del municipio
 				$i++;
 			}
-            $i++;
+			$final=$i-1;
+			$this->phpexcel->getActiveSheet()->mergeCells("A$inicial".":"."A$final");
+            //$i++;
 		}
 		$i--;
         $this->phpexcel->getActiveSheet()->getStyle("A5:C$i")->applyFromArray($estCells);
         
         /*Finalizacion y Descarga*/
-        $filename = "rg_ccc" . date("d-m-y") . ".xls"; //GUARDANDO CON ESTE NOMBRE
+        $filename = "RepteGral_CCC_Muni_" . date("d-m-y") . ".xls"; //GUARDANDO CON ESTE NOMBRE
         header('Content-Type: application/vnd.ms-excel');
         header("Content-Disposition: attachment;filename=$filename");
         header('Cache-Control: max-age=0');

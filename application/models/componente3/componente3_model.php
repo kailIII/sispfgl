@@ -320,6 +320,138 @@ Class componente3_model extends CI_Model{
  		return $row->sec_nombre;
 	}
 	
+	public function get_estado_comp3(){
+		
+		$query = $this->db->query("select count(*) as cant from epi;");
+		$row = $query->row();
+ 		
+ 		if($row->cant > 0){
+				$query1 = $this->db->query("select max(epi_id) as id from epi;");
+				$row1 = $query1->row();
+				
+				$query2 = $this->db->query("select epi_nombre from epi where epi_id=".$row1->id.";");
+				$row2 = $query2->row();
+				
+				$estado['img']='<img src="'.base_url("resource/imagenes/epp.png").'" height="200px" width="200px"/>';
+				$estado['msg']='El Plan Piloto ha sido elaborado.<br/>El nombre por defecto es:<br/><br/>';
+				$estado['info']=$row2->epi_nombre;
+				$estado['pb']='<br/><br/>Porcentaje de Avance:<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<img src="'.base_url("resource/imagenes/pb100.png").'" height="50px" width="300px"/>';
+				$estado['rpt_detalle']='<br/><a href="'.base_url("componente3/componente3/reporte_epp").'">Ver Reporte Detallado.</a>';
+				return $estado;
+		}
+		
+		$query = $this->db->query("select count(*) as cant from dd;");
+		$row = $query->row();
+		
+		if($row->cant > 0){
+				$query1 = $this->db->query("select max(dd_id) as id from dd;");
+				$row1 = $query1->row();
+				
+				$query2 = $this->db->query("select * from dd where dd_id=".$row1->id.";");
+				$row2 = $query2->row();
+				
+				$estado['img']='<img src="'.base_url("resource/imagenes/dd.png").'" height="200px" width="200px"/>';
+				$estado['msg']='Los Documentos de Descentralizaci&oacute;n han sido registrados.<br/>';
+				$estado['info']='Fecha de Registro: '.$row2->dd_fecha.'<br/>
+								Documentos:<br/>
+									&nbsp;&nbsp;Resumen Ejecutivo: <a href="'.base_url($row2->dd_archivo_resumen).'">Descargar</a></br>
+									&nbsp;&nbsp;Documento Completo: <a href="'.base_url($row2->dd_archivo_completo).'">Descargar</a></br>';
+				$estado['pb']='<br/><br/>Porcentaje de Avance:<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<img src="'.base_url("resource/imagenes/pb80.png").'" height="50px" width="300px"/>';
+				return $estado;
+		}
+		
+		$query = $this->db->query("select count(*) as cant from divu;");
+		$row = $query->row();
+		
+		if($row->cant > 0){
+				//$query1 = $this->db->query("select min(divu_id) as id from divu;");
+				//$row1 = $query1->row();
+				
+				$query1 = $this->db->query("select * from divu where divu_id=(select min(divu_id) as id from divu);");
+				$row1 = $query1->row();
+				
+				$query2 = $this->db->query("select * from divu where divu_id=(select max(divu_id) as id from divu);");
+				$row2 = $query2->row();
+				
+				$estado['img']='<img src="'.base_url("resource/imagenes/divu.png").'" height="200px" width="200px"/>';
+				$estado['msg']='Las Actividades de Divulgaci&oacute;n han sido registradas.<br/><br/>';
+				$estado['info']='Primera Actividad registrada, programada para el d&iacute;a: '.$row1->divu_fecha.'<br/>
+								&Uacute;ltima Actividad registrada, programada para el d&iacute;a: '.$row2->divu_fecha.'<br/>
+								Total de Actividades registradas: '.$row->cant;
+				$estado['pb']='<br/><br/>Porcentaje de Avance:<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<img src="'.base_url("resource/imagenes/pb60.png").'" height="50px" width="300px"/>';
+				$estado['rpt_detalle']='<br/><a href="'.base_url("componente3/componente3/reporte_divu").'">Ver Reporte Detallado.</a>';
+				return $estado;
+		}
+		
+		
+		$query = $this->db->query("select count(*) as cant from fcdp;");
+		$row = $query->row();
+		
+		if($row->cant > 0){
+				//$query1 = $this->db->query("select min(divu_id) as id from divu;");
+				//$row1 = $query1->row();
+				
+				$query1 = $this->db->query("select * from fcdp where fcdp_id=(select min(fcdp_id) as id from fcdp);");
+				$row1 = $query1->row();
+				
+				$query2 = $this->db->query("select * from fcdp where fcdp_id=(select max(fcdp_id) as id from fcdp);");
+				$row2 = $query2->row();
+				
+				$query3 = $this->db->query("select count(*) as cant from fcdp where fcdp_ultima='S';");
+				$row3 = $query3->row();
+				if($row3->cant > 0)
+					$pendientes='No. La ultima reuni&oacute;n se ha llevado a cabo.';
+				else $pendientes='Si. Aun hay reuniones pendientes.';
+				
+				$estado['img']='<img src="'.base_url("resource/imagenes/fcdp.png").'" height="200px" width="200px"/>';
+				$estado['msg']='Las Actividades de Formaci&oacute;n de Consenso y Discuci&oacute;n de la Pol&iacute;tica han iniciado.<br/><br/>';
+				$estado['info']='Primera Actividad realizada el d&iacute;a: '.$row1->fcdp_fecha.'<br/>
+								&Uacute;ltima Actividad realizada el d&iacute;a: '.$row2->fcdp_fecha.'<br/>
+								Reuniones Pendientes: '.$pendientes;
+				$estado['pb']='<br/><br/>Porcentaje de Avance:<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<img src="'.base_url("resource/imagenes/pb40.png").'" height="50px" width="300px"/>';
+				return $estado;
+		}
+		
+		$query = $this->db->query("select count(*) as cant from dsat;");
+		$row = $query->row();
+		
+		if($row->cant > 0){
+				//$query1 = $this->db->query("select min(divu_id) as id from divu;");
+				//$row1 = $query1->row();
+				
+				$query1 = $this->db->query("select * from dsat where dsat_id=(select min(dsat_id) as id from dsat);");
+				$row1 = $query1->row();
+				
+				$query2 = $this->db->query("select * from dsat where dsat_id=(select max(dsat_id) as id from dsat);");
+				$row2 = $query2->row();
+				
+				$estado['img']='<img src="'.base_url("resource/imagenes/dsat.png").'" height="200px" width="200px"/>';
+				$estado['msg']='Las Actividades Diagnostico Sectorial y Analisis Transversal han sido iniciadas.<br/><br/>';
+				$estado['info']='Primera Actividad realizada el d&iacute;a: '.$row1->dsat_fecha.'<br/>
+								&Uacute;ltima Actividad realizada el d&iacute;a: '.$row2->dsat_fecha.'<br/>
+								Total de Actividades registradas: '.$row->cant;
+				$estado['pb']='<br/><br/>Porcentaje de Avance:<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<img src="'.base_url("resource/imagenes/pb20.png").'" height="50px" width="300px"/>';
+				return $estado;
+		}
+		else{
+				$estado['img']='<img src="'.base_url("resource/imagenes/noini.png").'" height="200px" width="200px"/>';
+				$estado['msg']='Las Actividades Diagnostico Sectorial y Analisis Transversal no han sido iniciadas.<br/><br/>';
+				$estado['info']='Total de Actividades registradas: 0';
+				$estado['pb']='<br/><br/>Porcentaje de Avance:<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<img src="'.base_url("resource/imagenes/pb0.png").'" height="50px" width="300px"/>';
+				return $estado;
+		
+		}
+		
+ 		
+	}
+	
+	
 	public function finalizar_pmatricula() {
 		/*$data = array(
             'estadoPeriodoMatricula' => 0
