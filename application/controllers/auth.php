@@ -22,14 +22,18 @@ class Auth extends CI_Controller {
     function index() {
         if ($message = $this->session->flashdata('message')) {
             $informacion['titulo'] = 'SIS-PFGL';
+            
+            if ($this->tank_auth->get_user_id() <> 0){
+            $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
             $informacion['user_id'] = $this->tank_auth->get_user_id();
             $informacion['username'] = $this->tank_auth->get_username();
-            $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+            }
             $this->load->view('plantilla/header', $informacion);
             $this->load->view('plantilla/menu', $informacion);
             $this->load->view('auth/general_message', array('message' => $message));
             $this->load->view('plantilla/footer', $informacion);
-        } else
+        }
+        else
             redirect('/auth/login/');
     }
 
@@ -104,9 +108,10 @@ class Auth extends CI_Controller {
      * @return void
      */
     function register() {
-        if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
-        /* TODO: validar rol*/
-        
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');                // logged in
+        /* TODO: validar rol */
+
         $use_username = $this->config->item('use_username', 'tank_auth');
         if ($use_username) {
             $this->form_validation->set_rules('username', 'Username', 'trim|required|xss_clean|min_length[' . $this->config->item('username_min_length', 'tank_auth') . ']|max_length[' . $this->config->item('username_max_length', 'tank_auth') . ']|alpha_dash');
@@ -472,7 +477,7 @@ class Auth extends CI_Controller {
             'img_height' => $this->config->item('captcha_height', 'tank_auth'),
             'show_grid' => $this->config->item('captcha_grid', 'tank_auth'),
             'expiration' => $this->config->item('captcha_expire', 'tank_auth'),
-                ));
+        ));
 
         // Save captcha params in session
         $this->session->set_flashdata(array(
