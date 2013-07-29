@@ -49,6 +49,23 @@ class Grupo_apoyo extends CI_Model {
         $consulta = $this->db->get($this->tabla);
         return $consulta->result_array();
     }
+    
+   public function verificarGrupoApoyo($mun_id){
+        $consulta = "Select CASE WHEN gru_apo_fecha IS NOT NULL AND gru_apo_c3 IS NOT NULL AND gru_apo_c4 IS NOT NULL AND gru_apo_lugar IS NOT NULL then 1 ELSE  0 END resultado
+           FROM proyecto_pep A, $this->tabla B
+           WHERE A.pro_pep_id=B.pro_pep_id AND A.mun_id=?";
+        $query = $this->db->query($consulta, array($mun_id));
+        return $query->result();   
+    }
+    
+    public function verificarParticipantesGrupoApoyo($mun_id){
+         $consulta = "SELECT count(A.gru_apo_id) valor 
+            FROM $this->tabla A, participante B,proyecto_pep C
+            WHERE  A.gru_apo_id=B.gru_apo_id AND  A.pro_pep_id=C.pro_pep_id
+                 AND C.mun_id==?";
+        $query = $this->db->query($consulta, array($mun_id));
+        return $query->result();   
+    }
 }
 
 ?>

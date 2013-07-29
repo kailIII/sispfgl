@@ -214,7 +214,15 @@ FROM
         return $consulta->result();
     }
 
-    
+    public function obtenerMunicipiosTodos() {
+        $sql = "SELECT A.reg_nombre,B.dep_nombre,C.mun_nombre,C.mun_id 
+FROM region A, departamento B, $this->tabla C
+WHERE A.reg_id=B.reg_id AND B.dep_id=C.dep_id
+ORDER BY A.reg_nombre,B.dep_nombre,C.mun_nombre";
+        $consulta = $this->db->query($sql, array());
+        return $consulta->result();
+    }
+
 }
 
 ?>

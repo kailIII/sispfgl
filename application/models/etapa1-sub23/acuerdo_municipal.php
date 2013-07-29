@@ -65,6 +65,23 @@ class Acuerdo_municipal extends CI_Model {
         return $consulta->result_array();
     }
     
+    public function verificarAcuerdoMunicipal($mun_id){
+        $consulta = "SELECT CASE WHEN acu_mun_fecha IS NOT NULL AND acu_mun_p1 IS NOT NULL AND acu_mun_p2 IS NOT NULL 
+                then 1 ELSE  0 END resultado
+            FROM proyecto_pep A, $this->tabla B
+            WHERE A.pro_pep_id=B.pro_pep_id AND A.mun_id=?";
+        $query = $this->db->query($consulta, array($mun_id));
+        return $query->result();   
+    }
+    
+    public function verificarCriteriosAcuerdoMunicipal($mun_id){
+         $consulta = "Select count(A.acu_mun_id) valor 
+            FROM $this->tabla A, criterio_acuerdo B, proyecto_pep C
+            WHERE  A.acu_mun_id=B.acu_mun_id AND  A.pro_pep_id=C.pro_pep_id
+                 AND B.cri_acu_valor IS NOT NULL AND C.mun_id=?";
+        $query = $this->db->query($consulta, array($mun_id));
+        return $query->result();   
+    }
 }
 
 ?>

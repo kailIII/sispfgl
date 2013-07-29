@@ -48,6 +48,13 @@ class Declaracion_interes extends CI_Model {
         return $consulta->result_array();
     }
 
+    public function verificarDeclaracionInteres($mun_id){
+        $consulta = "SELECT CASE WHEN dec_int_fecha IS NOT NULL AND dec_int_lugar IS NOT NULL AND dec_int_ruta_archivo IS NOT NULL then 1 ELSE  0 END resultado
+            FROM proyecto_pep A, $this->tabla B
+            WHERE A.pro_pep_id=B.pro_pep_id AND A.mun_id=?";
+        $query = $this->db->query($consulta, array($mun_id));
+        return $query->result();   
+    }
 }
 
 ?>
