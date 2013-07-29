@@ -132,6 +132,34 @@ Class comp21_model extends CI_Model{
 		return $query->result();
 	}
 	
+	public function cc_por_depto(){
+		$query = $this->db->query("select D.dep_nombre as depto, count(Mun.cc_id) cant
+									from (select dep_id, C.mun_id, cc_id
+											from cc C, municipio M 
+											where C.mun_id=M.mun_id) as Mun
+									right outer join departamento D 
+									on (Mun.dep_id=D.dep_id)
+									group by D.dep_nombre
+									order by D.dep_nombre;");
+		return $query->result();
+	}
+	
+	public function proy_cc_por_depto(){ //devuelve la cantidad de cc por depto, y el numero de proyectos de cc por depto
+		$query = $this->db->query("select D.dep_nombre as depto, count(Mun.id) cant, sum(nproy) n
+									from (select * from (select dep_id, C.mun_id, C.cc_id id
+										from cc C, municipio M 
+										where C.mun_id=M.mun_id) F
+										left outer join (select cc_id, count(id_proy_cc) nproy from proyectos_cc
+													group by cc_id) Pcc
+													on (F.id=Pcc.cc_id)
+										) as Mun
+										right outer join departamento D 
+											on (Mun.dep_id=D.dep_id)
+										group by D.dep_nombre
+										order by D.dep_nombre;");
+		return $query->result();
+	}
+	
 	public function ccc_por_region(){
 		$query = $this->db->query("select R.reg_nombre reg,sum(cant) suma
 									from (select D.dep_nombre as depto, D.reg_id regid, count(Mun.ccc_id) cant
@@ -145,6 +173,44 @@ Class comp21_model extends CI_Model{
 									right outer join region R
 									on (cccdepto.regid=R.reg_id)
 									group by R.reg_nombre
+									order by R.reg_nombre;");
+		return $query->result();
+	}
+	
+	public function cc_por_region(){
+		$query = $this->db->query("select R.reg_nombre reg,sum(cant) suma
+									from (select D.dep_nombre as depto, D.reg_id regid, count(Mun.cc_id) cant
+											from (select dep_id, C.mun_id, cc_id
+													from cc C, municipio M 
+													where C.mun_id=M.mun_id) as Mun
+											right outer join departamento D 
+											on (Mun.dep_id=D.dep_id)
+											group by D.dep_nombre,D.reg_id
+											order by D.dep_nombre) as ccdepto
+									right outer join region R
+									on (ccdepto.regid=R.reg_id)
+									group by R.reg_nombre
+									order by R.reg_nombre;");
+		return $query->result();
+	}
+	
+	public function proy_cc_por_region(){
+		$query = $this->db->query("select R.reg_nombre reg,sum(cant) suma, nproy
+									from (select D.dep_nombre as depto, D.reg_id regid, count(Mun.id) cant, nproy
+											from ((select dep_id, C.mun_id, cc_id id
+													from cc C, municipio M 
+													where C.mun_id=M.mun_id) P
+													left outer join 
+													(select cc_id, count(id_proy_cc) nproy from proyectos_cc
+													group by cc_id) S
+													on (P.id=S.cc_id)) as Mun
+											right outer join departamento D 
+											on (Mun.dep_id=D.dep_id)
+											group by D.dep_nombre,D.reg_id,nproy
+											order by D.dep_nombre) as ccdepto
+									right outer join region R
+									on (ccdepto.regid=R.reg_id)
+									group by R.reg_nombre, nproy
 									order by R.reg_nombre;");
 		return $query->result();
 	}
@@ -170,7 +236,65 @@ Class comp21_model extends CI_Model{
 									where mun_id=".$mun_id.";");
 		return $query->row();
 	}
-
+	
+	public function monto_total_proy_cc(){
+		$query = $this->db->query("select sum(monto_proy) as mtotal
+									from proyectos_cc;");
+		return $query->row();
+	}
+	
+	public function total_combeneficiadas_proy_cc(){
+		$query = $this->db->query("select sum(com_beneficiadas) as comtotal
+									from proyectos_cc;");
+		return $query->row();
+	}
+	
+	public function total_tipo_proy($tipo){
+		$query = $this->db->query("select count(*) as total
+									from proyectos_cc
+									where tipo_proy='".$tipo."';");
+		return $query->row();
+	}
+	
+	public function total_proy(){
+		$query = $this->db->query("select count(*) as totalp
+									from proyectos_cc;");
+		return $query->row();
+	}
+	
+	public function total_cc(){
+		$query = $this->db->query("select count(*) as total
+									from cc;");
+		return $query->row();
+	}
+	
+	public function total_m_cc(){
+		$query = $this->db->query("select sum(total_mujeres) as total
+									from cc;");
+		return $query->row();
+	}
+	
+	public function total_h_cc(){
+		$query = $this->db->query("select sum(total_hombres) as total
+									from cc;");
+		return $query->row();
+	}
+	
+	public function prom_m_por_cc(){
+		$tcc=$this->total_cc()->total;
+		$tm=$this->total_m_cc()->total;
+		if($tcc==0)
+			return 0;
+		else return ($tm/$tcc);
+	}
+	
+	public function prom_h_por_cc(){
+		$tcc=$this->total_cc()->total;
+		$th=$this->total_h_cc()->total;
+		if($tcc==0)
+			return 0;
+		else return ($th/$tcc);
+	}
 
 
 }

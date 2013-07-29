@@ -26,7 +26,7 @@ class Librerias {
             $menu.='<li><a href="' . base_url($rolPadre->opc_sis_url) . '">' . $rolPadre->opc_sis_nombre . '</a>';
             $opcionesN2 = $this->ci->ros->obtenerOpcionesOtrosNiveles($rol, $rolPadre->opc_sis_id);
             if ($opcionesN2->num_rows() != 0) {
-                $menu.='<ul>';
+                $menu.='<ul style="position:absolute; z-index:1;">';
                 foreach ($opcionesN2->result() as $opcN2) {
                     $menu.='<li><a href="' . base_url($opcN2->opc_sis_url) . '">' . $opcN2->opc_sis_nombre . '</a>';
                     $opcionesN3 = $this->ci->ros->obtenerOpcionesOtrosNiveles($rol, $opcN2->opc_sis_id);

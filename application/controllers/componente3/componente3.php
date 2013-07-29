@@ -81,9 +81,9 @@ class  componente3 extends CI_Controller {
 		$estado = $this->componente3_model->get_estado_comp3();
 		
         $informacion['titulo'] = '3.1 Diagnostico Sectorial y Analisis Transversales';
-        $informacion['user_id'] = $this->tank_auth->get_user_id();
-        $informacion['username'] = $this->tank_auth->get_username();
-        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
+        //$informacion['user_id'] = $this->tank_auth->get_user_id();
+        //$informacion['username'] = $this->tank_auth->get_username();
+        //$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('componente3/reporte_estado_comp3_view',$estado);
@@ -333,7 +333,14 @@ class  componente3 extends CI_Controller {
 			$i++;
 			
 			$this->phpexcel->getActiveSheet()->setCellValue("B$i", 'Municipio en que se realiza');
-			$this->phpexcel->getActiveSheet()->setCellValue("C$i", $this->componente3_model->get_mun_nombre($act->divu_municipio));
+			$this->phpexcel->getActiveSheet()->setCellValue("C$i", $this->componente3_model->get_mun_nombre( $act->divu_municipio));
+			$this->phpexcel->getActiveSheet()->mergeCells("C$i:D$i");
+			$i++;
+			
+			$asis_act = $this->componente3_model->get_asistentes_divu($act->divu_id);
+			
+			$this->phpexcel->getActiveSheet()->setCellValue("B$i", 'Asistentes de la Actividad');
+			$this->phpexcel->getActiveSheet()->setCellValue("C$i", count($asis_act));
 			$this->phpexcel->getActiveSheet()->mergeCells("C$i:D$i");
 			
 			$this->phpexcel->getActiveSheet()->getStyle("B$inicialA:B$i")->applyFromArray($estEncabezado);
