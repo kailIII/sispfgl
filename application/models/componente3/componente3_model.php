@@ -337,7 +337,7 @@ Class componente3_model extends CI_Model{
 				$estado['info']=$row2->epi_nombre;
 				$estado['pb']='<br/><br/>Porcentaje de Avance:<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								<img src="'.base_url("resource/imagenes/pb100.png").'" height="50px" width="300px"/>';
-				$estado['rpt_detalle']='<br/><a href="'.base_url("componente3/componente3/reporte_epp").'">Ver Reporte Detallado.</a>';
+				$estado['rpt_detalle']='<br/><a href="'.base_url("index.php/componente3/componente3/reporte_epp").'">Ver Reporte Detallado.</a>';
 				return $estado;
 		}
 		
@@ -382,7 +382,7 @@ Class componente3_model extends CI_Model{
 								Total de Actividades registradas: '.$row->cant;
 				$estado['pb']='<br/><br/>Porcentaje de Avance:<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								<img src="'.base_url("resource/imagenes/pb60.png").'" height="50px" width="300px"/>';
-				$estado['rpt_detalle']='<br/><a href="'.base_url("componente3/componente3/reporte_divu").'">Ver Reporte Detallado.</a>';
+				$estado['rpt_detalle']='<br/><a href="'.base_url("index.php/componente3/componente3/reporte_divu").'">Ver Reporte Detallado.</a>';
 				return $estado;
 		}
 		

@@ -177,6 +177,18 @@ class  componente21 extends CI_Controller {
         $this->load->view('componente2/reportes_comp21_ccc_view');
         $this->load->view('plantilla/footer', $informacion);
     }
+    
+    public function reportes_comp21_cc() {
+
+        $informacion['titulo'] = 'Reportes Componente 2.1 CC';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/reportes_comp21_cc_view');
+        $this->load->view('plantilla/footer', $informacion);
+    }
 	
 	public function reporte_ccc_por_region(){
 		/*Inicio*/
@@ -369,6 +381,190 @@ class  componente21 extends CI_Controller {
         
         /*Finalizacion y Descarga*/
         $filename = "RepteGral_CCC_Muni_" . date("d-m-y") . ".xls"; //GUARDANDO CON ESTE NOMBRE
+        header('Content-Type: application/vnd.ms-excel');
+        header("Content-Disposition: attachment;filename=$filename");
+        header('Cache-Control: max-age=0');
+        $objWriter = PHPExcel_IOFactory::createWriter($this->phpexcel, 'Excel5');
+        $objWriter->save('php://output');
+	}
+	
+	public function reporte_gral_cc(){
+		/*Inicio*/
+		$this->load->library('PHPExcel');
+		$this->phpexcel->setActiveSheetIndex(0);
+        $this->phpexcel->getActiveSheet()->setTitle('Reporte General');
+        
+        /*Definicion de Estilos de Celdas*/
+        $estTitulos = array(
+            'font' => array('bold' => true, 'size' => 11, 'name' => 'Arial'),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => 'C5E0EB')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+                'shrinkToFit' => false
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        
+        $estSubTitulos = array(
+            'font' => array('bold' => true, 'size' => 10, 'name' => 'Arial'),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => 'E0F3FC')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+                'shrinkToFit' => false
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        
+         $estEncabezado = array(
+            'font' => array('bold' => true, 'size' => 10, 'name' => 'Arial'),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => 'E6E6F0')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        
+        $estCells = array(
+            'font' => array('size' => 10, 'name' => 'Arial'),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_JUSTIFY,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        
+        /*Reporte*/
+        $this->phpexcel->getActiveSheet()->setCellValue('D2', 'Componente 2.1 - Reporte Gral Consultas Ciudadanas');
+        $this->phpexcel->getActiveSheet()->mergeCells('D2:J2');
+        $this->phpexcel->getActiveSheet()->getStyle('D2:J2')->applyFromArray($estTitulos);
+
+        $this->phpexcel->getActiveSheet()->getColumnDimension('A')->setWidth(18);
+        $this->phpexcel->getActiveSheet()->getColumnDimension('B')->setWidth(14);
+        
+					/*CCC por departamento*/
+        $this->phpexcel->getActiveSheet()->setCellValue('A3', 'Por Departamento');
+        $this->phpexcel->getActiveSheet()->getStyle('A3:A3')->applyFromArray($estSubTitulos);
+        
+        $this->phpexcel->getActiveSheet()->setCellValue('B4', 'Departamento');
+        $this->phpexcel->getActiveSheet()->setCellValue('C4', 'Cantidad CC');
+        $this->phpexcel->getActiveSheet()->setCellValue('D4', '%');
+        $this->phpexcel->getActiveSheet()->setCellValue('E4', 'SubProyectos CC');
+        $this->phpexcel->getActiveSheet()->getStyle('B4:E4')->applyFromArray($estEncabezado);
+        
+        $this->load->model('componente2/comp21_model');
+        $consulta = $this->comp21_model->proy_cc_por_depto();
+        $total=0;
+        foreach ($consulta as $row){
+			$total=$total+$row->cant;
+		}
+		if ($total==0) 
+			$total=1;
+        $i=5;
+        foreach ($consulta as $row) {
+			$this->phpexcel->getActiveSheet()->setCellValue("B$i", $row->depto);//imprime los deptos
+            $this->phpexcel->getActiveSheet()->setCellValue("C$i", $row->cant);//imprime la cant de CC del depto
+            $this->phpexcel->getActiveSheet()->setCellValue("D$i", (round((($row->cant / $total)*100),2)));
+            if(!($row->n))
+				$row->n=0;
+            $this->phpexcel->getActiveSheet()->setCellValue("E$i", $row->n);
+            $i++;
+		}
+		$i--;
+        $this->phpexcel->getActiveSheet()->getStyle("B5:E$i")->applyFromArray($estCells);
+        
+				/*CCC por Region*/
+		$i=$i+4;
+		$this->phpexcel->getActiveSheet()->setCellValue('A20', 'Por Region');
+        $this->phpexcel->getActiveSheet()->getStyle('A20:A20')->applyFromArray($estSubTitulos);
+        
+        $this->phpexcel->getActiveSheet()->setCellValue('B21', 'Region');
+        $this->phpexcel->getActiveSheet()->setCellValue('C21', 'Cantidad');
+        $this->phpexcel->getActiveSheet()->setCellValue('D21', '%');
+        $this->phpexcel->getActiveSheet()->setCellValue('E21', 'SubProyectos CC');
+        $this->phpexcel->getActiveSheet()->getStyle('B21:E21')->applyFromArray($estEncabezado);
+        
+        $consulta = $this->comp21_model->proy_cc_por_region();
+        $total=0;
+        foreach ($consulta as $row){
+			$total=$total+$row->suma;
+		}
+		if ($total==0) 
+			$total=1;
+        foreach ($consulta as $row) {
+			$this->phpexcel->getActiveSheet()->setCellValue("B$i", $row->reg);//imprime la region
+            $this->phpexcel->getActiveSheet()->setCellValue("C$i", $row->suma);//imprime las cant de CC de la region
+            $this->phpexcel->getActiveSheet()->setCellValue("D$i", (round((($row->suma / $total)*100),2)));
+            if(!($row->nproy))
+				$row->nproy=0;
+            $this->phpexcel->getActiveSheet()->setCellValue("E$i", $row->nproy);
+            $i++;
+		}
+		$i--;
+        $this->phpexcel->getActiveSheet()->getStyle("B22:E$i")->applyFromArray($estCells);
+        
+        $i=$i+2;
+        $this->phpexcel->getActiveSheet()->setCellValue("A$i", 'Indicadores');
+        $this->phpexcel->getActiveSheet()->getStyle("A$i:A$i")->applyFromArray($estSubTitulos);
+        $i++;
+        
+        $this->phpexcel->getActiveSheet()->setCellValue("A$i", 'Monto SubProyectos CC');
+        $this->phpexcel->getActiveSheet()->getStyle("A$i:A$i")->applyFromArray($estEncabezado);
+        
+			$mtcc=$this->comp21_model->monto_total_proy_cc();
+			$this->phpexcel->getActiveSheet()->mergeCells("B$i:H$i");
+			$this->phpexcel->getActiveSheet()->setCellValue("B$i", "El monto total de los SubProyectos de CC asciende a: $".$mtcc->mtotal);
+			$this->phpexcel->getActiveSheet()->getStyle("B$i:H$i")->applyFromArray($estCells);
+			$i++;
+			
+		$this->phpexcel->getActiveSheet()->setCellValue("A$i", 'Comunidades Beneficiadas');
+        $this->phpexcel->getActiveSheet()->getStyle("A$i:A$i")->applyFromArray($estEncabezado);
+        
+			$comben=$this->comp21_model->total_combeneficiadas_proy_cc();
+			$this->phpexcel->getActiveSheet()->mergeCells("B$i:H$i");
+			$this->phpexcel->getActiveSheet()->setCellValue("B$i", "El numero aproximado de comunidades beneficiadas de los SubProyectos de CC asciende a: $".$comben->comtotal);
+			$this->phpexcel->getActiveSheet()->getStyle("B$i:H$i")->applyFromArray($estCells);
+			$i++;
+			
+		$this->phpexcel->getActiveSheet()->setCellValue("A$i", 'Tipos de SubProyecto');
+        $this->phpexcel->getActiveSheet()->getStyle("A$i:A$i")->applyFromArray($estEncabezado);
+        
+			$t1=$this->comp21_model->total_proy();
+			$t2=$this->comp21_model->total_tipo_proy('Nuevo Subproyecto');
+			if($t1->totalp==0)
+				$t1->totalp=1;
+			$ts=round((($t2->total / $t1->totalp)*100),2);
+			$this->phpexcel->getActiveSheet()->mergeCells("B$i:H$i");
+			$this->phpexcel->getActiveSheet()->setCellValue("B$i", "El ".$ts."% de los SubProyectos son de tipo 'Nuevo' mientras que el ".(100-$ts)."% son de tipo 'Cambio'");
+			$this->phpexcel->getActiveSheet()->getStyle("B$i:H$i")->applyFromArray($estCells);
+			$i++;
+		
+		$this->phpexcel->getActiveSheet()->setCellValue("A$i", 'Genero');
+        $this->phpexcel->getActiveSheet()->getStyle("A$i:A$i")->applyFromArray($estEncabezado);
+        
+			$t1=$this->comp21_model->total_h_cc();
+			$t2=$this->comp21_model->total_m_cc();
+			$thm=$t1->total+$t2->total;
+			$th=round((($t1->total / $thm)*100),2);
+			
+			$this->phpexcel->getActiveSheet()->mergeCells("B$i:H$i");
+			$this->phpexcel->getActiveSheet()->setCellValue("B$i", "El ".$th."% de los asistentes a CC son Hombres, mientras que el ".(100-$th)."% son Mujeres");
+			$this->phpexcel->getActiveSheet()->getStyle("B$i:H$i")->applyFromArray($estCells);
+			$i++;
+        
+			$t1=round($this->comp21_model->prom_h_por_cc(),2);
+			$t2=round($this->comp21_model->prom_m_por_cc(),2);
+			
+			$this->phpexcel->getActiveSheet()->mergeCells("B$i:H$i");
+			$this->phpexcel->getActiveSheet()->setCellValue("B$i", "Por cada CC, en promedio asisten: $t1 Hombres y $t2 Mujeres");
+			$this->phpexcel->getActiveSheet()->getStyle("B$i:H$i")->applyFromArray($estCells);
+			
+        /*Finalizacion y Descarga*/
+        $filename = "RepteGral_CC" . date("d-m-y") . ".xls"; //GUARDANDO CON ESTE NOMBRE
         header('Content-Type: application/vnd.ms-excel');
         header("Content-Disposition: attachment;filename=$filename");
         header('Cache-Control: max-age=0');

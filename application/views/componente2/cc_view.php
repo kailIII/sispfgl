@@ -73,6 +73,14 @@
 					$('#monto_proy').val("0");
 			}
         });
+        
+        $('#com_beneficiadas').change(function(){   
+            var m = $('#com_beneficiadas').val();
+            if(!isNumber(m) || m<0){
+					$('#mensaje9').dialog('open');
+					$('#com_beneficiadas').val("0");
+			}
+        });
 		
         
         /*CARGAR MUNICIPIOS*/
@@ -326,7 +334,7 @@ echo form_open_multipart('componente2/componente21/guardar_cc',$attributes);?>
 	<input type="text" name="com_beneficiadas" id="com_beneficiadas"  size="5">
 	
 	<label>Poblaci&oacute;n Beneficiada: </label>
-	<input type="text" name="pob_beneficiada" id="pob_beneficiada"  size="5">
+	<input type="text" name="pob_beneficiada" id="pob_beneficiada"  size="10">
 	
 	<input type="button" value="Agregar" name="agregar_proy" id="agregar_proy"><br/>
 	<br/><br/>
@@ -390,4 +398,7 @@ echo form_open_multipart('componente2/componente21/guardar_cc',$attributes);?>
 </div>
 <div id="mensaje8" class="mensaje" title="Aviso">
     <p>El monto ingresado no es valido.</p>
+</div>
+<div id="mensaje9" class="mensaje" title="Aviso">
+    <p>Se requiere un numero.</p>
 </div>
