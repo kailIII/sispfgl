@@ -75,6 +75,31 @@ Class componente26_model extends CI_Model{
         
 	}
 	
+	public function get_info_caps(){
+		$query = $this->db->query("select entidad, count(comp_id) as cant, sum(monto_cap) as monto_t, 
+										sum(total_mujeres) as tm, sum(total_hombres) as th
+									from componente26_cap
+									group by entidad
+									order by entidad;");
+		return $query->result();
+	}
+	
+	public function get_info_cons(){
+		$query = $this->db->query("select entidad, count(comp_id) as cant, sum(monto_con) as monto_t 
+									from componente26_con
+									group by entidad
+									order by entidad;");
+		return $query->result();
+	}
+	
+	public function get_info_equi(){
+		$query = $this->db->query("select entidad, count(comp_id) as cant, sum(monto_equi) as monto_t 
+									from componente26_equi
+									group by entidad
+									order by entidad;");
+		return $query->result();
+	}
+	
 	
 		
 }    
