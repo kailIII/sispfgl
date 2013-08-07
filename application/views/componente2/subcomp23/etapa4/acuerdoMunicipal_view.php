@@ -1,178 +1,221 @@
-<script type="text/javascript">        
-    $(document).ready(function(){
-                 <?php if (isset($guardo)){?>
-                $('#guardo').dialog();
-                <?php }?>
-
+<script type="text/javascript">
+    $(document).ready(function() {
         $("#guardar").button().click(function() {
-            borrador= $('#acu_mun_fecha_borrador').datepicker("getDate");
-            observacion=$( "#acu_mun_fecha_observacion" ).datepicker("getDate");
-            aprobacion=$( "#acu_mun_fecha_aceptacion" ).datepicker("getDate");
-            if(borrador==null){
-                $("#acu_mun_fecha_observacion" ).val('');
-                $("#acu_mun_fecha_aceptacion" ).val('');
-                this.form.action='<?php echo base_url('componente2/comp23_E4/guardarAcuerdoMunicipal') . '/' . $acu_mun_id; ?>';
-            }else{
-                if(observacion==null){
-                    $( "#acu_mun_fecha_aceptacion" ).val('');
-                    this.form.action='<?php echo base_url('componente2/comp23_E4/guardarAcuerdoMunicipal') . '/' . $acu_mun_id; ?>';
-                }else{
-                    if(borrador<observacion){
-                        if(aprobacion==null){
-                            this.form.action='<?php echo base_url('componente2/comp23_E4/guardarAcuerdoMunicipal') . '/' . $acu_mun_id; ?>';
-                        }else{
-                            if(observacion<aprobacion){
-                                this.form.action='<?php echo base_url('componente2/comp23_E4/guardarAcuerdoMunicipal') . '/' . $acu_mun_id; ?>';
-                            }else{
+            borrador = $('#acu_mun_fecha_borrador').datepicker("getDate");
+            observacion = $("#acu_mun_fecha_observacion").datepicker("getDate");
+            aprobacion = $("#acu_mun_fecha_aceptacion").datepicker("getDate");
+            if (borrador == null) {
+                $("#acu_mun_fecha_observacion").val('');
+                $("#acu_mun_fecha_aceptacion").val('');
+                $.ajax({
+                    type: "POST",
+                    url: '<?php echo base_url('componente2/comp23_E4/guardarAcuerdoMunicipal') . '/' . $acu_mun_id; ?>',
+                    data: $("#acuerdoForm").serialize(), // serializes the form's elements.
+                    success: function(data)
+                    {
+                        $('#efectivo').dialog('open');
+                    }
+                });
+                return false;
+            } else {
+                if (observacion == null) {
+                    $("#acu_mun_fecha_aceptacion").val('');
+                    $.ajax({
+                        type: "POST",
+                        url: '<?php echo base_url('componente2/comp23_E4/guardarAcuerdoMunicipal') . '/' . $acu_mun_id; ?>',
+                        data: $("#acuerdoForm").serialize(), // serializes the form's elements.
+                        success: function(data)
+                        {
+                            $('#efectivo').dialog('open');
+                        }
+                    });
+                    return false;
+                } else {
+                    if (borrador < observacion) {
+                        if (aprobacion == null) {
+                            $.ajax({
+                                type: "POST",
+                                url: '<?php echo base_url('componente2/comp23_E4/guardarAcuerdoMunicipal') . '/' . $acu_mun_id; ?>',
+                                data: $("#acuerdoForm").serialize(), // serializes the form's elements.
+                                success: function(data)
+                                {
+                                    $('#efectivo').dialog('open');
+                                }
+                            });
+                            return false;
+                        } else {
+                            if (observacion < aprobacion) {
+                                $.ajax({
+                                    type: "POST",
+                                    url: '<?php echo base_url('componente2/comp23_E4/guardarAcuerdoMunicipal') . '/' . $acu_mun_id; ?>',
+                                    data: $("#acuerdoForm").serialize(), // serializes the form's elements.
+                                    success: function(data)
+                                    {
+                                        $('#efectivo').dialog('open');
+                                    }
+                                });
+                                return false;
+                            } else {
                                 $('#fechaValidacion').dialog('open');
                                 return false
                             }
                         }
-                    }else{
+                    } else {
                         $('#fechaValidacion').dialog('open');
                         return false
                     }
                 }
-            }  
+            }
         });
-        
+
         $("#cancelar").button().click(function() {
-            document.location.href='<?php echo base_url('componente2/comp23_E4/'); ?>';
+            document.location.href = '<?php echo base_url('componente2/comp23_E4/'); ?>';
         });
         /*PARA EL DATEPICKER*/
-        $( "#acu_mun_fecha_borrador").datepicker({
+        $("#acu_mun_fecha_borrador").datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
+            buttonImageOnly: true,
             dateFormat: 'dd-mm-yy'
         });
-        
-        $( "#acu_mun_fecha_observacion" ).datepicker({
+
+        $("#acu_mun_fecha_observacion").datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
+            buttonImageOnly: true,
             dateFormat: 'dd-mm-yy'
         });
-        $( "#acu_mun_fecha_aceptacion" ).datepicker({
+        $("#acu_mun_fecha_aceptacion").datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
+            buttonImageOnly: true,
             dateFormat: 'dd-mm-yy'
         });
-        
+
         function validaSexo(value, colname) {
-            if (value == 0 ) return [false,"Seleccione el Sexo del Participante"];
-            else return [true,""];
+            if (value == 0)
+                return [false, "Seleccione el Sexo del Participante"];
+            else
+                return [true, ""];
         }
-        
+
         function validaPerteneceA(value, colname) {
-            if (value == 0 ) return [false,"Seleccione la pertenencia del participante"];
-            else return [true,""];
+            if (value == 0)
+                return [false, "Seleccione la pertenencia del participante"];
+            else
+                return [true, ""];
         }
-        
-        var tabla=$("#participantes");
+
+        var tabla = $("#participantes");
         tabla.jqGrid({
-            url:'<?php echo base_url('componente2/comp23_E4/cargarParticipantes') . '/acu_mun_id/' . $acu_mun_id; ?>',
-            editurl:'<?php echo base_url('componente2/comp23_E2/gestionParticipantes') . '/acu_mun_id/' . $acu_mun_id; ?>',
-            datatype:'json',
-            altRows:true,
+            url: '<?php echo base_url('componente2/comp23_E4/cargarParticipantes') . '/acu_mun_id/' . $acu_mun_id; ?>',
+            editurl: '<?php echo base_url('componente2/comp23_E2/gestionParticipantes') . '/acu_mun_id/' . $acu_mun_id; ?>',
+            datatype: 'json',
+            altRows: true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','Nombres','Apellidos','Sexo','Cargo','Teléfono','Pertenece A'],
-            colModel:[
-                {name:'par_id',index:'par_id', width:40,editable:false,editoptions:{size:15} },
-                {name:'par_nombre',index:'par_nombre',width:100,editable:true,
-                    editoptions:{size:25,maxlength:50}, 
-                    formoptions:{label: "Nombres",elmprefix:"(*)"},
-                    editrules:{required:true} 
+            colNames: ['id', 'Nombres', 'Apellidos', 'Sexo', 'Cargo', 'Teléfono', 'Pertenece A'],
+            colModel: [
+                {name: 'par_id', index: 'par_id', width: 40, editable: false, editoptions: {size: 15}},
+                {name: 'par_nombre', index: 'par_nombre', width: 100, editable: true,
+                    editoptions: {size: 25, maxlength: 50},
+                    formoptions: {label: "Nombres", elmprefix: "(*)"},
+                    editrules: {required: true}
                 },
-                {name:'par_apellido',index:'par_apellido',width:100,editable:true,
-                    editoptions:{size:25,maxlength:50}, 
-                    formoptions:{label: "Apellidos",elmprefix:"(*)"},
-                    editrules:{required:true} 
+                {name: 'par_apellido', index: 'par_apellido', width: 100, editable: true,
+                    editoptions: {size: 25, maxlength: 50},
+                    formoptions: {label: "Apellidos", elmprefix: "(*)"},
+                    editrules: {required: true}
                 },
-                {name:'par_sexo',index:'par_sexo',editable:true,edittype:"select",width:40,
-                    editoptions:{ value: '0:Seleccione;M:Mujer;H:Hombre' }, 
-                    formoptions:{ label: "Sexo",elmprefix:"(*)"},
-                    editrules:{custom:true, custom_func:validaSexo}
+                {name: 'par_sexo', index: 'par_sexo', editable: true, edittype: "select", width: 40,
+                    editoptions: {value: '0:Seleccione;M:Mujer;H:Hombre'},
+                    formoptions: {label: "Sexo", elmprefix: "(*)"},
+                    editrules: {custom: true, custom_func: validaSexo}
                 },
-                {name:'par_cargo',index:'par_cargo',width:250,editable:true,
-                    editoptions:{size:25,maxlength:30}, 
-                    formoptions:{ label: "Cargo",elmprefix:"(*)"},
-                    editrules:{required:true} 
+                {name: 'par_cargo', index: 'par_cargo', width: 250, editable: true,
+                    editoptions: {size: 25, maxlength: 30},
+                    formoptions: {label: "Cargo", elmprefix: "(*)"},
+                    editrules: {required: true}
                 },
-                {name:'par_tel',index:'par_tel',width:100,editable:true,
-                    editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}, 
-                    formoptions:{ label: "Teléfono"} 
+                {name: 'par_tel', index: 'par_tel', width: 100, editable: true,
+                    editoptions: {size: 10, maxlength: 9, dataInit: function(el) {
+                            $(el).mask("9999-9999", {placeholder: " "});
+                        }},
+                    formoptions: {label: "Teléfono"}
                 },
-                {name:'par_tipo',index:'par_tipo',editable:true,edittype:"select",width:125,
-                    editoptions:{ value: '0:Seleccione;gg:Grupo Gestor;gl:Gobierno Local' }, 
-                    formoptions:{ label: "Pertenece A:",elmprefix:"(*)"},
-                    editrules:{custom:true, custom_func:validaPerteneceA}
+                {name: 'par_tipo', index: 'par_tipo', editable: true, edittype: "select", width: 125,
+                    editoptions: {value: '0:Seleccione;gg:Grupo Gestor;gl:Gobierno Local'},
+                    formoptions: {label: "Pertenece A:", elmprefix: "(*)"},
+                    editrules: {custom: true, custom_func: validaPerteneceA}
                 }
             ],
             multiselect: false,
             caption: "Personal de Enlace Municipal",
-            rowNum:10,
-            rowList:[10,20,30],
-            loadonce:true,
+            rowNum: 10,
+            rowList: [10, 20, 30],
+            loadonce: true,
             pager: jQuery('#pagerParticipantes'),
             viewrecords: true
-        }).jqGrid('navGrid','#pagerParticipantes',
-        {edit:false,add:false,del:false,search:false,refresh:false,
-            beforeRefresh: function() {
-                tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
-        }
-    ).hideCol('par_id');
-        function despuesAgregarEditar() {
-            tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');
-            return[true,'']; //no error
-        }
-        $("#agregar").button().click(function(){
-            tabla.jqGrid('editGridRow',"new",
-            {closeAfterAdd:true,addCaption: "Agregar participante",width:350,
-                align:'center',reloadAfterSubmit:true,
-                processData: "Cargando...",afterSubmit:despuesAgregarEditar,
-                bottominfo:"Campos marcados con (*) son obligatorios", 
-                onclickSubmit: function(rp_ge, postdata) {
-                    $('#mensaje').dialog('open');
+        }).jqGrid('navGrid', '#pagerParticipantes',
+                {edit: false, add: false, del: false, search: false, refresh: false,
+                    beforeRefresh: function() {
+                        tabla.jqGrid('setGridParam', {datatype: 'json', loadonce: true}).trigger('reloadGrid');
+                    }
                 }
-            });
+        ).hideCol('par_id');
+        function despuesAgregarEditar() {
+            tabla.jqGrid('setGridParam', {datatype: 'json', loadonce: true}).trigger('reloadGrid');
+            return[true, '']; //no error
+        }
+        $("#agregar").button().click(function() {
+            tabla.jqGrid('editGridRow', "new",
+                    {closeAfterAdd: true, addCaption: "Agregar participante", width: 350,
+                        align: 'center', reloadAfterSubmit: true,
+                        processData: "Cargando...", afterSubmit: despuesAgregarEditar,
+                        bottominfo: "Campos marcados con (*) son obligatorios",
+                        onclickSubmit: function(rp_ge, postdata) {
+                            $('#mensaje').dialog('open');
+                        }
+                    });
         });
-        
-        $("#editar").button().click(function(){
-            var gr = tabla.jqGrid('getGridParam','selrow');
-            if( gr != null )
-                tabla.jqGrid('editGridRow',gr,
-            {closeAfterEdit:true,editCaption: "Editar participante ",width:350,
-                align:'center',reloadAfterSubmit:true,
-                processData: "Cargando...",afterSubmit:despuesAgregarEditar,
-                bottominfo:"Campos marcados con (*) son obligatorios", 
-                onclickSubmit: function(rp_ge, postdata) {
-                    $('#mensaje').dialog('open');
-                    ;}
-            });
-            else $('#mensaje2').dialog('open'); 
+
+        $("#editar").button().click(function() {
+            var gr = tabla.jqGrid('getGridParam', 'selrow');
+            if (gr != null)
+                tabla.jqGrid('editGridRow', gr,
+                        {closeAfterEdit: true, editCaption: "Editar participante ", width: 350,
+                            align: 'center', reloadAfterSubmit: true,
+                            processData: "Cargando...", afterSubmit: despuesAgregarEditar,
+                            bottominfo: "Campos marcados con (*) son obligatorios",
+                            onclickSubmit: function(rp_ge, postdata) {
+                                $('#mensaje').dialog('open');
+                                ;
+                            }
+                        });
+            else
+                $('#mensaje2').dialog('open');
         });
-        
-        $("#eliminar").button().click(function(){
-            var grs = tabla.jqGrid('getGridParam','selrow');
-            if( grs != null ) tabla.jqGrid('delGridRow',grs,
-            {msg: "¿Desea Eliminar este participante?",caption:"Eliminando ",
-                align:'center',reloadAfterSubmit:true,
-                processData: "Cargando...",
-                onclickSubmit: function(rp_ge, postdata) {
-                    $('#mensaje').dialog('open');                            
-                }}); 
-            else $('#mensaje2').dialog('open'); 
+
+        $("#eliminar").button().click(function() {
+            var grs = tabla.jqGrid('getGridParam', 'selrow');
+            if (grs != null)
+                tabla.jqGrid('delGridRow', grs,
+                        {msg: "¿Desea Eliminar este participante?", caption: "Eliminando ",
+                            align: 'center', reloadAfterSubmit: true,
+                            processData: "Cargando...",
+                            onclickSubmit: function(rp_ge, postdata) {
+                                $('#mensaje').dialog('open');
+                            }});
+            else
+                $('#mensaje2').dialog('open');
         });
-        
+
         /*  PARA SUBIR EL ARCHIVO  */
         var button = $('#btn_subir'), interval;
         new AjaxUpload('#btn_subir', {
             action: '<?php echo base_url('componente2/comp23_E1/subirArchivo') . '/acuerdo_municipal/' . $acu_mun_id . '/acu_mun_id'; ?>',
-            onSubmit : function(file , ext){
-                if (! (ext && /^(pdf|doc|docx)$/.test(ext))){
+            onSubmit: function(file, ext) {
+                if (!(ext && /^(pdf|doc|docx)$/.test(ext))) {
                     $('#extension').dialog('open');
                     return false;
                 } else {
@@ -180,33 +223,33 @@
                     this.disable();
                 }
             },
-            onComplete: function(file, response,ext){
-                if(response!='error'){
+            onComplete: function(file, response, ext) {
+                if (response != 'error') {
                     $('#vinieta').val('Subido con Exito');
-                    this.enable();			
-                    ext= (response.substring(response.lastIndexOf("."))).toLowerCase();
-                    nombre=response.substring(response.lastIndexOf("/")).toLowerCase().replace('/','');
-                    $('#vinietaD').val('Descargar '+nombre);
+                    this.enable();
+                    ext = (response.substring(response.lastIndexOf("."))).toLowerCase();
+                    nombre = response.substring(response.lastIndexOf("/")).toLowerCase().replace('/', '');
+                    $('#vinietaD').val('Descargar ' + nombre);
                     $('#acu_mun_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO
-                    if (ext=='.pdf'){
+                    if (ext == '.pdf') {
                         $('#btn_descargar').attr({
-                            'href': '<?php echo base_url(); ?>'+response,
-                            'target':'_blank'
+                            'href': '<?php echo base_url(); ?>' + response,
+                            'target': '_blank'
                         });
                     }
-                    else{
+                    else {
                         $('#btn_descargar').attr({
-                            'href': '<?php echo base_url(); ?>'+response,
-                            'target':'_self'
+                            'href': '<?php echo base_url(); ?>' + response,
+                            'target': '_self'
                         });
                     }
-                }else{
+                } else {
                     $('#vinieta').val('El Archivo debe ser menor a 1 MB.');
-                    this.enable();			
-                 
+                    this.enable();
+
                 }
-                 
-            }	
+
+            }
         });
         $('#btn_descargar').click(function() {
             $.get($(this).attr('href'));
@@ -223,7 +266,7 @@
         });
     });
 </script>
-<form method="post">
+<form method="post" id="acuerdoForm">
     <h2 class="h2Titulos">Etapa 4: Acompañamiento y Seguimiento</h2>
     <h2 class="h2Titulos">Producto 1: Acuerdo Municipal</h2>
 
@@ -308,7 +351,7 @@
         <p><img src="<?php echo base_url('resource/imagenes/cancel.png'); ?>" class="imagenError" />Las fechas deben de ir en orden ascendente</p>
     </center>
 </div>
-<div id="guardo" class="mensaje" title="Almacenado">
+<div id="efectivo" class="mensaje" title="Almacenado">
     <center>
         <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
     </center>

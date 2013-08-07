@@ -1027,6 +1027,9 @@ class Reportes extends CI_Controller {
         $this->load->model('etapa3-sub23/portafolio_proyecto');
         $this->load->model('etapa3-sub23/proyeccion_ingreso');
 
+        /* ETAPA 4 */
+        $this->load->model('etapa4-sub23/integracion_instancia');
+
         $consulta = $this->municipio->obtenerMunicipiosTodos();
         $region = '';
         $depto = '';
@@ -1079,7 +1082,7 @@ class Reportes extends CI_Controller {
             /*  AQUI INICIA LA ETAPA 2   */
             $consulta2 = $this->asociatividad->verificarAsociatividadMunicipal($aux->mun_id);
             if (count($consulta2) != 0) {
-                if ($consulta2[0]->resultado <> '0') {
+                if ($consulta2[0]->resultado != '0') {
                     $consulta3 = $this->grupo_gestor->verificarGrupoGestor($aux->mun_id);
                     if (count($consulta3) != 0) {
                         if ($consulta3[0]->resultado == '1') {
@@ -1113,25 +1116,40 @@ class Reportes extends CI_Controller {
                     }
                 }
             }
-            
+
             /*  AQUI INICIA LA ETAPA 3   */
             $consulta2 = $this->portafolio_proyecto->verificarPriorizacionProyecto($aux->mun_id);
-            if ($consulta2[0]->valor <> '0') {
+            if ($consulta2[0]->valor != '0') {
                 $consulta3 = $this->proyeccion_ingreso->verificarProyeccionIngreso($aux->mun_id);
-                if ($consulta3[0]->valor <> '0') {
+                if ($consulta3[0]->valor != '0') {
                     $consulta4 = $this->proyeccion_ingreso->verificarProyeccionIngresoDetalle($aux->mun_id);
-                    if ($consulta4[0]->valor <> '0') {
+                    if ($consulta4[0]->valor != '0') {
                         $consulta5 = $this->portafolio_proyecto->verificarEjecucionProyecto($aux->mun_id);
-                        if ($consulta5[0]->valor <> '0') {
+                        if ($consulta5[0]->valor != '0') {
                             $this->phpexcel->getActiveSheet()->setCellValue("G$i", '1');
                         }
                     }
                 }
             }
-            
             /*  AQUI INICIA LA ETAPA 4   */
-            
-            
+            $consulta2 = $this->acuerdo_municipal->verificarAcuerdoMunicipal2($aux->mun_id, 4);
+            if (count($consulta2) != 0) {
+                if ($consulta2[0]->resultado == '1') {
+                    $consulta3 = $this->integracion_instancia->verificarIntegracionInstancia($aux->mun_id);
+                    if (count($consulta3) != 0) {
+                        if ($consulta3[0]->resultado == '1') {
+                            $consulta4 = $this->integracion_instancia->verificarParticipantesIntegracionInstancia($aux->mun_id);
+                            if ($consulta4[0]->valor != '0') {
+                                $consulta5 = $this->integracion_instancia->verificarCriteriosIntegracionInstancia($aux->mun_id);
+                                if ($consulta5[0]->valor == '4') {
+                                    $this->phpexcel->getActiveSheet()->setCellValue("H$i", '1');
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             $this->phpexcel->getActiveSheet()->getStyle("B$i:H$i")->applyFromArray($estCuerpo);
             $i++;
             $numero++;

@@ -1,9 +1,5 @@
 <script type="text/javascript">        
     $(document).ready(function(){
-        <?php if (isset($guardo)){?>
-                $('#guardo').dialog();
-                <?php }?>
-        /*VARIABLES*/
         var tabla=$("#participantes");
         /*ZONA DE BOTONES*/
         $("#agregar").button().click(function(){
@@ -46,7 +42,16 @@
         });
         
         $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/comp23_E1/guardarAcuerdoMunicipal/' . $acu_mun_id); ?>';
+          $.ajax({
+                    type: "POST",
+                    url: '<?php echo base_url('componente2/comp23_E1/guardarAcuerdoMunicipal/' . $acu_mun_id); ?>',
+                    data: $("#acuerdoMunicipalForm").serialize(), // serializes the form's elements.
+                    success: function(data)
+                    {
+                        $('#efectivo').dialog('open');
+                    }
+                });
+                return false;
         });
         $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url(); ?>';
@@ -355,7 +360,7 @@ foreach ($contrapartidas as $aux) {
 <div id="extension" class="mensaje" title="Error">
     <p>Solo se permiten archivos con la extensión pdf|doc|docx</p>
 </div>
-<div id="guardo" class="mensaje" title="Almacenado">
+<div id="efectivo" class="mensaje" title="Almacenado">
     <center>
         <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
     </center>

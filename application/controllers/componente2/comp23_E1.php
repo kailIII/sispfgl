@@ -605,9 +605,6 @@ class Comp23_E1 extends CI_Controller {
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
 
-        $g = $this->input->get('g');
-        if ($g)
-            $informacion['guardo'] = true;
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $username = $this->tank_auth->get_username();
         $informacion['username'] = $username;
@@ -713,7 +710,6 @@ class Comp23_E1 extends CI_Controller {
         $this->load->model('etapa1-sub23/acuerdo_municipal', 'acuerdoMun');
         $this->acuerdoMun->actualizarAcuMun($acu_mun_id, $acu_mun_fecha, $acu_mun_p1, $acu_mun_p2, $acu_mun_observacion, $acu_mun_ruta_archivo);
 
-        redirect('componente2/comp23_E1/acuerdoMunicipal?g=true');
     }
 
     public function subirArchivo($tabla, $campo_id, $campo) {
