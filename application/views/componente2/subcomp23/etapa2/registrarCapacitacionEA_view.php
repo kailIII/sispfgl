@@ -117,7 +117,7 @@
             beforeRefresh: function() {
                 tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
         },//OPCIONES
-        {closeAfterEdit:true,editCaption: "Editando Otros Asistenciantes ",width:450,
+        {closeAfterEdit:true,editCaption: "Editando Otros Asistentes ",width:450,
             align:'center',reloadAfterSubmit:true,
             processData: "Cargando...",afterSubmit:despuesAgregarEditar,
             bottominfo:"Campos marcados con (*) son obligatorios", 
@@ -125,7 +125,7 @@
                 $('#mensaje').dialog('open');
             }    
         },//EDITAR
-        {closeAfterAdd:true,addCaption: "Agregar Nuevos Asistenciantes ",width:450,
+        {closeAfterAdd:true,addCaption: "Agregar Nuevos Asistentes ",width:450,
             align:'center',reloadAfterSubmit:true,
             processData: "Cargando...",afterSubmit:despuesAgregarEditar,
             bottominfo:"Campos marcados con (*) son obligatorios", 
@@ -347,7 +347,7 @@
         </td>
         <td>
         <fieldset   style="border-color: #2F589F;height:85px;width:225px;position: relative;left: 50px;">
-            <legend align="center"><strong>Cantidad de Asistenciantes</strong></legend>
+            <legend align="center"><strong>Cantidad de Asistentes</strong></legend>
             <table>
                 <tr>
                 <td class="textD">Hombres: </td>

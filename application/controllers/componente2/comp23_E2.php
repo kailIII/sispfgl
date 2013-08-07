@@ -1000,7 +1000,7 @@ class Comp23_E2 extends CI_Controller {
 
         $this->load->model('etapa2-sub23/definicion');
         $this->definicion->actualizarDef($def_id, $def_fecha, $def_ruta_archivo, $def_observacion);
-        redirect('componente2/comp23_E2/definicionTema?g=true');
+        
     }
 
     public function priorizacion() {
@@ -1062,7 +1062,6 @@ class Comp23_E2 extends CI_Controller {
 
         $this->load->model('etapa2-sub23/priorizacion');
         $this->priorizacion->actualizarPri($pri_id, $pri_fecha, $pri_observacion);
-        redirect('componente2/comp23_E2/priorizacion?g=true');
     }
 
     public function cargarProyectosIdentificados($pri_id) {

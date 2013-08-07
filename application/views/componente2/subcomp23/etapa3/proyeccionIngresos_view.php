@@ -1,11 +1,17 @@
 <script type="text/javascript">        
     $(document).ready(function(){
- <?php if (isset($guardo)){?>
-                $('#guardo').dialog();
-                <?php }?>
-        /*ZONA DE BOTONES*/
         $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/comp23_E3/guardarProyeccion') ?>';
+            $.ajax({
+                type: "POST",
+                url: '<?php echo base_url('componente2/comp23_E3/guardarProyeccion') ?>',
+                data: $("#proyeccionIngresosForm").serialize(), // serializes the form's elements.
+                success: function(data)
+                {
+                    $('#efectivo').dialog('open');
+                }
+            });
+            return false;
+            
         });
         $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url(); ?>';
@@ -196,7 +202,7 @@ Donde el 9 significa cualquier número entre el 0 y el 9</p>
     <p><img src="<?php echo base_url('resource/imagenes/cancel.png'); ?>" heigth="25px" width="25px"/>Debe de llenar el año de proyección para continuar
     </p>
 </div>
-<div id="guardo" class="mensaje" title="Almacenado">
+<div id="efectivo" class="mensaje" title="Almacenado">
     <center>
         <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
     </center>

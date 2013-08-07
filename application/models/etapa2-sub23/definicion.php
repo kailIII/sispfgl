@@ -47,6 +47,23 @@ class Definicion extends CI_Model {
         $consulta = $this->db->get($this->tabla);
         return $consulta->result_array();
     }
+    
+    public function verificarDefinicion($mun_id){
+        $consulta = "SELECT CASE WHEN B.def_fecha IS NOT NULL AND B.def_ruta_archivo IS NOT NULL THEN 1 ELSE  0 END resultado
+                     FROM proyecto_pep A, $this->tabla B
+                     WHERE A.pro_pep_id=B.pro_pep_id AND A.mun_id=?";
+        $query = $this->db->query($consulta, array($mun_id));
+        return $query->result();   
+    }
+    
+    public function verificarParticipantesDefinicion($mun_id){
+        $consulta = "SELECT count(D.def_id) valor 
+                     FROM proyecto_pep A, $this->tabla B, participante_definicion D
+                     WHERE A.pro_pep_id=B.pro_pep_id AND D.def_id=B.def_id 
+	                     AND D.par_def_participa IS NOT NULL AND A.mun_id=?";
+        $query = $this->db->query($consulta, array($mun_id));
+        return $query->result();   
+    }
 
 }
 

@@ -48,7 +48,40 @@ class Grupo_gestor extends CI_Model {
         $consulta = $this->db->get($this->tabla);
         return $consulta->result_array();
     }
-
+       public function verificarGrupoGestor($mun_id){
+        $consulta = "SELECT CASE WHEN B.gru_ges_fecha IS NOT NULL AND B.gru_ges_acuerdo IS NOT NULL AND B.gru_ges_acuerdo IS NOT NULL THEN 1 ELSE  0 END resultado
+                     FROM proyecto_pep A, $this->tabla B
+                     WHERE A.pro_pep_id=B.pro_pep_id AND A.mun_id=?";
+        $query = $this->db->query($consulta, array($mun_id));
+        return $query->result();   
+    }
+    
+    public function verificarParticipantesGrupoGestor($mun_id){
+         $consulta = "SELECT count(A.gru_ges_id) valor 
+            FROM $this->tabla A, participante B,proyecto_pep C
+            WHERE  A.gru_ges_id=B.gru_ges_id AND  A.pro_pep_id=C.pro_pep_id
+                 AND C.mun_id=?";
+        $query = $this->db->query($consulta, array($mun_id));
+        return $query->result();   
+    }
+    
+    public function verificarCriteriosGrupoGestor($mun_id){
+         $consulta = "Select count(A.gru_ges_id) valor 
+            FROM $this->tabla A, criterio_grupo_gestor B, proyecto_pep C
+            WHERE  A.gru_ges_id=B.gru_ges_id AND  A.pro_pep_id=C.pro_pep_id
+                 AND B.cri_gru_ges_valor IS NOT NULL AND C.mun_id=?";
+        $query = $this->db->query($consulta, array($mun_id));
+        return $query->result();   
+    }
+    
+    public function verificarCapacipacionGrupoGestor($mun_id){
+        $consulta="SELECT count(D.cap_id) valor 
+                   FROM $this->tabla A, participante B,proyecto_pep C, participante_capacitacion D
+                   WHERE  A.gru_ges_id=B.gru_ges_id AND  A.pro_pep_id=C.pro_pep_id AND D.par_id=B.par_id
+                         AND C.mun_id=?";
+         $query = $this->db->query($consulta, array($mun_id));
+        return $query->result();   
+    }
 }
 
 ?>

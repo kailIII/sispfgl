@@ -1,9 +1,5 @@
 <script type="text/javascript">        
     $(document).ready(function(){
-         <?php if (isset($guardo)){?>
-                $('#guardo').dialog();
-                <?php }?>
-        /*VARIABLES*/
         var tabla=$("#participantes");
         /*ZONA DE BOTONES*/
         $("#agregar").button().click(function(){
@@ -46,7 +42,17 @@
         });
         
         $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/comp23_E1/guardarDeclaracionInteres/' . $dec_int_id); ?>';
+        $.ajax({
+                    type: "POST",
+                    url: '<?php echo base_url('componente2/comp23_E1/guardarDeclaracionInteres/' . $dec_int_id); ?>',
+                    data: $("#declaracionForm").serialize(), // serializes the form's elements.
+                    success: function(data)
+                    {
+                        $('#efectivo').dialog('open');
+                    }
+                });
+                return false;
+            
         });
         $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url(); ?>';
@@ -218,7 +224,7 @@
     });
 </script>
 
-<form method="post">
+<form method="post" id="declaracionForm">
     <h2 class="h2Titulos">Etapa 1: Preparacion de Condiciones Previas</h2>
     <h2 class="h2Titulos">Producto 2: Declaración de Interes de la Población de Participar en el Proceso</h2>
     <br/>
@@ -237,7 +243,7 @@
         </tr>
     </table>
 
-    <p><strong>Lugar : </strong><input id="dec_int_lugar" name="dec_int_lugar" type="text" size="50"></input></p>
+    <p><strong>Lugar : </strong><input id="dec_int_lugar" value="<?php if (isset($dec_int_lugar)) echo$dec_int_lugar; ?>" name="dec_int_lugar" type="text" size="50"></input></p>
     <br/>
     <table id="participantes"></table>
     <div id="pagerParticipantes"></div>
@@ -307,7 +313,7 @@
 <div id="extension" class="mensaje" title="Error">
     <p>Solo se permiten archivos con la extensión pdf|doc|docx</p>
 </div>
-<div id="guardo" class="mensaje" title="Almacenado">
+<div id="efectivo" class="mensaje" title="Almacenado">
     <center>
         <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
     </center>

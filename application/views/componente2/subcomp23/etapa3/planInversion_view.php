@@ -1,11 +1,18 @@
 <script type="text/javascript">        
     $(document).ready(function(){
-         <?php if (isset($guardo)){?>
-                $('#guardo').dialog();
-                <?php }?>
-        /*ZONA DE BOTONES*/
+       
         $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/comp23_E3/guardarPlanInversion') ?>';
+            $.ajax({
+                type: "POST",
+                url: '<?php echo base_url('componente2/comp23_E3/guardarPlanInversion') ?>',
+                data: $("#planInversionForm").serialize(), // serializes the form's elements.
+                success: function(data)
+                {
+                    $('#efectivo').dialog('open');
+                }
+            });
+            return false;
+            
         });
         $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url(); ?>';
@@ -201,7 +208,7 @@ Donde el 9 significa cualquier número entre el 0 y el 9</p>
 <input id="pla_inv_id" name="pla_inv_id" value="<?php echo $pla_inv_id; ?>" style="visibility:hidden"/>
 <input id="pro_pep_id" name="pro_pep_id" value="<?php echo $pro_pep_id; ?>" style="visibility:hidden"/>
 </form>
-<div id="guardo" class="mensaje" title="Almacenado">
+<div id="efectivo" class="mensaje" title="Almacenado">
     <center>
         <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
     </center>

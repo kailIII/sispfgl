@@ -77,6 +77,24 @@ private $tabla = 'portafolio_proyecto';
         $this->db->where('por_pro_id', $por_pro_id);
         $this->db->update($this->tabla, $datos);
     }
+    
+    public function verificarPriorizacionProyecto($mun_id) {
+        $consulta = "SELECT count(A.pro_pep_id) valor
+                      FROM $this->tabla A, proyecto_pep B
+                      WHERE A.pro_pep_id=B.pro_pep_id AND B.mun_id=?";
+        $query = $this->db->query($consulta, array($mun_id));
+        return $query->result();
+    }
+    
+    public function verificarEjecucionProyecto($mun_id){
+        $consulta="SELECT count(A.pro_pep_id) valor
+                      FROM $this->tabla A, proyecto_pep B
+                      WHERE A.pro_pep_id=B.pro_pep_id 
+                      AND A.por_pro_anio1 <> 0 AND A.por_pro_anio2 <> 0 AND A.por_pro_anio3 <> 0 AND A.por_pro_anio4 <> 0
+                      AND B.mun_id=?";
+        $query = $this->db->query($consulta, array($mun_id));
+        return $query->result();
+    }
 
     
 }
