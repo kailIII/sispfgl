@@ -493,9 +493,6 @@ class Comp23_E3 extends CI_Controller {
 
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
-        $g = $this->input->get('g');
-        if ($g)
-            $informacion['guardo'] = true;
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $username = $this->tank_auth->get_username();
         $informacion['username'] = $username;
@@ -690,17 +687,11 @@ class Comp23_E3 extends CI_Controller {
                 $ingreso = null;
             $this->dmonPro->editarIngresos($aux->dmon_pro_id, $ingreso);
         }
-
-
-        redirect(base_url('componente2/comp23_E3/mostrarProyeccionIngresos?g=true'));
     }
 
     public function planInversion() {
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
-        $g = $this->input->get('g');
-        if ($g)
-            $informacion['guardo'] = true;
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $username = $this->tank_auth->get_username();
         $informacion['username'] = $username;
@@ -761,7 +752,6 @@ class Comp23_E3 extends CI_Controller {
         }
 
         $this->plaInv->editarPlanInversion($pla_inv_id, $pla_inv_observacion);
-        redirect('componente2/comp23_E3/planInversion?g=true');
     }
 
     public function estrategiaComunicacion() {

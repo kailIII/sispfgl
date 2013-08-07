@@ -1,11 +1,18 @@
 <script type="text/javascript">        
     $(document).ready(function(){
         /*ZONA DE BOTONES*/
-         <?php if (isset($guardo)){?>
-                $('#guardo').dialog();
-                <?php }?>
         $("#guardar").button().click(function() {
-            this.form.action='<?php echo base_url('componente2/comp23_E2/guardarPriorizacion') . '/' . $pri_id; ?>';
+            $.ajax({
+                type: "POST",
+                url: '<?php echo base_url('componente2/comp23_E2/guardarPriorizacion') . '/' . $pri_id; ?>',
+                data: $("#priorizacionForm").serialize(), // serializes the form's elements.
+                success: function(data)
+                {
+                    $('#efectivo').dialog('open');
+                }
+            });
+            return false;
+            
         });
         $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url('componente2/comp23_E2'); ?>';
@@ -45,7 +52,7 @@
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','Nombre','Nombre Completo','Sexo','Cargo','Teléfono','Participa',''],
+            colNames:['id','DUI','Nombre Completo','Sexo','Cargo','Teléfono','Participa',''],
             colModel:[
                 {name:'par_id',index:'par_id', width:40,editable:false,editoptions:{size:15} },
                 {name:'par_dui',index:'par_dui', width:100,editable:false},
@@ -178,7 +185,7 @@
     });
 </script>
 
-<form method="post" id="definicionForm">
+<form method="post" id="priorizacionForm">
 
     <h2 class="h2Titulos">Etapa 2: Diagnóstico del Municipio</h2>
     <h2 class="h2Titulos">Producto 5: Priorización e implementación de pequeños proyectos de impacto</h2>
@@ -229,7 +236,7 @@
 <div id="mensaje2" class="mensaje" title="Aviso">
     <p>Debe Seleccionar una fila para continuar</p>
 </div>
-<div id="guardo" class="mensaje" title="Almacenado">
+<div id="efectivo" class="mensaje" title="Almacenado">
     <center>
         <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
     </center>

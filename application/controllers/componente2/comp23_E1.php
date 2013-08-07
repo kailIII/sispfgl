@@ -777,8 +777,6 @@ class Comp23_E1 extends CI_Controller {
         /* ACTUALIZANDO DECLARACIÒN DE INTERÈS */
         $this->load->model('etapa1-sub23/declaracion_interes', 'decInt');
         $this->decInt->actualizarDecInt($dec_int_id, $dec_int_fecha, $dec_int_lugar, $dec_int_comentario, $dec_int_ruta_archivo);
-
-        redirect('componente2/comp23_E1/declaracionInteres?g=true');
     }
 
     public function equipoApoyo() {

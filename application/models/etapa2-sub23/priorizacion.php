@@ -47,6 +47,23 @@ class Priorizacion extends CI_Model {
         return $consulta->result_array();
     }
 
+    public function verificarPriorizacion($mun_id) {
+        $consulta = "SELECT CASE WHEN B.pri_fecha IS NOT NULL THEN 1 ELSE  0 END resultado
+                     FROM proyecto_pep A, $this->tabla B
+                     WHERE A.pro_pep_id=B.pro_pep_id AND A.mun_id=?";
+        $query = $this->db->query($consulta, array($mun_id));
+        return $query->result();
+    }
+
+    public function verificarParticipantesPriorizacion($mun_id) {
+        $consulta = "SELECT count(D.pri_id) valor 
+                     FROM proyecto_pep A, $this->tabla B, participante_priorizacion D
+                     WHERE A.pro_pep_id=B.pro_pep_id AND D.pri_id=B.pri_id 
+	                     AND D.par_pri_participa IS NOT NULL AND A.mun_id=?";
+        $query = $this->db->query($consulta, array($mun_id));
+        return $query->result();
+    }
+
 }
 
 ?>

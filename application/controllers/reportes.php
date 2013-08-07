@@ -1012,9 +1012,20 @@ class Reportes extends CI_Controller {
          */
 
         $this->load->model('pais/municipio');
+        /* ETAPA 1 */
         $this->load->model('etapa1-sub23/acuerdo_municipal');
         $this->load->model('etapa1-sub23/declaracion_interes');
         $this->load->model('etapa1-sub23/grupo_apoyo');
+
+        /* ETAPA 2 */
+        $this->load->model('etapa2-sub23/asociatividad');
+        $this->load->model('etapa2-sub23/grupo_gestor');
+        $this->load->model('etapa2-sub23/definicion');
+        $this->load->model('etapa2-sub23/priorizacion');
+
+        /* ETAPA 3 */
+        $this->load->model('etapa3-sub23/portafolio_proyecto');
+        $this->load->model('etapa3-sub23/proyeccion_ingreso');
 
         $consulta = $this->municipio->obtenerMunicipiosTodos();
         $region = '';
@@ -1042,10 +1053,10 @@ class Reportes extends CI_Controller {
             $this->phpexcel->getActiveSheet()->setCellValue("C$i", $aux->dep_nombre);
             $this->phpexcel->getActiveSheet()->setCellValue("D$i", $aux->mun_nombre);
             /*  AQUI INICIA LA ETAPA 1   */
-            $consulta2 = $this->acuerdo_municipal->verificarAcuerdoMunicipal($aux->mun_id);
+            $consulta2 = $this->acuerdo_municipal->verificarAcuerdoMunicipal($aux->mun_id, 1);
             if (count($consulta2) != 0) {
                 if ($consulta2[0]->resultado == '1') {
-                    $consulta3 = $this->acuerdo_municipal->verificarCriteriosAcuerdoMunicipal($aux->mun_id);
+                    $consulta3 = $this->acuerdo_municipal->verificarCriteriosAcuerdoMunicipal($aux->mun_id, 1);
                     if ($consulta3[0]->valor == '4') {
                         $consulta4 = $this->declaracion_interes->verificarDeclaracionInteres($aux->mun_id);
                         if (count($consulta4) != 0) {
@@ -1053,7 +1064,7 @@ class Reportes extends CI_Controller {
                                 $consulta5 = $this->grupo_apoyo->verificarGrupoApoyo($aux->mun_id);
                                 if (count($consulta5) != 0) {
                                     if ($consulta5[0]->resultado == '1') {
-                                        $consulta6 = $this->acuerdo_municipal->verificarCriteriosAcuerdoMunicipal($aux->mun_id);
+                                        $consulta6 = $this->grupo_apoyo->verificarParticipantesGrupoApoyo($aux->mun_id);
                                         if ($consulta6[0]->valor != '0') {
                                             $this->phpexcel->getActiveSheet()->setCellValue("E$i", '1');
                                         }
@@ -1064,6 +1075,63 @@ class Reportes extends CI_Controller {
                     }
                 }
             }
+
+            /*  AQUI INICIA LA ETAPA 2   */
+            $consulta2 = $this->asociatividad->verificarAsociatividadMunicipal($aux->mun_id);
+            if (count($consulta2) != 0) {
+                if ($consulta2[0]->resultado <> '0') {
+                    $consulta3 = $this->grupo_gestor->verificarGrupoGestor($aux->mun_id);
+                    if (count($consulta3) != 0) {
+                        if ($consulta3[0]->resultado == '1') {
+                            $consulta4 = $this->grupo_gestor->verificarParticipantesGrupoGestor($aux->mun_id);
+                            if ($consulta4[0]->valor != '0') {
+                                $consulta5 = $this->grupo_gestor->verificarCriteriosGrupoGestor($aux->mun_id);
+                                if ($consulta5[0]->valor != '0') {
+                                    $consulta6 = $this->grupo_gestor->verificarCapacipacionGrupoGestor($aux->mun_id);
+                                    if ($consulta6[0]->valor != '0') {
+                                        $consulta7 = $this->definicion->verificarDefinicion($aux->mun_id);
+                                        if (count($consulta7) != 0) {
+                                            if ($consulta7[0]->resultado == '1') {
+                                                $consulta8 = $this->definicion->verificarParticipantesDefinicion($aux->mun_id);
+                                                if ($consulta8[0]->valor != '0') {
+                                                    $consulta9 = $this->priorizacion->verificarPriorizacion($aux->mun_id);
+                                                    if (count($consulta9) != 0) {
+                                                        if ($consulta9[0]->resultado == '1') {
+                                                            $consulta10 = $this->priorizacion->verificarParticipantesPriorizacion($aux->mun_id);
+                                                            if ($consulta10[0]->valor != '0') {
+                                                                $this->phpexcel->getActiveSheet()->setCellValue("F$i", '1');
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            /*  AQUI INICIA LA ETAPA 3   */
+            $consulta2 = $this->portafolio_proyecto->verificarPriorizacionProyecto($aux->mun_id);
+            if ($consulta2[0]->valor <> '0') {
+                $consulta3 = $this->proyeccion_ingreso->verificarProyeccionIngreso($aux->mun_id);
+                if ($consulta3[0]->valor <> '0') {
+                    $consulta4 = $this->proyeccion_ingreso->verificarProyeccionIngresoDetalle($aux->mun_id);
+                    if ($consulta4[0]->valor <> '0') {
+                        $consulta5 = $this->portafolio_proyecto->verificarEjecucionProyecto($aux->mun_id);
+                        if ($consulta5[0]->valor <> '0') {
+                            $this->phpexcel->getActiveSheet()->setCellValue("G$i", '1');
+                        }
+                    }
+                }
+            }
+            
+            /*  AQUI INICIA LA ETAPA 4   */
+            
+            
             $this->phpexcel->getActiveSheet()->getStyle("B$i:H$i")->applyFromArray($estCuerpo);
             $i++;
             $numero++;

@@ -22,11 +22,11 @@ class Auth extends CI_Controller {
     function index() {
         if ($message = $this->session->flashdata('message')) {
             $informacion['titulo'] = 'SIS-PFGL';
-            
-            if ($this->tank_auth->get_user_id() <> 0){
-            $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
-            $informacion['user_id'] = $this->tank_auth->get_user_id();
-            $informacion['username'] = $this->tank_auth->get_username();
+
+            if ($this->tank_auth->get_user_id() <> 0) {
+                $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+                $informacion['user_id'] = $this->tank_auth->get_user_id();
+                $informacion['username'] = $this->tank_auth->get_username();
             }
             $this->load->view('plantilla/header', $informacion);
             $this->load->view('plantilla/menu', $informacion);
@@ -477,7 +477,7 @@ class Auth extends CI_Controller {
             'img_height' => $this->config->item('captcha_height', 'tank_auth'),
             'show_grid' => $this->config->item('captcha_grid', 'tank_auth'),
             'expiration' => $this->config->item('captcha_expire', 'tank_auth'),
-        ));
+                ));
 
         // Save captcha params in session
         $this->session->set_flashdata(array(

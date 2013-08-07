@@ -62,7 +62,7 @@ class Grupo_apoyo extends CI_Model {
          $consulta = "SELECT count(A.gru_apo_id) valor 
             FROM $this->tabla A, participante B,proyecto_pep C
             WHERE  A.gru_apo_id=B.gru_apo_id AND  A.pro_pep_id=C.pro_pep_id
-                 AND C.mun_id==?";
+                 AND C.mun_id=?";
         $query = $this->db->query($consulta, array($mun_id));
         return $query->result();   
     }
