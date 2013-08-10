@@ -49,9 +49,9 @@ $active_group = 'default';
 $active_record = TRUE;
 
 $db['default']['hostname'] = 'localhost';
-$db['default']['username'] = 'postgres';
+$db['default']['username'] = 'sispfgl';
 $db['default']['password'] = 'sispfgl';
-$db['default']['database'] = 'smpfgl';
+$db['default']['database'] = 'sispfgl';
 $db['default']['dbdriver'] = 'postgre';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;

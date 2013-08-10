@@ -14,7 +14,6 @@
                     <li><a>Mapa de Pobreza</a></li>
                 </ul>
             </li>
-            <li><a>Reportes</a></li>
             <li><a>Contáctenos</a></li>
             <li><a href="http://sis-pfgl.gob.sv/limesurvey">Encuestas</a></li>
             <li><a>Transparencia</a>

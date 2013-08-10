@@ -37,6 +37,61 @@ class Auth extends CI_Controller {
             redirect('/auth/login/');
     }
 
+    /* MUESTRA LOS USUARIOS REGISTRADO CON SU DETERMINADO ROL */
+
+    function muestraUsuario() {
+        $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
+            Planeación Estratégica Participativa';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('auth/muestra_usuarios_view');
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function cargarUsuariosJson() {
+        $this->load->model('participante');
+        $this->load->model('institucion');
+        $participantes = $this->participante->obtenerParticipantes($campo, $id_campo);
+        $numfilas = count($participantes);
+
+        $i = 0;
+        foreach ($participantes as $aux) {
+            if (isset($aux->ins_id))
+                $nombreInstitucion = $this->institucion->obtenerNombreInstitucion($aux->ins_id);
+            else
+                $nombreInstitucion = ' ';
+            $rows[$i]['id'] = $aux->par_id;
+            $rows[$i]['cell'] = array($aux->par_id,
+                $aux->par_nombre,
+                $aux->par_apellido,
+                strtoupper($aux->par_sexo),
+                $nombreInstitucion[0]['ins_nombre'],
+                $aux->par_cargo
+            );
+            $i++;
+        }
+
+        if ($numfilas != 0) {
+            array_multisort($rows, SORT_ASC);
+        } else {
+            $rows = array();
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+
     /**
      * Login user on the site
      *
@@ -477,7 +532,7 @@ class Auth extends CI_Controller {
             'img_height' => $this->config->item('captcha_height', 'tank_auth'),
             'show_grid' => $this->config->item('captcha_grid', 'tank_auth'),
             'expiration' => $this->config->item('captcha_expire', 'tank_auth'),
-                ));
+        ));
 
         // Save captcha params in session
         $this->session->set_flashdata(array(
