@@ -27,8 +27,11 @@ class Reportes extends CI_Controller {
         $rol = $this->usuarios->obtenerCodigoRol($this->tank_auth->get_username());
         if (strcmp(trim($rol[0]->rol_codigo), 'apg') == 0)
             $this->load->view('reporte/index_pep_view');
-        else
-            $this->load->view('reporte/index_view');
+        else {
+            $this->load->model('pais/departamento');
+            $informacion['deptos'] = $this->departamento->obtenerDepartamentos();
+            $this->load->view('reporte/index_view', $informacion);
+        }
         $this->load->view('plantilla/footer', $informacion);
     }
 
@@ -1184,6 +1187,136 @@ class Reportes extends CI_Controller {
          * SALIDA DEL DOCUMENTO
          */
         $filename = "avancePep_" . date("d-m-y") . ".xls"; //GUARDANDO CON ESTE NOMBRE
+        header('Content-Type: application/vnd.ms-excel');
+        header("Content-Disposition: attachment;filename=$filename");
+        header('Cache-Control: max-age=0');
+        $objWriter = PHPExcel_IOFactory::createWriter($this->phpexcel, 'Excel5');
+        $objWriter->save('php://output');
+    }
+
+    public function mejoraPerfil() {
+        $mun_id = $this->input->post("mun_id");
+        $this->load->model('pais/municipio');
+        $muniDatos = $this->municipio->obtenerNomMunDepAlcalde($mun_id);
+        $this->phpexcel->setActiveSheetIndex(0);
+        $this->phpexcel->getActiveSheet()->setTitle('Seguimiento');
+        $estCuerpo = array(
+            'font' => array('size' => 8, 'name' => 'Arial'),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_JUSTIFY,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            )
+        );
+        $estCuerpoBorde = array(
+            'font' => array('size' => 8, 'name' => 'Arial'),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_JUSTIFY,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        $this->phpexcel->getActiveSheet()->getColumnDimension('A')->setWidth(1);
+        $this->phpexcel->getActiveSheet()->getColumnDimension('D')->setWidth(1);
+        $this->phpexcel->getActiveSheet()->getRowDimension('13')->setRowHeight(50);
+        $this->phpexcel->getActiveSheet()->getRowDimension('23')->setRowHeight(50);
+         $this->phpexcel->getActiveSheet()->getRowDimension('25')->setRowHeight(25);
+        // Obtenemos y traducimos el nombre del día
+        $dia = date("l");
+        if ($dia == "Monday")
+            $dia = "Lunes";
+        if ($dia == "Tuesday")
+            $dia = "Martes";
+        if ($dia == "Wednesday")
+            $dia = "Miércoles";
+        if ($dia == "Thursday")
+            $dia = "Jueves";
+        if ($dia == "Friday")
+            $dia = "Viernes";
+        if ($dia == "Saturday")
+            $dia = "Sabado";
+        if ($dia == "Sunday")
+            $dia = "Domingo";
+
+// Obtenemos el número del día
+        $dia2 = date("d");
+
+// Obtenemos y traducimos el nombre del mes
+        $mes = date("F");
+        if ($mes == "January")
+            $mes = "Enero";
+        if ($mes == "February")
+            $mes = "Febrero";
+        if ($mes == "March")
+            $mes = "Marzo";
+        if ($mes == "April")
+            $mes = "Abril";
+        if ($mes == "May")
+            $mes = "Mayo";
+        if ($mes == "June")
+            $mes = "Junio";
+        if ($mes == "July")
+            $mes = "Julio";
+        if ($mes == "August")
+            $mes = "Agosto";
+        if ($mes == "September")
+            $mes = "Setiembre";
+        if ($mes == "October")
+            $mes = "Octubre";
+        if ($mes == "November")
+            $mes = "Noviembre";
+        if ($mes == "December")
+            $mes = "Diciembre";
+
+// Obtenemos el año
+        $anio = date("Y");
+
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('G4', "San Salvador, $dia $dia2 de $mes de $anio");
+        $this->phpexcel->getActiveSheet()->mergeCells('G4:I4');
+        $this->phpexcel->getActiveSheet()->getStyle('G4:I4')->applyFromArray($estCuerpo);
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('E7', "Sr(a). " . strtoupper($muniDatos[0]->alcalde));
+        $this->phpexcel->getActiveSheet()->mergeCells('E7:G7');
+        $this->phpexcel->getActiveSheet()->getStyle('E7:G7')->applyFromArray($estCuerpo);
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('E8', "ALCALDE MUNICIPAL DEL " . strtoupper($muniDatos[0]->muni));
+        $this->phpexcel->getActiveSheet()->mergeCells('E8:G8');
+        $this->phpexcel->getActiveSheet()->getStyle('E8:G8')->applyFromArray($estCuerpo);
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('E9', "DEPARTAMENTO DE " . strtoupper($muniDatos[0]->depto));
+        $this->phpexcel->getActiveSheet()->mergeCells('E9:G9');
+        $this->phpexcel->getActiveSheet()->getStyle('E9:G9')->applyFromArray($estCuerpo);
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('E11', "Respetable Sr(a). " . strtoupper($muniDatos[0]->alcalde));
+        $this->phpexcel->getActiveSheet()->mergeCells('E11:F11');
+        $this->phpexcel->getActiveSheet()->getStyle('E11:F11')->applyFromArray($estCuerpo);
+
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('E13', "Con el objeto de ayudar a cerrar el proceso de elaboración de perfil de proyecto para la ejecución del sub componente 2.5 del PFGL, se le envía un diagnóstico de lo encontrado en la información de gestión de riesgos de desastres enviada desde la municipalidad de " . $muniDatos[0]->muni . ", para efectos de ayudarle a concluir con el diseño del perfil de proyecto solicitado.");
+        $this->phpexcel->getActiveSheet()->mergeCells('E13:I13');
+        $this->phpexcel->getActiveSheet()->getStyle('E13:I13')->applyFromArray($estCuerpo);
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('E23', "Para poderle ayudar a utilizar parte del fondo para la compra de un vehículo de transporte para casos de emergencia, tiene que presentarnos documentación que avale los rubros elegibles que le preceden " . " y haber adjudicado la consultoría para el desarrollo del Plan Municipal de Gestión de Riesgo, de lo contrario no podremos autorizarle pasar a ese nivel.");
+        $this->phpexcel->getActiveSheet()->mergeCells('E23:I23');
+        $this->phpexcel->getActiveSheet()->getStyle('E23:I23')->applyFromArray($estCuerpo);
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('E25', "En espera de poder recibir su perfil de proyecto acorde a lo que es viable,  para efectos de agilizar el trámite correspondiente.");
+        $this->phpexcel->getActiveSheet()->mergeCells('E25:I25');
+        $this->phpexcel->getActiveSheet()->getStyle('E25:I25')->applyFromArray($estCuerpo);
+           $this->phpexcel->getActiveSheet()
+                ->setCellValue('E27', "Muy Atentamente,");
+        $this->phpexcel->getActiveSheet()->mergeCells('E27:I27');
+        $this->phpexcel->getActiveSheet()->getStyle('E27:I27')->applyFromArray($estCuerpo);
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('G31', "Desarrollo Local y Gestión de Riesgo");
+        $this->phpexcel->getActiveSheet()->mergeCells('G31:I31');
+        $this->phpexcel->getActiveSheet()->getStyle('G31:I31')->applyFromArray($estCuerpo);
+        /*
+         * SALIDA DEL DOCUMENTO
+         */
+        $filename = "mejoraPerfil_" . date("d-m-y") . ".xls"; //GUARDANDO CON ESTE NOMBRE
         header('Content-Type: application/vnd.ms-excel');
         header("Content-Disposition: attachment;filename=$filename");
         header('Cache-Control: max-age=0');

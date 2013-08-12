@@ -30,6 +30,15 @@ class Municipio extends CI_Model {
         return $query->result();
     }
 
+    function obtenerNomMunDepAlcalde($mun_id) {
+        $this->db->select('departamento.dep_nombre depto,municipio.mun_nombre muni, municipio.mun_nombre_alcalde alcalde');
+        $this->db->from($this->tabla);
+        $this->db->join('departamento', 'departamento.dep_id = municipio.dep_id');
+        $this->db->where('municipio.mun_id', $mun_id);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
     public function obtenerMunicipiosSinConsultora($dep_id) {
         $query = "SELECT municipio.mun_id, 
                          municipio.mun_nombre

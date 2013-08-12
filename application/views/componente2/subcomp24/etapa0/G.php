@@ -101,12 +101,26 @@ $(document).ready(function(){
                 <select id='per_mun_tipologia'>
                     <option value='0'>--Seleccione--</option>
                     <?php
-                    for($i=1;$i<=5;$i++){
+                    for($i=1;$i<5;$i++){
                         echo "<option value='$i'";
                         if(set_value('per_mun_tipologia')==$i){
                             echo ' selected="selected" ';
                         }
-                        echo ">$i</option>\n";
+                        switch ($i){
+                            case 1:
+                                echo ">$i-Pobreza Extrema Servera";
+                                break;
+                             case 2:
+                                echo ">$i-Pobreza Extrema Alta";
+                                break;
+                             case 3:
+                                echo ">$i-Pobreza Extrema Moderada";
+                                break;
+                             case 4:
+                                echo ">$i-Pobreza Extrema Baja";
+                                break;
+                        }
+                        echo "\n";
                     }
                      ?>
                 </select>
