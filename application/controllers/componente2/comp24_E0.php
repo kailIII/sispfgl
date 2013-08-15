@@ -220,7 +220,7 @@ class Comp24_E0 extends CI_Controller {
             redirect('/auth');                // logged in
 
         $config = array(
-            array('field' => 'selMun', 'label' => 'Municipio', 'rules' => 'trim|required|xss_clean|is_natural_no_zero'),
+            array('field' => 'mun_id', 'label' => 'Municipio', 'rules' => 'trim|required|xss_clean|is_natural_no_zero'),
             array('field' => 'f_emision', 'label' => 'Emision', 'rules' => 'trim|required|xss_clean'),
             array('field' => 'f_recepcion', 'label' => 'Recepcion', 'rules' => 'required|xss_clean')
         );
@@ -274,7 +274,7 @@ class Comp24_E0 extends CI_Controller {
             $_POST['acu_mun_fecha_recepcion'] = $this->librerias->parse_output('date', $_POST['acu_mun_fecha_recepcion']);
         }
 
-        if (isset($_POST['mun_id']) && $_POST['mun_id'] > 0) {
+        if (isset($_POST['mun_id']) && $_POST['mun_id'] > '0') {
             $_POST['depto'] = $this->comp24->getDepto($_POST['mun_id'])->dep_nombre;
             $_POST['muni'] = $this->comp24->get_by_Id('municipio', 'mun_id', $_POST['mun_id'])->mun_nombre;
         }
@@ -282,7 +282,7 @@ class Comp24_E0 extends CI_Controller {
         $config = array(
             array('field' => 'depto', 'label' => 'Municipio', 'rules' => 'trim|xss_clean'),
             array('field' => 'muni', 'label' => 'Municipio', 'rules' => 'trim|xss_clean'),
-            array('field' => 'mun_id', 'label' => 'Municipio', 'rules' => 'trim|required|xss_clean|is_natural_no_zero'),
+            array('field' => 'mun_id', 'label' => 'Municipio', 'rules' => 'trim|xss_clean'),
             array('field' => 'acu_mun_fecha_conformacion', 'label' => 'Fecha', 'rules' => 'trim|required|xss_clean'),
             array('field' => 'acu_mun_fecha_acuerdo', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
             array('field' => 'acu_mun_fecha_recepcion', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
@@ -304,8 +304,8 @@ class Comp24_E0 extends CI_Controller {
                 $prefix . 'observaciones' => $this->form_validation->set_value('acu_mun_observaciones')
             );
 
-            if ($id > 0) {
-                if (!is_null($data = $this->comp24->update_row($tabla, $campo, $id, $datos))) {
+            if ($id > '0') {
+                if (!is_null($data = $this->comp24->update_row($tabla, $campo, (int) $id, $datos))) {
                     $this->session->set_flashdata('message', 'Ok');
                     $t = explode('/' . $id, current_url());
                     redirect($t[0]);
@@ -323,7 +323,7 @@ class Comp24_E0 extends CI_Controller {
                         $data['errors'][$k] = $this->lang->line($v);
                 }
             }
-        } else if (($mun = $this->input->post('mun_id')) != 0 && $id == false) {
+        } else if (($mun = $this->input->post('mun_id')) != '0' && $id == false) {
             //
             redirect(current_url() . '/' . $this->setNewId($tabla, $campo, array('mun_id' => $mun)));
         }
