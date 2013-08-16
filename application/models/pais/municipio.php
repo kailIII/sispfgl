@@ -232,6 +232,14 @@ ORDER BY A.reg_nombre,B.dep_nombre,C.mun_nombre";
         return $consulta->result();
     }
 
+    public function obtenerMunicipiosClasificacion($clasificacion) {
+        $sql = "SELECT mun_id
+            FROM municipio
+            WHERE mun_clasificacion_municipio=?";
+        $consulta = $this->db->query($sql, array($clasificacion));
+        return $consulta->result();
+    }
+
 }
 
 ?>
