@@ -15,6 +15,11 @@ class Region extends CI_Model {
         $consulta = $this->db->get($this->tabla);
         return $consulta->result();
     }
+     public function obtenerRegionesNombre() {
+        $this->db->order_by('reg_nombre', 'asc');
+        $consulta = $this->db->get($this->tabla);
+        return $consulta->result();
+    }
 
     public function obtenerRegion($reg_id) {
         $this->db->where('reg_id', $reg_id);

@@ -360,6 +360,7 @@ class Comp22 extends CI_Controller {
         $tabla = $this->dbPrefix . 'participantes';
         $campo = 'par_id';
         $prefix = 'par_';
+
         $view = array(
             'titulo' => 'Componente 2.2: Capacitaciones',
             'user_uid' => $this->tank_auth->get_user_id(),
@@ -374,31 +375,39 @@ class Comp22 extends CI_Controller {
         if ($id == 'new' && $mun_id > 0) {
             $this->comp24->insert_row($tabla, array('par_ins_municipio' => $mun_id, 'mun_id' => $mun_id));
             $id = $this->comp24->last_id($tabla, $campo);
+            echo current_url();
+            //$t = explode('/' . $id, current_url());
+            //redirect($t[0]);
+             $view = array(
+                'titulo' => 'Componente 2.2: Capacitaciones',
+                'user_uid' => $this->tank_auth->get_user_id(),
+                'username' => $this->tank_auth->get_username(),
+                'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
+                'departamentos' => $this->comp24->getDepartamentos(),
+                'tabla_id' => $id,
+                'prefix' => $prefix
+            );
+            //$_POST['mun_id'] = $mun_id;
         }
 
         if ($id > 0 && !isset($_POST['mod']) | $mun_id > 0) {
-            //die('true');
-            if (!($tmp = $this->comp24->get_by_id($tabla, $campo, $id))) {
-                die('id invalido');
-            }
-            //print_r($tmp);
-            //die('true');
+            $tmp = $this->comp24->get_by_id($tabla, $campo, $id);
             $_POST = get_object_vars($tmp);
-            //print_r($_POST);die();    //test
             $_POST[$prefix . 'birthday'] = $this->librerias->parse_output('date', $_POST[$prefix . 'birthday']);
         }
         //
         //Cargamos el municipio y departamento
         if (isset($_POST['mun_id']) && $_POST['mun_id'] > 0) {
             $_POST['depto'] = $this->comp24->getDepto($_POST['mun_id'])->dep_nombre;
-            $_POST['par_ins_municipio'] = $this->comp24->get_by_Id('municipio', 'mun_id', $_POST['mun_id'])->mun_nombre;
+            $_POST['muni'] = $this->comp24->get_by_Id('municipio', 'mun_id', $_POST['mun_id'])->mun_nombre;
+            $_POST['par_ins_municipio'] = $_POST['mun_id']; //$this->comp24->get_by_Id('municipio', 'mun_id', $_POST['mun_id'])->mun_nombre;
         }
 
         $this->form_validation->set_message('required', '*');
         $this->form_validation->set_message('numeric', '*');
 
         $config = array(
-            array('field' => 'depto', 'label' => 'Municipio', 'rules' => 'trim|xss_clean'),
+            array('field' => 'depto', 'label' => 'Departamento', 'rules' => 'trim|xss_clean'),
             array('field' => 'muni', 'label' => 'Municipio', 'rules' => 'trim|xss_clean'),
             array('field' => 'mod', 'label' => 'Mod', 'rules' => 'required|xss_clean'),
             array('field' => 'mun_id', 'label' => 'Municipio', 'rules' => 'trim|xss_clean'),
@@ -431,7 +440,7 @@ class Comp22 extends CI_Controller {
         );
 
         //
-        $view['capacitaciones'] = $this->getDataDropbox('capacitaciones', 'cap_id', 'cap_area', true);
+        $view['capacitaciones'] = $this->getDataDropbox('capacitaciones', 'cap_id', 'cap_proceso', true);
 
         $this->form_validation->set_rules($config);
 
@@ -472,6 +481,16 @@ class Comp22 extends CI_Controller {
                 $this->session->set_flashdata('message', 'Ok');
                 $t = explode('/' . $id, current_url());
                 redirect($t[0]);
+                $view = array(
+                    'titulo' => 'Componente 2.2: Capacitaciones',
+                    'user_uid' => $this->tank_auth->get_user_id(),
+                    'username' => $this->tank_auth->get_username(),
+                    'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
+                    'departamentos' => $this->comp24->getDepartamentos(),
+                    'tabla_id' => $id,
+                    'prefix' => $prefix,
+                    'paso2' => true
+                );
             } else {
                 $errors = $this->tank_auth->get_error_message();
                 foreach ($errors as $k => $v)

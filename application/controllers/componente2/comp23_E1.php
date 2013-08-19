@@ -16,6 +16,8 @@ class Comp23_E1 extends CI_Controller {
     }
 
     public function index() {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
@@ -41,7 +43,8 @@ class Comp23_E1 extends CI_Controller {
     }
 
     public function registrarReunion() {
-
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
@@ -72,6 +75,8 @@ class Comp23_E1 extends CI_Controller {
     }
 
     public function editarReunion($reu_id) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
@@ -105,6 +110,8 @@ class Comp23_E1 extends CI_Controller {
     }
 
     public function guardarReunion() {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         /* VARIABLES POST */
         $reu_fecha = $this->input->post("reu_fecha");
         $reu_duracion_horas = $this->input->post("reu_duracion_horas");
@@ -120,7 +127,8 @@ class Comp23_E1 extends CI_Controller {
     }
 
     public function muestraReuniones() {
-
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
 
@@ -141,7 +149,8 @@ class Comp23_E1 extends CI_Controller {
     }
 
     public function muestraReunion($reu_id) {
-
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
 
@@ -601,7 +610,8 @@ class Comp23_E1 extends CI_Controller {
     }
 
     public function acuerdoMunicipal() {
-
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
 
@@ -709,7 +719,6 @@ class Comp23_E1 extends CI_Controller {
         /* ACTUALIZANDO ACUERDO MUNICIPAL */
         $this->load->model('etapa1-sub23/acuerdo_municipal', 'acuerdoMun');
         $this->acuerdoMun->actualizarAcuMun($acu_mun_id, $acu_mun_fecha, $acu_mun_p1, $acu_mun_p2, $acu_mun_observacion, $acu_mun_ruta_archivo);
-
     }
 
     public function subirArchivo($tabla, $campo_id, $campo) {
@@ -717,11 +726,11 @@ class Comp23_E1 extends CI_Controller {
     }
 
     public function declaracionInteres() {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
-        $g = $this->input->get('g');
-        if ($g)
-            $informacion['guardo'] = true;
+
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $username = $this->tank_auth->get_username();
         $informacion['username'] = $username;
@@ -776,6 +785,8 @@ class Comp23_E1 extends CI_Controller {
     }
 
     public function equipoApoyo() {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
         $g = $this->input->get('g');
@@ -823,6 +834,8 @@ class Comp23_E1 extends CI_Controller {
     }
 
     public function guardarEquipoApoyo($gru_apo_id) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         /* VARIABLES POST */
         $gru_apo_fecha = $this->input->post('gru_apo_fecha');
         if ($gru_apo_fecha == '')
@@ -847,6 +860,8 @@ class Comp23_E1 extends CI_Controller {
     }
 
     public function capacitacionEquipoApoyo() {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
         $username = $this->tank_auth->get_username();
@@ -866,7 +881,8 @@ class Comp23_E1 extends CI_Controller {
     }
 
     public function registrarCapacitacion() {
-
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
@@ -904,6 +920,8 @@ class Comp23_E1 extends CI_Controller {
     }
 
     public function editarCapacitacion($cap_id) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
@@ -1016,6 +1034,8 @@ class Comp23_E1 extends CI_Controller {
     }
 
     public function informePreliminar() {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
@@ -1036,6 +1056,8 @@ class Comp23_E1 extends CI_Controller {
     }
 
     public function cargarInformePreliminar() {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
         $mun_id = $this->input->post("selMun");
@@ -1160,7 +1182,8 @@ class Comp23_E1 extends CI_Controller {
     }
 
     public function inventarioInformacion() {
-
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         $informacion['titulo'] = 'Componente 2.3 Pautas Metodológicas para la 
             Planeación Estratégica Participativa';
         $g = $this->input->get('g');
@@ -1188,7 +1211,7 @@ class Comp23_E1 extends CI_Controller {
             $resultado = $this->invInf->obtenerInvInf($pro_pep_id);
             $this->load->model('proyectoPep/proyecto_pep', 'proPep');
             $this->proPep->actualizarIndices('inv_inf_id', $resultado[0]['inv_inf_id'], $pro_pep_id);
-        }else
+        } else
             $resultado = $this->invInf->obtenerInvInf($pro_pep_id);
         $informacion['inv_inf_id'] = $resultado[0]['inv_inf_id'];
         $informacion['inv_inf_observacion'] = $resultado[0]['inv_inf_observacion'];
@@ -1201,6 +1224,8 @@ class Comp23_E1 extends CI_Controller {
     }
 
     public function guardarInventarioInformacion($inv_inf_id) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         /* VARIABLES POST */
         $inv_inf_observacion = $this->input->post("inv_inf_observacion");
 

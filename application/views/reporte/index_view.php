@@ -22,7 +22,7 @@
         });
         $('#dep_id').change(function() {
             $('#mun_id').children().remove();
-            $.getJSON('<?php echo base_url('componente2/proyectoPep/cargarMunicipios') ?>?dep_id=' + $('#dep_id').val(),
+            $.getJSON('<?php echo base_url('componente2/proyectoPep/cargarMunicipiosRep') ?>?dep_id=' + $('#dep_id').val(),
                     function(data) {
                         var i = 0;
                         $.each(data, function(key, val) {

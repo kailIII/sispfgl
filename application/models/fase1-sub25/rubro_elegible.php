@@ -57,6 +57,14 @@ class Rubro_elegible extends CI_Model {
         $query = $this->db->get();
         return $query->result();
     }
+    public function obtenerRubrosReporte($mun_id){
+        $sql="SELECT C.nom_rub_nombre, rub_ele_observacion, rub_ele_seleccionado 
+FROM rubro A, rubro_elegible B, nombre_rubro C
+WHERE A.rub_id=B.rub_id AND C.nom_rub_id=B.nom_rub_id
+	AND A.mun_id=?";
+         $consulta = $this->db->query($sql, array($mun_id));
+        return $consulta->result();
+    }
 
 }
 
