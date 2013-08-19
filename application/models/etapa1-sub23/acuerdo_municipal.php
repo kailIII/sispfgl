@@ -82,6 +82,15 @@ class Acuerdo_municipal extends CI_Model {
         $query = $this->db->query($consulta, array($mun_id,$etapa));
         return $query->result();   
     }
+    
+    public function verificarAcuerdoMunicipal2($mun_id,$etapa){
+        $consulta = "SELECT CASE WHEN B.acu_mun_p1 IS NOT NULL AND B.acu_mun_fecha_borrador IS NOT NULL AND B.acu_mun_fecha_observacion IS NOT NULL AND B.acu_mun_fecha_aceptacion IS NOT NULL
+                then 1 ELSE  0 END resultado
+            FROM proyecto_pep A, $this->tabla B
+            WHERE A.pro_pep_id=B.pro_pep_id AND A.mun_id=? AND B.eta_id=?";
+        $query = $this->db->query($consulta, array($mun_id,$etapa));
+        return $query->result();   
+    }
 }
 
 ?>

@@ -18,7 +18,7 @@ if (!defined('BASEPATH'))
   |
  */
 
-$config['base_url'] = "http://" . $_SERVER['HTTP_HOST'] ."/sispfgl/";
+$config['base_url'] = "http://" . $_SERVER['HTTP_HOST'] ;
 
 
 

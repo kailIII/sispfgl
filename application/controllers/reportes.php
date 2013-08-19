@@ -27,8 +27,13 @@ class Reportes extends CI_Controller {
         $rol = $this->usuarios->obtenerCodigoRol($this->tank_auth->get_username());
         if (strcmp(trim($rol[0]->rol_codigo), 'apg') == 0)
             $this->load->view('reporte/index_pep_view');
-        else
-            $this->load->view('reporte/index_view');
+        else if (strcmp(trim($rol[0]->rol_codigo), 'cc') == 0) {
+            $this->load->view('reporte/index_cc_view', $informacion);
+        } else {
+            $this->load->model('pais/departamento');
+            $informacion['deptos'] = $this->departamento->obtenerDepartamentos();
+            $this->load->view('reporte/index_view', $informacion);
+        }
         $this->load->view('plantilla/footer', $informacion);
     }
 
@@ -1027,6 +1032,9 @@ class Reportes extends CI_Controller {
         $this->load->model('etapa3-sub23/portafolio_proyecto');
         $this->load->model('etapa3-sub23/proyeccion_ingreso');
 
+        /* ETAPA 4 */
+        $this->load->model('etapa4-sub23/integracion_instancia');
+
         $consulta = $this->municipio->obtenerMunicipiosTodos();
         $region = '';
         $depto = '';
@@ -1079,7 +1087,7 @@ class Reportes extends CI_Controller {
             /*  AQUI INICIA LA ETAPA 2   */
             $consulta2 = $this->asociatividad->verificarAsociatividadMunicipal($aux->mun_id);
             if (count($consulta2) != 0) {
-                if ($consulta2[0]->resultado <> '0') {
+                if ($consulta2[0]->resultado != '0') {
                     $consulta3 = $this->grupo_gestor->verificarGrupoGestor($aux->mun_id);
                     if (count($consulta3) != 0) {
                         if ($consulta3[0]->resultado == '1') {
@@ -1113,25 +1121,40 @@ class Reportes extends CI_Controller {
                     }
                 }
             }
-            
+
             /*  AQUI INICIA LA ETAPA 3   */
             $consulta2 = $this->portafolio_proyecto->verificarPriorizacionProyecto($aux->mun_id);
-            if ($consulta2[0]->valor <> '0') {
+            if ($consulta2[0]->valor != '0') {
                 $consulta3 = $this->proyeccion_ingreso->verificarProyeccionIngreso($aux->mun_id);
-                if ($consulta3[0]->valor <> '0') {
+                if ($consulta3[0]->valor != '0') {
                     $consulta4 = $this->proyeccion_ingreso->verificarProyeccionIngresoDetalle($aux->mun_id);
-                    if ($consulta4[0]->valor <> '0') {
+                    if ($consulta4[0]->valor != '0') {
                         $consulta5 = $this->portafolio_proyecto->verificarEjecucionProyecto($aux->mun_id);
-                        if ($consulta5[0]->valor <> '0') {
+                        if ($consulta5[0]->valor != '0') {
                             $this->phpexcel->getActiveSheet()->setCellValue("G$i", '1');
                         }
                     }
                 }
             }
-            
             /*  AQUI INICIA LA ETAPA 4   */
-            
-            
+            $consulta2 = $this->acuerdo_municipal->verificarAcuerdoMunicipal2($aux->mun_id, 4);
+            if (count($consulta2) != 0) {
+                if ($consulta2[0]->resultado == '1') {
+                    $consulta3 = $this->integracion_instancia->verificarIntegracionInstancia($aux->mun_id);
+                    if (count($consulta3) != 0) {
+                        if ($consulta3[0]->resultado == '1') {
+                            $consulta4 = $this->integracion_instancia->verificarParticipantesIntegracionInstancia($aux->mun_id);
+                            if ($consulta4[0]->valor != '0') {
+                                $consulta5 = $this->integracion_instancia->verificarCriteriosIntegracionInstancia($aux->mun_id);
+                                if ($consulta5[0]->valor == '4') {
+                                    $this->phpexcel->getActiveSheet()->setCellValue("H$i", '1');
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             $this->phpexcel->getActiveSheet()->getStyle("B$i:H$i")->applyFromArray($estCuerpo);
             $i++;
             $numero++;
@@ -1166,6 +1189,513 @@ class Reportes extends CI_Controller {
          * SALIDA DEL DOCUMENTO
          */
         $filename = "avancePep_" . date("d-m-y") . ".xls"; //GUARDANDO CON ESTE NOMBRE
+        header('Content-Type: application/vnd.ms-excel');
+        header("Content-Disposition: attachment;filename=$filename");
+        header('Cache-Control: max-age=0');
+        $objWriter = PHPExcel_IOFactory::createWriter($this->phpexcel, 'Excel5');
+        $objWriter->save('php://output');
+    }
+
+    public function mejoraPerfil() {
+        $mun_id = $this->input->post("mun_id");
+        $this->load->model('pais/municipio');
+        $muniDatos = $this->municipio->obtenerNomMunDepAlcalde($mun_id);
+        $this->phpexcel->setActiveSheetIndex(0);
+        $this->phpexcel->getActiveSheet()->setTitle('Seguimiento');
+        $estCuerpo = array(
+            'font' => array('size' => 8, 'name' => 'Arial'),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_JUSTIFY,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            )
+        );
+        $estCuerpoBorde = array(
+            'font' => array('size' => 8, 'name' => 'Arial'),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_JUSTIFY,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        $this->phpexcel->getActiveSheet()->getColumnDimension('A')->setWidth(1);
+        $this->phpexcel->getActiveSheet()->getColumnDimension('D')->setWidth(1);
+        $this->phpexcel->getActiveSheet()->getRowDimension('13')->setRowHeight(50);
+        $this->phpexcel->getActiveSheet()->getRowDimension('23')->setRowHeight(50);
+        $this->phpexcel->getActiveSheet()->getRowDimension('25')->setRowHeight(25);
+        // Obtenemos y traducimos el nombre del día
+        $dia = date("l");
+        if ($dia == "Monday")
+            $dia = "Lunes";
+        if ($dia == "Tuesday")
+            $dia = "Martes";
+        if ($dia == "Wednesday")
+            $dia = "Miércoles";
+        if ($dia == "Thursday")
+            $dia = "Jueves";
+        if ($dia == "Friday")
+            $dia = "Viernes";
+        if ($dia == "Saturday")
+            $dia = "Sabado";
+        if ($dia == "Sunday")
+            $dia = "Domingo";
+
+// Obtenemos el número del día
+        $dia2 = date("d");
+
+// Obtenemos y traducimos el nombre del mes
+        $mes = date("F");
+        if ($mes == "January")
+            $mes = "Enero";
+        if ($mes == "February")
+            $mes = "Febrero";
+        if ($mes == "March")
+            $mes = "Marzo";
+        if ($mes == "April")
+            $mes = "Abril";
+        if ($mes == "May")
+            $mes = "Mayo";
+        if ($mes == "June")
+            $mes = "Junio";
+        if ($mes == "July")
+            $mes = "Julio";
+        if ($mes == "August")
+            $mes = "Agosto";
+        if ($mes == "September")
+            $mes = "Setiembre";
+        if ($mes == "October")
+            $mes = "Octubre";
+        if ($mes == "November")
+            $mes = "Noviembre";
+        if ($mes == "December")
+            $mes = "Diciembre";
+
+// Obtenemos el año
+        $anio = date("Y");
+
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('G4', "San Salvador, $dia $dia2 de $mes de $anio");
+        $this->phpexcel->getActiveSheet()->mergeCells('G4:I4');
+        $this->phpexcel->getActiveSheet()->getStyle('G4:I4')->applyFromArray($estCuerpo);
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('E7', "Sr(a). " . strtoupper($muniDatos[0]->alcalde));
+        $this->phpexcel->getActiveSheet()->mergeCells('E7:G7');
+        $this->phpexcel->getActiveSheet()->getStyle('E7:G7')->applyFromArray($estCuerpo);
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('E8', "ALCALDE MUNICIPAL DEL " . strtoupper($muniDatos[0]->muni));
+        $this->phpexcel->getActiveSheet()->mergeCells('E8:G8');
+        $this->phpexcel->getActiveSheet()->getStyle('E8:G8')->applyFromArray($estCuerpo);
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('E9', "DEPARTAMENTO DE " . strtoupper($muniDatos[0]->depto));
+        $this->phpexcel->getActiveSheet()->mergeCells('E9:G9');
+        $this->phpexcel->getActiveSheet()->getStyle('E9:G9')->applyFromArray($estCuerpo);
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('E11', "Respetable Sr(a). " . strtoupper($muniDatos[0]->alcalde));
+        $this->phpexcel->getActiveSheet()->mergeCells('E11:F11');
+        $this->phpexcel->getActiveSheet()->getStyle('E11:F11')->applyFromArray($estCuerpo);
+
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('E13', "Con el objeto de ayudar a cerrar el proceso de elaboración de perfil de proyecto para la ejecución del sub componente 2.5 del PFGL, se le envía un diagnóstico de lo encontrado en la información de gestión de riesgos de desastres enviada desde la municipalidad de " . $muniDatos[0]->muni . ", para efectos de ayudarle a concluir con el diseño del perfil de proyecto solicitado.");
+        $this->phpexcel->getActiveSheet()->mergeCells('E13:I13');
+        $this->phpexcel->getActiveSheet()->getStyle('E13:I13')->applyFromArray($estCuerpo);
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('E23', "Para poderle ayudar a utilizar parte del fondo para la compra de un vehículo de transporte para casos de emergencia, tiene que presentarnos documentación que avale los rubros elegibles que le preceden " . " y haber adjudicado la consultoría para el desarrollo del Plan Municipal de Gestión de Riesgo, de lo contrario no podremos autorizarle pasar a ese nivel.");
+        $this->phpexcel->getActiveSheet()->mergeCells('E23:I23');
+        $this->phpexcel->getActiveSheet()->getStyle('E23:I23')->applyFromArray($estCuerpo);
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('E25', "En espera de poder recibir su perfil de proyecto acorde a lo que es viable,  para efectos de agilizar el trámite correspondiente.");
+        $this->phpexcel->getActiveSheet()->mergeCells('E25:I25');
+        $this->phpexcel->getActiveSheet()->getStyle('E25:I25')->applyFromArray($estCuerpo);
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('E27', "Muy Atentamente,");
+        $this->phpexcel->getActiveSheet()->mergeCells('E27:I27');
+        $this->phpexcel->getActiveSheet()->getStyle('E27:I27')->applyFromArray($estCuerpo);
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('G31', "Desarrollo Local y Gestión de Riesgo");
+        $this->phpexcel->getActiveSheet()->mergeCells('G31:I31');
+        $this->phpexcel->getActiveSheet()->getStyle('G31:I31')->applyFromArray($estCuerpo);
+        /*
+         * SALIDA DEL DOCUMENTO
+         */
+        $filename = "mejoraPerfil_" . date("d-m-y") . ".xls"; //GUARDANDO CON ESTE NOMBRE
+        header('Content-Type: application/vnd.ms-excel');
+        header("Content-Disposition: attachment;filename=$filename");
+        header('Cache-Control: max-age=0');
+        $objWriter = PHPExcel_IOFactory::createWriter($this->phpexcel, 'Excel5');
+        $objWriter->save('php://output');
+    }
+
+    public function consolidadoModalidadFormacion() {
+        $this->phpexcel->setActiveSheetIndex(0);
+        $this->phpexcel->getActiveSheet()->setTitle('Seguimiento');
+        /* ESTILOS */
+        $estEnc5 = array(
+            'font' => array('bold' => true, 'size' => 16, 'name' => 'Arial'),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => 'FFE0C2')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_JUSTIFY,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        $estRegion = array(
+            'font' => array('bold' => true, 'size' => 8, 'name' => 'Arial', 'color' => array('rgb' => 'FFFFFF')),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => '00008A')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_JUSTIFY,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        $estPais = array(
+            'font' => array('bold' => true, 'size' => 10, 'name' => 'Arial'),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => 'E6E6F0')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        $estCuerpo = array(
+            'font' => array('size' => 8, 'name' => 'Arial'),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_JUSTIFY,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        $estTotales = array(
+            'font' => array('bold' => true, 'size' => 8, 'name' => 'Arial', 'color' => array('rgb' => 'FFFFFF')),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => '000000')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_JUSTIFY,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+
+        $this->load->model('componente2/model22', 'comp22');
+        $procesos = $this->comp22->obtenerProcesoFormacion();
+        $this->phpexcel->getActiveSheet()->getRowDimension('2')->setRowHeight(40);
+        $this->phpexcel->getActiveSheet()->getColumnDimension('B')->setWidth(18);
+
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('B2', 'CONSOLIDADO POR MODALIDAD DE FORMACIÓN');
+        $this->phpexcel->getActiveSheet()->mergeCells('B2:E2');
+        $this->phpexcel->getActiveSheet()->getStyle('B2:E2')->applyFromArray($estEnc5);
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('B4', 'Proceso de Formación');
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('C4', 'Hombres');
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('D4', 'Mujeres');
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('E4', 'Total');
+        $this->phpexcel->getActiveSheet()->getStyle('B4:E4')->applyFromArray($estPais);
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('E4', 'Total');
+
+        $i = 5;
+        foreach ($procesos as $aux) {
+            $this->phpexcel->getActiveSheet()->setCellValue("B$i", $aux->nombre);
+            $this->phpexcel->getActiveSheet()->setCellValue("C$i", $aux->hombres);
+            $this->phpexcel->getActiveSheet()->setCellValue("D$i", $aux->mujeres);
+            $this->phpexcel->getActiveSheet()->setCellValue("E$i", $aux->resultado);
+            $this->phpexcel->getActiveSheet()->getStyle("B$i:E$i")->applyFromArray($estCuerpo);
+            $i++;
+        }
+        $inio = 5;
+        $fin = $i - 1;
+        $this->phpexcel->getActiveSheet()->setCellValue("B$i", 'TOTAL');
+        $this->phpexcel->getActiveSheet()->setCellValue("C$i", "=SUM(C$inio:C$fin)");
+        $this->phpexcel->getActiveSheet()->setCellValue("D$i", "=SUM(D$inio:D$fin)");
+        $this->phpexcel->getActiveSheet()->setCellValue("E$i", "=SUM(E$inio:E$fin)");
+        $this->phpexcel->getActiveSheet()->getStyle("B$i:E$i")->applyFromArray($estTotales);
+
+        $procesos1 = $this->comp22->obtenerProcesoFormacionSolicitud();
+        $procesos2 = $this->comp22->obtenerProcesoFormacion();
+        $i+=2;
+        $this->phpexcel->getActiveSheet()->getRowDimension("$i")->setRowHeight(40);
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue("B$i", 'CONSOLIDADO POR MODALIDAD DE FORMACIÓN - SOLICITUDES');
+        $this->phpexcel->getActiveSheet()->mergeCells("B$i:E$i");
+        $this->phpexcel->getActiveSheet()->getStyle("B$i:E$i")->applyFromArray($estEnc5);
+        $i++;
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue("B$i", 'Proceso de Formación');
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue("C$i", 'Hombres');
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue("D$i", 'Mujeres');
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue("E$i", 'Total');
+        $this->phpexcel->getActiveSheet()->getStyle("B$i:E$i")->applyFromArray($estPais);
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue("E$i", 'Total');
+        $i++;
+        $inio = $i;
+        $j = 0;
+        foreach ($procesos1 as $aux) {
+            $this->phpexcel->getActiveSheet()->setCellValue("B$i", $aux->nombre);
+            $this->phpexcel->getActiveSheet()->setCellValue("C$i", $aux->hombres - $procesos2[$j]->hombres);
+            $this->phpexcel->getActiveSheet()->setCellValue("D$i", $aux->mujeres - $procesos2[$j]->mujeres);
+            $this->phpexcel->getActiveSheet()->setCellValue("E$i", $aux->resultado - $procesos2[$j]->resultado);
+            $this->phpexcel->getActiveSheet()->getStyle("B$i:E$i")->applyFromArray($estCuerpo);
+            $i++;
+            $j++;
+        }
+        $fin = $i - 1;
+        $this->phpexcel->getActiveSheet()->setCellValue("B$i", 'TOTAL');
+        $this->phpexcel->getActiveSheet()->setCellValue("C$i", "=SUM(C$inio:C$fin)");
+        $this->phpexcel->getActiveSheet()->setCellValue("D$i", "=SUM(D$inio:D$fin)");
+        $this->phpexcel->getActiveSheet()->setCellValue("E$i", "=SUM(E$inio:E$fin)");
+        $this->phpexcel->getActiveSheet()->getStyle("B$i:E$i")->applyFromArray($estTotales);
+        /*
+         * SALIDA DEL DOCUMENTO
+         */
+        $filename = "consolidado_modalidad_" . date("d-m-y") . ".xls"; //GUARDANDO CON ESTE NOMBRE
+        header('Content-Type: application/vnd.ms-excel');
+        header("Content-Disposition: attachment;filename=$filename");
+        header('Cache-Control: max-age=0');
+        $objWriter = PHPExcel_IOFactory::createWriter($this->phpexcel, 'Excel5');
+        $objWriter->save('php://output');
+    }
+
+    public function consolidadoModalidadPorDepto() {
+        $this->phpexcel->setActiveSheetIndex(0);
+        $this->phpexcel->getActiveSheet()->setTitle('Capacitados');
+        /* ESTILOS */
+        $estEnc5 = array(
+            'font' => array('bold' => true, 'size' => 16, 'name' => 'Arial'),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => 'FFE0C2')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_JUSTIFY,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        $estDivDepto = array(
+            'font' => array('bold' => true, 'size' => 8, 'name' => 'Arial', 'color' => array('rgb' => 'FFFFFF')),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => '008000')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_JUSTIFY,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        $estPais = array(
+            'font' => array('bold' => true, 'size' => 10, 'name' => 'Arial'),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => 'E6E6F0')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        $estCuerpo = array(
+            'font' => array('size' => 8, 'name' => 'Arial'),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_JUSTIFY,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        $estTotales = array(
+            'font' => array('bold' => true, 'size' => 8, 'name' => 'Arial', 'color' => array('rgb' => 'FFFFFF')),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => '000000')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_JUSTIFY,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+
+        $this->load->model('componente2/model22', 'comp22');
+        $this->load->model('pais/municipio');
+
+        $municipios = $this->municipio->obtenerMunicipiosTodos();
+        $this->phpexcel->getActiveSheet()->getRowDimension('2')->setRowHeight(40);
+        $this->phpexcel->getActiveSheet()->getColumnDimension('B')->setWidth(18);
+        $this->phpexcel->getActiveSheet()->getColumnDimension('C')->setWidth(18);
+        $this->phpexcel->getActiveSheet()->getColumnDimension('D')->setWidth(18);
+
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('B2', 'CAPACITADOS POR DEPARTAMENTO Y MUNICIPIO');
+        $this->phpexcel->getActiveSheet()->mergeCells('B2:G2');
+        $this->phpexcel->getActiveSheet()->getStyle('B2:G2')->applyFromArray($estEnc5);
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('B3', 'Departamento');
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('C3', 'Municipio');
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('D3', 'Proceso de Formación');
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('E3', 'Hombres');
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('F3', 'Mujeres');
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('G3', 'Total');
+        $this->phpexcel->getActiveSheet()->getStyle('B3:G3')->applyFromArray($estPais);
+
+
+        $i = 4;
+        $depto = '';
+        $inicio = $i + 1;
+        foreach ($municipios as $aux2) {
+            if (strcmp($aux2->dep_nombre, $depto) != 0) {
+                $this->phpexcel->getActiveSheet()->mergeCells("B$i:G$i");
+                $this->phpexcel->getActiveSheet()->getStyle("B$i:G$i")->applyFromArray($estDivDepto);
+                $depto = $aux2->dep_nombre;
+                $i++;
+            }
+            $this->phpexcel->getActiveSheet()->setCellValue("B$i", $aux2->dep_nombre);
+            $this->phpexcel->getActiveSheet()->setCellValue("C$i", $aux2->mun_nombre);
+            $procesos = $this->comp22->obtenerHombresFormacion($aux2->mun_id);
+            foreach ($procesos as $aux) {
+                $this->phpexcel->getActiveSheet()->setCellValue("D$i", $aux->nombre);
+                $this->phpexcel->getActiveSheet()->setCellValue("E$i", $aux->hombres);
+                $this->phpexcel->getActiveSheet()->setCellValue("F$i", $aux->mujeres);
+                $this->phpexcel->getActiveSheet()->setCellValue("G$i", $aux->hombres + $aux->mujeres);
+                $this->phpexcel->getActiveSheet()->getStyle("B$i:G$i")->applyFromArray($estCuerpo);
+                $i++;
+            }
+        }
+        /*
+         * SALIDA DEL DOCUMENTO
+         */
+        $filename = "capacitados_departamento_" . date("d-m-y") . ".xls"; //GUARDANDO CON ESTE NOMBRE
+        header('Content-Type: application/vnd.ms-excel');
+        header("Content-Disposition: attachment;filename=$filename");
+        header('Cache-Control: max-age=0');
+        $objWriter = PHPExcel_IOFactory::createWriter($this->phpexcel, 'Excel5');
+        $objWriter->save('php://output');
+    }
+
+    public function consolidadoClasificacionMunicipio() {
+        $this->phpexcel->setActiveSheetIndex(0);
+        $this->phpexcel->getActiveSheet()->setTitle('Capacitados');
+        /* ESTILOS */
+        $estEnc5 = array(
+            'font' => array('bold' => true, 'size' => 16, 'name' => 'Arial'),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => 'FFE0C2')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_JUSTIFY,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        $estDivDepto = array(
+            'font' => array('bold' => true, 'size' => 8, 'name' => 'Arial', 'color' => array('rgb' => 'FFFFFF')),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => '008000')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_JUSTIFY,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        $estPais = array(
+            'font' => array('bold' => true, 'size' => 10, 'name' => 'Arial'),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => 'E6E6F0')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        $estCuerpo = array(
+            'font' => array('size' => 8, 'name' => 'Arial'),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_JUSTIFY,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        $estTotales = array(
+            'font' => array('bold' => true, 'size' => 8, 'name' => 'Arial', 'color' => array('rgb' => 'FFFFFF')),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => '000000')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_JUSTIFY,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+
+        $this->load->model('componente2/model22', 'comp22');
+        $this->load->model('pais/municipio');
+
+
+        $this->phpexcel->getActiveSheet()->getRowDimension('2')->setRowHeight(40);
+        $this->phpexcel->getActiveSheet()->getColumnDimension('B')->setWidth(18);
+        $this->phpexcel->getActiveSheet()->getColumnDimension('C')->setWidth(18);
+        $this->phpexcel->getActiveSheet()->getColumnDimension('D')->setWidth(18);
+
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('B2', 'CAPACITADOS SEGÚN CLASIFICACION DEL MUNICIPIO');
+        $this->phpexcel->getActiveSheet()->mergeCells('B2:E2');
+        $this->phpexcel->getActiveSheet()->getStyle('B2:E2')->applyFromArray($estEnc5);
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('B3', 'Clasificación');
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('C3', 'Hombres');
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('D3', 'Mujeres');
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('E3', 'Total');
+        $this->phpexcel->getActiveSheet()->getStyle('B3:E3')->applyFromArray($estPais);
+        $i = 4;
+        for ($j = 1; $j <= 4; $j++) {
+            switch ($j) {
+                case 1:
+                    $this->phpexcel->getActiveSheet()->setCellValue("B$i", 'Pobreza Extrema Severa');
+                    break;
+                case 2:
+                    $this->phpexcel->getActiveSheet()->setCellValue("B$i", 'Pobreza Extrema Alta');
+                    break;
+                case 3:
+                    $this->phpexcel->getActiveSheet()->setCellValue("B$i", 'Pobreza Extrema Moderada');
+                    break;
+                case 4:
+                    $this->phpexcel->getActiveSheet()->setCellValue("B$i", 'Pobreza Extrema Baja');
+                    break;
+            }
+            $municipios = $this->municipio->obtenerMunicipiosClasificacion($j);
+            $sumaH = 0;
+            $sumaM = 0;
+            $sumaT = 0;
+            foreach ($municipios as $aux2) {
+                $procesos = $this->comp22->obtenerHombresFormacion($aux2->mun_id);
+                foreach ($procesos as $aux) {
+                    $sumaH+=$aux->hombres;
+                    $sumaM+=$aux->mujeres;
+                    $sumaT+=$aux->hombres + $aux->mujeres;
+                }
+            }
+            $this->phpexcel->getActiveSheet()->setCellValue("C$i", $sumaH);
+            $this->phpexcel->getActiveSheet()->setCellValue("D$i", $sumaM);
+            $this->phpexcel->getActiveSheet()->setCellValue("E$i", $sumaT);
+            $this->phpexcel->getActiveSheet()->getStyle("B$i:E$i")->applyFromArray($estCuerpo);
+            $i++;
+        }
+        /*
+         * SALIDA DEL DOCUMENTO
+         */
+        $filename = "capacitados_clasificacion_" . date("d-m-y") . ".xls"; //GUARDANDO CON ESTE NOMBRE
         header('Content-Type: application/vnd.ms-excel');
         header("Content-Disposition: attachment;filename=$filename");
         header('Cache-Control: max-age=0');

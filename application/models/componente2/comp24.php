@@ -84,7 +84,9 @@ GROUP BY dep_nombre';
     }
     
     public function update_row($tabla,$campo,$index,$data){
-        return $this->db->update($tabla,$data,array($campo=>$index));
+         $this->db->where($campo, $index);
+        return $this->db->update($tabla,$data);
+        //return $this->db->update($tabla,$data,array($campo=>$index));
     }
     
     public function db_row_delete($tabla,$campo,$index){

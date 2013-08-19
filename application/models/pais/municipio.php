@@ -30,6 +30,15 @@ class Municipio extends CI_Model {
         return $query->result();
     }
 
+    function obtenerNomMunDepAlcalde($mun_id) {
+        $this->db->select('departamento.dep_nombre depto,municipio.mun_nombre muni, municipio.mun_nombre_alcalde alcalde');
+        $this->db->from($this->tabla);
+        $this->db->join('departamento', 'departamento.dep_id = municipio.dep_id');
+        $this->db->where('municipio.mun_id', $mun_id);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
     public function obtenerMunicipiosSinConsultora($dep_id) {
         $query = "SELECT municipio.mun_id, 
                          municipio.mun_nombre
@@ -220,6 +229,14 @@ FROM region A, departamento B, $this->tabla C
 WHERE A.reg_id=B.reg_id AND B.dep_id=C.dep_id
 ORDER BY A.reg_nombre,B.dep_nombre,C.mun_nombre";
         $consulta = $this->db->query($sql, array());
+        return $consulta->result();
+    }
+
+    public function obtenerMunicipiosClasificacion($clasificacion) {
+        $sql = "SELECT mun_id
+            FROM municipio
+            WHERE mun_clasificacion_municipio=?";
+        $consulta = $this->db->query($sql, array($clasificacion));
         return $consulta->result();
     }
 
