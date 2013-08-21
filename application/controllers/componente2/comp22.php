@@ -521,7 +521,138 @@ class Comp22 extends CI_Controller {
                 $data['errors'][$k] = $this->lang->line($v);
         }
     }
+    
+    public function rpt_por_modalidad(){
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');                // logged in
+        
+        $modalidades = array(
+            '1' => 'Inscritos',
+            '2' => 'No Inscritos'
+        );
+        
+        $sql = "
+Select
+  c22_capacitaciones.cap_proceso As proceso,
+  c22_capacitaciones.cap_descripcion As \"desc\",
+  (Select Count(*) From c22_cxp_inscritos 
+  Inner Join c22_participantes On c22_cxp_inscritos.cxp_par_id = c22_participantes.par_id
+  Where c22_participantes.par_sexo = 'F' And c22_cxp_inscritos.cxp_cap_id = c22_capacitaciones.cap_id ) As mujeres,
+  (Select Count(*) From c22_cxp_inscritos
+  Inner Join c22_participantes On c22_cxp_inscritos.cxp_par_id = c22_participantes.par_id
+  Where c22_participantes.par_sexo = 'M' And c22_cxp_inscritos.cxp_cap_id = c22_capacitaciones.cap_id ) As hombres,
+  (Select Count(*) From c22_cxp_inscritos
+  Inner Join c22_participantes On c22_cxp_inscritos.cxp_par_id = c22_participantes.par_id
+  Where c22_cxp_inscritos.cxp_cap_id = c22_capacitaciones.cap_id ) as total
+From c22_capacitaciones;
+        ";
+        $dat = $this->db->query($sql);
+        $data = ( $dat->num_rows() > 0 )? $dat->result() : array();
+        
+        $sql2 = "
+Select
+  c22_capacitaciones.cap_proceso as proceso,
+  c22_capacitaciones.cap_descripcion as \"desc\",
+  (Select
+  Count(*)
+From
+  c22_cxp_solicitud Inner Join
+  c22_participantes On c22_cxp_solicitud.par_id = c22_participantes.par_id
+Where
+  c22_participantes.par_sexo = 'M' And
+  c22_participantes.par_id Not In (Select
+    c22_cxp_inscritos.cxp_par_id
+  From
+    c22_cxp_inscritos
+  Where
+    c22_cxp_inscritos.cxp_cap_id = c22_cxp_solicitud.cap_id)
+    AND c22_cxp_solicitud.cap_id = c22_capacitaciones.cap_id ) As hombres,
+    (Select
+  Count(*)
+From
+  c22_cxp_solicitud Inner Join
+  c22_participantes On c22_cxp_solicitud.par_id = c22_participantes.par_id
+Where
+  c22_participantes.par_sexo = 'F' And
+  c22_participantes.par_id Not In (Select
+    c22_cxp_inscritos.cxp_par_id
+  From
+    c22_cxp_inscritos
+  Where
+    c22_cxp_inscritos.cxp_cap_id = c22_cxp_solicitud.cap_id)
+    AND c22_cxp_solicitud.cap_id = c22_capacitaciones.cap_id ) As mujeres,
+    (Select
+  Count(*)
+From
+  c22_cxp_solicitud Inner Join
+  c22_participantes On c22_cxp_solicitud.par_id = c22_participantes.par_id
+Where
+  c22_participantes.par_id Not In (Select
+    c22_cxp_inscritos.cxp_par_id
+  From
+    c22_cxp_inscritos
+  Where
+    c22_cxp_inscritos.cxp_cap_id = c22_cxp_solicitud.cap_id)
+    AND c22_cxp_solicitud.cap_id = c22_capacitaciones.cap_id ) As total
+From
+  c22_capacitaciones;
+        ";
+        $dat = $this->db->query($sql2);
+        $data2 = ( $dat->num_rows() > 0 )? $dat->result() : array();
+        
+        $view = array(
+            'titulo' => 'Componente 2.2: Reportes',
+            'user_uid' => $this->tank_auth->get_user_id(),
+            'username' => $this->tank_auth->get_username(),
+            'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
+            'modalidades' => $modalidades,
+            'data' => $data,
+            'data2' => $data2
+        );
+        
+        $this->load->view($this->ruta . 'rpt_por_modalidad', $view);
+    }
 
+    public function rpt_por_municipio($mun = 0){
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');                // logged in
+        
+        $modalidades = array(
+            '1' => 'Inscritos',
+            '2' => 'No Inscritos'
+        );
+        
+        $sql = "
+Select
+  c22_capacitaciones.cap_proceso As proceso,
+  c22_capacitaciones.cap_descripcion As \"desc\",
+  (Select Count(*) From c22_cxp_inscritos 
+  Inner Join c22_participantes On c22_cxp_inscritos.cxp_par_id = c22_participantes.par_id
+  Where c22_participantes.mun_id = " . $mun . " And c22_participantes.par_sexo = 'F' And c22_cxp_inscritos.cxp_cap_id = c22_capacitaciones.cap_id ) As mujeres,
+  (Select Count(*) From c22_cxp_inscritos
+  Inner Join c22_participantes On c22_cxp_inscritos.cxp_par_id = c22_participantes.par_id
+  Where c22_participantes.mun_id = " . $mun . " And c22_participantes.par_sexo = 'M' And c22_cxp_inscritos.cxp_cap_id = c22_capacitaciones.cap_id ) As hombres,
+  (Select Count(*) From c22_cxp_inscritos
+  Inner Join c22_participantes On c22_cxp_inscritos.cxp_par_id = c22_participantes.par_id
+  Where c22_participantes.mun_id = " . $mun . " And c22_cxp_inscritos.cxp_cap_id = c22_capacitaciones.cap_id ) as total
+From c22_capacitaciones;
+        ";
+        $dat = $this->db->query($sql);
+        $data = ( $dat->num_rows() > 0 )? $dat->result() : array();
+        
+        
+        $view = array(
+            'titulo' => 'Componente 2.2: Reportes',
+            'user_uid' => $this->tank_auth->get_user_id(),
+            'username' => $this->tank_auth->get_username(),
+            'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
+            'modalidades' => $modalidades,
+            'departamentos' => $this->comp24->getDepartamentos(),
+            'data' => $data
+        );
+        
+        $this->load->view($this->ruta . 'rpt_por_municipio', $view);
+    }
 }
 
 ?>
