@@ -153,6 +153,41 @@ class ProyectoPep extends CI_Controller {
         echo $jsonresponse;
     }
 
+    public function cargarMunicipiosRep() {
+        $this->load->model('tank_auth/users', 'usuarios');
+        $rol = $this->usuarios->obtenerCodigoRol($this->tank_auth->get_username());
+        $this->load->model('consultor/consultor');
+        $cons = $this->consultor->obtenerConsultorPorUsuario($this->tank_auth->get_username());
+
+        $dep_id = $this->input->get("dep_id");
+        $this->load->model('pais/municipio', 'mun');
+        $municipios = $this->mun->obtenerMunicipioPorDepartamento($dep_id);
+        $numfilas = count($municipios);
+        $i = 0;
+        $rows = array();
+        if ($numfilas != 0) {
+            foreach ($municipios as $aux) {
+                $rows[$i]['id'] = $aux->mun_id;
+                $rows[$i]['cell'] = array($aux->mun_id,
+                    $aux->mun_nombre
+                );
+                $i++;
+            }
+            array_multisort($rows, SORT_ASC);
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+
     public function cuantosPepMuni($mun_id) {
         $this->load->model('proyectoPep/proyecto_pep', 'proPep');
         $totales = $this->proPep->cuantosPep($mun_id);

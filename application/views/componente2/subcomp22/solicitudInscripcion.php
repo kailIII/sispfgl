@@ -30,19 +30,27 @@ $this->load->view('plantilla/menu', $menu);
         function formularioShow() {
             $('#listaContainer').hide();
             $('#formulario').show();
+            //$('#procesos').show()
+        }
+        function procesoShow() {
+            $('#listaContainer').hide();
+            $('#formulario').show();
             $('#procesos').show()
         }
+        $('#procesos').hide()
         $("#guardar").button();
         $("#guardar2").button();
         $("#guardar3").button();
-        $("#cancelar").button();
         $("#btn_acuerdo_nuevo").button().click(function() {
             $('#frm').submit();
         });
         $("#btn_seleccionar").button().click(function() {
             document.location.href = '<?php echo current_url(); ?>/' + jQuery("#lista").jqGrid('getGridParam', 'selrow');
         });
-        $("#cancelar #cacelae2 #cancelar3").button().click(function() {
+        $("#cancelar").button().click(function() {
+            document.location.href = '<?php echo base_url(); ?>';
+        });
+        $("#cancelar2").button().click(function() {
             document.location.href = '<?php echo base_url(); ?>';
         });
         $('.mensaje').dialog({autoOpen: false, width: 300,
@@ -63,11 +71,16 @@ $this->load->view('plantilla/menu', $menu);
             //$('#actions').show()
         });
         $('#par_acepta').click(function() {
-            $("#guardar3").toggle(this.checked);
-            window.location.href = '<?php echo current_url(); ?>/' + $('#mun_id').val();
+            //$("#guardar3").toggle(this.checked);
+            $("#frm_acuerdo_municipal2").attr("action",'<?php echo current_url(); ?>/new/' + $('#mun_id').val());
+            //window.location.href = '<?php echo current_url(); ?>/new/' + $('#mun_id').val();
+            $('#frm_acuerdo_municipal2').submit();
+            
         });
-        $('#guardar3').click(function() {
-            window.location.href = '<?php echo current_url(); ?> /new/' + $('#mun_id').val();
+        $('#guardar2').click(function() {
+            // $("#frm_acuerdo_municipal2").attr("action",'<?php echo current_url() . '/' . $tabla_id . '/' ?>' + $('#mun_id').val());
+            //window.location.href = '<?php echo current_url(); ?>/new/' + $('#mun_id').val();
+            $('#frm_acuerdo_municipal2').submit();
         });
 
         /*PARA EL DATEPICKER*/
@@ -101,69 +114,69 @@ $this->load->view('plantilla/menu', $menu);
         /*FIN DEL DATEPICKER*/
 
         /*GRID*
-         $("#miembros").jqGrid({
-         url:'<?php echo base_url('componente2/comp24_E0/acuMun_loadMiembros') . '/' . $acu_mun_id; ?>',
-         editurl:'<?php echo base_url('componente2/comp24_E0/acuMun_gestionMiembros') . '/' . $acu_mun_id; ?>',
-         datatype:'json',
-         altRows:true,
-         gridview: true,
-         hidegrid: false,
-         colNames:['id','Padre','Nombres','Apellidos','Sexo','Edad','Cargo','Nivel de Escolaridad','Telefono'],
-         colModel:[
-         {name:'mie_id',index:'mie_id', width:40,editable:false,editoptions:{size:15},hidden:true },
-         {name:'acu_mun_id',index:'acu_mun_id', width:40,editable:false,editoptions:{size:15},hidden:true },
-         {name:'mie_nombre',index:'mie_nombre', width:150,editable:true,
-         edittype:'text',editoptions:{size:20,maxlength:50},
-         editrules:{required:true} },
-         {name:'mie_apellidos',index:'mie_apellidos', width:150,editable:true,
-         edittypr:'text',editoptions:{size:20,maxlength:50},
-         editrules:{required:true} },
-         {name:'mie_sexo',index:'mie_sexo', width:90,editable:true,
-         edittype:'select',formatter:'select',editoptions:{value:'M:Masculino;F:Femenino'},
-         editrules:{required:true} },
-         {name:'mie_edad',index:'mie_edad', width:60,editable:true,align:'center',
-         edittype:'text',editoptions:{size:5,maxlength:2},
-         editrules:{number:true,minValue:18,maxValue:100} },
-         {name:'mie_cargo',index:'mie_cargo', width:150,editable:true,editoptions:{size:30},
-         edittype:'text',editoptions:{size:20,maxlength:50},
-         editrules:{required:true} },
-         {name:'mie_nivel',index:'mie_nivel', width:150,editable:true,editoptions:{size:30},
-         edittype:'text',editoptions:{size:20,maxlength:50},
-         editrules:{} },
-         {name:'mie_telefono',index:'mie_telefono', width:80,editable:true,editoptions:{size:8},align:'center',
-         edittype:'text',editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}
-         }
-         ],
-         multiselect: false,
-         caption: "Miembros de la Comisión Financiera Municipal",
-         rowNum:10,
-         rowList:[10,20,30],
-         loadonce:true,
-         pager: jQuery('#pagerMiembros'),
-         viewrecords: true,
-         gridComplete: 
-         function(){
-         $.getJSON('<?php echo base_url('componente2/comp24_E0/count_sexo/acumun_miembros/mie_sexo') ?>/acu_mun_id/<?php echo $acu_mun_id; ?>',
-         function(data) {
-         $('#total').val(data['total']);
-         $('#mujeres').val(data['female']);
-         $('#hombres').val(data['male']);
-         }); 
-         }
-         });
-         $("#miembros").jqGrid('navGrid','#pagerMiembros',
-         {edit:false,add:false,del:true,search:false,refresh:false,
-         beforeRefresh: function() {
-         tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
-         }
-         );
-         $("#miembros").jqGrid('inlineNav',"#pagerMiembros");
-         // Funcion para regargar los JQGRID luego de agregar y editar
-         function despuesAgregarEditar() {
-         tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');
-         return[true,'']; //no error
-         }
-         /*desabilitado para activas completar comentario de esta linea y retirar display:none; del elemento */
+        $("#miembros").jqGrid({
+            url:'<?php echo base_url('componente2/comp24_E0/acuMun_loadMiembros') . '/' . $acu_mun_id; ?>',
+            editurl:'<?php echo base_url('componente2/comp24_E0/acuMun_gestionMiembros') . '/' . $acu_mun_id; ?>',
+            datatype:'json',
+            altRows:true,
+            gridview: true,
+            hidegrid: false,
+            colNames:['id','Padre','Nombres','Apellidos','Sexo','Edad','Cargo','Nivel de Escolaridad','Telefono'],
+            colModel:[
+                {name:'mie_id',index:'mie_id', width:40,editable:false,editoptions:{size:15},hidden:true },
+                {name:'acu_mun_id',index:'acu_mun_id', width:40,editable:false,editoptions:{size:15},hidden:true },
+                {name:'mie_nombre',index:'mie_nombre', width:150,editable:true,
+                    edittype:'text',editoptions:{size:20,maxlength:50},
+                    editrules:{required:true} },
+                {name:'mie_apellidos',index:'mie_apellidos', width:150,editable:true,
+                    edittypr:'text',editoptions:{size:20,maxlength:50},
+                    editrules:{required:true} },
+                {name:'mie_sexo',index:'mie_sexo', width:90,editable:true,
+                    edittype:'select',formatter:'select',editoptions:{value:'M:Masculino;F:Femenino'},
+                    editrules:{required:true} },
+                {name:'mie_edad',index:'mie_edad', width:60,editable:true,align:'center',
+                    edittype:'text',editoptions:{size:5,maxlength:2},
+                    editrules:{number:true,minValue:18,maxValue:100} },
+                {name:'mie_cargo',index:'mie_cargo', width:150,editable:true,editoptions:{size:30},
+                    edittype:'text',editoptions:{size:20,maxlength:50},
+                    editrules:{required:true} },
+                {name:'mie_nivel',index:'mie_nivel', width:150,editable:true,editoptions:{size:30},
+                    edittype:'text',editoptions:{size:20,maxlength:50},
+                    editrules:{} },
+                {name:'mie_telefono',index:'mie_telefono', width:80,editable:true,editoptions:{size:8},align:'center',
+                    edittype:'text',editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}
+                }
+            ],
+            multiselect: false,
+            caption: "Miembros de la Comisión Financiera Municipal",
+            rowNum:10,
+            rowList:[10,20,30],
+            loadonce:true,
+            pager: jQuery('#pagerMiembros'),
+            viewrecords: true,
+            gridComplete: 
+                function(){
+                $.getJSON('<?php echo base_url('componente2/comp24_E0/count_sexo/acumun_miembros/mie_sexo') ?>/acu_mun_id/<?php echo $acu_mun_id; ?>',
+                function(data) {
+                    $('#total').val(data['total']);
+                    $('#mujeres').val(data['female']);
+                    $('#hombres').val(data['male']);
+                }); 
+            }
+        });
+        $("#miembros").jqGrid('navGrid','#pagerMiembros',
+        {edit:false,add:false,del:true,search:false,refresh:false,
+            beforeRefresh: function() {
+                tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
+        }
+    );
+        $("#miembros").jqGrid('inlineNav',"#pagerMiembros");
+        // Funcion para regargar los JQGRID luego de agregar y editar
+        function despuesAgregarEditar() {
+            tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');
+            return[true,'']; //no error
+        }
+        /*desabilitado para activas completar comentario de esta linea y retirar display:none; del elemento */
         var jqLista = $('#lista');
         jqLista.jqGrid({
             url: '<?php echo base_url('componente2/comp22/loadParticipantes/'); ?>/' + $('#mun_id').val(),
@@ -232,10 +245,13 @@ if ($t != '') {
 if ($this->session->flashdata('message') == 'Ok') {
     echo "$('#efectivo').dialog('open');";
 }
-if (isset($tabla_id) && $tabla_id != 0) {
+if (isset($tabla_id) && $tabla_id != '0') {
     echo "formularioShow();";
 } else {
     echo "formularioHide();";
+}
+if (isset($proceso2)) {
+    echo "proceesoHide();";
 }
 ?>
     });
@@ -262,14 +278,14 @@ if (isset($tabla_id) && $tabla_id != 0) {
         </div>
         <div class="campo">
             <label>Departamento</label>
-<?php echo form_dropdown('selDepto', $departamentos, '', 'id="selDepto"'); ?>
+            <?php echo form_dropdown('selDepto', $departamentos, '', 'id="selDepto"'); ?>
         </div>
         <div class="campo">
             <label>Municipio</label>
             <select id='mun_id' name='mun_id'>
                 <option value='0'>--Seleccione--</option>
             </select>
-<?php echo form_error('mun_id'); ?>
+            <?php echo form_error('mun_id'); ?>
         </div>
         <div id="rpt-border"></div>
         <div id="politica">
@@ -278,12 +294,9 @@ if (isset($tabla_id) && $tabla_id != 0) {
             <span>Tiempo mínimo de trabajo en la municipalidad de 3 años</span>
             <span>Nivel mínimo de estudios: Bachillerato</span>
             <span>Relación entre proceso formativo al que aplica y funciones del puesto de trabajo del solicitante</span>
-            <span><input type="checkbox" name="par_acepta" id="par_acepta" value="ok" <?php echo set_checkbox('par_acepta', '1'); ?> />He leido los criterios de Preselección/elegibilidad para aplicar a Procesos de Formación</span>
+            <span><input type="checkbox" name="par_acepta" id="par_acepta" value="1" <?php echo set_checkbox('par_acepta', '1'); ?> />He leido los criterios de Preselección/elegibilidad para aplicar a Procesos de Formación</span>
         </div>
-        <div id="actions3" style="position: relative;top: 20px">
-            <input type="submit" id="guardar3" value="Guardar" style="display: none;" />
-            <input type="button" id="cancelar" value="Cancelar" />
-        </div>
+
     </div>
     <div id="formulario" style="display: block;">
         <div class="campo">
@@ -299,29 +312,29 @@ if (isset($tabla_id) && $tabla_id != 0) {
             <div class="campo">
                 <label style="width: 200px;">Apellidos:</label>
                 <input id="par_apellidos" name="par_apellidos" type="text" value="<?php echo set_value('par_apellidos') ?>"/>
-<?php echo form_error('par_apellidos'); ?>
+                <?php echo form_error('par_apellidos'); ?>
             </div>
             <div class="campo">
                 <label style="width: 200px;">Nombres:</label>
                 <input id="par_nombres" name="par_nombres" type="text" value="<?php echo set_value('par_nombres') ?>"/>
-<?php echo form_error('par_nombres'); ?>
+                <?php echo form_error('par_nombres'); ?>
             </div>
             <div class="campo">
                 <label style="width: 200px;">Lugar de Nacimiento:</label>
                 <input id="par_birthplace" name="par_birthplace" type="text" value="<?php echo set_value('par_birthplace') ?>"/>
-<?php echo form_error('par_birthplace'); ?>
+                <?php echo form_error('par_birthplace'); ?>
             </div>
             <div class="campo">
                 <label style="width: 200px;">Fecha de Nacimiento:</label>
                 <input id="par_birthday" name="par_birthday" type="text" readonly="readonly" value="<?php echo set_value('par_birthday') ?>" style="width: 150px;"/>
                 <span>Masculino</span><input type="radio" name="par_sexo" value="M" <?php echo set_radio('par_sexo', 'm', TRUE); ?>/>
                 <span>Femenino</span><input type="radio" name="par_sexo" value="F" <?php echo set_radio('par_sexo', 'f'); ?>/>
-<?php echo form_error('par_birthday'); ?>
+                <?php echo form_error('par_birthday'); ?>
             </div>
             <div class="campo">
                 <label style="width: 200px;">DUI:</label>
                 <input id="par_dui" name="par_dui" type="text" value="<?php echo set_value('par_dui') ?>"/>
-<?php echo form_error('par_dui'); ?>
+                <?php echo form_error('par_dui'); ?>
             </div>
         </fieldset>
         <fieldset style="width: 700px; display: block; vertical-align: top; margin-left: 89px;">
@@ -335,17 +348,17 @@ if (isset($tabla_id) && $tabla_id != 0) {
             <div class="campo">
                 <label style="width: 200px;">Nombre:</label>
                 <input id="par_dir_nombre" name="par_dir_nombre" type="text" value="<?php echo set_value('par_dir_nombre') ?>"/>
-<?php echo form_error('par_dir_nombre'); ?>
+                <?php echo form_error('par_dir_nombre'); ?>
             </div>
             <div class="campo">
                 <label style="width: 200px;">Calle:</label>
                 <input id="par_dir_calle" name="par_dir_calle" type="text" value="<?php echo set_value('par_dir_calle') ?>"/>
-<?php echo form_error('par_dir_calle'); ?>
+                <?php echo form_error('par_dir_calle'); ?>
             </div>
             <div class="campo">
                 <label style="width: 200px;">No. de Casa:</label>
                 <input id="par_dir_casa" name="par_dir_casa" type="text" value="<?php echo set_value('par_dir_casa') ?>"/>
-<?php echo form_error('par_dir_casa'); ?>
+                <?php echo form_error('par_dir_casa'); ?>
             </div>
         </fieldset>
         <fieldset style="width: 700px; display: block; vertical-align: top; margin-left: 89px;">
@@ -354,13 +367,13 @@ if (isset($tabla_id) && $tabla_id != 0) {
                 <label style="width: 200px;">Municipales:</label>
                 <input id="par_ins_telefono" name="par_ins_telefono" type="text" value="<?php echo set_value('par_ins_telefono') ?>" style="width: 150px;"/>
                 <input id="par_ins_movil" name="par_ins_movil" type="text" value="<?php echo set_value('par_ins_movil') ?>" style="width: 150px;"/>
-<?php echo form_error('par_ins_telefono'); ?>
+                <?php echo form_error('par_ins_telefono'); ?>
             </div>
             <div class="campo">
                 <label style="width: 200px;">Personales:</label>
                 <input id="par_telefono" name="par_telefono" type="text" value="<?php echo set_value('par_telefono') ?>" style="width: 150px;"/>
                 <input id="par_movil" name="par_movil" type="text" value="<?php echo set_value('par_movil') ?>" style="width: 150px;"/>
-<?php echo form_error('par_telefono'); ?>
+                <?php echo form_error('par_telefono'); ?>
             </div>
         </fieldset>
         <fieldset style="width: 700px; display: block; vertical-align: top; margin-left: 89px;">
@@ -384,7 +397,7 @@ if (isset($tabla_id) && $tabla_id != 0) {
             <div class="campo">
                 <label style="width: 200px;">Titulos Obtenidos:</label>
                 <textarea id="par_titulos" name="par_titulos" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('par_titulos') ?></textarea>
-<?php echo form_error('par_titulos'); ?>
+                <?php echo form_error('par_titulos'); ?>
             </div>
         </fieldset>
         <fieldset style="width: 700px; display: block; vertical-align: top; margin-left: 89px;">
@@ -392,22 +405,22 @@ if (isset($tabla_id) && $tabla_id != 0) {
             <div class="campo">
                 <label style="width: 200px;">Municipalidad:</label>
                 <input id="par_ins_municipio" name="par_ins_municipio" type="text" value="<?php echo set_value('par_ins_municipio') ?>"/>
-<?php echo form_error('par_ins_municipio'); ?>
+                <?php echo form_error('par_ins_municipio'); ?>
             </div>
             <div class="campo">
                 <label style="width: 200px;">Categoria:</label>
                 <input id="par_ins_categoria" name="par_ins_categoria" type="text" value="<?php echo set_value('par_ins_categoria') ?>"/>
-<?php echo form_error('par_ins_categoria'); ?>
+                <?php echo form_error('par_ins_categoria'); ?>
             </div>
             <div class="campo">
                 <label style="width: 200px;">Denominación del Cargo:</label>
                 <input id="par_ins_cargo" name="par_ins_cargo" type="text" value="<?php echo set_value('par_ins_cargo') ?>"/>
-<?php echo form_error('par_ins_cargo'); ?>
+                <?php echo form_error('par_ins_cargo'); ?>
             </div>
             <div class="campo">
                 <label style="width: 200px;">Nivel:</label>
                 <input id="par_ins_nivel" name="par_ins_nivel" type="text" value="<?php echo set_value('par_ins_nivel') ?>"/>
-<?php echo form_error('par_ins_nivel'); ?>
+                <?php echo form_error('par_ins_nivel'); ?>
             </div>
             <div class="campo">
                 <label style="width: 200px;">Tiempo de Servicio:</label>
@@ -415,7 +428,7 @@ if (isset($tabla_id) && $tabla_id != 0) {
                 <span>Años</span>
                 <input id="par_ins_tiempo2" name="par_ins_tiempo2" type="text" value="<?php echo set_value('par_ins_tiempo2') ?>" style="width: 75px;"/>
                 <span>Meses</span>
-<?php echo form_error('par_ins_tiempo'); ?>
+                <?php echo form_error('par_ins_tiempo'); ?>
             </div>
             <div class="campo">
                 <label style="width: 200px;">Tiempo en Cargo Actual:</label>
@@ -423,35 +436,37 @@ if (isset($tabla_id) && $tabla_id != 0) {
                 <span>Años</span>
                 <input id="par_ins_servicio2" name="par_ins_servicio2" type="text" value="<?php echo set_value('par_ins_servicio2') ?>" style="width: 75px;"/>
                 <span>Meses</span>
-<?php echo form_error('par_ins_servicio'); ?>
+                <?php echo form_error('par_ins_servicio'); ?>
             </div>
         </fieldset>
-        <div id="actions" style="position: relative;top: 20px">
-            <input type="submit" id="guardar" value="Guardar" />
-            <input type="button" id="cancelar" value="Cancelar" />
+        <div id="actions2" style="position: relative;top: 20px">
+            <input type="submit" id="guardar2" value="Guardar" />
+
         </div>
-        <input type="hidden" value="modificado" name="mod" id="mod" />
     </div>
-<?php echo form_close();
-echo form_open('componente2/comp22/addSolicitud/' . $tabla_id);
-?>
+    <?php
+    echo form_close();
+    echo form_open('componente2/comp22/addSolicitud/' . $tabla_id);
+    ?>
     <div id="procesos" style="margin-top: 20px;">
         <div class="campo">
             <label>Proceso de Formación que desea participar:</label>
-<?php echo form_dropdown('cap_id', $capacitaciones, set_value('cap_id', '0')); ?>
-<?php echo form_error('cap_id'); ?>
+            <?php echo form_dropdown('cap_id', $capacitaciones, set_value('cap_id', '0')); ?>
+            <?php echo form_error('cap_id'); ?>
         </div>
         <div class="campo">
             <label>Justifique por que desea Participar:</label>
             <textarea id="cxp_justificacion" name="cxp_justificacion" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('cxp_justificacion') ?></textarea>
-<?php echo form_error('cxp_justificacion'); ?>
+            <?php echo form_error('cxp_justificacion'); ?>
         </div>
-        <div id="actions2" style="position: relative;top: 20px">
-            <input type="submit" id="guardar" value="Enviar" />
-            <input type="button" id="cancelar" value="Cancelar" />
+
+        <div id="actions" style="position: relative;top: 20px">
+            <input type="submit" id="guardar2" value="Enviar" />
+            <input type="button" id="cancelar2" value="Cancelar" />
         </div>
     </div>
 </div>
+<input type="hidden" value="modificado" name="mod" id="mod" />
 <?php
 echo form_close();
 $this->load->view('plantilla/footer');
