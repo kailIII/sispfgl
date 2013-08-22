@@ -17,6 +17,8 @@ class Reportes extends CI_Controller {
     }
 
     public function index() {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         $informacion['titulo'] = 'Fortalecimiento de Gobiernos Locales';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
@@ -29,6 +31,8 @@ class Reportes extends CI_Controller {
             $this->load->view('reporte/index_pep_view');
         else if (strcmp(trim($rol[0]->rol_codigo), 'cc') == 0) {
             $this->load->view('reporte/index_cc_view', $informacion);
+        } else if (strcmp(trim($rol[0]->rol_codigo), 'prfm') == 0) {
+            $this->load->view('reporte/index_prfm_view', $informacion);
         } else {
             $this->load->model('pais/departamento');
             $informacion['deptos'] = $this->departamento->obtenerDepartamentos();
@@ -1199,7 +1203,9 @@ class Reportes extends CI_Controller {
     public function mejoraPerfil() {
         $mun_id = $this->input->post("mun_id");
         $this->load->model('pais/municipio');
+        $this->load->model('fase1-sub25/rubro_elegible', 'rub_ele');
         $muniDatos = $this->municipio->obtenerNomMunDepAlcalde($mun_id);
+        $datosRubros = $this->rub_ele->obtenerRubrosReporte($mun_id);
         $this->phpexcel->setActiveSheetIndex(0);
         $this->phpexcel->getActiveSheet()->setTitle('Seguimiento');
         $estCuerpo = array(
@@ -1210,8 +1216,43 @@ class Reportes extends CI_Controller {
                 'shrinkToFit' => true
             )
         );
+        $estCuerpoC = array(
+            'font' => array('size' => 8, 'name' => 'Arial'),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_JUSTIFY,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            )
+        );
         $estCuerpoBorde = array(
             'font' => array('size' => 8, 'name' => 'Arial'),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_JUSTIFY,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+
+        $soloBorde = array(
+            'borders' => array(
+                'outline' => array(
+                    'style' => PHPExcel_Style_Border::BORDER_THIN
+                ),
+            ),
+        );
+
+        $estCuerpoN = array(
+            'font' => array('size' => 8, 'name' => 'Arial', 'bold' => true),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_JUSTIFY,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            )
+        );
+
+        $estCuerpoBordeN = array(
+            'font' => array('size' => 8, 'name' => 'Arial', 'bold' => true),
             'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
                 'vertical' => PHPExcel_Style_Alignment::VERTICAL_JUSTIFY,
                 'wrapText' => true,
@@ -1299,6 +1340,25 @@ class Reportes extends CI_Controller {
                 ->setCellValue('E13', "Con el objeto de ayudar a cerrar el proceso de elaboración de perfil de proyecto para la ejecución del sub componente 2.5 del PFGL, se le envía un diagnóstico de lo encontrado en la información de gestión de riesgos de desastres enviada desde la municipalidad de " . $muniDatos[0]->muni . ", para efectos de ayudarle a concluir con el diseño del perfil de proyecto solicitado.");
         $this->phpexcel->getActiveSheet()->mergeCells('E13:I13');
         $this->phpexcel->getActiveSheet()->getStyle('E13:I13')->applyFromArray($estCuerpo);
+
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('E15', "RUBROS ELEGIBLES");
+        $this->phpexcel->getActiveSheet()->mergeCells('E15:F15');
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('G15', "CONCLUSIÓN");
+        $this->phpexcel->getActiveSheet()->mergeCells('G15:I15');
+        $this->phpexcel->getActiveSheet()->getStyle("E15:I15")->applyFromArray($estCuerpoBordeN);
+        $i = 16;
+        foreach ($datosRubros as $aux) {
+            $this->phpexcel->getActiveSheet()->setCellValue("E$i", $aux->nom_rub_nombre);
+            $this->phpexcel->getActiveSheet()->mergeCells("E$i:F$i");
+            $this->phpexcel->getActiveSheet()->setCellValue("G$i", $aux->rub_ele_observacion);
+            $this->phpexcel->getActiveSheet()->mergeCells("G$i:I$i");
+            $this->phpexcel->getActiveSheet()->getStyle("E$i:I$i")->applyFromArray($estCuerpoBorde);
+            $this->phpexcel->getActiveSheet()->getRowDimension("$i")->setRowHeight(40);
+            $i++;
+        }
+
         $this->phpexcel->getActiveSheet()
                 ->setCellValue('E23', "Para poderle ayudar a utilizar parte del fondo para la compra de un vehículo de transporte para casos de emergencia, tiene que presentarnos documentación que avale los rubros elegibles que le preceden " . " y haber adjudicado la consultoría para el desarrollo del Plan Municipal de Gestión de Riesgo, de lo contrario no podremos autorizarle pasar a ese nivel.");
         $this->phpexcel->getActiveSheet()->mergeCells('E23:I23');
@@ -1315,6 +1375,32 @@ class Reportes extends CI_Controller {
                 ->setCellValue('G31', "Desarrollo Local y Gestión de Riesgo");
         $this->phpexcel->getActiveSheet()->mergeCells('G31:I31');
         $this->phpexcel->getActiveSheet()->getStyle('G31:I31')->applyFromArray($estCuerpo);
+
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('B13', "INSTITUCIONES EJECUTORAS DEL PFGL");
+        $this->phpexcel->getActiveSheet()->mergeCells('B13:C13');
+        $this->phpexcel->getActiveSheet()->getStyle('B13:C13')->applyFromArray($estCuerpoN);
+
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('B15', "Subsecretaría de Desarrollo Territorial y Descentralizado (SSDTT)");
+        $this->phpexcel->getActiveSheet()->mergeCells('B15:C16');
+        $this->phpexcel->getActiveSheet()->getStyle('B15:C16')->applyFromArray($estCuerpoC);
+
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('B18', "Fondo de Inversión Social para el Desarrollo Local (FISPDL)");
+        $this->phpexcel->getActiveSheet()->mergeCells('B18:C18');
+        $this->phpexcel->getActiveSheet()->getStyle('B18:C18')->applyFromArray($estCuerpoC);
+
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('B21', "Instituto Salvadoreño de Desarrollo Municipal (ISDEM)");
+        $this->phpexcel->getActiveSheet()->mergeCells('B21:C21');
+        $this->phpexcel->getActiveSheet()->getStyle('B21:C21')->applyFromArray($estCuerpoC);
+
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('B24', "Ministerio de Hacienda (MH)");
+        $this->phpexcel->getActiveSheet()->mergeCells('B24:C24');
+        $this->phpexcel->getActiveSheet()->getStyle('B24:C24')->applyFromArray($estCuerpoC);
+        $this->phpexcel->getActiveSheet()->getStyle('B13:C25')->applyFromArray($soloBorde);
         /*
          * SALIDA DEL DOCUMENTO
          */
@@ -1386,7 +1472,7 @@ class Reportes extends CI_Controller {
         $this->phpexcel->getActiveSheet()->getColumnDimension('B')->setWidth(18);
 
         $this->phpexcel->getActiveSheet()
-                ->setCellValue('B2', 'CONSOLIDADO POR MODALIDAD DE FORMACIÓN');
+                ->setCellValue('B2', 'CONSOLIDADO POR MODALIDAD DE FORMACIÓN - INSCRITOS');
         $this->phpexcel->getActiveSheet()->mergeCells('B2:E2');
         $this->phpexcel->getActiveSheet()->getStyle('B2:E2')->applyFromArray($estEnc5);
         $this->phpexcel->getActiveSheet()
@@ -1696,6 +1782,319 @@ class Reportes extends CI_Controller {
          * SALIDA DEL DOCUMENTO
          */
         $filename = "capacitados_clasificacion_" . date("d-m-y") . ".xls"; //GUARDANDO CON ESTE NOMBRE
+        header('Content-Type: application/vnd.ms-excel');
+        header("Content-Disposition: attachment;filename=$filename");
+        header('Cache-Control: max-age=0');
+        $objWriter = PHPExcel_IOFactory::createWriter($this->phpexcel, 'Excel5');
+        $objWriter->save('php://output');
+    }
+
+    public function reportePRFM() {
+        $this->phpexcel->setActiveSheetIndex(0);
+        $this->phpexcel->getActiveSheet()->setTitle('PRFM');
+
+        /* ESTILOS */
+        $estPais = array(
+            'font' => array('bold' => true, 'size' => 10, 'name' => 'Arial'),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => 'E6E6F0')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        $estEnc = array(
+            'font' => array('bold' => true, 'size' => 10, 'name' => 'Arial'),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => 'FFFF99')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        $estEnc2 = array(
+            'font' => array('bold' => true, 'size' => 10, 'name' => 'Arial'),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => '04B431')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        $estEnc3 = array(
+            'font' => array('size' => 8, 'name' => 'Arial'),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_JUSTIFY,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        $estEnc4 = array(
+            'font' => array('bold' => true, 'size' => 8, 'name' => 'Arial', 'color' => array('rgb' => 'FFFFFF')),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => '00008A')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_JUSTIFY,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        $estEnc5 = array(
+            'font' => array('bold' => true, 'size' => 16, 'name' => 'Arial'),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => 'FFE0C2')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_JUSTIFY,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        $estRegion = array(
+            'font' => array('bold' => true, 'size' => 8, 'name' => 'Arial', 'color' => array('rgb' => 'FFFFFF')),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => '00008A')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_JUSTIFY,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        $estCuerpo = array(
+            'font' => array('size' => 8, 'name' => 'Arial'),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_JUSTIFY,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        $estCuerpoDer = array(
+            'font' => array('size' => 8, 'name' => 'Arial'),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_JUSTIFY,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        $estTotales = array(
+            'font' => array('bold' => true, 'size' => 8, 'name' => 'Arial', 'color' => array('rgb' => 'FFFFFF')),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => '000000')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_JUSTIFY,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        $estDivDepto = array(
+            'font' => array('bold' => true, 'size' => 8, 'name' => 'Arial', 'color' => array('rgb' => 'FFFFFF')),
+            'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => '008000')),
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_JUSTIFY,
+                'wrapText' => true,
+                'shrinkToFit' => true
+            ),
+            'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
+        );
+        //ENCABEZADO DEL DOCUMENTO
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('A2', 'No.');
+        $this->phpexcel->getActiveSheet()->mergeCells('A2:A4');
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('B2', 'REGION');
+        $this->phpexcel->getActiveSheet()->mergeCells('B2:B4');
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('C2', 'DEPARTAMENTO');
+        $this->phpexcel->getActiveSheet()->mergeCells('C2:C4');
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('D2', 'MUNICIPIO');
+        $this->phpexcel->getActiveSheet()->mergeCells('D2:D4');
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('E2', 'Prioridad');
+        $this->phpexcel->getActiveSheet()->mergeCells('E2:E4');
+        $this->phpexcel->getActiveSheet()->getStyle('A2:E4')->applyFromArray($estPais);
+        $this->phpexcel->getActiveSheet()->getColumnDimension('A')->setWidth(4);
+        $this->phpexcel->getActiveSheet()->getColumnDimension('B')->setWidth(15);
+        $this->phpexcel->getActiveSheet()->getColumnDimension('C')->setWidth(15);
+        $this->phpexcel->getActiveSheet()->getColumnDimension('D')->setWidth(18);
+        $this->phpexcel->getActiveSheet()->getColumnDimension('E')->setWidth(15);
+        $this->phpexcel->getActiveSheet()->getColumnDimension('F')->setWidth(15);
+        $this->phpexcel->getActiveSheet()->getColumnDimension('G')->setWidth(15);
+        $this->phpexcel->getActiveSheet()->getColumnDimension('I')->setWidth(15);
+        $this->phpexcel->getActiveSheet()->getColumnDimension('J')->setWidth(5);
+        $this->phpexcel->getActiveSheet()->getColumnDimension('K')->setWidth(5);
+        $this->phpexcel->getActiveSheet()->getColumnDimension('L')->setWidth(5);
+        $this->phpexcel->getActiveSheet()->getColumnDimension('M')->setWidth(18);
+        $this->phpexcel->getActiveSheet()->getColumnDimension('N')->setWidth(18);
+        $this->phpexcel->getActiveSheet()->getColumnDimension('O')->setWidth(18);
+
+
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('F3', 'Emisión de Solicitud');
+        $this->phpexcel->getActiveSheet()->mergeCells('F3:F4');
+        $this->phpexcel->getActiveSheet()->getStyle('F3:F4')->applyFromArray($estEnc);
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('G3', 'Recibida Solicitud');
+        $this->phpexcel->getActiveSheet()->mergeCells('G3:G4');
+        $this->phpexcel->getActiveSheet()->getStyle('G3:G4')->applyFromArray($estEnc);
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('H3', 'Fecha Acuerdo');
+        $this->phpexcel->getActiveSheet()->mergeCells('H3:H4');
+        $this->phpexcel->getActiveSheet()->getStyle('H3:H4')->applyFromArray($estEnc);
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('I3', 'Recepción de acuerdo');
+        $this->phpexcel->getActiveSheet()->mergeCells('I3:I4');
+        $this->phpexcel->getActiveSheet()->getStyle('I3:I4')->applyFromArray($estEnc);
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('J3', 'Comisión Financiera');
+        $this->phpexcel->getActiveSheet()->mergeCells('J3:L3');
+        $this->phpexcel->getActiveSheet()->getStyle('J3:L3')->applyFromArray($estEnc);
+        $this->phpexcel->getActiveSheet()->setCellValue('J4', 'Total');
+        $this->phpexcel->getActiveSheet()->setCellValue('K4', 'Hom');
+        $this->phpexcel->getActiveSheet()->setCellValue('L4', 'Muj');
+        $this->phpexcel->getActiveSheet()->getStyle('J4:L4')->applyFromArray($estEnc);
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('F2', 'Precondiciones');
+        $this->phpexcel->getActiveSheet()->mergeCells('F2:L2');
+        $this->phpexcel->getActiveSheet()->getStyle('F2:L2')->applyFromArray($estEnc);
+
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('M3', 'Aprobación Municipalidad');
+        $this->phpexcel->getActiveSheet()->mergeCells('M3:M4');
+        $this->phpexcel->getActiveSheet()->getStyle('M3:M4')->applyFromArray($estEnc2);
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('N3', 'Recibida por FISDL/UEP/AMU');
+        $this->phpexcel->getActiveSheet()->mergeCells('N3:N4');
+        $this->phpexcel->getActiveSheet()->getStyle('N3:N3')->applyFromArray($estEnc2);
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('O3', 'Solicitud de no objeción');
+        $this->phpexcel->getActiveSheet()->mergeCells('O3:O4');
+        $this->phpexcel->getActiveSheet()->getStyle('O3:O4')->applyFromArray($estEnc2);
+
+        $this->phpexcel->getActiveSheet()
+                ->setCellValue('M2', 'Elaboración de perfil y TDR');
+        $this->phpexcel->getActiveSheet()->mergeCells('M2:O2');
+        $this->phpexcel->getActiveSheet()->getStyle('M2:O2')->applyFromArray($estEnc2);
+        /*
+         * CUERPO DEL EXCEL
+         */
+
+        $this->load->model('pais/municipio');
+        $this->load->model('pais/region');
+        $this->load->model('componente2/comp24');
+        $mucipios = $this->municipio->obtenerMunicipiosTodos();
+        $region = '';
+        $depto = '';
+        $i = 5;
+        $numero = 1;
+        foreach ($mucipios as $aux) {
+            if (strcmp($aux->reg_nombre, $region) != 0) {
+                //$this->phpexcel->getActiveSheet()->setCellValue("A$i", "REGION " . strtoupper($aux->reg_nombre));
+                $this->phpexcel->getActiveSheet()->mergeCells("A$i:O$i");
+                $this->phpexcel->getActiveSheet()->getStyle("A$i:O$i")->applyFromArray($estRegion);
+                $region = $aux->reg_nombre;
+                $depto = $aux->dep_nombre;
+                $numero = 1;
+                $i++;
+            }
+            $this->phpexcel->getActiveSheet()->setCellValue("A$i", $numero);
+            $this->phpexcel->getActiveSheet()->setCellValue("B$i", $aux->reg_nombre);
+            $this->phpexcel->getActiveSheet()->setCellValue("C$i", $aux->dep_nombre);
+            $this->phpexcel->getActiveSheet()->setCellValue("D$i", $aux->mun_nombre);
+            $consulta = $this->comp24->obtenerSolicitudAyudaReporte($aux->mun_id);
+            if (count($consulta) > 0) {
+                $this->phpexcel->getActiveSheet()->setCellValue("F$i", date('d-m-Y', strtotime($consulta[0]->sol_ayu_fecha_emision)));
+                $this->phpexcel->getActiveSheet()->setCellValue("G$i", date('d-m-Y', strtotime($consulta[0]->sol_ayu_fecha_recepcion)));
+            }
+            $consulta = $this->comp24->obtenerAcuerdoMunicipalReporte($aux->mun_id);
+            if (count($consulta) > 0) {
+                $this->phpexcel->getActiveSheet()->setCellValue("H$i", date('d-m-Y', strtotime($consulta[0]->acu_mun_fecha_acuerdo)));
+                $this->phpexcel->getActiveSheet()->setCellValue("I$i", date('d-m-Y', strtotime($consulta[0]->acu_mun_fecha_recepcion)));
+                $consulta2 = $this->comp24->miembrosComisionReporte($aux->mun_id);
+                if (count($consulta2) > 0) {
+                    $this->phpexcel->getActiveSheet()->setCellValue("J$i", $consulta2[0]->total);
+                    $this->phpexcel->getActiveSheet()->setCellValue("K$i", $consulta2[0]->hom);
+                    $this->phpexcel->getActiveSheet()->setCellValue("L$i", $consulta2[0]->muj);
+                }
+            }
+            $consulta = $this->comp24->asistenciaTecnicaReporte($aux->mun_id);
+            if (count($consulta) > 0) {
+                $this->phpexcel->getActiveSheet()->setCellValue("M$i", date('d-m-Y', strtotime($consulta[0]->asi_tec_fecha_emision)));
+                $this->phpexcel->getActiveSheet()->setCellValue("N$i", date('d-m-Y', strtotime($consulta[0]->asi_tec_fecha_envio)));
+                $this->phpexcel->getActiveSheet()->setCellValue("O$i", date('d-m-Y', strtotime($consulta[0]->asi_tec_fecha_inicio)));
+            }
+
+            $this->phpexcel->getActiveSheet()->getStyle("A$i:O$i")->applyFromArray($estCuerpo);
+            $i++;
+            $numero++;
+        }
+        $i++;
+    
+// Obtenemos el número del día
+        $dia2 = date("d");
+
+// Obtenemos y traducimos el nombre del mes
+        $mes = date("F");
+        if ($mes == "January")
+            $mes = "Enero";
+        if ($mes == "February")
+            $mes = "Febrero";
+        if ($mes == "March")
+            $mes = "Marzo";
+        if ($mes == "April")
+            $mes = "Abril";
+        if ($mes == "May")
+            $mes = "Mayo";
+        if ($mes == "June")
+            $mes = "Junio";
+        if ($mes == "July")
+            $mes = "Julio";
+        if ($mes == "August")
+            $mes = "Agosto";
+        if ($mes == "September")
+            $mes = "Setiembre";
+        if ($mes == "October")
+            $mes = "Octubre";
+        if ($mes == "November")
+            $mes = "Noviembre";
+        if ($mes == "December")
+            $mes = "Diciembre";
+
+// Obtenemos el año
+        $anio = date("Y");
+        /*
+        $this->phpexcel->getActiveSheet()->setCellValue("C$i", "CONSOLIDADO AL $dia2 de $mes de $anio");
+        $this->phpexcel->getActiveSheet()->mergeCells("C$i:E$i");
+        $this->phpexcel->getActiveSheet()->getStyle("C$i:E$i")->applyFromArray($estCuerpo);
+        $i++;
+        $this->phpexcel->getActiveSheet()->setCellValue("F$i", "PROCESOS INICIADOS");
+        $regiones = $this->region->obtenerRegionesNombre();
+        $j = $i;
+        
+        foreach ($regiones as $region) {
+            $this->phpexcel->getActiveSheet()->setCellValue("D$j", $numero);
+            $this->phpexcel->getActiveSheet()->setCellValue("E$j", $depto->dep_nombre);
+            $this->phpexcel->getActiveSheet()->setCellValue("F$j", "=SUMIF(B8:B" . ($i - 9) . ",E$j,F8:F" . ($i - 9) . ")");
+            $this->phpexcel->getActiveSheet()->setCellValue("G$j", "=SUMIF(B8:B" . ($i - 9) . ",E$j,G8:G" . ($i - 9) . ")");
+            $this->phpexcel->getActiveSheet()->setCellValue("H$j", $numero);
+            $this->phpexcel->getActiveSheet()->setCellValue("I$j", $depto->dep_nombre);
+            $this->phpexcel->getActiveSheet()->setCellValue("K$j", "=SUMIF(B8:B" . ($i - 9) . ",I$j,K8:K" . ($i - 9) . ")");
+            $this->phpexcel->getActiveSheet()->setCellValue("M$j", "=SUMIF(B8:B" . ($i - 9) . ",I$j,N8:N" . ($i - 9) . ")");
+            $this->phpexcel->getActiveSheet()->getStyle("D$j:M$j")->applyFromArray($estCuerpo);
+            $this->phpexcel->getActiveSheet()->getStyle("D$j")->applyFromArray($estCuerpoDer);
+            $this->phpexcel->getActiveSheet()->getStyle("H$j")->applyFromArray($estCuerpoDer);
+            $j++;
+            $numero++;
+        }*/
+        /*
+         * SALIDA DEL DOCUMENTO
+         */
+        $filename = "reporte_prfm_" . date("d-m-y") . ".xls"; //GUARDANDO CON ESTE NOMBRE
         header('Content-Type: application/vnd.ms-excel');
         header("Content-Disposition: attachment;filename=$filename");
         header('Cache-Control: max-age=0');

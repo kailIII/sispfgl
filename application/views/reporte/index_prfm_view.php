@@ -2,8 +2,9 @@
     $(document).ready(function() {
         $("#reporte").button().click(function() {
 
-            if ($('input[name="tipo"]:checked').val() == 5)
-                $("#formulario").attr('action', '<?php echo base_url('reportes/avancesPEP'); ?>');
+            if ($('input[name="tipo"]:checked').val() == 1)
+                $("#formulario").attr('action', '<?php echo base_url('reportes/reportePRFM'); ?>');
+            
             $.ajax({
                 type: "POST",
                 cache: false,
@@ -21,7 +22,7 @@
     <h1>REPORTES</h1>
 </center>
 <form id="formulario" method="post" action="">
-    <input type="radio" name="tipo" value="5"> Avances PEP </input>
+    <input type="radio" name="tipo" value="1"> Reportes Consolidado PRFM </input>
     <br/>
     <br/>
     <input type="submit" id="reporte" value="Generar Reporte" />

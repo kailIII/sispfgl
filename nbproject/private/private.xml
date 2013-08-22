@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="5">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="6">
         <file>
             <url>application/views/componente2/subcomp25/fase1/revisionInformacion_view.php</url>
             <bookmark id="2">
@@ -30,5 +30,23 @@
                 <key/>
             </bookmark>
         </file>
+        <file>
+            <url>application/controllers/reportes.php</url>
+            <bookmark id="6">
+                <name/>
+                <line>1330</line>
+                <key/>
+            </bookmark>
+        </file>
     </editor-bookmarks>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/home/karencita/sispfgl/application/config/config.php</file>
+            <file>file:/home/karencita/sispfgl/application/controllers/componente2/comp22.php</file>
+            <file>file:/home/karencita/sispfgl/application/config/database.php</file>
+            <file>file:/home/karencita/sispfgl/application/views/componente2/subcomp22/solicitudInscripcion.php</file>
+            <file>file:/home/karencita/sispfgl/application/models/componente2/comp24.php</file>
+            <file>file:/home/karencita/sispfgl/application/controllers/reportes.php</file>
+        </group>
+    </open-files>
 </project-private>
