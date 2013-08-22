@@ -22,9 +22,9 @@ class matriz_indicadores extends CI_Controller {
 			$comp='1';
         $informacion['titulo'] = 'Matriz de Indicadores del Componente '.$comp;
         $informacion['componente']=$comp;
-        $informacion['user_id'] = $this->tank_auth->get_user_id();
-        $informacion['username'] = $this->tank_auth->get_username();
-        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        //$informacion['user_id'] = $this->tank_auth->get_user_id();
+        //$informacion['username'] = $this->tank_auth->get_username();
+        //$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('matriz_indicadores/matriz_indicadores_view', $informacion);
