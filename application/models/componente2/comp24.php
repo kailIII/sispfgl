@@ -92,6 +92,10 @@ Class comp24 extends CI_Model {
         return $this->db->delete($tabla, array($campo => $index));
     }
 
+    public function db_row_delete_two($tabla, $campo1, $index1,$campo2, $index2) {
+        return $this->db->delete($tabla, array($campo1 => $index1,$campo2 => $index2));
+    }
+
     public function insert_indicadores1($data) {
 
         return $this->db->insert('indicadores_desempeno1', $data);
@@ -100,6 +104,24 @@ Class comp24 extends CI_Model {
     public function last_id($tabla, $campo) {
         $this->db->order_by($campo, 'desc');
         return $this->db->get($tabla, '1')->row()->$campo;
+    }
+
+    public function obtenerCapacitaciones($par_id) {
+        $query = "SELECT B.cap_id,B.cap_proceso
+FROM c22_capacitaciones B 
+WHERE B.cap_id NOT IN (Select cap_id FROM c22_cxp_solicitud WHERE par_id=?) 
+ORDER BY cap_proceso";
+        $consulta = $this->db->query($query, array($par_id));
+        return $consulta->result();
+    }
+
+    public function obtenerSolicitudesParticipantes($par_id) {
+        $query = "Select B.cap_id,B.cap_proceso,A.cxp_justificacion
+FROM c22_cxp_solicitud A,c22_capacitaciones B
+WHERE A.cap_id=B.cap_id AND par_id=?
+ORDER BY cap_proceso";
+        $consulta = $this->db->query($query, array($par_id));
+        return $consulta->result();
     }
 
     /**

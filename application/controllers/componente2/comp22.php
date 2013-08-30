@@ -357,148 +357,290 @@ class Comp22 extends CI_Controller {
     public function solicitudInscripcion($id = false, $mun_id = false) {
         if (!$this->tank_auth->is_logged_in())
             redirect('/auth');                // logged in
+
+        /*
+          $tabla = $this->dbPrefix . 'participantes';
+          $campo = 'par_id';
+          $prefix = 'par_';
+
+          $view = array(
+          'titulo' => 'Componente 2.2: Capacitaciones',
+          'user_uid' => $this->tank_auth->get_user_id(),
+          'username' => $this->tank_auth->get_username(),
+          'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
+          'departamentos' => $this->comp24->getDepartamentos(),
+          'tabla_id' => $id,
+          'prefix' => $prefix
+          );
+
+          //si es nuevo crear
+          if ($id == 'new' && $mun_id > 0) {
+          $this->comp24->insert_row($tabla, array('par_ins_municipio' => $mun_id, 'mun_id' => $mun_id));
+          $id = $this->comp24->last_id($tabla, $campo);
+          echo current_url();
+          //$t = explode('/' . $id, current_url());
+          //redirect($t[0]);
+          $view = array(
+          'titulo' => 'Componente 2.2: Capacitaciones',
+          'user_uid' => $this->tank_auth->get_user_id(),
+          'username' => $this->tank_auth->get_username(),
+          'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
+          'departamentos' => $this->comp24->getDepartamentos(),
+          'tabla_id' => $id,
+          'prefix' => $prefix
+          );
+          //$_POST['mun_id'] = $mun_id;
+          }
+
+          if ($id > 0 && !isset($_POST['mod']) | $mun_id > 0) {
+          $tmp = $this->comp24->get_by_id($tabla, $campo, $id);
+          $_POST = get_object_vars($tmp);
+          $_POST[$prefix . 'birthday'] = $this->librerias->parse_output('date', $_POST[$prefix . 'birthday']);
+          }
+          //
+          //Cargamos el municipio y departamento
+          if (isset($_POST['mun_id']) && $_POST['mun_id'] > 0) {
+          $_POST['depto'] = $this->comp24->getDepto($_POST['mun_id'])->dep_nombre;
+          $_POST['muni'] = $this->comp24->get_by_Id('municipio', 'mun_id', $_POST['mun_id'])->mun_nombre;
+          $_POST['par_ins_municipio'] = $_POST['mun_id']; //$this->comp24->get_by_Id('municipio', 'mun_id', $_POST['mun_id'])->mun_nombre;
+          }
+
+          $this->form_validation->set_message('required', '*');
+          $this->form_validation->set_message('numeric', '*');
+
+          $config = array(
+          array('field' => 'depto', 'label' => 'Departamento', 'rules' => 'trim|xss_clean'),
+          array('field' => 'muni', 'label' => 'Municipio', 'rules' => 'trim|xss_clean'),
+          array('field' => 'mod', 'label' => 'Mod', 'rules' => 'required|xss_clean'),
+          array('field' => 'mun_id', 'label' => 'Municipio', 'rules' => 'trim|xss_clean'),
+          array('field' => $prefix . 'nombres', 'label' => '', 'rules' => 'trim|required|xss_clean'),
+          array('field' => $prefix . 'apellidos', 'label' => '', 'rules' => 'trim|required|xss_clean'),
+          array('field' => $prefix . 'birthplace', 'label' => '', 'rules' => 'trim|required|xss_clean'),
+          array('field' => $prefix . 'birthday', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
+          array('field' => $prefix . 'sexo', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
+          array('field' => $prefix . 'dui', 'label' => 'Fecha', 'rules' => 'trim|xss_clean|numeric'),
+          array('field' => $prefix . 'dir_tipo', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
+          array('field' => $prefix . 'dir_nombre', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
+          array('field' => $prefix . 'dir_calle', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
+          array('field' => $prefix . 'dir_casa', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
+          array('field' => $prefix . 'dir_municipio', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
+          array('field' => $prefix . 'telefono', 'label' => 'Fecha', 'rules' => 'trim|xss_clean|numeric'),
+          array('field' => $prefix . 'movil', 'label' => 'Fecha', 'rules' => 'trim|xss_clean|numeric'),
+          array('field' => $prefix . 'nivel', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
+          array('field' => $prefix . 'titulos', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
+          array('field' => $prefix . 'ins_municipio', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
+          array('field' => $prefix . 'ins_cargo', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
+          array('field' => $prefix . 'ins_categoria', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
+          array('field' => $prefix . 'ins_nivel', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
+          array('field' => $prefix . 'ins_tiempo', 'label' => 'Fecha', 'rules' => 'trim|xss_clean|numeric'),
+          array('field' => $prefix . 'ins_tiempo2', 'label' => 'Fecha', 'rules' => 'trim|xss_clean|numeric'),
+          array('field' => $prefix . 'ins_servicio', 'label' => 'Fecha', 'rules' => 'trim|xss_clean|numeric'),
+          array('field' => $prefix . 'ins_servicio2', 'label' => 'Fecha', 'rules' => 'trim|xss_clean|numeric'),
+          array('field' => $prefix . 'ins_telefono', 'label' => 'Fecha', 'rules' => 'trim|xss_clean|numeric'),
+          array('field' => $prefix . 'ins_movil', 'label' => 'Fecha', 'rules' => 'trim|xss_clean|numeric'),
+          array('field' => $prefix . 'acepta', 'label' => 'Fecha', 'rules' => 'trim|xss_clean')
+          );
+
+          //
+          $view['capacitaciones'] = $this->getDataDropbox('capacitaciones', 'cap_id', 'cap_proceso', true);
+
+          $this->form_validation->set_rules($config);
+
+          $data['errors'] = array();
+          $mensaje = false;
+
+          if ($this->form_validation->run()) {
+          $datos = array(
+          $prefix . 'nombres' => $this->form_validation->set_value($prefix . 'nombres'),
+          $prefix . 'apellidos' => $this->form_validation->set_value($prefix . 'apellidos'),
+          $prefix . 'birthplace' => $this->form_validation->set_value($prefix . 'birthplace'),
+          $prefix . 'birthday' => $this->comp24->changeDate($this->form_validation->set_value($prefix . 'birthday')),
+          $prefix . 'sexo' => $this->form_validation->set_value($prefix . 'sexo'),
+          $prefix . 'dui' => $this->form_validation->set_value($prefix . 'dui'),
+          $prefix . 'dir_tipo' => $this->form_validation->set_value($prefix . 'dir_tipo'),
+          $prefix . 'dir_nombre' => $this->form_validation->set_value($prefix . 'dir_nombre'),
+          $prefix . 'dir_calle' => $this->form_validation->set_value($prefix . 'dir_calle'),
+          $prefix . 'dir_casa' => $this->form_validation->set_value($prefix . 'dir_casa'),
+          $prefix . 'dir_municipio' => $this->form_validation->set_value($prefix . 'dir_municipio'),
+          $prefix . 'telefono' => $this->form_validation->set_value($prefix . 'telefono'),
+          $prefix . 'movil' => $this->form_validation->set_value($prefix . 'movil'),
+          $prefix . 'nivel' => $this->form_validation->set_value($prefix . 'nivel'),
+          $prefix . 'titulos' => $this->form_validation->set_value($prefix . 'titulos'),
+          $prefix . 'ins_municipio' => $this->form_validation->set_value($prefix . 'ins_municipio'),
+          $prefix . 'ins_cargo' => $this->form_validation->set_value($prefix . 'ins_cargo'),
+          $prefix . 'ins_categoria' => $this->form_validation->set_value($prefix . 'ins_categoria'),
+          $prefix . 'ins_nivel' => $this->form_validation->set_value($prefix . 'ins_nivel'),
+          $prefix . 'ins_tiempo' => $this->form_validation->set_value($prefix . 'ins_tiempo'),
+          $prefix . 'ins_tiempo2' => $this->form_validation->set_value($prefix . 'ins_tiempo2'),
+          $prefix . 'ins_servicio' => $this->form_validation->set_value($prefix . 'ins_servicio'),
+          $prefix . 'ins_servicio2' => $this->form_validation->set_value($prefix . 'ins_servicio2'),
+          $prefix . 'ins_telefono' => $this->form_validation->set_value($prefix . 'ins_telefono'),
+          $prefix . 'ins_movil' => $this->form_validation->set_value($prefix . 'ins_movil'),
+          $prefix . 'acepta' => $this->form_validation->set_value($prefix . 'acepta'),
+          );
+
+          if (!is_null($data = $this->comp24->update_row($tabla, $campo, $id, $datos))) {
+          $this->session->set_flashdata('message', 'Ok');
+          $t = explode('/' . $id, current_url());
+          redirect($t[0]);
+          $view = array(
+          'titulo' => 'Componente 2.2: Capacitaciones',
+          'user_uid' => $this->tank_auth->get_user_id(),
+          'username' => $this->tank_auth->get_username(),
+          'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
+          'departamentos' => $this->comp24->getDepartamentos(),
+          'tabla_id' => $id,
+          'prefix' => $prefix,
+          'paso2' => true
+          );
+          } else {
+          $errors = $this->tank_auth->get_error_message();
+          foreach ($errors as $k => $v)
+          $data['errors'][$k] = $this->lang->line($v);
+          }
+          }
+
+          $this->load->view($this->ruta . 'solicitudInscripcion', $view);
+         * 
+         */
+
+        $informacion['titulo'] = 'Componente 2.2: Capacitaciones';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $this->load->model('pais/departamento');
+        $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/subcomp22/solicitud_inscripcion_view');
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function agregarEmpleado($mun_id) {
+        $tabla = $this->dbPrefix . 'participantes';
+        $campo = 'par_id';
+        $this->comp24->insert_row($tabla, array('par_ins_municipio' => $mun_id, 'mun_id' => $mun_id));
+        $id = $this->comp24->last_id($tabla, $campo);
+        $rows[0]['id'] = $id;
+        $rows[0]['cell'] = array($id);
+        $numfilas = 1;
+        $datos = json_encode($rows);
+        $pages = floor(1 / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+
+    public function guardarSolicitud($mun_id) {
         $tabla = $this->dbPrefix . 'participantes';
         $campo = 'par_id';
         $prefix = 'par_';
-
-        $view = array(
-            'titulo' => 'Componente 2.2: Capacitaciones',
-            'user_uid' => $this->tank_auth->get_user_id(),
-            'username' => $this->tank_auth->get_username(),
-            'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
-            'departamentos' => $this->comp24->getDepartamentos(),
-            'tabla_id' => $id,
-            'prefix' => $prefix
+        if ($this->input->post($prefix . 'birthday') == '')
+            $fecha = null;
+        else
+            $fecha = $this->input->post($prefix . 'birthday');
+        $datos = array(
+            $prefix . 'nombres' => $this->input->post($prefix . 'nombres'),
+            $prefix . 'apellidos' => $this->input->post($prefix . 'apellidos'),
+            $prefix . 'birthplace' => $this->input->post($prefix . 'birthplace'),
+            $prefix . 'birthday' => $fecha,
+            $prefix . 'sexo' => $this->input->post($prefix . 'sexo'),
+            $prefix . 'dui' => $this->input->post($prefix . 'dui'),
+            $prefix . 'dir_tipo' => $this->input->post($prefix . 'dir_tipo'),
+            $prefix . 'dir_nombre' => $this->input->post($prefix . 'dir_nombre'),
+            $prefix . 'dir_calle' => $this->input->post($prefix . 'dir_calle'),
+            $prefix . 'dir_casa' => $this->input->post($prefix . 'dir_casa'),
+            $prefix . 'dir_municipio' => $this->input->post($prefix . 'dir_municipio'),
+            $prefix . 'telefono' => $this->input->post($prefix . 'telefono'),
+            $prefix . 'movil' => $this->input->post($prefix . 'movil'),
+            $prefix . 'nivel' => $this->input->post($prefix . 'nivel'),
+            $prefix . 'titulos' => $this->input->post($prefix . 'titulos'),
+            $prefix . 'ins_municipio' => $mun_id,
+            $prefix . 'ins_cargo' => $this->input->post($prefix . 'ins_cargo'),
+            $prefix . 'ins_categoria' => $this->input->post($prefix . 'ins_categoria'),
+            $prefix . 'ins_nivel' => $this->input->post($prefix . 'ins_nivel'),
+            $prefix . 'ins_tiempo' => $this->input->post($prefix . 'ins_tiempo'),
+            $prefix . 'ins_tiempo2' => $this->input->post($prefix . 'ins_tiempo2'),
+            $prefix . 'ins_servicio' => $this->input->post($prefix . 'ins_servicio'),
+            $prefix . 'ins_servicio2' => $this->input->post($prefix . 'ins_servicio2'),
+            $prefix . 'ins_telefono' => $this->input->post($prefix . 'ins_telefono'),
+            $prefix . 'ins_movil' => $this->input->post($prefix . 'ins_movil'),
+            $prefix . 'acepta' => 1
         );
+        $this->comp24->update_row($tabla, $campo, $this->input->post($prefix . 'id'), $datos);
+    }
 
-        //si es nuevo crear
-        if ($id == 'new' && $mun_id > 0) {
-            $this->comp24->insert_row($tabla, array('par_ins_municipio' => $mun_id, 'mun_id' => $mun_id));
-            $id = $this->comp24->last_id($tabla, $campo);
-            echo current_url();
-            //$t = explode('/' . $id, current_url());
-            //redirect($t[0]);
-             $view = array(
-                'titulo' => 'Componente 2.2: Capacitaciones',
-                'user_uid' => $this->tank_auth->get_user_id(),
-                'username' => $this->tank_auth->get_username(),
-                'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
-                'departamentos' => $this->comp24->getDepartamentos(),
-                'tabla_id' => $id,
-                'prefix' => $prefix
+    public function borrarSolicitud($par_id) {
+        $tabla = $this->dbPrefix . 'participantes';
+        $campo = 'par_id';
+        $this->comp24->db_row_delete($tabla, $campo, $par_id);
+        redirect(base_url());
+    }
+
+    public function cargarCapacitaciones($par_id) {
+        $consultoras = $this->comp24->obtenerCapacitaciones($par_id);
+        $combo = "<select name='cap_id'>";
+        $combo.= " <option value='0'> -- Seleccione --</option>";
+        foreach ($consultoras as $aux)
+            $combo.= " <option value='" . $aux->cap_id . "'>" . $aux->cap_proceso . "</option>";
+        $combo.="</select>";
+
+        echo $combo;
+    }
+
+    public function cargarCapacitacionesPar($par_id) {
+        $this->load->model('procesoAdministrativo/consultores_interes', 'conInt');
+        $consultoresInt = $this->comp24->obtenerSolicitudesParticipantes($par_id);
+        $numfilas = count($consultoresInt);
+
+        $i = 0;
+        $rows = array();
+
+        foreach ($consultoresInt as $aux) {
+            $rows[$i]['id'] = $aux->cap_id;
+            $rows[$i]['cell'] = array($aux->cap_id,
+                $aux->cap_proceso,
+                $aux->cxp_justificacion
             );
-            //$_POST['mun_id'] = $mun_id;
+            $i++;
         }
+        array_multisort($rows, SORT_ASC);
 
-        if ($id > 0 && !isset($_POST['mod']) | $mun_id > 0) {
-            $tmp = $this->comp24->get_by_id($tabla, $campo, $id);
-            $_POST = get_object_vars($tmp);
-            $_POST[$prefix . 'birthday'] = $this->librerias->parse_output('date', $_POST[$prefix . 'birthday']);
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+    
+     public function guardarCapacitaciones($par_id) {
+        /* VARIABLES POST */
+        /* LOS COMUNES */
+        $id = $this->input->post("id");
+        $cap_id = $this->input->post("cap_id");
+        $cxp_justificacion = $this->input->post("cxp_justificacion");
+        
+        $tabla = $this->dbPrefix . 'cxp_solicitud';
+       
+        switch ($this->input->post('oper')) {
+            case 'add':
+                $this->comp24->insert_row($tabla, array('cap_id' => $cap_id, 'par_id' => $par_id,'cxp_justificacion'=>$cxp_justificacion));
+                break;
+            case 'del':
+                $this->comp24->db_row_delete_two($tabla,'par_id', $par_id,'cap_id',$id);
+                break;
         }
-        //
-        //Cargamos el municipio y departamento
-        if (isset($_POST['mun_id']) && $_POST['mun_id'] > 0) {
-            $_POST['depto'] = $this->comp24->getDepto($_POST['mun_id'])->dep_nombre;
-            $_POST['muni'] = $this->comp24->get_by_Id('municipio', 'mun_id', $_POST['mun_id'])->mun_nombre;
-            $_POST['par_ins_municipio'] = $_POST['mun_id']; //$this->comp24->get_by_Id('municipio', 'mun_id', $_POST['mun_id'])->mun_nombre;
-        }
-
-        $this->form_validation->set_message('required', '*');
-        $this->form_validation->set_message('numeric', '*');
-
-        $config = array(
-            array('field' => 'depto', 'label' => 'Departamento', 'rules' => 'trim|xss_clean'),
-            array('field' => 'muni', 'label' => 'Municipio', 'rules' => 'trim|xss_clean'),
-            array('field' => 'mod', 'label' => 'Mod', 'rules' => 'required|xss_clean'),
-            array('field' => 'mun_id', 'label' => 'Municipio', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix . 'nombres', 'label' => '', 'rules' => 'trim|required|xss_clean'),
-            array('field' => $prefix . 'apellidos', 'label' => '', 'rules' => 'trim|required|xss_clean'),
-            array('field' => $prefix . 'birthplace', 'label' => '', 'rules' => 'trim|required|xss_clean'),
-            array('field' => $prefix . 'birthday', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix . 'sexo', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix . 'dui', 'label' => 'Fecha', 'rules' => 'trim|xss_clean|numeric'),
-            array('field' => $prefix . 'dir_tipo', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix . 'dir_nombre', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix . 'dir_calle', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix . 'dir_casa', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix . 'dir_municipio', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix . 'telefono', 'label' => 'Fecha', 'rules' => 'trim|xss_clean|numeric'),
-            array('field' => $prefix . 'movil', 'label' => 'Fecha', 'rules' => 'trim|xss_clean|numeric'),
-            array('field' => $prefix . 'nivel', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix . 'titulos', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix . 'ins_municipio', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix . 'ins_cargo', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix . 'ins_categoria', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix . 'ins_nivel', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix . 'ins_tiempo', 'label' => 'Fecha', 'rules' => 'trim|xss_clean|numeric'),
-            array('field' => $prefix . 'ins_tiempo2', 'label' => 'Fecha', 'rules' => 'trim|xss_clean|numeric'),
-            array('field' => $prefix . 'ins_servicio', 'label' => 'Fecha', 'rules' => 'trim|xss_clean|numeric'),
-            array('field' => $prefix . 'ins_servicio2', 'label' => 'Fecha', 'rules' => 'trim|xss_clean|numeric'),
-            array('field' => $prefix . 'ins_telefono', 'label' => 'Fecha', 'rules' => 'trim|xss_clean|numeric'),
-            array('field' => $prefix . 'ins_movil', 'label' => 'Fecha', 'rules' => 'trim|xss_clean|numeric'),
-            array('field' => $prefix . 'acepta', 'label' => 'Fecha', 'rules' => 'trim|xss_clean')
-        );
-
-        //
-        $view['capacitaciones'] = $this->getDataDropbox('capacitaciones', 'cap_id', 'cap_proceso', true);
-
-        $this->form_validation->set_rules($config);
-
-        $data['errors'] = array();
-        $mensaje = false;
-
-        if ($this->form_validation->run()) {
-            $datos = array(
-                $prefix . 'nombres' => $this->form_validation->set_value($prefix . 'nombres'),
-                $prefix . 'apellidos' => $this->form_validation->set_value($prefix . 'apellidos'),
-                $prefix . 'birthplace' => $this->form_validation->set_value($prefix . 'birthplace'),
-                $prefix . 'birthday' => $this->comp24->changeDate($this->form_validation->set_value($prefix . 'birthday')),
-                $prefix . 'sexo' => $this->form_validation->set_value($prefix . 'sexo'),
-                $prefix . 'dui' => $this->form_validation->set_value($prefix . 'dui'),
-                $prefix . 'dir_tipo' => $this->form_validation->set_value($prefix . 'dir_tipo'),
-                $prefix . 'dir_nombre' => $this->form_validation->set_value($prefix . 'dir_nombre'),
-                $prefix . 'dir_calle' => $this->form_validation->set_value($prefix . 'dir_calle'),
-                $prefix . 'dir_casa' => $this->form_validation->set_value($prefix . 'dir_casa'),
-                $prefix . 'dir_municipio' => $this->form_validation->set_value($prefix . 'dir_municipio'),
-                $prefix . 'telefono' => $this->form_validation->set_value($prefix . 'telefono'),
-                $prefix . 'movil' => $this->form_validation->set_value($prefix . 'movil'),
-                $prefix . 'nivel' => $this->form_validation->set_value($prefix . 'nivel'),
-                $prefix . 'titulos' => $this->form_validation->set_value($prefix . 'titulos'),
-                $prefix . 'ins_municipio' => $this->form_validation->set_value($prefix . 'ins_municipio'),
-                $prefix . 'ins_cargo' => $this->form_validation->set_value($prefix . 'ins_cargo'),
-                $prefix . 'ins_categoria' => $this->form_validation->set_value($prefix . 'ins_categoria'),
-                $prefix . 'ins_nivel' => $this->form_validation->set_value($prefix . 'ins_nivel'),
-                $prefix . 'ins_tiempo' => $this->form_validation->set_value($prefix . 'ins_tiempo'),
-                $prefix . 'ins_tiempo2' => $this->form_validation->set_value($prefix . 'ins_tiempo2'),
-                $prefix . 'ins_servicio' => $this->form_validation->set_value($prefix . 'ins_servicio'),
-                $prefix . 'ins_servicio2' => $this->form_validation->set_value($prefix . 'ins_servicio2'),
-                $prefix . 'ins_telefono' => $this->form_validation->set_value($prefix . 'ins_telefono'),
-                $prefix . 'ins_movil' => $this->form_validation->set_value($prefix . 'ins_movil'),
-                $prefix . 'acepta' => $this->form_validation->set_value($prefix . 'acepta'),
-            );
-
-            if (!is_null($data = $this->comp24->update_row($tabla, $campo, $id, $datos))) {
-                $this->session->set_flashdata('message', 'Ok');
-                $t = explode('/' . $id, current_url());
-                redirect($t[0]);
-                $view = array(
-                    'titulo' => 'Componente 2.2: Capacitaciones',
-                    'user_uid' => $this->tank_auth->get_user_id(),
-                    'username' => $this->tank_auth->get_username(),
-                    'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
-                    'departamentos' => $this->comp24->getDepartamentos(),
-                    'tabla_id' => $id,
-                    'prefix' => $prefix,
-                    'paso2' => true
-                );
-            } else {
-                $errors = $this->tank_auth->get_error_message();
-                foreach ($errors as $k => $v)
-                    $data['errors'][$k] = $this->lang->line($v);
-            }
-        }
-
-        $this->load->view($this->ruta . 'solicitudInscripcion', $view);
     }
 
     public function addSolicitud($par_id) {
@@ -521,16 +663,16 @@ class Comp22 extends CI_Controller {
                 $data['errors'][$k] = $this->lang->line($v);
         }
     }
-    
-    public function rpt_por_modalidad(){
+
+    public function rpt_por_modalidad() {
         if (!$this->tank_auth->is_logged_in())
             redirect('/auth');                // logged in
-        
+
         $modalidades = array(
             '1' => 'Inscritos',
             '2' => 'No Inscritos'
         );
-        
+
         $sql = "
 Select
   c22_capacitaciones.cap_proceso As proceso,
@@ -547,8 +689,8 @@ Select
 From c22_capacitaciones;
         ";
         $dat = $this->db->query($sql);
-        $data = ( $dat->num_rows() > 0 )? $dat->result() : array();
-        
+        $data = ( $dat->num_rows() > 0 ) ? $dat->result() : array();
+
         $sql2 = "
 Select
   c22_capacitaciones.cap_proceso as proceso,
@@ -598,8 +740,8 @@ From
   c22_capacitaciones;
         ";
         $dat = $this->db->query($sql2);
-        $data2 = ( $dat->num_rows() > 0 )? $dat->result() : array();
-        
+        $data2 = ( $dat->num_rows() > 0 ) ? $dat->result() : array();
+
         $view = array(
             'titulo' => 'Componente 2.2: Reportes',
             'user_uid' => $this->tank_auth->get_user_id(),
@@ -609,19 +751,19 @@ From
             'data' => $data,
             'data2' => $data2
         );
-        
+
         $this->load->view($this->ruta . 'rpt_por_modalidad', $view);
     }
 
-    public function rpt_por_municipio($mun = 0){
+    public function rpt_por_municipio($mun = 0) {
         if (!$this->tank_auth->is_logged_in())
             redirect('/auth');                // logged in
-        
+
         $modalidades = array(
             '1' => 'Inscritos',
             '2' => 'No Inscritos'
         );
-        
+
         $sql = "
 Select
   c22_capacitaciones.cap_proceso As proceso,
@@ -638,9 +780,9 @@ Select
 From c22_capacitaciones;
         ";
         $dat = $this->db->query($sql);
-        $data = ( $dat->num_rows() > 0 )? $dat->result() : array();
-        
-        
+        $data = ( $dat->num_rows() > 0 ) ? $dat->result() : array();
+
+
         $view = array(
             'titulo' => 'Componente 2.2: Reportes',
             'user_uid' => $this->tank_auth->get_user_id(),
@@ -650,9 +792,10 @@ From c22_capacitaciones;
             'departamentos' => $this->comp24->getDepartamentos(),
             'data' => $data
         );
-        
+
         $this->load->view($this->ruta . 'rpt_por_municipio', $view);
     }
+
 }
 
 ?>
