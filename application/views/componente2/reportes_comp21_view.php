@@ -15,7 +15,7 @@
                 $("#formulario").attr('action', '<?php echo base_url(''); ?>');
             else
             if ($('input[name="tipo"]:checked').val() == 5)
-                $("#formulario").attr('action', '<?php echo base_url('index.php/componente2/componente21/reporte_ccc_por_muni'); ?>');
+                $("#formulario").attr('action', '<?php echo base_url('componente2/componente21/reporte_ccc_por_muni'); ?>');
 
             $.ajax({
                 type: "POST",

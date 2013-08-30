@@ -230,7 +230,7 @@
 ?>
 <?php if(isset($aviso))
 	echo $aviso;?>
-<h2>3.2.1 Formaci&oacute;n de Concenso y Discusi&oacute;n de la Politica de Descentralizaci&oacute;n</h2>
+<h2>3.2.1 Formaci&oacute;n de Consenso y Discusi&oacute;n de la Politica de Descentralizaci&oacute;n</h2>
 <br/>
 
 		<table id="actividades"></table>

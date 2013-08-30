@@ -6,7 +6,14 @@
             echo $menu;
         else {
             ?>
-            <li><a >Avance</a> </li>                   
+            <li><a >Avance</a>
+				<ul style="position:absolute; z-index:1;" >
+                    <li><a href="<?php echo base_url('matriz_indicadores/matriz_indicadores/gestion_matriz/1'); ?>">Matriz de Indicadores - Componente 1</a></li>
+                    <li><a href="<?php echo base_url('matriz_indicadores/matriz_indicadores/gestion_matriz/2'); ?>">Matriz de Indicadores - Componente 2</a></li>
+                    <li><a href="<?php echo base_url('matriz_indicadores/matriz_indicadores/gestion_matriz/3'); ?>">Matriz de Indicadores - Componente 3</a></li>
+                    <li><a href="<?php echo base_url('matriz_indicadores/matriz_indicadores/gestion_matriz/4'); ?>">Matriz de Indicadores - Componente 4</a></li>
+                </ul>
+            </li>                   
             <li><a >Mapas</a>
                 <ul style="position:absolute; z-index:1;" >
                     <li><a href="<?php echo base_url('mapas/showmaps'); ?>">Partidos Politicos de Gobierno</a></li>

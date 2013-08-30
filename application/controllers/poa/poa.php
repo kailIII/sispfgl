@@ -36,8 +36,15 @@ class poa extends CI_Controller {
 		$config['allowed_types'] = 'xls|xlsx';
 		$config['max_size']	= '0';
 		
-		if(file_exists('documentos/seguimiento_poa/poa_base.xlsx'))
-			$config['file_name'] = 'poa_seguimiento_'.date("d-m-y");
+		
+		if(file_exists('documentos/seguimiento_poa/poa_base.xlsx')){
+				if(isset($_POST['subs'])){
+					unlink('documentos/seguimiento_poa/poa_base.xlsx');
+					$config['file_name']='poa_base';
+				}
+				else 
+				$config['file_name'] = 'poa_seguimiento_'.date("d-m-y");
+		}
 		else
 			$config['file_name']='poa_base';
 		
@@ -68,6 +75,9 @@ class poa extends CI_Controller {
 			//$this->excel_todb($data2['file_name']);
 			
 			$informacion['titulo'] = 'Archivo Subido con Exito.';//'Subida de Archivo: '.$data2['file_name'].' name: '.$excel->val(10,'A');
+			$informacion['user_id'] = $this->tank_auth->get_user_id();
+			$informacion['username'] = $this->tank_auth->get_username();
+			$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
 			$this->load->view('plantilla/header', $informacion);
 			$this->load->view('plantilla/menu', $informacion);
 			$this->load->view('poa/subida_exitosa_view',$data);
@@ -111,7 +121,7 @@ class poa extends CI_Controller {
 		unset($datos['guardar']);
 		
 		//configuracion del archivo adjunto a subir
-		$config['upload_path'] = 'documentos/seguimiento_poa/gestion_riesgo';
+		$config['upload_path'] = 'documentos/seguimiento_poa/gestion_riesgo/';
 		$config['allowed_types'] = 'xls|xlsx';
 		//$config['max_size']	= '2048';
 		
@@ -172,7 +182,7 @@ class poa extends CI_Controller {
 				$this->poa_model->get_mun_nombre($aux->id_mun),
                 $aux->anio_poa_gr,
                 $aux->estado_poa_gr,
-                $aux->$arch
+                $arch
             );
             $i++;
         }
@@ -196,11 +206,17 @@ class poa extends CI_Controller {
         echo $jsonresponse;
     }
     
+    public function actualizar_estado_poa_gr() {
+			 $gr = $_POST;
+			 $this->load->model('poa/poa_model');
+			 $this->poa_model->actualizar_estado_poa_gr($gr);
+	}
+    
     public function subir_poa_rf(){//rescate financiero
 		$informacion['titulo'] = 'Subir Archivo POA - Rescate Financiero';
         //require_once 'excel_reader2.php';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
-        informacion['username'] = $this->tank_auth->get_username();
+        $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
@@ -238,8 +254,8 @@ class poa extends CI_Controller {
 					
 					$ruta=$config['upload_path'].$datos_arch['file_name'];
 					
-					//$this->load->model('componente3/componente3_model');
-					//$this->componente3_model->insertar_dd($datos_dd,$ruta1,$ruta2);				
+					$this->load->model('poa/poa_model');
+					$this->poa_model->insertar_poa_rf($datos,$ruta);			
 					
 					$informacion['titulo'] = 'Subir Archivo POA - Rescate Financiero';
 					$informacion['user_id'] = $this->tank_auth->get_user_id();
@@ -257,6 +273,53 @@ class poa extends CI_Controller {
 		//	echo $prueba[$i]['sec_id'];
 		
     }
+    
+    public function cargar_docs_rf() {
+        $this->load->model('poa/poa_model');
+        $docs = $this->poa_model->get_docs_gr();
+        $numfilas = count($docs);
+
+        $i = 0;
+        foreach ($docs as $aux) {
+			
+			if($aux->doc_poa_gr!='')
+				$arch='<a href="'.base_url().''.$aux->doc_poa_gr.'">Descargar</a>';
+            else $arch='No disponible';
+			
+            $rows[$i]['id'] = $aux->id_poa_gr;
+            $rows[$i]['cell'] = array($aux->id_poa_gr,
+				$this->poa_model->get_mun_nombre($aux->id_mun),
+                $aux->anio_poa_gr,
+                $aux->estado_poa_gr,
+                $arch
+            );
+            $i++;
+        }
+
+        if ($numfilas != 0) {
+            array_multisort($rows, SORT_ASC);
+        } else {
+            //$rows[0]['id'] = 0;
+           // $rows[0]['cell'] = array('0', ' ', ' ', ' ', ' ', ' ');
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+    
+    public function actualizar_estado_poa_rf() {
+			 $rf = $_POST;
+			 $this->load->model('poa/poa_model');
+			 $this->poa_model->actualizar_estado_poa_rf($rf);
+	}
 		
 	public function comparar_poa($new_file){
 		$this->load->library('PHPExcel');
@@ -385,41 +448,44 @@ class poa extends CI_Controller {
 		$poa_comp->getActiveSheet()->getCell("G".$i)->getValue();
 		$report->getActiveSheet()->setCellValue("B".$i, $poa_base->getActiveSheet()->getCell("G".$i)->getValue() - $poa_comp->getActiveSheet()->getCell("G".$i)->getValue());
 		*/
-		$i=0; $j=0;
-		for($i=9;$i<185;$i++){
+		$i=0; $j=5;
+		for($i=9;$i<223;$i++){
 			
 			$comp=$poa_base->getActiveSheet()->getCell("B".$i);
 			if($comp!=''){ //si la celda B$i no esta vacia
 				if($comp=='1'||$comp=='2'||$comp=='3'||$comp=='4'){ //Si es un Componente
 					
-					$report->getActiveSheet()->mergeCells("A".$i.":C".$i);
-					$report->getActiveSheet()->setCellValue("A".$i, $comp.' '.$poa_base->getActiveSheet()->getCell("C".$i)->getValue());
-					$report->getActiveSheet()->setCellValue("D".$i, $poa_base->getActiveSheet()->getCell("G".$i)->getValue());
-					$report->getActiveSheet()->setCellValue("E".$i, $poa_comp->getActiveSheet()->getCell("G".$i)->getValue());
-					$report->getActiveSheet()->setCellValue("F".$i, substr($poa_base->getActiveSheet()->getCell("G".$i)->getValue(),1,-1) - substr($poa_comp->getActiveSheet()->getCell("G".$i)->getValue(),1,-1));
-					$report->getActiveSheet()->getStyle("A".$i.":F".$i)->applyFromArray($estComp);
+					$report->getActiveSheet()->mergeCells("A".$j.":C".$j);
+					$report->getActiveSheet()->setCellValue("A".$j, $comp.' '.$poa_base->getActiveSheet()->getCell("C".$i)->getValue());
+					$report->getActiveSheet()->setCellValue("D".$j, $poa_base->getActiveSheet()->getCell("G".$i)->getValue());
+					$report->getActiveSheet()->setCellValue("E".$j, $poa_comp->getActiveSheet()->getCell("G".$i)->getValue());
+					$report->getActiveSheet()->setCellValue("F".$j, substr($poa_base->getActiveSheet()->getCell("G".$i)->getValue(),1,-1) - substr($poa_comp->getActiveSheet()->getCell("G".$i)->getValue(),1,-1));
+					$report->getActiveSheet()->getStyle("A".$j.":F".$j)->applyFromArray($estComp);
+					$j++;
 					
 				}
 				else{ //Es Subcomponente
 					
-					$report->getActiveSheet()->mergeCells("A".$i.":C".$i);
-					$report->getActiveSheet()->setCellValue("A".$i, ' '.$comp.' '.$poa_base->getActiveSheet()->getCell("C".$i)->getValue());
-					$report->getActiveSheet()->setCellValue("D".$i, $poa_base->getActiveSheet()->getCell("G".$i)->getValue());
-					$report->getActiveSheet()->setCellValue("E".$i, $poa_comp->getActiveSheet()->getCell("G".$i)->getValue());
-					$report->getActiveSheet()->setCellValue("F".$i, substr($poa_base->getActiveSheet()->getCell("G".$i)->getValue(),1,-1) - substr($poa_comp->getActiveSheet()->getCell("G".$i)->getValue(),1,-1));
-					$report->getActiveSheet()->getStyle("A".$i.":F".$i)->applyFromArray($estSubComp);
+					$report->getActiveSheet()->mergeCells("A".$j.":C".$j);
+					$report->getActiveSheet()->setCellValue("A".$j, ' '.$comp.' '.$poa_base->getActiveSheet()->getCell("C".$i)->getValue());
+					$report->getActiveSheet()->setCellValue("D".$j, $poa_base->getActiveSheet()->getCell("G".$i)->getValue());
+					$report->getActiveSheet()->setCellValue("E".$j, $poa_comp->getActiveSheet()->getCell("G".$i)->getValue());
+					$report->getActiveSheet()->setCellValue("F".$j, substr($poa_base->getActiveSheet()->getCell("G".$i)->getValue(),1,-1) - substr($poa_comp->getActiveSheet()->getCell("G".$i)->getValue(),1,-1));
+					$report->getActiveSheet()->getStyle("A".$j.":F".$j)->applyFromArray($estSubComp);
+					$j++;
 				}
 			}
 			else{
 				$comp=$poa_base->getActiveSheet()->getCell("C".$i);
 				if($comp!=''){//Es Macro Actividad
 					
-					$report->getActiveSheet()->mergeCells("A".$i.":C".$i);
-					$report->getActiveSheet()->setCellValue("A".$i, '   '.$comp.' '.$poa_base->getActiveSheet()->getCell("D".$i)->getValue());
-					$report->getActiveSheet()->setCellValue("D".$i, $poa_base->getActiveSheet()->getCell("G".$i)->getValue());
-					$report->getActiveSheet()->setCellValue("E".$i, $poa_comp->getActiveSheet()->getCell("G".$i)->getValue());
-					$report->getActiveSheet()->setCellValue("F".$i, substr($poa_base->getActiveSheet()->getCell("G".$i)->getValue(),1,-1) - substr($poa_comp->getActiveSheet()->getCell("G".$i)->getValue(),1,-1));
-					$report->getActiveSheet()->getStyle("A".$i.":F".$i)->applyFromArray($estMacroAct);
+					$report->getActiveSheet()->mergeCells("A".$j.":C".$j);
+					$report->getActiveSheet()->setCellValue("A".$j, '   '.$comp.' '.$poa_base->getActiveSheet()->getCell("D".$i)->getValue());
+					$report->getActiveSheet()->setCellValue("D".$j, $poa_base->getActiveSheet()->getCell("G".$i)->getValue());
+					$report->getActiveSheet()->setCellValue("E".$j, $poa_comp->getActiveSheet()->getCell("G".$i)->getValue());
+					$report->getActiveSheet()->setCellValue("F".$j, substr($poa_base->getActiveSheet()->getCell("G".$i)->getValue(),1,-1) - substr($poa_comp->getActiveSheet()->getCell("G".$i)->getValue(),1,-1));
+					$report->getActiveSheet()->getStyle("A".$j.":F".$j)->applyFromArray($estMacroAct);
+					$j++;
 				
 				}
 				else{
@@ -427,23 +493,24 @@ class poa extends CI_Controller {
 					if($comp!=''){
 						if(strlen($comp)>3){ //Es Actividad
 							
-							$report->getActiveSheet()->mergeCells("A".$i.":C".$i);
-							$report->getActiveSheet()->setCellValue("A".$i, '    '.$comp.' '.$poa_base->getActiveSheet()->getCell("E".$i)->getValue());
-							$report->getActiveSheet()->setCellValue("D".$i, $poa_base->getActiveSheet()->getCell("G".$i)->getValue());
-							$report->getActiveSheet()->setCellValue("E".$i, $poa_comp->getActiveSheet()->getCell("G".$i)->getValue());
-							$report->getActiveSheet()->setCellValue("F".$i, substr($poa_base->getActiveSheet()->getCell("G".$i)->getValue(),1,-1) - substr($poa_comp->getActiveSheet()->getCell("G".$i)->getValue(),1,-1));
-							$report->getActiveSheet()->getStyle("A".$i.":F".$i)->applyFromArray($estAct);
-							
+							$report->getActiveSheet()->mergeCells("A".$j.":C".$j);
+							$report->getActiveSheet()->setCellValue("A".$j, '    '.$comp.' '.$poa_base->getActiveSheet()->getCell("E".$i)->getValue());
+							$report->getActiveSheet()->setCellValue("D".$j, $poa_base->getActiveSheet()->getCell("G".$i)->getValue());
+							$report->getActiveSheet()->setCellValue("E".$j, $poa_comp->getActiveSheet()->getCell("G".$i)->getValue());
+							$report->getActiveSheet()->setCellValue("F".$j, substr($poa_base->getActiveSheet()->getCell("G".$i)->getValue(),1,-1) - substr($poa_comp->getActiveSheet()->getCell("G".$i)->getValue(),1,-1));
+							$report->getActiveSheet()->getStyle("A".$j.":F".$j)->applyFromArray($estAct);
+							$j++;
 						}
 						else{//Es SubActividad
-							
-							$report->getActiveSheet()->mergeCells("A".$i.":C".$i);
-							$report->getActiveSheet()->setCellValue("A".$i, '     '.$comp.' '.$poa_base->getActiveSheet()->getCell("E".$i)->getValue());
-							$report->getActiveSheet()->setCellValue("D".$i, $poa_base->getActiveSheet()->getCell("G".$i)->getValue());
-							$report->getActiveSheet()->setCellValue("E".$i, $poa_comp->getActiveSheet()->getCell("G".$i)->getValue());
-							$report->getActiveSheet()->setCellValue("F".$i, substr($poa_base->getActiveSheet()->getCell("G".$i)->getValue(),1,-1) - substr($poa_comp->getActiveSheet()->getCell("G".$i)->getValue(),1,-1));
-							$report->getActiveSheet()->getStyle("A".$i.":F".$i)->applyFromArray($estCells);
-							
+							//if($i==187)
+								//$report->getActiveSheet()->setCellValue("A".$j, $poa_base->getActiveSheet()->getCell("G".$i)->getValue());
+							$report->getActiveSheet()->mergeCells("A".$j.":C".$j);
+							$report->getActiveSheet()->setCellValue("A".$j, '     '.$comp.' '.$poa_base->getActiveSheet()->getCell("E".$i)->getValue());
+							$report->getActiveSheet()->setCellValue("D".$j, $poa_base->getActiveSheet()->getCell("G".$i)->getValue());
+							$report->getActiveSheet()->setCellValue("E".$j, $poa_comp->getActiveSheet()->getCell("G".$i)->getValue());
+							$report->getActiveSheet()->setCellValue("F".$j, substr($poa_base->getActiveSheet()->getCell("G".$i)->getValue(),1,-1) - substr($poa_comp->getActiveSheet()->getCell("G".$i)->getValue(),1,-1));
+							$report->getActiveSheet()->getStyle("A".$j.":F".$j)->applyFromArray($estCells);
+							$j++;
 						} 
 					}
 				}

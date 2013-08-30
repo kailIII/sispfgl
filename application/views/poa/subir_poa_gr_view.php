@@ -54,6 +54,39 @@
                 });
             });              
         });
+        var lastsel;
+        $('#cam_est').button().click(function() {
+			var id=$('#docsGR').jqGrid('getGridParam','selrow');
+			if( id != null ){
+				if(id && id!==lastsel){
+								$('#cam_est').prop('disabled', true).button('refresh');
+								$('#guardar_es').prop('disabled', false).button('refresh');
+								$('#cancelar').prop('disabled', false).button('refresh');
+								tabla.jqGrid('restoreRow',lastsel);
+								tabla.jqGrid('editRow',id,false);
+								
+								lastsel=id;
+								}
+			}
+			else $('#mensaje2').dialog('open');
+		});
+		
+		$('#guardar_es').button().click(function() {
+			tabla.jqGrid('saveRow',lastsel,{url:'<?php echo base_url('poa/poa/actualizar_estado_poa_gr') ?>'});
+			$('#guardar_es').prop('disabled',true).button('refresh');
+			$('#cancelar').prop('disabled',true).button('refresh');
+			$('#cam_est').prop('disabled',false).button('refresh');
+		});
+		
+		$('#cancelar').button().click(function() {
+			tabla.jqGrid('restoreRow',lastsel);
+			$('#guardar_es').prop('disabled',true).button('refresh');
+			$('#cancelar').prop('disabled',true).button('refresh');
+			$('#cam_est').prop('disabled',false).button('refresh');
+		});
+		
+		$('#guardar').button().click(function() {
+		});
 		
 		var tabla=$("#docsGR");
         tabla.jqGrid({
@@ -66,22 +99,22 @@
             colNames:['id','Municipio','Anio','Estado','Documento'],
             colModel:[
                 {name:'id',index:'id', width:40,editable:false,editoptions:{size:15} },
-                {name:'nombre_muni',index:'nombre_muni',width:200,editable:true,
+                {name:'nombre_muni',index:'nombre_muni',width:200,editable:false,
                     editoptions:{size:25,maxlength:100}, 
                     formoptions:{label: "Municipio",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
-                {name:'anio',index:'anio',width:80,editable:true,
+                {name:'anio',index:'anio',width:80,editable:false,
                     editoptions:{size:25,maxlength:20}, 
                     formoptions:{label: "Anio POA",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
-                {name:'estado',index:'estado',editable:true,width:200,
-                    editoptions:{ size:25,maxlength:20 }, 
+                {name:'estado',index:'estado',editable:true,width:200,edittype:'select',
+                    editoptions:{value: "En Ejecucion:En Ejecucion;Finalizado:Finalizado;Retrasado:Retrasado;Cancelado:Cancelado"},
                     formoptions:{ label: "Estado",elmprefix:"(*)"},
                     editrules:{required:true}
                 },
-                {name:'documento',index:'documento',width:100,editable:true,
+                {name:'documento',index:'documento',width:100,editable:false,
                     editoptions:{size:25,maxlength:100}, 
                     formoptions:{ label: "Documento",elmprefix:"(*)"},
                     editrules:{required:true} 
@@ -156,9 +189,17 @@ echo form_open_multipart('poa/poa/guardar_poa_gr',$attributes);?>
 	<div  style="float:left;height:250px;width:700px;">	
 		<table id="docsGR"></table>
 		<div id="pagerDocs"></div>
+		<br/>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+		<input type="button" id="cam_est" value="Cambiar Estado"/>
+		<input type="button" id="guardar_es" value="Guardar Estado" disabled />
+		<input type="button" id="cancelar" value="Cancelar" disabled />
 	</div>
+	
 		
 <?php echo form_close();?>
 <div id="mensaje1" class="mensaje" title="Aviso">
     <p>Archivo no valido! Extenciones permitidas: .xls | .xlsx</p>
+</div>
+<div id="mensaje2" class="mensaje" title="Aviso">
+    <p>Seleccione una fila para realizar esta acci&oacute;n.</p>
 </div>
