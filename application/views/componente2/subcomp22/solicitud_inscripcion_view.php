@@ -94,6 +94,7 @@
                         success: function(data)
                         {
                             $('#efectivo').dialog('open');
+                            $("#regresar").show();
                             $("#cancelar").hide();
                         }
                     });
