@@ -84,89 +84,270 @@ class Comp22 extends CI_Controller {
         $tabla = $this->dbPrefix . 'capacitaciones';
         $campo = 'cap_id';
         $prefix = 'cap_';
+        /*
+          $view = array(
+          'titulo' => 'Componente 2.2: Capacitaciones',
+          'user_uid' => $this->tank_auth->get_user_id(),
+          'username' => $this->tank_auth->get_username(),
+          'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
+          'departamentos' => $this->comp24->getDepartamentos(),
+          'tabla_id' => $id,
+          'prefix' => $prefix
+          );
 
-        $view = array(
-            'titulo' => 'Componente 2.2: Capacitaciones',
-            'user_uid' => $this->tank_auth->get_user_id(),
-            'username' => $this->tank_auth->get_username(),
-            'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
-            'departamentos' => $this->comp24->getDepartamentos(),
-            'tabla_id' => $id,
-            'prefix' => $prefix
+          if ($id && !isset($_POST['mod'])) {
+          if (!($tmp = $this->comp24->get_by_id($tabla, $campo, $id))) {
+          $id = $this->comp24->insert_row($tabla, array('cap_add' => date('Y-m-d')));
+          $tmp = $this->comp24->get_by_id($tabla, $campo, $id);
+          }
+          $_POST = get_object_vars($tmp);
+          //print_r($_POST);die();    //test
+          $_POST[$prefix . 'fecha_ini'] = $this->librerias->parse_output('date', $_POST[$prefix . 'fecha_ini']);
+          }
+
+          $this->form_validation->set_message('required', '*');
+          $this->form_validation->set_message('numeric', '*');
+
+          $config = array(
+          array('field' => 'mod', 'label' => 'Mod', 'rules' => 'required|xss_clean'),
+          array('field' => $prefix . 'id', 'label' => '', 'rules' => 'trim|xss_clean'),
+          array('field' => $prefix . 'sede', 'label' => '', 'rules' => 'trim|required|xss_clean'),
+          array('field' => 'mod_id', 'label' => '', 'rules' => 'trim|required|xss_clean'),
+          array('field' => $prefix . 'proceso', 'label' => '', 'rules' => 'trim|xss_clean'),
+          array('field' => $prefix . 'area', 'label' => '', 'rules' => 'trim|xss_clean'),
+          array('field' => $prefix . 'nombre', 'label' => '', 'rules' => 'trim|xss_clean'),
+          array('field' => $prefix . 'entidad', 'label' => '', 'rules' => 'trim|xss_clean'),
+          array('field' => $prefix . 'nivel', 'label' => '', 'rules' => 'trim|xss_clean'),
+          array('field' => $prefix . 'facilitador', 'label' => '', 'rules' => 'trim|xss_clean'),
+          array('field' => $prefix . 'fecha_ini', 'label' => '', 'rules' => 'trim|xss_clean'),
+          array('field' => $prefix . 'duracion', 'label' => '', 'rules' => 'trim|xss_clean|numeric'),
+          array('field' => $prefix . 'duracion_tipo', 'label' => '', 'rules' => 'trim|xss_clean'),
+          array('field' => $prefix . 'descripcion', 'label' => '', 'rules' => 'trim|xss_clean'),
+          array('field' => $prefix . 'observaciones', 'label' => '', 'rules' => 'trim|xss_clean'),
+          array('field' => $prefix . 'archivo', 'label' => '', 'rules' => 'trim|xss_clean'),
+          );
+
+          $this->form_validation->set_rules($config);
+
+          $data['errors'] = array();
+          $mensaje = false;
+
+          if ($this->form_validation->run()) {
+          $datos = array(
+          $prefix . 'sede' => $this->form_validation->set_value($prefix . 'sede'),
+          'mod_id' => $this->form_validation->set_value('mod_id'),
+          $prefix . 'proceso' => $this->form_validation->set_value($prefix . 'proceso'),
+          $prefix . 'area' => $this->form_validation->set_value($prefix . 'area'),
+          $prefix . 'nombre' => $this->form_validation->set_value($prefix . 'nombre'),
+          $prefix . 'entidad' => $this->form_validation->set_value($prefix . 'entidad'),
+          $prefix . 'nivel' => $this->form_validation->set_value($prefix . 'nivel'),
+          $prefix . 'facilitador' => $this->form_validation->set_value($prefix . 'facilitador'),
+          $prefix . 'fecha_ini' => $this->comp24->changeDate($this->form_validation->set_value($prefix . 'fecha_ini')),
+          $prefix . 'duracion' => $this->form_validation->set_value($prefix . 'duracion'),
+          $prefix . 'duracion_tipo' => $this->form_validation->set_value($prefix . 'duracion_tipo'),
+          $prefix . 'descripcion' => $this->form_validation->set_value($prefix . 'descripcion'),
+          $prefix . 'archivo' => $this->form_validation->set_value($prefix . 'archivo'),
+          );
+
+          if (!is_null($data = $this->comp24->update_row($tabla, $campo, $id, $datos))) {
+          $this->session->set_flashdata('message', 'Ok');
+          $t = explode('/' . $id, current_url());
+          redirect($t[0]);
+          } else {
+          $errors = $this->tank_auth->get_error_message();
+          foreach ($errors as $k => $v)
+          $data['errors'][$k] = $this->lang->line($v);
+          }
+          }
+
+          //Cargar Sedes
+          $view['cap_sede'] = $this->getDataDropbox('sedes', 'sed_id', 'sed_nombre', true);
+
+          //Cargar Modalidades
+          $view['cap_modalidad'] = $this->getDataDropbox('modalidades', 'mod_id', 'mod_nombre');
+
+          $this->load->view($this->ruta . 'registroCapacitaciones', $view);
+         */
+        $informacion['titulo'] = 'Componente 2.2: Capacitaciones';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/subcomp22/gestion_capacitacion_view');
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function solicitudesRecibidas() {
+        $informacion['titulo'] = 'Componente 2.2: Capacitaciones';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $this->load->model('pais/departamento');
+        $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/subcomp22/solicitudes_recibidas_view', $informacion);
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    /*
+     * AGREGADOR POR KAREN PEÑATE
+     */
+
+    public function crearCapacitacion() {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');                // logged in
+        $tabla = $this->dbPrefix . 'capacitaciones';
+        $campo = 'cap_id';
+        $prefix = 'cap_';
+        $informacion['titulo'] = 'Componente 2.2: Capacitaciones';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $informacion['modalidades'] = $this->comp24->select_table($this->dbPrefix . 'modalidades', 'mod_id');
+        $this->comp24->insert_row($tabla, array($prefix . 'add' => date('Y-m-d')));
+        $id = $this->comp24->last_id($tabla, $campo);
+        $informacion['cap_id'] = $id;
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/subcomp22/crear_capacitacion_view', $informacion);
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function editarCapacitacion($cap_id) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');                // logged in
+        $tabla = $this->dbPrefix . 'capacitaciones';
+        $campo = 'cap_id';
+        $prefix = 'cap_';
+        $informacion['titulo'] = 'Componente 2.2: Capacitaciones';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $informacion['modalidades'] = $this->comp24->select_table($this->dbPrefix . 'modalidades', 'mod_id');
+        $informacion['cap_id'] = $cap_id;
+        $capacitacion = $this->comp24->obtener_por_id($tabla, $campo, $cap_id);
+        $informacion[$prefix . 'sede'] = $capacitacion[0]->cap_sede;
+        $informacion[$prefix . 'proceso'] = $capacitacion[0]->cap_proceso;
+        $informacion[$prefix . 'area'] = $capacitacion[0]->cap_area;
+        $informacion[$prefix . 'nombre'] = $capacitacion[0]->cap_nombre;
+        $informacion[$prefix . 'entidad'] = $capacitacion[0]->cap_entidad;
+        $informacion[$prefix . 'nivel'] = $capacitacion[0]->cap_nivel;
+        $informacion[$prefix . 'facilitador'] = $capacitacion[0]->cap_facilitador;
+        $informacion[$prefix . 'fecha_ini'] = $capacitacion[0]->cap_fecha_ini;
+        $informacion[$prefix . 'duracion'] = $capacitacion[0]->cap_duracion;
+        $informacion[$prefix . 'duracion_tipo'] = $capacitacion[0]->cap_duracion_tipo;
+        $informacion[$prefix . 'descripcion'] = $capacitacion[0]->cap_descripcion;
+        $informacion[$prefix . 'observaciones'] = $capacitacion[0]->cap_observaciones;
+        $informacion[$prefix . 'ruta_archivo'] = $capacitacion[0]->cap_ruta_archivo;
+        $informacion['mod_id'] = $capacitacion[0]->mod_id;
+
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/subcomp22/editar_capacitacion_view', $informacion);
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function borrarCapacitacion($cap_id) {
+        $tabla = $this->dbPrefix . 'capacitaciones';
+        $campo = 'cap_id';
+        $this->comp24->db_row_delete($tabla, $campo, $cap_id);
+        redirect(base_url('componente2/comp22/registroCapacitaciones'));
+    }
+
+    public function guardarCapacitacion() {
+        $tabla = $this->dbPrefix . 'capacitaciones';
+        $campo = 'cap_id';
+        $prefix = 'cap_';
+        if ($this->input->post('mod_id') == 0)
+            $mod_id = null;
+        else
+            $mod_id = $this->input->post('mod_id');
+        if ($this->input->post($prefix . 'nivel') == '0')
+            $nivel = null;
+        else
+            $nivel = $this->input->post($prefix . 'nivel');
+
+        if ($this->input->post($prefix . 'duracion_tipo ') == '0')
+            $duracion_tipo = null;
+        else
+            $duracion_tipo = $this->input->post($prefix . 'duracion_tipo');
+        $datos = array(
+            $prefix . 'sede' => $this->input->post($prefix . 'sede'),
+            $prefix . 'proceso' => $this->input->post($prefix . 'proceso'),
+            $prefix . 'area' => $this->input->post($prefix . 'area'),
+            $prefix . 'nombre' => $this->input->post($prefix . 'nombre'),
+            $prefix . 'entidad' => $this->input->post($prefix . 'entidad'),
+            $prefix . 'nivel' => $nivel,
+            $prefix . 'facilitador' => $this->input->post($prefix . 'facilitador'),
+            $prefix . 'fecha_ini' => $this->input->post($prefix . 'fecha_ini'),
+            $prefix . 'duracion' => $this->input->post($prefix . 'duracion'),
+            $prefix . 'duracion_tipo' => $duracion_tipo,
+            $prefix . 'descripcion' => $this->input->post($prefix . 'descripcion'),
+            'mod_id' => $mod_id
         );
+        $this->comp24->update_row($tabla, $campo, $this->input->post($prefix . 'id'), $datos);
+    }
 
-        if ($id && !isset($_POST['mod'])) {
-            if (!($tmp = $this->comp24->get_by_id($tabla, $campo, $id))) {
-                $id = $this->comp24->insert_row($tabla, array('cap_add' => date('Y-m-d')));
-                $tmp = $this->comp24->get_by_id($tabla, $campo, $id);
+    public function loadSolicitudesMunicipio($mun_id) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');                // logged in
+        $d = $this->comp24->obtenerSolicitudesPorMunicipio($mun_id);
+        $rows = array();
+        $numfilas = count($d);
+        $i = 0;
+        if ($numfilas != 0) {
+            foreach ($d as $aux) {
+                $rows[$i]['id'] = $i;
+                $rows[$i]['cell'] = array($i,
+                    $aux->cap_nombres,
+                    $aux->cap_proceso,
+                    $aux->cxp_justificacion,
+                    $aux->inscrito
+                );
+                $i++;
             }
-            $_POST = get_object_vars($tmp);
-            //print_r($_POST);die();    //test
-            $_POST[$prefix . 'fecha_ini'] = $this->librerias->parse_output('date', $_POST[$prefix . 'fecha_ini']);
+            array_multisort($rows, SORT_ASC);
         }
 
-        $this->form_validation->set_message('required', '*');
-        $this->form_validation->set_message('numeric', '*');
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
 
-        $config = array(
-            array('field' => 'mod', 'label' => 'Mod', 'rules' => 'required|xss_clean'),
-            array('field' => $prefix . 'id', 'label' => '', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix . 'sede', 'label' => '', 'rules' => 'trim|required|xss_clean'),
-            array('field' => 'mod_id', 'label' => '', 'rules' => 'trim|required|xss_clean'),
-            array('field' => $prefix . 'proceso', 'label' => '', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix . 'area', 'label' => '', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix . 'nombre', 'label' => '', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix . 'entidad', 'label' => '', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix . 'nivel', 'label' => '', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix . 'facilitador', 'label' => '', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix . 'fecha_ini', 'label' => '', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix . 'duracion', 'label' => '', 'rules' => 'trim|xss_clean|numeric'),
-            array('field' => $prefix . 'duracion_tipo', 'label' => '', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix . 'descripcion', 'label' => '', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix . 'observaciones', 'label' => '', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix . 'archivo', 'label' => '', 'rules' => 'trim|xss_clean'),
-        );
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
 
-        $this->form_validation->set_rules($config);
+        echo $jsonresponse;
+    }
 
-        $data['errors'] = array();
-        $mensaje = false;
-
-        if ($this->form_validation->run()) {
-            $datos = array(
-                $prefix . 'sede' => $this->form_validation->set_value($prefix . 'sede'),
-                'mod_id' => $this->form_validation->set_value('mod_id'),
-                $prefix . 'proceso' => $this->form_validation->set_value($prefix . 'proceso'),
-                $prefix . 'area' => $this->form_validation->set_value($prefix . 'area'),
-                $prefix . 'nombre' => $this->form_validation->set_value($prefix . 'nombre'),
-                $prefix . 'entidad' => $this->form_validation->set_value($prefix . 'entidad'),
-                $prefix . 'nivel' => $this->form_validation->set_value($prefix . 'nivel'),
-                $prefix . 'facilitador' => $this->form_validation->set_value($prefix . 'facilitador'),
-                $prefix . 'fecha_ini' => $this->comp24->changeDate($this->form_validation->set_value($prefix . 'fecha_ini')),
-                $prefix . 'duracion' => $this->form_validation->set_value($prefix . 'duracion'),
-                $prefix . 'duracion_tipo' => $this->form_validation->set_value($prefix . 'duracion_tipo'),
-                $prefix . 'descripcion' => $this->form_validation->set_value($prefix . 'descripcion'),
-                $prefix . 'archivo' => $this->form_validation->set_value($prefix . 'archivo'),
-            );
-
-            if (!is_null($data = $this->comp24->update_row($tabla, $campo, $id, $datos))) {
-                $this->session->set_flashdata('message', 'Ok');
-                $t = explode('/' . $id, current_url());
-                redirect($t[0]);
-            } else {
-                $errors = $this->tank_auth->get_error_message();
-                foreach ($errors as $k => $v)
-                    $data['errors'][$k] = $this->lang->line($v);
-            }
+    public function eliminarCapacitacion($cap_id) {
+        $tabla = $this->dbPrefix . 'capacitaciones';
+        $campo = 'cap_id';
+        $resultado=$this->comp24->contarInscritos($cap_id);
+        if($resultado[0]->inscripciones==0){
+            $this->comp24->db_row_delete($tabla, $campo, $cap_id) ;
+            $valor=0;
         }
+        else
+            $valor=1;
+            
+        
+        $rows[0]['id'] = 1;
+        $rows[0]['cell'] = array(1,$valor);
+        $numfilas = 1;
+        $datos = json_encode($rows);
+        $pages = floor(1 / 10) + 1;
 
-        //Cargar Sedes
-        $view['cap_sede'] = $this->getDataDropbox('sedes', 'sed_id', 'sed_nombre', true);
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
 
-        //Cargar Modalidades
-        $view['cap_modalidad'] = $this->getDataDropbox('modalidades', 'mod_id', 'mod_nombre');
-
-        $this->load->view($this->ruta . 'registroCapacitaciones', $view);
+        echo $jsonresponse;
     }
 
     /**
@@ -233,8 +414,33 @@ class Comp22 extends CI_Controller {
     public function loadCapacitaciones() {
         if (!$this->tank_auth->is_logged_in())
             redirect('/auth');                // logged in
-        $d = $this->comp24->select_data($this->dbPrefix . 'capacitaciones');
-        echo $this->librerias->json_out($d, 'cap_id', array('cap_id', 'cap_proceso', 'cap_nombre', 'cap_fecha_ini'));
+        $d = $this->comp24->select_table($this->dbPrefix . 'capacitaciones', 'cap_id');
+        $rows = array();
+        $numfilas = count($d);
+        $i = 0;
+        if ($numfilas != 0) {
+            foreach ($d as $aux) {
+                $rows[$i]['id'] = $aux->cap_id;
+                $rows[$i]['cell'] = array($aux->cap_id,
+                    $aux->cap_proceso,
+                    $aux->cap_nombre,
+                    date('d-m-Y', strtotime($aux->cap_fecha_ini))
+                );
+                $i++;
+            }
+            array_multisort($rows, SORT_ASC);
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
     }
 
     public function inscribirParticipante($cap_id, $par_id) {
@@ -623,22 +829,22 @@ class Comp22 extends CI_Controller {
 
         echo $jsonresponse;
     }
-    
-     public function guardarCapacitaciones($par_id) {
+
+    public function guardarCapacitaciones($par_id) {
         /* VARIABLES POST */
         /* LOS COMUNES */
         $id = $this->input->post("id");
         $cap_id = $this->input->post("cap_id");
         $cxp_justificacion = $this->input->post("cxp_justificacion");
-        
+
         $tabla = $this->dbPrefix . 'cxp_solicitud';
-       
+
         switch ($this->input->post('oper')) {
             case 'add':
-                $this->comp24->insert_row($tabla, array('cap_id' => $cap_id, 'par_id' => $par_id,'cxp_justificacion'=>$cxp_justificacion));
+                $this->comp24->insert_row($tabla, array('cap_id' => $cap_id, 'par_id' => $par_id, 'cxp_justificacion' => $cxp_justificacion));
                 break;
             case 'del':
-                $this->comp24->db_row_delete_two($tabla,'par_id', $par_id,'cap_id',$id);
+                $this->comp24->db_row_delete_two($tabla, 'par_id', $par_id, 'cap_id', $id);
                 break;
         }
     }

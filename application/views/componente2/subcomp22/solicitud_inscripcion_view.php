@@ -45,7 +45,7 @@
                                                 edittype: "textarea", editoptions: {rows: "4", cols: "50"},
                                                 formoptions: {label: "Justifique por qué desea participar"}
                                             }
-                                        ],
+                                        ]
                                     }).trigger('reloadGrid');
                                 });
                             }

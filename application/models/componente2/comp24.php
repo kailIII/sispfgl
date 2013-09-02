@@ -18,6 +18,13 @@ Class comp24 extends CI_Model {
         //return json_encode($data->result());
     }
 
+    public function select_table($tabla, $campo) {
+        $this->db->from($tabla);
+        $this->db->order_by($campo);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
     public function count_sexo($tabla, $campo_sexo, $campo_index, $index) {
         $male = $this->db->query('SELECT count(*) FROM ' . $tabla . ' WHERE ' . $campo_sexo . " = 'M' AND " . $campo_index . ' = ' . $index . ';')->row()->count;
         $female = $this->db->query('SELECT count(*) FROM ' . $tabla . ' WHERE ' . $campo_sexo . " = 'F' AND " . $campo_index . ' = ' . $index . ';')->row()->count;
@@ -61,6 +68,15 @@ Class comp24 extends CI_Model {
         return $this->db->query($sql)->row();
     }
 
+    public function contarInscritos($cap_id) {
+        $sql = 'SELECT COUNT(cxp_cap_id) inscripciones
+FROM 
+  c22_cxp_inscritos A
+WHERE A.cxp_cap_id=?';
+       $consulta = $this->db->query($sql, array($cap_id));
+        return $consulta->result();
+    }
+
     public function get_by_Id($table, $index, $id, $limit = true) {
         $this->db->where($index, $id);
         $this->db->order_by($index, 'asc');
@@ -71,6 +87,14 @@ Class comp24 extends CI_Model {
             return $query->row();
         else
             return false;
+    }
+
+    public function obtener_por_id($table, $index, $id) {
+        $this->db->from($table);
+        $this->db->where($index, $id);
+        $this->db->order_by($index, 'asc');
+        $query = $this->db->get();
+        return $query->result();
     }
 
     public function insert_row($tabla, $data, $last_id = false) {
@@ -92,8 +116,8 @@ Class comp24 extends CI_Model {
         return $this->db->delete($tabla, array($campo => $index));
     }
 
-    public function db_row_delete_two($tabla, $campo1, $index1,$campo2, $index2) {
-        return $this->db->delete($tabla, array($campo1 => $index1,$campo2 => $index2));
+    public function db_row_delete_two($tabla, $campo1, $index1, $campo2, $index2) {
+        return $this->db->delete($tabla, array($campo1 => $index1, $campo2 => $index2));
     }
 
     public function insert_indicadores1($data) {
@@ -112,6 +136,23 @@ FROM c22_capacitaciones B
 WHERE B.cap_id NOT IN (Select cap_id FROM c22_cxp_solicitud WHERE par_id=?) 
 ORDER BY cap_proceso";
         $consulta = $this->db->query($query, array($par_id));
+        return $consulta->result();
+    }
+
+    public function obtenerSolicitudesPorMunicipio($mun_id) {
+        $query = "SELECT C.par_nombres||' '|| C.par_apellidos cap_nombres, 
+  B.cap_proceso, 
+  A.cxp_justificacion,
+  (SELECT CASE WHEN COUNT(*)=1 THEN 'Si' ELSE 'No' END FROM c22_cxp_inscritos D WHERE cxp_cap_id=B.cap_id AND cxp_par_id=C.par_id) inscrito
+FROM 
+  c22_cxp_solicitud A, 
+  c22_capacitaciones B, 
+  c22_participantes C
+WHERE 
+  B.cap_id = A.cap_id AND
+  C.par_id = A.par_id AND
+  C.mun_id = ?";
+        $consulta = $this->db->query($query, array($mun_id));
         return $consulta->result();
     }
 
