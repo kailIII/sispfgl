@@ -30,7 +30,7 @@ $this->load->view('plantilla/menu', $menu);
         function formularioShow() {
             $('#listaContainer').hide();
             $('#formulario').show();
-            //$('#procesos').show()
+           $('#procesos').show()
         }
         function procesoShow() {
             $('#listaContainer').hide();

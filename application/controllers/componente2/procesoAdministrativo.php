@@ -86,7 +86,7 @@ class ProcesoAdministrativo extends CI_Controller {
         $informacion['pro_fpublicacion'] = $resultado[0]->pro_fpublicacion;
         $informacion['pro_faclara_dudas'] = $resultado[0]->pro_faclara_dudas;
         $informacion['pro_fexpresion_interes'] = $resultado[0]->pro_fexpresion_interes;
-        $informacion['pro_observacion1'] = $resultado[0]->pro_observacion1;
+        $informacion['pro_observacion'] = $resultado[0]->pro_observacion1;
         $informacion['pro_pub_ruta_archivo'] = $resultado[0]->pro_pub_ruta_archivo;
         $informacion['pro_exp_ruta_archivo'] = $resultado[0]->pro_exp_ruta_archivo;
         /* $resultado = $this->municipio->obtenerNomMunDep($mun_id);
@@ -116,7 +116,7 @@ class ProcesoAdministrativo extends CI_Controller {
                 $pro_fexpresion_interes = $this->input->post("pro_fexpresion_interes");
                 if ($pro_fexpresion_interes == "")
                     $pro_fexpresion_interes = null;
-                $pro_observacion1 = $this->input->post("pro_observacion1");
+                $pro_observacion1 = $this->input->post("pro_observacion");
                 $pro_pub_ruta_archivo = $this->input->post("pro_pub_ruta_archivo");
                 $pro_exp_ruta_archivo = $this->input->post("pro_exp_ruta_archivo");
                 foreach ($municipios as $mun) {

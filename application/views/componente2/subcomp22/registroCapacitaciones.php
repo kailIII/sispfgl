@@ -83,10 +83,12 @@ $this->load->view('plantilla/menu', $menu);
         /**/
 
         /**/
-        var download_path = '<?php $t = set_value('cap_archivo');
+        var download_path = '<?php
+$t = set_value('cap_archivo');
 if ($t != '') {
     echo base_url($t);
-} ?>';
+}
+?>';
         if (download_path == '') {
             $('#btn_download').hide();
         }
@@ -171,18 +173,19 @@ if (isset($tabla_id) && $tabla_id != 0) {
         <div class="campo">
             <label>Area de Capacitación o Tema:</label>
             <input id="cap_area" name="cap_area" type="text" value="<?php echo set_value('cap_area') ?>"/>
-            <?php echo form_error('cap_area'); ?>
+<?php echo form_error('cap_area'); ?>
         </div>
         <div class="campo">
             <label>Nombre de la Sede:</label>
             <input id="cap_sede" name="cap_sede" type="text" value="<?php echo set_value('cap_sede') ?>"/>
 <?php echo form_error('cap_sede'); ?>
-<?php //echo form_dropdown('sed_id',$cap_sede,set_value('sed_id','0')); echo form_error('sed_id');  ?>
+<?php //echo form_dropdown('sed_id',$cap_sede,set_value('sed_id','0')); echo form_error('sed_id');   ?>
         </div>
         <div class="campo">
             <label>Modalidad del proceso:</label>
 <?php echo form_dropdown('mod_id', $cap_modalidad, set_value('mod_id', '0'));
-echo form_error('mod_id'); ?>
+echo form_error('mod_id');
+?>
         </div>
         <div class="campo">
             <label>Nombre del Capacitación:</label>
@@ -216,7 +219,7 @@ echo form_error('mod_id'); ?>
         <div class="campo">
             <label>Fecha de Inicio:</label>
             <input id="cap_fecha_ini" name="cap_fecha_ini" type="text" value="<?php echo set_value('cap_fecha_ini') ?>"/>
-            <?php echo form_error('cap_fecha_ini'); ?>
+<?php echo form_error('cap_fecha_ini'); ?>
         </div>
         <div class="campo">
             <label>Duración:</label>
@@ -265,6 +268,7 @@ echo form_error('mod_id'); ?>
         <input type="hidden" value="modificado" name="mod" id="mod" />
     </div>
 </div>
-<?php echo form_close();
+<?php
+echo form_close();
 $this->load->view('plantilla/footer');
 ?>
