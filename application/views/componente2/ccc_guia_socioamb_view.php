@@ -247,7 +247,7 @@
 <?php if(isset($aviso))
 	echo $aviso;?>
 	
-<h1>Gu&iacute;a Socio-Ambiental</h1>
+<h1>Gu&iacute;a de Supervisi&oacute;n Ambiental para los CCC</h1>
 <br/>
 
 <?php $attributes = array('id' => 'myform');

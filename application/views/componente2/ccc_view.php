@@ -663,7 +663,7 @@ echo form_open('componente2/componente21/guardar_ccc',$attributes);?>
 	<hr color="green" size=1 width="700"><br/>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Nuevo ETM: </label>
 	<br/>
-	<input type="radio" name="etm" id="etm" value="Nuevo Nombramiento" <?php echo set_radio('etm', 'Nuevo Nombramiento'); ?> />Nuevo Nombramiento
+	<input type="radio" name="etm" id="etm" value="Nombramiento" <?php echo set_radio('etm', 'Nombramiento'); ?> />Nuevo Nombramiento
 	
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Fecha de Inducci&oacute;n: </label>
 	<input readonly="readonly"  type="text" name="fecha_ind_etm" id="fecha_ind_etm"  size="4">
@@ -671,7 +671,7 @@ echo form_open('componente2/componente21/guardar_ccc',$attributes);?>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Fecha de Capacitaci&oacute;n: </label>
 	<input readonly="readonly"  type="text" name="fecha_cap_etm" id="fecha_cap_etm"  size="4">
 	
-	<br/><input type="radio" name="etm" id="etm" value="Cambio de GL" <?php echo set_radio('etm', 'Cambio de GL'); ?> />Por Cambio de GL
+	<br/><input type="radio" name="etm" id="etm" value="Cambio de Gobierno" <?php echo set_radio('etm', 'Cambio de Gobierno'); ?> />Por Cambio de GL
 	<br/><br/>
 	
 	<label>Nombre: </label>
@@ -706,15 +706,15 @@ echo form_open('componente2/componente21/guardar_ccc',$attributes);?>
 		<hr color="green" size=1 width="700"><br/>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Nuevo CCC: </label>
 		<br/>
-		<input type="radio" name="ccc" id="ccc" value="Nuevo Nombramiento" <?php echo set_radio('ccc', 'Nuevo Nombramiento'); ?> />Nuevo Nombramiento
+		<input type="radio" name="ccc" id="ccc" value="Nuevo Nombramiento" <?php echo set_radio('ccc', 'Nombramiento'); ?> />Nuevo Nombramiento
 		
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Fecha de Constituci&oacute;n: </label>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Fecha de Conformaci&oacute;n: </label>
 		<input readonly="readonly"  type="text" name="fecha_con_ccc" id="fecha_con_ccc"  size="4">
 		
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Fecha de Capacitaci&oacute;n: </label>
 		<input readonly="readonly"  type="text" name="fecha_cap_ccc" id="fecha_cap_ccc"  size="4">
 		
-		<br/><input type="radio" name="ccc" id="ccc" value="Cambio de GL" <?php echo set_radio('ccc', 'Cambio de GL'); ?> />Por Cambio de GL
+		<br/><input type="radio" name="ccc" id="ccc" value="Restructuracion" <?php echo set_radio('ccc', 'Restructuracion'); ?> />Por Cambio de GL
 		<br/><br/><br/>
 		
 		<label>Nombre: </label>
@@ -727,10 +727,12 @@ echo form_open('componente2/componente21/guardar_ccc',$attributes);?>
 		
 		<label>Responsabilidad: </label>
 		<select name="resp_asis_ccc" size="1" id="resp_asis_ccc">
-			<option value="Logistica"<?php echo set_select('resp_asis_ccc', 'Logistica'); ?>>Logistica</option>
-			<option value="Sistematizacion"<?php echo set_select('resp_asis_ccc', 'Sistematizacion'); ?>>Sistematizacion</option>
-			<option value="Coordinador"<?php echo set_select('resp_asis_ccc', 'Coordinador'); ?>>Coordinador</option>
-			<option value="Documentador"<?php echo set_select('resp_asis_ccc', 'Documentador'); ?>>Documentador</option>
+			<option value="Presidente"<?php echo set_select('resp_asis_ccc', 'Presidente'); ?>>Presidente</option>
+			<option value="Secretario"<?php echo set_select('resp_asis_ccc', 'Secretario'); ?>>Secretario</option>
+			<option value="Contralor Financiero"<?php echo set_select('resp_asis_ccc', 'Contralor Financiero'); ?>>Contralor Financiero</option>
+			<option value="Vigilante Ambiental y Social"<?php echo set_select('resp_asis_ccc', 'Vigilante Ambiental y Social'); ?>>Vigilante Ambiental y Social</option>
+			<option value="Procurador de Genero"<?php echo set_select('resp_asis_ccc', 'Procurador de Genero'); ?>>Procurador de Genero</option>
+			<option value="Contralor Comunitario"<?php echo set_select('resp_asis_ccc', 'Contralor Comunitario'); ?>>Contralor Comunitario</option>
 		</select>
 				
 		<input type="button" value="Agregar" name="agregar_ccc_asis" id="agregar_ccc_asis" align="left"><br/>
@@ -745,12 +747,12 @@ echo form_open('componente2/componente21/guardar_ccc',$attributes);?>
 		<hr color="green" size=1 width="700"><br/>
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Comisi&oacute;n Mantenimiento: </label>
 		<br/>
-		<input type="radio" name="cm" id="cm" value="Nuevo Nombramiento" <?php echo set_radio('cm', 'Nuevo Nombramiento'); ?> />Nuevo Nombramiento
+		<!--<input type="radio" name="cm" id="cm" value="Nuevo Nombramiento" <?php echo set_radio('cm', 'Nuevo Nombramiento'); ?> />Nuevo Nombramiento-->
 		
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Fecha de Constituci&oacute;n: </label>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Fecha de Conformaci&oacute;n: </label>
 		<input readonly="readonly"  type="text" name="fecha_con_cm" id="fecha_con_cm"  size="4">
 		
-		<br/><input type="radio" name="cm" id="cm" value="Cambio de GL" <?php echo set_radio('cm', 'Cambio de GL'); ?> />Por Cambio de GL
+		<!--<br/><input type="radio" name="cm" id="cm" value="Cambio de GL" <?php echo set_radio('cm', 'Cambio de GL'); ?> />Por Cambio de GL-->
 		<br/><br/>
 		
 		<label>Nombre: </label>
