@@ -18,14 +18,15 @@ class Inicio extends CI_Controller {
 
     public function index() {
         if (!$this->tank_auth->is_logged_in()) {
-            $informacion['titulo'] = 'Sistema de Información y Seguimiento del Programa de Fortalecimiento de Gobiernos Locales';
+            redirect('/auth/login/');
+            /*$informacion['titulo'] = 'Sistema de Información y Seguimiento del Programa de Fortalecimiento de Gobiernos Locales';
             $informacion['principal'] = 'no mostrar';
             //CARGAR VISTA
             $this->load->view('plantilla/header', $informacion);
             $this->load->view('plantilla/menu', $informacion);
             //$this->load->view('inicio/construccion_view');
             $this->load->view('inicio/principal_view');
-            $this->load->view('plantilla/footer', $informacion);
+            $this->load->view('plantilla/footer', $informacion);*/
         } else {
             //ESTAS LINEAS SIEMPRE DEBEN IR PARA GENERAR EL MENU Y COLOCAR EL LOGOUT
             $informacion['titulo'] = 'Sistema de Información y Seguimiento del Programa de Fortalecimiento de Gobiernos Locales';

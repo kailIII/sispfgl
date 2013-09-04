@@ -1,6 +1,6 @@
 <div id="myjquerymenu" class="jquerycssmenu">
     <ul>
-        <li><a href="<?php echo base_url(); ?>">Inicio</a></li>
+        <!--<li><a href="<php echo base_url(); ?>">Inicio</a></li>-->
         <?php
         if (isset($menu))
             echo $menu;
@@ -14,15 +14,17 @@
                     <li><a href="<?php echo base_url('matriz_indicadores/matriz_indicadores/gestion_matriz_public/4'); ?>">Matriz de Indicadores - Componente 4</a></li>
                 </ul>
             </li>                   
-            <li><a >Mapas</a>
+            <li><a href='http://sis-pfgl.gob.sv/pmapper-dev/map_default.phtml'  target="_blank">Mapas</a>
+                <!--
                 <ul style="position:absolute; z-index:1;" >
-                    <li><a href="<?php echo base_url('mapas/showmaps'); ?>">Partidos Politicos de Gobierno</a></li>
+                    <li><a href="<php echo base_url('mapas/showmaps'); ?>">Partidos Politicos de Gobierno</a></li>
                     <li><a>Proyectos</a></li>
                     <li><a>Mapa de Pobreza</a></li>
                 </ul>
+                -->
             </li>
-            <li><a>Contáctenos</a></li>
-            <li><a href="http://sis-pfgl.gob.sv/limesurvey">Encuestas</a></li>
+            <!--<li><a>Contáctenos</a></li>-->
+            <li><a href="http://sis-pfgl.gob.sv/limesurvey" target="_blank">Encuestas</a></li>
             <li><a>Transparencia</a>
 				<ul style="position:absolute; z-index:1;" >
                     <li><a href="<?php echo base_url('transparencia/observaciones_cc_ccc/agregar_obs'); ?>">Observaciones CC y CCC</a></li>
