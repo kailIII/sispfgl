@@ -16,44 +16,7 @@
                         });
                     });
         });
-        $('#par_acepta').click(function() {
-            $.getJSON('<?php echo base_url('componente2/comp22/agregarEmpleado') . "/" ?>' + $('#selMun').val(),
-                    function(data) {
-                        var i = 0;
-                        $.each(data, function(key, val) {
-                            if (key == 'rows') {
-                                $.each(val, function(id, registro) {
-                                    $('#par_id').val(registro['cell'][0]);
-                                    $("#propuestaTecnicaForm").show();
-                                    $('#Formulario').show();
-                                    $('#selDepto').attr('disabled', 'disabled');
-                                    $('#selMun').attr('disabled', 'disabled');
-                                    $('#par_acepta').attr('disabled', 'disabled');
-                                    $('#solicitudCapacitaciones').setGridParam({
-                                        url: '<?php echo base_url('componente2/comp22/cargarCapacitacionesPar'); ?>/' + registro['cell'][0],
-                                        editurl: '<?php echo base_url('componente2/comp22/guardarCapacitaciones'); ?>/' + registro['cell'][0],
-                                        datatype: 'json',
-                                        colModel: [
-                                            {name: 'id', index: 'id', width: 40, editable: false, editoptions: {size: 15}},
-                                            {name: 'cap_id', index: 'cap_id', editable: true,
-                                                edittype: "select", width: 450,
-                                                editoptions: {dataUrl: '<?php echo base_url('componente2/comp22/cargarCapacitaciones') ?>/' + registro['cell'][0]},
-                                                formoptions: {label: "Proceso de formación en que desea participar:", elmprefix: "(*)"},
-                                                editrules: {custom: true, custom_func: validaInstitucion}
-                                            },
-                                            {name: 'cxp_justificacion', index: 'cxp_justificacion', width: 400, editable: true,
-                                                edittype: "textarea", editoptions: {rows: "4", cols: "50"},
-                                                formoptions: {label: "Justifique por qué desea participar"}
-                                            }
-                                        ]
-                                    }).trigger('reloadGrid');
-                                });
-                            }
-                        });
-                    });
-        });
-        $('#Formulario').hide();
-
+              
         /*PARA EL DATEPICKER*/
         $("#acu_mun_fecha_conformacion").datepicker({
             showOn: 'both',
@@ -90,7 +53,7 @@
                 if ($("#solicitudInscripcion").validate().form() == true) {
                     $.ajax({
                         type: "POST",
-                        url: '<?php echo base_url('componente2/comp22/guardarSolicitud') ?>/' + $('#selMun').val(),
+                        url: '<?php echo base_url('componente2/comp22/guardarSolicitud')."/".$mun_id ?>',
                         data: $("#solicitudInscripcion").serialize(), // serializes the form's elements.
                         success: function(data)
                         {
@@ -172,7 +135,7 @@
         });
 
         $("#cancelar").button().click(function() {
-            document.location.href = '<?php echo base_url('componente2/comp22/borrarSolicitud') . '/'; ?>' + $('#par_id').val();
+            document.location.href = '<?php echo base_url('componente2/comp22/borrarSolicitud') . '/'; ?>';
         });
         $("#regresar").button().click(function() {
             document.location.href = '<?php echo base_url('') ; ?>';
@@ -186,8 +149,8 @@
         /*GRID Otros asistentes*/
         var tabla = $("#solicitudCapacitaciones");
         tabla.jqGrid({
-            url: '<?php echo base_url('componente2/comp22/cargarCapacitacionesPar'); ?>/' + $('#par_id').val(),
-            editurl: '<?php echo base_url('componente2/comp22/guardarCapacitaciones'); ?>/' + $('#par_id').val(),
+            url: '<?php echo base_url('componente2/comp22/cargarCapacitacionesPar')."/".$par_id; ?>',
+            editurl: '<?php echo base_url('componente2/comp22/guardarCapacitaciones')."/".$par_id; ?>',
             datatype: 'json',
             altRows: true,
             height: "100%",
@@ -197,7 +160,7 @@
                 {name: 'id', index: 'id', width: 40, editable: false, editoptions: {size: 15}},
                 {name: 'cap_id', index: 'cap_id', editable: true,
                     edittype: "select", width: 450,
-                    editoptions: {dataUrl: '<?php echo base_url('componente2/comp22/cargarCapacitaciones') ?>/' + $('#par_id').val()},
+                    editoptions: {dataUrl: '<?php echo base_url('componente2/comp22/cargarCapacitaciones')."/".$par_id ?>'},
                     formoptions: {label: "Proceso de formación en que desea participar:", elmprefix: "(*)"},
                     editrules: {custom: true, custom_func: validaInstitucion}
                 },
@@ -263,18 +226,11 @@
     <table>
         <tr>
         <td><strong>Departamento</strong></td>
-        <td><select id='selDepto'>
-                <option value='0'>--Seleccione--</option>
-                <?php foreach ($departamentos as $grupo) { ?>
-                    <option value='<?php echo $grupo->dep_id; ?>'><?php echo $grupo->dep_nombre; ?></option>
-                <?php } ?>
-            </select>
+        <td><input id="departamento" name="departamento" value="<?php echo $departamento ?>" type="text" style="border: none" />
         </td>
         </tr>
         <td><strong>Municipio</strong></td>
-        <td><select id='selMun' name='selMun'>
-                <option value='0'>--Seleccione--</option>
-            </select>
+        <td><input id="municipio" name="municipio" value="<?php echo $municipio ?>" type="text" style="border: none" />
         </td>
         </tr>
     </table>
@@ -286,7 +242,7 @@
     <li>Nivel mínimo de estudios: Bachillerato</li>
     <li>Relación entre proceso formativo al que aplica y funciones del puesto de trabajo del solicitante</li>
 </ul>
-<input id="par_acepta" type="checkbox" value="1" name="par_acepta">
+<input id="par_acepta" type="checkbox" value="1" name="par_acepta" checked="checked" readonly="readonly">
 He leido los criterios de Preselección/elegibilidad para aplicar a Procesos de Formación
 </input>
 <div id="Formulario">
@@ -295,59 +251,59 @@ He leido los criterios de Preselección/elegibilidad para aplicar a Procesos de 
             <legend>Datos Generales</legend>
             <div class="campo">
                 <label style="width: 200px;">Apellidos:</label>
-                <input id="par_apellidos" name="par_apellidos" type="text" />
+                <input id="par_apellidos" name="par_apellidos" type="text" value="<?php echo $par_apellidos ?>" />
             </div>
             <div class="campo">
                 <label style="width: 200px;">Nombres:</label>
-                <input id="par_nombres" name="par_nombres" type="text" />
+                <input id="par_nombres" name="par_nombres" type="text"value="<?php echo $par_nombres ?>" />
             </div>
             <div class="campo">
                 <label style="width: 200px;">Lugar de Nacimiento:</label>
-                <input id="par_birthplace" name="par_birthplace" type="text" />
+                <input id="par_birthplace" name="par_birthplace" type="text" value="<?php echo $par_birthplace ?>" />
             </div>
             <div class="campo">
                 <label style="width: 200px;">Fecha de Nacimiento:</label>
-                <input id="par_birthday" name="par_birthday" type="text" readonly="readonly" style="width: 150px;"/>
-                <span>Masculino</span><input type="radio" name="par_sexo" value="M"/>
-                <span>Femenino</span><input type="radio" name="par_sexo" value="F"/>
+                <input id="par_birthday" name="par_birthday" type="text" readonly="readonly" value="<?php echo $par_birthday ?>"  style="width: 150px;"/>
+                <span>Masculino</span><input type="radio" name="par_sexo" <?php if ($par_sexo=='M') echo "checked='checked'" ?> value="M"/>
+                <span>Femenino</span><input type="radio" name="par_sexo" <?php if ($par_sexo=='F') echo "checked='checked'" ?> value="F"/>
             </div>
             <div class="campo">
                 <label style="width: 200px;">DUI:</label>
-                <input id="par_dui" name="par_dui" type="text"/>
+                <input id="par_dui" name="par_dui" value="<?php echo $par_dui ?>" type="text"/>
             </div>
         </fieldset>
         <fieldset style="width: 700px; display: block; vertical-align: top; margin-left: 89px;">
             <legend>Domicilio de Residencia Actual</legend>
             <div class="campo">
                 <label style="width: 200px;"></label>
-                <span>Barrio</span><input type="radio" name="par_dir_tipo" value="Barrio"/>
-                <span>Colonia</span><input type="radio" name="par_dir_tipo" value="Colonia"/>
-                <span>Cantón</span><input type="radio" name="par_dir_tipo" value="Canton"/>
+                <span>Barrio</span><input <?php if ($par_dir_tipo=='Barrio') echo "checked='checked'" ?> type="radio" name="par_dir_tipo" value="Barrio"/>
+                <span>Colonia</span><input type="radio" <?php if ($par_dir_tipo=='Colonia') echo "checked='checked'" ?> name="par_dir_tipo" value="Colonia"/>
+                <span>Cantón</span><input type="radio" <?php if ($par_dir_tipo=='Canton') echo "checked='checked'" ?> name="par_dir_tipo" value="Canton"/>
             </div>
             <div class="campo">
                 <label style="width: 200px;">Nombre:</label>
-                <input id="par_dir_nombre" name="par_dir_nombre" type="text"/>
+                <input id="par_dir_nombre" name="par_dir_nombre" value="<?php echo $par_dir_nombre ?>" type="text"/>
             </div>
             <div class="campo">
                 <label style="width: 200px;">Calle:</label>
-                <input id="par_dir_calle" name="par_dir_calle" type="text" />
+                <input id="par_dir_calle" name="par_dir_calle" value="<?php echo $par_dir_calle ?>" type="text" />
             </div>
             <div class="campo">
                 <label style="width: 200px;">No. de Casa:</label>
-                <input id="par_dir_casa" name="par_dir_casa" type="text"/>
+                <input id="par_dir_casa" name="par_dir_casa" value="<?php echo $par_dir_casa?>" type="text"/>
             </div>
         </fieldset>
         <fieldset style="width: 700px; display: block; vertical-align: top; margin-left: 89px;">
             <legend>Telefonos de Contacto</legend>
             <div class="campo">
                 <label style="width: 200px;">Municipales:</label>
-                <input id="par_ins_telefono" class="telefono" name="par_ins_telefono" type="text" style="width: 150px;"/>
-                <input id="par_ins_movil" class="telefono" name="par_ins_movil" type="text"  style="width: 150px;"/>
+                <input id="par_ins_telefono" class="telefono" name="par_ins_telefono" value="<?php echo $par_ins_telefono ?>" type="text" style="width: 150px;"/>
+                <input id="par_ins_movil" class="telefono" name="par_ins_movil" type="text" value="<?php echo $par_ins_movil ?>"  style="width: 150px;"/>
             </div>
             <div class="campo">
                 <label style="width: 200px;">Personales:</label>
-                <input id="par_telefono" name="par_telefono" class="telefono" type="text" style="width: 150px;"/>
-                <input id="par_movil" name="par_movil" class="telefono" type="text" style="width: 150px;"/>
+                <input id="par_telefono" name="par_telefono" class="telefono" type="text" value="<?php echo $par_telefono ?>" style="width: 150px;"/>
+                <input id="par_movil" name="par_movil" class="telefono" type="text" style="width: 150px;" value="<?php echo $par_movil ?>"/>
             </div>
         </fieldset>
         <fieldset style="width: 700px; display: block; vertical-align: top; margin-left: 89px;">
@@ -355,55 +311,50 @@ He leido los criterios de Preselección/elegibilidad para aplicar a Procesos de 
             <div class="campo">
                 <label style="width: 200px;">Nivel de Estudios Cursados:</label>
                 <select id='par_nivel' name="par_nivel">
-                    <option value='0'>--Seleccione--</option>
-                    <option value='Maestria'>Maestría</option>
-                    <option value='Posgrado'>Posgrado</option>
-                    <option value='Grado Universitario'>Grado Universitario</option>
-                    <option value='Bachillerato'>Bachillerato</option>
-                    <option value='Tecnico'>Técnico</option>
-                    <option value='Educacion Primaria'>Educación Primaria</option>
+                    <option <?php if ($par_nivel=='0') echo "selected='selected'" ?> value='0'>--Seleccione--</option>
+                    <option <?php if ($par_nivel=='Maestria') echo "selected='selected'" ?> value='Maestria'>Maestría</option>
+                    <option <?php if ($par_nivel=='Posgrado') echo "selected='selected'" ?> value='Posgrado'>Posgrado</option>
+                    <option <?php if ($par_nivel=='Grado Universitario') echo "selected='selected'" ?> value='Grado Universitario'>Grado Universitario</option>
+                    <option <?php if ($par_nivel=='Bachillerato') echo "selected='selected'" ?> value='Bachillerato'>Bachillerato</option>
+                    <option <?php if ($par_nivel=='Tecnico') echo "selected='selected'" ?> value='Tecnico'>Técnico</option>
+                    <option <?php if ($par_nivel=='Educacion Primaria') echo "selected='selected'" ?> value='Educacion Primaria'>Educación Primaria</option>
                 </select>
             </div>
             <div class="campo">
                 <label style="width: 200px;">Titulos Obtenidos:</label>
-                <textarea id="par_titulos" name="par_titulos" cols="30" rows="5" wrap="virtual" maxlength="100"></textarea>
+                <textarea id="par_titulos" name="par_titulos" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo $par_titulos ?></textarea>
             </div>
         </fieldset>
         <fieldset style="width: 700px; display: block; vertical-align: top; margin-left: 89px;">
             <legend>Información sobre la Institución</legend>
-            <!--
-             <div class="campo">
-                 <label style="width: 200px;">Municipalidad:</label>
-                 <input id="par_ins_municipio" name="par_ins_municipio" type="text"/>
-             </div>-->
             <div class="campo">
                 <label style="width: 200px;">Categoria:</label>
-                <input id="par_ins_categoria" name="par_ins_categoria" value=" " type="text" />
+                <input id="par_ins_categoria" name="par_ins_categoria" value="<?php echo $par_ins_categoria ?>" value=" " type="text" />
             </div>
             <div class="campo">
                 <label style="width: 200px;">Denominación del Cargo:</label>
-                <input id="par_ins_cargo" name="par_ins_cargo" value=" " type="text" />
+                <input id="par_ins_cargo" name="par_ins_cargo" value="<?php echo $par_ins_cargo ?>" type="text" />
             </div>
             <div class="campo">
                 <label style="width: 200px;">Nivel:</label>
-                <input id="par_ins_nivel" name="par_ins_nivel" value=" " type="text" />
+                <input id="par_ins_nivel" name="par_ins_nivel" value="<?php echo $par_ins_nivel ?>" type="text" />
             </div>
             <div class="campo">
                 <label style="width: 200px;">Tiempo de Servicio:</label>
-                <input id="par_ins_tiempo" name="par_ins_tiempo" value="0" type="text" />
+                <input id="par_ins_tiempo" name="par_ins_tiempo" value="<?php echo $par_ins_tiempo?>" type="text" />
                 <span>Años</span>
-                <input id="par_ins_tiempo2" name="par_ins_tiempo2" value="0" type="text" style="width: 75px;"/>
+                <input id="par_ins_tiempo2" name="par_ins_tiempo2" value="<?php echo $par_ins_tiempo2 ?>" type="text" style="width: 75px;"/>
                 <span>Meses</span>
             </div>
             <div class="campo">
                 <label style="width: 200px;">Tiempo en Cargo Actual:</label>
-                <input id="par_ins_servicio" name="par_ins_servicio" type="text" value="0" style="width: 75px;"/>
+                <input id="par_ins_servicio" name="par_ins_servicio" type="text" value="<?php echo $par_ins_servicio ?>" style="width: 75px;"/>
                 <span>Años</span>
-                <input id="par_ins_servicio2" name="par_ins_servicio2" type="text" value="0" style="width: 75px;"/>
+                <input id="par_ins_servicio2" name="par_ins_servicio2" type="text" value="<?php echo $par_ins_servicio2 ?>" style="width: 75px;"/>
                 <span>Meses</span>
             </div>
         </fieldset>
-        <input type="text" value="" id="par_id" name="par_id" hidden="hidden"/>
+        <input type="text" value="<?php echo $par_id ?>" id="par_id" name="par_id" hidden="hidden"/>
 
         <center style="position: relative;top: 20px">
             <input type="submit" id="guardar" value="Guardar" />

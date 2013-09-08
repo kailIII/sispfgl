@@ -1,6 +1,6 @@
 <div id="myjquerymenu" class="jquerycssmenu">
     <ul>
-        <!--<li><a href="<php echo base_url(); ?>">Inicio</a></li>-->
+        <li><a href="<?php echo base_url('auth/login/'); ?>">Inicio</a></li>
         <?php
         if (isset($menu))
             echo $menu;

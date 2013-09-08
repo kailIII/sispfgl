@@ -240,6 +240,16 @@ ORDER BY A.reg_nombre,B.dep_nombre,C.mun_nombre";
         return $consulta->result();
     }
 
+    public function obtenerMunicipioPorParticipante($par_id) {
+        $sql = "SELECT C.dep_nombre, B.mun_nombre,B.mun_id
+FROM c22_participantes A, municipio B, departamento C
+WHERE A.mun_id=B.mun_id AND B.dep_id=C.dep_id
+	AND A.par_id=?";
+        $consulta = $this->db->query($sql, array($par_id));
+        $resultado=$consulta->result();
+        return $resultado[0];
+    }
+
 }
 
 ?>

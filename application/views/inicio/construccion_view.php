@@ -1,4 +1,4 @@
-<center><h1 class="letraazul">Sitio En Construcción</h1>
+<center><h1 class="letraazul"></h1>
 <img src="<?php echo base_url('resource/imagenes/en-construccion.png'); ?>"/>
-<h1 class="letraazul">Espéralo Proximamente </blink></h1>
+<h1 class="letraazul">Página No Encontrada </blink></h1>
 </center>
