@@ -72,7 +72,7 @@ Class comp21_model extends CI_Model{
 				  'ccc_id' => $id,
 				  'nom_subproy' => $new_ccc['nombre_proy'.$i],
 				  'nom_com_beneficiadas' => $new_ccc['com_beneficiadas'.$i],
-				  'num_com_beneficiadas' => $new_ccc['pob_beneficiada'.$i],
+				  'num_com_beneficiadas' => $new_ccc['pob_beneficiada'.$i]
 				);
 				$k++;
 		}// ingresa los asistentes al un array

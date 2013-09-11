@@ -67,6 +67,11 @@
 			if($('#no_posee').is(':checked'))
 				$('#monto_ap').prop('disabled', true);
 		});
+		
+		$('#no_aplica').change(function(){
+			if($('#no_aplica').is(':checked'))
+				$('#monto_ap').prop('disabled', true);
+		});
 
         
          /*suma de totales*/
@@ -274,7 +279,7 @@
 			 var records=$('#cm_asis').jqGrid('getGridParam','records');
 			 
 			 var nombre_asis = $('#nombre_cm_asis').val();
-			 var resp_asis = $('#resp_asis_cm').val();
+			 var resp_asis = 'N/A'; //antes: $('#resp_asis_cm').val();
 			 var sexo_asis = $('#sexo_cm_asis').val();
 			 		 
 			 if ( nombre_asis!="" && resp_asis!="" && sexo_asis!="") {
@@ -321,8 +326,8 @@
 			 
 			 if($('#si_posee').is(':checked')){
 				if($('#monto_ap').val()==""){
-					$('#mensaje7').dialog('open');
-					return false;
+					var monto_ap= 0;
+					var posee_ap = 'Si';
 				}
 				else{
 					var monto_ap = $('#monto_ap').val();
@@ -330,8 +335,14 @@
 				}
 			}
 			else{
-				var monto_ap = '0';
-				var posee_ap = 'No';
+				if($('#no_posee').is(':checked')){
+					var monto_ap = '0';
+					var posee_ap = 'No';
+				}
+				else{
+					var monto_ap = '0';
+					var posee_ap = 'N/A';
+				}
 			}
 					
 			 		 
@@ -663,7 +674,7 @@ echo form_open('componente2/componente21/guardar_ccc',$attributes);?>
 	<hr color="green" size=1 width="700"><br/>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Nuevo ETM: </label>
 	<br/>
-	<input type="radio" name="etm" id="etm" value="Nombramiento" <?php echo set_radio('etm', 'Nombramiento'); ?> />Nuevo Nombramiento
+	<input type="radio" name="etm" id="etm" value="Nombramiento" <?php echo set_radio('etm', 'Nombramiento'); ?> />Nombramiento
 	
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Fecha de Inducci&oacute;n: </label>
 	<input readonly="readonly"  type="text" name="fecha_ind_etm" id="fecha_ind_etm"  size="4">
@@ -671,7 +682,7 @@ echo form_open('componente2/componente21/guardar_ccc',$attributes);?>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Fecha de Capacitaci&oacute;n: </label>
 	<input readonly="readonly"  type="text" name="fecha_cap_etm" id="fecha_cap_etm"  size="4">
 	
-	<br/><input type="radio" name="etm" id="etm" value="Cambio de Gobierno" <?php echo set_radio('etm', 'Cambio de Gobierno'); ?> />Por Cambio de GL
+	<br/><input type="radio" name="etm" id="etm" value="Cambio de Gobierno" <?php echo set_radio('etm', 'Por Cambio de Gobierno'); ?> />Por Cambio de Gobierno
 	<br/><br/>
 	
 	<label>Nombre: </label>
@@ -706,7 +717,7 @@ echo form_open('componente2/componente21/guardar_ccc',$attributes);?>
 		<hr color="green" size=1 width="700"><br/>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Nuevo CCC: </label>
 		<br/>
-		<input type="radio" name="ccc" id="ccc" value="Nuevo Nombramiento" <?php echo set_radio('ccc', 'Nombramiento'); ?> />Nuevo Nombramiento
+		<input type="radio" name="ccc" id="ccc" value="Nuevo Nombramiento" <?php echo set_radio('ccc', 'Por Nombramiento'); ?> />Por Nombramiento
 		
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Fecha de Conformaci&oacute;n: </label>
 		<input readonly="readonly"  type="text" name="fecha_con_ccc" id="fecha_con_ccc"  size="4">
@@ -714,7 +725,7 @@ echo form_open('componente2/componente21/guardar_ccc',$attributes);?>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Fecha de Capacitaci&oacute;n: </label>
 		<input readonly="readonly"  type="text" name="fecha_cap_ccc" id="fecha_cap_ccc"  size="4">
 		
-		<br/><input type="radio" name="ccc" id="ccc" value="Restructuracion" <?php echo set_radio('ccc', 'Restructuracion'); ?> />Por Cambio de GL
+		<br/><input type="radio" name="ccc" id="ccc" value="Restructuracion" <?php echo set_radio('ccc', 'Por Reestructuracion'); ?> />Por Reestructuraci&oacute;n
 		<br/><br/><br/>
 		
 		<label>Nombre: </label>
@@ -763,13 +774,15 @@ echo form_open('componente2/componente21/guardar_ccc',$attributes);?>
 			<option value="M"<?php echo set_select('sexo_cm_asis', 'M'); ?>>Masculino</option>
 		</select>
 		
-		<label>Responsabilidad: </label>
+		<!--<label>Responsabilidad: </label>
 		<select name="resp_asis_cm" size="1" id="resp_asis_cm">
-			<option value="Logistica"<?php echo set_select('resp_asis_cm', 'Logistica'); ?>>Logistica</option>
-			<option value="Sistematizacion"<?php echo set_select('resp_asis_cm', 'Sistematizacion'); ?>>Sistematizacion</option>
-			<option value="Coordinador"<?php echo set_select('resp_asis_cm', 'Coordinador'); ?>>Coordinador</option>
-			<option value="Documentador"<?php echo set_select('resp_asis_cm', 'Documentador'); ?>>Documentador</option>
-		</select>
+			<option value="Presidente"<?php echo set_select('resp_asis_cm', 'Presidente'); ?>>Presidente</option>
+			<option value="Secretario"<?php echo set_select('resp_asis_cm', 'Secretario'); ?>>Secretario</option>
+			<option value="Contralor Financiero"<?php echo set_select('resp_asis_cm', 'Contralor Financiero'); ?>>Contralor Financiero</option>
+			<option value="Vigilante Ambiental y Social"<?php echo set_select('resp_asis_cm', 'Vigilante Ambiental y Social'); ?>>Vigilante Ambiental y Social</option>
+			<option value="Procurador de Genero"<?php echo set_select('resp_asis_cm', 'Procurador de Genero'); ?>>Procurador de Genero</option>
+			<option value="Contralor Comunitario"<?php echo set_select('resp_asis_cm', 'Contralor Comunitario'); ?>>Contralor Comunitario</option>
+		</select>-->
 				
 		<input type="button" value="Agregar" name="agregar_cm_asis" id="agregar_cm_asis" align="left"><br/>
 		
@@ -791,6 +804,7 @@ echo form_open('componente2/componente21/guardar_ccc',$attributes);?>
 		
 		<br/><label>&#191;Posee Asignaci&oacute;n Presupuestaria</b></label>
 		<input type="radio" name="posee_ap" id="si_posee" value="si" <?php echo set_radio('posee_ap', 'si'); ?> />S&iacute;
+		&nbsp;<input type="radio" name="posee_ap" id="no_aplica" value="na" <?php echo set_radio('posee_ap', 'na'); ?> />N/A
 		&nbsp;<input type="radio" name="posee_ap" id="no_posee" value="no" <?php echo set_radio('posee_ap', 'no'); ?> />No
 		
 		&nbsp;&nbsp;&nbsp;&nbsp;<label>Monto: </label>

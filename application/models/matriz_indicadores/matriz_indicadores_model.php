@@ -35,12 +35,22 @@ Class matriz_indicadores_model extends CI_Model{
                 'anio_3' => $ind["2013"],
                 'anio_4' => $ind["2014"],
                 'anio_5' => $ind["2015"],
-                'total' => $ind["total"],
-                'comentario' => $ind["comentario"]
+                'comentario' => $ind["comentario"],
+                'planificado' => $ind["planificado"],
+                'total' => $ind["total"]
             );
 
 			$this->db->where('id', $ind["id"]);
 			$this->db->update('matriz_indicadores', $data); 
+	}
+	
+	public function add_new_ind($cod, $ind){
+		$data = array(
+                'cod' => $cod,
+                'indicador' => $ind
+            );
+         $this->db->insert('matriz_indicadores',$data);   
+            
 	}
 
 }
