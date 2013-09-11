@@ -84,97 +84,14 @@ class Comp22 extends CI_Controller {
         $tabla = $this->dbPrefix . 'capacitaciones';
         $campo = 'cap_id';
         $prefix = 'cap_';
-        /*
-          $view = array(
-          'titulo' => 'Componente 2.2: Capacitaciones',
-          'user_uid' => $this->tank_auth->get_user_id(),
-          'username' => $this->tank_auth->get_username(),
-          'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
-          'departamentos' => $this->comp24->getDepartamentos(),
-          'tabla_id' => $id,
-          'prefix' => $prefix
-          );
 
-          if ($id && !isset($_POST['mod'])) {
-          if (!($tmp = $this->comp24->get_by_id($tabla, $campo, $id))) {
-          $id = $this->comp24->insert_row($tabla, array('cap_add' => date('Y-m-d')));
-          $tmp = $this->comp24->get_by_id($tabla, $campo, $id);
-          }
-          $_POST = get_object_vars($tmp);
-          //print_r($_POST);die();    //test
-          $_POST[$prefix . 'fecha_ini'] = $this->librerias->parse_output('date', $_POST[$prefix . 'fecha_ini']);
-          }
-
-          $this->form_validation->set_message('required', '*');
-          $this->form_validation->set_message('numeric', '*');
-
-          $config = array(
-          array('field' => 'mod', 'label' => 'Mod', 'rules' => 'required|xss_clean'),
-          array('field' => $prefix . 'id', 'label' => '', 'rules' => 'trim|xss_clean'),
-          array('field' => $prefix . 'sede', 'label' => '', 'rules' => 'trim|required|xss_clean'),
-          array('field' => 'mod_id', 'label' => '', 'rules' => 'trim|required|xss_clean'),
-          array('field' => $prefix . 'proceso', 'label' => '', 'rules' => 'trim|xss_clean'),
-          array('field' => $prefix . 'area', 'label' => '', 'rules' => 'trim|xss_clean'),
-          array('field' => $prefix . 'nombre', 'label' => '', 'rules' => 'trim|xss_clean'),
-          array('field' => $prefix . 'entidad', 'label' => '', 'rules' => 'trim|xss_clean'),
-          array('field' => $prefix . 'nivel', 'label' => '', 'rules' => 'trim|xss_clean'),
-          array('field' => $prefix . 'facilitador', 'label' => '', 'rules' => 'trim|xss_clean'),
-          array('field' => $prefix . 'fecha_ini', 'label' => '', 'rules' => 'trim|xss_clean'),
-          array('field' => $prefix . 'duracion', 'label' => '', 'rules' => 'trim|xss_clean|numeric'),
-          array('field' => $prefix . 'duracion_tipo', 'label' => '', 'rules' => 'trim|xss_clean'),
-          array('field' => $prefix . 'descripcion', 'label' => '', 'rules' => 'trim|xss_clean'),
-          array('field' => $prefix . 'observaciones', 'label' => '', 'rules' => 'trim|xss_clean'),
-          array('field' => $prefix . 'archivo', 'label' => '', 'rules' => 'trim|xss_clean'),
-          );
-
-          $this->form_validation->set_rules($config);
-
-          $data['errors'] = array();
-          $mensaje = false;
-
-          if ($this->form_validation->run()) {
-          $datos = array(
-          $prefix . 'sede' => $this->form_validation->set_value($prefix . 'sede'),
-          'mod_id' => $this->form_validation->set_value('mod_id'),
-          $prefix . 'proceso' => $this->form_validation->set_value($prefix . 'proceso'),
-          $prefix . 'area' => $this->form_validation->set_value($prefix . 'area'),
-          $prefix . 'nombre' => $this->form_validation->set_value($prefix . 'nombre'),
-          $prefix . 'entidad' => $this->form_validation->set_value($prefix . 'entidad'),
-          $prefix . 'nivel' => $this->form_validation->set_value($prefix . 'nivel'),
-          $prefix . 'facilitador' => $this->form_validation->set_value($prefix . 'facilitador'),
-          $prefix . 'fecha_ini' => $this->comp24->changeDate($this->form_validation->set_value($prefix . 'fecha_ini')),
-          $prefix . 'duracion' => $this->form_validation->set_value($prefix . 'duracion'),
-          $prefix . 'duracion_tipo' => $this->form_validation->set_value($prefix . 'duracion_tipo'),
-          $prefix . 'descripcion' => $this->form_validation->set_value($prefix . 'descripcion'),
-          $prefix . 'archivo' => $this->form_validation->set_value($prefix . 'archivo'),
-          );
-
-          if (!is_null($data = $this->comp24->update_row($tabla, $campo, $id, $datos))) {
-          $this->session->set_flashdata('message', 'Ok');
-          $t = explode('/' . $id, current_url());
-          redirect($t[0]);
-          } else {
-          $errors = $this->tank_auth->get_error_message();
-          foreach ($errors as $k => $v)
-          $data['errors'][$k] = $this->lang->line($v);
-          }
-          }
-
-          //Cargar Sedes
-          $view['cap_sede'] = $this->getDataDropbox('sedes', 'sed_id', 'sed_nombre', true);
-
-          //Cargar Modalidades
-          $view['cap_modalidad'] = $this->getDataDropbox('modalidades', 'mod_id', 'mod_nombre');
-
-          $this->load->view($this->ruta . 'registroCapacitaciones', $view);
-         */
         $informacion['titulo'] = 'Componente 2.2: Capacitaciones';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
-        $this->load->view('componente2/subcomp22/gestion_capacitacion_view');
+        $this->load->view($this->ruta . 'gestion_capacitacion_view');
         $this->load->view('plantilla/footer', $informacion);
     }
 
@@ -187,7 +104,7 @@ class Comp22 extends CI_Controller {
         $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
-        $this->load->view('componente2/subcomp22/solicitudes_recibidas_view', $informacion);
+        $this->load->view($this->ruta . 'solicitudes_recibidas_view', $informacion);
         $this->load->view('plantilla/footer', $informacion);
     }
 
@@ -211,7 +128,7 @@ class Comp22 extends CI_Controller {
         $informacion['cap_id'] = $id;
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
-        $this->load->view('componente2/subcomp22/crear_capacitacion_view', $informacion);
+        $this->load->view($this->ruta . 'crear_capacitacion_view', $informacion);
         $this->load->view('plantilla/footer', $informacion);
     }
 
@@ -245,7 +162,7 @@ class Comp22 extends CI_Controller {
 
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
-        $this->load->view('componente2/subcomp22/editar_capacitacion_view', $informacion);
+        $this->load->view($this->ruta . 'editar_capacitacion_view', $informacion);
         $this->load->view('plantilla/footer', $informacion);
     }
 
@@ -326,17 +243,17 @@ class Comp22 extends CI_Controller {
     public function eliminarCapacitacion($cap_id) {
         $tabla = $this->dbPrefix . 'capacitaciones';
         $campo = 'cap_id';
-        $resultado=$this->comp24->contarInscritos($cap_id);
-        if($resultado[0]->inscripciones==0){
-            $this->comp24->db_row_delete($tabla, $campo, $cap_id) ;
-            $valor=0;
+        $resultado = $this->comp24->contarInscritos($cap_id);
+        if ($resultado[0]->inscripciones == 0) {
+            $this->comp24->db_row_delete($tabla, $campo, $cap_id);
+            $valor = 0;
         }
         else
-            $valor=1;
-            
-        
+            $valor = 1;
+
+
         $rows[0]['id'] = 1;
-        $rows[0]['cell'] = array(1,$valor);
+        $rows[0]['cell'] = array(1, $valor);
         $numfilas = 1;
         $datos = json_encode($rows);
         $pages = floor(1 / 10) + 1;
@@ -348,6 +265,144 @@ class Comp22 extends CI_Controller {
                "rows":' . $datos . '}';
 
         echo $jsonresponse;
+    }
+    
+    public function eliminarParticipante($par_id) {
+        $tabla = $this->dbPrefix . 'participantes';
+        $campo = 'par_id';
+        $resultado = $this->comp24->contarParticipantesInscritos($par_id);
+        if ($resultado->inscripciones == 0) {
+            $this->comp24->db_row_delete($tabla, $campo, $par_id);
+            $valor = 0;
+        }
+        else
+            $valor = 1;
+
+
+        $rows[0]['id'] = 1;
+        $rows[0]['cell'] = array(1, $valor);
+        $numfilas = 1;
+        $datos = json_encode($rows);
+        $pages = floor(1 / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+
+    public function obtenerParticipantesPorMunicipio($mun_id) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');                // logged in
+        $d = $this->comp24->obtenerParticipantesPorMunicipio($mun_id);
+        $rows = array();
+        $numfilas = count($d);
+        $i = 0;
+        if ($numfilas != 0) {
+            foreach ($d as $aux) {
+                $rows[$i]['id'] = $aux->par_id;
+                $rows[$i]['cell'] = array($aux->par_id,
+                    $aux->cap_nombres
+                );
+                $i++;
+            }
+            array_multisort($rows, SORT_ASC);
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+
+    /**
+     * A. 
+     */
+    public function solicitudInscripcion($id = false, $mun_id = false) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');                // logged in
+
+        $informacion['titulo'] = 'Componente 2.2: Capacitaciones';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $this->load->model('pais/departamento');
+        $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view($this->ruta . 'solicitud_inscripcion_view');
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function gestionSolicitudes() {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');                // logged in
+
+        $informacion['titulo'] = 'Componente 2.2: Capacitaciones';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $this->load->model('pais/departamento');
+        $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view($this->ruta . 'gestion_solicitud_view');
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function editarSolicitudInscripcion($par_id) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');                // logged in
+
+        $informacion['titulo'] = 'Componente 2.2: Capacitaciones';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $this->load->model('pais/municipio');
+        $resultado = $this->municipio->obtenerMunicipioPorParticipante($par_id);
+        $informacion['departamento'] = $resultado->dep_nombre;
+        $informacion['municipio'] = $resultado->mun_nombre;
+        $informacion['par_id'] = $par_id;
+        $participante = $this->comp24->obtener_por_id("c22_participantes", "par_id", $par_id);
+        $informacion['par_nombres'] = $participante[0]->par_nombres;
+        $informacion['par_apellidos'] = $participante[0]->par_apellidos;
+        $informacion['par_birthplace'] = $participante[0]->par_birthplace;
+        $informacion['par_birthday'] = $participante[0]->par_birthday;
+        $informacion['par_sexo'] = $participante[0]->par_sexo;
+        $informacion['par_dui'] = $participante[0]->par_dui;
+        $informacion['par_dir_tipo'] = $participante[0]->par_dir_tipo;
+        $informacion['par_dir_nombre'] = $participante[0]->par_dir_nombre;
+        $informacion['par_dir_calle'] = $participante[0]->par_dir_calle;
+        $informacion['par_dir_casa'] = $participante[0]->par_dir_casa;
+        $informacion['par_dir_municipio'] = $participante[0]->par_dir_municipio;
+        $informacion['par_telefono'] = $participante[0]->par_telefono;
+        $informacion['par_movil'] = $participante[0]->par_movil;
+        $informacion['par_nivel'] = $participante[0]->par_nivel;
+        $informacion['par_titulos'] = $participante[0]->par_titulos;
+        $informacion['mun_id'] = $resultado->mun_id;
+        $informacion['par_ins_cargo'] = $participante[0]->par_ins_cargo;
+        $informacion['par_ins_categoria'] = $participante[0]->par_ins_categoria;
+        $informacion['par_ins_nivel'] = $participante[0]->par_ins_nivel;
+        $informacion['par_ins_tiempo'] = $participante[0]->par_ins_tiempo;
+        $informacion['par_ins_tiempo2'] = $participante[0]->par_ins_tiempo2;
+        $informacion['par_ins_servicio'] = $participante[0]->par_ins_servicio;
+        $informacion['par_ins_servicio2'] = $participante[0]->par_ins_servicio2;
+        $informacion['par_ins_telefono'] = $participante[0]->par_ins_telefono;
+        $informacion['par_ins_movil'] = $participante[0]->par_ins_movil;
+
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view($this->ruta . 'editar_solicitud_inscripcion_view', $informacion);
+        $this->load->view('plantilla/footer', $informacion);
     }
 
     /**
@@ -555,171 +610,6 @@ class Comp22 extends CI_Controller {
                 break;
             //case 'del':  $this->comp24->db_row_delete($tabla, $campo, $index); break;
         }
-    }
-
-    /**
-     * A. 
-     */
-    public function solicitudInscripcion($id = false, $mun_id = false) {
-        if (!$this->tank_auth->is_logged_in())
-            redirect('/auth');                // logged in
-
-        /*
-          $tabla = $this->dbPrefix . 'participantes';
-          $campo = 'par_id';
-          $prefix = 'par_';
-
-          $view = array(
-          'titulo' => 'Componente 2.2: Capacitaciones',
-          'user_uid' => $this->tank_auth->get_user_id(),
-          'username' => $this->tank_auth->get_username(),
-          'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
-          'departamentos' => $this->comp24->getDepartamentos(),
-          'tabla_id' => $id,
-          'prefix' => $prefix
-          );
-
-          //si es nuevo crear
-          if ($id == 'new' && $mun_id > 0) {
-          $this->comp24->insert_row($tabla, array('par_ins_municipio' => $mun_id, 'mun_id' => $mun_id));
-          $id = $this->comp24->last_id($tabla, $campo);
-          echo current_url();
-          //$t = explode('/' . $id, current_url());
-          //redirect($t[0]);
-          $view = array(
-          'titulo' => 'Componente 2.2: Capacitaciones',
-          'user_uid' => $this->tank_auth->get_user_id(),
-          'username' => $this->tank_auth->get_username(),
-          'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
-          'departamentos' => $this->comp24->getDepartamentos(),
-          'tabla_id' => $id,
-          'prefix' => $prefix
-          );
-          //$_POST['mun_id'] = $mun_id;
-          }
-
-          if ($id > 0 && !isset($_POST['mod']) | $mun_id > 0) {
-          $tmp = $this->comp24->get_by_id($tabla, $campo, $id);
-          $_POST = get_object_vars($tmp);
-          $_POST[$prefix . 'birthday'] = $this->librerias->parse_output('date', $_POST[$prefix . 'birthday']);
-          }
-          //
-          //Cargamos el municipio y departamento
-          if (isset($_POST['mun_id']) && $_POST['mun_id'] > 0) {
-          $_POST['depto'] = $this->comp24->getDepto($_POST['mun_id'])->dep_nombre;
-          $_POST['muni'] = $this->comp24->get_by_Id('municipio', 'mun_id', $_POST['mun_id'])->mun_nombre;
-          $_POST['par_ins_municipio'] = $_POST['mun_id']; //$this->comp24->get_by_Id('municipio', 'mun_id', $_POST['mun_id'])->mun_nombre;
-          }
-
-          $this->form_validation->set_message('required', '*');
-          $this->form_validation->set_message('numeric', '*');
-
-          $config = array(
-          array('field' => 'depto', 'label' => 'Departamento', 'rules' => 'trim|xss_clean'),
-          array('field' => 'muni', 'label' => 'Municipio', 'rules' => 'trim|xss_clean'),
-          array('field' => 'mod', 'label' => 'Mod', 'rules' => 'required|xss_clean'),
-          array('field' => 'mun_id', 'label' => 'Municipio', 'rules' => 'trim|xss_clean'),
-          array('field' => $prefix . 'nombres', 'label' => '', 'rules' => 'trim|required|xss_clean'),
-          array('field' => $prefix . 'apellidos', 'label' => '', 'rules' => 'trim|required|xss_clean'),
-          array('field' => $prefix . 'birthplace', 'label' => '', 'rules' => 'trim|required|xss_clean'),
-          array('field' => $prefix . 'birthday', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
-          array('field' => $prefix . 'sexo', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
-          array('field' => $prefix . 'dui', 'label' => 'Fecha', 'rules' => 'trim|xss_clean|numeric'),
-          array('field' => $prefix . 'dir_tipo', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
-          array('field' => $prefix . 'dir_nombre', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
-          array('field' => $prefix . 'dir_calle', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
-          array('field' => $prefix . 'dir_casa', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
-          array('field' => $prefix . 'dir_municipio', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
-          array('field' => $prefix . 'telefono', 'label' => 'Fecha', 'rules' => 'trim|xss_clean|numeric'),
-          array('field' => $prefix . 'movil', 'label' => 'Fecha', 'rules' => 'trim|xss_clean|numeric'),
-          array('field' => $prefix . 'nivel', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
-          array('field' => $prefix . 'titulos', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
-          array('field' => $prefix . 'ins_municipio', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
-          array('field' => $prefix . 'ins_cargo', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
-          array('field' => $prefix . 'ins_categoria', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
-          array('field' => $prefix . 'ins_nivel', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
-          array('field' => $prefix . 'ins_tiempo', 'label' => 'Fecha', 'rules' => 'trim|xss_clean|numeric'),
-          array('field' => $prefix . 'ins_tiempo2', 'label' => 'Fecha', 'rules' => 'trim|xss_clean|numeric'),
-          array('field' => $prefix . 'ins_servicio', 'label' => 'Fecha', 'rules' => 'trim|xss_clean|numeric'),
-          array('field' => $prefix . 'ins_servicio2', 'label' => 'Fecha', 'rules' => 'trim|xss_clean|numeric'),
-          array('field' => $prefix . 'ins_telefono', 'label' => 'Fecha', 'rules' => 'trim|xss_clean|numeric'),
-          array('field' => $prefix . 'ins_movil', 'label' => 'Fecha', 'rules' => 'trim|xss_clean|numeric'),
-          array('field' => $prefix . 'acepta', 'label' => 'Fecha', 'rules' => 'trim|xss_clean')
-          );
-
-          //
-          $view['capacitaciones'] = $this->getDataDropbox('capacitaciones', 'cap_id', 'cap_proceso', true);
-
-          $this->form_validation->set_rules($config);
-
-          $data['errors'] = array();
-          $mensaje = false;
-
-          if ($this->form_validation->run()) {
-          $datos = array(
-          $prefix . 'nombres' => $this->form_validation->set_value($prefix . 'nombres'),
-          $prefix . 'apellidos' => $this->form_validation->set_value($prefix . 'apellidos'),
-          $prefix . 'birthplace' => $this->form_validation->set_value($prefix . 'birthplace'),
-          $prefix . 'birthday' => $this->comp24->changeDate($this->form_validation->set_value($prefix . 'birthday')),
-          $prefix . 'sexo' => $this->form_validation->set_value($prefix . 'sexo'),
-          $prefix . 'dui' => $this->form_validation->set_value($prefix . 'dui'),
-          $prefix . 'dir_tipo' => $this->form_validation->set_value($prefix . 'dir_tipo'),
-          $prefix . 'dir_nombre' => $this->form_validation->set_value($prefix . 'dir_nombre'),
-          $prefix . 'dir_calle' => $this->form_validation->set_value($prefix . 'dir_calle'),
-          $prefix . 'dir_casa' => $this->form_validation->set_value($prefix . 'dir_casa'),
-          $prefix . 'dir_municipio' => $this->form_validation->set_value($prefix . 'dir_municipio'),
-          $prefix . 'telefono' => $this->form_validation->set_value($prefix . 'telefono'),
-          $prefix . 'movil' => $this->form_validation->set_value($prefix . 'movil'),
-          $prefix . 'nivel' => $this->form_validation->set_value($prefix . 'nivel'),
-          $prefix . 'titulos' => $this->form_validation->set_value($prefix . 'titulos'),
-          $prefix . 'ins_municipio' => $this->form_validation->set_value($prefix . 'ins_municipio'),
-          $prefix . 'ins_cargo' => $this->form_validation->set_value($prefix . 'ins_cargo'),
-          $prefix . 'ins_categoria' => $this->form_validation->set_value($prefix . 'ins_categoria'),
-          $prefix . 'ins_nivel' => $this->form_validation->set_value($prefix . 'ins_nivel'),
-          $prefix . 'ins_tiempo' => $this->form_validation->set_value($prefix . 'ins_tiempo'),
-          $prefix . 'ins_tiempo2' => $this->form_validation->set_value($prefix . 'ins_tiempo2'),
-          $prefix . 'ins_servicio' => $this->form_validation->set_value($prefix . 'ins_servicio'),
-          $prefix . 'ins_servicio2' => $this->form_validation->set_value($prefix . 'ins_servicio2'),
-          $prefix . 'ins_telefono' => $this->form_validation->set_value($prefix . 'ins_telefono'),
-          $prefix . 'ins_movil' => $this->form_validation->set_value($prefix . 'ins_movil'),
-          $prefix . 'acepta' => $this->form_validation->set_value($prefix . 'acepta'),
-          );
-
-          if (!is_null($data = $this->comp24->update_row($tabla, $campo, $id, $datos))) {
-          $this->session->set_flashdata('message', 'Ok');
-          $t = explode('/' . $id, current_url());
-          redirect($t[0]);
-          $view = array(
-          'titulo' => 'Componente 2.2: Capacitaciones',
-          'user_uid' => $this->tank_auth->get_user_id(),
-          'username' => $this->tank_auth->get_username(),
-          'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
-          'departamentos' => $this->comp24->getDepartamentos(),
-          'tabla_id' => $id,
-          'prefix' => $prefix,
-          'paso2' => true
-          );
-          } else {
-          $errors = $this->tank_auth->get_error_message();
-          foreach ($errors as $k => $v)
-          $data['errors'][$k] = $this->lang->line($v);
-          }
-          }
-
-          $this->load->view($this->ruta . 'solicitudInscripcion', $view);
-         * 
-         */
-
-        $informacion['titulo'] = 'Componente 2.2: Capacitaciones';
-        $informacion['user_id'] = $this->tank_auth->get_user_id();
-        $informacion['username'] = $this->tank_auth->get_username();
-        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
-        $this->load->model('pais/departamento');
-        $informacion['departamentos'] = $this->departamento->obtenerDepartamentos();
-        $this->load->view('plantilla/header', $informacion);
-        $this->load->view('plantilla/menu', $informacion);
-        $this->load->view('componente2/subcomp22/solicitud_inscripcion_view');
-        $this->load->view('plantilla/footer', $informacion);
     }
 
     public function agregarEmpleado($mun_id) {

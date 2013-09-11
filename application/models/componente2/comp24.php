@@ -73,8 +73,18 @@ Class comp24 extends CI_Model {
 FROM 
   c22_cxp_inscritos A
 WHERE A.cxp_cap_id=?';
-       $consulta = $this->db->query($sql, array($cap_id));
+        $consulta = $this->db->query($sql, array($cap_id));
         return $consulta->result();
+    }
+
+    public function contarParticipantesInscritos($par_id) {
+        $sql = 'SELECT COUNT(cxp_par_id) inscripciones
+FROM 
+  c22_cxp_inscritos A
+WHERE A.cxp_par_id=?';
+        $consulta = $this->db->query($sql, array($par_id));
+        $resultado=$consulta->result();
+        return $resultado[0];
     }
 
     public function get_by_Id($table, $index, $id, $limit = true) {
@@ -150,6 +160,18 @@ FROM
   c22_participantes C
 WHERE 
   B.cap_id = A.cap_id AND
+  C.par_id = A.par_id AND
+  C.mun_id = ?";
+        $consulta = $this->db->query($query, array($mun_id));
+        return $consulta->result();
+    }
+
+    public function obtenerParticipantesPorMunicipio($mun_id) {
+        $query = "SELECT DISTINCT C.par_id,C.par_nombres||' '|| C.par_apellidos cap_nombres
+FROM 
+  c22_cxp_solicitud A, 
+  c22_participantes C
+WHERE 
   C.par_id = A.par_id AND
   C.mun_id = ?";
         $consulta = $this->db->query($query, array($mun_id));
