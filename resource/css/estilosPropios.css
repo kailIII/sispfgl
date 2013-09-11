@@ -29,7 +29,7 @@ div#divpagina{
 
 div#divcuerpo{
     position:absolute; 
-    width:960px; 
+    width:1000px; 
     left:50%; 
     right:50%; 
     margin-left:-470px; 
@@ -212,7 +212,7 @@ em {
     border-top: 1px solid #0B2161;
     padding: 10px 15px 10px 15px;
     position: absolute;
-    width: 930px;
+    width: 970px;
     bottom: 0%;
     border-radius: 0px 0px 15px 15px;
     -moz-border-radius-bottomleft: 15px;
