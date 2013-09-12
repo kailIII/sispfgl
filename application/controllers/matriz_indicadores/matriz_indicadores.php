@@ -19,7 +19,7 @@ class matriz_indicadores extends CI_Controller {
 	
     public function gestion_matriz($comp) {
 		if(!isset($comp))
-			$comp='1';
+			$comp='0';
         $informacion['titulo'] = 'Matriz de Indicadores del Componente '.$comp;
         $informacion['componente']=$comp;
         $informacion['user_id'] = $this->tank_auth->get_user_id();
@@ -35,7 +35,7 @@ class matriz_indicadores extends CI_Controller {
     
     public function gestion_matriz_public($comp) {
 		if(!isset($comp))
-			$comp='1';
+			$comp='0';
         $informacion['titulo'] = 'Matriz de Indicadores del Componente '.$comp;
         $informacion['componente']=$comp;
         //$informacion['user_id'] = $this->tank_auth->get_user_id();
@@ -57,6 +57,11 @@ class matriz_indicadores extends CI_Controller {
         $i = 0;
         foreach ($ind as $aux) {
 			
+			if($aux->planificado==0)
+				$por_avance='0';
+			else
+				$por_avance=(($aux->total/$aux->planificado)*100);
+			
             $rows[$i]['id'] = $aux->id;
             $rows[$i]['cell'] = array($aux->id,
                 $aux->cod,
@@ -68,6 +73,8 @@ class matriz_indicadores extends CI_Controller {
                 $aux->anio_4,
                 $aux->anio_5,
                 $aux->total,
+                $aux->planificado,
+                $por_avance.'%',
                 $aux->comentario
             );
             $i++;
@@ -96,6 +103,16 @@ class matriz_indicadores extends CI_Controller {
 			 $indicador = $_POST;
 			 $this->load->model('matriz_indicadores/matriz_indicadores_model');
 			 $this->matriz_indicadores_model->actualizar_indicador($indicador);
+	}
+	
+	public function add_new_ind(){
+		$cod=$this->input->post("cod");
+		$ind=$this->input->post("ind");
+
+		$this->load->model('matriz_indicadores/matriz_indicadores_model');
+		$this->matriz_indicadores_model->add_new_ind($cod, $ind);
+			 
+		echo '1';
 	}
     
 }

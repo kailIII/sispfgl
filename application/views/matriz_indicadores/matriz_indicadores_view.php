@@ -78,6 +78,32 @@
 		});
 		
 		
+		$('#addNewInd').button().click(function() {
+			$('#add').show();
+			$('#newcod').show();
+			$('#newind').show();
+			$('#newcodlabel').show();
+			$('#newindlabel').show();
+			$('#addNewDiv').show();
+		});
+		
+		$('#add').button().click(function() {
+			var cod = $('#newcod').val();
+			var ind = $('#newind').val();
+			if(cod=="" || ind=="")
+				$('#mensaje4').dialog('open');
+			else{
+				var datos = {cod:cod, ind:ind}
+				$.post('<?php echo base_url('matriz_indicadores/matriz_indicadores/add_new_ind') ?>', datos,function(data){
+							$('#mensaje5').dialog('open');
+							tabla.trigger('reloadGrid');
+							$('#newcod').val("");
+							$('#newind').val("");
+				});
+			}
+			
+		});
+		
 		
 		$('#editar').button().click(function() {
 			var id=$('#matriz').jqGrid('getGridParam','selrow');
@@ -100,6 +126,7 @@
 			$('#guardar').prop('disabled',true).button('refresh');
 			$('#cancelar').prop('disabled',true).button('refresh');
 			$('#editar').prop('disabled',false).button('refresh');
+			tabla.trigger('reloadGrid');
 		});
 		
 		$('#cancelar').button().click(function() {
@@ -118,7 +145,7 @@
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','Cod','Indicador','Linea Base','2011','2012','2013','2014','2015','Total','Comentario'],
+            colNames:['id','Cod','Indicador','Linea Base','Ejecutado 2011','Ejecutado 2012','Ejecutado 2013','Ejecutado 2014','Ejecutado 2015','Total Ejecutado', 'Total Planificado', '% Avance','Comentario'],
             colModel:[
                 {name:'id',index:'id', width:40,editable:false,editoptions:{size:15} },
                 {name:'cod',index:'cod',width:31,editable:true,
@@ -126,7 +153,7 @@
                     formoptions:{label: "Cod",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
-                {name:'indicador',index:'indicador',width:200,editable:true,
+                {name:'indicador',index:'indicador',width:60,editable:true,
                     editoptions:{size:31,maxlength:350}, 
                     formoptions:{label: "Indicador",elmprefix:"(*)"},
                     editrules:{required:true} 
@@ -136,27 +163,27 @@
                     formoptions:{ label: "Linea Base",elmprefix:"(*)"},
                     editrules:{required:true}
                 },
-                {name:'2011',index:'2011',width:70,editable:true,
+                {name:'2011',index:'2011',width:81,editable:true,
                     editoptions:{size:9,maxlength:90}, 
                     formoptions:{ label: "2011",elmprefix:"(*)"},
                     editrules:{required:false} 
                 },
-                {name:'2012',index:'2012',width:70,editable:true,
+                {name:'2012',index:'2012',width:81,editable:true,
                     editoptions:{size:9,maxlength:100}, 
                     formoptions:{ label: "2012",elmprefix:"(*)"},
                     editrules:{required:false} 
                 },
-                {name:'2013',index:'2013',width:70,editable:true,
+                {name:'2013',index:'2013',width:81,editable:true,
                     editoptions:{size:9,maxlength:100}, 
                     formoptions:{ label: "2013",elmprefix:"(*)"},
                     editrules:{required:false} 
                 },
-                {name:'2014',index:'2014',width:70,editable:true,
+                {name:'2014',index:'2014',width:81,editable:true,
                     editoptions:{size:9,maxlength:100}, 
                     formoptions:{ label: "2014",elmprefix:"(*)"},
                     editrules:{required:false} 
                 },
-                {name:'2015',index:'2015',width:70,editable:true,
+                {name:'2015',index:'2015',width:81,editable:true,
                     editoptions:{size:9,maxlength:100}, 
                     formoptions:{ label: "2015",elmprefix:"(*)"},
                     editrules:{required:false} 
@@ -166,7 +193,17 @@
                     formoptions:{ label: "Total",elmprefix:"(*)"},
                     editrules:{required:false}
                 },
-                {name:'comentario',index:'comentario',editable:true,width:145,
+                {name:'planificado',index:'planificado',editable:true,width:90,
+                    editoptions:{ size:13,maxlength:20 }, 
+                    formoptions:{ label: "Planificado",elmprefix:"(*)"},
+                    editrules:{required:false}
+                },
+                {name:'avance',index:'avance',editable:false,width:55,
+                    editoptions:{ size:13,maxlength:20 }, 
+                    formoptions:{ label: "% Avance",elmprefix:"(*)"},
+                    editrules:{required:false}
+                },
+                {name:'comentario',index:'comentario',editable:true,width:65,
                     editoptions:{ size:25,maxlength:500 }, 
                     formoptions:{ label: "Comentario",elmprefix:"(*)"},
                     editrules:{required:false}
@@ -174,9 +211,9 @@
             ],
             multiselect: false,
             caption: "Matriz de Indicadores",
-            rowNum:10,
+            rowNum:30,
             rowList:[10,20,30],
-            loadonce:true,
+            loadonce:false,
             pager: jQuery('#pagerMatriz'),
             viewrecords: true,
             emptyrecords: 'No hay indicadores registrados'
@@ -195,7 +232,15 @@
 ?>
 <?php if(isset($aviso))
 	echo $aviso;?>
-<h1>Matriz de Indicadores del <?php if(isset($componente))echo $componente;?></h1>
+<h1>Matriz de Indicadores
+	<?php if(isset($componente)){
+			if($componente!='0')
+				echo ' del Componente '.$componente;
+			else
+				echo ' de Nivel Superior';
+		}
+	?>
+</h1>
 <br/>
 <?php $attributes = array('id' => 'myform');
 echo form_open_multipart('poa/poa/guardar_poa_gr',$attributes);?>
@@ -208,10 +253,19 @@ echo form_open_multipart('poa/poa/guardar_poa_gr',$attributes);?>
 		<input type="button" id="editar" value="Editar"/>
 		<input type="button" id="guardar" value="Guardar" disabled />
 		<input type="button" id="cancelar" value="Cancelar" disabled />
+		<input type="button" id="addNewInd" value="Agregar Nuevo" />
 		&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
 		<input type="button" id="ver_indicador" value="Ver Indicador"/>
 		<input type="button" id="ver_comentario" value="Ver Comentario"/>
 		
+		<br/><br/>
+		<div id="addNewDiv" hidden>
+		<label id="newcodlabel" hidden >Codigo: </label>
+			<input type="text" name="newcod" id="newcod"  size="8" hidden>
+		<label id="newindlabel" hidden >Indicador: </label>
+			<input type="text" name="newind" id="newind"  size="15" hidden>
+		<input type="button" id="add" value="Agregar" hidden />
+		</div>
 		
 <?php echo form_close();?>
 <div id="mensaje1" class="mensaje" title="Aviso">
@@ -222,4 +276,10 @@ echo form_open_multipart('poa/poa/guardar_poa_gr',$attributes);?>
 </div>
 <div id="mensaje3" class="mensaje" title="Indicador">
     <p id="comentario_msj"></p>
+</div>
+<div id="mensaje4" class="mensaje" title="Indicador">
+    <p>Debe especificar el C&oacute;digo y el Indicador.</p>
+</div>
+<div id="mensaje5" class="mensaje" title="Indicador">
+    <p>Ingresado Correctamente.</p>
 </div>
