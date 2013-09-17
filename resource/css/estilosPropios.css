@@ -319,7 +319,7 @@ form .campo input {
 }
 
 #rpt_frm_bdy .campo,
-#rpt_frm_bdy .campoUp, {
+#rpt_frm_bdy .campoUp {
 	margin-bottom:	10px;
 	display: 		block;
     min-height:     35px;
@@ -335,14 +335,14 @@ form .campo input {
 }
 
 #rpt_frm_bdy .campo label {
-	width: 			300px;
-	margin-left:	20px;
-    margin-right:   10px;
-	display:        inline-block;
-	line-height: 	35px;
-	cursor: 		pointer;
-    text-align:     right;
+    width:300px;
+    margin-left: 20px;
+    margin-right: 10px;
+    display: inline-block;
+    line-height: 35px;
+    text-align: right;
     vertical-align: top;
+    font-weight: bold
 }
 
 #rpt_frm_bdy .campoUp input[type=text] {
