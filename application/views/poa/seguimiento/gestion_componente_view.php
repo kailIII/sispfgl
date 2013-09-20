@@ -3,13 +3,13 @@
         /*desabilitado para activas completar comentario de esta linea y retirar display:none; del elemento */
         var jqLista = $('#lista');
         jqLista.jqGrid({
-            url: '<?php echo base_url('poa/seguimiento/cargarComponentes'); ?>',
+            url: '<?php echo base_url($ruta . 'cargarComponentes'); ?>',
             datatype: "json",
             colNames: ['Id', 'Código', 'Componente'],
             colModel: [
                 {name: 'poa_com_id', index: 'poa_com_id', width: 55},
                 {name: 'poa_com_codigo', index: 'poa_com_codigo', width: 70, align: 'center'},
-                {name: 'poa_com_descripcion', index: 'poa_com_descripcion', width: 800}
+                {name: 'poa_com_descripcion', index: 'poa_com_descripcion', width: 850}
             ],
             rowNum: 10,
             rowList: [10, 20, 30],
@@ -26,30 +26,34 @@
                 // here we can easy construct the following
                 var subgrid_table_id;
                 subgrid_table_id = subgrid_id + "_t";
-                jQuery("#" + subgrid_id).html("<table id='" + subgrid_table_id + "' class='scroll'></table>");
+                pager_id = "p_" + subgrid_table_id;
+                $("#" + subgrid_id).html("<table id='" + subgrid_table_id + "' class='scroll'></table><div id='" + pager_id + "' class='scroll'></div>");
                 jQuery("#" + subgrid_table_id).jqGrid({
-                    url: '<?php echo base_url('poa/seguimiento/cargarSubComponentes'); ?>/' + row_id,
+                    url: '<?php echo base_url($ruta . 'cargarSubComponentes'); ?>/' + row_id,
+                    editurl:'<?php echo base_url($ruta . 'eliminarSubComponente'); ?>',
                     datatype: "json",
-                    colNames: ['Id', 'Código', 'Componente','Acciones'],
+                    colNames: ['Id', 'Código', 'Componente', 'Acciones'],
                     colModel: [
                         {name: 'h_poa_com_id', index: 'h_poa_com_id', width: 55},
                         {name: 'h_poa_com_codigo', index: 'h_poa_com_codigo', width: 70, align: 'center'},
                         {name: 'h_poa_com_descripcion', index: 'h_poa_com_descripcion', width: 700},
-                        {name: 'act', index: 'act', width: 70, sortable: false}
+                        {name: 'act', index: 'act', width: 110, sortable: false}
                     ],
                     height: '100%',
-                    rowNum: 20,
+                    rowNum: 5,
+                    pager: pager_id,
                     gridComplete: function() {
-                        var ids = jQuery("#"+subgrid_table_id).jqGrid('getDataIDs');
+                        var ids = jQuery("#" + subgrid_table_id).jqGrid('getDataIDs');
                         for (var i = 0; i < ids.length; i++) {
                             var cl = ids[i];
                             if (cl != 0) {
-                                ce = "<input type='button' value='Editar' onclick=\"alert("+cl+") \" />";
-                                jQuery("#"+subgrid_table_id).jqGrid('setRowData', ids[i], {act: ce});
+                                ce = "<input type='button' value='Editar' onclick=\"document.location.href =  '<?php echo base_url($ruta . 'gestionarSubComponente'); ?>/" + row_id + "/" + cl + "'\" />";
+                                jQuery("#" + subgrid_table_id).jqGrid('setRowData', ids[i], {act: ce});
                             }
                         }
                     },
                 }).hideCol(['h_poa_com_id']);
+                jQuery("#" + subgrid_table_id).jqGrid('navGrid', "#" + pager_id, {edit: false, add: false, del: true})
             }
         }).hideCol(['poa_com_id']);
 
@@ -64,7 +68,7 @@
         $("#editar").button().click(function() {
             var gr = jqLista.jqGrid('getGridParam', 'selrow');
             if (gr != null)
-                document.location.href = '<?php echo base_url('poa/seguimiento/gestionarComponente'); ?>/' + jqLista.jqGrid('getGridParam', 'selrow');
+                document.location.href = '<?php echo base_url($ruta . 'gestionarComponente'); ?>/' + jqLista.jqGrid('getGridParam', 'selrow');
             else
                 $('#mensaje2').dialog('open');
 
@@ -72,46 +76,57 @@
         $("#subcomponente").button().click(function() {
             var gr = jqLista.jqGrid('getGridParam', 'selrow');
             if (gr != null)
-                document.location.href = '<?php echo base_url('poa/seguimiento/agregarSubcomponente'); ?>/' + jqLista.jqGrid('getGridParam', 'selrow');
+                document.location.href = '<?php echo base_url($ruta . 'gestionarSubComponente'); ?>/' + jqLista.jqGrid('getGridParam', 'selrow');
             else
                 $('#mensaje2').dialog('open');
 
         });
         $("#agregar").button().click(function() {
-            document.location.href = '<?php echo base_url('poa/seguimiento/gestionarComponente'); ?>';
+            document.location.href = '<?php echo base_url($ruta . 'gestionarComponente'); ?>';
         });
         $('.mensaje').dialog({autoOpen: false, width: 300,
             buttons: {"Ok": function() {
                     $(this).dialog("close");
                 }}
         });
-        /*
-         $("#eliminar").button().click(function() {
-         var gr = jqLista.jqGrid('getGridParam', 'selrow');
-         if (gr != null) {
-         $.getJSON('<?php echo base_url('componente2/comp22/eliminarCapacitacion'); ?>/' + jQuery("#lista").jqGrid('getGridParam', 'selrow'),
-         function(data) {
-         var i = 0;
-         $.each(data, function(key, val) {
-         if (key == 'rows') {
-         $.each(val, function(id, registro) {
-         if (registro['cell'][1] == 0) {
-         $('#mensaje1').dialog('open');
-         jqLista.setGridParam({
-         url: '<?php echo base_url('componente2/comp22/loadCapacitaciones/'); ?>/',
-         datatype: "json"
-         }).trigger("reloadGrid");
-         } else {
-         $('#mensaje3').dialog('open');
-         }
-         });
-         }
-         });
-         });
-         }
-         else
-         $('#mensaje2').dialog('open');
-         });*/
+
+        $("#eliminar").button().click(function() {
+            var gr = jqLista.jqGrid('getGridParam', 'selrow');
+            if (gr != null) {
+                $.getJSON('<?php echo base_url($ruta . 'eliminarComponente'); ?>/' + jQuery("#lista").jqGrid('getGridParam', 'selrow'),
+                        function(data) {
+                            $.each(data.resultado, function(indice, result) {
+                                if (result == 0) {
+                                    $('#mensaje1').dialog('open');
+                                    jqLista.setGridParam({
+                                        url: '<?php echo base_url($ruta . 'cargarComponentes'); ?>',
+                                        datatype: "json"
+                                    }).trigger("reloadGrid");
+                                } else {
+                                    $('#mensaje3').dialog('open');
+                                }
+                            });
+                        });
+            }
+            else
+                $('#mensaje2').dialog('open');
+        });
+        function eliminarSubcomponente(poa_com_id) {
+            $.getJSON('<?php echo base_url($ruta . 'eliminarComponente'); ?>/' + poa_com_id,
+                    function(data) {
+                        $.each(data.resultado, function(indice, result) {
+                            if (result == 0) {
+                                $('#mensaje1').dialog('open');
+                                jqLista.setGridParam({
+                                    url: '<?php echo base_url($ruta . 'cargarComponentes'); ?>',
+                                    datatype: "json"
+                                }).trigger("reloadGrid");
+                            } else {
+                                $('#mensaje3').dialog('open');
+                            }
+                        });
+                    });
+        }
     });
 </script>
 
@@ -125,6 +140,7 @@
     <br/><br/>
     <div id="agregar">Agregar</div>
     <div id="editar">Editar</div>
+    <div id="eliminar">Eliminar</div>
     <div id="subcomponente">Agregar Subcomponente</div>
 </center>
 <div id="mensaje2" class="mensaje" title="Aviso">

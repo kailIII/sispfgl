@@ -29,6 +29,11 @@ class Poa_componente extends CI_Model {
         $this->db->order_by('poa_com_id', 'desc');
         return $this->db->get($this->tabla, '1')->row()->poa_com_codigo;
     }
+    public function obtenerUltimoCodigoHijo($poa_comp_padre) {
+        $this->db->where("poa_com_padre = $poa_comp_padre");
+        $this->db->order_by('poa_com_id', 'desc');
+        return $this->db->get($this->tabla, '1')->row()->poa_com_codigo;
+    }
 }
 
 ?>

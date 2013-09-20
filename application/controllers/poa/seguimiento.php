@@ -28,9 +28,10 @@ class Seguimiento extends CI_Controller {
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $informacion['ruta'] = $this->ruta;
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
-        $this->load->view($this->ruta . 'gestion_componente_view');
+        $this->load->view($this->ruta . 'gestion_componente_view', $informacion);
         $this->load->view('plantilla/footer', $informacion);
     }
 
@@ -184,6 +185,49 @@ class Seguimiento extends CI_Controller {
                 $this->poa->eliminar_tabla('poa_indicador', 'poa_ind_id', $this->input->post('id'));
                 break;
         }
+    }
+
+    public function eliminarComponente($poa_com_id) {
+        $tabla = $this->dbPrefix . 'componente';
+        $this->poa->eliminar_tabla($tabla, 'poa_com_id', $poa_com_id);
+
+        $resultado['resultado'] = array('valor' => 0);
+        echo json_encode($resultado);
+    }
+
+    public function eliminarSubComponente() {
+        $tabla = $this->dbPrefix . 'componente';
+        $this->poa->eliminar_tabla($tabla, 'poa_com_id', $this->input->post('id'));
+    }
+
+    public function gestionarSubComponente($poa_com_padre, $poa_comp_id = false) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
+        if (!$poa_comp_id) {
+            $codigo = $this->componente->obtenerUltimoCodigoHijo($poa_com_padre);
+            $codigo = explode(".", $codigo);
+            $datos = array('poa_com_codigo' => $codigo[0] . "." . ((int) $codigo[1] + 1) . '.',
+                'poa_com_padre' => $poa_com_padre);
+            $this->poa->insertar_tabla('poa_componente', $datos);
+            $poa_comp_id = $this->poa->ultimoId('poa_componente', 'poa_com_id');
+        }
+        $componente = $this->poa->obtener_por_id("poa_componente", 'poa_com_id', $poa_comp_id);
+        $informacion['poa_com_descripcion'] = $componente->poa_com_descripcion;
+        $informacion['poa_com_objetivo'] = $componente->poa_com_objetivo;
+        $informacion['poa_com_resultado'] = $componente->poa_com_resultado;
+        $informacion['poa_com_codigo'] = $componente->poa_com_codigo;
+        $padre = $this->poa->obtener_por_id("poa_componente", 'poa_com_id', $poa_com_padre);
+        $informacion['poa_comp_padre'] = $padre->poa_com_descripcion;
+        $informacion['poa_com_id'] = $poa_comp_id;
+        $informacion['titulo'] = 'Planificación Operativa Anual';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $informacion['ruta'] = $this->ruta;
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view($this->ruta . 'crear_subcomponente_view', $informacion);
+        $this->load->view('plantilla/footer', $informacion);
     }
 
 }
