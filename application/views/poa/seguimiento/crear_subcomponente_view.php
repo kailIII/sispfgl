@@ -180,8 +180,10 @@ else
 <form id="componenteForm" method="post">
     <div id="rpt_frm_bdy">
         <div class="campo">
+            <p>Este código es sugerido, usted puede modificarlo si lo desea</p>
             <label>Código:</label>
-            <input type="text" id="poa_com_codigo" name="poa_com_codigo" readonly="readonly"  value="<?php echo $poa_com_codigo; ?>" style="width: 60px; background-color: white; border: none;  margin-top: 5px;" />
+            <input type="text" id="poa_com_codigo" name="poa_com_codigo" value="<?php echo $poa_com_codigo; ?>" style="width: 60px; margin-top: 5px;" />
+            
         </div>
         <div class="campo">
             <label>Componente:</label>

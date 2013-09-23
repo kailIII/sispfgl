@@ -244,18 +244,18 @@ img{
 /****************
     Formularios
  ***************/
- 
- 
+
+
 #actions {
-	padding-bottom: 10px;
-	padding-top: 10px;
-	padding-right: 30px;
-	border-left-color: white;
-	border-left-style: solid;
-	border-left-width: 1px;
-	/*float: right;*/
-	width: 700px;
-	text-align: right;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-right: 30px;
+    border-left-color: white;
+    border-left-style: solid;
+    border-left-width: 1px;
+    /*float: right;*/
+    width: 700px;
+    text-align: right;
 }
 
 form .campo label {
@@ -272,7 +272,7 @@ form .campo input {
 .error{
     display: inline-block;
 }
- 
+
 #rpt {
 }
 
@@ -289,24 +289,24 @@ form .campo input {
     color: #222;
     text-decoration: none;
     font-size:  110%;
-	background: #fff;
-	border-bottom: #999 0px solid;
-	border-right: #999 0px solid;
-	height: 24px;
+    background: #fff;
+    border-bottom: #999 0px solid;
+    border-right: #999 0px solid;
+    height: 24px;
 }
 
 #rpt-border {
-  background: url(../images/header_border.png) no-repeat;
-  clear: both;
-  height: 3px;
-  margin-bottom: 20px;
+    background: url(../images/header_border.png) no-repeat;
+    clear: both;
+    height: 3px;
+    margin-bottom: 20px;
 }
 
 #rpt_frm_hdr img,
 #rpt_opt_hdr img,
 #rpt_prt_hdr img {
-	
-	cursor: pointer;
+
+    cursor: pointer;
 }
 
 #rpt_frm_bdy,
@@ -320,18 +320,18 @@ form .campo input {
 
 #rpt_frm_bdy .campo,
 #rpt_frm_bdy .campoUp {
-	margin-bottom:	10px;
-	display: 		block;
+    margin-bottom:	10px;
+    display: 		block;
     min-height:     35px;
     margin-top:     10px;
 }
 
 #rpt_frm_bdy .campoUp label {
-	width: 			300px;
-	margin-left:	20px;
-	display:        block;
-	line-height: 	35px;
-	cursor: 		pointer;
+    width: 			300px;
+    margin-left:	20px;
+    display:        block;
+    line-height: 	35px;
+    cursor: 		pointer;
 }
 
 #rpt_frm_bdy .campo label {
@@ -394,12 +394,12 @@ form .campo input {
 }
 
 #rpt_frm_bdy .tabla label{
-    
+
 }
 
 
 .rpt_groupBy {
-	margin-left: 5px;
+    margin-left: 5px;
     font-size: 100%;
     font-weight: bold;
 }
@@ -501,4 +501,45 @@ form .campo input {
     background-color: white;
     text-align: center;
     font-weight: bold;
+}
+/* AGREGADO POR ING. PEÑATE PARA EL ESTILO DE LAS TABLAS
+    RELACIONADAS POR AL POA
+*/
+#box-table-a
+{
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size: 12px;
+    margin: 45px;
+    text-align: left;
+    border-collapse: collapse;
+}
+#box-table-a th
+{
+    font-size: 13px;
+    font-weight: normal;
+    padding: 8px;
+    background: #b9c9fe;
+    border-top: 4px solid #aabcfe;
+    border-bottom: 1px solid #fff;
+    color: #039;
+    font-weight: bold;
+}
+
+#box-table-a td
+{
+    padding: 8px;
+    border-bottom: 1px solid #fff;
+    color: #669;
+    border-top: 1px solid transparent;
+}
+
+#box-table-a .odd
+{
+    background: #F2F2F2; 
+}
+
+#box-table-a tr:hover td
+{
+    background: #d0dafd;
+    color: #339;
 }
