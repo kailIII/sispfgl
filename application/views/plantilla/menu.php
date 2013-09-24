@@ -8,10 +8,10 @@
             ?>
             <li><a >Avance</a>
 				<ul style="position:absolute; z-index:1;" >
-                    <li><a href="<?php echo base_url('matriz_indicadores/matriz_indicadores/gestion_matriz_public/1'); ?>">Matriz de Indicadores - Componente 1</a></li>
-                    <li><a href="<?php echo base_url('matriz_indicadores/matriz_indicadores/gestion_matriz_public/2'); ?>">Matriz de Indicadores - Componente 2</a></li>
-                    <li><a href="<?php echo base_url('matriz_indicadores/matriz_indicadores/gestion_matriz_public/3'); ?>">Matriz de Indicadores - Componente 3</a></li>
-                    <li><a href="<?php echo base_url('matriz_indicadores/matriz_indicadores/gestion_matriz_public/4'); ?>">Matriz de Indicadores - Componente 4</a></li>
+                    <li><a href="<?php echo base_url('matriz_indicadores/matriz_indicadores/gestion_matriz_public/1'); ?>">Resultado 1</a></li>
+                    <li><a href="<?php echo base_url('matriz_indicadores/matriz_indicadores/gestion_matriz_public/2'); ?>">Resultado 2</a></li>
+                    <li><a href="<?php echo base_url('matriz_indicadores/matriz_indicadores/gestion_matriz_public/3'); ?>">Resultado 3</a></li>
+                    <li><a href="<?php echo base_url('matriz_indicadores/matriz_indicadores/gestion_matriz_public/4'); ?>">Resultado 4</a></li>
                 </ul>
             </li>                   
             <li><a href='http://sis-pfgl.gob.sv/pmapper-dev/map_default.phtml'  target="_blank">Mapas</a>

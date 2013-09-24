@@ -218,14 +218,14 @@
 echo form_open('componente3/componente3/guardar_epi',$attributes);?>
 
 	<label>Nombre Actividad:&nbsp;</label>
-	<input type="text" name="nombre_act_imp" id="nombre_act_imp"  size="45" align="left"><br/><br/>
+	<input type="text" name="nombre_act_imp" id="nombre_act_imp"  size="45" align="left" maxlength="150"><br/><br/>
 		
 	<div  style="float:left;height:200px;">
 		<label>Fecha de Inicio:</label>
 		<input readonly="readonly"  type="text" name="fecha_ini" id="fecha_ini"  size="10" align="left"><br/><br/>
 
 		<label>Responsable: &nbsp;&nbsp;</label>
-		<input type="text" name="res_act_imp" id="res_act_imp"  size="22" align="left"><br/><br/>
+		<input type="text" name="res_act_imp" id="res_act_imp"  size="22" align="left" maxlength="100"><br/><br/>
 		
 		<label>Descripci&oacute;n: </label><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<textarea rows="5" cols="21" maxlength="150" name="desc_act_imp" id="desc_act_imp" align="left"></textarea><br/><br/>
@@ -237,7 +237,7 @@ echo form_open('componente3/componente3/guardar_epi',$attributes);?>
 		<input readonly="readonly"  type="text" name="fecha_fin" id="fecha_fin"  size="10" align="left"><br/><br/>
 		
 		&nbsp;&nbsp;<label>Cargo: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-		<input type="text" name="cargo_res" id="cargo_res"  size="10" align="left"><br/><br/>
+		<input type="text" name="cargo_res" id="cargo_res"  size="10" align="left" maxlength="50"><br/><br/>
 		
 		&nbsp;&nbsp;<label>Costo: </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type="text" name="recu_act_imp" id="recu_act_imp" size="10" align="left"><br/><br/><br/><br/>

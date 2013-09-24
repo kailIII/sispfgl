@@ -177,7 +177,7 @@ echo form_open_multipart('poa/poa/guardar_poa_gr',$attributes);?>
 		</select>
 		<br/><br/>
 		
-		<label>Doc. Gestion de Riesgo: </label>
+		<label>Doc. Gesti&oacute;n de Riesgo: </label>
 		<input type="file" id="doc_gr" name="doc_gr" size="10" />
 	</div>
 	

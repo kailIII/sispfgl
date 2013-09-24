@@ -254,7 +254,7 @@ echo form_open_multipart('componente3/componente3/guardar_dsat', $attributes);?>
 		<input readonly="readonly"  type="text" name="fecha_act" id="fecha_act"  size="10" align="left"><br/><br/>
 
 		<label>Nombre Actividad:&nbsp;</label>
-		<input type="text" name="nombre_act" id="nombre_act"  size="35" align="left"><br/><br/>
+		<input type="text" name="nombre_act" id="nombre_act"  size="35" align="left" maxlength="150"><br/><br/>
 
 		<label>Departamento: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 		<?php echo form_dropdown_from_db('dep_id','selDepto',"SELECT dep_id,dep_nombre FROM departamento");?>
@@ -302,7 +302,7 @@ echo form_open_multipart('componente3/componente3/guardar_dsat', $attributes);?>
 		<p align="center"><b>Asistentes</b></p>
 		
 		<label>Nombre: </label>
-		<input type="text" name="nombre_asis" id="nombre_asis"  size="17" align="left">
+		<input type="text" name="nombre_asis" id="nombre_asis"  size="17" align="left" maxlength="150">
 		
 		<select name="sexo_asis" size="1" id="sexo_asis">
 			<option value="F"<?php echo set_select('sexo_asis', 'F'); ?>>Femenino</option>
@@ -321,7 +321,7 @@ echo form_open_multipart('componente3/componente3/guardar_dsat', $attributes);?>
 		</select>
 		
 		<label>Cargo: </label>
-		<input type="text" name="cargo_asis" id="cargo_asis"  size="7" align="left">
+		<input type="text" name="cargo_asis" id="cargo_asis"  size="7" align="left" maxlength="50">
 		
 		<input type="button" value="Agregar" name="agregar" id="agregar" align="left"><br/>
 		

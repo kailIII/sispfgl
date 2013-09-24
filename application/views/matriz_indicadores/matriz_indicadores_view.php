@@ -136,6 +136,10 @@
 			$('#editar').prop('disabled',false).button('refresh');
 		});
 		
+		$("#export").button().click(function(){            
+				window.location = '<?php echo base_url('matriz_indicadores/matriz_indicadores/export_excel/'.$componente) ?>';
+        });
+		
 		var lastsel;
 		var tabla=$("#matriz");
         tabla.jqGrid({
@@ -249,14 +253,15 @@ echo form_open_multipart('poa/poa/guardar_poa_gr',$attributes);?>
 		<div id="pagerMatriz"></div>
 		
 		<br/>
-		&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+		&emsp;
 		<input type="button" id="editar" value="Editar"/>
 		<input type="button" id="guardar" value="Guardar" disabled />
 		<input type="button" id="cancelar" value="Cancelar" disabled />
 		<input type="button" id="addNewInd" value="Agregar Nuevo" />
-		&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+		&emsp;&emsp;&emsp;&emsp;
 		<input type="button" id="ver_indicador" value="Ver Indicador"/>
 		<input type="button" id="ver_comentario" value="Ver Comentario"/>
+		<input type="button" id="export" value="Exportar a Excel"/>
 		
 		<br/><br/>
 		<div id="addNewDiv" hidden>

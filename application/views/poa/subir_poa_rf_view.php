@@ -154,7 +154,7 @@
 <?php $attributes = array('id' => 'myform');
 echo form_open_multipart('poa/poa/guardar_poa_rf',$attributes);?>
 	
-	<div  style="float:left;height:80px;width:350px;">
+	<div  style="float:left;height:120px;width:400px;">
 		
 		<label>Departamento: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 		<?php echo form_dropdown_from_db('dep_id','selDepto' ,"SELECT dep_id,dep_nombre FROM departamento");?>
@@ -166,12 +166,14 @@ echo form_open_multipart('poa/poa/guardar_poa_rf',$attributes);?>
 		</select>
 		<br/><br/>
 		
+		<label>A&ntilde;o: </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="text" name="anio_rf" id="anio_rf"  size="7" >
 		<!--<label>Fecha: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 		<input readonly="readonly"  type="text" name="fecha_doc" id="fecha_doc"  size="7" align="left"><br/><br/>-->
 		
 	</div>
 	
-	<div  style="float:left;height:80px;width:550px;">
+	<div  style="float:left;height:120px;width:500px;">
 		<label>Estado: </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<select name="estado_rf" size="1" id="estado_rf">
 			<option value="En Ejecucion"<?php echo set_select('estado_rf', 'En Ejecucion'); ?>>En Ejecuci&oacute;n</option>
