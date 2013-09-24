@@ -111,10 +111,16 @@ class poa extends CI_Controller {
 					$config['file_name']='poa_base';
 				}
 				else 
-				$config['file_name'] = 'poa_seguimiento_'.date("d-m-y");
+				$config['file_name'] = 'poa_seguimiento_'.$_POST['trim'].'_'.$_POST['anio'];
 		}
 		else
 			$config['file_name']='poa_base';
+		
+		if(file_exists('documentos/seguimiento_poa/'.$config['file_name'].'.xlsx')){
+			if($config['file_name']!='poa_base'){
+				unlink('documentos/seguimiento_poa/'.$config['file_name'].'.xlsx');
+			}
+		}
 		
 		
 		$this->load->library('upload', $config);
@@ -152,6 +158,35 @@ class poa extends CI_Controller {
 			$this->load->view('plantilla/footer', $informacion);
 		}
 	}
+	
+	public function ver_arch_poa_seguimiento_view() {
+		
+		for($anio=2011;$anio<2016;$anio++){//se crean divs para cada anio, los cuales contienen botones para realizar la accion de comparar
+			$informacion['a'.$anio]='<div id="'.$anio.'" hidden><h5>A&ntilde;o '.$anio.'</h5>';
+			for($trim=1;$trim<5;$trim++){
+				$dir='documentos/seguimiento_poa/';
+				$file='poa_seguimiento_'.$trim.'_'.$anio.'.xlsx';
+				if(file_exists($dir.$file)){
+					$informacion['a'.$anio].='<input type="button" id="comparar'.$trim.$anio.'" name="'.$file.'" value="Comparar Archivo Trimestre '.$trim.'-'.$anio.'"/><br/><br/>';
+				}
+			}
+			$informacion['a'.$anio].='</div>';
+			
+			if($informacion['a'.$anio]=='<div id="'.$anio.'" hidden><h5>A&ntilde;o '.$anio.'</h5></div>')//si no hay datos
+				$informacion['a'.$anio]='<div id="'.$anio.'" hidden><p>Aun no hay archivos para el a&ntilde;o seleccionado.</p></div>';
+		}
+		
+		
+        $informacion['titulo'] = 'Archivos POA Seguimiento';
+        //require_once 'excel_reader2.php';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('poa/ver_arch_poa_seguimiento_view',$informacion);
+        $this->load->view('plantilla/footer', $informacion);
+    }
 	
 	public function nextFileName($file,$dir) {//aun no se utiliza
 
@@ -298,7 +333,7 @@ class poa extends CI_Controller {
 		unset($datos['guardar']);
 		
 		//configuracion del archivo adjunto a subir
-		$config['upload_path'] = 'documentos/seguimiento_poa/rescate_financiero';
+		$config['upload_path'] = 'documentos/seguimiento_poa/rescate_financiero/';
 		$config['allowed_types'] = 'xls|xlsx';
 		//$config['max_size']	= '2048';
 		
@@ -489,21 +524,26 @@ class poa extends CI_Controller {
             'borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN))
         );
         
-        $report->getActiveSheet()->setCellValue('C2', 'Seguiminto POA PFGL - Avance Fisico y Financiero.');
-        $report->getActiveSheet()->mergeCells('C2:I2');
-        $report->getActiveSheet()->getStyle('C2:I2')->applyFromArray($estTitulos);
+        $estRight = array(
+            'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT)
+        );
+        
+        $report->getActiveSheet()->setCellValue('B2', 'Seguiminto POA PFGL - Avance Fisico y Financiero.');
+        $report->getActiveSheet()->mergeCells('B2:H2');
+        $report->getActiveSheet()->getStyle('B2:H2')->applyFromArray($estTitulos);
 
-        $report->getActiveSheet()->getColumnDimension('A')->setWidth(19);
-        $report->getActiveSheet()->getColumnDimension('B')->setWidth(19);
-        $report->getActiveSheet()->getColumnDimension('C')->setWidth(19);
-        $report->getActiveSheet()->getColumnDimension('D')->setWidth(12);
-        $report->getActiveSheet()->getColumnDimension('E')->setWidth(12);
+        $report->getActiveSheet()->getColumnDimension('A')->setWidth(20);
+        $report->getActiveSheet()->getColumnDimension('B')->setWidth(20);
+        $report->getActiveSheet()->getColumnDimension('C')->setWidth(20);
+        $report->getActiveSheet()->getColumnDimension('D')->setWidth(20);
+        $report->getActiveSheet()->getColumnDimension('E')->setWidth(22);
+        $report->getActiveSheet()->getColumnDimension('F')->setWidth(22);
         $report->getActiveSheet()->mergeCells('A4:C4');
         
         $report->getActiveSheet()->setCellValue('A4', 'Componente/SubComponente/Actividad');
-        $report->getActiveSheet()->setCellValue('D4', 'Total Costos Inicial');
-        $report->getActiveSheet()->setCellValue('E4', 'Total a la Fecha');
-        $report->getActiveSheet()->setCellValue('F4', 'Variacion');
+        $report->getActiveSheet()->setCellValue('D4', 'Total Planificado');
+        $report->getActiveSheet()->setCellValue('E4', 'Total a la Fecha (Avance Fisico)');
+        $report->getActiveSheet()->setCellValue('F4', 'Ejecutado (Avance Financiero)');
         $report->getActiveSheet()->getStyle('A4:F4')->applyFromArray($estSubTitulos);
         
         
@@ -527,7 +567,11 @@ class poa extends CI_Controller {
 					$report->getActiveSheet()->setCellValue("A".$j, $comp.' '.$poa_base->getActiveSheet()->getCell("C".$i)->getValue());
 					$report->getActiveSheet()->setCellValue("D".$j, $poa_base->getActiveSheet()->getCell("G".$i)->getValue());
 					$report->getActiveSheet()->setCellValue("E".$j, $poa_comp->getActiveSheet()->getCell("G".$i)->getValue());
-					$report->getActiveSheet()->setCellValue("F".$j, substr($poa_base->getActiveSheet()->getCell("G".$i)->getValue(),1,-1) - substr($poa_comp->getActiveSheet()->getCell("G".$i)->getValue(),1,-1));
+						$plan=$poa_base->getActiveSheet()->getCell("G".$i)->getValue();
+						$ejec=$poa_comp->getActiveSheet()->getCell("G".$i)->getValue();
+						if($plan==0)
+							$plan=1;
+					$report->getActiveSheet()->setCellValue("F".$j, (($ejec/$plan) * 100).'%' );
 					$report->getActiveSheet()->getStyle("A".$j.":F".$j)->applyFromArray($estComp);
 					$j++;
 					
@@ -538,7 +582,11 @@ class poa extends CI_Controller {
 					$report->getActiveSheet()->setCellValue("A".$j, ' '.$comp.' '.$poa_base->getActiveSheet()->getCell("C".$i)->getValue());
 					$report->getActiveSheet()->setCellValue("D".$j, $poa_base->getActiveSheet()->getCell("G".$i)->getValue());
 					$report->getActiveSheet()->setCellValue("E".$j, $poa_comp->getActiveSheet()->getCell("G".$i)->getValue());
-					$report->getActiveSheet()->setCellValue("F".$j, substr($poa_base->getActiveSheet()->getCell("G".$i)->getValue(),1,-1) - substr($poa_comp->getActiveSheet()->getCell("G".$i)->getValue(),1,-1));
+						$plan=$poa_base->getActiveSheet()->getCell("G".$i)->getValue();
+						$ejec=$poa_comp->getActiveSheet()->getCell("G".$i)->getValue();
+						if($plan==0)
+							$plan=1;
+					$report->getActiveSheet()->setCellValue("F".$j, (($ejec/$plan) * 100).'%');
 					$report->getActiveSheet()->getStyle("A".$j.":F".$j)->applyFromArray($estSubComp);
 					$j++;
 				}
@@ -551,7 +599,12 @@ class poa extends CI_Controller {
 					$report->getActiveSheet()->setCellValue("A".$j, '   '.$comp.' '.$poa_base->getActiveSheet()->getCell("D".$i)->getValue());
 					$report->getActiveSheet()->setCellValue("D".$j, $poa_base->getActiveSheet()->getCell("G".$i)->getValue());
 					$report->getActiveSheet()->setCellValue("E".$j, $poa_comp->getActiveSheet()->getCell("G".$i)->getValue());
-					$report->getActiveSheet()->setCellValue("F".$j, substr($poa_base->getActiveSheet()->getCell("G".$i)->getValue(),1,-1) - substr($poa_comp->getActiveSheet()->getCell("G".$i)->getValue(),1,-1));
+						$plan=$poa_base->getActiveSheet()->getCell("G".$i)->getValue();
+						$ejec=$poa_comp->getActiveSheet()->getCell("G".$i)->getValue();
+						if($plan==0)
+							$plan=1;
+					$report->getActiveSheet()->setCellValue("F".$j, (($ejec / $plan  ) * 100).'%');
+					//$report->getActiveSheet()->setCellValue("F".$j, substr($poa_base->getActiveSheet()->getCell("G".$i)->getValue(),1,-1) - substr($poa_comp->getActiveSheet()->getCell("G".$i)->getValue(),1,-1));
 					$report->getActiveSheet()->getStyle("A".$j.":F".$j)->applyFromArray($estMacroAct);
 					$j++;
 				
@@ -565,7 +618,12 @@ class poa extends CI_Controller {
 							$report->getActiveSheet()->setCellValue("A".$j, '    '.$comp.' '.$poa_base->getActiveSheet()->getCell("E".$i)->getValue());
 							$report->getActiveSheet()->setCellValue("D".$j, $poa_base->getActiveSheet()->getCell("G".$i)->getValue());
 							$report->getActiveSheet()->setCellValue("E".$j, $poa_comp->getActiveSheet()->getCell("G".$i)->getValue());
-							$report->getActiveSheet()->setCellValue("F".$j, substr($poa_base->getActiveSheet()->getCell("G".$i)->getValue(),1,-1) - substr($poa_comp->getActiveSheet()->getCell("G".$i)->getValue(),1,-1));
+								$plan=$poa_base->getActiveSheet()->getCell("G".$i)->getValue();
+								$ejec=$poa_comp->getActiveSheet()->getCell("G".$i)->getValue();
+								if($plan==0)
+									$plan=1;
+							$report->getActiveSheet()->setCellValue("F".$j, (($ejec / $plan  ) * 100).'%');
+							//$report->getActiveSheet()->setCellValue("F".$j, substr($poa_base->getActiveSheet()->getCell("G".$i)->getValue(),1,-1) - substr($poa_comp->getActiveSheet()->getCell("G".$i)->getValue(),1,-1));
 							$report->getActiveSheet()->getStyle("A".$j.":F".$j)->applyFromArray($estAct);
 							$j++;
 						}
@@ -576,7 +634,12 @@ class poa extends CI_Controller {
 							$report->getActiveSheet()->setCellValue("A".$j, '     '.$comp.' '.$poa_base->getActiveSheet()->getCell("E".$i)->getValue());
 							$report->getActiveSheet()->setCellValue("D".$j, $poa_base->getActiveSheet()->getCell("G".$i)->getValue());
 							$report->getActiveSheet()->setCellValue("E".$j, $poa_comp->getActiveSheet()->getCell("G".$i)->getValue());
-							$report->getActiveSheet()->setCellValue("F".$j, substr($poa_base->getActiveSheet()->getCell("G".$i)->getValue(),1,-1) - substr($poa_comp->getActiveSheet()->getCell("G".$i)->getValue(),1,-1));
+								$plan=$poa_base->getActiveSheet()->getCell("G".$i)->getValue();
+								$ejec=$poa_comp->getActiveSheet()->getCell("G".$i)->getValue();
+								if($plan==0)
+									$plan=1;
+							$report->getActiveSheet()->setCellValue("F".$j, (($ejec / $plan  ) * 100).'%');
+							//$report->getActiveSheet()->setCellValue("F".$j, substr($poa_base->getActiveSheet()->getCell("G".$i)->getValue(),1,-1) - substr($poa_comp->getActiveSheet()->getCell("G".$i)->getValue(),1,-1));
 							$report->getActiveSheet()->getStyle("A".$j.":F".$j)->applyFromArray($estCells);
 							$j++;
 						} 
@@ -585,6 +648,8 @@ class poa extends CI_Controller {
 				
 			}
 		}
+		
+		$report->getActiveSheet()->getStyle("D5:F".$j)->applyFromArray($estRight);
 		
 		
 		

@@ -26,6 +26,9 @@ Class matriz_indicadores_model extends CI_Model{
 	}
 	
 	public function actualizar_indicador($ind){
+		
+		$newtotal=$ind["2011"]+$ind["2012"]+$ind["2013"]+$ind["2014"]+$ind["2015"];
+		
 			$data = array(
                 'cod' => $ind["cod"],
                 'indicador' => $ind["indicador"],
@@ -37,7 +40,7 @@ Class matriz_indicadores_model extends CI_Model{
                 'anio_5' => $ind["2015"],
                 'comentario' => $ind["comentario"],
                 'planificado' => $ind["planificado"],
-                'total' => $ind["total"]
+                'total' => $newtotal
             );
 
 			$this->db->where('id', $ind["id"]);

@@ -184,7 +184,7 @@
 		<input readonly="readonly"  type="text" name="fecha_con" id="fecha_con"  size="10" align="left"><br/>
 		
 		<label>Tematica: </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<input type="text" name="tematica_con" id="tematica_con"  size="45" align="left">
+		<input type="text" name="tematica_con" id="tematica_con"  size="45" align="left" maxlength="150">
 		
 	</div>
 	<div style="">
@@ -202,7 +202,7 @@
 		<p align="center"><b>Asistentes</b></p>
 		
 		<label>Nombre: </label>
-		<input type="text" name="nombre_asis" id="nombre_asis"  size="17" align="left">
+		<input type="text" name="nombre_asis" id="nombre_asis"  size="17" align="left" maxlength="150">
 		
 		<select name="sexo_asis" id="sexo_asis" size="1">
 			<option value="F"<?php echo set_select('sexo_asis', 'F'); ?>>Femenino</option>
@@ -221,7 +221,7 @@
 		</select>
 		
 		<label>Cargo: </label>
-		<input type="text" name="cargo_asis" id="cargo_asis"  size="7" align="left">
+		<input type="text" name="cargo_asis" id="cargo_asis"  size="7" align="left" maxlength="50">
 		
 		<input type="button" value="Agregar" name="agregar" id="agregar" align="left"><br/><br/>
 		
