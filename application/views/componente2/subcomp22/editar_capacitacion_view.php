@@ -19,14 +19,7 @@
             });
         });
         $('#btn_upload').button();
-        $('#btn_download').button().click(function(e) {
-            if (download_path != '') {
-               // e.preventDefault();  //stop the browser from following
-                //window.location.href = download_path;
-                window.open(download_path, "", ",height=500,width=400")
-            }
-        });
-        
+
         /*DIALOGOS DE VALIDACION*/
         $('.mensaje').dialog({
             autoOpen: false,
@@ -37,7 +30,7 @@
                 }
             }
         });
-        
+        /*  PARA SUBIR EL ARCHIVO  */
         new AjaxUpload('#btn_upload', {
             action: '<?php echo base_url('componente2/comp23_E1/subirArchivo') . '/c22_capacitaciones/' . $cap_id . '/cap_id'; ?>',
             onSubmit: function(file, ext) {
@@ -51,24 +44,40 @@
             },
             onComplete: function(file, response, ext) {
                 if (response != 'error') {
-                    $('#vineta').html('Ok');
+                    $('#vineta').html('Subido con éxito');
                     this.enable();
-                    download_path = response;
-                    $('#btn_download').show();
+                    ext = (response.substring(response.lastIndexOf("."))).toLowerCase();
+                    $('#cap_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO
+                    if (ext == '.pdf') {
+                        $('#btn_download').attr({
+                            'href': '<?php echo base_url(); ?>' + response,
+                            'target': '_blank'
+                        });
+                    }
+                    else {
+                        $('#btn_download').attr({
+                            'href': '<?php echo base_url(); ?>' + response,
+                            'target': '_self'
+                        });
+                    }
                 } else {
-                    $('#vineta').html('<span class="error">Error</span>');
+                    $('#vineta').html('<span class="error">Debe ser menor a 1 MB</span>');
                     this.enable();
 
                 }
             }
         });
+        $('#btn_download').button().click(function() {
+            $.get($(this).attr('href'));
+        });
+
         $("#cap_fecha_ini").datepicker({
             showOn: 'both',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-            buttonImageOnly: true, 
+            buttonImageOnly: true,
             dateFormat: 'dd-mm-yy'
         });
-        
+
         $('#capacitacionForm').validate({
             rules: {
                 mod_id: {
@@ -132,13 +141,17 @@
                 <label>Modalidad del proceso:</label>
                 <select id='mod_id' name='mod_id'>
                     <option value='0'>--Seleccione--</option>
-                    <?php foreach ($modalidades as $aux) {
-                          if($mod_id==$aux->mod_id){
-                        ?>
-                        <option value='<?php echo $aux->mod_id; ?>' selected="selected"><?php echo $aux->mod_nombre; ?></option>
-                    <?php }else{ ?>
-                        <option value='<?php echo $aux->mod_id; ?>' ><?php echo $aux->mod_nombre; ?></option>
-                        <?php }}?>
+                    <?php
+                    foreach ($modalidades as $aux) {
+                        if ($mod_id == $aux->mod_id) {
+                            ?>
+                            <option value='<?php echo $aux->mod_id; ?>' selected="selected"><?php echo $aux->mod_nombre; ?></option>
+                        <?php } else { ?>
+                            <option value='<?php echo $aux->mod_id; ?>' ><?php echo $aux->mod_nombre; ?></option>
+                            <?php
+                        }
+                    }
+                    ?>
                 </select>
             </div>
             <div class="campo">
@@ -153,10 +166,10 @@
                 <label>Nivel al que va dirigido:</label>
                 <select id="cap_nivel" name="cap_nivel" >
                     <option value="0" selected="selected">Seleccione--</option>
-                    <option <?php if ($cap_nivel=='Dirección') echo 'selected="selected"' ?> value="Dirección">Dirección</option>
-                    <option <?php if ($cap_nivel=='Administrativo') echo 'selected="selected"' ?> value="Administrativo">Administrativo</option>
-                    <option <?php if ($cap_nivel=='Técnico') echo 'selected="selected"' ?> value="Técnico">Técnico</option>
-                    <option <?php if ($cap_nivel=='Operativo') echo 'selected="selected"' ?> value="Operativo">Operativo</option>
+                    <option <?php if ($cap_nivel == 'Dirección') echo 'selected="selected"' ?> value="Dirección">Dirección</option>
+                    <option <?php if ($cap_nivel == 'Administrativo') echo 'selected="selected"' ?> value="Administrativo">Administrativo</option>
+                    <option <?php if ($cap_nivel == 'Técnico') echo 'selected="selected"' ?> value="Técnico">Técnico</option>
+                    <option <?php if ($cap_nivel == 'Operativo') echo 'selected="selected"' ?> value="Operativo">Operativo</option>
                 </select> 
 
             </div>
@@ -173,10 +186,10 @@
                 <input id="cap_duracion" name="cap_duracion" type="text"  style="width: 145px;" value="<?php echo $cap_duracion ?>"/>
                 <select id="cap_duracion_tipo" name="cap_duracion_tipo" style="width: 100px;" >
                     <option value="0" selected="selected">Seleccione--</option>
-                    <option <?php if ($cap_duracion_tipo=='Años') echo 'selected="selected"' ?> value="Años">Años</option>
-                    <option <?php if ($cap_duracion_tipo=='Meses') echo 'selected="selected"' ?> value="Meses">Meses</option>
-                    <option <?php if ($cap_duracion_tipo=='Días') echo 'selected="selected"' ?> value="Días">Días</option>
-                    <option <?php if ($cap_duracion_tipo=='Horas') echo 'selected="selected"' ?> value="Horas">Horas</option>
+                    <option <?php if ($cap_duracion_tipo == 'Años') echo 'selected="selected"' ?> value="Años">Años</option>
+                    <option <?php if ($cap_duracion_tipo == 'Meses') echo 'selected="selected"' ?> value="Meses">Meses</option>
+                    <option <?php if ($cap_duracion_tipo == 'Días') echo 'selected="selected"' ?> value="Días">Días</option>
+                    <option <?php if ($cap_duracion_tipo == 'Horas') echo 'selected="selected"' ?> value="Horas">Horas</option>
                 </select>        
             </div>
             <div class="campo">

@@ -58,8 +58,6 @@
                         success: function(data)
                         {
                             $('#efectivo').dialog('open');
-                            $("#regresar").show();
-                            $("#cancelar").hide();
                         }
                     });
                     return false;
@@ -134,11 +132,8 @@
             }
         });
 
-        $("#cancelar").button().click(function() {
-            document.location.href = '<?php echo base_url('componente2/comp22/borrarSolicitud') . '/'; ?>';
-        });
-        $("#regresar").button().click(function() {
-            document.location.href = '<?php echo base_url('') ; ?>';
+       $("#regresar").button().click(function() {
+            document.location.href = '<?php echo base_url('componente2/comp22/gestionSolicitudes') ; ?>';
         });
         function validaInstitucion(value, colname) {
             if (value == 0)
@@ -213,7 +208,6 @@
             tabla.jqGrid('setGridParam', {datatype: 'json', loadonce: true}).trigger('reloadGrid');
             return[true, '']; //no error
         }
-        $("#regresar").hide();
 
     });
 </script>
@@ -359,7 +353,6 @@ He leido los criterios de Preselección/elegibilidad para aplicar a Procesos de 
         <center style="position: relative;top: 20px">
             <input type="submit" id="guardar" value="Guardar" />
             <input type="button" id="regresar" value="Regresar" />
-            <input type="button" id="cancelar" value="Cancelar" />
         </center>
     </form>
     <br/><br/><br/>
