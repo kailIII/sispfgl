@@ -62,12 +62,13 @@ $this->load->view('plantilla/menu', $menu);
             url: '<?php echo base_url('componente2/comp22/loadCapacitaciones/'); ?>/', // + $('#mun_id').val(),
             datatype: "json",
             height: 300,
-            colNames: ['Id', 'Proceso', 'Nombre/Tema', 'Fecha'],
+            colNames: ['Id', 'Proceso', 'Nombre/Tema', 'Fecha','Archivo'],
             colModel: [
                 {name: 'id', index: 'id', width: 55},
                 {name: 'cap_proceso', index: 'cap_proceso', width: 150},
                 {name: 'cap_nombre', index: 'cap_nombre', width: 200},
-                {name: 'cap_fecha', index: 'cap_fecha', width: 100}
+                {name: 'cap_fecha', index: 'cap_fecha', width: 100},
+                {name: 'Subcategory', formatter: 'showlink', formatoptions: {baseLinkUrl: '#'}}
             ],
             rowNum: 10,
             rowList: [10, 20, 30],
@@ -78,6 +79,21 @@ $this->load->view('plantilla/menu', $menu);
             caption: "Capacitaciones",
             ondblClickRow: function(rowid, iRow, iCol, e) {
                 window.location.href = '<?php echo current_url(); ?>/' + rowid;
+            },
+            loadComplete: function() {
+                var ids = jqLista.getDataIDs();
+                for (var i = 0, idCount = ids.length; i < idCount; i++) {
+                    $("#" + ids[i] + " a", jqLista[0]).click(function(e) {
+                        var hash = e.currentTarget.hash;// string like "#?id=0"
+                        if (hash.substring(0, 5) === '#?id=') {
+                            var id = hash.substring(5, hash.length);
+                            var text = this.textContent || this.innerText;
+                            alert("clicked the row with id='" + id + "'. Link contain '" + text + "'");
+                            location.href = "http://en.wikipedia.org/wiki/" + text;
+                        }
+                        e.preventDefault();
+                    });
+                }
             }
         });
         /**/
@@ -163,34 +179,35 @@ if (isset($tabla_id) && $tabla_id != 0) {
         <div class="campo">
             <label>Capacitación Id:</label>
             <input id="cap_id" name="cap_id" type="text" readonly="readonly" value="<?php echo set_value('cap_id') ?>"/>
-<?php echo form_error('cap_id'); ?>
+            <?php echo form_error('cap_id'); ?>
         </div>
         <div class="campo">
             <label>No. Proceso de Formación:</label>
             <input id="cap_proceso" name="cap_proceso" type="text" value="<?php echo set_value('cap_proceso') ?>"/>
-<?php echo form_error('cap_proceso'); ?>
+            <?php echo form_error('cap_proceso'); ?>
         </div>
         <div class="campo">
             <label>Area de Capacitación o Tema:</label>
             <input id="cap_area" name="cap_area" type="text" value="<?php echo set_value('cap_area') ?>"/>
-<?php echo form_error('cap_area'); ?>
+            <?php echo form_error('cap_area'); ?>
         </div>
         <div class="campo">
             <label>Nombre de la Sede:</label>
             <input id="cap_sede" name="cap_sede" type="text" value="<?php echo set_value('cap_sede') ?>"/>
-<?php echo form_error('cap_sede'); ?>
-<?php //echo form_dropdown('sed_id',$cap_sede,set_value('sed_id','0')); echo form_error('sed_id');   ?>
+            <?php echo form_error('cap_sede'); ?>
+            <?php //echo form_dropdown('sed_id',$cap_sede,set_value('sed_id','0')); echo form_error('sed_id');   ?>
         </div>
         <div class="campo">
             <label>Modalidad del proceso:</label>
-<?php echo form_dropdown('mod_id', $cap_modalidad, set_value('mod_id', '0'));
-echo form_error('mod_id');
-?>
+            <?php
+            echo form_dropdown('mod_id', $cap_modalidad, set_value('mod_id', '0'));
+            echo form_error('mod_id');
+            ?>
         </div>
         <div class="campo">
             <label>Nombre del Capacitación:</label>
             <input id="cap_nombre" name="cap_nombre" type="text" value="<?php echo set_value('cap_nombre') ?>"/>
-<?php echo form_error('cap_nombre'); ?>
+            <?php echo form_error('cap_nombre'); ?>
         </div>
         <div class="campo">
             <label>Entidad Capacitadora:</label>
@@ -214,12 +231,12 @@ echo form_error('mod_id');
         <div class="campo">
             <label>Nombre del Facilitador:</label>
             <input id="cap_facilitador" name="cap_facilitador" type="text" value="<?php echo set_value('cap_facilitador') ?>"/>
-<?php echo form_error('cap_facilitador'); ?>
+            <?php echo form_error('cap_facilitador'); ?>
         </div>
         <div class="campo">
             <label>Fecha de Inicio:</label>
             <input id="cap_fecha_ini" name="cap_fecha_ini" type="text" value="<?php echo set_value('cap_fecha_ini') ?>"/>
-<?php echo form_error('cap_fecha_ini'); ?>
+            <?php echo form_error('cap_fecha_ini'); ?>
         </div>
         <div class="campo">
             <label>Duración:</label>
@@ -240,14 +257,14 @@ echo form_error('mod_id');
         <div class="campo">
             <label>Descripción:</label>
             <textarea id="cap_descripcion" name="cap_descripcion" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('cap_descripcion') ?></textarea>
-<?php echo form_error('cap_descripcion'); ?>
+            <?php echo form_error('cap_descripcion'); ?>
         </div>
         <div style="width: 100%;">
             <div style="width: 50%; display: inline-block;">
                 <div class="campoUp">
                     <label style="text-align: left;">Observaciones:</label>
                     <textarea id="cap_observaciones" name="cap_observaciones" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('cap_observaciones') ?></textarea>
-<?php echo form_error('cap_observaciones'); ?>
+                    <?php echo form_error('cap_observaciones'); ?>
                 </div>
             </div>
             <div class="campoUp" style="display: inline-block;">

@@ -118,12 +118,14 @@
         });
     });
 </script>
+<h2 class="h2Titulos">Capacitaciones</h2>
+<h2 class="h2Titulos">Registro de Procesos de Formación</h2>
+
 <div id="rpt_frm_bdy">
     <div id="formulario">
         <form id="capacitacionForm" method="post"> 
             <div class="campo">
-                <label>Capacitación Id:</label>
-                <input id="cap_id" name="cap_id" type="text" readonly="readonly" style="width: 100px;" value="<?php echo $cap_id ?>"  />
+                <input hidden="hidden" id="cap_id" name="cap_id" type="text" readonly="readonly" style="width: 100px;" value="<?php echo $cap_id ?>"  />
             </div>
             <div class="campo">
                 <label>No. Proceso de Formación:</label>

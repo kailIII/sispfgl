@@ -6,12 +6,14 @@
             url: '<?php echo base_url('componente2/comp22/loadCapacitaciones/'); ?>/', // + $('#mun_id').val(),
             datatype: "json",
             height: "100%",
-            colNames: ['Id', 'Proceso', 'Nombre/Tema', 'Fecha'],
+            colNames: ['Id', 'Proceso', 'Nombre/Tema', 'Fecha', 'Archivo'],
             colModel: [
                 {name: 'id', index: 'id', width: 55},
                 {name: 'cap_proceso', index: 'cap_proceso', width: 150},
                 {name: 'cap_nombre', index: 'cap_nombre', width: 200},
-                {name: 'cap_fecha', index: 'cap_fecha', width: 100}
+                {name: 'cap_fecha', index: 'cap_fecha', width: 100},
+                {name: 'Subcategory', index: 'Subcategory', width: 200, formatter: linkFormatter
+                }
             ],
             rowNum: 10,
             rowList: [10, 20, 30],
@@ -24,52 +26,61 @@
                 window.location.href = '<?php echo base_url('componente2/comp22/editarCapacitacion'); ?>/' + rowid;
             }
         }).hideCol(['id']);
-        jqLista.jqGrid('navGrid','#pagerLista',
-        {edit:false,add:false,del:false,refresh:true,search:true,
-            beforeRefresh: function() {
-                jqLista.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');
-            }
+        jqLista.jqGrid('navGrid', '#pagerLista',
+                {edit: false, add: false, del: false, refresh: true, search: true,
+                    beforeRefresh: function() {
+                        jqLista.jqGrid('setGridParam', {datatype: 'json', loadonce: true}).trigger('reloadGrid');
+                    }
+                }
+        )
+        function linkFormatter(cellvalue, options, rowObject) {
+            if (cellvalue === '#')
+                return "No hay archivo para descargar";
+            else
+                return '<a href="' + cellvalue + '" target="blank_">' + "Descargar Archivo " + '</a>';
         }
-    );         
-        $("#btn_seleccionar").button().click(function(){
-            var gr = jqLista.jqGrid('getGridParam','selrow');
-            if( gr != null )
-                document.location.href='<?php echo base_url('componente2/comp22/editarCapacitacion'); ?>/' + jQuery("#lista").jqGrid('getGridParam','selrow');
-            else 
-                $('#mensaje2').dialog('open'); 
-        
-        });  
+        ;
+        $("#btn_seleccionar").button().click(function() {
+            var gr = jqLista.jqGrid('getGridParam', 'selrow');
+            if (gr != null)
+                document.location.href = '<?php echo base_url('componente2/comp22/editarCapacitacion'); ?>/' + jQuery("#lista").jqGrid('getGridParam', 'selrow');
+            else
+                $('#mensaje2').dialog('open');
+
+        });
         $("#btn_acuerdo_nuevo").button().click(function() {
-            document.location.href='<?php echo base_url('componente2/comp22/crearCapacitacion'); ?>';           
+            document.location.href = '<?php echo base_url('componente2/comp22/crearCapacitacion'); ?>';
         });
-        $('.mensaje').dialog({autoOpen: false,width: 300,
-            buttons: {"Ok": function() {$(this).dialog("close");}}
+        $('.mensaje').dialog({autoOpen: false, width: 300,
+            buttons: {"Ok": function() {
+                    $(this).dialog("close");
+                }}
         });
-        $("#btn_eliminar").button().click(function(){
-            var gr = jqLista.jqGrid('getGridParam','selrow');
-            if( gr != null ){
-                $.getJSON('<?php echo base_url('componente2/comp22/eliminarCapacitacion'); ?>/' + jQuery("#lista").jqGrid('getGridParam','selrow'),
-                function(data) {
-                    var i = 0;
-                    $.each(data, function(key, val) {
-                        if (key == 'rows') {
-                            $.each(val, function(id, registro) {
-                                if(registro['cell'][1]==0){
-                                    $('#mensaje1').dialog('open');
-                                    jqLista.setGridParam({
-                                        url: '<?php echo base_url('componente2/comp22/loadCapacitaciones/'); ?>/',
-                                        datatype: "json"
-                                    }).trigger("reloadGrid");                                     
-                                }else{
-                                    $('#mensaje3').dialog('open'); 
+        $("#btn_eliminar").button().click(function() {
+            var gr = jqLista.jqGrid('getGridParam', 'selrow');
+            if (gr != null) {
+                $.getJSON('<?php echo base_url('componente2/comp22/eliminarCapacitacion'); ?>/' + jQuery("#lista").jqGrid('getGridParam', 'selrow'),
+                        function(data) {
+                            var i = 0;
+                            $.each(data, function(key, val) {
+                                if (key == 'rows') {
+                                    $.each(val, function(id, registro) {
+                                        if (registro['cell'][1] == 0) {
+                                            $('#mensaje1').dialog('open');
+                                            jqLista.setGridParam({
+                                                url: '<?php echo base_url('componente2/comp22/loadCapacitaciones/'); ?>/',
+                                                datatype: "json"
+                                            }).trigger("reloadGrid");
+                                        } else {
+                                            $('#mensaje3').dialog('open');
+                                        }
+                                    });
                                 }
                             });
-                        }
-                    });
-                });
+                        });
             }
-            else 
-                $('#mensaje2').dialog('open');      
+            else
+                $('#mensaje2').dialog('open');
         });
     });
 </script>
