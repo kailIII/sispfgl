@@ -130,6 +130,7 @@ class Seguimiento extends CI_Controller {
     public function guardarComponente() {
 
         $datos = array(
+            $this->dbPrefix . 'com_codigo' => $this->input->post($this->dbPrefix . 'com_codigo'),
             $this->dbPrefix . 'com_objetivo' => $this->input->post($this->dbPrefix . 'com_objetivo'),
             $this->dbPrefix . 'com_resultado' => $this->input->post($this->dbPrefix . 'com_resultado'),
             $this->dbPrefix . 'com_descripcion' => $this->input->post($this->dbPrefix . 'com_descripcion')

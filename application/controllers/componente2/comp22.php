@@ -266,7 +266,7 @@ class Comp22 extends CI_Controller {
 
         echo $jsonresponse;
     }
-    
+
     public function eliminarParticipante($par_id) {
         $tabla = $this->dbPrefix . 'participantes';
         $campo = 'par_id';
@@ -475,11 +475,16 @@ class Comp22 extends CI_Controller {
         $i = 0;
         if ($numfilas != 0) {
             foreach ($d as $aux) {
+                if ($aux->cap_ruta_archivo == '')
+                    $ruta = "#";
+                else
+                    $ruta = base_url($aux->cap_ruta_archivo);
                 $rows[$i]['id'] = $aux->cap_id;
                 $rows[$i]['cell'] = array($aux->cap_id,
                     $aux->cap_proceso,
                     $aux->cap_nombre,
-                    date('d-m-Y', strtotime($aux->cap_fecha_ini))
+                    date('d-m-Y', strtotime($aux->cap_fecha_ini)),
+                    $ruta
                 );
                 $i++;
             }
