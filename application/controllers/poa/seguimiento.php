@@ -248,74 +248,124 @@ class Seguimiento extends CI_Controller {
     }
 
     public function cargarActividades($poa_com_id) {
+        $informacion['ruta'] = $this->ruta;
+        $informacion['poa_com_id'] = $poa_com_id;
         $informacion['actividades'] = $this->actividad->obtenerActividadesPadres($poa_com_id);
 
         $this->load->view($this->ruta . 'cargar_actividades_view', $informacion);
     }
 
-    public function gestionarActividad($poa_comp_id, $poa_act_id = false) {
+    public function gestionarActividad($poa_comp_id, $poa_act_id = false, $poa_act_hijo = false) {
         if (!$this->tank_auth->is_logged_in())
             redirect('/auth');
         $informacion['titulo'] = 'Planificación Operativa Anual';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
-        $informacion['ruta'] = $this->ruta;
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $informacion['poa_com_id'] = $poa_comp_id;
-        if ($poa_comp_id == 1) {
-            $this->load->view($this->ruta . 'gestion_act_componente1_view', $informacion);
-        } else {
-            $this->load->view($this->ruta . 'gestion_act_componentes_view', $informacion);
+        if ($poa_act_id != false) {
+            $actividad = $this->poa->obtener_por_id($this->dbPrefix . 'actividad', $this->dbPrefix . 'act_id', (int) $poa_act_id);
+            $informacion['poa_act_codigo'] = $actividad->poa_act_codigo;
+            $informacion['poa_act_descripcion'] = $actividad->poa_act_descripcion;
+            $informacion['poa_act_meta_total'] = $actividad->poa_act_meta_total;
+            $informacion['poa_act_id'] = $actividad->poa_act_id;
+            $informacion['poa_act_padre'] = $actividad->poa_act_padre;
         }
+        $informacion['ruta'] = $this->ruta;
+     //   if ($poa_comp_id == 1) {
+            $this->load->view($this->ruta . 'gestion_act_componente1_view', $informacion);
+      //  } else {
+     //       $this->load->view($this->ruta . 'gestion_act_componentes_view', $informacion);
+     //   }
+
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function gestionarSubActividad($poa_comp_id, $poa_act_padre, $poa_act_id = false) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
+        $informacion['titulo'] = 'Planificación Operativa Anual';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $informacion['poa_com_id'] = $poa_comp_id;
+        $informacion['poa_act_padre'] = $poa_act_padre;
+        $informacion['ruta'] = $this->ruta;
+        if ($poa_act_id != false) {
+            $actividad = $this->poa->obtener_por_id($this->dbPrefix . 'actividad', $this->dbPrefix . 'act_id', (int) $poa_act_id);
+            $informacion['poa_act_codigo'] = $actividad->poa_act_codigo;
+            $informacion['poa_act_descripcion'] = $actividad->poa_act_descripcion;
+            $informacion['poa_act_meta_total'] = $actividad->poa_act_meta_total;
+            $informacion['poa_act_id'] = $actividad->poa_act_id;
+        }
+
+        //   if ($poa_comp_id == 1) {
+        $this->load->view($this->ruta . 'gestion_act_componente1_view', $informacion);
+        // } else {
+        //  $this->load->view($this->ruta . 'gestion_act_componentes_view', $informacion);
+        //}
 
         $this->load->view('plantilla/footer', $informacion);
     }
 
     public function guardarActividad() {
         $tabla = 'poa_actividad';
-        $campo = 'poa_com_id';
+        $campo = 'poa_act_id';
         if ($this->input->post('poa_com_id') == 1) {
             if ($this->input->post('poa_act_id') == '') {
+                if ($this->input->post('poa_act_padre') == "")
+                    $valor = null;
+                else
+                    $valor = $this->input->post('poa_act_padre');
                 $datos = array(
-                    'poa_act_padre' => $this->input->post('poa_act_padre'),
+                    'poa_act_padre' => $valor,
+                    'poa_act_codigo' => $this->input->post('poa_act_codigo'),
                     'poa_act_descripcion' => $this->input->post('poa_act_descripcion'),
                     'poa_act_meta_total' => $this->input->post('poa_act_meta_total'),
-                    'poa_com_id' => $this->input->post('poa_com_id')
+                    'poa_com_id' => (int) $this->input->post('poa_com_id')
                 );
                 $this->poa->insertar_tabla($tabla, $datos);
                 $poa_act_id = $this->poa->ultimoId($tabla, $campo);
             } else {
                 $datos = array(
-                    'poa_act_padre' => $this->input->post('poa_act_padre'),
+                    'poa_act_codigo' => $this->input->post('poa_act_codigo'),
                     'poa_act_descripcion' => $this->input->post('poa_act_descripcion'),
-                    'poa_act_meta_total' => $this->input->post('poa_act_meta_total'),
-                    'poa_com_id' => $this->input->post('')
+                    'poa_act_meta_total' => $this->input->post('poa_act_meta_total')
                 );
-                $this->poa->actualizar_tabla($tabla, $campo, $datos);
+                $poa_act_id = $this->input->post('poa_act_id');
+                $this->poa->actualizar_tabla($tabla, $campo, $this->input->post('poa_act_id'), $datos);
             }
         } else {
             if ($this->input->post('poa_act_id') == '') {
+                if ($this->input->post('poa_act_padre') == "")
+                    $valor = null;
+                else
+                    $valor = $this->input->post('poa_act_padre');
                 $datos = array(
-                    'poa_act_padre' => $this->input->post('poa_act_padre'),
+                    'poa_act_padre' => $valor,
+                    'poa_act_codigo' => $this->input->post('poa_act_codigo'),
                     'poa_act_descripcion' => $this->input->post('poa_act_descripcion'),
                     'poa_act_meta_total' => $this->input->post('poa_act_meta_total'),
-                    'poa_com_id' => $this->input->post('poa_com_id')
+                    'poa_com_id' => (int) $this->input->post('poa_com_id')
                 );
                 $this->poa->insertar_tabla($tabla, $datos);
                 $poa_act_id = $this->poa->ultimoId($tabla, $campo);
             } else {
                 $datos = array(
-                    'poa_act_padre' => $this->input->post('poa_act_padre'),
+                    'poa_act_codigo' => $this->input->post('poa_act_codigo'),
                     'poa_act_descripcion' => $this->input->post('poa_act_descripcion'),
-                    'poa_act_meta_total' => $this->input->post('poa_act_meta_total'),
-                    'poa_com_id' => $this->input->post('poa_com_id')
+                    'poa_act_meta_total' => $this->input->post('poa_act_meta_total')
                 );
-                $this->poa->actualizar_tabla($tabla, $campo, $datos);
+                $poa_act_id = $this->input->post('poa_act_id');
+                $this->poa->actualizar_tabla($tabla, $campo, $this->input->post('poa_act_id'), $datos);
             }
         }
-        return new Response(json_encode($departamentos['poa_act_id'] = array($poa_act_id)));
+
+        echo json_encode((int) $poa_act_id);
     }
 
 }

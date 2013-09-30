@@ -2,18 +2,21 @@
     $(document).ready(function() {
         $("#guardar").button().click(function() {
             $("#actividadForm").submit(function(event) {
-                if ($("#actividadForm").validate().form() == true) {
-                    $.getJSON(Routing.generate('<?php echo base_url($ruta . 'guardarActividad'); ?>'),
-                            function(data) {
-                                $.each(data.poa_act_id, function(indice, id) {
-                                    $('#poa_act_id').val(id.poa_act_id);
-                                    $('#efectivo').dialog('open');
-                                    return false;
-                                });
-                            });
+                if ($("#actividadForm").validate().form() === true) {
+                    $.ajax({
+                        type: "POST",
+                        url: '<?php echo base_url($ruta . 'guardarActividad') ?>',
+                        data: $("#actividadForm").serialize(),
+                        success: function(json)
+                        {
+                            $('#efectivo').dialog('open');
+                            $('#poa_act_id').val(json);
+                        }
+                    });
+                    return false;
                 }
-                
-            return false;
+                return false;
+
             });
         });
 
@@ -47,6 +50,7 @@
                 }
             }
         });
+
     });
 </script>
 <center>
@@ -58,17 +62,17 @@
     <div id="rpt_frm_bdy">
         <div class="campo">
             <label>Código:</label>
-            <input type="text" id="poa_act_codigo" name="poa_act_codigo" value="<?php if (isset($poa_act_codigo)) $poa_act_codigo; ?>" style="width: 60px; margin-top: 5px;" />
+            <input type="text" id="poa_act_codigo" name="poa_act_codigo" value="<?php if (isset($poa_act_codigo)) echo $poa_act_codigo; ?>" style="width: 60px; margin-top: 5px;" />
         </div>
         <div class="campo">
             <label>Descripción:</label>
-            <textarea id="poa_act_descripcion" name="poa_act_descripcion" tcols="30" rows="5" wrap="virtual"><?php if (isset($poa_act_descripcion)) $poa_act_descripcion; ?></textarea>
+            <textarea id="poa_act_descripcion" name="poa_act_descripcion" tcols="30" rows="5" wrap="virtual"><?php if (isset($poa_act_descripcion)) echo $poa_act_descripcion; ?></textarea>
         </div>
         <div class="campo">
             <label>Meta Total:</label>
             <input type="text" id="poa_act_meta_total" name="poa_act_meta_total" value="<?php
             if (isset($poa_act_meta_total))
-                $poa_act_meta_total;
+                echo $poa_act_meta_total;
             else
                 echo '0';
             ?>"/>
