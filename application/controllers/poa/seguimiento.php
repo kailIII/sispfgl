@@ -247,11 +247,15 @@ class Seguimiento extends CI_Controller {
         $this->load->view('plantilla/footer', $informacion);
     }
 
-    public function cargarActividades($poa_com_id) {
+    public function cargarActividades($poa_com_id, $anio = false) {
         $informacion['ruta'] = $this->ruta;
-        $informacion['poa_com_id'] = $poa_com_id;
-        $informacion['actividades'] = $this->actividad->obtenerActividadesPadres($poa_com_id);
-
+        if ($anio == false) {
+            $informacion['poa_com_id'] = $poa_com_id;
+            $informacion['actividades'] = $this->actividad->obtenerActividadesPadres($poa_com_id);
+        }else{
+               $informacion['poa_com_id'] = $poa_com_id;
+            $informacion['actividades'] = $this->actividad->obtenerActividadesPadresSeg($poa_com_id);
+        }
         $this->load->view($this->ruta . 'cargar_actividades_view', $informacion);
     }
 
@@ -267,18 +271,24 @@ class Seguimiento extends CI_Controller {
         $informacion['poa_com_id'] = $poa_comp_id;
         if ($poa_act_id != false) {
             $actividad = $this->poa->obtener_por_id($this->dbPrefix . 'actividad', $this->dbPrefix . 'act_id', (int) $poa_act_id);
+            $informacion['poa_act_cod_presupuestario'] = $actividad->poa_act_cod_presupuestario;
             $informacion['poa_act_codigo'] = $actividad->poa_act_codigo;
             $informacion['poa_act_descripcion'] = $actividad->poa_act_descripcion;
+            $informacion['poa_act_unidad_medida'] = $actividad->poa_act_unidad_medida;
+            $informacion['poa_act_cantidad'] = $actividad->poa_act_cantidad;
+            $informacion['poa_act_costo_unitario'] = $actividad->poa_act_costo_unitario;
             $informacion['poa_act_meta_total'] = $actividad->poa_act_meta_total;
+            $informacion['poa_act_responsable'] = $actividad->poa_act_responsable;
+            $informacion['poa_act_producto'] = $actividad->poa_act_producto;
             $informacion['poa_act_id'] = $actividad->poa_act_id;
             $informacion['poa_act_padre'] = $actividad->poa_act_padre;
         }
         $informacion['ruta'] = $this->ruta;
-     //   if ($poa_comp_id == 1) {
+        if ($poa_comp_id == 1) {
             $this->load->view($this->ruta . 'gestion_act_componente1_view', $informacion);
-      //  } else {
-     //       $this->load->view($this->ruta . 'gestion_act_componentes_view', $informacion);
-     //   }
+        } else {
+            $this->load->view($this->ruta . 'gestion_act_componente2_view', $informacion);
+        }
 
         $this->load->view('plantilla/footer', $informacion);
     }
@@ -297,17 +307,23 @@ class Seguimiento extends CI_Controller {
         $informacion['ruta'] = $this->ruta;
         if ($poa_act_id != false) {
             $actividad = $this->poa->obtener_por_id($this->dbPrefix . 'actividad', $this->dbPrefix . 'act_id', (int) $poa_act_id);
+            $informacion['poa_act_cod_presupuestario'] = $actividad->poa_act_cod_presupuestario;
             $informacion['poa_act_codigo'] = $actividad->poa_act_codigo;
             $informacion['poa_act_descripcion'] = $actividad->poa_act_descripcion;
+            $informacion['poa_act_unidad_medida'] = $actividad->poa_act_unidad_medida;
+            $informacion['poa_act_cantidad'] = $actividad->poa_act_cantidad;
+            $informacion['poa_act_costo_unitario'] = $actividad->poa_act_costo_unitario;
             $informacion['poa_act_meta_total'] = $actividad->poa_act_meta_total;
+            $informacion['poa_act_responsable'] = $actividad->poa_act_responsable;
+            $informacion['poa_act_producto'] = $actividad->poa_act_producto;
             $informacion['poa_act_id'] = $actividad->poa_act_id;
         }
 
-        //   if ($poa_comp_id == 1) {
-        $this->load->view($this->ruta . 'gestion_act_componente1_view', $informacion);
-        // } else {
-        //  $this->load->view($this->ruta . 'gestion_act_componentes_view', $informacion);
-        //}
+        if ($poa_comp_id == 1) {
+            $this->load->view($this->ruta . 'gestion_act_componente1_view', $informacion);
+        } else {
+            $this->load->view($this->ruta . 'gestion_act_componente2_view', $informacion);
+        }
 
         $this->load->view('plantilla/footer', $informacion);
     }
@@ -346,19 +362,31 @@ class Seguimiento extends CI_Controller {
                 else
                     $valor = $this->input->post('poa_act_padre');
                 $datos = array(
-                    'poa_act_padre' => $valor,
+                    'poa_act_cod_presupuestario' => $this->input->post('poa_act_cod_presupuestario'),
                     'poa_act_codigo' => $this->input->post('poa_act_codigo'),
                     'poa_act_descripcion' => $this->input->post('poa_act_descripcion'),
+                    'poa_act_unidad_medida' => $this->input->post('poa_act_unidad_medida'),
+                    'poa_act_cantidad' => $this->input->post('poa_act_cantidad'),
+                    'poa_act_costo_unitario' => $this->input->post('poa_act_costo_unitario'),
                     'poa_act_meta_total' => $this->input->post('poa_act_meta_total'),
+                    'poa_act_responsable' => $this->input->post('poa_act_responsable'),
+                    'poa_act_producto' => $this->input->post('poa_act_producto'),
+                    'poa_act_padre' => $valor,
                     'poa_com_id' => (int) $this->input->post('poa_com_id')
                 );
                 $this->poa->insertar_tabla($tabla, $datos);
                 $poa_act_id = $this->poa->ultimoId($tabla, $campo);
             } else {
                 $datos = array(
+                    'poa_act_cod_presupuestario' => $this->input->post('poa_act_cod_presupuestario'),
                     'poa_act_codigo' => $this->input->post('poa_act_codigo'),
                     'poa_act_descripcion' => $this->input->post('poa_act_descripcion'),
-                    'poa_act_meta_total' => $this->input->post('poa_act_meta_total')
+                    'poa_act_unidad_medida' => $this->input->post('poa_act_unidad_medida'),
+                    'poa_act_cantidad' => $this->input->post('poa_act_cantidad'),
+                    'poa_act_costo_unitario' => $this->input->post('poa_act_costo_unitario'),
+                    'poa_act_meta_total' => $this->input->post('poa_act_meta_total'),
+                    'poa_act_responsable' => $this->input->post('poa_act_responsable'),
+                    'poa_act_producto' => $this->input->post('poa_act_producto')
                 );
                 $poa_act_id = $this->input->post('poa_act_id');
                 $this->poa->actualizar_tabla($tabla, $campo, $this->input->post('poa_act_id'), $datos);
@@ -366,6 +394,21 @@ class Seguimiento extends CI_Controller {
         }
 
         echo json_encode((int) $poa_act_id);
+    }
+
+    public function planificacionAnual() {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
+        $informacion['titulo'] = 'Planificación Operativa Anual';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $informacion['ruta'] = $this->ruta;
+        $informacion['componentes'] = $this->componente->obtenerComponentes();
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view($this->ruta . 'programacion_anio_view', $informacion);
+        $this->load->view('plantilla/footer', $informacion);
     }
 
 }
