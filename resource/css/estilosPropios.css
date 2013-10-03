@@ -523,6 +523,7 @@ form .campo input {
     border-bottom: 1px solid #fff;
     color: #039;
     font-weight: bold;
+    text-align: center;
 }
 
 #box-table-a td

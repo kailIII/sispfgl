@@ -19,6 +19,7 @@ class Seguimiento extends CI_Controller {
         $this->load->model('poa/poa_componente', 'componente');
         $this->load->model('poa/poa_indicador', 'indicador');
         $this->load->model('poa/poa_actividad', 'actividad');
+        $this->load->model('poa/poa_actividad_detalle', 'detalle');
         $this->load->model('poa/poa_model', 'poa');
     }
 
@@ -252,8 +253,8 @@ class Seguimiento extends CI_Controller {
         if ($anio == false) {
             $informacion['poa_com_id'] = $poa_com_id;
             $informacion['actividades'] = $this->actividad->obtenerActividadesPadres($poa_com_id);
-        }else{
-               $informacion['poa_com_id'] = $poa_com_id;
+        } else {
+            $informacion['poa_com_id'] = $poa_com_id;
             $informacion['actividades'] = $this->actividad->obtenerActividadesPadresSeg($poa_com_id);
         }
         $this->load->view($this->ruta . 'cargar_actividades_view', $informacion);
@@ -408,6 +409,35 @@ class Seguimiento extends CI_Controller {
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view($this->ruta . 'programacion_anio_view', $informacion);
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function gestionProgramacionAnual($anio, $poa_com_id) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
+        $informacion['titulo'] = 'Planificación Operativa Anual';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $informacion['ruta'] = $this->ruta;
+        $componente = $this->poa->obtener_por_id('poa_componente', 'poa_com_id', $poa_com_id);
+
+        $informacion['componente'] = $componente->poa_com_codigo . " " . $componente->poa_com_descripcion;
+        $informacion['anio'] = $anio;
+        $actividades = $this->actividad->obtenerActividadComponente($poa_com_id);
+        if ($this->detalle->obtenerActividadDetalle($anio, $poa_com_id)->valor == 0) {
+            foreach ($actividades as $aux) {
+                $datos = array(
+                    'poa_act_id'=>$aux->poa_act_id,
+                    'poa_act_det_anio'=>$anio
+                );
+                $this->poa->insertar_tabla('poa_actividad_detalle', $datos);
+            }
+        }
+        $informacion['actividades'] = $actividades;
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view($this->ruta . 'gestion_programacion_anual_view', $informacion);
         $this->load->view('plantilla/footer', $informacion);
     }
 

@@ -18,16 +18,6 @@ class Poa_actividad extends CI_Model {
         return $consulta->result();
     }
 
-    public function obtenerActividadesPadresSeg($poa_com_id) {
-        $sql = 'SELECT A.poa_act_descripcion, A.poa_act_codigo,A.poa_act_id
-                FROM poa_actividad A LEFT JOIN  poa_actividad_detalle B ON  A.poa_act_id = B.poa_act_id 
-                                     LEFT JOIN poa_actividad_seg_tri C ON B.poa_act_det_id = C.poa_act_det_id
-                WHERE A.poa_act_padre IS NULL AND A.poa_com_id=?
-                ORDER BY A.poa_act_codigo';
-        $consulta = $this->db->query($sql, array($poa_com_id));
-        return $consulta->result();
-    }
-
     public function obtenerSubActividades($padre) {
         $this->db->where('poa_act_padre', $padre);
         $this->db->order_by('poa_act_id');
@@ -47,7 +37,8 @@ class Poa_actividad extends CI_Model {
         return $this->db->get($this->tabla, '1')->row()->poa_act_codigo;
     }
 
-    public function obtenerActividades() {
+    public function obtenerActividadComponente($poa_com_id) {
+        $this->db->where("poa_com_id = $poa_com_id");        
         $this->db->order_by('poa_act_codigo');
         $consulta = $this->db->get($this->tabla);
         return $consulta->result();
