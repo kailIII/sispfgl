@@ -20,6 +20,7 @@ class Seguimiento extends CI_Controller {
         $this->load->model('poa/poa_indicador', 'indicador');
         $this->load->model('poa/poa_actividad', 'actividad');
         $this->load->model('poa/poa_actividad_detalle', 'detalle');
+        $this->load->model('poa/poa_actividad_seg_tri', 'trimestral');
         $this->load->model('poa/poa_model', 'poa');
     }
 
@@ -424,20 +425,105 @@ class Seguimiento extends CI_Controller {
 
         $informacion['componente'] = $componente->poa_com_codigo . " " . $componente->poa_com_descripcion;
         $informacion['anio'] = $anio;
+        $informacion['poa_com_id'] = $poa_com_id;
         $actividades = $this->actividad->obtenerActividadComponente($poa_com_id);
         if ($this->detalle->obtenerActividadDetalle($anio, $poa_com_id)->valor == 0) {
             foreach ($actividades as $aux) {
                 $datos = array(
-                    'poa_act_id'=>$aux->poa_act_id,
-                    'poa_act_det_anio'=>$anio
+                    'poa_act_id' => $aux->poa_act_id,
+                    'poa_act_det_anio' => $anio
                 );
                 $this->poa->insertar_tabla('poa_actividad_detalle', $datos);
             }
+        } else {
+            foreach ($actividades as $aux) {
+                if ($this->detalle->obtenerPorActividadDetalle($anio, $aux->poa_act_id)->valor == 0) {
+                    $datos = array(
+                        'poa_act_id' => $aux->poa_act_id,
+                        'poa_act_det_anio' => $anio
+                    );
+                    $this->poa->insertar_tabla('poa_actividad_detalle', $datos);
+                }
+            }
         }
+        $actividades = $this->actividad->obtenerPorActividadDetalle($poa_com_id, $anio);
         $informacion['actividades'] = $actividades;
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view($this->ruta . 'gestion_programacion_anual_view', $informacion);
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function guardarPlanificacionAnual($anio, $poa_com_id) {
+        $actividades = $this->actividad->obtenerPorActividadDetalle($poa_com_id, $anio);
+        $tabla = "poa_actividad_detalle";
+        $campo = "poa_act_det_id";
+        foreach ($actividades as $aux) {
+            $datos = array(
+                'poa_act_det_meta_acumulada' => $this->input->post($aux->poa_act_id . '_poa_act_det_meta_acumulada'),
+                'poa_act_det_meta_planificada' => $this->input->post($aux->poa_act_id . '_poa_act_det_meta_planificada'),
+                'poa_act_mes_inicio' => $this->input->post($aux->poa_act_id . '_poa_act_mes_inicio'),
+                'poa_actividad_mes_fin' => $this->input->post($aux->poa_act_id . '_poa_actividad_mes_fin')
+            );
+            $this->poa->actualizar_tabla($tabla, $campo, $aux->poa_act_det_id, $datos);
+        }
+    }
+
+    public function seguimientoPlanificacionAnual() {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
+        $informacion['titulo'] = 'Planificación Operativa Anual';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $informacion['ruta'] = $this->ruta;
+        $informacion['componentes'] = $this->componente->obtenerComponentes();
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view($this->ruta . 'programacion_anio_seguimiento_view', $informacion);
+        $this->load->view('plantilla/footer', $informacion);
+    }
+
+    public function gestionSeguimientoTrimestral($anio, $poa_com_id, $trimestre) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
+        $informacion['titulo'] = 'Planificación Operativa Anual';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $informacion['ruta'] = $this->ruta;
+        $componente = $this->poa->obtener_por_id('poa_componente', 'poa_com_id', $poa_com_id);
+
+        $informacion['componente'] = $componente->poa_com_codigo . " " . $componente->poa_com_descripcion;
+        $informacion['anio'] = $anio;
+        $informacion['poa_com_id'] = $poa_com_id;
+        $actividades = $this->actividad->obtenerActividadComponente($poa_com_id);
+        if ($this->trimestral->obtenerActividadDetalleTri($anio, $poa_com_id)->valor == 0) {
+            $actividades = $this->actividad->obtenerPorActividadDetalle($poa_com_id,$anio);
+            foreach ($actividades as $aux) {
+                $datos = array(
+                    'poa_act_det_id' => $aux->poa_act_det_id,
+                    'poa_act_seg_tri_mes' => $trimestre
+                );
+                $this->poa->insertar_tabla('poa_actividad_seg_tri', $datos);
+            }
+        } else {
+            $actividades = $this->actividad->obtenerPorActividadDetalle($poa_com_id,$anio);
+            foreach ($actividades as $aux) {
+                if ($this->trimestral->obtenerActividadTri($anio, $aux->poa_act_id)->valor == 0) {
+                    $datos = array(
+                        'poa_act_det_id' => $aux->poa_act_det_id,
+                        'poa_act_seg_tri_mes' => $trimestre
+                    );
+                    $this->poa->insertar_tabla('poa_actividad_seg_tri', $datos);
+                }
+            }
+        }
+        $actividades = $this->actividad->obtenerPorActividadDetalleTri($poa_com_id, $anio);
+        $informacion['actividades'] = $actividades;
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view($this->ruta . 'gestion_programacion_anual_trimestral_view', $informacion);
         $this->load->view('plantilla/footer', $informacion);
     }
 
