@@ -78,6 +78,20 @@ Class componente24a_model extends CI_Model{
 		return $query->result();
 	}
 	
+	public function get_cap_by_year($year){
+		$query = $this->db->query("select count(*) as total
+									from componente24a_cap
+									where EXTRACT(YEAR FROM fecha_cap)='".$year."'");
+		return $query->row();
+	}
+	
+	public function get_asistec_by_year($year){
+		$query = $this->db->query("select count(*) as total
+									from componente24a_atm
+									where EXTRACT(YEAR FROM fecha_atm)='".$year."'");
+		return $query->row();
+	}
+	
 	public function atm_por_depto(){
 		$query = $this->db->query("select D.dep_nombre as depto, count(Mun.comp_id) cant
 									from (select dep_id, C.mun_id, comp_id

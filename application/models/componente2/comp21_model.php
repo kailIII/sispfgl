@@ -262,9 +262,24 @@ Class comp21_model extends CI_Model{
 		return $query->row();
 	}
 	
+	public function total_proy_by_year($year){
+		$query = $this->db->query("select count(*) as total
+									from proyectos_cc
+									where cc_id in (select cc_id 
+											from cc 
+											where EXTRACT(YEAR FROM cc_fecha)='".$year."');");
+		return $query->row();
+	}
+	
 	public function total_cc(){
 		$query = $this->db->query("select count(*) as total
 									from cc;");
+		return $query->row();
+	}
+	
+	public function total_cc_by_year($year){
+		$query = $this->db->query("select count(*) as total
+									from cc where EXTRACT(YEAR FROM cc_fecha)='".$year."';");
 		return $query->row();
 	}
 	
