@@ -49,6 +49,21 @@ class matriz_indicadores extends CI_Controller {
         
     }
     
+    public function gestion_matriz_calc($comp) {
+		if(!isset($comp))
+			$comp='0';
+        $informacion['titulo'] = 'Matriz de Indicadores del Componente '.$comp;
+        $informacion['componente']=$comp;
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('matriz_indicadores/matriz_indicadores_calc_view', $informacion);
+        $this->load->view('plantilla/footer', $informacion);
+        
+    }
+    
     public function cargar_indicadores($comp) {
         $this->load->model('matriz_indicadores/matriz_indicadores_model');
         $ind = $this->matriz_indicadores_model->get_indicadores($comp);
@@ -78,6 +93,196 @@ class matriz_indicadores extends CI_Controller {
                 $aux->comentario
             );
             $i++;
+        }
+
+        if ($numfilas != 0) {
+            array_multisort($rows, SORT_ASC);
+        } else {
+            //$rows[0]['id'] = 0;
+           // $rows[0]['cell'] = array('0', ' ', ' ', ' ', ' ', ' ');
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+    
+    public function cod14a($aux){
+		$this->load->model('componente2/comp21_model');
+		$a = $this->comp21_model->total_cc_by_year('2011')->total;
+		$b = $this->comp21_model->total_cc_by_year('2012')->total;
+		$c = $this->comp21_model->total_cc_by_year('2013')->total;
+		$d = $this->comp21_model->total_cc_by_year('2014')->total;
+		$e = $this->comp21_model->total_cc_by_year('2015')->total;
+		$aux->total = $a + $b +$c + $d + $e;
+		if($aux->planificado==0)
+			$por_avance='0';
+		else
+			$por_avance=(($aux->total/$aux->planificado)*100);
+		return array($aux->id,
+					$aux->cod,
+					$aux->indicador,
+					$aux->linea_base,
+					$a,
+					$b,
+					$c,
+					$d,
+					$e,
+					$aux->total,
+					$aux->planificado,
+					$por_avance.'%',
+					$aux->comentario
+
+				);
+	}
+	
+	public function cod14b($aux){
+		$this->load->model('componente2/comp21_model');
+		$a = $this->comp21_model->total_proy_by_year('2011')->total;
+		$b = $this->comp21_model->total_proy_by_year('2012')->total;
+		$c = $this->comp21_model->total_proy_by_year('2013')->total;
+		$d = $this->comp21_model->total_proy_by_year('2014')->total;
+		$e = $this->comp21_model->total_proy_by_year('2015')->total;
+		$aux->total = $a + $b +$c + $d + $e;
+		if($aux->planificado==0)
+			$por_avance='0';
+		else
+			$por_avance=(($aux->total/$aux->planificado)*100);
+		return array($aux->id,
+					$aux->cod,
+					$aux->indicador,
+					$aux->linea_base,
+					$a,
+					$b,
+					$c,
+					$d,
+					$e,
+					$aux->total,
+					$aux->planificado,
+					$por_avance.'%',
+					$aux->comentario
+
+				);
+	}
+	
+	public function cod24a($aux){
+		$this->load->model('componente2/componente24a_model');
+		$a = $this->componente24a_model->get_cap_by_year('2011')->total;
+		$b = $this->componente24a_model->get_cap_by_year('2012')->total;
+		$c = $this->componente24a_model->get_cap_by_year('2013')->total;
+		$d = $this->componente24a_model->get_cap_by_year('2014')->total;
+		$e = $this->componente24a_model->get_cap_by_year('2015')->total;
+		$aux->total = $a + $b +$c + $d + $e;
+		if($aux->planificado==0)
+			$por_avance='0';
+		else
+			$por_avance=(($aux->total/$aux->planificado)*100);
+		return array($aux->id,
+					$aux->cod,
+					$aux->indicador,
+					$aux->linea_base,
+					$a,
+					$b,
+					$c,
+					$d,
+					$e,
+					$aux->total,
+					$aux->planificado,
+					$por_avance.'%',
+					$aux->comentario
+
+				);
+	}
+    
+    public function cod24b($aux){
+		$this->load->model('componente2/componente24a_model');
+		$a = $this->componente24a_model->get_asistec_by_year('2011')->total;
+		$b = $this->componente24a_model->get_asistec_by_year('2012')->total;
+		$c = $this->componente24a_model->get_asistec_by_year('2013')->total;
+		$d = $this->componente24a_model->get_asistec_by_year('2014')->total;
+		$e = $this->componente24a_model->get_asistec_by_year('2015')->total;
+		$aux->total = $a + $b +$c + $d + $e;
+		if($aux->planificado==0)
+			$por_avance='0';
+		else
+			$por_avance=(($aux->total/$aux->planificado)*100);
+		return array($aux->id,
+					$aux->cod,
+					$aux->indicador,
+					$aux->linea_base,
+					$a,
+					$b,
+					$c,
+					$d,
+					$e,
+					$aux->total,
+					$aux->planificado,
+					$por_avance.'%',
+					$aux->comentario
+
+				);
+	}
+    
+    public function cargar_indicadores_calc($comp) {
+        $this->load->model('matriz_indicadores/matriz_indicadores_model');
+        $this->load->model('componente2/comp21_model');
+        $ind = $this->matriz_indicadores_model->get_indicadores($comp);
+        $numfilas = count($ind);
+
+        $i = 0;
+        foreach ($ind as $aux) {
+			
+			if($aux->cod=='1.4A'){
+				$rows[$i]['id'] = $aux->id;
+				$rows[$i]['cell'] = $this->cod14a($aux);
+				$i++;
+			}
+			else if($aux->cod=='1.4B'){
+				$rows[$i]['id'] = $aux->id;
+				$rows[$i]['cell'] = $this->cod14b($aux);
+				$i++;
+			}
+			else if($aux->cod=='2.4A'){
+				$rows[$i]['id'] = $aux->id;
+				$rows[$i]['cell'] = $this->cod24a($aux);
+				$i++;
+			}
+			else if($aux->cod=='2.4B'){
+				$rows[$i]['id'] = $aux->id;
+				$rows[$i]['cell'] = $this->cod24b($aux);
+				$i++;
+			}
+			else{
+			
+				if($aux->planificado==0)
+					$por_avance='0';
+				else
+					$por_avance=(($aux->total/$aux->planificado)*100);
+				
+				$rows[$i]['id'] = $aux->id;
+				$rows[$i]['cell'] = array($aux->id,
+					$aux->cod,
+					$aux->indicador,
+					$aux->linea_base,
+					$aux->anio_1,
+					$aux->anio_2,
+					$aux->anio_3,
+					$aux->anio_4,
+					$aux->anio_5,
+					$aux->total,
+					$aux->planificado,
+					$por_avance.'%',
+					$aux->comentario
+				);
+				$i++;
+			}
         }
 
         if ($numfilas != 0) {

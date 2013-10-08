@@ -78,6 +78,32 @@
 		});
 		
 		
+		$('#addNewInd').button().click(function() {
+			$('#add').show();
+			$('#newcod').show();
+			$('#newind').show();
+			$('#newcodlabel').show();
+			$('#newindlabel').show();
+			$('#addNewDiv').show();
+		});
+		
+		$('#add').button().click(function() {
+			var cod = $('#newcod').val();
+			var ind = $('#newind').val();
+			if(cod=="" || ind=="")
+				$('#mensaje4').dialog('open');
+			else{
+				var datos = {cod:cod, ind:ind}
+				$.post('<?php echo base_url('matriz_indicadores/matriz_indicadores/add_new_ind') ?>', datos,function(data){
+							$('#mensaje5').dialog('open');
+							tabla.trigger('reloadGrid');
+							$('#newcod').val("");
+							$('#newind').val("");
+				});
+			}
+			
+		});
+		
 		
 		$('#editar').button().click(function() {
 			var id=$('#matriz').jqGrid('getGridParam','selrow');
@@ -110,10 +136,14 @@
 			$('#editar').prop('disabled',false).button('refresh');
 		});
 		
+		$("#export").button().click(function(){            
+				window.location = '<?php echo base_url('matriz_indicadores/matriz_indicadores/export_excel/'.$componente) ?>';
+        });
+		
 		var lastsel;
 		var tabla=$("#matriz");
         tabla.jqGrid({
-            url:'<?php echo base_url('matriz_indicadores/matriz_indicadores/cargar_indicadores/'.$componente) ?>',
+            url:'<?php echo base_url('matriz_indicadores/matriz_indicadores/cargar_indicadores_calc/'.$componente) ?>',
             editurl: '<?php echo base_url('matriz_indicadores/matriz_indicadores/actualizar_indicador') ?>',
             datatype:'json',
             altRows:true,
@@ -223,12 +253,24 @@ echo form_open_multipart('poa/poa/guardar_poa_gr',$attributes);?>
 		<div id="pagerMatriz"></div>
 		
 		<br/>
-		&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-		&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-		&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+		&emsp;
+		<input type="button" id="editar" value="Editar"/>
+		<input type="button" id="guardar" value="Guardar" disabled />
+		<input type="button" id="cancelar" value="Cancelar" disabled />
+		<input type="button" id="addNewInd" value="Agregar Nuevo" />
+		&emsp;&emsp;&emsp;&emsp;
 		<input type="button" id="ver_indicador" value="Ver Indicador"/>
 		<input type="button" id="ver_comentario" value="Ver Comentario"/>
+		<input type="button" id="export" value="Exportar a Excel"/>
 		
+		<br/><br/>
+		<div id="addNewDiv" hidden>
+		<label id="newcodlabel" hidden >Codigo: </label>
+			<input type="text" name="newcod" id="newcod"  size="8" hidden>
+		<label id="newindlabel" hidden >Indicador: </label>
+			<input type="text" name="newind" id="newind"  size="15" hidden>
+		<input type="button" id="add" value="Agregar" hidden />
+		</div>
 		
 <?php echo form_close();?>
 <div id="mensaje1" class="mensaje" title="Aviso">
@@ -239,4 +281,10 @@ echo form_open_multipart('poa/poa/guardar_poa_gr',$attributes);?>
 </div>
 <div id="mensaje3" class="mensaje" title="Indicador">
     <p id="comentario_msj"></p>
+</div>
+<div id="mensaje4" class="mensaje" title="Indicador">
+    <p>Debe especificar el C&oacute;digo y el Indicador.</p>
+</div>
+<div id="mensaje5" class="mensaje" title="Indicador">
+    <p>Ingresado Correctamente.</p>
 </div>

@@ -167,27 +167,27 @@
                     formoptions:{ label: "Linea Base",elmprefix:"(*)"},
                     editrules:{required:true}
                 },
-                {name:'2011',index:'2011',width:81,editable:true,
+                {name:'2011',index:'2011',width:82,editable:true,
                     editoptions:{size:9,maxlength:90}, 
                     formoptions:{ label: "2011",elmprefix:"(*)"},
                     editrules:{required:false} 
                 },
-                {name:'2012',index:'2012',width:81,editable:true,
+                {name:'2012',index:'2012',width:82,editable:true,
                     editoptions:{size:9,maxlength:100}, 
                     formoptions:{ label: "2012",elmprefix:"(*)"},
                     editrules:{required:false} 
                 },
-                {name:'2013',index:'2013',width:81,editable:true,
+                {name:'2013',index:'2013',width:82,editable:true,
                     editoptions:{size:9,maxlength:100}, 
                     formoptions:{ label: "2013",elmprefix:"(*)"},
                     editrules:{required:false} 
                 },
-                {name:'2014',index:'2014',width:81,editable:true,
+                {name:'2014',index:'2014',width:82,editable:true,
                     editoptions:{size:9,maxlength:100}, 
                     formoptions:{ label: "2014",elmprefix:"(*)"},
                     editrules:{required:false} 
                 },
-                {name:'2015',index:'2015',width:81,editable:true,
+                {name:'2015',index:'2015',width:82,editable:true,
                     editoptions:{size:9,maxlength:100}, 
                     formoptions:{ label: "2015",elmprefix:"(*)"},
                     editrules:{required:false} 
