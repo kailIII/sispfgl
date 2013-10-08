@@ -2,23 +2,23 @@
     $(document).ready(function(){
         /*ZONA DE BOTONES*/
         $("#guardar").button().click(function() {
-            fecha1= $('#ela_pro_fentrega_idem').datepicker("getDate");
+            /* fecha1= $('#ela_pro_fentrega_idem').datepicker("getDate");
             fecha2=$( "#ela_pro_fentrega_uep" ).datepicker("getDate");
             fecha3=$( "#ela_pro_fconformacion" ).datepicker("getDate");
             if(fecha1==null){
                 $( "#ela_pro_fentrega_uep" ).val('');
-                $( "#ela_pro_fconformacion" ).val('');
-                $.ajax({
-                    type: "POST",
-                    url: '<?php echo base_url('componente2/comp25/guardarElaboracionProyecto') ?>',
-                    data: $("#elaboracionProyectoForm").serialize(), // serializes the form's elements.
-                    success: function(data)
-                    {
-                        $('#efectivo').dialog('open');
-                    }
-                });
-                return false;
-            }else{
+                $( "#ela_pro_fconformacion" ).val('');*/
+            $.ajax({
+                type: "POST",
+                url: '<?php echo base_url('componente2/comp25/guardarElaboracionProyecto') ?>',
+                data: $("#elaboracionProyectoForm").serialize(), // serializes the form's elements.
+                success: function(data)
+                {
+                    $('#efectivo').dialog('open');
+                }
+            });
+            return false;
+            /* }else{
                 if(fecha2==null){
                     $("#ela_pro_fconformacion" ).val('');
                     $.ajax({
@@ -66,7 +66,7 @@
                         return false
                     }
                 }
-            }  
+            }  */
         });
         $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url(); ?>';
@@ -374,7 +374,7 @@
             </p>
         </div>
     </center>
-     <?php //} ?>
+    <?php //} ?>
     <input id="ela_pro_id" name="ela_pro_id" value="" type="text" size="100" readonly="readonly" style="visibility: hidden"/>
 </form>
 <div id="mensaje" class="mensaje" title="Aviso de la operación">
