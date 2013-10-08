@@ -508,29 +508,31 @@ form .campo input {
 #box-table-a
 {
     font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
-    font-size: 12px;
+    font-size: 10px;
     margin: 45px;
     text-align: left;
     border-collapse: collapse;
+    border: 1px solid;
 }
 #box-table-a th
 {
-    font-size: 13px;
+    font-size: 10px;
     font-weight: normal;
     padding: 8px;
     background: #b9c9fe;
+    border: 1px solid;
     border-top: 4px solid #aabcfe;
-    border-bottom: 1px solid #fff;
     color: #039;
     font-weight: bold;
+    text-align: center;
 }
 
 #box-table-a td
 {
+    border: 1px solid;
     padding: 8px;
-    border-bottom: 1px solid #fff;
     color: #669;
-    border-top: 1px solid transparent;
+    border: 1px solid;
 }
 
 #box-table-a .odd
@@ -540,6 +542,7 @@ form .campo input {
 
 #box-table-a tr:hover td
 {
+    border: 1px solid;
     background: #d0dafd;
     color: #339;
 }

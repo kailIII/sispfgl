@@ -51,6 +51,15 @@
             }
         });
 
+        //PARA VALIDAR QUE SOLO ESCRIBAN NUMEROS
+        $(".numeric").numeric();
+
+        $('.calcular').blur(function() {
+            a = $('#poa_act_costo_unitario').val();
+            b = $('#poa_act_cantidad').val();
+            $('#poa_act_meta_total').val(a * b);
+        });
+
     });
 </script>
 <center>
@@ -61,21 +70,58 @@
 <form id="actividadForm" method="post">
     <div id="rpt_frm_bdy">
         <div class="campo">
-            <label>Código:</label>
-            <input type="text" id="poa_act_codigo" name="poa_act_codigo" value="<?php if (isset($poa_act_codigo)) echo $poa_act_codigo; ?>" style="width: 60px; margin-top: 5px;" />
+            <label>Código Presupuestario:</label>
+            <input type="text" id="poa_act_cod_presupuestario" name="poa_act_cod_presupuestario" value="<?php if (isset($poa_act_cod_presupuestario)) echo $poa_act_cod_presupuestario; ?>" style="width: 60px; margin-top: 5px;" />
         </div>
         <div class="campo">
-            <label>Descripción:</label>
+            <label>Código Actividad:</label>
+            <input type="text" id="poa_act_codigo" name="poa_act_codigo" value="<?php if (isset($poa_act_codigo)) echo $poa_act_codigo; ?>" style="width: 100px; margin-top: 5px;" />
+        </div>
+        <div class="campo">
+            <label>Actividad:</label>
             <textarea id="poa_act_descripcion" name="poa_act_descripcion" tcols="30" rows="5" wrap="virtual"><?php if (isset($poa_act_descripcion)) echo $poa_act_descripcion; ?></textarea>
         </div>
         <div class="campo">
-            <label>Meta Total:</label>
+            <label>Unidad de Medida:</label>
+            <input type="text" id="poa_act_unidad_medida" name="poa_act_unidad_medida" value="<?php if (isset($poa_act_unidad_medida)) echo $poa_act_unidad_medida; ?>" />
+        </div>
+        <div class="campo">
+            <label>Cantidad:</label>
+            <input type="text" class="numeric calcular" id="poa_act_cantidad" name="poa_act_cantidad" value="<?php
+            if (isset($poa_act_cantidad))
+                echo $poa_act_cantidad;
+            else
+                echo '0';
+            ?>" style="width: 60px; margin-top: 5px;" />
+        </div>
+        <p><strong>Indicación:</strong>El costo unitario tener el siguiente formato: 999999.99  -->>
+            Donde el 9 significa cualquier número entre el 0 y el 9</p>
+
+        <div class="campo">
+            <label>Costo Unitario ($):</label>
+            <input type="text" class="numeric calcular" id="poa_act_costo_unitario" name="poa_act_costo_unitario" value="<?php
+            if (isset($poa_act_costo_unitario))
+                echo $poa_act_costo_unitario;
+            else
+                echo '0';
+            ?>" style="width: 60px; margin-top: 5px;" />
+        </div>
+        <div class="campo">
+            <label>Costo Total ($):</label>
             <input type="text" id="poa_act_meta_total" name="poa_act_meta_total" value="<?php
             if (isset($poa_act_meta_total))
                 echo $poa_act_meta_total;
             else
                 echo '0';
-            ?>"/>
+            ?>" style="width: 60px; margin-top: 5px;" readonly="readonly"/>
+        </div>
+        <div class="campo">
+            <label>Responsable:</label>
+            <input type="text" id="poa_act_responsable" name="poa_act_responsable" value="<?php if (isset($poa_act_responsable)) echo $poa_act_responsable; ?>" />
+        </div>
+        <div class="campo">
+            <label>Producto:</label>
+            <textarea id="poa_act_producto" name="poa_act_producto" tcols="30" rows="5" wrap="virtual"><?php if (isset($poa_act_producto)) echo $poa_act_producto; ?></textarea>
         </div>
         <center style="position: relative;top: 20px">
             <input type="submit" id="guardar" value="Guardar" />

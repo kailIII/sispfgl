@@ -22,7 +22,7 @@
             rules: {
                 poa_com_descripcion: {
                     required: true
-                },
+                }
             }
         });
         $("#cancelar").button().click(function() {
