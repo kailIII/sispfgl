@@ -9,7 +9,7 @@
 
 <center>
     <h2 class="h2Titulos">Planificación Operativa Anual</h2>
-    <h2 class="h2Titulos">Seguimiento del POA</h2>
+    <h2 class="h2Titulos">Seguimiento Trimestral del POA</h2>
     <br/>
     <select id="poa_com_id">
         <option selected="selected" value="0">Seleccione--</option>

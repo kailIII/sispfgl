@@ -498,8 +498,8 @@ class Seguimiento extends CI_Controller {
         $informacion['anio'] = $anio;
         $informacion['poa_com_id'] = $poa_com_id;
         $actividades = $this->actividad->obtenerActividadComponente($poa_com_id);
-        if ($this->trimestral->obtenerActividadDetalleTri($anio, $poa_com_id)->valor == 0) {
-            $actividades = $this->actividad->obtenerPorActividadDetalle($poa_com_id,$anio);
+        if ($this->trimestral->obtenerActividadDetalleTri($anio, $poa_com_id,$trimestre)->valor == 0) {
+            $actividades = $this->actividad->obtenerPorActividadDetalle($poa_com_id, $anio);
             foreach ($actividades as $aux) {
                 $datos = array(
                     'poa_act_det_id' => $aux->poa_act_det_id,
@@ -508,9 +508,9 @@ class Seguimiento extends CI_Controller {
                 $this->poa->insertar_tabla('poa_actividad_seg_tri', $datos);
             }
         } else {
-            $actividades = $this->actividad->obtenerPorActividadDetalle($poa_com_id,$anio);
+            $actividades = $this->actividad->obtenerPorActividadDetalle($poa_com_id, $anio);
             foreach ($actividades as $aux) {
-                if ($this->trimestral->obtenerActividadTri($anio, $aux->poa_act_id)->valor == 0) {
+                if ($this->trimestral->obtenerActividadTri($anio, $aux->poa_act_id,$trimestre)->valor == 0) {
                     $datos = array(
                         'poa_act_det_id' => $aux->poa_act_det_id,
                         'poa_act_seg_tri_mes' => $trimestre
@@ -519,12 +519,48 @@ class Seguimiento extends CI_Controller {
                 }
             }
         }
-        $actividades = $this->actividad->obtenerPorActividadDetalleTri($poa_com_id, $anio);
+        $actividades = $this->actividad->obtenerPorActividadDetalleTri($poa_com_id, $anio, $trimestre);
+        switch ($trimestre) {
+            case 1:
+                $trim="Primer";
+                break;
+            case 2:
+                $trim="Segundo";
+                break;
+            case 3:
+                $trim="Tercer";
+                break;
+            case 4:
+                $trim="Cuarto";
+                break;
+        }
+
         $informacion['actividades'] = $actividades;
+        $informacion['trimestre'] = $trim;
+        $informacion['poa_act_seg_tri_mes'] = $trimestre;
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view($this->ruta . 'gestion_programacion_anual_trimestral_view', $informacion);
         $this->load->view('plantilla/footer', $informacion);
+    }
+    
+    public function guardarPlanificacionTrimestral($anio, $poa_com_id,$trimestre) {
+        $actividades = $this->actividad->obtenerPorActividadDetalleTri($poa_com_id, $anio,$trimestre);
+        $tabla = "poa_actividad_seg_tri";
+        $campo = "poa_act_seg_tri_id";
+        foreach ($actividades as $aux) {
+            if($this->input->post($aux->poa_act_id . '_poa_act_seg_tri_nivel')=='')
+                    $nivel=NULL;
+            else
+                $nivel=$this->input->post($aux->poa_act_id . '_poa_act_seg_tri_nivel');
+            $datos = array(
+                'poa_act_seg_tri_nivel' => $nivel,
+                'poa_act_seg_tri_valoracion' => $this->input->post($aux->poa_act_id . '_poa_act_seg_tri_valoracion'),
+                'poa_act_seg_tri_decision' => $this->input->post($aux->poa_act_id . '_poa_act_seg_tri_decision'),
+                'poa_act_seg_tri_observacion' => $this->input->post($aux->poa_act_id . '_poa_act_seg_tri_observacion')
+            );
+            $this->poa->actualizar_tabla($tabla, $campo, $aux->poa_act_seg_tri_id, $datos);
+        }
     }
 
 }

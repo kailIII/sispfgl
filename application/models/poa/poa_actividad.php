@@ -53,13 +53,13 @@ ORDER BY poa_act_codigo";
         return $consulta->result();
     }
     
-    public function obtenerPorActividadDetalleTri($poa_com_id,$anio) {
+    public function obtenerPorActividadDetalleTri($poa_com_id,$anio,$trimestre) {
         $sql = "SELECT * 
 FROM $this->tabla  A JOIN poa_actividad_detalle  B ON A.poa_act_id=B.poa_act_id 
     JOIN poa_actividad_seg_tri C ON C.poa_act_det_id=B.poa_act_det_id
-WHERE poa_com_id = ? AND B.poa_act_det_anio=?
+WHERE poa_com_id = ? AND B.poa_act_det_anio=? AND C.poa_act_seg_tri_mes=?
 ORDER BY poa_act_codigo";
-        $consulta = $this->db->query($sql, array($poa_com_id,$anio));
+        $consulta = $this->db->query($sql, array($poa_com_id,$anio,$trimestre));
         return $consulta->result();
     }
 

@@ -3,7 +3,7 @@
         $('#guardar').button().click(function() {
             $.ajax({
                 type: "POST",
-                url: '<?php echo base_url($ruta . 'guardarPlanificacionAnual')."/".$anio."/".$poa_com_id ?>',
+                url: '<?php echo base_url($ruta . 'guardarPlanificacionAnual') . "/" . $anio . "/" . $poa_com_id ?>',
                 data: $("#seguimientoForm").serialize(), // serializes the form's elements.
                 success: function(data)
                 {
@@ -42,7 +42,7 @@ foreach ($actividades as $aux) {
                                             $("#<?php echo $aux->poa_act_id ?>_trim_02").removeAttr("checked");
                                             $("#<?php echo $aux->poa_act_id ?>_trim_03").removeAttr("checked");
                                             $("#<?php echo $aux->poa_act_id ?>_trim_04").removeAttr("checked"); 
-                                                                                                                                                                        
+                                                                                                                                                                                
                                         }else{
                                             if( parseInt($( "#<?php echo $aux->poa_act_id; ?>_poa_act_mes_inicio" ).val())<=3 && parseInt($( "#<?php echo $aux->poa_act_id; ?>_poa_actividad_mes_fin" ).val())<=6){
                                                 $("#<?php echo $aux->poa_act_id ?>_trim_01").attr("checked","checked");
@@ -111,7 +111,7 @@ foreach ($actividades as $aux) {
                                 }
                             }
                         });
-                                                                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                                                
                         $( "#<?php echo $aux->poa_act_id; ?>_poa_actividad_mes_fin" ).change(function() {
                             if(parseInt($( "#<?php echo $aux->poa_act_id; ?>_poa_act_mes_inicio" ).val()) <=  parseInt($( "#<?php echo $aux->poa_act_id; ?>_poa_actividad_mes_fin" ).val())){
                                 if( $( "#<?php echo $aux->poa_act_id; ?>_poa_act_mes_inicio" ).val()<=3){
@@ -120,7 +120,7 @@ foreach ($actividades as $aux) {
                                         $("#<?php echo $aux->poa_act_id ?>_trim_02").removeAttr("checked");
                                         $("#<?php echo $aux->poa_act_id ?>_trim_03").removeAttr("checked");
                                         $("#<?php echo $aux->poa_act_id ?>_trim_04").removeAttr("checked"); 
-                                                                                                                                                                        
+                                                                                                                                                                                
                                     }else{
                                         if( parseInt($( "#<?php echo $aux->poa_act_id; ?>_poa_act_mes_inicio" ).val())<=3 && parseInt($( "#<?php echo $aux->poa_act_id; ?>_poa_actividad_mes_fin" ).val())<=6){
                                             $("#<?php echo $aux->poa_act_id ?>_trim_01").attr("checked","checked");
@@ -210,7 +210,7 @@ foreach ($actividades as $aux) {
                             a = $('#<?php echo $aux->poa_act_id ?>_poa_act_det_porcentaje_planificada').val();
                             b = $('#<?php echo $aux->poa_act_id ?>_poa_act_det_porcentaje_acumulado').val();
                             $('#<?php echo $aux->poa_act_id ?>_poa_act_det_planificado_acumulado').val(parseFloat(a)+parseFloat(b));
-                                            
+                                                    
                             a = $('#<?php echo $aux->poa_act_id ?>_poa_act_det_planificado_acumulado').val();
                             b = 100.00-parseFloat(a);
                             if(b<0.00)
@@ -220,7 +220,8 @@ foreach ($actividades as $aux) {
                         });
                         $('#<?php echo $aux->poa_act_id ?>_poa_act_det_meta_acumulada').blur();
                         $('#<?php echo $aux->poa_act_id ?>_poa_act_det_meta_planificada').blur();
-                        $( "#<?php echo $aux->poa_act_id; ?>_poa_actividad_mes_fin" ).change();
+                        if($( "#<?php echo $aux->poa_act_id; ?>_poa_actividad_mes_fin" ).val()!="")
+                            $( "#<?php echo $aux->poa_act_id; ?>_poa_actividad_mes_fin" ).change();
         <?php
     }
 }
@@ -279,14 +280,14 @@ foreach ($actividades as $aux) {
                         <td><input name="<?php echo $aux->poa_act_id ?>_trim_04" id="<?php echo $aux->poa_act_id ?>_trim_04" type="checkbox" readonly="readonly"></td>
                         <td><select name="<?php echo $aux->poa_act_id ?>_poa_act_mes_inicio" id="<?php echo $aux->poa_act_id ?>_poa_act_mes_inicio">
                                 <?php
-                                $informacion['valor']= $aux->poa_act_mes_inicio;
-                                $this->load->view($ruta . 'select_meses',$informacion);
+                                $informacion['valor'] = $aux->poa_act_mes_inicio;
+                                $this->load->view($ruta . 'select_meses', $informacion);
                                 ?>
                             </select></td>
                         <td><select name="<?php echo $aux->poa_act_id ?>_poa_actividad_mes_fin" id="<?php echo $aux->poa_act_id ?>_poa_actividad_mes_fin">
                                 <?php
-                                $informacion['valor']= $aux->poa_actividad_mes_fin;
-                                $this->load->view($ruta . 'select_meses',$informacion);
+                                $informacion['valor'] = $aux->poa_actividad_mes_fin;
+                                $this->load->view($ruta . 'select_meses', $informacion);
                                 ?>
                             </select></td>
                         <td><input type="text" value="<?php echo $aux->poa_act_meta_total ?>" name="<?php echo $aux->poa_act_id ?>_poa_act_meta_total" id="<?php echo $aux->poa_act_id ?>_poa_act_meta_total" style="width: 50px" readonly="readonly" /></td>

@@ -3,7 +3,7 @@
         $('#guardar').button().click(function() {
             $.ajax({
                 type: "POST",
-                url: '<?php echo base_url($ruta . 'guardarPlanificacionAnual')."/".$anio."/".$poa_com_id ?>',
+                url: '<?php echo base_url($ruta . 'guardarPlanificacionTrimestral') . "/" . $anio . "/" . $poa_com_id. "/" . $poa_act_seg_tri_mes ?>',
                 data: $("#seguimientoForm").serialize(), // serializes the form's elements.
                 success: function(data)
                 {
@@ -14,7 +14,7 @@
         });
         
         $('#regresar').button().click(function() {
-            document.location.href = '<?php echo base_url($ruta . 'planificacionAnual'); ?>';
+            document.location.href = '<?php echo base_url($ruta . 'seguimientoPlanificacionAnual'); ?>';
         });
         /*DIALOGOS DE VALIDACION*/
         $('.mensaje').dialog({
@@ -36,7 +36,7 @@
 
 <center>
     <h2 class="h2Titulos">Planificación Operativa Anual</h2>
-    <h2 class="h2Titulos">Planificación para el año <?php echo $anio; ?> </h2>
+    <h2 class="h2Titulos">Planificación para el <?php echo $trimestre; ?> Trimestre del año <?php echo $anio; ?> </h2>
     <br/>
     <p><strong>Componente:</strong><?php echo $componente; ?></p>
 </center>
@@ -51,31 +51,37 @@
         <table id="box-table-a">
             <thead>
                 <tr>
-                <th scope="col" rowspan="2">Código</th>
-                <th scope="col"  rowspan="2" width='400px'>Actividad</th>
-                <th scope="col" colspan="2" >1º Semestre</th>
-                <th scope="col" colspan="2" >2º Semestre</th>
-                <th scope="col"  rowspan="2" >Fecha Inicio</th>
-                <th scope="col" rowspan="2" >Fecha Fin</th>
-                <th scope="col" rowspan="2" >Meta Total</th>
-                <th scope="col" rowspan="2" >Meta Acumulada a Dic <?php echo $anio - 1; ?> </th>
-                <th scope="col" rowspan="2" >% Planificado a Dic <?php echo $anio - 1; ?> </th>
-                <th scope="col" rowspan="2" >Meta Planificada para <?php echo $anio; ?> </th>
-                <th scope="col"  rowspan="2">% Planificado para <?php echo $anio; ?> </th>
-                <th scope="col"  rowspan="2">% Acumulado para <?php echo $anio; ?> </th>
-                <th scope="col"  rowspan="2">% Pendiente Planificar para <?php echo $anio + 1; ?> y <?php echo $anio + 2; ?> </th>
-                </tr>
-                <tr>
-                <th scope="col" >Ene - Mar</th>
-                <th scope="col" >Abr - Jun</th>
-                <th scope="col" >Jul -- Sep</th>
-                <th scope="col" >Oct - Dic</th> 
+                <th scope="col">Código</th>
+                <th scope="col"  width='400px'>Actividad</th>
+                <th scope="col" >Observaciones</th>
+                <th scope="col" >Nivel de cumplimiento trimestral acumulado (%)</th>
+                <th scope="col"  >Valoración del avance (Por qué, razones del avance obtenido)</th>
+                <th scope="col" >Decisiones o medidas correctivas</th>
                 </tr>
             </thead>
             <tbody>
-                
+                <?php
+                foreach ($actividades as $aux) {
+                    if (!is_null($aux->poa_act_padre)) {
+                        ?>
+                        <tr>                    
+                        <td><input value="<?php echo $aux->poa_act_id ?>" name="poa_act_id" hidden="hidden" /><?php echo $aux->poa_act_codigo ?></td>
+                        <td><?php echo $aux->poa_act_descripcion ?></td>
+                        <td><textarea rows="3" cols="15" id="<?php echo $aux->poa_act_id ?>_poa_act_seg_tri_observacion" name="<?php echo $aux->poa_act_id ?>_poa_act_seg_tri_observacion"><?php echo $aux->poa_act_seg_tri_observacion ?></textarea></td>
+                        <td><input type="text" value="<?php echo $aux->poa_act_seg_tri_nivel ?>" name="<?php echo $aux->poa_act_id ?>_poa_act_seg_tri_nivel" id="<?php echo $aux->poa_act_id ?>_poa_act_seg_tri_nivel" class="numeric" style="width: 50px" /></td>
+                        <td><textarea rows="3" cols="15" id="<?php echo $aux->poa_act_id ?>_poa_act_seg_tri_valoracion" name="<?php echo $aux->poa_act_id ?>_poa_act_seg_tri_valoracion" ><?php echo $aux->poa_act_seg_tri_valoracion ?></textarea></td>
+                        <td><textarea rows="3" cols="15" id="<?php echo $aux->poa_act_id ?>_poa_act_seg_tri_decision" name="<?php echo $aux->poa_act_id ?>_poa_act_seg_tri_decision" ><?php echo $aux->poa_act_seg_tri_decision ?></textarea></td>
+                        </tr>
+    <?php } else { ?>
+                        <tr class='odd'>
+                        <td><?php echo $aux->poa_act_codigo ?></td>
+                        <td colspan="14"><?php echo $aux->poa_act_descripcion ?></td>
+                        </tr>
+    <?php }
+} ?>
             </tbody>
         </table>
+
     </form>
 </div>
 <center style="position: relative;top:15px">
