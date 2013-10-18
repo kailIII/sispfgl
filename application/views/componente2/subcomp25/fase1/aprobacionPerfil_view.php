@@ -364,6 +364,246 @@
                                 $('#per_pro_acuD').val(registro['cell'][26]);
                                 $('#per_pro_doc_ruta_archivo').val(registro['cell'][27]);
                                 $('#per_pro_docD').val(registro['cell'][28]);
+                                var button1 = $('#btn_per_subir'), interval;
+                                new AjaxUpload('#btn_per_subir', {
+                                    action: '<?php echo base_url('componente2/procesoAdministrativo/subirArchivo2') . '/perfil_proyecto/'; ?>' + registro['cell'][0] + '/per_pro_id/per_pro_per_',
+                                    onSubmit: function(file, ext) {
+                                        if (!(ext && /^(pdf|doc|docx|png|jpg)$/.test(ext))) {
+                                            $('#extension').dialog('open');
+                                            return false;
+                                        } else {
+                                            $('#per_pro_per').val('Subiendo....');
+                                            this.disable();
+                                        }
+                                    },
+                                    onComplete: function(file, response, ext) {
+                                        if (response != 'error') {
+                                            $('#per_pro_per').val('Subido con Exito');
+                                            this.enable();
+                                            ext = (response.substring(response.lastIndexOf("."))).toLowerCase();
+                                            nombre = response.substring(response.lastIndexOf("/")).toLowerCase().replace('/', '');
+                                            $('#per_pro_perD').val('Descargar ' + nombre);
+                                            $('#per_pro_per_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO
+                                            if ( ext == '.pdf' || ext == '.png' || ext == '.jpg') {
+                                                $('#btn_per_descargar').attr({
+                                                    'href': '<?php echo base_url(); ?>' + response,
+                                                    'target': '_blank'
+                                                });
+                                            }
+                                            else {
+                                                $('#btn_per_descargar').attr({
+                                                    'href': '<?php echo base_url(); ?>' + response,
+                                                    'target': '_self'
+                                                });
+                                            }
+                                        } else {
+                                            $('#per_pro_per').val('El Archivo debe ser menor a 1 MB.');
+                                            this.enable();
+
+                                        }
+
+                                    }
+                                });
+                                var button2 = $('#btn_tdr_subir'), interval;
+                                new AjaxUpload('#btn_tdr_subir', {
+                                    action: '<?php echo base_url('componente2/procesoAdministrativo/subirArchivo2') . '/perfil_proyecto/'; ?>' + registro['cell'][0] + '/per_pro_id/per_pro_tdr_',
+                                    onSubmit: function(file, ext) {
+                                        if (!(ext && /^(pdf|doc|docx|png|jpg)$/.test(ext))) {
+                                            $('#extension').dialog('open');
+                                            return false;
+                                        } else {
+                                            $('#per_pro_tdr').val('Subiendo....');
+                                            this.disable();
+                                        }
+                                    },
+                                    onComplete: function(file, response, ext) {
+                                        if (response != 'error') {
+                                            $('#per_pro_tdr').val('Subido con Exito');
+                                            this.enable();
+                                            ext = (response.substring(response.lastIndexOf("."))).toLowerCase();
+                                            nombre = response.substring(response.lastIndexOf("/")).toLowerCase().replace('/', '');
+                                            $('#per_pro_tdrD').val('Descargar ' + nombre);
+                                            $('#per_pro_tdr_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO
+                                            if ( ext == '.pdf' || ext == '.png' || ext == '.jpg') {
+                                                $('#btn_tdr_descargar').attr({
+                                                    'href': '<?php echo base_url(); ?>' + response,
+                                                    'target': '_blank'
+                                                });
+                                            }
+                                            else {
+                                                $('#btn_tdr_descargar').attr({
+                                                    'href': '<?php echo base_url(); ?>' + response,
+                                                    'target': '_self'
+                                                });
+                                            }
+                                        } else {
+                                            $('#per_pro_tdr').val('El Archivo debe ser menor a 1 MB.');
+                                            this.enable();
+
+                                        }
+
+                                    }
+                                });
+                                var button3 = $('#btn_esp_subir'), interval;
+                                new AjaxUpload('#btn_esp_subir', {
+                                    action: '<?php echo base_url('componente2/procesoAdministrativo/subirArchivo2') . '/perfil_proyecto/'; ?>' + registro['cell'][0] + '/per_pro_id/per_pro_esp_',
+                                    onSubmit: function(file, ext) {
+                                        if (!(ext && /^(pdf|doc|docx|png|jpg)$/.test(ext))) {
+                                            $('#extension').dialog('open');
+                                            return false;
+                                        } else {
+                                            $('#per_pro_esp').val('Subiendo....');
+                                            this.disable();
+                                        }
+                                    },
+                                    onComplete: function(file, response, ext) {
+                                        if (response != 'error') {
+                                            $('#per_pro_esp').val('Subido con Exito');
+                                            this.enable();
+                                            ext = (response.substring(response.lastIndexOf("."))).toLowerCase();
+                                            nombre = response.substring(response.lastIndexOf("/")).toLowerCase().replace('/', '');
+                                            $('#per_pro_espD').val('Descargar ' + nombre);
+                                            $('#per_pro_esp_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO
+                                            if ( ext == '.pdf' || ext == '.png' || ext == '.jpg') {
+                                                $('#btn_esp_descargar').attr({
+                                                    'href': '<?php echo base_url(); ?>' + response,
+                                                    'target': '_blank'
+                                                });
+                                            }
+                                            else {
+                                                $('#btn_esp_descargar').attr({
+                                                    'href': '<?php echo base_url(); ?>' + response,
+                                                    'target': '_self'
+                                                });
+                                            }
+                                        } else {
+                                            $('#per_pro_esp').val('El Archivo debe ser menor a 1 MB.');
+                                            this.enable();
+
+                                        }
+
+                                    }
+                                });
+                                var button4 = $('#btn_car_subir'), interval;
+                                new AjaxUpload('#btn_car_subir', {
+                                    action: '<?php echo base_url('componente2/procesoAdministrativo/subirArchivo2') . '/perfil_proyecto/'; ?>' + registro['cell'][0] + '/per_pro_id/per_pro_car_',
+                                    onSubmit: function(file, ext) {
+                                        if (!(ext && /^(pdf|doc|docx|png|jpg)$/.test(ext))) {
+                                            $('#extension').dialog('open');
+                                            return false;
+                                        } else {
+                                            $('#per_pro_car').val('Subiendo....');
+                                            this.disable();
+                                        }
+                                    },
+                                    onComplete: function(file, response, ext) {
+                                        if (response != 'error') {
+                                            $('#per_pro_car').val('Subido con Exito');
+                                            this.enable();
+                                            ext = (response.substring(response.lastIndexOf("."))).toLowerCase();
+                                            nombre = response.substring(response.lastIndexOf("/")).toLowerCase().replace('/', '');
+                                            $('#per_pro_carD').val('Descargar ' + nombre);
+                                            $('#per_pro_car_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO
+                                            if ( ext == '.pdf' || ext == '.png' || ext == '.jpg') {
+                                                $('#btn_car_descargar').attr({
+                                                    'href': '<?php echo base_url(); ?>' + response,
+                                                    'target': '_blank'
+                                                });
+                                            }
+                                            else {
+                                                $('#btn_car_descargar').attr({
+                                                    'href': '<?php echo base_url(); ?>' + response,
+                                                    'target': '_self'
+                                                });
+                                            }
+                                        } else {
+                                            $('#per_pro_car').val('El Archivo debe ser menor a 1 MB.');
+                                            this.enable();
+
+                                        }
+
+                                    }
+                                });
+                                var button5 = $('#btn_acu_subir'), interval;
+                                new AjaxUpload('#btn_acu_subir', {
+                                    action: '<?php echo base_url('componente2/procesoAdministrativo/subirArchivo2') . '/perfil_proyecto/'; ?>' + registro['cell'][0] + '/per_pro_id/per_pro_acu_',
+                                    onSubmit: function(file, ext) {
+                                        if (!(ext && /^(pdf|doc|docx|png|jpg)$/.test(ext))) {
+                                            $('#extension').dialog('open');
+                                            return false;
+                                        } else {
+                                            $('#per_pro_acu').val('Subiendo....');
+                                            this.disable();
+                                        }
+                                    },
+                                    onComplete: function(file, response, ext) {
+                                        if (response != 'error') {
+                                            $('#per_pro_acu').val('Subido con Exito');
+                                            this.enable();
+                                            ext = (response.substring(response.lastIndexOf("."))).toLowerCase();
+                                            nombre = response.substring(response.lastIndexOf("/")).toLowerCase().replace('/', '');
+                                            $('#per_pro_acuD').val('Descargar ' + nombre);
+                                            $('#per_pro_acu_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO 
+                                            if ( ext == '.pdf' || ext == '.png' || ext == '.jpg') {
+                                                $('#btn_acu_descargar').attr({
+                                                    'href': '<?php echo base_url(); ?>' + response,
+                                                    'target': '_blank'
+                                                });
+                                            }
+                                            else {
+                                                $('#btn_acu_descargar').attr({
+                                                    'href': '<?php echo base_url(); ?>' + response,
+                                                    'target': '_self'
+                                                });
+                                            }
+                                        } else {
+                                            $('#per_pro_acu').val('El Archivo debe ser menor a 1 MB.');
+                                            this.enable();
+
+                                        }
+
+                                    }
+                                });
+                                var button6 = $('#btn_doc_subir'), interval;
+                                new AjaxUpload('#btn_doc_subir', {
+                                    action: '<?php echo base_url('componente2/procesoAdministrativo/subirArchivo2') . '/perfil_proyecto/'; ?>' + registro['cell'][0] + '/per_pro_id/per_pro_doc_',
+                                    onSubmit: function(file, ext) {
+                                        if (!(ext && /^(pdf|doc|docx|png|jpg)$/.test(ext))) {
+                                            $('#extension').dialog('open');
+                                            return false;
+                                        } else {
+                                            $('#per_pro_doc').val('Subiendo....');
+                                            this.disable();
+                                        }
+                                    },
+                                    onComplete: function(file, response, ext) {
+                                        if (response != 'error') {
+                                            $('#per_pro_doc').val('Subido con Exito');
+                                            this.enable();
+                                            ext = (response.substring(response.lastIndexOf("."))).toLowerCase();
+                                            nombre = response.substring(response.lastIndexOf("/")).toLowerCase().replace('/', '');
+                                            $('#per_pro_docD').val('Descargar ' + nombre);
+                                            $('#per_pro_doc_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO 
+                                            if ( ext == '.pdf' || ext == '.png' || ext == '.jpg') {
+                                                $('#btn_doc_descargar').attr({
+                                                    'href': '<?php echo base_url(); ?>' + response,
+                                                    'target': '_blank'
+                                                });
+                                            }
+                                            else {
+                                                $('#btn_doc_descargar').attr({
+                                                    'href': '<?php echo base_url(); ?>' + response,
+                                                    'target': '_self'
+                                                });
+                                            }
+                                        } else {
+                                            $('#per_pro_doc').val('El Archivo debe ser menor a 1 MB.');
+                                            this.enable();
+
+                                        }
+
+                                    }
+                                });
                                 $("#aprobacionPerfilForm").show();
                             });
                         }
@@ -457,265 +697,31 @@
             dateFormat: 'dd-mm-yy'
         });
         /*ZONA DE BOTONES DE DESCARGA*/
-        var button1 = $('#btn_per_subir'), interval;
-        new AjaxUpload('#btn_per_subir', {
-            action: '<?php echo base_url('componente2/procesoAdministrativo/subirArchivo2') . '/perfil_proyecto/'; ?>' + $('#per_pro_id').val() + '/per_pro_id/per_pro_per_',
-            onSubmit: function(file, ext) {
-                if (!(ext && /^(pdf|doc|docx)$/.test(ext))) {
-                    $('#extension').dialog('open');
-                    return false;
-                } else {
-                    $('#per_pro_per').val('Subiendo....');
-                    this.disable();
-                }
-            },
-            onComplete: function(file, response, ext) {
-                if (response != 'error') {
-                    $('#per_pro_per').val('Subido con Exito');
-                    this.enable();
-                    ext = (response.substring(response.lastIndexOf("."))).toLowerCase();
-                    nombre = response.substring(response.lastIndexOf("/")).toLowerCase().replace('/', '');
-                    $('#per_pro_perD').val('Descargar ' + nombre);
-                    $('#per_pro_per_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO
-                    if (ext == '.pdf') {
-                        $('#btn_per_descargar').attr({
-                            'href': '<?php echo base_url(); ?>' + response,
-                            'target': '_blank'
-                        });
-                    }
-                    else {
-                        $('#btn_per_descargar').attr({
-                            'href': '<?php echo base_url(); ?>' + response,
-                            'target': '_self'
-                        });
-                    }
-                } else {
-                    $('#per_pro_per').val('El Archivo debe ser menor a 1 MB.');
-                    this.enable();
-
-                }
-
-            }
-        });
+        
         $('#btn_per_descargar').click(function() {
             $.get($(this).attr('href'));
         });
 
-        var button2 = $('#btn_tdr_subir'), interval;
-        new AjaxUpload('#btn_tdr_subir', {
-            action: '<?php echo base_url('componente2/procesoAdministrativo/subirArchivo2') . '/perfil_proyecto/'; ?>' + $('#per_pro_id').val() + '/per_pro_id/per_pro_tdr_',
-            onSubmit: function(file, ext) {
-                if (!(ext && /^(pdf|doc|docx)$/.test(ext))) {
-                    $('#extension').dialog('open');
-                    return false;
-                } else {
-                    $('#per_pro_tdr').val('Subiendo....');
-                    this.disable();
-                }
-            },
-            onComplete: function(file, response, ext) {
-                if (response != 'error') {
-                    $('#per_pro_tdr').val('Subido con Exito');
-                    this.enable();
-                    ext = (response.substring(response.lastIndexOf("."))).toLowerCase();
-                    nombre = response.substring(response.lastIndexOf("/")).toLowerCase().replace('/', '');
-                    $('#per_pro_tdrD').val('Descargar ' + nombre);
-                    $('#per_pro_tdr_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO
-                    if (ext == '.pdf') {
-                        $('#btn_tdr_descargar').attr({
-                            'href': '<?php echo base_url(); ?>' + response,
-                            'target': '_blank'
-                        });
-                    }
-                    else {
-                        $('#btn_tdr_descargar').attr({
-                            'href': '<?php echo base_url(); ?>' + response,
-                            'target': '_self'
-                        });
-                    }
-                } else {
-                    $('#per_pro_tdr').val('El Archivo debe ser menor a 1 MB.');
-                    this.enable();
-
-                }
-
-            }
-        });
+        
         $('#btn_tdr_descargar').click(function() {
             $.get($(this).attr('href'));
         });
 
-        var button3 = $('#btn_esp_subir'), interval;
-        new AjaxUpload('#btn_esp_subir', {
-            action: '<?php echo base_url('componente2/procesoAdministrativo/subirArchivo2') . '/perfil_proyecto/'; ?>' + $('#per_pro_id').val() + '/per_pro_id/per_pro_esp_',
-            onSubmit: function(file, ext) {
-                if (!(ext && /^(pdf|doc|docx)$/.test(ext))) {
-                    $('#extension').dialog('open');
-                    return false;
-                } else {
-                    $('#per_pro_esp').val('Subiendo....');
-                    this.disable();
-                }
-            },
-            onComplete: function(file, response, ext) {
-                if (response != 'error') {
-                    $('#per_pro_esp').val('Subido con Exito');
-                    this.enable();
-                    ext = (response.substring(response.lastIndexOf("."))).toLowerCase();
-                    nombre = response.substring(response.lastIndexOf("/")).toLowerCase().replace('/', '');
-                    $('#per_pro_espD').val('Descargar ' + nombre);
-                    $('#per_pro_esp_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO
-                    if (ext == '.pdf') {
-                        $('#btn_esp_descargar').attr({
-                            'href': '<?php echo base_url(); ?>' + response,
-                            'target': '_blank'
-                        });
-                    }
-                    else {
-                        $('#btn_esp_descargar').attr({
-                            'href': '<?php echo base_url(); ?>' + response,
-                            'target': '_self'
-                        });
-                    }
-                } else {
-                    $('#per_pro_esp').val('El Archivo debe ser menor a 1 MB.');
-                    this.enable();
-
-                }
-
-            }
-        });
+       
         $('#btn_esp_descargar').click(function() {
             $.get($(this).attr('href'));
         });
-        var button4 = $('#btn_car_subir'), interval;
-        new AjaxUpload('#btn_car_subir', {
-            action: '<?php echo base_url('componente2/procesoAdministrativo/subirArchivo2') . '/perfil_proyecto/'; ?>' + $('#per_pro_id').val() + '/per_pro_id/per_pro_car_',
-            onSubmit: function(file, ext) {
-                if (!(ext && /^(pdf|doc|docx)$/.test(ext))) {
-                    $('#extension').dialog('open');
-                    return false;
-                } else {
-                    $('#per_pro_car').val('Subiendo....');
-                    this.disable();
-                }
-            },
-            onComplete: function(file, response, ext) {
-                if (response != 'error') {
-                    $('#per_pro_car').val('Subido con Exito');
-                    this.enable();
-                    ext = (response.substring(response.lastIndexOf("."))).toLowerCase();
-                    nombre = response.substring(response.lastIndexOf("/")).toLowerCase().replace('/', '');
-                    $('#per_pro_carD').val('Descargar ' + nombre);
-                    $('#per_pro_car_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO
-                    if (ext == '.pdf') {
-                        $('#btn_car_descargar').attr({
-                            'href': '<?php echo base_url(); ?>' + response,
-                            'target': '_blank'
-                        });
-                    }
-                    else {
-                        $('#btn_car_descargar').attr({
-                            'href': '<?php echo base_url(); ?>' + response,
-                            'target': '_self'
-                        });
-                    }
-                } else {
-                    $('#per_pro_car').val('El Archivo debe ser menor a 1 MB.');
-                    this.enable();
-
-                }
-
-            }
-        });
+        
         $('#btn_car_descargar').click(function() {
             $.get($(this).attr('href'));
         });
 
-        var button5 = $('#btn_acu_subir'), interval;
-        new AjaxUpload('#btn_acu_subir', {
-            action: '<?php echo base_url('componente2/procesoAdministrativo/subirArchivo2') . '/perfil_proyecto/'; ?>' + $('#per_pro_id').val() + '/per_pro_id/per_pro_acu_',
-            onSubmit: function(file, ext) {
-                if (!(ext && /^(pdf|doc|docx)$/.test(ext))) {
-                    $('#extension').dialog('open');
-                    return false;
-                } else {
-                    $('#per_pro_acu').val('Subiendo....');
-                    this.disable();
-                }
-            },
-            onComplete: function(file, response, ext) {
-                if (response != 'error') {
-                    $('#per_pro_acu').val('Subido con Exito');
-                    this.enable();
-                    ext = (response.substring(response.lastIndexOf("."))).toLowerCase();
-                    nombre = response.substring(response.lastIndexOf("/")).toLowerCase().replace('/', '');
-                    $('#per_pro_acuD').val('Descargar ' + nombre);
-                    $('#per_pro_acu_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO 
-                    if (ext == '.pdf') {
-                        $('#btn_acu_descargar').attr({
-                            'href': '<?php echo base_url(); ?>' + response,
-                            'target': '_blank'
-                        });
-                    }
-                    else {
-                        $('#btn_acu_descargar').attr({
-                            'href': '<?php echo base_url(); ?>' + response,
-                            'target': '_self'
-                        });
-                    }
-                } else {
-                    $('#per_pro_acu').val('El Archivo debe ser menor a 1 MB.');
-                    this.enable();
-
-                }
-
-            }
-        });
+       
         $('#btn_acu_descargar').click(function() {
             $.get($(this).attr('href'));
         });
 
-        var button6 = $('#btn_doc_subir'), interval;
-        new AjaxUpload('#btn_doc_subir', {
-            action: '<?php echo base_url('componente2/procesoAdministrativo/subirArchivo2') . '/perfil_proyecto/'; ?>' + $('#per_pro_id').val() + '/per_pro_id/per_pro_doc_',
-            onSubmit: function(file, ext) {
-                if (!(ext && /^(pdf|doc|docx)$/.test(ext))) {
-                    $('#extension').dialog('open');
-                    return false;
-                } else {
-                    $('#per_pro_doc').val('Subiendo....');
-                    this.disable();
-                }
-            },
-            onComplete: function(file, response, ext) {
-                if (response != 'error') {
-                    $('#per_pro_doc').val('Subido con Exito');
-                    this.enable();
-                    ext = (response.substring(response.lastIndexOf("."))).toLowerCase();
-                    nombre = response.substring(response.lastIndexOf("/")).toLowerCase().replace('/', '');
-                    $('#per_pro_docD').val('Descargar ' + nombre);
-                    $('#per_pro_doc_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO 
-                    if (ext == '.pdf') {
-                        $('#btn_doc_descargar').attr({
-                            'href': '<?php echo base_url(); ?>' + response,
-                            'target': '_blank'
-                        });
-                    }
-                    else {
-                        $('#btn_doc_descargar').attr({
-                            'href': '<?php echo base_url(); ?>' + response,
-                            'target': '_self'
-                        });
-                    }
-                } else {
-                    $('#per_pro_doc').val('El Archivo debe ser menor a 1 MB.');
-                    this.enable();
-
-                }
-
-            }
-        });
+       
         $('#btn_doc_descargar').click(function() {
             $.get($(this).attr('href'));
         });
@@ -899,5 +905,5 @@
     </center>
 </div>
 <div id="extension" class="mensaje" title="Error">
-    <p>Solo se permiten archivos con la extensión pdf|doc|docx</p>
+    <p>Solo se permiten archivos con la extensión pdf|doc|docx|png|jpg</p>
 </div>

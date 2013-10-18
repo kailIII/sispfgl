@@ -56,17 +56,17 @@
             $("#etapas").hide();
             $('#mun_id').children().remove();
             $.getJSON('<?php echo base_url('componente2/proyectoPep/cargarMunicipios') ?>?dep_id=' + $('#dep_id').val(),
-                    function(data) {
-                        var i = 0;
-                        $.each(data, function(key, val) {
-                            if (key == 'rows') {
-                                $('#mun_id').append('<option value="0">--Seleccione Municipio--</option>');
-                                $.each(val, function(id, registro) {
-                                    $('#mun_id').append('<option value="' + registro['cell'][0] + '">' + registro['cell'][1] + '</option>');
-                                });
-                            }
+            function(data) {
+                var i = 0;
+                $.each(data, function(key, val) {
+                    if (key == 'rows') {
+                        $('#mun_id').append('<option value="0">--Seleccione Municipio--</option>');
+                        $.each(val, function(id, registro) {
+                            $('#mun_id').append('<option value="' + registro['cell'][0] + '">' + registro['cell'][1] + '</option>');
                         });
-                    });
+                    }
+                });
+            });
         });
 
 
@@ -79,231 +79,242 @@
             $("#etapas").show();
             if ($('#mun_id').val() != 0) {
                 $.getJSON('<?php echo base_url('componente2/comp25_fase1/cargarRevisionInformacion') . "/" ?>' + $('#mun_id').val(),
-                        function(data) {
-                            $.each(data, function(key, val) {
-                                if (key == 'rows') {
-                                    $.each(val, function(id, registro) {
-                                        $('#rev_inf_id').val(registro['cell'][0]);
-                                        $('#rev_inf_id2').val(registro['cell'][0]);
-                                        $('#rev_inf_id3').val(registro['cell'][0]);
-                                        if (registro['cell'][1] != null) {
-                                            if (registro['cell'][1] == "t")
-                                                $('input:checkbox[name=rev_inf_plan_municipalidad]').attr("checked", "checked");
-                                            else
-                                                $('input:checkbox[name=rev_inf_plan_municipalidad]').attr("checked", false);
-                                        }
-                                        if (registro['cell'][2] != null) {
-                                            if (registro['cell'][2] == "t") {
-                                                $('input:checkbox[name=rev_inf_plan_contingencia]').attr("checked", "checked");
-                                                $('#plan1').show();
-                                            }
-                                            else {
-                                                $('input:checkbox[name=rev_inf_plan_contingencia]').attr("checked", false);
-                                                $('#plan1').hide();
-                                            }
-                                        }
-                                        $('#rev_inf_felaboracion').val(registro['cell'][3]);
-                                        if (registro['cell'][4] != null) {
-                                            if (registro['cell'][4] == "t") {
-                                                $('input:checkbox[name=rev_inf_plan_oformato]').attr("checked", "checked");
-                                                $('#plan2').show();
-                                            }
-                                            else {
-                                                $('input:checkbox[name=rev_inf_plan_oformato]').attr("checked", false);
-                                                $('#plan2').hide();
-                                            }
-                                        }
-                                        if (registro['cell'][5] != null) {
-                                            if (registro['cell'][5] == "t")
-                                                $('input:radio[name=rev_inf_gestion_reactiva]')[0].checked = true;
-                                            else
-                                                $('input:radio[name=rev_inf_gestion_reactiva]')[1].checked = true;
-                                        }
-                                        $('#rev_inf_ogestion_reactiva').val(registro['cell'][6]);
-                                        if (registro['cell'][7] != null) {
-                                            if (registro['cell'][7] == "t")
-                                                $('input:radio[name=rev_inf_gestion_correctiva]')[0].checked = true;
-                                            else
-                                                $('input:radio[name=rev_inf_gestion_correctiva]')[1].checked = true;
-                                        }
-                                        $('#rev_inf_ogestion_correctiva').val(registro['cell'][8]);
-                                        if (registro['cell'][9] != null) {
-                                            if (registro['cell'][9] == "t")
-                                                $('input:radio[name=rev_inf_gestion_prospectiva]')[0].checked = true;
-                                            else
-                                                $('input:radio[name=rev_inf_gestion_prospectiva]')[1].checked = true;
-                                        }
-                                        $('#rev_inf_ogestion_prospectiva').val(registro['cell'][10]);
-                                        if (registro['cell'][11] != null) {
-                                            if (registro['cell'][11] == "t") {
-                                                $('input:checkbox[name=rev_inf_plan_comunal]').attr("checked", "checked");
-                                                $('#plan3').show();
-                                            }
-                                            else {
-                                                $('input:checkbox[name=rev_inf_plan_comunal]').attr("checked", false);
-                                                $('#plan3').hide();
-                                            }
-                                        }
-                                        if (registro['cell'][12] != null) {
-                                            if (registro['cell'][12] == "t")
-                                                $('input:checkbox[name=rev_inf_mapa]').attr("checked", "checked");
-                                            else
-                                                $('input:checkbox[name=rev_inf_mapa]').attr("checked", false);
-                                        }
-                                        if (registro['cell'][13] != null) {
-                                            if (registro['cell'][13] == "t")
-                                                $('input:checkbox[name=rev_inf_presentoa]').attr("checked", "checked");
-                                            else
-                                                $('input:checkbox[name=rev_inf_presentoa]').attr("checked", false);
-                                        }
-                                        $('#rev_inf_conclusion').val(registro['cell'][14]);
-                                        $('#planContingencial1').setGridParam({
-                                            url: '<?php echo base_url('componente2/comp25_fase1/cargarPlanContingencial') ?>/1/' + registro['cell'][0],
-                                            editurl: '<?php echo base_url('componente2/comp25_fase1/guardarPlanContingencial') ?>/1/' + registro['cell'][0],
-                                            datatype: 'json'
-                                        }).trigger('reloadGrid');
-                                        $('#planContingencial2').setGridParam({
-                                            url: '<?php echo base_url('componente2/comp25_fase1/cargarPlanContingencial') ?>/2/' + registro['cell'][0],
-                                            editurl: '<?php echo base_url('componente2/comp25_fase1/guardarPlanContingencial') ?>/2/' + registro['cell'][0],
-                                            datatype: 'json'
-                                        }).trigger('reloadGrid');
-                                        $('#planContingencial3').setGridParam({
-                                            url: '<?php echo base_url('componente2/comp25_fase1/cargarPlanContingencial') ?>/3/' + registro['cell'][0],
-                                            editurl: '<?php echo base_url('componente2/comp25_fase1/guardarPlanContingencial') ?>/3/' + registro['cell'][0],
-                                            datatype: 'json'
-                                        }).trigger('reloadGrid');
-                                        //SEGUNDA PARTE
-                                        if (registro['cell'][15] != null) {
-                                            if (registro['cell'][15] == "t")
-                                                $('input:checkbox[name=rev_inf_presento]').attr("checked", "checked");
-                                            else
-                                                $('input:checkbox[name=rev_inf_presento]').attr("checked", false);
-                                        }
-                                        if (registro['cell'][16] != null) {
-                                            if (registro['cell'][16] == "t")
-                                                $('input:checkbox[name=rev_inf_comision_conformada]').attr("checked", "checked");
-                                            else
-                                                $('input:checkbox[name=rev_inf_comision_conformada]').attr("checked", false);
-                                        }
-                                        $('#rev_inf_fconformacion').val(registro['cell'][17]);
-                                        if (registro['cell'][18] != null) {
-                                            if (registro['cell'][18] == "t") {
-                                                $('input:checkbox[name=rev_inf_presentob_eo]').attr("checked", "checked");
-                                                $('#prev_inf_dpresentob_eo').show();
-                                            }
-                                            else {
-                                                $('input:checkbox[name=rev_inf_presentob_eo]').attr("checked", false);
-                                                $('#prev_inf_dpresentob_eo').hide();
-                                            }
-                                        }
-                                        $('#rev_inf_dpresentob_eo').val(registro['cell'][19]);
-                                        if (registro['cell'][20] != null) {
-                                            if (registro['cell'][20] == "t")
-                                                $('input:checkbox[name=rev_inf_comision]').attr("checked", "checked");
-                                            else
-                                                $('input:checkbox[name=rev_inf_comision]').attr("checked", false);
-                                        }
-                                        if (registro['cell'][21] != null) {
-                                            if (registro['cell'][21] == "t") {
-                                                $('input:checkbox[name=rev_inf_acta_comision]').attr("checked", "checked");
-                                                $('#prev_inf_dacta_comision').show();
-                                            }
-                                            else {
-                                                $('input:checkbox[name=rev_inf_acta_comision]').attr("checked", false);
-                                                $('#prev_inf_dacta_comision').hide();
-                                            }
-                                        }
-                                        $('#rev_inf_dacta_comision').val(registro['cell'][22]);
-                                        if (registro['cell'][23] != null) {
-                                            if (registro['cell'][23] == "t") {
-                                                $('input:checkbox[name=rev_inf_capacitacion]').attr("checked", "checked");
-                                                $('#prev_inf_dcapacitacion').show();
-                                            }
-                                            else {
-                                                $('input:checkbox[name=rev_inf_capacitacion]').attr("checked", false);
-                                                $('#prev_inf_dcapacitacion').hide();
-                                            }
-                                        }
-                                        $('#rev_inf_dcapacitacion').val(registro['cell'][24]);
-                                        if (registro['cell'][25] != null) {
-                                            if (registro['cell'][25] == "t")
-                                                $('input:checkbox[name=rev_inf_herramienta]').attr("checked", "checked");
-                                            else
-                                                $('input:checkbox[name=rev_inf_herramienta]').attr("checked", false);
-                                        }
-                                        if (registro['cell'][26] != null) {
-                                            if (registro['cell'][26] == "t") {
-                                                $('input:checkbox[name=rev_inf_inv_herramienta]').attr("checked", "checked");
-                                                $('#prev_inf_dinv_herramienta').show();
-                                            }
-                                            else {
-                                                $('input:checkbox[name=rev_inf_inv_herramienta]').attr("checked", false);
-                                                $('#prev_inf_dinv_herramienta').hide();
-                                            }
-                                        }
-                                        $('#rev_inf_dinv_herramienta').val(registro['cell'][27]);
-                                        if (registro['cell'][28] != null) {
-                                            if (registro['cell'][28] == "t") {
-                                                $('input:checkbox[name=rev_inf_presentoc]').attr("checked", "checked");
-                                                $('#prev_inf_dpresentoc').show();
-                                            }
-                                            else {
-                                                $('input:checkbox[name=rev_inf_presentoc]').attr("checked", false);
-                                                $('#prev_inf_dpresentoc').hide();
-                                            }
-                                        }
-                                        $('#rev_inf_dpresentoc').val(registro['cell'][29]);
-                                        if (registro['cell'][30] != null) {
-                                            if (registro['cell'][30] == "t")
-                                                $('input:checkbox[name=rev_inf_presentod]').attr("checked", "checked");
-                                            else
-                                                $('input:checkbox[name=rev_inf_presentod]').attr("checked", false);
-                                        }
-                                        if (registro['cell'][31] != null) {
-                                            if (registro['cell'][31] == "t") {
-                                                $('input:checkbox[name=rev_inf_mapa_identificacion]').attr("checked", "checked");
-                                                $('#prev_inf_dmapa_identificacion').show();
-                                            }
-                                            else {
-                                                $('input:checkbox[name=rev_inf_mapa_identificacion]').attr("checked", false);
-                                                $('#prev_inf_dmapa_identificacion').hide();
-                                            }
-                                        }
-                                        $('#rev_inf_dmapa_identificacion').val(registro['cell'][32]);
-                                        if (registro['cell'][33] != null) {
-                                            if (registro['cell'][33] == "t") {
-                                                $('input:checkbox[name=rev_inf_presentoe]').attr("checked", "checked");
-                                                $('#prev_inf_dpresentoe').show();
-                                            }
-                                            else {
-                                                $('input:checkbox[name=rev_inf_presentoe]').attr("checked", false);
-                                                $('#prev_inf_dpresentoe').hide();
-                                            }
-                                        }
-                                        $('#rev_inf_dpresentoe').val(registro['cell'][34]);
-                                        if (registro['cell'][35] != null) {
-                                            if (registro['cell'][35] == "t") {
-                                                $('input:checkela_pro_carta_expbox[name=rev_inf_presentof]').attr("checked", "checked");
-                                                $('#prev_inf_dpresentof').show();
-                                            }
-                                            else {
-                                                $('input:checkbox[name=rev_inf_presentof]').attr("checked", false);
-                                                $('#prev_inf_dpresentof').hide();
-                                            }
-                                        }
-                                        $('#rev_inf_dpresentof').val(registro['cell'][36]);
-                                        $('#rev_inf_fregistro_asesor').val(registro['cell'][37]);
-                                        $('#rev_inf_frevision_uep').val(registro['cell'][38]);
-                                        if (registro['cell'][39] != null) {
-                                            if (registro['cell'][39] == "t")
-                                                $('input:radio[name=rev_inf_adjunto_doc]')[0].checked = true;
-                                            else
-                                                $('input:radio[name=rev_inf_adjunto_doc]')[1].checked = true;
-                                        }
-                                    });
+                function(data) {
+                    $.each(data, function(key, val) {
+                        if (key == 'rows') {
+                            $.each(val, function(id, registro) {
+                                $('#rev_inf_id').val(registro['cell'][0]);
+                                $('#rev_inf_id2').val(registro['cell'][0]);
+                                $('#rev_inf_id3').val(registro['cell'][0]);
+                                if (registro['cell'][1] != null) {
+                                    if (registro['cell'][1] == "t")
+                                        $('input:checkbox[name=rev_inf_plan_municipalidad]').attr("checked", "checked");
+                                    else
+                                        $('input:checkbox[name=rev_inf_plan_municipalidad]').attr("checked", false);
+                                }
+                                if (registro['cell'][2] != null) {
+                                    if (registro['cell'][2] == "t") {
+                                        $('input:checkbox[name=rev_inf_plan_contingencia]').attr("checked", "checked");
+                                        $('#plan1').show();
+                                    }
+                                    else {
+                                        $('input:checkbox[name=rev_inf_plan_contingencia]').attr("checked", false);
+                                        $('#plan1').hide();
+                                    }
+                                }
+                                $('#rev_inf_felaboracion').val(registro['cell'][3]);
+                                if (registro['cell'][4] != null) {
+                                    if (registro['cell'][4] == "t") {
+                                        $('input:checkbox[name=rev_inf_plan_oformato]').attr("checked", "checked");
+                                        $('#plan2').show();
+                                    }
+                                    else {
+                                        $('input:checkbox[name=rev_inf_plan_oformato]').attr("checked", false);
+                                        $('#plan2').hide();
+                                    }
+                                }
+                                if (registro['cell'][5] != null) {
+                                    if (registro['cell'][5] == "t")
+                                        $('input:radio[name=rev_inf_gestion_reactiva]')[0].checked = true;
+                                    else
+                                        $('input:radio[name=rev_inf_gestion_reactiva]')[1].checked = true;
+                                }
+                                $('#rev_inf_ogestion_reactiva').val(registro['cell'][6]);
+                                if (registro['cell'][7] != null) {
+                                    if (registro['cell'][7] == "t")
+                                        $('input:radio[name=rev_inf_gestion_correctiva]')[0].checked = true;
+                                    else
+                                        $('input:radio[name=rev_inf_gestion_correctiva]')[1].checked = true;
+                                }
+                                $('#rev_inf_ogestion_correctiva').val(registro['cell'][8]);
+                                if (registro['cell'][9] != null) {
+                                    if (registro['cell'][9] == "t")
+                                        $('input:radio[name=rev_inf_gestion_prospectiva]')[0].checked = true;
+                                    else
+                                        $('input:radio[name=rev_inf_gestion_prospectiva]')[1].checked = true;
+                                }
+                                $('#rev_inf_ogestion_prospectiva').val(registro['cell'][10]);
+                                if (registro['cell'][11] != null) {
+                                    if (registro['cell'][11] == "t") {
+                                        $('input:checkbox[name=rev_inf_plan_comunal]').attr("checked", "checked");
+                                        $('#plan3').show();
+                                    }
+                                    else {
+                                        $('input:checkbox[name=rev_inf_plan_comunal]').attr("checked", false);
+                                        $('#plan3').hide();
+                                    }
+                                }
+                               
+                                if (registro['cell'][12] != null) {
+                                    if (registro['cell'][12] == "t"){
+                                        $('input:checkbox[name=rev_inf_mapa]').attr("checked", "checked");
+                                        $("#mapa").show();
+                                    }
+                                    else{
+                                        $('input:checkbox[name=rev_inf_mapa]').attr("checked", false);
+                                        $("#mapa").hide();
+                                    }
+                                }
+                                if (registro['cell'][13] != null) {
+                                    if (registro['cell'][13] == "t")
+                                        $('input:checkbox[name=rev_inf_presentoa]').attr("checked", "checked");
+                                    else
+                                        $('input:checkbox[name=rev_inf_presentoa]').attr("checked", false);
+                                }
+                                $('#rev_inf_conclusion').val(registro['cell'][14]);
+                                $("#mapa").setGridParam({
+                                    url: '<?php echo base_url('componente2/comp25_fase1/cargarMapas') ?>/' + registro['cell'][0],
+                                    editurl: '<?php echo base_url('componente2/comp25_fase1/guardarMapas') ?>/' + registro['cell'][0],
+                                    datatype: 'json'
+                                }).trigger('reloadGrid');
+                                $('#planContingencial1').setGridParam({
+                                    url: '<?php echo base_url('componente2/comp25_fase1/cargarPlanContingencial') ?>/1/' + registro['cell'][0],
+                                    editurl: '<?php echo base_url('componente2/comp25_fase1/guardarPlanContingencial') ?>/1/' + registro['cell'][0],
+                                    datatype: 'json'
+                                }).trigger('reloadGrid');
+                                $('#planContingencial2').setGridParam({
+                                    url: '<?php echo base_url('componente2/comp25_fase1/cargarPlanContingencial') ?>/2/' + registro['cell'][0],
+                                    editurl: '<?php echo base_url('componente2/comp25_fase1/guardarPlanContingencial') ?>/2/' + registro['cell'][0],
+                                    datatype: 'json'
+                                }).trigger('reloadGrid');
+                                $('#planContingencial3').setGridParam({
+                                    url: '<?php echo base_url('componente2/comp25_fase1/cargarPlanContingencial') ?>/3/' + registro['cell'][0],
+                                    editurl: '<?php echo base_url('componente2/comp25_fase1/guardarPlanContingencial') ?>/3/' + registro['cell'][0],
+                                    datatype: 'json'
+                                }).trigger('reloadGrid');
+                                //SEGUNDA PARTE
+                                if (registro['cell'][15] != null) {
+                                    if (registro['cell'][15] == "t")
+                                        $('input:checkbox[name=rev_inf_presento]').attr("checked", "checked");
+                                    else
+                                        $('input:checkbox[name=rev_inf_presento]').attr("checked", false);
+                                }
+                                if (registro['cell'][16] != null) {
+                                    if (registro['cell'][16] == "t")
+                                        $('input:checkbox[name=rev_inf_comision_conformada]').attr("checked", "checked");
+                                    else
+                                        $('input:checkbox[name=rev_inf_comision_conformada]').attr("checked", false);
+                                }
+                                $('#rev_inf_fconformacion').val(registro['cell'][17]);
+                                
+                                if (registro['cell'][18] != null) {
+                                    if (registro['cell'][18] == "t") {
+                                        $('input:checkbox[name=rev_inf_presentob_eo]').attr("checked", "checked");
+                                        $('#prev_inf_dpresentob_eo').show();
+                                    }
+                                    else {
+                                        $('input:checkbox[name=rev_inf_presentob_eo]').attr("checked", false);
+                                        $('#prev_inf_dpresentob_eo').hide();
+                                    }
+                                }
+                                $('#rev_inf_dpresentob_eo').val(registro['cell'][19]);
+                                if (registro['cell'][20] != null) {
+                                    if (registro['cell'][20] == "t")
+                                        $('input:checkbox[name=rev_inf_comision]').attr("checked", "checked");
+                                    else
+                                        $('input:checkbox[name=rev_inf_comision]').attr("checked", false);
+                                }
+                                if (registro['cell'][21] != null) {
+                                    if (registro['cell'][21] == "t") {
+                                        $('input:checkbox[name=rev_inf_acta_comision]').attr("checked", "checked");
+                                        $('#prev_inf_dacta_comision').show();
+                                    }
+                                    else {
+                                        $('input:checkbox[name=rev_inf_acta_comision]').attr("checked", false);
+                                        $('#prev_inf_dacta_comision').hide();
+                                    }
+                                }
+                                $('#rev_inf_dacta_comision').val(registro['cell'][22]);
+                                if (registro['cell'][23] != null) {
+                                    if (registro['cell'][23] == "t") {
+                                        $('input:checkbox[name=rev_inf_capacitacion]').attr("checked", "checked");
+                                        $('#prev_inf_dcapacitacion').show();
+                                    }
+                                    else {
+                                        $('input:checkbox[name=rev_inf_capacitacion]').attr("checked", false);
+                                        $('#prev_inf_dcapacitacion').hide();
+                                    }
+                                }
+                                $('#rev_inf_dcapacitacion').val(registro['cell'][24]);
+                                if (registro['cell'][25] != null) {
+                                    if (registro['cell'][25] == "t")
+                                        $('input:checkbox[name=rev_inf_herramienta]').attr("checked", "checked");
+                                    else
+                                        $('input:checkbox[name=rev_inf_herramienta]').attr("checked", false);
+                                }
+                                if (registro['cell'][26] != null) {
+                                    if (registro['cell'][26] == "t") {
+                                        $('input:checkbox[name=rev_inf_inv_herramienta]').attr("checked", "checked");
+                                        $('#prev_inf_dinv_herramienta').show();
+                                    }
+                                    else {
+                                        $('input:checkbox[name=rev_inf_inv_herramienta]').attr("checked", false);
+                                        $('#prev_inf_dinv_herramienta').hide();
+                                    }
+                                }
+                                $('#rev_inf_dinv_herramienta').val(registro['cell'][27]);
+                                if (registro['cell'][28] != null) {
+                                    if (registro['cell'][28] == "t") {
+                                        $('input:checkbox[name=rev_inf_presentoc]').attr("checked", "checked");
+                                        $('#prev_inf_dpresentoc').show();
+                                    }
+                                    else {
+                                        $('input:checkbox[name=rev_inf_presentoc]').attr("checked", false);
+                                        $('#prev_inf_dpresentoc').hide();
+                                    }
+                                }
+                                $('#rev_inf_dpresentoc').val(registro['cell'][29]);
+                                if (registro['cell'][30] != null) {
+                                    if (registro['cell'][30] == "t")
+                                        $('input:checkbox[name=rev_inf_presentod]').attr("checked", "checked");
+                                    else
+                                        $('input:checkbox[name=rev_inf_presentod]').attr("checked", false);
+                                }
+                                if (registro['cell'][31] != null) {
+                                    if (registro['cell'][31] == "t") {
+                                        $('input:checkbox[name=rev_inf_mapa_identificacion]').attr("checked", "checked");
+                                        $('#prev_inf_dmapa_identificacion').show();
+                                    }
+                                    else {
+                                        $('input:checkbox[name=rev_inf_mapa_identificacion]').attr("checked", false);
+                                        $('#prev_inf_dmapa_identificacion').hide();
+                                    }
+                                }
+                                $('#rev_inf_dmapa_identificacion').val(registro['cell'][32]);
+                                if (registro['cell'][33] != null) {
+                                    if (registro['cell'][33] == "t") {
+                                        $('input:checkbox[name=rev_inf_presentoe]').attr("checked", "checked");
+                                        $('#prev_inf_dpresentoe').show();
+                                    }
+                                    else {
+                                        $('input:checkbox[name=rev_inf_presentoe]').attr("checked", false);
+                                        $('#prev_inf_dpresentoe').hide();
+                                    }
+                                }
+                                $('#rev_inf_dpresentoe').val(registro['cell'][34]);
+                                if (registro['cell'][35] != null) {
+                                    if (registro['cell'][35] == "t") {
+                                        $('input:checkela_pro_carta_expbox[name=rev_inf_presentof]').attr("checked", "checked");
+                                        $('#prev_inf_dpresentof').show();
+                                    }
+                                    else {
+                                        $('input:checkbox[name=rev_inf_presentof]').attr("checked", false);
+                                        $('#prev_inf_dpresentof').hide();
+                                    }
+                                }
+                                $('#rev_inf_dpresentof').val(registro['cell'][36]);
+                                $('#rev_inf_fregistro_asesor').val(registro['cell'][37]);
+                                $('#rev_inf_frevision_uep').val(registro['cell'][38]);
+                                if (registro['cell'][39] != null) {
+                                    if (registro['cell'][39] == "t")
+                                        $('input:radio[name=rev_inf_adjunto_doc]')[0].checked = true;
+                                    else
+                                        $('input:radio[name=rev_inf_adjunto_doc]')[1].checked = true;
                                 }
                             });
-                        });
+                        }
+                    });
+                });
             } else
                 $("#etapas").hide();
         });
@@ -478,11 +489,11 @@
             pager: jQuery('#pagerPlanContingencial1'),
             viewrecords: true
         }).jqGrid('navGrid', '#pagerPlanContingencial1',
-                {edit: true, add: true, del: true, search: false, refresh: false,
-                    beforeRefresh: function() {
-                        tabla.jqGrid('setGridParam', {datatype: 'json', loadonce: true}).trigger('reloadGrid');
-                    }
-                }, //OPCIONES
+        {edit: true, add: true, del: true, search: false, refresh: false,
+            beforeRefresh: function() {
+                tabla.jqGrid('setGridParam', {datatype: 'json', loadonce: true}).trigger('reloadGrid');
+            }
+        }, //OPCIONES
         {closeAfterEdit: true, editCaption: "Editando el plan de contingencia", width: 700,
             align: 'center', reloadAfterSubmit: true,
             processData: "Cargando...", afterSubmit: despuesAgregarEditar,
@@ -505,7 +516,7 @@
                 $('#mensaje').dialog('open');
             }
         }//ELIMINAR
-        ).hideCol('pla_con_id').hideCol('pla_con_numero');
+    ).hideCol('pla_con_id').hideCol('pla_con_numero');
         /* Funcion para regargar los JQGRID luego de agregar y editar*/
         function despuesAgregarEditar() {
             tabla.jqGrid('setGridParam', {datatype: 'json', loadonce: true}).trigger('reloadGrid');
@@ -560,11 +571,11 @@
             pager: jQuery('#pagerPlanContingencial2'),
             viewrecords: true
         }).jqGrid('navGrid', '#pagerPlanContingencial2',
-                {edit: true, add: true, del: true, search: false, refresh: false,
-                    beforeRefresh: function() {
-                        tabla2.jqGrid('setGridParam', {datatype: 'json', loadonce: true}).trigger('reloadGrid');
-                    }
-                }, //OPCIONES
+        {edit: true, add: true, del: true, search: false, refresh: false,
+            beforeRefresh: function() {
+                tabla2.jqGrid('setGridParam', {datatype: 'json', loadonce: true}).trigger('reloadGrid');
+            }
+        }, //OPCIONES
         {closeAfterEdit: true, editCaption: "Editando el plan de contingencia con otro formato", width: 700,
             align: 'center', reloadAfterSubmit: true,
             processData: "Cargando...", afterSubmit: despuesAgregarEditar2,
@@ -587,7 +598,7 @@
                 $('#mensaje').dialog('open');
             }
         }//ELIMINAR
-        ).hideCol('pla_con_id').hideCol('pla_con_numero');
+    ).hideCol('pla_con_id').hideCol('pla_con_numero');
         /* Funcion para regargar los JQGRID luego de agregar y editar*/
         function despuesAgregarEditar2() {
             tabla2.jqGrid('setGridParam', {datatype: 'json', loadonce: true}).trigger('reloadGrid');
@@ -637,11 +648,11 @@
             pager: jQuery('#pagerPlanContingencial3'),
             viewrecords: true
         }).jqGrid('navGrid', '#pagerPlanContingencial3',
-                {edit: true, add: true, del: true, search: false, refresh: false,
-                    beforeRefresh: function() {
-                        tabla3.jqGrid('setGridParam', {datatype: 'json', loadonce: true}).trigger('reloadGrid');
-                    }
-                }, //OPCIONES
+        {edit: true, add: true, del: true, search: false, refresh: false,
+            beforeRefresh: function() {
+                tabla3.jqGrid('setGridParam', {datatype: 'json', loadonce: true}).trigger('reloadGrid');
+            }
+        }, //OPCIONES
         {closeAfterEdit: true, editCaption: "Editando el plan de contingencia", width: 700,
             align: 'center', reloadAfterSubmit: true,
             processData: "Cargando...", afterSubmit: despuesAgregarEditar3,
@@ -664,7 +675,7 @@
                 $('#mensaje').dialog('open');
             }
         }//ELIMINAR
-        ).hideCol('pla_con_id').hideCol('pla_con_numero');
+    ).hideCol('pla_con_id').hideCol('pla_con_numero');
         /* Funcion para regargar los JQGRID luego de agregar y editar*/
         function despuesAgregarEditar3() {
             tabla3.jqGrid('setGridParam', {datatype: 'json', loadonce: true}).trigger('reloadGrid');
@@ -678,8 +689,8 @@
         }
         var tabla4 = $("#mapa");
         tabla4.jqGrid({
-            url: '<?php echo base_url('componente2/comp25/cargarParticipantesET') ?>/ela_pro_id/' + $('#rev_inf_id').val(),
-            editurl: '<?php echo base_url('componente2/comp23_E1/gestionParticipantes') ?>/elaboracion_proyecto/ela_pro_id/' + $('#rev_inf_id').val(),
+            url: '<?php echo base_url('componente2/comp25_fase1/cargarMapas') ?>/' + $('#rev_inf_id').val(),
+            editurl: '<?php echo base_url('componente2/comp25_fase1/guardarMapas') ?>/' + $('#rev_inf_id').val(),
             datatype: 'json',
             altRows: true,
             height: "100%",
@@ -712,11 +723,11 @@
             pager: jQuery('#pagerMapa'),
             viewrecords: true
         }).jqGrid('navGrid', '#pagerMapa',
-                {edit: true, add: true, del: true, search: false, refresh: false,
-                    beforeRefresh: function() {
-                        tabla.jqGrid('setGridParam', {datatype: 'json', loadonce: true}).trigger('reloadGrid');
-                    }
-                }, //OPCIONES
+        {edit: true, add: true, del: true, search: false, refresh: false,
+            beforeRefresh: function() {
+                tabla.jqGrid('setGridParam', {datatype: 'json', loadonce: true}).trigger('reloadGrid');
+            }
+        }, //OPCIONES
         {closeAfterEdit: true, editCaption: "Editando el plan de contingencia", width: 700,
             align: 'center', reloadAfterSubmit: true,
             processData: "Cargando...", afterSubmit: despuesAgregarEditar,
@@ -739,7 +750,7 @@
                 $('#mensaje').dialog('open');
             }
         }//ELIMINAR
-        ).hideCol('map_id');
+    ).hideCol('map_id');
         /* Funcion para regargar los JQGRID luego de agregar y editar*/
         function despuesAgregarEditar4() {
             tabla4.jqGrid('setGridParam', {datatype: 'json', loadonce: true}).trigger('reloadGrid');
@@ -756,9 +767,9 @@
         <td><strong>Departamento</strong></td>
         <td><select id='dep_id'>
                 <option value='0'>--Seleccione--</option>
-<?php foreach ($departamentos as $depto) { ?>
+                <?php foreach ($departamentos as $depto) { ?>
                     <option value='<?php echo $depto->dep_id; ?>'><?php echo $depto->dep_nombre; ?></option>
-<?php } ?>
+                <?php } ?>
             </select>
         </td>
         </tr>
@@ -883,7 +894,7 @@
             </p>
             <p><strong>Conclusiones:</strong><br/><textarea id="rev_inf_conclusion" name="rev_inf_conclusion" cols="48" rows="5"></textarea></p>
             <input id="rev_inf_id" name="rev_inf_id" value="" type="text" size="100" readonly="readonly" style="visibility: hidden"/>
-             <?php //if (strcmp($rol, 'gdrc') == 0) {?>
+            <?php //if (strcmp($rol, 'gdrc') == 0) {?>
             <center>
                 <p><input type="submit" id="guardar" value="Guardar" />
                 </p>
@@ -932,11 +943,11 @@
             <p id="prev_inf_dpresentof">Descripción:<br/><textarea name="rev_inf_dpresentof" cols="48" rows="5"></textarea></p>
 
             <input id="rev_inf_id2" name="rev_inf_id2" value="" type="text" size="100" readonly="readonly" style="visibility: hidden"/>
-             <?php if (strcmp($rol, 'gdrc') == 0) {?>
-            <center>
-                <p><input type="submit" id="guardar2" value="Guardar" />
-                </p>
-            </center>
+            <?php if (strcmp($rol, 'gdrc') == 0) { ?>
+                <center>
+                    <p><input type="submit" id="guardar2" value="Guardar" />
+                    </p>
+                </center>
             <?php } ?>
         </form>
     </div>

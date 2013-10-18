@@ -51,6 +51,16 @@
                                     else
                                         $('input:radio[name=rub_emite_nota]')[1].checked = true; 
                                 }
+                                 $.each(registro['cell'][3], function(id, valor){
+                                    if(valor['rub_ele_seleccionado']!=null){
+                                        if(valor['rub_ele_seleccionado']=="t")
+                                            $('input:radio[name=rubro_'+j+']')[0].checked = true; 
+                                        else
+                                            $('input:radio[name=rubro_'+j+']')[1].checked = true; 
+                                    }
+                                    $("#conclusion_"+j).val(valor['rub_ele_observacion']); 
+                                    j++;
+                                });/*
                                 $.each(registro['cell'][3], function(id, valor){
                                     if(valor[0]!=null){
                                         if(valor[0]=="t")
@@ -60,7 +70,7 @@
                                     }
                                     $("#conclusion_"+j).val(valor[1]); 
                                     j++;
-                                });
+                                });*/
                                 tabla.setGridParam({
                                     url:'<?php echo base_url('componente2/comp25_fase1/cargarNota') ?>/'+registro['cell'][0],
                                     editurl:'<?php echo base_url('componente2/comp25_fase1/guardarNota') ?>/'+registro['cell'][0],

@@ -16,6 +16,8 @@ class Comp25_fase1 extends CI_Controller {
     }
 
     public function index() {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         $informacion['titulo'] = 'Fortalecimiento de Gobiernos Locales';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
@@ -27,6 +29,8 @@ class Comp25_fase1 extends CI_Controller {
     }
 
     public function revisionInformacion() {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         $informacion['titulo'] = 'Componente 2.5 Registro de datos del componente';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
@@ -62,6 +66,8 @@ class Comp25_fase1 extends CI_Controller {
     }
 
     public function cargarRevisionInformacion($mun_id) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         $this->load->model('pais/municipio');
         $this->load->model('fase1-sub25/revision_informacion', 'revInf');
         $resultado = $this->municipio->obtenerIDVariable('rev_inf_id', $mun_id);
@@ -145,6 +151,8 @@ class Comp25_fase1 extends CI_Controller {
     }
 
     public function guardarRevisionInformacion($parte) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         $this->load->model('fase1-sub25/revision_informacion', 'revInf');
         switch ($parte) {
             case '1':
@@ -271,6 +279,8 @@ class Comp25_fase1 extends CI_Controller {
     }
 
     public function cargarPlanContingencial($tipo, $rev_inf_id) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         $this->load->model('fase1-sub25/plan_contingencia', 'plaCon');
         $recibidos = $this->plaCon->obtenerPlanContingenciales($rev_inf_id, $tipo);
         $numfilas = count($recibidos);
@@ -282,8 +292,8 @@ class Comp25_fase1 extends CI_Controller {
                 $rows[$i]['cell'] = array($aux->pla_con_id,
                     $aux->pla_con_numero,
                     $aux->pla_con_nombre,
-                    $aux->pla_con_descripcion,
-                    date('d-m-Y', strtotime($aux->pla_con_fdocumento))
+                    $aux->pla_con_fdocumento,
+                    $aux->pla_con_descripcion
                 );
                 $i++;
             }
@@ -305,6 +315,8 @@ class Comp25_fase1 extends CI_Controller {
     }
 
     public function guardarPlanContingencial($pla_con_tipo, $rev_inf_id) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         $this->load->model('fase1-sub25/plan_contingencia', 'plaCon');
         $pla_con_id = $this->input->post("id");
         $pla_con_numero = $this->input->post("pla_con_numero");
@@ -328,7 +340,67 @@ class Comp25_fase1 extends CI_Controller {
         }
     }
 
+    public function cargarMapas($rev_inf_id) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
+        $this->load->model('fase1-sub25/mapa');
+        $recibidos = $this->mapa->obtenerMapas($rev_inf_id);
+        $numfilas = count($recibidos);
+
+        if ($numfilas != 0) {
+            $i = 0;
+            foreach ($recibidos as $aux) {
+                $rows[$i]['id'] = $aux->map_id;
+                $rows[$i]['cell'] = array($aux->map_id,
+                    $aux->tip_map_nombre,
+                    $aux->map_nombre,
+                    $aux->map_descripcion
+                );
+                $i++;
+            }
+            array_multisort($rows, SORT_ASC);
+        } else {
+            $rows = array();
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+
+    public function guardarMapas($rev_inf_id) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
+        $this->load->model('fase1-sub25/mapa');
+        $map_id = $this->input->post("id");
+        $map_nombre = $this->input->post("map_nombre");
+        $map_descripcion = $this->input->post("map_descripcion");
+        $tip_map_id = $this->input->post("tip_map_id");
+    
+        $operacion = $this->input->post("oper");
+        switch ($operacion) {
+            case 'add':
+                $this->mapa->agregarMapa($map_nombre, $map_descripcion, $tip_map_id, $rev_inf_id);
+                break;
+            case 'edit':
+                $this->mapa->actualizarMapa($map_id,$map_nombre, $map_descripcion, $tip_map_id);
+                break;
+            case 'del':
+                $this->mapa->eliminarMapa($map_id);
+                break;
+        }
+    }
+
     public function rubrosElegibles() {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         $informacion['titulo'] = 'Componente 2.5 Registro de datos del componente';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
@@ -354,6 +426,8 @@ class Comp25_fase1 extends CI_Controller {
     }
 
     public function cargarRubrosElegibles($mun_id) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         $this->load->model('pais/municipio');
         $this->load->model('fase1-sub25/rubro');
         $this->load->model('fase1-sub25/rubro_elegible', 'rubEle');
@@ -380,59 +454,59 @@ class Comp25_fase1 extends CI_Controller {
         }
         $resultado = $this->rubro->idPorMunicipio($mun_id);
         $rubros = $this->rubEle->obtenerLosRubros($resultado[0]->rub_id);
-        $rubroE = array();
-        $revisionInfo=  $this->revInf->idPorMunicipio($mun_id);
-        $i=1;
-        foreach ($rubros as $rubro){
-            switch ($i){
-                case 1:
-                    if($revisionInfo[0]->rev_inf_plan_municipalidad== true)
-                        $rubroE[$rubro->nom_rub_id] = array('t', $rubro->rub_ele_observacion);
-                    else
-                        $rubroE[$rubro->nom_rub_id] = array('f', $rubro->rub_ele_observacion);
-                    break;
-                case 2:
-                    if($revisionInfo[0]->rev_inf_presento== true)
-                        $rubroE[$rubro->nom_rub_id] = array('t', $rubro->rub_ele_observacion);
-                    else
-                        $rubroE[$rubro->nom_rub_id] = array('f', $rubro->rub_ele_observacion);
-                    break;
-                case 3:
-                    if($revisionInfo[0]->rev_inf_presentoc== true)
-                        $rubroE[$rubro->nom_rub_id] = array('t', $rubro->rub_ele_observacion);
-                    else
-                        $rubroE[$rubro->nom_rub_id] = array('f', $rubro->rub_ele_observacion);
-                    break;
-                      break;
-                case 4:
-                    if($revisionInfo[0]->rev_inf_presentod== true)
-                        $rubroE[$rubro->nom_rub_id] = array('t', $rubro->rub_ele_observacion);
-                    else
-                        $rubroE[$rubro->nom_rub_id] = array('f', $rubro->rub_ele_observacion);
-                    break;
-                      break;
-                case 5:
-                    if($revisionInfo[0]->rev_inf_presentoe== true)
-                        $rubroE[$rubro->nom_rub_id] = array('t', $rubro->rub_ele_observacion);
-                    else
-                        $rubroE[$rubro->nom_rub_id] = array('f', $rubro->rub_ele_observacion);
-                    break;
-                case 6:
-                    if($revisionInfo[0]->rev_inf_presentof== true)
-                        $rubroE[$rubro->nom_rub_id] = array('t', $rubro->rub_ele_observacion);
-                    else
-                        $rubroE[$rubro->nom_rub_id] = array(FALSE, $rubro->rub_ele_observacion);
-                    break;
-            }
-            $i++;
-        }
-            
+        /* $rubroE = array();
+          $revisionInfo=  $this->revInf->idPorMunicipio($mun_id);
+          $i=1;
+          foreach ($rubros as $rubro){
+          switch ($i){
+          case 1:
+          if($revisionInfo[0]->rev_inf_plan_municipalidad== true)
+          $rubroE[$rubro->nom_rub_id] = array('t', $rubro->rub_ele_observacion);
+          else
+          $rubroE[$rubro->nom_rub_id] = array('f', $rubro->rub_ele_observacion);
+          break;
+          case 2:
+          if($revisionInfo[0]->rev_inf_presento== true)
+          $rubroE[$rubro->nom_rub_id] = array('t', $rubro->rub_ele_observacion);
+          else
+          $rubroE[$rubro->nom_rub_id] = array('f', $rubro->rub_ele_observacion);
+          break;
+          case 3:
+          if($revisionInfo[0]->rev_inf_presentoc== true)
+          $rubroE[$rubro->nom_rub_id] = array('t', $rubro->rub_ele_observacion);
+          else
+          $rubroE[$rubro->nom_rub_id] = array('f', $rubro->rub_ele_observacion);
+          break;
+          break;
+          case 4:
+          if($revisionInfo[0]->rev_inf_presentod== true)
+          $rubroE[$rubro->nom_rub_id] = array('t', $rubro->rub_ele_observacion);
+          else
+          $rubroE[$rubro->nom_rub_id] = array('f', $rubro->rub_ele_observacion);
+          break;
+          break;
+          case 5:
+          if($revisionInfo[0]->rev_inf_presentoe== true)
+          $rubroE[$rubro->nom_rub_id] = array('t', $rubro->rub_ele_observacion);
+          else
+          $rubroE[$rubro->nom_rub_id] = array('f', $rubro->rub_ele_observacion);
+          break;
+          case 6:
+          if($revisionInfo[0]->rev_inf_presentof== true)
+          $rubroE[$rubro->nom_rub_id] = array('t', $rubro->rub_ele_observacion);
+          else
+          $rubroE[$rubro->nom_rub_id] = array(FALSE, $rubro->rub_ele_observacion);
+          break;
+          }
+          $i++;
+          }
 
+         */
         $rows[0]['id'] = $resultado[0]->rub_id;
         $rows[0]['cell'] = array($resultado[0]->rub_id,
             $resultado[0]->rub_observacion_general,
             $resultado[0]->rub_emite_nota,
-            $rubroE
+            $rubros
         );
         $datos = json_encode($rows);
         $pages = floor(1 / 10) + 1;
@@ -447,6 +521,8 @@ class Comp25_fase1 extends CI_Controller {
     }
 
     public function guardarRubrosElegibles() {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         $this->load->model('fase1-sub25/rubro');
         $this->load->model('fase1-sub25/rubro_elegible', 'rubEle');
         $rub_id = $this->input->post("rub_id");
@@ -467,6 +543,8 @@ class Comp25_fase1 extends CI_Controller {
     }
 
     public function cargarNota($rub_id) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         $this->load->model('fase1-sub25/nota');
         $notas = $this->nota->obtenerNotas($rub_id);
         $numfilas = count($notas);
@@ -500,6 +578,8 @@ class Comp25_fase1 extends CI_Controller {
     }
 
     public function guardarNota($rub_id) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         $this->load->model('fase1-sub25/nota');
         $not_id = $this->input->post("id");
         $not_correlativo = $this->input->post("not_correlativo");
@@ -521,6 +601,8 @@ class Comp25_fase1 extends CI_Controller {
     }
 
     public function aprobacionPerfil() {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         $informacion['titulo'] = 'Componente 2.5 Registro de datos del componente';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
@@ -544,6 +626,8 @@ class Comp25_fase1 extends CI_Controller {
     }
 
     public function cargarAprobacionPerfil($mun_id) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         $this->load->model('pais/municipio');
         $this->load->model('fase1-sub25/perfil_proyecto', 'perPro');
         $resultado = $this->municipio->obtenerIDVariable('per_pro_id', $mun_id);
@@ -658,6 +742,8 @@ class Comp25_fase1 extends CI_Controller {
     }
 
     public function guardarAprobacionPerfil() {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         $this->load->model('fase1-sub25/perfil_proyecto', 'perPro');
         $per_pro_id = $this->input->post("per_pro_id");
         $per_pro_fentrega_isdem = $this->input->post("per_pro_fentrega_isdem");
@@ -725,6 +811,8 @@ class Comp25_fase1 extends CI_Controller {
     }
 
     public function rubrosElegiblesAplica() {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         $informacion['titulo'] = 'Componente 2.5 Registro de datos del componente';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
@@ -757,6 +845,8 @@ class Comp25_fase1 extends CI_Controller {
     }
 
     public function cargarRubrosElegiblesAplica($mun_id) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         $this->load->model('pais/municipio');
         $this->load->model('fase1-sub25/rubro');
         $this->load->model('fase1-sub25/rubro_elegible', 'rubEle');
@@ -813,6 +903,8 @@ class Comp25_fase1 extends CI_Controller {
     }
 
     public function guardarRubrosElegiblesAplica() {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
         $this->load->model('fase1-sub25/rubro');
         $this->load->model('fase1-sub25/rubro_elegible', 'rubEle');
         $this->load->model('fase1-sub25/detalle_fortalecimiento', 'detFor');

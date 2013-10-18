@@ -24,7 +24,7 @@ class Ayuda_archivo extends CI_Model {
     }
     
      public function obtenerRutaArchivo2($campo,$campo_id,$tabla,$ext) {
-        $query = "SELECT COALESCE(".  $ext."ruta_archivo,'/.0') ruta_archivo FROM ".
+        $query = "SELECT COALESCE(".$ext."ruta_archivo,'/.0') ruta_archivo FROM ".
                 $tabla." WHERE ".$campo."=".$campo_id;
         $consulta = $this->db->query($query);
         return $consulta->result_array();

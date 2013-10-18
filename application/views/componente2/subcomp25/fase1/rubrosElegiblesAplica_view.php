@@ -166,8 +166,17 @@
     <p ><strong>Nombre del proyecto</strong>
         <input name="rub_nombre_proyecto" id="rub_nombre_proyecto" value="" type="text" size="50" />
     </p>
-    <p><strong>Indicación General:</strong>Los montos a ingresar deben tener el siguiente formato: 999999.99  -->>
-        Donde el 9 significa cualquier número entre el 0 y el 9</p>
+    <p><strong>Indicación General:</strong>
+    <UL><li>Los montos a ingresar deben tener el siguiente formato: 999999.99  -->>
+        Donde el 9 significa cualquier número entre el 0 y el 9</li>
+        <li>Las casillas b. y f. son solo de lectura ya que se calculan automaticamente según lo siguiente:
+            <ul>
+                <li>Suma de los montos estimados para Fortalecimiento de la organización municipal y comunitaria para la gestión de riesgos</li>
+                <li>Suma de los montos estimados para Detalles de obra y actividades de mitigación </li>
+            </ul>
+        </li>
+        <li>Las columnas de total se calcular de la suma de sus casillas anteriores por lo tanto son de solo lectura no pueden ser modificadas</li>
+    </UL></p>
     <p><strong>Rubros a los que aplica</strong></p>
     <table border="1"cellspacing="0" style="border-color: #2F589F" >
         <tr>
