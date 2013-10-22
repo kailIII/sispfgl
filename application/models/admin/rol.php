@@ -16,10 +16,11 @@ class rol extends CI_Model {
         return $consulta->result();
     }
 
-    public function insertarRol($rol_nombre, $rol_descripcion) {
+    public function insertarRol($rol_nombre, $rol_descripcion,$rol_codigo) {
         $datos = array(
             "rol_nombre" => $rol_nombre,
-            "rol_descripcion" => $rol_descripcion
+            "rol_descripcion" => $rol_descripcion,
+            "rol_codigo" => $rol_codigo
         );
         $this->db->insert($this->tabla, $datos);
     }

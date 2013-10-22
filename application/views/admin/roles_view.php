@@ -56,7 +56,7 @@
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','Nombre','Descripciòn'],
+            colNames:['id','Nombre','Descripción','Código'],
             colModel:[
                 {name:'rol_id',index:'rol_id', width:40,editable:false,editrules:{edithidden:false}},
                 {name:'rol_nombre',index:'rol_nombre',width:100,editable:true,
@@ -67,7 +67,12 @@
                 {name:'rol_descripcion',index:'rol_descripcion',width:400,editable:true,
                     editoptions:{rows:"5",cols:"23",maxlength:100}, edittype:'textarea',
                     formoptions:{label: "Descripción"}
-                }
+                },
+                {name:'rol_codigo',index:'rol_codigo',width:75,editable:true,
+                    editoptions:{size:15,maxlength:4}, 
+                    formoptions:{label: "Código"},
+                    editrules:{required:false} 
+                },
             ],
             multiselect: false,
             caption: "Roles de usuarios",

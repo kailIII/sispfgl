@@ -27,8 +27,9 @@ class Administracion extends CI_Controller {
     }
 
     public function rolesSistema() {
-		if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
-		
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');                // logged in
+
         $informacion['titulo'] = 'Administración de roles del SISPFGL';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
@@ -45,21 +46,19 @@ class Administracion extends CI_Controller {
         $numfilas = count($roles);
 
         $i = 0;
+        $rows = array();
         foreach ($roles as $aux) {
             $rows[$i]['id'] = $aux->rol_id;
             $rows[$i]['cell'] = array($aux->rol_id,
                 $aux->rol_nombre,
-                $aux->rol_descripcion
+                $aux->rol_descripcion,
+                $aux->rol_codigo
             );
             $i++;
         }
 
-        if ($numfilas != 0) {
-            array_multisort($rows, SORT_ASC);
-        } else {
-            $rows[0]['id'] = 0;
-             $rows = array();
-        }
+        array_multisort($rows, SORT_ASC);
+
 
         $datos = json_encode($rows);
         $pages = floor($numfilas / 10) + 1;
@@ -78,11 +77,12 @@ class Administracion extends CI_Controller {
         $rol_id = $this->input->post("id");
         $rol_nombre = $this->input->post("rol_nombre");
         $rol_descripcion = $this->input->post("rol_descripcion");
+        $rol_codigo = $this->input->post("rol_codigo");
         $operacion = $this->input->post('oper');
         $this->load->model('admin/rol');
         switch ($operacion) {
             case 'add':
-                $this->rol->insertarRol($rol_nombre, $rol_descripcion);
+                $this->rol->insertarRol($rol_nombre, $rol_descripcion,$rol_codigo);
                 $response->responseText = "Rol Agregado con Èxito";
                 break;
             case 'edit':
@@ -159,7 +159,7 @@ class Administracion extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-             $rows = array();
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -190,7 +190,7 @@ class Administracion extends CI_Controller {
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
-             $rows = array();
+            $rows = array();
         }
 
         $datos = json_encode($rows);
@@ -219,8 +219,9 @@ class Administracion extends CI_Controller {
     }
 
     public function opcionesSistema() {
-		if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
-		
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');                // logged in
+
         $informacion['titulo'] = 'Gestionar las Opciones del Sistema';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
@@ -290,6 +291,6 @@ class Administracion extends CI_Controller {
         }
     }
 
-   }
+}
 
 ?>

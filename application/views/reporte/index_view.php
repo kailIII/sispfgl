@@ -23,35 +23,35 @@
         $('#dep_id').change(function() {
             $('#mun_id').children().remove();
             $.getJSON('<?php echo base_url('componente2/proyectoPep/cargarMunicipiosRep') ?>?dep_id=' + $('#dep_id').val(),
-                    function(data) {
-                        var i = 0;
-                        $.each(data, function(key, val) {
-                            if (key == 'rows') {
-                                $('#mun_id').append('<option value="0">--Seleccione Municipio--</option>');
-                                $.each(val, function(id, registro) {
-                                    $('#mun_id').append('<option value="' + registro['cell'][0] + '">' + registro['cell'][1] + '</option>');
-                                });
-                                $("#reporte").show();
-                            }
+            function(data) {
+                var i = 0;
+                $.each(data, function(key, val) {
+                    if (key == 'rows') {
+                        $('#mun_id').append('<option value="0">--Seleccione Municipio--</option>');
+                        $.each(val, function(id, registro) {
+                            $('#mun_id').append('<option value="' + registro['cell'][0] + '">' + registro['cell'][1] + '</option>');
                         });
-                    });
+                        $("#reporte").show();
+                    }
+                });
+            });
         });
         $("#reporte").button().click(function() {
 
             if ($('input[name="tipo"]:checked').val() == 1)
                 $("#formulario").attr('action', '<?php echo base_url('reportes/gdrGeneral'); ?>');
             else
-            if ($('input[name="tipo"]:checked').val() == 2)
-                $("#formulario").attr('action', '<?php echo base_url('reportes/seguimientoReporte'); ?>');
+                if ($('input[name="tipo"]:checked').val() == 2)
+                    $("#formulario").attr('action', '<?php echo base_url('reportes/seguimientoReporte'); ?>');
             else
-            if ($('input[name="tipo"]:checked').val() == 3)
-                $("#formulario").attr('action', '<?php echo base_url('reportes/resumenEjecutivoReporte'); ?>');
+                if ($('input[name="tipo"]:checked').val() == 3)
+                    $("#formulario").attr('action', '<?php echo base_url('reportes/resumenEjecutivoReporte'); ?>');
             else
-            if ($('input[name="tipo"]:checked').val() == 4)
-                $("#formulario").attr('action', '<?php echo base_url('reportes/avancesConsolidadosReporte'); ?>');
+                if ($('input[name="tipo"]:checked').val() == 4)
+                    $("#formulario").attr('action', '<?php echo base_url('reportes/avancesConsolidadosReporte'); ?>');
             else
-            if ($('input[name="tipo"]:checked').val() == 5)
-                $("#formulario").attr('action', '<?php echo base_url('reportes/mejoraPerfil'); ?>');
+                if ($('input[name="tipo"]:checked').val() == 5)
+                    $("#formulario").attr('action', '<?php echo base_url('reportes/mejoraPerfil'); ?>');
             $.ajax({
                 type: "POST",
                 cache: false,

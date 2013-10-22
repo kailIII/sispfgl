@@ -33,6 +33,10 @@ class Reportes extends CI_Controller {
             $this->load->view('reporte/index_cc_view', $informacion);
         } else if (strcmp(trim($rol[0]->rol_codigo), 'prfm') == 0) {
             $this->load->view('reporte/index_prfm_view', $informacion);
+        } else if (strcmp(trim($rol[0]->rol_codigo), 'ttd') == 0) {
+            $this->load->model('pais/departamento');
+            $informacion['deptos'] = $this->departamento->obtenerDepartamentos();
+            $this->load->view('reporte/todos_reportes_view', $informacion);
         } else {
             $this->load->model('pais/departamento');
             $informacion['deptos'] = $this->departamento->obtenerDepartamentos();
@@ -2034,7 +2038,7 @@ class Reportes extends CI_Controller {
             $numero++;
         }
         $i++;
-    
+
 // Obtenemos el número del día
         $dia2 = date("d");
 
@@ -2068,29 +2072,29 @@ class Reportes extends CI_Controller {
 // Obtenemos el año
         $anio = date("Y");
         /*
-        $this->phpexcel->getActiveSheet()->setCellValue("C$i", "CONSOLIDADO AL $dia2 de $mes de $anio");
-        $this->phpexcel->getActiveSheet()->mergeCells("C$i:E$i");
-        $this->phpexcel->getActiveSheet()->getStyle("C$i:E$i")->applyFromArray($estCuerpo);
-        $i++;
-        $this->phpexcel->getActiveSheet()->setCellValue("F$i", "PROCESOS INICIADOS");
-        $regiones = $this->region->obtenerRegionesNombre();
-        $j = $i;
-        
-        foreach ($regiones as $region) {
-            $this->phpexcel->getActiveSheet()->setCellValue("D$j", $numero);
-            $this->phpexcel->getActiveSheet()->setCellValue("E$j", $depto->dep_nombre);
-            $this->phpexcel->getActiveSheet()->setCellValue("F$j", "=SUMIF(B8:B" . ($i - 9) . ",E$j,F8:F" . ($i - 9) . ")");
-            $this->phpexcel->getActiveSheet()->setCellValue("G$j", "=SUMIF(B8:B" . ($i - 9) . ",E$j,G8:G" . ($i - 9) . ")");
-            $this->phpexcel->getActiveSheet()->setCellValue("H$j", $numero);
-            $this->phpexcel->getActiveSheet()->setCellValue("I$j", $depto->dep_nombre);
-            $this->phpexcel->getActiveSheet()->setCellValue("K$j", "=SUMIF(B8:B" . ($i - 9) . ",I$j,K8:K" . ($i - 9) . ")");
-            $this->phpexcel->getActiveSheet()->setCellValue("M$j", "=SUMIF(B8:B" . ($i - 9) . ",I$j,N8:N" . ($i - 9) . ")");
-            $this->phpexcel->getActiveSheet()->getStyle("D$j:M$j")->applyFromArray($estCuerpo);
-            $this->phpexcel->getActiveSheet()->getStyle("D$j")->applyFromArray($estCuerpoDer);
-            $this->phpexcel->getActiveSheet()->getStyle("H$j")->applyFromArray($estCuerpoDer);
-            $j++;
-            $numero++;
-        }*/
+          $this->phpexcel->getActiveSheet()->setCellValue("C$i", "CONSOLIDADO AL $dia2 de $mes de $anio");
+          $this->phpexcel->getActiveSheet()->mergeCells("C$i:E$i");
+          $this->phpexcel->getActiveSheet()->getStyle("C$i:E$i")->applyFromArray($estCuerpo);
+          $i++;
+          $this->phpexcel->getActiveSheet()->setCellValue("F$i", "PROCESOS INICIADOS");
+          $regiones = $this->region->obtenerRegionesNombre();
+          $j = $i;
+
+          foreach ($regiones as $region) {
+          $this->phpexcel->getActiveSheet()->setCellValue("D$j", $numero);
+          $this->phpexcel->getActiveSheet()->setCellValue("E$j", $depto->dep_nombre);
+          $this->phpexcel->getActiveSheet()->setCellValue("F$j", "=SUMIF(B8:B" . ($i - 9) . ",E$j,F8:F" . ($i - 9) . ")");
+          $this->phpexcel->getActiveSheet()->setCellValue("G$j", "=SUMIF(B8:B" . ($i - 9) . ",E$j,G8:G" . ($i - 9) . ")");
+          $this->phpexcel->getActiveSheet()->setCellValue("H$j", $numero);
+          $this->phpexcel->getActiveSheet()->setCellValue("I$j", $depto->dep_nombre);
+          $this->phpexcel->getActiveSheet()->setCellValue("K$j", "=SUMIF(B8:B" . ($i - 9) . ",I$j,K8:K" . ($i - 9) . ")");
+          $this->phpexcel->getActiveSheet()->setCellValue("M$j", "=SUMIF(B8:B" . ($i - 9) . ",I$j,N8:N" . ($i - 9) . ")");
+          $this->phpexcel->getActiveSheet()->getStyle("D$j:M$j")->applyFromArray($estCuerpo);
+          $this->phpexcel->getActiveSheet()->getStyle("D$j")->applyFromArray($estCuerpoDer);
+          $this->phpexcel->getActiveSheet()->getStyle("H$j")->applyFromArray($estCuerpoDer);
+          $j++;
+          $numero++;
+          } */
         /*
          * SALIDA DEL DOCUMENTO
          */
