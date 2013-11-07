@@ -44,23 +44,31 @@ class Poa_actividad extends CI_Model {
         return $consulta->result();
     }
 
-    public function obtenerPorActividadDetalle($poa_com_id,$anio) {
+    public function obtenerPorActividadDetalle($poa_com_id, $anio, $ordenamiento) {
         $sql = "SELECT * 
 FROM $this->tabla  A JOIN poa_actividad_detalle  B ON A.poa_act_id=B.poa_act_id 
 WHERE poa_com_id = ? AND B.poa_act_det_anio=?
-ORDER BY poa_act_codigo";
-        $consulta = $this->db->query($sql, array($poa_com_id,$anio));
+ORDER BY A.$ordenamiento";
+        $consulta = $this->db->query($sql, array($poa_com_id, $anio));
         return $consulta->result();
     }
-    
-    public function obtenerPorActividadDetalleTri($poa_com_id,$anio,$trimestre) {
+
+    public function obtenerPorActividadDetalleTri($poa_com_id, $anio, $trimestre) {
         $sql = "SELECT * 
 FROM $this->tabla  A JOIN poa_actividad_detalle  B ON A.poa_act_id=B.poa_act_id 
     JOIN poa_actividad_seg_tri C ON C.poa_act_det_id=B.poa_act_det_id
 WHERE poa_com_id = ? AND B.poa_act_det_anio=? AND C.poa_act_seg_tri_mes=?
 ORDER BY poa_act_codigo";
-        $consulta = $this->db->query($sql, array($poa_com_id,$anio,$trimestre));
+        $consulta = $this->db->query($sql, array($poa_com_id, $anio, $trimestre));
         return $consulta->result();
+    }
+
+    public function obtenerCuantasSubActividades($padre) {
+        $this->db->from($this->tabla);
+        $this->db->where('poa_act_padre', $padre);
+        $this->db->group_by('poa_act_id');
+        $consulta = $this->db->count_all_results();
+        return $consulta;
     }
 
 }

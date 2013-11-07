@@ -87,6 +87,12 @@ Class poa_model extends CI_Model {
         $this->db->where($campo, $index);
         return $this->db->update($tabla, $data);
     }
+    
+    public function actualizar_tabla_2($tabla, $campo, $index,$campo2, $index2, $data) {
+        $this->db->where($campo, $index);
+        $this->db->where($campo2, $index2);
+        return $this->db->update($tabla, $data);
+    }
 
     public function insertar_tabla($tabla, $data) {
         return $this->db->insert($tabla, $data);

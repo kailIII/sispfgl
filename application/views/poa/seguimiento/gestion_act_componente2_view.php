@@ -22,10 +22,6 @@
 
         $('#actividadForm').validate({
             rules: {
-                poa_act_codigo: {
-                    required: true,
-                    maxlength: 10
-                },
                 poa_act_descripcion: {
                     required: true
                 },

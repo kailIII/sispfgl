@@ -21,7 +21,12 @@ div#divpagina{
     top: 0px; 
     min-width:1000px;
 }
-
+input[readonly="readonly"]{
+    background-color: lightgray;
+}
+input{
+    font-size: 98%;font-family: "Tahoma", "Geneva", sans-serif;
+}
 .procesoAdmin{
     right:-150px;
     position: relative;
