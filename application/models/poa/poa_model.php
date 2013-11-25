@@ -80,7 +80,10 @@ Class poa_model extends CI_Model {
         $this->db->where($index, $id);
         $query = $this->db->get();
         $resultado = $query->result();
-        return $resultado[0];
+        if(count($resultado)!=0)
+            return $resultado[0];
+        else
+            return $resultado;
     }
 
     public function actualizar_tabla($tabla, $campo, $index, $data) {

@@ -124,7 +124,7 @@ foreach ($actividades as $aux) {
         seleccionan en la parte de los semestres.
     <li>Los calculos de los porcentajes se realizan automaticamente al llenar las casillas de las metas</li>
 </ul></p>
-<div style="overflow:scroll">
+<div style="overflow:scroll; max-height: 500px;">
     <form id="seguimientoForm" method="post" >
         <table id="box-table-a">
             <thead>
@@ -241,7 +241,7 @@ foreach ($actividades as $aux) {
                         <td><input type="text" value="<?php echo $aux->poa_act_ftdrs ?>" name="<?php echo $aux->poa_act_id ?>_poa_act_ftdrs" id="<?php echo $aux->poa_act_id ?>_poa_act_ftdrs" style="width: 50px" /></td>
                         <td><div style=" position: relative; width: 120px;">
                                 <input type="text" value="<?php echo $aux->poa_act_periodo_car ?>" name="<?php echo $aux->poa_act_id ?>_poa_act_periodo_car" id="<?php echo $aux->poa_act_id ?>_poa_act_periodo_car" class="numeric" style="width: 30px" />
-                                <select tyle="width: 50px">
+                                <select style="width: 50px" id="<?php echo $aux->poa_act_id ?>_poa_act_periodo_tipo" name="<?php echo $aux->poa_act_id ?>_poa_act_periodo_tipo">
                                     <option value="dias" <?php if ($aux->poa_act_periodo_tipo == 'dias') echo "selected=selected"; ?> >Días</option>
                                     <option value="semanas" <?php if ($aux->poa_act_periodo_tipo == 'semanas') echo "selected=selected"; ?> >Semanas</option>
                                     <option value="meses" <?php if ($aux->poa_act_periodo_tipo == 'meses') echo "selected=selected"; ?>>Meses</option>

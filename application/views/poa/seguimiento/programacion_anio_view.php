@@ -21,7 +21,7 @@
     <h2 class="h2Titulos">Planificación Operativa Anual</h2>
     <h2 class="h2Titulos">Planificación Por Año</h2>
     <br/>
-    <form id="formulario" method="post" action="<?php echo base_url('reportes/reportesPOA'); ?>">
+    <form id="formulario" method="post" action="<?php echo base_url('reporte_poa/reportesPOA'); ?>">
         <select id="poa_com_id">
             <option selected="selected" value="0">Seleccione--</option>
             <?php foreach ($componentes as $aux) { ?>
