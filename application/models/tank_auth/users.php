@@ -389,7 +389,9 @@ class Users extends CI_Model {
         $this->db->where('user_id', $user_id);
         $this->db->delete($this->profile_table_name);
     }
-/*AGREGADAS POR ING. KAREN PEÑATE PARA OBTENER INFORMACIÒN DEL USUARIO*/
+
+    /* AGREGADAS POR ING. KAREN PEÑATE PARA OBTENER INFORMACIÒN DEL USUARIO */
+
     function obtenerRol($username) {
         $this->db->select('rol_id');
         $this->db->where('username', $username);
@@ -397,18 +399,18 @@ class Users extends CI_Model {
         $r = $consulta->result();
         return $r;
     }
-    
+
     function obtenerDepartamentoMunicipio($username) {
         $this->db->select('rol_id');
         $this->db->where('username', $username);
-        $consulta=$this->db->get($this->table_name);
-        $r=$consulta->result();
+        $consulta = $this->db->get($this->table_name);
+        $r = $consulta->result();
         return $r;
     }
 
     function obtenerDepartamento($username) {
-        
-        $consulta='SELECT departamento.dep_nombre AS "Depto", municipio.mun_nombre AS "Muni",
+
+        $consulta = 'SELECT departamento.dep_nombre AS "Depto", municipio.mun_nombre AS "Muni",
                           proyecto_pep.pro_pep_nombre AS "Proyecto",
                           proyecto_pep.pro_pep_id AS "id"
                    FROM consultor, proyecto_pep, municipio, departamento
@@ -417,15 +419,34 @@ class Users extends CI_Model {
                         proyecto_pep.mun_id = municipio.mun_id AND
                         municipio.dep_id = departamento.dep_id AND
                         consultor."user" = ?';
-        $query = $this->db->query($consulta,array($username));
+        $query = $this->db->query($consulta, array($username));
         return $query->result();
     }
+
     public function obtenerCodigoRol($username) {
         $this->db->from($this->table_name);
         $this->db->join('rol', "rol.rol_id=$this->table_name.rol_id");
-        $this->db->where("$this->table_name.username", $username);  
+        $this->db->where("$this->table_name.username", $username);
         $query = $this->db->get();
         return $query->result();
+    }
+
+    public function obtenerUsuarios() {
+        $this->db->from($this->table_name);
+        $this->db->join('rol', "rol.rol_id=$this->table_name.rol_id");
+        $this->db->where('activated', 1);
+        $this->db->order_by("$this->table_name.rol_id");
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function eliminarUsuario($id) {
+        $data = array(
+            'username' => 'eliminado' . $id,
+            'activated' => 0
+        );
+        $this->db->where('id', $id);
+        $this->db->update($this->table_name, $data);
     }
 
 }

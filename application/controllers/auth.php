@@ -52,36 +52,25 @@ class Auth extends CI_Controller {
     }
 
     public function cargarUsuariosJson() {
-        $this->load->model('participante');
-        $this->load->model('institucion');
-        $participantes = $this->participante->obtenerParticipantes($campo, $id_campo);
-        $numfilas = count($participantes);
+        $this->load->model('tank_auth/users');
+        $usuarios = $this->users->obtenerUsuarios();
+        $numfilas = count($usuarios);
 
         $i = 0;
-        foreach ($participantes as $aux) {
-            if (isset($aux->ins_id))
-                $nombreInstitucion = $this->institucion->obtenerNombreInstitucion($aux->ins_id);
-            else
-                $nombreInstitucion = ' ';
-            $rows[$i]['id'] = $aux->par_id;
-            $rows[$i]['cell'] = array($aux->par_id,
-                $aux->par_nombre,
-                $aux->par_apellido,
-                strtoupper($aux->par_sexo),
-                $nombreInstitucion[0]['ins_nombre'],
-                $aux->par_cargo
+        $rows = array();
+        foreach ($usuarios as $aux) {
+            $rows[$i]['id'] = $aux->id;
+            $rows[$i]['cell'] = array($aux->id,
+                $aux->username,
+                $aux->email,
+                $aux->rol_nombre
             );
             $i++;
         }
-
-        if ($numfilas != 0) {
-            array_multisort($rows, SORT_ASC);
-        } else {
-            $rows = array();
-        }
+        array_multisort($rows, SORT_ASC);
 
         $datos = json_encode($rows);
-        $pages = floor($numfilas / 10) + 1;
+        $pages = floor($numfilas / 20) + 1;
 
         $jsonresponse = '{
                "page":"1",
@@ -90,6 +79,11 @@ class Auth extends CI_Controller {
                "rows":' . $datos . '}';
 
         echo $jsonresponse;
+    }
+
+    public function eliminarUsuario($id) {
+        $this->load->model('tank_auth/users');
+        $this->users->eliminarUsuario($id);
     }
 
     /**
@@ -532,7 +526,7 @@ class Auth extends CI_Controller {
             'img_height' => $this->config->item('captcha_height', 'tank_auth'),
             'show_grid' => $this->config->item('captcha_grid', 'tank_auth'),
             'expiration' => $this->config->item('captcha_expire', 'tank_auth'),
-        ));
+                ));
 
         // Save captcha params in session
         $this->session->set_flashdata(array(

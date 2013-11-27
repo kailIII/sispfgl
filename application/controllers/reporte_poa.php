@@ -1555,11 +1555,6 @@ Préstamo BIRF 7916');
                             break;
                     }
                 }
-
-                /*
-                  $this->phpexcel->getActiveSheet()->getStyle("O$i")->getNumberFormat()->setFormatCode('0.000%');
-                  $this->phpexcel->getActiveSheet()->setCellValue("P$i", "=IF((1-O$i)<0,0,(1-O$i))");
-                 */
                 $this->phpexcel->getActiveSheet()->setCellValue("AP$i", $aux->poa_act_det_birf);
                 $this->phpexcel->getActiveSheet()->setCellValue("AQ$i", $aux->poa_act_det_contrapartida);
                 $this->phpexcel->getActiveSheet()->setCellValue("AR$i", $aux->poa_act_det_total_proyecto);
