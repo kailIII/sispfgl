@@ -769,8 +769,7 @@ Préstamo BIRF 7916');
         $this->phpexcel->setActiveSheetIndex($k);
         $this->phpexcel->getActiveSheet()->setTitle("C3");
 
-        $componente3 = $this->poa->obtener_por_id('poa_componente', 'poa_com_codigo', "3.1");
-
+        $componente3 = $this->poa->obtener_por_id('poa_componente', 'poa_com_codigo', "3.1.");
         if (count($componente3) != 0) {
             //ENCABEZADO DEL DOCUMENTO
             $this->phpexcel->getActiveSheet()
@@ -1173,7 +1172,7 @@ Préstamo BIRF 7916');
         $this->phpexcel->setActiveSheetIndex($k + 1);
         $this->phpexcel->getActiveSheet()->setTitle("C4");
 
-        $componente4 = $this->poa->obtener_por_id('poa_componente', 'poa_com_codigo', "4.3");
+        $componente4 = $this->poa->obtener_por_id('poa_componente', 'poa_com_codigo', "4.3.");
 
         if (count($componente4) != 0) {
             //ENCABEZADO DEL DOCUMENTO
