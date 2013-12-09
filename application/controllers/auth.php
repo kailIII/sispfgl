@@ -169,23 +169,24 @@ class Auth extends CI_Controller {
         $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean|min_length[' . $this->config->item('password_min_length', 'tank_auth') . ']|max_length[' . $this->config->item('password_max_length', 'tank_auth') . ']|alpha_dash');
         $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'trim|required|xss_clean|matches[password]');
         $this->form_validation->set_rules('rol_id', 'rol_id', 'callback_rolSeleccionado');
+        $this->form_validation->set_rules('reg_id', 'reg_id', 'callback_regionSeleccionada');
         $informacion['errors'] = array();
 
         $email_activation = $this->config->item('email_activation', 'tank_auth');
 
-        if ($this->form_validation->run()) {        // validation ok
+        if ($this->form_validation->run()) {  
+            
             if (!is_null($informacion = $this->tank_auth->create_user(
                             $use_username ? $this->form_validation->set_value('username') : '', $this->form_validation->set_value('email'), $this->form_validation->set_value('password'), $this->form_validation->set_value('rol_id'), $email_activation))) {         // success
                 $informacion['site_name'] = $this->config->item('website_name', 'tank_auth');
-
-                if ($email_activation) {         // send "activate" email
-                    $informacion['activation_period'] = $this->config->item('email_activation_expire', 'tank_auth') / 3600;
-
-                    $this->_send_email('activate', $informacion['email'], $informacion);
-
-                    unset($informacion['password']); // Clear password (just for any case)
-
-                    $this->_show_message($this->lang->line('auth_message_registration_completed_1'));
+                
+                if ($email_activation) {
+                   
+                    $this->tank_auth->activate_user($informacion['user_id'], '123456789qrtyuo');
+/*                    if ($informacion['rol_id'] == 16)
+                        $this->tank_auth->actualizaRegion($informacion['reg_id'], $informacion['user_id']);*/
+                    $this->_send_email('credenciales', $informacion['email'], $informacion);
+                    $this->_show_message($this->lang->line('auth_message_registration_completed_3'));
                 }
             } else {
                 $errors = $this->tank_auth->get_error_message();
@@ -207,9 +208,17 @@ class Auth extends CI_Controller {
         foreach ($roles as $aux)
             $select[$aux->rol_id] = $aux->rol_nombre;
 
+        /* LISTA DE REGIONES */
+        $this->load->model('pais/region');
+        $regiones = $this->region->obtenerRegiones();
+        $select2 = array();
+        $select2[0] = "--Seleccione una region --";
+        foreach ($regiones as $aux)
+            $select2[$aux->reg_id] = $aux->reg_nombre;
 
         /* FIN DE LISTA DE ROLES */
         $informacion['lista'] = $select;
+        $informacion['regiones'] = $select2;
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $this->load->view('auth/register_form', $informacion);
@@ -221,6 +230,17 @@ class Auth extends CI_Controller {
     function rolSeleccionado($valor) {
         if ($valor == '0') {
             $this->form_validation->set_message('rolSeleccionado', 'Debe Seleccionar un rol');
+            return FALSE;
+        }
+        else
+            return TRUE;
+    }
+
+    /* PARA VALIDAR QUE SE HAYA SELECCIONADO EL ROL */
+
+    function regionSeleccionada($valor) {
+        if ($valor == '0') {
+            $this->form_validation->set_message('regionSeleccioanda', 'Debe Seleccionar una region');
             return FALSE;
         }
         else

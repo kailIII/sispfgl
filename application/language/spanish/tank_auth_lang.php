@@ -15,6 +15,7 @@ $lang['auth_message_logged_out'] = 'Se ha cerrado la sesión con éxito.';
 $lang['auth_message_registration_disabled'] = 'El registro está deshabilitado.';
 $lang['auth_message_registration_completed_1'] = 'Se ha registrado con éxito. Compruebe su dirección de correo electrónico para activar su cuenta.';
 $lang['auth_message_registration_completed_2'] = 'Usted se ha registrado con éxito.';
+$lang['auth_message_registration_completed_3'] = 'El usuario se ha registrado con éxito. Este usuario recibirá un correo de notificación con sus datos.';
 $lang['auth_message_activation_email_sent'] = 'Un correo electrónico de activación ha sido enviado a %s. Siga las instrucciones del correo electrónico para activar su cuenta.';
 $lang['auth_message_activation_completed'] = 'Su cuenta ha sido activado correctamente.';
 $lang['auth_message_activation_failed'] = 'El código de activación que ha introducido es incorrecto o ha caducado.';

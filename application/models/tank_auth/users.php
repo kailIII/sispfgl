@@ -159,25 +159,25 @@ class Users extends CI_Model {
     function activate_user($user_id, $activation_key, $activate_by_email) {
         $this->db->select('1', FALSE);
         $this->db->where('id', $user_id);
-        if ($activate_by_email) {
-            $this->db->where('new_email_key', $activation_key);
-        } else {
-            $this->db->where('new_password_key', $activation_key);
-        }
+        /* if ($activate_by_email) {
+          $this->db->where('new_email_key', $activation_key);
+          } else {
+          $this->db->where('new_password_key', $activation_key);
+          } */
         $this->db->where('activated', 0);
         $query = $this->db->get($this->table_name);
+        /*
+          if ($query->num_rows() == 1) {
+         */
+        $this->db->set('activated', 1);
+        $this->db->set('new_email_key', NULL);
+        $this->db->where('id', $user_id);
+        $this->db->update($this->table_name);
 
-        if ($query->num_rows() == 1) {
-
-            $this->db->set('activated', 1);
-            $this->db->set('new_email_key', NULL);
-            $this->db->where('id', $user_id);
-            $this->db->update($this->table_name);
-
-            $this->create_profile($user_id);
-            return TRUE;
-        }
-        return FALSE;
+        $this->create_profile($user_id);
+        return TRUE;
+        /*      }
+          return TRUE; */
     }
 
     /**
@@ -447,6 +447,18 @@ class Users extends CI_Model {
         );
         $this->db->where('id', $id);
         $this->db->update($this->table_name, $data);
+    }
+
+    public function actualizaRegion($reg_id, $username) {
+        $data = array(
+            'username' => 'eliminado' . $id,
+            'activated' => 0
+        );
+        $this->db->where('id', $id);
+        $this->db->update($this->table_name, $data);
+        $this->db->set('reg_id', $reg_id);
+        $this->db->where('id', $username);
+        $this->db->update($this->table_name);
     }
 
 }
