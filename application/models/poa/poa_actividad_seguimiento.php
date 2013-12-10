@@ -17,6 +17,17 @@ class Poa_actividad_seguimiento extends CI_Model {
         return $consulta->result();
     }
     
+    public function obtenerDetalleActividadSeguimiento($codigo,$anio,$mes){
+        $sql="SELECT A.poa_act_seg_desembolso
+FROM $this->tabla A 
+	INNER JOIN poa_actividad_detalle B ON A.poa_act_det_id=B.poa_act_det_id
+	INNER JOIN poa_actividad C ON B.poa_act_id=C.poa_act_id
+WHERE B.poa_act_det_anio=$anio AND C.poa_act_codigo='$codigo' AND A.poa_act_seg_mes=$mes";
+        $consulta = $this->db->query($sql, array());
+        $resultado = $consulta->result();
+        return $resultado[0]->poa_act_seg_desembolso;
+    }
+    
     
 }
 

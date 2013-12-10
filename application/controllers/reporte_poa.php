@@ -15,6 +15,8 @@ class Reporte_poa extends CI_Controller {
         parent::__construct();
         $this->load->library('PHPExcel');
         $this->load->model('poa/poa_actividad_seguimiento', 'seguimiento');
+        $this->load->model('poa/poa_actividad_detalle', 'detalle');
+        $this->load->model('poa/poa_actividad', 'actividad');
     }
 
     public function reportesPOA() {
@@ -620,8 +622,10 @@ Préstamo BIRF 7916');
                     $this->phpexcel->getActiveSheet()->setCellValue("B$i", $aux->poa_act_codigo);
                     $this->phpexcel->getActiveSheet()->setCellValue("C$i", $aux->poa_act_descripcion);
                     $this->phpexcel->getActiveSheet()->setCellValue("D$i", $aux->poa_act_unidad_medida);
-                    $this->phpexcel->getActiveSheet()->setCellValue("E$i", $aux->poa_act_cantidad);
-                    $this->phpexcel->getActiveSheet()->setCellValue("F$i", $aux->poa_act_costo_unitario);
+                    if ($aux->poa_act_cantidad != 0)
+                        $this->phpexcel->getActiveSheet()->setCellValue("E$i", $aux->poa_act_cantidad);
+                    if ($aux->poa_act_costo_unitario != 0)
+                        $this->phpexcel->getActiveSheet()->setCellValue("F$i", $aux->poa_act_costo_unitario);
                     $this->phpexcel->getActiveSheet()->setCellValue("G$i", $aux->poa_act_meta_total);
                     $this->phpexcel->getActiveSheet()->getStyle("G$i")->getNumberFormat()->setFormatCode("$ #,###,###.##");
                     $this->phpexcel->getActiveSheet()->setCellValue("H$i", $aux->poa_act_responsable);
@@ -654,13 +658,17 @@ Préstamo BIRF 7916');
                                 break;
                         }
                     }
-                    $this->phpexcel->getActiveSheet()->setCellValue("V$i", $aux->poa_act_realiza);
+                    if ($aux->poa_act_realiza != '0')
+                        $this->phpexcel->getActiveSheet()->setCellValue("V$i", $aux->poa_act_realiza);
                     $this->phpexcel->getActiveSheet()->setCellValue("W$i", $aux->poa_act_ftdrs);
-                    $this->phpexcel->getActiveSheet()->setCellValue("X$i", $aux->poa_act_periodo_car . " " . $aux->poa_act_periodo_tipo);
+                    if ($aux->poa_act_periodo_car != 0)
+                        $this->phpexcel->getActiveSheet()->setCellValue("X$i", $aux->poa_act_periodo_car . " " . $aux->poa_act_periodo_tipo);
                     $this->phpexcel->getActiveSheet()->setCellValue("Y$i", $aux->poa_act_monto_estimado);
                     $this->phpexcel->getActiveSheet()->getStyle("Y$i")->getNumberFormat()->setFormatCode("$ #,###,###");
-                    $this->phpexcel->getActiveSheet()->setCellValue("Z$i", $aux->poa_act_metodo);
-                    $this->phpexcel->getActiveSheet()->setCellValue("AA$i", $aux->poa_act_pac);
+                    if ($aux->poa_act_metodo != '0')
+                        $this->phpexcel->getActiveSheet()->setCellValue("Z$i", $aux->poa_act_metodo);
+                    if ($aux->poa_act_pac != '0')
+                        $this->phpexcel->getActiveSheet()->setCellValue("AA$i", $aux->poa_act_pac);
                     $this->phpexcel->getActiveSheet()->getColumnDimension('AO')->setWidth(25);
                     switch ($aux->poa_act_mes_inicio) {
                         case 1: $variable = 'Enero';
@@ -1024,8 +1032,10 @@ Préstamo BIRF 7916');
                 $this->phpexcel->getActiveSheet()->setCellValue("B$i", $aux->poa_act_codigo);
                 $this->phpexcel->getActiveSheet()->setCellValue("C$i", $aux->poa_act_descripcion);
                 $this->phpexcel->getActiveSheet()->setCellValue("D$i", $aux->poa_act_unidad_medida);
-                $this->phpexcel->getActiveSheet()->setCellValue("E$i", $aux->poa_act_cantidad);
-                $this->phpexcel->getActiveSheet()->setCellValue("F$i", $aux->poa_act_costo_unitario);
+                if ($aux->poa_act_cantidad != 0)
+                    $this->phpexcel->getActiveSheet()->setCellValue("E$i", $aux->poa_act_cantidad);
+                if ($aux->poa_act_costo_unitario != 0)
+                    $this->phpexcel->getActiveSheet()->setCellValue("F$i", $aux->poa_act_costo_unitario);
                 $this->phpexcel->getActiveSheet()->setCellValue("G$i", $aux->poa_act_meta_total);
                 $this->phpexcel->getActiveSheet()->getStyle("G$i")->getNumberFormat()->setFormatCode("$ #,###,###.##");
                 $this->phpexcel->getActiveSheet()->setCellValue("H$i", $aux->poa_act_responsable);
@@ -1058,13 +1068,17 @@ Préstamo BIRF 7916');
                             break;
                     }
                 }
-                $this->phpexcel->getActiveSheet()->setCellValue("V$i", $aux->poa_act_realiza);
+                if ($aux->poa_act_realiza != '0')
+                    $this->phpexcel->getActiveSheet()->setCellValue("V$i", $aux->poa_act_realiza);
                 $this->phpexcel->getActiveSheet()->setCellValue("W$i", $aux->poa_act_ftdrs);
-                $this->phpexcel->getActiveSheet()->setCellValue("X$i", $aux->poa_act_periodo_car . " " . $aux->poa_act_periodo_tipo);
+                if ($aux->poa_act_periodo_car != 0)
+                    $this->phpexcel->getActiveSheet()->setCellValue("X$i", $aux->poa_act_periodo_car . " " . $aux->poa_act_periodo_tipo);
                 $this->phpexcel->getActiveSheet()->setCellValue("Y$i", $aux->poa_act_monto_estimado);
                 $this->phpexcel->getActiveSheet()->getStyle("Y$i")->getNumberFormat()->setFormatCode("$ #,###,###");
-                $this->phpexcel->getActiveSheet()->setCellValue("Z$i", $aux->poa_act_metodo);
-                $this->phpexcel->getActiveSheet()->setCellValue("AA$i", $aux->poa_act_pac);
+                if ($aux->poa_act_metodo != '0')
+                    $this->phpexcel->getActiveSheet()->setCellValue("Z$i", $aux->poa_act_metodo);
+                if ($aux->poa_act_pac != '0')
+                    $this->phpexcel->getActiveSheet()->setCellValue("AA$i", $aux->poa_act_pac);
                 $this->phpexcel->getActiveSheet()->getColumnDimension('AO')->setWidth(25);
                 switch ($aux->poa_act_mes_inicio) {
                     case 1: $variable = 'Enero';
@@ -1167,7 +1181,7 @@ Préstamo BIRF 7916');
             }
         }
 
-        //COMPONENTE 3
+        //COMPONENTE 4
         $this->phpexcel->createSheet($k + 1);
         $this->phpexcel->setActiveSheetIndex($k + 1);
         $this->phpexcel->getActiveSheet()->setTitle("C4");
@@ -1428,8 +1442,10 @@ Préstamo BIRF 7916');
                 $this->phpexcel->getActiveSheet()->setCellValue("B$i", $aux->poa_act_codigo);
                 $this->phpexcel->getActiveSheet()->setCellValue("C$i", $aux->poa_act_descripcion);
                 $this->phpexcel->getActiveSheet()->setCellValue("D$i", $aux->poa_act_unidad_medida);
-                $this->phpexcel->getActiveSheet()->setCellValue("E$i", $aux->poa_act_cantidad);
-                $this->phpexcel->getActiveSheet()->setCellValue("F$i", $aux->poa_act_costo_unitario);
+                if ($aux->poa_act_cantidad != 0)
+                    $this->phpexcel->getActiveSheet()->setCellValue("E$i", $aux->poa_act_cantidad);
+                if ($aux->poa_act_costo_unitario != 0)
+                    $this->phpexcel->getActiveSheet()->setCellValue("F$i", $aux->poa_act_costo_unitario);
                 $this->phpexcel->getActiveSheet()->setCellValue("G$i", $aux->poa_act_meta_total);
                 $this->phpexcel->getActiveSheet()->getStyle("G$i")->getNumberFormat()->setFormatCode("$ #,###,###.##");
                 $this->phpexcel->getActiveSheet()->setCellValue("H$i", $aux->poa_act_responsable);
@@ -1462,13 +1478,17 @@ Préstamo BIRF 7916');
                             break;
                     }
                 }
-                $this->phpexcel->getActiveSheet()->setCellValue("V$i", $aux->poa_act_realiza);
+                if ($aux->poa_act_realiza != '0')
+                    $this->phpexcel->getActiveSheet()->setCellValue("V$i", $aux->poa_act_realiza);
                 $this->phpexcel->getActiveSheet()->setCellValue("W$i", $aux->poa_act_ftdrs);
-                $this->phpexcel->getActiveSheet()->setCellValue("X$i", $aux->poa_act_periodo_car . " " . $aux->poa_act_periodo_tipo);
+                if ($aux->poa_act_periodo_car != 0)
+                    $this->phpexcel->getActiveSheet()->setCellValue("X$i", $aux->poa_act_periodo_car . " " . $aux->poa_act_periodo_tipo);
                 $this->phpexcel->getActiveSheet()->setCellValue("Y$i", $aux->poa_act_monto_estimado);
                 $this->phpexcel->getActiveSheet()->getStyle("Y$i")->getNumberFormat()->setFormatCode("$ #,###,###");
-                $this->phpexcel->getActiveSheet()->setCellValue("Z$i", $aux->poa_act_metodo);
-                $this->phpexcel->getActiveSheet()->setCellValue("AA$i", $aux->poa_act_pac);
+                if ($aux->poa_act_metodo != '0')
+                    $this->phpexcel->getActiveSheet()->setCellValue("Z$i", $aux->poa_act_metodo);
+                if ($aux->poa_act_pac != '0')
+                    $this->phpexcel->getActiveSheet()->setCellValue("AA$i", $aux->poa_act_pac);
                 $this->phpexcel->getActiveSheet()->getColumnDimension('AO')->setWidth(25);
                 switch ($aux->poa_act_mes_inicio) {
                     case 1: $variable = 'Enero';
@@ -1565,6 +1585,535 @@ Préstamo BIRF 7916');
                 $i++;
             }
         }
+        $k++;
+
+        //RESUMEN
+        $this->phpexcel->createSheet($k + 1);
+        $this->phpexcel->setActiveSheetIndex($k + 1);
+        $this->phpexcel->getActiveSheet()->setTitle("Consolidado POA-$anio");
+        //ENCABEZADO
+        $this->phpexcel->getActiveSheet()->setCellValue('B3', "Componente");
+        $this->phpexcel->getActiveSheet()->mergeCells('B3:B4');
+        $this->phpexcel->getActiveSheet()->getStyle('B3:B4')->applyFromArray($estEnc2);
+
+        $this->phpexcel->getActiveSheet()->setCellValue('C3', "Sub-Componente");
+        $this->phpexcel->getActiveSheet()->mergeCells('C3:C4');
+        $this->phpexcel->getActiveSheet()->getStyle('C3:C4')->applyFromArray($estEnc2);
+
+        $this->phpexcel->getActiveSheet()->setCellValue('D3', "Datos");
+        $this->phpexcel->getActiveSheet()->mergeCells('D3:Q3');
+        $this->phpexcel->getActiveSheet()->getStyle('D3:Q3')->applyFromArray($estEnc2);
+        $this->phpexcel->getActiveSheet()->setCellValue('D4', "Suma-Ene");
+        $this->phpexcel->getActiveSheet()->setCellValue('E4', "Suma-Feb");
+        $this->phpexcel->getActiveSheet()->setCellValue('F4', "Suma-Mar");
+        $this->phpexcel->getActiveSheet()->setCellValue('G4', "Suma-Abr");
+        $this->phpexcel->getActiveSheet()->setCellValue('H4', "Suma-May");
+        $this->phpexcel->getActiveSheet()->setCellValue('I4', "Suma-Jun");
+        $this->phpexcel->getActiveSheet()->setCellValue('J4', "Suma-Jul");
+        $this->phpexcel->getActiveSheet()->setCellValue('K4', "Suma-Ago");
+        $this->phpexcel->getActiveSheet()->setCellValue('L4', "Suma-Sep");
+        $this->phpexcel->getActiveSheet()->setCellValue('M4', "Suma-Oct");
+        $this->phpexcel->getActiveSheet()->setCellValue('N4', "Suma-Nov");
+        $this->phpexcel->getActiveSheet()->setCellValue('O4', "Suma-Dic");
+        $this->phpexcel->getActiveSheet()->setCellValue('P4', "Suma - Total BIRF");
+        $this->phpexcel->getActiveSheet()->setCellValue('Q4', "Suma - Total Contrapartida");
+        $this->phpexcel->getActiveSheet()->getStyle('D4:Q4')->applyFromArray($estEnc2);
+        $this->phpexcel->getActiveSheet()->getColumnDimension('B')->setWidth(15);
+        $this->phpexcel->getActiveSheet()->getColumnDimension('C')->setWidth(15);
+        $this->phpexcel->getActiveSheet()->getColumnDimension('P')->setWidth(15);
+        $this->phpexcel->getActiveSheet()->getColumnDimension('Q')->setWidth(20);
+        //CUERPO DEL REPORTE
+        $this->phpexcel->getActiveSheet()->setCellValue('B5', "2");
+        $this->phpexcel->getActiveSheet()->mergeCells('B5:B9');
+        $this->phpexcel->getActiveSheet()->setCellValue('C5', "2.2");
+        //Valores de cada mes
+        $actividad = $this->detalle->obtenerPorActividadDetalleCod($anio, '2.2');
+        if (!empty($actividad)) {
+            for ($i = 1; $i <= 12; $i++) {
+                $valor = $this->seguimiento->obtenerDetalleActividadSeguimiento('2.2', $anio, $i);
+                switch ($i) {
+                    case 1:
+                        $this->phpexcel->getActiveSheet()->setCellValue("D5", $valor);
+                        break;
+                    case 2:
+                        $this->phpexcel->getActiveSheet()->setCellValue("E5", $valor);
+                        break;
+                    case 3:
+                        $this->phpexcel->getActiveSheet()->setCellValue("F5", $valor);
+                        break;
+                    case 4:
+                        $this->phpexcel->getActiveSheet()->setCellValue("G5", $valor);
+                        break;
+                    case 5:
+                        $this->phpexcel->getActiveSheet()->setCellValue("H5", $valor);
+                        break;
+                    case 6:
+                        $this->phpexcel->getActiveSheet()->setCellValue("I5", $valor);
+                        break;
+                    case 7:
+                        $this->phpexcel->getActiveSheet()->setCellValue("J5", $valor);
+                        break;
+                    case 8:
+                        $this->phpexcel->getActiveSheet()->setCellValue("K5", $valor);
+                        break;
+                    case 9:
+                        $this->phpexcel->getActiveSheet()->setCellValue("L5", $valor);
+                        break;
+                    case 10:
+                        $this->phpexcel->getActiveSheet()->setCellValue("M5", $valor);
+                        break;
+                    case 11:
+                        $this->phpexcel->getActiveSheet()->setCellValue("N5", $valor);
+                        break;
+                    case 12:
+                        $this->phpexcel->getActiveSheet()->setCellValue("O5", $valor);
+                        break;
+                }
+            }
+
+
+            $this->phpexcel->getActiveSheet()->setCellValue('P5', $actividad[0]->poa_act_det_birf);
+            $this->phpexcel->getActiveSheet()->setCellValue('Q5', $actividad[0]->poa_act_det_contrapartida);
+            $this->phpexcel->getActiveSheet()->getStyle("D5:Q5")->getNumberFormat()->setFormatCode("$ #,###,###.##");
+        }
+        //2.3
+        //CUERPO DEL REPORTE
+        $this->phpexcel->getActiveSheet()->setCellValue('C6', "2.3");
+        //Valores de cada mes
+        $actividad = $this->detalle->obtenerPorActividadDetalleCod($anio, '2.3');
+        if (!empty($actividad)) {
+
+            for ($i = 1; $i <= 12; $i++) {
+                $valor = $this->seguimiento->obtenerDetalleActividadSeguimiento('2.3', $anio, $i);
+                switch ($i) {
+                    case 1:
+                        $this->phpexcel->getActiveSheet()->setCellValue("D6", $valor);
+                        break;
+                    case 2:
+                        $this->phpexcel->getActiveSheet()->setCellValue("E6", $valor);
+                        break;
+                    case 3:
+                        $this->phpexcel->getActiveSheet()->setCellValue("F6", $valor);
+                        break;
+                    case 4:
+                        $this->phpexcel->getActiveSheet()->setCellValue("G6", $valor);
+                        break;
+                    case 5:
+                        $this->phpexcel->getActiveSheet()->setCellValue("H6", $valor);
+                        break;
+                    case 6:
+                        $this->phpexcel->getActiveSheet()->setCellValue("I6", $valor);
+                        break;
+                    case 7:
+                        $this->phpexcel->getActiveSheet()->setCellValue("J6", $valor);
+                        break;
+                    case 8:
+                        $this->phpexcel->getActiveSheet()->setCellValue("K6", $valor);
+                        break;
+                    case 9:
+                        $this->phpexcel->getActiveSheet()->setCellValue("L6", $valor);
+                        break;
+                    case 10:
+                        $this->phpexcel->getActiveSheet()->setCellValue("M6", $valor);
+                        break;
+                    case 11:
+                        $this->phpexcel->getActiveSheet()->setCellValue("N6", $valor);
+                        break;
+                    case 12:
+                        $this->phpexcel->getActiveSheet()->setCellValue("O6", $valor);
+                        break;
+                }
+            }
+
+
+            $this->phpexcel->getActiveSheet()->setCellValue('P6', $actividad[0]->poa_act_det_birf);
+            $this->phpexcel->getActiveSheet()->setCellValue('Q6', $actividad[0]->poa_act_det_contrapartida);
+            $this->phpexcel->getActiveSheet()->getStyle("D6:Q6")->getNumberFormat()->setFormatCode("$ #,###,###.##");
+        }
+        //2.4
+        //CUERPO DEL REPORTE
+        $this->phpexcel->getActiveSheet()->setCellValue('C7', "2.4");
+        //Valores de cada mes
+        $actividad = $this->detalle->obtenerPorActividadDetalleCod($anio, '2.4');
+
+        if (!empty($actividad)) {
+            for ($i = 1; $i <= 12; $i++) {
+                $valor = $this->seguimiento->obtenerDetalleActividadSeguimiento('2.4', $anio, $i);
+                switch ($i) {
+                    case 1:
+                        $this->phpexcel->getActiveSheet()->setCellValue("D7", $valor);
+                        break;
+                    case 2:
+                        $this->phpexcel->getActiveSheet()->setCellValue("E7", $valor);
+                        break;
+                    case 3:
+                        $this->phpexcel->getActiveSheet()->setCellValue("F7", $valor);
+                        break;
+                    case 4:
+                        $this->phpexcel->getActiveSheet()->setCellValue("G7", $valor);
+                        break;
+                    case 5:
+                        $this->phpexcel->getActiveSheet()->setCellValue("H7", $valor);
+                        break;
+                    case 6:
+                        $this->phpexcel->getActiveSheet()->setCellValue("I7", $valor);
+                        break;
+                    case 7:
+                        $this->phpexcel->getActiveSheet()->setCellValue("J7", $valor);
+                        break;
+                    case 8:
+                        $this->phpexcel->getActiveSheet()->setCellValue("K7", $valor);
+                        break;
+                    case 9:
+                        $this->phpexcel->getActiveSheet()->setCellValue("L7", $valor);
+                        break;
+                    case 10:
+                        $this->phpexcel->getActiveSheet()->setCellValue("M7", $valor);
+                        break;
+                    case 11:
+                        $this->phpexcel->getActiveSheet()->setCellValue("N7", $valor);
+                        break;
+                    case 12:
+                        $this->phpexcel->getActiveSheet()->setCellValue("O7", $valor);
+                        break;
+                }
+            }
+            $this->phpexcel->getActiveSheet()->setCellValue('P7', $actividad[0]->poa_act_det_birf);
+            $this->phpexcel->getActiveSheet()->setCellValue('Q7', $actividad[0]->poa_act_det_contrapartida);
+            $this->phpexcel->getActiveSheet()->getStyle("D7:Q7")->getNumberFormat()->setFormatCode("$ #,###,###.##");
+        }
+
+//2.5
+        //CUERPO DEL REPORTE
+        $this->phpexcel->getActiveSheet()->setCellValue('C8', "2.5");
+        //Valores de cada mes
+        $actividad = $this->detalle->obtenerPorActividadDetalleCod($anio, '2.5');
+
+        if (!empty($actividad)) {
+            for ($i = 1; $i <= 12; $i++) {
+                $valor = $this->seguimiento->obtenerDetalleActividadSeguimiento('2.5', $anio, $i);
+                switch ($i) {
+                    case 1:
+                        $this->phpexcel->getActiveSheet()->setCellValue("D8", $valor);
+                        break;
+                    case 2:
+                        $this->phpexcel->getActiveSheet()->setCellValue("E8", $valor);
+                        break;
+                    case 3:
+                        $this->phpexcel->getActiveSheet()->setCellValue("F8", $valor);
+                        break;
+                    case 4:
+                        $this->phpexcel->getActiveSheet()->setCellValue("G8", $valor);
+                        break;
+                    case 5:
+                        $this->phpexcel->getActiveSheet()->setCellValue("H8", $valor);
+                        break;
+                    case 6:
+                        $this->phpexcel->getActiveSheet()->setCellValue("I8", $valor);
+                        break;
+                    case 7:
+                        $this->phpexcel->getActiveSheet()->setCellValue("J8", $valor);
+                        break;
+                    case 8:
+                        $this->phpexcel->getActiveSheet()->setCellValue("K8", $valor);
+                        break;
+                    case 9:
+                        $this->phpexcel->getActiveSheet()->setCellValue("L8", $valor);
+                        break;
+                    case 10:
+                        $this->phpexcel->getActiveSheet()->setCellValue("M8", $valor);
+                        break;
+                    case 11:
+                        $this->phpexcel->getActiveSheet()->setCellValue("N8", $valor);
+                        break;
+                    case 12:
+                        $this->phpexcel->getActiveSheet()->setCellValue("O8", $valor);
+                        break;
+                }
+            }
+            $this->phpexcel->getActiveSheet()->setCellValue('P8', $actividad[0]->poa_act_det_birf);
+            $this->phpexcel->getActiveSheet()->setCellValue('Q8', $actividad[0]->poa_act_det_contrapartida);
+            $this->phpexcel->getActiveSheet()->getStyle("D8:Q8")->getNumberFormat()->setFormatCode("$ #,###,###.##");
+        }
+
+        //CUERPO DEL REPORTE
+        $this->phpexcel->getActiveSheet()->setCellValue('B10', "3");
+        $this->phpexcel->getActiveSheet()->mergeCells('B10:B11');
+        $this->phpexcel->getActiveSheet()->setCellValue('C11', "3.1");
+        //Valores de cada mes
+        $actividad = $this->detalle->obtenerPorActividadDetalleCod($anio, '3.1');
+
+        if (!empty($actividad)) {
+            for ($i = 1; $i <= 12; $i++) {
+                $valor = $this->seguimiento->obtenerDetalleActividadSeguimiento('3.1', $anio, $i);
+                switch ($i) {
+                    case 1:
+                        $this->phpexcel->getActiveSheet()->setCellValue("D11", $valor);
+                        break;
+                    case 2:
+                        $this->phpexcel->getActiveSheet()->setCellValue("E11", $valor);
+                        break;
+                    case 3:
+                        $this->phpexcel->getActiveSheet()->setCellValue("F11", $valor);
+                        break;
+                    case 4:
+                        $this->phpexcel->getActiveSheet()->setCellValue("G11", $valor);
+                        break;
+                    case 5:
+                        $this->phpexcel->getActiveSheet()->setCellValue("H11", $valor);
+                        break;
+                    case 6:
+                        $this->phpexcel->getActiveSheet()->setCellValue("I11", $valor);
+                        break;
+                    case 7:
+                        $this->phpexcel->getActiveSheet()->setCellValue("J11", $valor);
+                        break;
+                    case 8:
+                        $this->phpexcel->getActiveSheet()->setCellValue("K11", $valor);
+                        break;
+                    case 9:
+                        $this->phpexcel->getActiveSheet()->setCellValue("L11", $valor);
+                        break;
+                    case 10:
+                        $this->phpexcel->getActiveSheet()->setCellValue("M11", $valor);
+                        break;
+                    case 11:
+                        $this->phpexcel->getActiveSheet()->setCellValue("N11", $valor);
+                        break;
+                    case 12:
+                        $this->phpexcel->getActiveSheet()->setCellValue("O11", $valor);
+                        break;
+                }
+            }
+            $this->phpexcel->getActiveSheet()->setCellValue('P11', $actividad[0]->poa_act_det_birf);
+            $this->phpexcel->getActiveSheet()->setCellValue('Q11', $actividad[0]->poa_act_det_contrapartida);
+            $this->phpexcel->getActiveSheet()->getStyle("D11:Q11")->getNumberFormat()->setFormatCode("$ #,###,###.##");
+        }
+        //CUERPO DEL REPORTE
+        $this->phpexcel->getActiveSheet()->setCellValue('B12', "4");
+        $this->phpexcel->getActiveSheet()->mergeCells('B12:B16');
+        $this->phpexcel->getActiveSheet()->setCellValue('C13', "4.1");
+        //Valores de cada mes
+        $actividad = $this->detalle->obtenerPorActividadDetalleCod($anio, '4.1');
+
+        if (!empty($actividad)) {
+            for ($i = 1; $i <= 12; $i++) {
+                $valor = $this->seguimiento->obtenerDetalleActividadSeguimiento('4.1', $anio, $i);
+                switch ($i) {
+                    case 1:
+                        $this->phpexcel->getActiveSheet()->setCellValue("D13", $valor);
+                        break;
+                    case 2:
+                        $this->phpexcel->getActiveSheet()->setCellValue("E13", $valor);
+                        break;
+                    case 3:
+                        $this->phpexcel->getActiveSheet()->setCellValue("F13", $valor);
+                        break;
+                    case 4:
+                        $this->phpexcel->getActiveSheet()->setCellValue("G13", $valor);
+                        break;
+                    case 5:
+                        $this->phpexcel->getActiveSheet()->setCellValue("H13", $valor);
+                        break;
+                    case 6:
+                        $this->phpexcel->getActiveSheet()->setCellValue("I13", $valor);
+                        break;
+                    case 7:
+                        $this->phpexcel->getActiveSheet()->setCellValue("J13", $valor);
+                        break;
+                    case 8:
+                        $this->phpexcel->getActiveSheet()->setCellValue("K13", $valor);
+                        break;
+                    case 9:
+                        $this->phpexcel->getActiveSheet()->setCellValue("L13", $valor);
+                        break;
+                    case 10:
+                        $this->phpexcel->getActiveSheet()->setCellValue("M13", $valor);
+                        break;
+                    case 11:
+                        $this->phpexcel->getActiveSheet()->setCellValue("N13", $valor);
+                        break;
+                    case 12:
+                        $this->phpexcel->getActiveSheet()->setCellValue("O13", $valor);
+                        break;
+                }
+            }
+            $this->phpexcel->getActiveSheet()->setCellValue('P13', $actividad[0]->poa_act_det_birf);
+            $this->phpexcel->getActiveSheet()->setCellValue('Q13', $actividad[0]->poa_act_det_contrapartida);
+            $this->phpexcel->getActiveSheet()->getStyle("D13:Q13")->getNumberFormat()->setFormatCode("$ #,###,###.##");
+        }
+
+        $this->phpexcel->getActiveSheet()->setCellValue('C14', "4.2");
+        //Valores de cada mes
+        $actividad = $this->detalle->obtenerPorActividadDetalleCod($anio, '4.2');
+
+        if (!empty($actividad)) {
+            for ($i = 1; $i <= 12; $i++) {
+                $valor = $this->seguimiento->obtenerDetalleActividadSeguimiento('4.2', $anio, $i);
+                switch ($i) {
+                    case 1:
+                        $this->phpexcel->getActiveSheet()->setCellValue("D14", $valor);
+                        break;
+                    case 2:
+                        $this->phpexcel->getActiveSheet()->setCellValue("E14", $valor);
+                        break;
+                    case 3:
+                        $this->phpexcel->getActiveSheet()->setCellValue("F14", $valor);
+                        break;
+                    case 4:
+                        $this->phpexcel->getActiveSheet()->setCellValue("G14", $valor);
+                        break;
+                    case 5:
+                        $this->phpexcel->getActiveSheet()->setCellValue("H14", $valor);
+                        break;
+                    case 6:
+                        $this->phpexcel->getActiveSheet()->setCellValue("I14", $valor);
+                        break;
+                    case 7:
+                        $this->phpexcel->getActiveSheet()->setCellValue("J14", $valor);
+                        break;
+                    case 8:
+                        $this->phpexcel->getActiveSheet()->setCellValue("K14", $valor);
+                        break;
+                    case 9:
+                        $this->phpexcel->getActiveSheet()->setCellValue("L14", $valor);
+                        break;
+                    case 10:
+                        $this->phpexcel->getActiveSheet()->setCellValue("M14", $valor);
+                        break;
+                    case 11:
+                        $this->phpexcel->getActiveSheet()->setCellValue("N14", $valor);
+                        break;
+                    case 12:
+                        $this->phpexcel->getActiveSheet()->setCellValue("O14", $valor);
+                        break;
+                }
+            }
+            $this->phpexcel->getActiveSheet()->setCellValue('P14', $actividad[0]->poa_act_det_birf);
+            $this->phpexcel->getActiveSheet()->setCellValue('Q14', $actividad[0]->poa_act_det_contrapartida);
+            $this->phpexcel->getActiveSheet()->getStyle("D14:Q14")->getNumberFormat()->setFormatCode("$ #,###,###.##");
+        }
+
+        $this->phpexcel->getActiveSheet()->setCellValue('C15', "4.3");
+        //Valores de cada mes
+        $actividad = $this->detalle->obtenerPorActividadDetalleCod($anio, '4.3');
+
+        if (!empty($actividad)) {
+            for ($i = 1; $i <= 12; $i++) {
+                $valor = $this->seguimiento->obtenerDetalleActividadSeguimiento('4.3', $anio, $i);
+                switch ($i) {
+                    case 1:
+                        $this->phpexcel->getActiveSheet()->setCellValue("D15", $valor);
+                        break;
+                    case 2:
+                        $this->phpexcel->getActiveSheet()->setCellValue("E15", $valor);
+                        break;
+                    case 3:
+                        $this->phpexcel->getActiveSheet()->setCellValue("F15", $valor);
+                        break;
+                    case 4:
+                        $this->phpexcel->getActiveSheet()->setCellValue("G15", $valor);
+                        break;
+                    case 5:
+                        $this->phpexcel->getActiveSheet()->setCellValue("H15", $valor);
+                        break;
+                    case 6:
+                        $this->phpexcel->getActiveSheet()->setCellValue("I15", $valor);
+                        break;
+                    case 7:
+                        $this->phpexcel->getActiveSheet()->setCellValue("J15", $valor);
+                        break;
+                    case 8:
+                        $this->phpexcel->getActiveSheet()->setCellValue("K15", $valor);
+                        break;
+                    case 9:
+                        $this->phpexcel->getActiveSheet()->setCellValue("L15", $valor);
+                        break;
+                    case 10:
+                        $this->phpexcel->getActiveSheet()->setCellValue("M15", $valor);
+                        break;
+                    case 11:
+                        $this->phpexcel->getActiveSheet()->setCellValue("N15", $valor);
+                        break;
+                    case 12:
+                        $this->phpexcel->getActiveSheet()->setCellValue("O15", $valor);
+                        break;
+                }
+            }
+            $this->phpexcel->getActiveSheet()->setCellValue('P15', $actividad[0]->poa_act_det_birf);
+            $this->phpexcel->getActiveSheet()->setCellValue('Q15', $actividad[0]->poa_act_det_contrapartida);
+            $this->phpexcel->getActiveSheet()->getStyle("D15:Q15")->getNumberFormat()->setFormatCode("$ #,###,###.##");
+        }
+
+        $this->phpexcel->getActiveSheet()->setCellValue('C16', "4.4");
+        //Valores de cada mes
+        $actividad = $this->detalle->obtenerPorActividadDetalleCod($anio, '4.4');
+
+        if (!empty($actividad)) {
+            for ($i = 1; $i <= 12; $i++) {
+                $valor = $this->seguimiento->obtenerDetalleActividadSeguimiento('4.3', $anio, $i);
+                switch ($i) {
+                    case 1:
+                        $this->phpexcel->getActiveSheet()->setCellValue("D16", $valor);
+                        break;
+                    case 2:
+                        $this->phpexcel->getActiveSheet()->setCellValue("E16", $valor);
+                        break;
+                    case 3:
+                        $this->phpexcel->getActiveSheet()->setCellValue("F16", $valor);
+                        break;
+                    case 4:
+                        $this->phpexcel->getActiveSheet()->setCellValue("G16", $valor);
+                        break;
+                    case 5:
+                        $this->phpexcel->getActiveSheet()->setCellValue("H16", $valor);
+                        break;
+                    case 6:
+                        $this->phpexcel->getActiveSheet()->setCellValue("I16", $valor);
+                        break;
+                    case 7:
+                        $this->phpexcel->getActiveSheet()->setCellValue("J16", $valor);
+                        break;
+                    case 8:
+                        $this->phpexcel->getActiveSheet()->setCellValue("K16", $valor);
+                        break;
+                    case 9:
+                        $this->phpexcel->getActiveSheet()->setCellValue("L16", $valor);
+                        break;
+                    case 10:
+                        $this->phpexcel->getActiveSheet()->setCellValue("M16", $valor);
+                        break;
+                    case 11:
+                        $this->phpexcel->getActiveSheet()->setCellValue("N16", $valor);
+                        break;
+                    case 12:
+                        $this->phpexcel->getActiveSheet()->setCellValue("O16", $valor);
+                        break;
+                }
+            }
+            $this->phpexcel->getActiveSheet()->setCellValue('P16', $actividad[0]->poa_act_det_birf);
+            $this->phpexcel->getActiveSheet()->setCellValue('Q16', $actividad[0]->poa_act_det_contrapartida);
+            $this->phpexcel->getActiveSheet()->getStyle("D16:Q16")->getNumberFormat()->setFormatCode("$ #,###,###.##");
+        }
+        $this->phpexcel->getActiveSheet()->setCellValue("B17", 'Total Resultado');
+        $this->phpexcel->getActiveSheet()->mergeCells('B17:C17');
+        $this->phpexcel->getActiveSheet()->setCellValue("D17", "=SUM(D5:D16)");
+        $this->phpexcel->getActiveSheet()->setCellValue("E17", "=SUM(E5:E16)");
+        $this->phpexcel->getActiveSheet()->setCellValue("F17", "=SUM(F5:F16)");
+        $this->phpexcel->getActiveSheet()->setCellValue("G17", "=SUM(G5:G16)");
+        $this->phpexcel->getActiveSheet()->setCellValue("H17", "=SUM(H5:H16)");
+        $this->phpexcel->getActiveSheet()->setCellValue("I17", "=SUM(I5:I16)");
+        $this->phpexcel->getActiveSheet()->setCellValue("J17", "=SUM(J5:J16)");
+        $this->phpexcel->getActiveSheet()->setCellValue("K17", "=SUM(K5:K16)");
+        $this->phpexcel->getActiveSheet()->setCellValue("L17", "=SUM(L5:L16)");
+        $this->phpexcel->getActiveSheet()->setCellValue("M17", "=SUM(M5:M16)");
+        $this->phpexcel->getActiveSheet()->setCellValue("N17", "=SUM(N5:N16)");
+        $this->phpexcel->getActiveSheet()->setCellValue("O17", "=SUM(O5:O16)");
+        $this->phpexcel->getActiveSheet()->setCellValue("P17", "=SUM(P5:P16)");
+        $this->phpexcel->getActiveSheet()->setCellValue("Q17", "=SUM(Q5:Q16)");
+$this->phpexcel->getActiveSheet()->getStyle("D17:Q17")->getNumberFormat()->setFormatCode("$ #,###,###.##");
+        $this->phpexcel->getActiveSheet()->getStyle('B5:Q16')->applyFromArray($estCuerpo);
+        $this->phpexcel->getActiveSheet()->getStyle('B17:Q17')->applyFromArray($estCuerpoNegrita);
         /*
          * SALIDA DEL DOCUMENTO
          */

@@ -31,6 +31,17 @@ WHERE B.poa_act_id=C.poa_act_id
         return $resultado[0];
         
     }
+    
+    public function obtenerPorActividadDetalleCod($anio, $codigo) {
+        $sql = "SELECT *
+FROM poa_actividad B, $this->tabla C
+WHERE B.poa_act_id=C.poa_act_id 
+	AND B.poa_act_codigo=? AND C.poa_act_det_anio = ?";
+        $consulta = $this->db->query($sql, array($codigo,$anio));
+        $resultado = $consulta->result();
+        return $resultado;
+        
+    }
 
 }
 
