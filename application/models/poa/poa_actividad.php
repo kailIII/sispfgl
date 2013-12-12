@@ -17,6 +17,16 @@ class Poa_actividad extends CI_Model {
         $consulta = $this->db->get($this->tabla);
         return $consulta->result();
     }
+    
+    public function obtenerActividadesPadresSeg($poa_com_id,$anio) {
+        $this->db->join('poa_actividad_detalle',"poa_actividad_detalle.poa_act_id=$this->tabla.poa_act_id");
+        $this->db->where('poa_act_padre IS NULL');
+        $this->db->where("poa_com_id = $poa_com_id");
+        $this->db->where("poa_act_det_anio = $anio");
+        $this->db->order_by('poa_act_codigo');
+        $consulta = $this->db->get($this->tabla);
+        return $consulta->result();
+    }
 
     public function obtenerSubActividades($padre) {
         $this->db->where('poa_act_padre', $padre);

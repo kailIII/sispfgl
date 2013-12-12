@@ -257,12 +257,12 @@ class Seguimiento extends CI_Controller {
             $informacion['actividades'] = $this->actividad->obtenerActividadesPadres($poa_com_id);
         } else {
             $informacion['poa_com_id'] = $poa_com_id;
-            $informacion['actividades'] = $this->actividad->obtenerActividadesPadresSeg($poa_com_id);
+            $informacion['actividades'] = $this->actividad->obtenerActividadesPadresSeg($poa_com_id,$anio);
         }
         $this->load->view($this->ruta . 'cargar_actividades_view', $informacion);
     }
 
-    public function gestionarActividad($poa_comp_id, $poa_act_id = false, $poa_act_hijo = false) {
+    public function gestionarActividad($poa_comp_id,$anio, $poa_act_id = false, $poa_act_hijo = false) {
         if (!$this->tank_auth->is_logged_in())
             redirect('/auth');
         $informacion['titulo'] = 'Planificación Operativa Anual';
@@ -272,6 +272,7 @@ class Seguimiento extends CI_Controller {
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
         $informacion['poa_com_id'] = $poa_comp_id;
+        $informacion['anio'] = $anio;
         if ($poa_act_id != false) {
             $actividad = $this->poa->obtener_por_id($this->dbPrefix . 'actividad', $this->dbPrefix . 'act_id', (int) $poa_act_id);
             $informacion['poa_act_cod_presupuestario'] = $actividad->poa_act_cod_presupuestario;
@@ -296,7 +297,7 @@ class Seguimiento extends CI_Controller {
         $this->load->view('plantilla/footer', $informacion);
     }
 
-    public function gestionarSubActividad($poa_comp_id, $poa_act_padre, $poa_act_id = false) {
+    public function gestionarSubActividad($poa_comp_id, $poa_act_padre,$anio, $poa_act_id = false) {
         if (!$this->tank_auth->is_logged_in())
             redirect('/auth');
         $informacion['titulo'] = 'Planificación Operativa Anual';
@@ -307,6 +308,7 @@ class Seguimiento extends CI_Controller {
         $this->load->view('plantilla/menu', $informacion);
         $informacion['poa_com_id'] = $poa_comp_id;
         $informacion['poa_act_padre'] = $poa_act_padre;
+        $informacion['anio'] = $anio;
         $informacion['ruta'] = $this->ruta;
         if ($poa_act_id != false) {
             $actividad = $this->poa->obtener_por_id($this->dbPrefix . 'actividad', $this->dbPrefix . 'act_id', (int) $poa_act_id);
@@ -333,6 +335,7 @@ class Seguimiento extends CI_Controller {
 
     public function guardarActividad() {
         $tabla = 'poa_actividad';
+        $detalle = 'poa_actividad_detalle';
         $campo = 'poa_act_id';
         if ($this->input->post('poa_com_id') == 1) {
             if ($this->input->post('poa_act_id') == '') {
@@ -349,6 +352,11 @@ class Seguimiento extends CI_Controller {
                 );
                 $this->poa->insertar_tabla($tabla, $datos);
                 $poa_act_id = $this->poa->ultimoId($tabla, $campo);
+                $datos=array(
+                    'poa_act_id'=>$poa_act_id,
+                    'poa_act_det_anio'=>$this->input->post('anio')
+                );
+                $this->poa->insertar_tabla($detalle, $datos);
             } else {
                 $datos = array(
                     'poa_act_codigo' => $this->input->post('poa_act_codigo'),
@@ -379,6 +387,11 @@ class Seguimiento extends CI_Controller {
                 );
                 $this->poa->insertar_tabla($tabla, $datos);
                 $poa_act_id = $this->poa->ultimoId($tabla, $campo);
+                 $datos=array(
+                    'poa_act_id'=>$poa_act_id,
+                    'poa_act_det_anio'=>$this->input->post('anio')
+                );
+                $this->poa->insertar_tabla($detalle, $datos);
             } else {
                 $datos = array(
                     'poa_act_cod_presupuestario' => $this->input->post('poa_act_cod_presupuestario'),

@@ -670,60 +670,64 @@ Préstamo BIRF 7916');
                     if ($aux->poa_act_pac != '0')
                         $this->phpexcel->getActiveSheet()->setCellValue("AA$i", $aux->poa_act_pac);
                     $this->phpexcel->getActiveSheet()->getColumnDimension('AO')->setWidth(25);
-                    switch ($aux->poa_act_mes_inicio) {
-                        case 1: $variable = 'Enero';
-                            break;
-                        case 2: $variable = 'Febrero';
-                            break;
-                        case 3: $variable = 'Marzo';
-                            break;
-                        case 4: $variable = 'Abril';
-                            break;
-                        case 5: $variable = 'Mayo';
-                            break;
-                        case 6: $variable = 'Junio';
-                            break;
-                        case 7: $variable = 'Julio';
-                            break;
-                        case 8: $variable = 'Agosto';
-                            break;
-                        case 9: $variable = 'Septiembre';
-                            break;
-                        case 10: $variable = 'Octubre';
-                            break;
-                        case 11: $variable = 'Noviembre';
-                            break;
-                        case 12: $variable = 'Diciembre';
-                            break;
+                    if (!is_null($aux->poa_act_mes_inicio)) {
+                        switch ($aux->poa_act_mes_inicio) {
+                            case 1: $variable = 'Enero';
+                                break;
+                            case 2: $variable = 'Febrero';
+                                break;
+                            case 3: $variable = 'Marzo';
+                                break;
+                            case 4: $variable = 'Abril';
+                                break;
+                            case 5: $variable = 'Mayo';
+                                break;
+                            case 6: $variable = 'Junio';
+                                break;
+                            case 7: $variable = 'Julio';
+                                break;
+                            case 8: $variable = 'Agosto';
+                                break;
+                            case 9: $variable = 'Septiembre';
+                                break;
+                            case 10: $variable = 'Octubre';
+                                break;
+                            case 11: $variable = 'Noviembre';
+                                break;
+                            case 12: $variable = 'Diciembre';
+                                break;
+                        }
+                        $this->phpexcel->getActiveSheet()->setCellValue("AB$i", $variable);
                     }
-                    $this->phpexcel->getActiveSheet()->setCellValue("AB$i", $variable);
-                    switch ($aux->poa_actividad_mes_fin) {
-                        case 1: $variable = 'Enero';
-                            break;
-                        case 2: $variable = 'Febrero';
-                            break;
-                        case 3: $variable = 'Marzo';
-                            break;
-                        case 4: $variable = 'Abril';
-                            break;
-                        case 5: $variable = 'Mayo';
-                            break;
-                        case 6: $variable = 'Junio';
-                            break;
-                        case 7: $variable = 'Julio';
-                            break;
-                        case 8: $variable = 'Agosto';
-                            break;
-                        case 9: $variable = 'Septiembre';
-                            break;
-                        case 10: $variable = 'Octubre';
-                            break;
-                        case 11: $variable = 'Noviembre';
-                            break;
-                        case 12: $variable = 'Diciembre';
-                            break;
+                    if (!is_null($aux->poa_actividad_mes_fin)) {
+                        switch ($aux->poa_actividad_mes_fin) {
+                            case 1: $variable = 'Enero';
+                                break;
+                            case 2: $variable = 'Febrero';
+                                break;
+                            case 3: $variable = 'Marzo';
+                                break;
+                            case 4: $variable = 'Abril';
+                                break;
+                            case 5: $variable = 'Mayo';
+                                break;
+                            case 6: $variable = 'Junio';
+                                break;
+                            case 7: $variable = 'Julio';
+                                break;
+                            case 8: $variable = 'Agosto';
+                                break;
+                            case 9: $variable = 'Septiembre';
+                                break;
+                            case 10: $variable = 'Octubre';
+                                break;
+                            case 11: $variable = 'Noviembre';
+                                break;
+                            case 12: $variable = 'Diciembre';
+                                break;
+                        }
+                        $this->phpexcel->getActiveSheet()->setCellValue("AC$i", $variable);
                     }
-                    $this->phpexcel->getActiveSheet()->setCellValue("AC$i", $variable);
 
                     $seguimientos = $this->seguimiento->obtenerSeguimientoActividad($aux->poa_act_det_id);
                     foreach ($seguimientos as $seg) {
@@ -2111,7 +2115,7 @@ Préstamo BIRF 7916');
         $this->phpexcel->getActiveSheet()->setCellValue("O17", "=SUM(O5:O16)");
         $this->phpexcel->getActiveSheet()->setCellValue("P17", "=SUM(P5:P16)");
         $this->phpexcel->getActiveSheet()->setCellValue("Q17", "=SUM(Q5:Q16)");
-$this->phpexcel->getActiveSheet()->getStyle("D17:Q17")->getNumberFormat()->setFormatCode("$ #,###,###.##");
+        $this->phpexcel->getActiveSheet()->getStyle("D17:Q17")->getNumberFormat()->setFormatCode("$ #,###,###.##");
         $this->phpexcel->getActiveSheet()->getStyle('B5:Q16')->applyFromArray($estCuerpo);
         $this->phpexcel->getActiveSheet()->getStyle('B17:Q17')->applyFromArray($estCuerpoNegrita);
         /*

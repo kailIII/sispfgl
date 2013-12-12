@@ -85,6 +85,7 @@
     <input type="text" id="poa_com_id" name="poa_com_id" hidden="hidden"  value="<?php echo $poa_com_id; ?>" />
     <input type="text" id="poa_act_id" name="poa_act_id" hidden="hidden"  value="<?php if (isset($poa_act_id)) echo $poa_act_id; ?>" />
     <input type="text" id="poa_act_padre" name="poa_act_padre" hidden="hidden"  value="<?php if (isset($poa_act_padre)) echo $poa_act_padre; ?>" />
+    <input type="text" id="anio" name="anio" hidden="hidden"  value="<?php if (isset($anio)) echo $anio; ?>" />
 </form>
 <div id="efectivo" class="mensaje" title="Almacenado">
     <center>
