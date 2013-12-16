@@ -5,6 +5,23 @@
             document.location.href = '<?php echo base_url('auth/muestraUsuario'); ?>';
         });
         
+        if($("select[name='reg_id']").val()=='0'){
+            $("select[name='reg_id']").hide();
+            $("#region").hide();
+        }
+        
+        
+        $("select[name='rol_id']").change(function() {
+            if($("select[name='rol_id']").val()==16){
+                $("select[name='reg_id']").show();
+                $("#region").show();
+            }else{
+                $("select[name='reg_id']").hide();
+                $("#region").hide();
+            }
+            
+        })
+        
         
     });
 </script>
@@ -47,7 +64,7 @@ $rol_id = array(
 $reg_id = array(
     'name' => 'reg_id',
     'id' => 'reg_id',
-    'value' => set_value('reg_id')
+    'value' => set_value('reg_id'),
 );
 ?>
 <h2 class="demoHeaders" align="Center">Registro de Usuario</h2>
@@ -57,13 +74,13 @@ $reg_id = array(
         <tr>
         <td class="letraazul"><?php echo form_label('Usuario', $username['id']); ?></td>
         <td><?php echo form_input($username); ?></td>
-		<td class="error"><?php echo form_error($username['name']); ?><?php echo isset($errors[$username['name']])?$errors[$username['name']]:''; ?></td>
+        <td class="error"><?php echo form_error($username['name']); ?><?php echo isset($errors[$username['name']]) ? $errors[$username['name']] : ''; ?></td>
     </tr>
 <?php } ?>
 <tr>
 <td class="letraazul"><?php echo form_label('Correo Electrónico', $email['id']); ?></td>
 <td><?php echo form_input($email); ?></td>
-		<td class="error"><?php echo form_error($email['name']); ?><?php echo isset($errors[$email['name']])?$errors[$email['name']]:''; ?></td>
+<td class="error"><?php echo form_error($email['name']); ?><?php echo isset($errors[$email['name']]) ? $errors[$email['name']] : ''; ?></td>
 </tr>
 <tr>
 <td class="letraazul"><?php echo form_label('Contraseña', $password['id']); ?></td>

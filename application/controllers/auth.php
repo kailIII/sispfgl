@@ -17,6 +17,7 @@ class Auth extends CI_Controller {
 
         $this->load->helper(array('form', 'url'));
         $this->lang->load('tank_auth');
+        $this->load->model('users');
     }
 
     function index() {
@@ -169,22 +170,23 @@ class Auth extends CI_Controller {
         $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean|min_length[' . $this->config->item('password_min_length', 'tank_auth') . ']|max_length[' . $this->config->item('password_max_length', 'tank_auth') . ']|alpha_dash');
         $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'trim|required|xss_clean|matches[password]');
         $this->form_validation->set_rules('rol_id', 'rol_id', 'callback_rolSeleccionado');
-        $this->form_validation->set_rules('reg_id', 'reg_id', 'callback_regionSeleccionada');
+        $this->form_validation->set_rules('reg_id', 'reg_id', '');
         $informacion['errors'] = array();
 
         $email_activation = $this->config->item('email_activation', 'tank_auth');
 
-        if ($this->form_validation->run()) {  
-            
+        if ($this->form_validation->run()) {
+            // var_dump($reg);
+            // exit();
             if (!is_null($informacion = $this->tank_auth->create_user(
                             $use_username ? $this->form_validation->set_value('username') : '', $this->form_validation->set_value('email'), $this->form_validation->set_value('password'), $this->form_validation->set_value('rol_id'), $email_activation))) {         // success
                 $informacion['site_name'] = $this->config->item('website_name', 'tank_auth');
-                
+
                 if ($email_activation) {
-                   
+
                     $this->tank_auth->activate_user($informacion['user_id'], '123456789qrtyuo');
-/*                    if ($informacion['rol_id'] == 16)
-                        $this->tank_auth->actualizaRegion($informacion['reg_id'], $informacion['user_id']);*/
+                    if($this->form_validation->set_value('reg_id')!='0')
+                        $this->users->actualizaRegion($this->form_validation->set_value('reg_id'), $informacion);
                     $this->_send_email('credenciales', $informacion['email'], $informacion);
                     $this->_show_message($this->lang->line('auth_message_registration_completed_3'));
                 }

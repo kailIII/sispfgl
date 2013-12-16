@@ -29,7 +29,7 @@ WHERE B.poa_act_det_anio=$anio AND C.poa_act_codigo='$codigo' AND A.poa_act_seg_
     }
     
     public function obtenerDetallePorCodigoPresupuestario($codigo,$anio,$mes,$componente){
-        $sql="SELECT SUM(D.poa_act_seg_desembolso)
+        $sql="SELECT SUM(D.poa_act_seg_desembolso) poa_act_seg_desembolso
 FROM poa_actividad A
 	INNER JOIN poa_actividad_detalle B ON A.poa_act_id=B.poa_act_id
 	INNER JOIN poa_componente C ON A.poa_com_id=C.poa_com_id

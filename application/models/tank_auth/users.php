@@ -450,14 +450,8 @@ class Users extends CI_Model {
     }
 
     public function actualizaRegion($reg_id, $username) {
-        $data = array(
-            'username' => 'eliminado' . $id,
-            'activated' => 0
-        );
-        $this->db->where('id', $id);
-        $this->db->update($this->table_name, $data);
         $this->db->set('reg_id', $reg_id);
-        $this->db->where('id', $username);
+        $this->db->where('id', $username['user_id']);
         $this->db->update($this->table_name);
     }
 

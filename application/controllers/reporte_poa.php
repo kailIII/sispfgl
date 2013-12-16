@@ -2118,6 +2118,235 @@ Préstamo BIRF 7916');
         $this->phpexcel->getActiveSheet()->getStyle("D17:Q17")->getNumberFormat()->setFormatCode("$ #,###,###.##");
         $this->phpexcel->getActiveSheet()->getStyle('B5:Q16')->applyFromArray($estCuerpo);
         $this->phpexcel->getActiveSheet()->getStyle('B17:Q17')->applyFromArray($estCuerpoNegrita);
+
+        //ENCABEZADO
+        $this->phpexcel->getActiveSheet()->setCellValue('B22', "Componente");
+        $this->phpexcel->getActiveSheet()->mergeCells('B22:B23');
+        $this->phpexcel->getActiveSheet()->getStyle('B22:B23')->applyFromArray($estEnc2);
+
+        $this->phpexcel->getActiveSheet()->setCellValue('C22', "Código Presupuestario");
+        $this->phpexcel->getActiveSheet()->mergeCells('C22:C23');
+        $this->phpexcel->getActiveSheet()->getStyle('C22:C23')->applyFromArray($estEnc2);
+
+        $this->phpexcel->getActiveSheet()->setCellValue('D22', "Datos");
+        $this->phpexcel->getActiveSheet()->mergeCells('D22:Q22');
+        $this->phpexcel->getActiveSheet()->getStyle('D22:Q22')->applyFromArray($estEnc2);
+        $this->phpexcel->getActiveSheet()->setCellValue('D23', "Suma-Ene");
+        $this->phpexcel->getActiveSheet()->setCellValue('E23', "Suma-Feb");
+        $this->phpexcel->getActiveSheet()->setCellValue('F23', "Suma-Mar");
+        $this->phpexcel->getActiveSheet()->setCellValue('G23', "Suma-Abr");
+        $this->phpexcel->getActiveSheet()->setCellValue('H23', "Suma-May");
+        $this->phpexcel->getActiveSheet()->setCellValue('I23', "Suma-Jun");
+        $this->phpexcel->getActiveSheet()->setCellValue('J23', "Suma-Jul");
+        $this->phpexcel->getActiveSheet()->setCellValue('K23', "Suma-Ago");
+        $this->phpexcel->getActiveSheet()->setCellValue('L23', "Suma-Sep");
+        $this->phpexcel->getActiveSheet()->setCellValue('M23', "Suma-Oct");
+        $this->phpexcel->getActiveSheet()->setCellValue('N23', "Suma-Nov");
+        $this->phpexcel->getActiveSheet()->setCellValue('O23', "Suma-Dic");
+        $this->phpexcel->getActiveSheet()->setCellValue('P23', "Suma - Total BIRF");
+        $this->phpexcel->getActiveSheet()->setCellValue('Q23', "Suma - Total Contrapartida");
+        $this->phpexcel->getActiveSheet()->getStyle('D23:Q23')->applyFromArray($estEnc2);
+
+        $i = 24;
+        //COMPONENTE 2
+        $this->phpexcel->getActiveSheet()->setCellValue("B$i", "2");
+        $componente = "2.";
+        $codigos = $this->detalle->obtenerCodigoPresupuestario($anio, $componente);
+        $i++;
+        foreach ($codigos as $cod) {
+            $this->phpexcel->getActiveSheet()->setCellValue("C$i", $cod->poa_act_cod_presupuestario);
+            for ($j = 1; $j <= 12; $j++) {
+                $valor = $this->seguimiento->obtenerDetallePorCodigoPresupuestario($cod->poa_act_cod_presupuestario, $anio, $j, $componente);
+                switch ($j) {
+                    case 1:
+                        $this->phpexcel->getActiveSheet()->setCellValue("D$i", $valor);
+                        break;
+                    case 2:
+                        $this->phpexcel->getActiveSheet()->setCellValue("E$i", $valor);
+                        break;
+                    case 3:
+                        $this->phpexcel->getActiveSheet()->setCellValue("F$i", $valor);
+                        break;
+                    case 4:
+                        $this->phpexcel->getActiveSheet()->setCellValue("G$i", $valor);
+                        break;
+                    case 5:
+                        $this->phpexcel->getActiveSheet()->setCellValue("H$i", $valor);
+                        break;
+                    case 6:
+                        $this->phpexcel->getActiveSheet()->setCellValue("I$i", $valor);
+                        break;
+                    case 7:
+                        $this->phpexcel->getActiveSheet()->setCellValue("J$i", $valor);
+                        break;
+                    case 8:
+                        $this->phpexcel->getActiveSheet()->setCellValue("K$i", $valor);
+                        break;
+                    case 9:
+                        $this->phpexcel->getActiveSheet()->setCellValue("L$i", $valor);
+                        break;
+                    case 10:
+                        $this->phpexcel->getActiveSheet()->setCellValue("M$i", $valor);
+                        break;
+                    case 11:
+                        $this->phpexcel->getActiveSheet()->setCellValue("N$i", $valor);
+                        break;
+                    case 12:
+                        $this->phpexcel->getActiveSheet()->setCellValue("O$i", $valor);
+                        break;
+                }
+            }
+            $sumaBirf = $this->detalle->obtenerBirfCodigoPresupuestario($cod->poa_act_cod_presupuestario, $anio, $componente);
+            $sumaContra = $this->detalle->obtenerContrapartidaCodigoPresupuestario($cod->poa_act_cod_presupuestario, $anio, $componente);
+            $this->phpexcel->getActiveSheet()->setCellValue("P$i", $sumaBirf);
+            $this->phpexcel->getActiveSheet()->setCellValue("Q$i", $sumaContra);
+            $this->phpexcel->getActiveSheet()->getStyle("D$i:Q$i")->getNumberFormat()->setFormatCode("$ #,###,###.##");
+            $this->phpexcel->getActiveSheet()->getStyle("C$i:Q$i")->applyFromArray($estCuerpo);
+            $i++;
+        }
+        $this->phpexcel->getActiveSheet()->mergeCells("B24:B".($i-1));
+        $this->phpexcel->getActiveSheet()->getStyle("B24:B".($i-1))->applyFromArray($estCuerpo);
+        $inicio=$i;
+        //COMPONENTE 3
+        $this->phpexcel->getActiveSheet()->setCellValue("B$i", "3");
+        $componente = "3.";
+        $codigos = $this->detalle->obtenerCodigoPresupuestario($anio, $componente);
+        $i++;
+        foreach ($codigos as $cod) {
+            $this->phpexcel->getActiveSheet()->setCellValue("C$i", $cod->poa_act_cod_presupuestario);
+            for ($j = 1; $j <= 12; $j++) {
+                $valor = $this->seguimiento->obtenerDetallePorCodigoPresupuestario($cod->poa_act_cod_presupuestario, $anio, $j, $componente);
+                switch ($j) {
+                    case 1:
+                        $this->phpexcel->getActiveSheet()->setCellValue("D$i", $valor);
+                        break;
+                    case 2:
+                        $this->phpexcel->getActiveSheet()->setCellValue("E$i", $valor);
+                        break;
+                    case 3:
+                        $this->phpexcel->getActiveSheet()->setCellValue("F$i", $valor);
+                        break;
+                    case 4:
+                        $this->phpexcel->getActiveSheet()->setCellValue("G$i", $valor);
+                        break;
+                    case 5:
+                        $this->phpexcel->getActiveSheet()->setCellValue("H$i", $valor);
+                        break;
+                    case 6:
+                        $this->phpexcel->getActiveSheet()->setCellValue("I$i", $valor);
+                        break;
+                    case 7:
+                        $this->phpexcel->getActiveSheet()->setCellValue("J$i", $valor);
+                        break;
+                    case 8:
+                        $this->phpexcel->getActiveSheet()->setCellValue("K$i", $valor);
+                        break;
+                    case 9:
+                        $this->phpexcel->getActiveSheet()->setCellValue("L$i", $valor);
+                        break;
+                    case 10:
+                        $this->phpexcel->getActiveSheet()->setCellValue("M$i", $valor);
+                        break;
+                    case 11:
+                        $this->phpexcel->getActiveSheet()->setCellValue("N$i", $valor);
+                        break;
+                    case 12:
+                        $this->phpexcel->getActiveSheet()->setCellValue("O$i", $valor);
+                        break;
+                }
+            }
+            $sumaBirf = $this->detalle->obtenerBirfCodigoPresupuestario($cod->poa_act_cod_presupuestario, $anio, $componente);
+            $sumaContra = $this->detalle->obtenerContrapartidaCodigoPresupuestario($cod->poa_act_cod_presupuestario, $anio, $componente);
+            $this->phpexcel->getActiveSheet()->setCellValue("P$i", $sumaBirf);
+            $this->phpexcel->getActiveSheet()->setCellValue("Q$i", $sumaContra);
+            $this->phpexcel->getActiveSheet()->getStyle("D$i:Q$i")->getNumberFormat()->setFormatCode("$ #,###,###.##");
+            $this->phpexcel->getActiveSheet()->getStyle("C$i:Q$i")->applyFromArray($estCuerpo);
+            $i++;
+        }
+        $this->phpexcel->getActiveSheet()->mergeCells("B$inicio:B".($i-1));
+        $this->phpexcel->getActiveSheet()->getStyle("B$inicio:B".($i-1))->applyFromArray($estCuerpo);
+        $inicio=$i;
+        //COMPONENTE 4
+         //COMPONENTE 3
+        $this->phpexcel->getActiveSheet()->setCellValue("B$i", "4");
+        $componente = "4.";
+        $codigos = $this->detalle->obtenerCodigoPresupuestario($anio, $componente);
+        $i++;
+        foreach ($codigos as $cod) {
+            $this->phpexcel->getActiveSheet()->setCellValue("C$i", $cod->poa_act_cod_presupuestario);
+            for ($j = 1; $j <= 12; $j++) {
+                $valor = $this->seguimiento->obtenerDetallePorCodigoPresupuestario($cod->poa_act_cod_presupuestario, $anio, $j, $componente);
+                switch ($j) {
+                    case 1:
+                        $this->phpexcel->getActiveSheet()->setCellValue("D$i", $valor);
+                        break;
+                    case 2:
+                        $this->phpexcel->getActiveSheet()->setCellValue("E$i", $valor);
+                        break;
+                    case 3:
+                        $this->phpexcel->getActiveSheet()->setCellValue("F$i", $valor);
+                        break;
+                    case 4:
+                        $this->phpexcel->getActiveSheet()->setCellValue("G$i", $valor);
+                        break;
+                    case 5:
+                        $this->phpexcel->getActiveSheet()->setCellValue("H$i", $valor);
+                        break;
+                    case 6:
+                        $this->phpexcel->getActiveSheet()->setCellValue("I$i", $valor);
+                        break;
+                    case 7:
+                        $this->phpexcel->getActiveSheet()->setCellValue("J$i", $valor);
+                        break;
+                    case 8:
+                        $this->phpexcel->getActiveSheet()->setCellValue("K$i", $valor);
+                        break;
+                    case 9:
+                        $this->phpexcel->getActiveSheet()->setCellValue("L$i", $valor);
+                        break;
+                    case 10:
+                        $this->phpexcel->getActiveSheet()->setCellValue("M$i", $valor);
+                        break;
+                    case 11:
+                        $this->phpexcel->getActiveSheet()->setCellValue("N$i", $valor);
+                        break;
+                    case 12:
+                        $this->phpexcel->getActiveSheet()->setCellValue("O$i", $valor);
+                        break;
+                }
+            }
+            $sumaBirf = $this->detalle->obtenerBirfCodigoPresupuestario($cod->poa_act_cod_presupuestario, $anio, $componente);
+            $sumaContra = $this->detalle->obtenerContrapartidaCodigoPresupuestario($cod->poa_act_cod_presupuestario, $anio, $componente);
+            $this->phpexcel->getActiveSheet()->setCellValue("P$i", $sumaBirf);
+            $this->phpexcel->getActiveSheet()->setCellValue("Q$i", $sumaContra);
+            $this->phpexcel->getActiveSheet()->getStyle("D$i:Q$i")->getNumberFormat()->setFormatCode("$ #,###,###.##");
+            $this->phpexcel->getActiveSheet()->getStyle("C$i:Q$i")->applyFromArray($estCuerpo);
+            $i++;
+        }
+        $this->phpexcel->getActiveSheet()->mergeCells("B$inicio:B".($i-1));
+        $this->phpexcel->getActiveSheet()->getStyle("B$inicio:B".($i-1))->applyFromArray($estCuerpo);
+        
+        //SUMAS
+        $this->phpexcel->getActiveSheet()->setCellValue("B$i", 'Total Resultado');
+        $this->phpexcel->getActiveSheet()->mergeCells("B$i:C$i");
+        $this->phpexcel->getActiveSheet()->setCellValue("D$i", "=SUM(D24:D".($i-1).")");
+        $this->phpexcel->getActiveSheet()->setCellValue("E$i", "=SUM(E24:E".($i-1).")");
+        $this->phpexcel->getActiveSheet()->setCellValue("F$i", "=SUM(F24:F".($i-1).")");
+        $this->phpexcel->getActiveSheet()->setCellValue("G$i", "=SUM(G24:G".($i-1).")");
+        $this->phpexcel->getActiveSheet()->setCellValue("H$i", "=SUM(H24:H".($i-1).")");
+        $this->phpexcel->getActiveSheet()->setCellValue("I$i", "=SUM(I24:I".($i-1).")");
+        $this->phpexcel->getActiveSheet()->setCellValue("J$i", "=SUM(J24:J".($i-1).")");
+        $this->phpexcel->getActiveSheet()->setCellValue("K$i", "=SUM(K24:K".($i-1).")");
+        $this->phpexcel->getActiveSheet()->setCellValue("L$i", "=SUM(L24:L".($i-1).")");
+        $this->phpexcel->getActiveSheet()->setCellValue("M$i", "=SUM(M24:M".($i-1).")");
+        $this->phpexcel->getActiveSheet()->setCellValue("N$i", "=SUM(N24:N".($i-1).")");
+        $this->phpexcel->getActiveSheet()->setCellValue("O$i", "=SUM(O24:O".($i-1).")");
+        $this->phpexcel->getActiveSheet()->setCellValue("P$i", "=SUM(P24:P".($i-1).")");
+        $this->phpexcel->getActiveSheet()->setCellValue("Q$i", "=SUM(Q24:Q".($i-1).")");
+        $this->phpexcel->getActiveSheet()->getStyle("D$i:Q$i")->getNumberFormat()->setFormatCode("$ #,###,###.##");
+        $this->phpexcel->getActiveSheet()->getStyle("B$i:Q$i")->applyFromArray($estCuerpoNegrita);
+
+        
         /*
          * SALIDA DEL DOCUMENTO
          */
