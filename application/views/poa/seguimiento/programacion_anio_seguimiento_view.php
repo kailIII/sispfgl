@@ -1,7 +1,26 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $('#boton').button().click(function() {
-            document.location.href = '<?php echo base_url($ruta . 'gestionSeguimientoTrimestral'); ?>/' +$('#anio').val()+"/"+ $('#poa_com_id').val()+"/"+$('#trimestre').val();
+
+            if ($('#trimestre').val() == 0 || $('#poa_com_id').val() == 0) {
+                $('#mTrimestre').dialog('open');
+                return false;
+            } else {
+                document.location.href = '<?php echo base_url($ruta . 'gestionSeguimientoTrimestral'); ?>/' + $('#anio').val() + "/" + $('#poa_com_id').val() + "/" + $('#trimestre').val();
+            }
+
+
+        });
+
+        /*DIALOGOS DE VALIDACION*/
+        $('.mensaje').dialog({
+            autoOpen: false,
+            width: 300,
+            buttons: {
+                "Ok": function() {
+                    $(this).dialog("close");
+                }
+            }
         });
     });
 </script>
@@ -34,5 +53,8 @@
 
     <input id='boton' type="button"  value="Editar Seguimiento" />
 </center>
-
-
+<div id="mTrimestre" class="mensaje" title="Error">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/cancel.png'); ?>" class="imagenError" />Debe Seleccionar el Trimestre y la Actividad para poder continuar</p>
+    </center>
+</div>
