@@ -32,6 +32,17 @@ WHERE A.poa_act_id=B.poa_act_id AND B.poa_act_det_id=C.poa_act_det_id
         
     }
     
+    public function obtenerActividadTrimestral($anio, $poa_act_id,$trimestre) {
+        $sql = "SELECT C.*
+                FROM poa_actividad A, poa_actividad_detalle B, $this->tabla C
+                WHERE A.poa_act_id=B.poa_act_id AND B.poa_act_det_id=C.poa_act_det_id
+                      AND A.poa_act_id=? AND B.poa_act_det_anio = ? AND C.poa_act_seg_tri_mes=?";
+        $consulta = $this->db->query($sql, array($poa_act_id,$anio,$trimestre));
+        $resultado = $consulta->result();
+        return $resultado[0];
+        
+    }
+    
 }
 
 ?>
