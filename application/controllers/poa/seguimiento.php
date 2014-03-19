@@ -440,7 +440,7 @@ class Seguimiento extends CI_Controller {
         $informacion['componente'] = $componente->poa_com_codigo . " " . $componente->poa_com_descripcion;
         $informacion['anio'] = $anio;
         $informacion['poa_com_id'] = $poa_com_id;
-        $actividades = $this->actividad->obtenerActividadComponente($poa_com_id);
+        $actividades = $this->actividad->obtenerActividadComponente($poa_com_id, $anio);
         if ($this->detalle->obtenerActividadDetalle($anio, $poa_com_id)->valor == 0) {
             foreach ($actividades as $aux) {
                 $datos = array(
@@ -485,43 +485,42 @@ class Seguimiento extends CI_Controller {
         $tabla2 = "poa_actividad_seguimiento";
         $campo = "poa_act_det_id";
         $campo2 = "poa_act_seg_mes";
-        if ($this->input->post($aux->poa_act_id . '_poa_actividad_mes_fin') == '')
-            $fechaFin = NULL;
-        else
-            $fechaFin = $this->input->post($aux->poa_act_id . '_poa_actividad_mes_fin');
-
-        if ($this->input->post($aux->poa_act_id . '_poa_act_mes_inicio') == '')
-            $fechaInicio = NULL;
-        else
-            $fechaInicio = $this->input->post($aux->poa_act_id . '_poa_act_mes_inicio');
-
-        if ($this->input->post($aux->poa_act_id . '_poa_act_realiza') == '')
-            $realiza = NULL;
-        else
-            $realiza = $this->input->post($aux->poa_act_id . '_poa_act_realiza');
-
-        if ($this->input->post($aux->poa_act_id . '_poa_act_periodo_car') == '')
-            $periodoCar = NULL;
-        else
-            $periodoCar = $this->input->post($aux->poa_act_id . '_poa_act_periodo_car');
-        
-        if ($this->input->post($aux->poa_act_id . '_poa_act_monto_estimado') == '')
-            $montoEstimado = NULL;
-        else
-            $montoEstimado = $this->input->post($aux->poa_act_id . '_poa_act_monto_estimado');
-        
-        if ($this->input->post($aux->poa_act_id . '_poa_act_metodo') == '')
-            $metodo = NULL;
-        else
-            $metodo = $this->input->post($aux->poa_act_id . '_poa_act_metodo');
-        
-        if ($this->input->post($aux->poa_act_id . '_poa_act_pac') == '')
-            $pac = NULL;
-        else
-            $pac = $this->input->post($aux->poa_act_id . '_poa_act_pac');
-       
         if ($poa_com_id != 1) {
             foreach ($actividades as $aux) {
+                if ($this->input->post($aux->poa_act_id . '_poa_actividad_mes_fin') == '')
+                    $fechaFin = NULL;
+                else
+                    $fechaFin = $this->input->post($aux->poa_act_id . '_poa_actividad_mes_fin');
+
+                if ($this->input->post($aux->poa_act_id . '_poa_act_mes_inicio') == '')
+                    $fechaInicio = NULL;
+                else
+                    $fechaInicio = $this->input->post($aux->poa_act_id . '_poa_act_mes_inicio');
+
+                if ($this->input->post($aux->poa_act_id . '_poa_act_realiza') == '')
+                    $realiza = NULL;
+                else
+                    $realiza = $this->input->post($aux->poa_act_id . '_poa_act_realiza');
+
+                if ($this->input->post($aux->poa_act_id . '_poa_act_periodo_car') == '')
+                    $periodoCar = NULL;
+                else
+                    $periodoCar = $this->input->post($aux->poa_act_id . '_poa_act_periodo_car');
+
+                if ($this->input->post($aux->poa_act_id . '_poa_act_monto_estimado') == '')
+                    $montoEstimado = NULL;
+                else
+                    $montoEstimado = $this->input->post($aux->poa_act_id . '_poa_act_monto_estimado');
+
+                if ($this->input->post($aux->poa_act_id . '_poa_act_metodo') == '')
+                    $metodo = NULL;
+                else
+                    $metodo = $this->input->post($aux->poa_act_id . '_poa_act_metodo');
+
+                if ($this->input->post($aux->poa_act_id . '_poa_act_pac') == '')
+                    $pac = NULL;
+                else
+                    $pac = $this->input->post($aux->poa_act_id . '_poa_act_pac');
                 $datos = array(
                     'poa_act_det_contrapartida' => $this->input->post($aux->poa_act_id . '_poa_act_det_contrapartida'),
                     'poa_act_det_total_proyecto' => $this->input->post($aux->poa_act_id . '_poa_act_det_total_proyecto'),
@@ -547,6 +546,14 @@ class Seguimiento extends CI_Controller {
             }
         } else {
             foreach ($actividades as $aux) {
+                if ($this->input->post($aux->poa_act_id . '_poa_actividad_mes_fin') == '')
+                    $fechaFin = NULL;
+                else
+                    $fechaFin = $this->input->post($aux->poa_act_id . '_poa_actividad_mes_fin');
+                if ($this->input->post($aux->poa_act_id . '_poa_act_mes_inicio') == '')
+                    $fechaInicio = NULL;
+                else
+                    $fechaInicio = $this->input->post($aux->poa_act_id . '_poa_act_mes_inicio');
                 $datos = array(
                     'poa_act_det_meta_acumulada' => $this->input->post($aux->poa_act_id . '_poa_act_det_meta_acumulada'),
                     'poa_act_det_meta_planificada' => $this->input->post($aux->poa_act_id . '_poa_act_det_meta_planificada'),
@@ -586,7 +593,7 @@ class Seguimiento extends CI_Controller {
         $informacion['componente'] = $componente->poa_com_codigo . " " . $componente->poa_com_descripcion;
         $informacion['anio'] = $anio;
         $informacion['poa_com_id'] = $poa_com_id;
-        $actividades = $this->actividad->obtenerActividadComponente($poa_com_id);
+        $actividades = $this->actividad->obtenerActividadComponente($poa_com_id,$anio);
         if ($this->trimestral->obtenerActividadDetalleTri($anio, $poa_com_id, $trimestre)->valor == 0) {
             if ($poa_com_id != 1)
                 $ordenamiento = 'poa_act_id';

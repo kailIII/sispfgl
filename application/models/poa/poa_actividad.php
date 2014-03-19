@@ -47,10 +47,12 @@ class Poa_actividad extends CI_Model {
         return $this->db->get($this->tabla, '1')->row()->poa_act_codigo;
     }
 
-    public function obtenerActividadComponente($poa_com_id) {
-        $this->db->where("poa_com_id = $poa_com_id");
-        $this->db->order_by('poa_act_codigo');
-        $consulta = $this->db->get($this->tabla);
+    public function obtenerActividadComponente($poa_com_id,$anio) {
+        $sql = "SELECT B.*
+FROM poa_componente A,$this->tabla B, poa_actividad_detalle C
+WHERE A.poa_com_id=B.poa_com_id AND B.poa_act_id=C.poa_act_id 
+	AND A.poa_com_id=? AND C.poa_act_det_anio = ?";
+        $consulta = $this->db->query($sql, array($poa_com_id, $anio));
         return $consulta->result();
     }
 
@@ -68,7 +70,7 @@ ORDER BY A.$ordenamiento";
 FROM $this->tabla  A JOIN poa_actividad_detalle  B ON A.poa_act_id=B.poa_act_id 
     JOIN poa_actividad_seg_tri C ON C.poa_act_det_id=B.poa_act_det_id
 WHERE poa_com_id = ? AND B.poa_act_det_anio=? AND C.poa_act_seg_tri_mes=?
-ORDER BY poa_act_codigo";
+ORDER BY A.poa_act_id,A.poa_act_codigo";
         $consulta = $this->db->query($sql, array($poa_com_id, $anio, $trimestre));
         return $consulta->result();
     }

@@ -308,6 +308,8 @@ Préstamo BIRF 7916');
                         break;
                     case 12: $variable = 'Diciembre';
                         break;
+                    default :$variable = null;
+                        break;
                 }
                 $this->phpexcel->getActiveSheet()->setCellValue("H$i", $variable);
                 switch ($aux->poa_actividad_mes_fin) {
@@ -334,6 +336,8 @@ Préstamo BIRF 7916');
                     case 11: $variable = 'Noviembre';
                         break;
                     case 12: $variable = 'Diciembre';
+                        break;
+                    default :$variable = null;
                         break;
                 }
                 $this->phpexcel->getActiveSheet()->setCellValue("I$i", $variable);
@@ -697,6 +701,8 @@ Préstamo BIRF 7916');
                                 break;
                             case 12: $variable = 'Diciembre';
                                 break;
+                            default :$variable = null;
+                                break;
                         }
                         $this->phpexcel->getActiveSheet()->setCellValue("AB$i", $variable);
                     }
@@ -725,6 +731,8 @@ Préstamo BIRF 7916');
                             case 11: $variable = 'Noviembre';
                                 break;
                             case 12: $variable = 'Diciembre';
+                                break;
+                            default :$variable = null;
                                 break;
                         }
                         $this->phpexcel->getActiveSheet()->setCellValue("AC$i", $variable);
@@ -1110,6 +1118,8 @@ Préstamo BIRF 7916');
                         break;
                     case 12: $variable = 'Diciembre';
                         break;
+                    default :$variable = null;
+                        break;
                 }
                 $this->phpexcel->getActiveSheet()->setCellValue("AB$i", $variable);
                 switch ($aux->poa_actividad_mes_fin) {
@@ -1136,6 +1146,8 @@ Préstamo BIRF 7916');
                     case 11: $variable = 'Noviembre';
                         break;
                     case 12: $variable = 'Diciembre';
+                        break;
+                    default :$variable = null;
                         break;
                 }
                 $this->phpexcel->getActiveSheet()->setCellValue("AC$i", $variable);
@@ -1520,6 +1532,8 @@ Préstamo BIRF 7916');
                         break;
                     case 12: $variable = 'Diciembre';
                         break;
+                    default :$variable = null;
+                        break;
                 }
                 $this->phpexcel->getActiveSheet()->setCellValue("AB$i", $variable);
                 switch ($aux->poa_actividad_mes_fin) {
@@ -1546,6 +1560,8 @@ Préstamo BIRF 7916');
                     case 11: $variable = 'Noviembre';
                         break;
                     case 12: $variable = 'Diciembre';
+                        break;
+                    default :$variable = null;
                         break;
                 }
                 $this->phpexcel->getActiveSheet()->setCellValue("AC$i", $variable);
@@ -2689,6 +2705,8 @@ Préstamo BIRF 7916');
                         break;
                     case 12: $variable = 'Diciembre';
                         break;
+                    default :$variable = null;
+                        break;
                 }
                 $this->phpexcel->getActiveSheet()->setCellValue("H$i", $variable);
                 switch ($aux->poa_actividad_mes_fin) {
@@ -2715,6 +2733,8 @@ Préstamo BIRF 7916');
                     case 11: $variable = 'Noviembre';
                         break;
                     case 12: $variable = 'Diciembre';
+                        break;
+                    default :$variable = null;
                         break;
                 }
                 $this->phpexcel->getActiveSheet()->setCellValue("I$i", $variable);
@@ -3098,6 +3118,8 @@ Préstamo BIRF 7916');
                                 break;
                             case 12: $variable = 'Diciembre';
                                 break;
+                            default :$variable = null;
+                                break;
                         }
                         $this->phpexcel->getActiveSheet()->setCellValue("AB$i", $variable);
                     }
@@ -3126,6 +3148,8 @@ Préstamo BIRF 7916');
                             case 11: $variable = 'Noviembre';
                                 break;
                             case 12: $variable = 'Diciembre';
+                                break;
+                            default :$variable = null;
                                 break;
                         }
                         $this->phpexcel->getActiveSheet()->setCellValue("AC$i", $variable);
@@ -3530,6 +3554,8 @@ Préstamo BIRF 7916');
                         break;
                     case 12: $variable = 'Diciembre';
                         break;
+                    default :$variable = null;
+                        break;
                 }
                 $this->phpexcel->getActiveSheet()->setCellValue("AB$i", $variable);
                 switch ($aux->poa_actividad_mes_fin) {
@@ -3556,6 +3582,8 @@ Préstamo BIRF 7916');
                     case 11: $variable = 'Noviembre';
                         break;
                     case 12: $variable = 'Diciembre';
+                        break;
+                    default :$variable = null;
                         break;
                 }
                 $this->phpexcel->getActiveSheet()->setCellValue("AC$i", $variable);
@@ -3958,6 +3986,8 @@ Préstamo BIRF 7916');
                         break;
                     case 12: $variable = 'Diciembre';
                         break;
+                    default :$variable = null;
+                        break;
                 }
                 $this->phpexcel->getActiveSheet()->setCellValue("AB$i", $variable);
                 switch ($aux->poa_actividad_mes_fin) {
@@ -3984,6 +4014,8 @@ Préstamo BIRF 7916');
                     case 11: $variable = 'Noviembre';
                         break;
                     case 12: $variable = 'Diciembre';
+                        break;
+                    default :$variable = null;
                         break;
                 }
                 $this->phpexcel->getActiveSheet()->setCellValue("AC$i", $variable);

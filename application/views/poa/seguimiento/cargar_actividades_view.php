@@ -17,7 +17,7 @@ $ci->load->model('poa/poa_actividad', 'actividad');
     </thead>
     <tbody>
         <?php foreach ($actividades as $aux) { ?>
-            <tr class='odd'>
+            <tr class='nivel1'>
             <td><?php echo $aux->poa_act_codigo; ?></td>
             <td><?php echo $aux->poa_act_descripcion; ?></td>
             <td><input class='boton' type="button" onclick="location.href=('<?php echo base_url($ruta . "gestionarActividad") . "/" . $poa_com_id ."/".$aux->poa_act_det_anio. "/" . $aux->poa_act_id; ?>')" value="Editar" />
@@ -26,7 +26,7 @@ $ci->load->model('poa/poa_actividad', 'actividad');
             </tr>
             <?php if (count($ci->actividad->obtenerSubActividades($aux->poa_act_id)) != 0) { ?>
                 <?php foreach ($ci->actividad->obtenerSubActividades($aux->poa_act_id) as $aux2) { ?>
-                    <tr class='odd'>
+                    <tr class='nivel2'>
                     <td><?php echo $aux2->poa_act_codigo; ?></td>
                     <td><?php echo $aux2->poa_act_descripcion; ?></td>
                     <td><input class='boton' type="button"  onclick="location.href=('<?php echo base_url($ruta . "gestionarActividad") . "/" . $poa_com_id ."/".$aux->poa_act_det_anio. "/" . $aux2->poa_act_id; ?>')" value="Editar" />
@@ -36,7 +36,7 @@ $ci->load->model('poa/poa_actividad', 'actividad');
                     </tr>
                     <?php if (count($ci->actividad->obtenerSubActividades($aux2->poa_act_id)) != 0) { ?>
                         <?php foreach ($ci->actividad->obtenerSubActividades($aux2->poa_act_id) as $aux3) { ?>
-                            <tr class='odd'>
+                            <tr class='nivel3'>
                             <td><?php echo $aux3->poa_act_codigo; ?></td>
                             <td><?php echo $aux3->poa_act_descripcion; ?></td>
                             <td><input class='boton' type="button"  onclick="location.href=('<?php echo base_url($ruta . "gestionarActividad") . "/" . $poa_com_id."/".$aux->poa_act_det_anio . "/" . $aux3->poa_act_id; ?>')" value="Editar" />
@@ -45,7 +45,7 @@ $ci->load->model('poa/poa_actividad', 'actividad');
                             </tr>
                             <?php if (count($ci->actividad->obtenerSubActividades($aux3->poa_act_id)) != 0) { ?>
                                 <?php foreach ($ci->actividad->obtenerSubActividades($aux3->poa_act_id) as $aux4) { ?>
-                                    <tr class='odd'>
+                                    <tr class='nivel4'>
                                     <td><?php echo $aux4->poa_act_codigo; ?></td>
                                     <td><?php echo $aux4->poa_act_descripcion; ?></td>
                                     <td><input class='boton' type="button"  onclick="location.href=('<?php echo base_url($ruta . "gestionarActividad") . "/" . $poa_com_id."/".$aux->poa_act_det_anio . "/" . $aux4->poa_act_id; ?>')" value="Editar" />
@@ -54,7 +54,7 @@ $ci->load->model('poa/poa_actividad', 'actividad');
                                     </tr>
                                     <?php if (count($ci->actividad->obtenerSubActividades($aux4->poa_act_id)) != 0) { ?>
                                         <?php foreach ($ci->actividad->obtenerSubActividades($aux4->poa_act_id) as $aux5) { ?>
-                                            <tr>
+                                            <tr class="odd">
                                             <td><?php echo $aux5->poa_act_codigo; ?></td>
                                             <td><?php echo $aux5->poa_act_descripcion; ?></td>
                                             <td><input class='boton' type="button"  onclick="location.href=('<?php echo base_url($ruta . "gestionarActividad") . "/" . $poa_com_id."/".$aux->poa_act_det_anio. "/" . $aux5->poa_act_id; ?>')" value="Editar" />

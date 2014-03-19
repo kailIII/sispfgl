@@ -545,6 +545,26 @@ form .campo input {
     background: #F2F2F2; 
 }
 
+#box-table-a .nivel1
+{
+    background: #AAC1F2; 
+}
+
+#box-table-a .nivel2
+{
+    background: #6290F2; 
+}
+
+#box-table-a .nivel3
+{
+    background: #AAB4CB; 
+}
+
+#box-table-a .nivel4
+{
+    background: #CDD3E0; 
+}
+
 #box-table-a tr:hover td
 {
     border: 1px solid;
