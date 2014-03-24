@@ -105,7 +105,7 @@
                 },
                 {name:'par_proviene',index:'par_proviene',width:80,edittype:"select",
                     editable:true,
-                    editoptions:{ value: '0:Seleccione;U:Urbano;R:Rural' }, 
+                    editoptions:{ value: '0:Seleccione;u:Urbano;r:Rural' }, 
                     formoptions:{ label: "Area",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validar}
                 },
@@ -140,7 +140,7 @@
                                 $("#total").attr('value', registro['cell'][0]);
                                 $("#mujeres").attr('value', registro['cell'][1]);
                                 $("#hombres").attr('value', registro['cell'][2]);
-                                if(registro['cell'][1]/registro['cell'][0]>=0.5)
+                                if(registro['cell'][1]>0)
                                     $("#porcenMujeresSi").attr("checked", true);
                                 else
                                     $("#porcenMujeresNo").attr("checked", true);

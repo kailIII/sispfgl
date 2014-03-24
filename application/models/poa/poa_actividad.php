@@ -82,6 +82,14 @@ ORDER BY A.poa_act_id,A.poa_act_codigo";
         $consulta = $this->db->count_all_results();
         return $consulta;
     }
+    
+    public function eliminarActividad($poa_act_id) {
+        $datos = array(
+            "poa_act_id" => $poa_act_id
+        );
+        $this->db->where($datos);       
+        $this->db->delete($this->tabla);
+    }
 
 }
 

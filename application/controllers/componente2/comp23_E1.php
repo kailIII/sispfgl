@@ -308,16 +308,16 @@ class Comp23_E1 extends CI_Controller {
         if ($ins_id == 0)
             $ins_id = null;
         $par_tel = $this->input->post("par_tel");
-        if ($par_tel == 0)
+        if ($par_tel == "0")
             $par_tel = null;
         $par_dui = $this->input->post("par_dui");
-        if ($par_dui == 0)
+        if ($par_dui == "0")
             $par_dui = null;
         $par_edad = $this->input->post("par_edad");
         if ($par_edad == 0)
             $par_edad = null;
         $par_proviene = $this->input->post("par_proviene");
-        if ($par_proviene == 0)
+        if ($par_proviene == '0')
             $par_proviene = null;
         $par_nivel_esco = $this->input->post("par_nivel_esco");
         if ($par_nivel_esco == '0')
@@ -385,7 +385,7 @@ class Comp23_E1 extends CI_Controller {
 
         $i = 0;
         foreach ($participantes as $aux) {
-            if (strcasecmp($aux->par_proviene, 'U'))
+            if (strcasecmp($aux->par_proviene, 'u'))
                 $proviene = 'Rural';
             else
                 $proviene = 'Urbano';
@@ -432,8 +432,13 @@ class Comp23_E1 extends CI_Controller {
 
         $i = 0;
         foreach ($participantes as $aux) {
-
+            
             $resultado = $this->parCap->obtenerParticipantesCap($cap_id, $aux->par_id);
+            if (empty($resultado)){
+                 $this->parCap->insertarParticipa($cap_id, $aux->par_id);
+                 $resultado = $this->parCap->obtenerParticipantesCap($cap_id, $aux->par_id);
+                 
+            }
             $rows[$i]['id'] = $aux->par_id;
             $rows[$i]['cell'] = array($aux->par_id,
                 $aux->par_dui,
@@ -471,7 +476,7 @@ class Comp23_E1 extends CI_Controller {
 
         $i = 0;
         foreach ($participantes as $aux) {
-            if (strcasecmp($aux->par_proviene, 'U'))
+            if (strcasecmp($aux->par_proviene, 'u'))
                 $proviene = 'Rural';
             else
                 $proviene = 'Urbano';

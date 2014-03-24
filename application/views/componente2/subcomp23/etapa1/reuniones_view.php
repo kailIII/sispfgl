@@ -17,7 +17,7 @@
         <th class="thEstandar"> No</th>
         <th class="thEstandar">Tema</th>
         <th class="thEstandar">Fecha</th>
-        <th class="thEstandar">Acciones</th>
+        <th class="thEstandar" width="150px">Acciones</th>
         </tr>
     </thead>
     <tbody>
@@ -26,8 +26,9 @@
             <td><?php echo $aux->reu_numero; ?></td>
             <td><?php echo $aux->reu_tema; ?></td>
             <td><?php if (!is_null($aux->reu_fecha)) echo date_format(date_create($aux->reu_fecha), "d-m-Y") ?></td>
-            <td><a href="<?php echo base_url('componente2/comp23_E1/editarReunion').'/'.$aux->reu_id; ?>"><img src="<?php echo base_url('resource/imagenes/edit.png'); ?>"/></a>
-                <!--<a href="#"><img src="<?php echo base_url('resource/imagenes/pdf.png'); ?>"/></a>-->
+            <td>
+                <a href="<?php echo base_url('componente2/comp23_E1/editarReunion').'/'.$aux->reu_id; ?>"><img src="<?php echo base_url('resource/imagenes/edit.png'); ?>"/></a>
+                <a href="<?php echo base_url('componente2/comp23_E1/muestraReunion').'/'.$aux->reu_id; ?>"><img src="<?php echo base_url('resource/imagenes/cancel.png'); ?>" heigth="50px" width="50px"/></a>
             </td>
             </tr>
         <?php } ?>

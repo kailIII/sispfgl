@@ -71,7 +71,7 @@
                 },
                 {name:'par_proviene',index:'par_proviene',width:80,edittype:"select",
                     editable:true,
-                    editoptions:{ value: '0:Seleccione;u:Urbano; r:Rural' }, 
+                    editoptions:{ value: '0:Seleccione;u:Urbano;r:Rural' }, 
                     formoptions:{ label: "Area",elmprefix:"(*)"},
                     editrules:{custom:true, custom_func:validar}
                 },

@@ -666,6 +666,11 @@ class Seguimiento extends CI_Controller {
             $this->poa->actualizar_tabla($tabla, $campo, $aux->poa_act_seg_tri_id, $datos);
         }
     }
+    
+    public function eliminarActividad($poa_act_id){
+        $this->actividad->eliminarActividad($poa_act_id);
+        redirect($this->ruta."gestionActividades");
+    }
 
 }
 
