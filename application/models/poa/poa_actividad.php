@@ -17,9 +17,9 @@ class Poa_actividad extends CI_Model {
         $consulta = $this->db->get($this->tabla);
         return $consulta->result();
     }
-    
-    public function obtenerActividadesPadresSeg($poa_com_id,$anio) {
-        $this->db->join('poa_actividad_detalle',"poa_actividad_detalle.poa_act_id=$this->tabla.poa_act_id");
+
+    public function obtenerActividadesPadresSeg($poa_com_id, $anio) {
+        $this->db->join('poa_actividad_detalle', "poa_actividad_detalle.poa_act_id=$this->tabla.poa_act_id");
         $this->db->where('poa_act_padre IS NULL');
         $this->db->where("poa_com_id = $poa_com_id");
         $this->db->where("poa_act_det_anio = $anio");
@@ -47,7 +47,7 @@ class Poa_actividad extends CI_Model {
         return $this->db->get($this->tabla, '1')->row()->poa_act_codigo;
     }
 
-    public function obtenerActividadComponente($poa_com_id,$anio) {
+    public function obtenerActividadComponente($poa_com_id, $anio) {
         $sql = "SELECT B.*
 FROM poa_componente A,$this->tabla B, poa_actividad_detalle C
 WHERE A.poa_com_id=B.poa_com_id AND B.poa_act_id=C.poa_act_id 
@@ -82,13 +82,22 @@ ORDER BY A.poa_act_id,A.poa_act_codigo";
         $consulta = $this->db->count_all_results();
         return $consulta;
     }
-    
+
     public function eliminarActividad($poa_act_id) {
         $datos = array(
             "poa_act_id" => $poa_act_id
         );
-        $this->db->where($datos);       
+        $this->db->where($datos);
         $this->db->delete($this->tabla);
+    }
+
+    public function obtenerActividad($poa_act_id) {
+       $sql = "SELECT * 
+FROM $this->tabla  A JOIN poa_actividad_detalle  B ON A.poa_act_id=B.poa_act_id 
+WHERE A.poa_act_id = ? 
+";
+        $consulta = $this->db->query($sql, array($poa_act_id));
+        return $consulta->result();
     }
 
 }
