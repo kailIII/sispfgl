@@ -22,7 +22,7 @@ class Poa_actividad_seguimiento extends CI_Model {
 FROM $this->tabla A 
 	INNER JOIN poa_actividad_detalle B ON A.poa_act_det_id=B.poa_act_det_id
 	INNER JOIN poa_actividad C ON B.poa_act_id=C.poa_act_id
-WHERE B.poa_act_det_anio=$anio AND C.poa_act_codigo LIKE ('$codigo'||'_') AND A.poa_act_seg_mes=$mes";
+WHERE B.poa_act_det_anio=$anio AND C.poa_act_codigo LIKE ('$codigo'||'._') AND A.poa_act_seg_mes=$mes";
         $consulta = $this->db->query($sql, array());
         $resultado = $consulta->result();
         return $resultado[0]->poa_act_seg_desembolso;

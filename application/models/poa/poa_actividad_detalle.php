@@ -34,7 +34,7 @@ WHERE B.poa_act_id=C.poa_act_id
         $sql = "SELECT *
 FROM poa_actividad B, $this->tabla C
 WHERE B.poa_act_id=C.poa_act_id 
-	AND B.poa_act_codigo LIKE ('$codigo'||'_') AND C.poa_act_det_anio = ?";
+	AND B.poa_act_codigo LIKE ('$codigo'||'._') AND C.poa_act_det_anio = ?";
         $consulta = $this->db->query($sql, array( $anio));
         $resultado = $consulta->result();
         return $resultado;
