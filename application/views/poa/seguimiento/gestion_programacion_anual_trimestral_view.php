@@ -67,10 +67,10 @@
                         <tr>                    
                         <td><input value="<?php echo $aux->poa_act_id ?>" name="poa_act_id" hidden="hidden" /><?php echo $aux->poa_act_codigo ?></td>
                         <td><?php echo $aux->poa_act_descripcion ?></td>
-                        <td><textarea rows="3" cols="15" id="<?php echo $aux->poa_act_id ?>_poa_act_seg_tri_observacion" name="<?php echo $aux->poa_act_id ?>_poa_act_seg_tri_observacion"><?php echo $aux->poa_act_seg_tri_observacion ?></textarea></td>
+                        <td><textarea rows="3" cols="45" id="<?php echo $aux->poa_act_id ?>_poa_act_seg_tri_observacion" name="<?php echo $aux->poa_act_id ?>_poa_act_seg_tri_observacion"><?php echo $aux->poa_act_seg_tri_observacion ?></textarea></td>
                         <td><input type="text" value="<?php echo $aux->poa_act_seg_tri_nivel ?>" name="<?php echo $aux->poa_act_id ?>_poa_act_seg_tri_nivel" id="<?php echo $aux->poa_act_id ?>_poa_act_seg_tri_nivel" class="numeric" style="width: 50px" /></td>
-                        <td><textarea rows="3" cols="15" id="<?php echo $aux->poa_act_id ?>_poa_act_seg_tri_valoracion" name="<?php echo $aux->poa_act_id ?>_poa_act_seg_tri_valoracion" ><?php echo $aux->poa_act_seg_tri_valoracion ?></textarea></td>
-                        <td><textarea rows="3" cols="15" id="<?php echo $aux->poa_act_id ?>_poa_act_seg_tri_decision" name="<?php echo $aux->poa_act_id ?>_poa_act_seg_tri_decision" ><?php echo $aux->poa_act_seg_tri_decision ?></textarea></td>
+                        <td><textarea rows="3" cols="45" id="<?php echo $aux->poa_act_id ?>_poa_act_seg_tri_valoracion" name="<?php echo $aux->poa_act_id ?>_poa_act_seg_tri_valoracion" ><?php echo $aux->poa_act_seg_tri_valoracion ?></textarea></td>
+                        <td><textarea rows="3" cols="45" id="<?php echo $aux->poa_act_id ?>_poa_act_seg_tri_decision" name="<?php echo $aux->poa_act_id ?>_poa_act_seg_tri_decision" ><?php echo $aux->poa_act_seg_tri_decision ?></textarea></td>
                         </tr>
     <?php } else { ?>
                         <tr class='odd'>

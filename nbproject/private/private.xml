@@ -3,6 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="6">
         <file>
+            <url>application/controllers/reportes.php</url>
+            <bookmark id="6">
+                <name/>
+                <line>1330</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
             <url>application/views/componente2/subcomp25/fase1/revisionInformacion_view.php</url>
             <bookmark id="2">
                 <name/>
@@ -30,15 +38,11 @@
                 <key/>
             </bookmark>
         </file>
-        <file>
-            <url>application/controllers/reportes.php</url>
-            <bookmark id="6">
-                <name/>
-                <line>1330</line>
-                <key/>
-            </bookmark>
-        </file>
     </editor-bookmarks>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
+        <file>file:/home/karencita/sispfgl/application/views/poa/seguimiento/gestion_programacion_anual_2_view.php</file>
+        <file>file:/home/karencita/sispfgl/application/controllers/poa/seguimiento.php</file>
+    </open-files>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/home/karencita/sispfgl/application/config/config.php</file>
