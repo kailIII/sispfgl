@@ -1,9 +1,15 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $('#boton').button().click(function() {
-            document.location.href = '<?php echo base_url($ruta . 'gestionProgramacionAnual'); ?>/' +$('#anio').val()+"/"+ $('#poa_com_id').val();
+            if ($('#poa_com_id').val() == 0)
+            {
+                $('#mTrimestre').dialog('open');
+                return false;
+            }
+            else
+                document.location.href = '<?php echo base_url($ruta . 'gestionProgramacionAnual'); ?>/' + $('#anio').val() + "/" + $('#poa_com_id').val();
         });
-        
+
         $('#reporte').button().click(function() {
             $.ajax({
                 type: "POST",
@@ -12,6 +18,16 @@
                     window.open(response);
                 }
             });
+        });
+        
+          $('.mensaje').dialog({
+            autoOpen: false,
+            width: 300,
+            buttons: {
+                "Ok": function() {
+                    $(this).dialog("close");
+                }
+            }
         });
     });
 </script>
@@ -23,7 +39,7 @@
     <br/>
     <form id="formulario" method="post" action="<?php echo base_url('reporte_poa/reportesPOA'); ?>">
         <select id="poa_com_id">
-            <option selected="selected" value="0">Seleccione--</option>
+            <option selected="selected" value="0">Seleccione Componente--</option>
             <?php foreach ($componentes as $aux) { ?>
                 <option value='<?php echo $aux->poa_com_id; ?>'><?php echo $aux->poa_com_codigo . ' ' . $aux->poa_com_descripcion; ?></option>
             <?php } ?>
@@ -44,5 +60,9 @@
 
 
 </center>
-
+<div id="mTrimestre" class="mensaje" title="Error">
+    <center>
+        <p><img src="<?php echo base_url('resource/imagenes/cancel.png'); ?>" class="imagenError" />Debe Seleccionar el componente para poder continuar</p>
+    </center>
+</div>
 
