@@ -266,7 +266,7 @@ $this->load->view('plantilla/menu', $menu);
 
 <?php echo form_open('',array('id'=>'frm')) ?>
 
-    <h2 class="h2Titulos">Etapa Final: Gestion de Riesgo</h2>
+    <h2 class="h2Titulos">Gestion de Riesgo</h2>
     <br/>
     <div id="rpt_frm_bdy">
         <div id="listaContainer">

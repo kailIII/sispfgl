@@ -248,7 +248,7 @@ $(document).ready(function(){
 
 <?php echo form_open('',array('id'=>'frm')) ?>
 
-    <h2 class="h2Titulos">Etapa 3: Seguimiento</h2>
+    <h2 class="h2Titulos"> Seguimiento</h2>
     <h2 class="h2Titulos">Divulgación del informe de Resultados de Desempeño Administrativo y Financiero</h2>
     <br/>
     <div id="rpt_frm_bdy">

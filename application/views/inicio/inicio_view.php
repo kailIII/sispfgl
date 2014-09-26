@@ -10,9 +10,9 @@
 <ol>
     <li>Fortalecer la capacidad de prestaciòn de servicios bàsicos de los Gobiernos Locales de tal
         manera que todas las inversiones localmente definidas y priorizadas de los 262 municipios y 
-        financiadas por el Ptroyecto se implementen en conformidad con las politicas fiduciarias y de 
+        financiadas por el Proyecto se implementen en conformidad con las politicas fiduciarias y de 
         salvaguardars del Banco y en conformidad con los estandarés nacionales</li> 
-    <li>Fortalecer la capacidad de Gestión de los Gobiernos Locales a través de asistencia técnica y capacitación a gin de elevar
+    <li>Fortalecer la capacidad de Gestión de los Gobiernos Locales a través de asistencia técnica y capacitación a fin de elevar
         su nivel de desempeño en el área en que recibieron asistencia tècnica</li>
     <li>Fortalecer la capacidad institucional del ISDEM para que pueda responder oportunamente y en forma coherente a la
         demanda de asesoría administrativa y de planificaciòn de los municipios, sensibilizados en estos temas

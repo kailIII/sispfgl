@@ -216,7 +216,7 @@ $(document).ready(function(){
 
 <?php echo form_open('',array('id'=>'frm')) ?>
 
-    <h2 class="h2Titulos">Etapa 0: Condiciones Previas</h2>
+    <h2 class="h2Titulos"> Condiciones Previas</h2>
     <h2 class="h2Titulos">Elaboración de perfil y PRFM</h2>
     <br/>
     <div id="rpt_frm_bdy">

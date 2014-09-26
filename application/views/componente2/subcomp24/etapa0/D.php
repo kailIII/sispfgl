@@ -74,7 +74,7 @@ $(document).ready(function(){
 
 <?php echo form_open() ?>
 
-    <h2 class="h2Titulos">Etapa 0: Condiciones Previas</h2>
+    <h2 class="h2Titulos"> Condiciones Previas</h2>
     <h2 class="h2Titulos">Indicadores de Desempeño Administrativo y Financiero Municipal</h2>
     <h2 class="h2Titulos">Indicadores para el Análisis del Endeudamiento Público</h2>
     <br/>

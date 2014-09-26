@@ -22,7 +22,7 @@ class Comp24 extends CI_Controller {
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());
         $this->load->view('plantilla/header', $informacion);
         $this->load->view('plantilla/menu', $informacion);
-        $this->load->view('componente2/subcomp23/principal_view');
+        $this->load->view('componente2/subcomp24/principal_view');
         $this->load->view('plantilla/footer', $informacion);
     }
 

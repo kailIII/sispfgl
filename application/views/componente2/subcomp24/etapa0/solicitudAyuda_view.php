@@ -83,7 +83,7 @@ if (isset($mun_id) && $mun_id > 0) {
 
         <?php echo form_open() ?>
 
-<h2 class="h2Titulos">Etapa 0: Condiciones Previas</h2>
+<h2 class="h2Titulos"> Condiciones Previas</h2>
 <h2 class="h2Titulos">Registro de Solicitudes</h2>
 <br/>
 <div id="rpt_frm_bdy">

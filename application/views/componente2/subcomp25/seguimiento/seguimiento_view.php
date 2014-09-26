@@ -679,7 +679,7 @@
         </td>
         </tr>
     </table>
-    <input id="seg_id" type="text" size="100" hidden="hidden"  />
+    <input id="seg_id" name="seg_id" type="text" size="100" hidden="hidden"  />
     <input id="seg_ruta_archivo" name="seg_ruta_archivo" type="text" size="100" hidden="hidden" readonly="readonly"/>
 </form>
 

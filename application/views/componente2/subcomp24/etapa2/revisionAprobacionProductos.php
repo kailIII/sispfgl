@@ -119,7 +119,7 @@ $(document).ready(function(){
 
 <?php echo form_open() ?>
 
-    <h2 class="h2Titulos">Etapa 2: Plan</h2>
+    <h2 class="h2Titulos">Plan</h2>
     <h2 class="h2Titulos">Revisión y Aprobación de Productos</h2>
     <br/>
     <div id="rpt_frm_bdy">

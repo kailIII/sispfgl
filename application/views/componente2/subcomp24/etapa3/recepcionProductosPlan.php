@@ -121,7 +121,7 @@ $(document).ready(function(){
 
 <?php echo form_open() ?>
 
-    <h2 class="h2Titulos">Etapa 3: Seguimiento</h2>
+    <h2 class="h2Titulos"> Seguimiento</h2>
     <h2 class="h2Titulos">Recepción del Producto de la ejecución del plan</h2>
     <br/>
     <div id="rpt_frm_bdy">
