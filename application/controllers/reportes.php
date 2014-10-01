@@ -28,7 +28,7 @@ class Reportes extends CI_Controller {
         $this->load->model('tank_auth/users', 'usuarios');
         $rol = $this->usuarios->obtenerCodigoRol($this->tank_auth->get_username());
         if (strcmp(trim($rol[0]->rol_codigo), 'apg') == 0)
-            $this->load->view('reporte/index_pep_view');
+        $this->load->view('reporte/index_pep_view');
         else if (strcmp(trim($rol[0]->rol_codigo), 'cc') == 0) {
             $this->load->view('reporte/index_cc_view', $informacion);
         } else if (strcmp(trim($rol[0]->rol_codigo), 'prfm') == 0) {
@@ -1000,19 +1000,33 @@ class Reportes extends CI_Controller {
         );
         //ENCABEZADO DEL DOCUMENTO
         $this->phpexcel->getActiveSheet()
-                ->setCellValue('B1', 'AVANCES DE LOS PEP');
-        $this->phpexcel->getActiveSheet()->mergeCells('B1:H1');
-        $this->phpexcel->getActiveSheet()->getStyle('B1:H1')->applyFromArray($estEnc5);
+                ->setCellValue('B1', 'AVANCE 2.3:  FORTALECIMIENTO DE LAS CAPACIDADES PARA LA PLANEACIÓN ESTRATÉGICA PARTICIPATIVA DE LAS MUNICIPALIDADES');
+        $this->phpexcel->getActiveSheet()->mergeCells('B1:L1');
+        $this->phpexcel->getActiveSheet()->getStyle('B1:L1')->applyFromArray($estEnc5);
         $this->phpexcel->getActiveSheet()->setCellValue('B2', 'No.');
         $this->phpexcel->getActiveSheet()->setCellValue('C2', 'DEPARTAMENTO');
+        $this->phpexcel->getActiveSheet()->mergeCells('C2:C3');
         $this->phpexcel->getActiveSheet()->setCellValue('D2', 'MUNICIPIO');
+        $this->phpexcel->getActiveSheet()->mergeCells('D2:D3');
         $this->phpexcel->getActiveSheet()->setCellValue('E2', 'ETAPA I');
-        $this->phpexcel->getActiveSheet()->setCellValue('F2', 'ETAPA II');
-        $this->phpexcel->getActiveSheet()->setCellValue('G2', 'ETAPA III');
-        $this->phpexcel->getActiveSheet()->setCellValue('H2', 'ETAPA IV');
+        $this->phpexcel->getActiveSheet()->mergeCells('E2:F2');
+        $this->phpexcel->getActiveSheet()->setCellValue('E3', 'En Proceso');
+        $this->phpexcel->getActiveSheet()->setCellValue('F3', 'Finalizado');
+        $this->phpexcel->getActiveSheet()->setCellValue('G2', 'ETAPA II');
+        $this->phpexcel->getActiveSheet()->mergeCells('G2:H2');
+        $this->phpexcel->getActiveSheet()->setCellValue('G3', 'En Proceso');
+        $this->phpexcel->getActiveSheet()->setCellValue('H3', 'Finalizado');
+        $this->phpexcel->getActiveSheet()->setCellValue('I2', 'ETAPA III');
+        $this->phpexcel->getActiveSheet()->mergeCells('I2:J2');
+        $this->phpexcel->getActiveSheet()->setCellValue('I3', 'En Proceso');
+        $this->phpexcel->getActiveSheet()->setCellValue('J3', 'Finalizado');
+        $this->phpexcel->getActiveSheet()->setCellValue('K2', 'ETAPA IV');
+        $this->phpexcel->getActiveSheet()->mergeCells('K2:L2');
+        $this->phpexcel->getActiveSheet()->setCellValue('K3', 'En Proceso');
+        $this->phpexcel->getActiveSheet()->setCellValue('L3', 'Finalizado');
 
-        $this->phpexcel->getActiveSheet()->getStyle('B2:H2')->applyFromArray($estPais);
-        $this->phpexcel->getActiveSheet()->getRowDimension('1')->setRowHeight(25);
+        $this->phpexcel->getActiveSheet()->getStyle('B2:L3')->applyFromArray($estPais);
+        $this->phpexcel->getActiveSheet()->getRowDimension('1')->setRowHeight(35);
         $this->phpexcel->getActiveSheet()->getRowDimension('2')->setRowHeight(25);
         $this->phpexcel->getActiveSheet()->getColumnDimension('A')->setWidth(4);
         $this->phpexcel->getActiveSheet()->getColumnDimension('B')->setWidth(4);
@@ -1046,20 +1060,20 @@ class Reportes extends CI_Controller {
         $consulta = $this->municipio->obtenerMunicipiosTodos();
         $region = '';
         $depto = '';
-        $i = 3;
+        $i = 4;
         $numero = 1;
         foreach ($consulta as $aux) {
             if (strcmp($aux->reg_nombre, $region) != 0) {
                 $this->phpexcel->getActiveSheet()->setCellValue("B$i", "REGION " . strtoupper($aux->reg_nombre));
-                $this->phpexcel->getActiveSheet()->mergeCells("B$i:H$i");
-                $this->phpexcel->getActiveSheet()->getStyle("B$i:H$i")->applyFromArray($estRegion);
+                $this->phpexcel->getActiveSheet()->mergeCells("B$i:L$i");
+                $this->phpexcel->getActiveSheet()->getStyle("B$i:L$i")->applyFromArray($estRegion);
                 $region = $aux->reg_nombre;
                 $depto = $aux->dep_nombre;
                 $numero = 1;
                 $i++;
             } if (strcmp($aux->dep_nombre, $depto) != 0) {
-                $this->phpexcel->getActiveSheet()->mergeCells("B$i:H$i");
-                $this->phpexcel->getActiveSheet()->getStyle("B$i:H$i")->applyFromArray($estDivDepto);
+                $this->phpexcel->getActiveSheet()->mergeCells("B$i:L$i");
+                $this->phpexcel->getActiveSheet()->getStyle("B$i:L$i")->applyFromArray($estDivDepto);
                 $depto = $aux->dep_nombre;
                 $numero = 1;
                 $i++;
@@ -1082,14 +1096,30 @@ class Reportes extends CI_Controller {
                                     if ($consulta5[0]->resultado == '1') {
                                         $consulta6 = $this->grupo_apoyo->verificarParticipantesGrupoApoyo($aux->mun_id);
                                         if ($consulta6[0]->valor != '0') {
+                                            $this->phpexcel->getActiveSheet()->setCellValue("F$i", '1');
+                                        } else {
                                             $this->phpexcel->getActiveSheet()->setCellValue("E$i", '1');
                                         }
+                                    } else {
+                                        $this->phpexcel->getActiveSheet()->setCellValue("E$i", '1');
                                     }
+                                } else {
+                                    $this->phpexcel->getActiveSheet()->setCellValue("E$i", '1');
                                 }
+                            } else {
+                                $this->phpexcel->getActiveSheet()->setCellValue("E$i", '1');
                             }
+                        } else {
+                            $this->phpexcel->getActiveSheet()->setCellValue("E$i", '1');
                         }
+                    } else {
+                        $this->phpexcel->getActiveSheet()->setCellValue("E$i", '1');
                     }
+                } else {
+                    $this->phpexcel->getActiveSheet()->setCellValue("E$i", '1');
                 }
+            } else {
+                $this->phpexcel->getActiveSheet()->setCellValue("E$i", '1');
             }
 
             /*  AQUI INICIA LA ETAPA 2   */
@@ -1115,19 +1145,58 @@ class Reportes extends CI_Controller {
                                                         if ($consulta9[0]->resultado == '1') {
                                                             $consulta10 = $this->priorizacion->verificarParticipantesPriorizacion($aux->mun_id);
                                                             if ($consulta10[0]->valor != '0') {
-                                                                $this->phpexcel->getActiveSheet()->setCellValue("F$i", '1');
+                                                                $this->phpexcel->getActiveSheet()->setCellValue("H$i", '1');
+                                                            } else {
+                                                                if ($this->phpexcel->getActiveSheet()->getCell("F$i") == '1')
+                                                                    $this->phpexcel->getActiveSheet()->setCellValue("G$i", '1');
                                                             }
+                                                        }else {
+                                                            if ($this->phpexcel->getActiveSheet()->getCell("F$i") == '1')
+                                                                $this->phpexcel->getActiveSheet()->setCellValue("G$i", '1');
                                                         }
+                                                    }else {
+                                                        if ($this->phpexcel->getActiveSheet()->getCell("F$i") == '1')
+                                                            $this->phpexcel->getActiveSheet()->setCellValue("G$i", '1');
                                                     }
+                                                }else {
+                                                    if ($this->phpexcel->getActiveSheet()->getCell("F$i") == '1')
+                                                        $this->phpexcel->getActiveSheet()->setCellValue("G$i", '1');
                                                 }
+                                            }else {
+                                                if ($this->phpexcel->getActiveSheet()->getCell("F$i") == '1')
+                                                    $this->phpexcel->getActiveSheet()->setCellValue("G$i", '1');
                                             }
+                                        }else {
+                                            if ($this->phpexcel->getActiveSheet()->getCell("F$i") == '1')
+                                                $this->phpexcel->getActiveSheet()->setCellValue("G$i", '1');
                                         }
+                                    }else {
+                                        if ($this->phpexcel->getActiveSheet()->getCell("F$i") == '1')
+                                            $this->phpexcel->getActiveSheet()->setCellValue("G$i", '1');
                                     }
+                                }else {
+                                    if ($this->phpexcel->getActiveSheet()->getCell("F$i") == '1')
+                                        $this->phpexcel->getActiveSheet()->setCellValue("G$i", '1');
                                 }
+                            }else {
+                                if ($this->phpexcel->getActiveSheet()->getCell("F$i") == '1')
+                                    $this->phpexcel->getActiveSheet()->setCellValue("G$i", '1');
                             }
+                        }else {
+                            if ($this->phpexcel->getActiveSheet()->getCell("F$i") == '1')
+                                $this->phpexcel->getActiveSheet()->setCellValue("G$i", '1');
                         }
+                    }else {
+                        if ($this->phpexcel->getActiveSheet()->getCell("F$i") == '1')
+                            $this->phpexcel->getActiveSheet()->setCellValue("G$i", '1');
                     }
+                }else {
+                    if ($this->phpexcel->getActiveSheet()->getCell("F$i") == '1')
+                        $this->phpexcel->getActiveSheet()->setCellValue("G$i", '1');
                 }
+            }else {
+                if ($this->phpexcel->getActiveSheet()->getCell("F$i") == '1')
+                    $this->phpexcel->getActiveSheet()->setCellValue("G$i", '1');
             }
 
             /*  AQUI INICIA LA ETAPA 3   */
@@ -1139,10 +1208,22 @@ class Reportes extends CI_Controller {
                     if ($consulta4[0]->valor != '0') {
                         $consulta5 = $this->portafolio_proyecto->verificarEjecucionProyecto($aux->mun_id);
                         if ($consulta5[0]->valor != '0') {
-                            $this->phpexcel->getActiveSheet()->setCellValue("G$i", '1');
+                            $this->phpexcel->getActiveSheet()->setCellValue("J$i", '1');
+                        } else {
+                            if ($this->phpexcel->getActiveSheet()->getCell("H$i") == '1')
+                                $this->phpexcel->getActiveSheet()->setCellValue("I$i", '1');
                         }
+                    }else {
+                        if ($this->phpexcel->getActiveSheet()->getCell("H$i") == '1')
+                            $this->phpexcel->getActiveSheet()->setCellValue("I$i", '1');
                     }
+                }else {
+                    if ($this->phpexcel->getActiveSheet()->getCell("H$i") == '1')
+                        $this->phpexcel->getActiveSheet()->setCellValue("I$i", '1');
                 }
+            }else {
+                if ($this->phpexcel->getActiveSheet()->getCell("H$i") == '1')
+                    $this->phpexcel->getActiveSheet()->setCellValue("I$i", '1');
             }
             /*  AQUI INICIA LA ETAPA 4   */
             $consulta2 = $this->acuerdo_municipal->verificarAcuerdoMunicipal2($aux->mun_id, 4);
@@ -1155,29 +1236,62 @@ class Reportes extends CI_Controller {
                             if ($consulta4[0]->valor != '0') {
                                 $consulta5 = $this->integracion_instancia->verificarCriteriosIntegracionInstancia($aux->mun_id);
                                 if ($consulta5[0]->valor == '4') {
-                                    $this->phpexcel->getActiveSheet()->setCellValue("H$i", '1');
+                                    $this->phpexcel->getActiveSheet()->setCellValue("L$i", '1');
+                                } else {
+                                    if ($this->phpexcel->getActiveSheet()->getCell("J$i") == '1')
+                                        $this->phpexcel->getActiveSheet()->setCellValue("K$i", '1');
                                 }
+                            }else {
+                                if ($this->phpexcel->getActiveSheet()->getCell("J$i") == '1')
+                                    $this->phpexcel->getActiveSheet()->setCellValue("K$i", '1');
                             }
+                        }else {
+                            if ($this->phpexcel->getActiveSheet()->getCell("J$i") == '1')
+                                $this->phpexcel->getActiveSheet()->setCellValue("K$i", '1');
                         }
+                    }else {
+                        if ($this->phpexcel->getActiveSheet()->getCell("J$i") == '1')
+                            $this->phpexcel->getActiveSheet()->setCellValue("K$i", '1');
                     }
+                }else {
+                    if ($this->phpexcel->getActiveSheet()->getCell("J$i") == '1')
+                        $this->phpexcel->getActiveSheet()->setCellValue("K$i", '1');
                 }
+            }else {
+                if ($this->phpexcel->getActiveSheet()->getCell("J$i") == '1')
+                    $this->phpexcel->getActiveSheet()->setCellValue("K$i", '1');
             }
 
-            $this->phpexcel->getActiveSheet()->getStyle("B$i:H$i")->applyFromArray($estCuerpo);
+            $this->phpexcel->getActiveSheet()->getStyle("B$i:L$i")->applyFromArray($estCuerpo);
             $i++;
             $numero++;
         }
         $i++;
         $this->phpexcel->getActiveSheet()->setCellValue("B$i", 'TOTAL POR DEPARTAMENTOS');
-        $this->phpexcel->getActiveSheet()->mergeCells("B$i:D$i");
+        $this->phpexcel->getActiveSheet()->mergeCells("B$i:D" . ($i + 1));
         $this->phpexcel->getActiveSheet()->setCellValue("E$i", 'ETAPA I');
-        $this->phpexcel->getActiveSheet()->setCellValue("F$i", 'ETAPA II');
-        $this->phpexcel->getActiveSheet()->setCellValue("G$i", 'ETAPA III');
-        $this->phpexcel->getActiveSheet()->setCellValue("H$i", 'ETAPA IV');
+        $this->phpexcel->getActiveSheet()->mergeCells("E$i:F$i");
+        $this->phpexcel->getActiveSheet()->setCellValue("E" . ($i + 1), 'En Proceso');
+        $this->phpexcel->getActiveSheet()->setCellValue("F" . ($i + 1), 'Finalizado');
 
-        $this->phpexcel->getActiveSheet()->getStyle("B$i:H$i")->applyFromArray($estTotales);
-        $final = $i - 2;
-        $i++;
+        $this->phpexcel->getActiveSheet()->setCellValue("G$i", 'ETAPA II');
+        $this->phpexcel->getActiveSheet()->mergeCells("G$i:H$i");
+        $this->phpexcel->getActiveSheet()->setCellValue("G" . ($i + 1), 'En Proceso');
+        $this->phpexcel->getActiveSheet()->setCellValue("H" . ($i + 1), 'Finalizado');
+
+        $this->phpexcel->getActiveSheet()->setCellValue("I$i", 'ETAPA III');
+        $this->phpexcel->getActiveSheet()->mergeCells("I$i:J$i");
+        $this->phpexcel->getActiveSheet()->setCellValue("I" . ($i + 1), 'En Proceso');
+        $this->phpexcel->getActiveSheet()->setCellValue("J" . ($i + 1), 'Finalizado');
+
+        $this->phpexcel->getActiveSheet()->setCellValue("K$i", 'ETAPA IV');
+        $this->phpexcel->getActiveSheet()->mergeCells("K$i:L$i");
+        $this->phpexcel->getActiveSheet()->setCellValue("K" . ($i + 1), 'En Proceso');
+        $this->phpexcel->getActiveSheet()->setCellValue("L" . ($i + 1), 'Finalizado');
+
+        $this->phpexcel->getActiveSheet()->getStyle("B$i:L". ($i + 1))->applyFromArray($estTotales);
+        $final = $i - 3;
+        $i=$i + 2;
         $this->load->model('pais/departamento');
         $deptos = $this->departamento->obtenerDepartamentosOrdenadosRegion();
         $numero = 1;
@@ -1189,7 +1303,11 @@ class Reportes extends CI_Controller {
             $this->phpexcel->getActiveSheet()->setCellValue("F$i", "=SUMIF(C4:C$final,C$i,F4:F$final)");
             $this->phpexcel->getActiveSheet()->setCellValue("G$i", "=SUMIF(C4:C$final,C$i,G4:G$final)");
             $this->phpexcel->getActiveSheet()->setCellValue("H$i", "=SUMIF(C4:C$final,C$i,H4:H$final)");
-            $this->phpexcel->getActiveSheet()->getStyle("B$i:H$i")->applyFromArray($estCuerpo);
+            $this->phpexcel->getActiveSheet()->setCellValue("H$i", "=SUMIF(C4:C$final,C$i,I4:I$final)");
+            $this->phpexcel->getActiveSheet()->setCellValue("H$i", "=SUMIF(C4:C$final,C$i,J4:J$final)");
+            $this->phpexcel->getActiveSheet()->setCellValue("H$i", "=SUMIF(C4:C$final,C$i,K4:K$final)");
+            $this->phpexcel->getActiveSheet()->setCellValue("H$i", "=SUMIF(C4:C$final,C$i,L4:L$final)");
+            $this->phpexcel->getActiveSheet()->getStyle("B$i:L$i")->applyFromArray($estCuerpo);
             $numero++;
             $i++;
         }
