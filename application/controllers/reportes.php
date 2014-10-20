@@ -1082,6 +1082,7 @@ class Reportes extends CI_Controller {
             $this->phpexcel->getActiveSheet()->setCellValue("B$i", $numero);
             $this->phpexcel->getActiveSheet()->setCellValue("C$i", $aux->dep_nombre);
             $this->phpexcel->getActiveSheet()->setCellValue("D$i", $aux->mun_nombre);
+            
             /*  AQUI INICIA LA ETAPA 1   */
             $consulta2 = $this->acuerdo_municipal->verificarAcuerdoMunicipal($aux->mun_id, 1);
             if (count($consulta2) != 0) {

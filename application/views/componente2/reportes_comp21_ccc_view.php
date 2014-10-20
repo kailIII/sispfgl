@@ -28,13 +28,13 @@
 <br/>
 <br/>
 <center>
-    <h1>Reportes Componente 2.1 CCC</h1>
+    <h1>Reportes Componente 2.1</h1>
 </center>
 <b><label>Seleccione el reporte que desea generar:</label></b>
 <form id="formulario" method="post" action="">
-    <input type="radio" name="tipo" value="1"> Comites de Contralor&iacute;a Ciudadana por Departamento y Region </input>
+    <input type="radio" name="tipo" value="1"> General por Departamento y Region </input>
     <br/>
-    <input type="radio" name="tipo" value="2"> Comites de Contralor&iacute;a Ciudadana por Muicipio </input>
+    <input type="radio" name="tipo" value="2"> General por Muicipio </input>
     <br/>
     <br/>
     <input type="submit" id="reporte" value="Generar Reporte" />

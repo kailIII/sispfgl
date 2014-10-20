@@ -17,7 +17,7 @@ class  componente21 extends CI_Controller {
     
     public function cc() {
 
-        $informacion['titulo'] = 'CC';
+        $informacion['titulo'] = 'Consulta Ciudadana';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
@@ -41,7 +41,7 @@ class  componente21 extends CI_Controller {
     
     public function ccc() {
 
-        $informacion['titulo'] = 'CCC';
+        $informacion['titulo'] = 'Comite Contraluria Ciudadana';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
@@ -50,7 +50,71 @@ class  componente21 extends CI_Controller {
         $this->load->view('componente2/ccc_view');
         $this->load->view('plantilla/footer', $informacion);
     }
+    ///************************************************************
+    public function etm() {
+
+        $informacion['titulo'] = 'Equipo Tecnico Municipal';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/etm_view');
+        $this->load->view('plantilla/footer', $informacion);
+    }
+    public function guardar_etm() {
+
+        $datos_etm = $_POST;
+		unset($datos_etm['guardar']);
+		
+		$this->load->model('componente2/comp21_model');
+		$this->comp21_model->insertar_etm($datos_etm);
+		
+		$informacion['titulo'] = 'Equipo Tecnico Municipal';
+			$informacion['user_id'] = $this->tank_auth->get_user_id();
+			$informacion['username'] = $this->tank_auth->get_username();
+			$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username()); 
+			$informacion['aviso'] = '<p style="color:blue">Se ha realizado el registro correctamete del ETM.</p>';         
+			$this->load->view('plantilla/header', $informacion);
+			$this->load->view('plantilla/menu', $informacion);
+			$this->load->view('componente2/etm_view');
+			$this->load->view('plantilla/footer', $informacion);
+		
+	}
     
+    ///***************************************************************************
+    public function comi() {
+
+        $informacion['titulo'] = 'Comision de Mantenimiento';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/comi_view');
+        $this->load->view('plantilla/footer', $informacion);
+    }
+    
+    public function guardar_comi() {
+
+        $datos_comi = $_POST;
+		unset($datos_comi['guardar']);
+		
+		$this->load->model('componente2/comp21_model');
+		$this->comp21_model->insertar_comi($datos_comi);
+		
+		$informacion['titulo'] = 'Comision de Mantenimiento';
+			$informacion['user_id'] = $this->tank_auth->get_user_id();
+			$informacion['username'] = $this->tank_auth->get_username();
+			$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username()); 
+			$informacion['aviso'] = '<p style="color:blue">Se ha realizado el registro correctamete de la CM.</p>';         
+			$this->load->view('plantilla/header', $informacion);
+			$this->load->view('plantilla/menu', $informacion);
+			$this->load->view('componente2/comi_view');
+			$this->load->view('plantilla/footer', $informacion);
+		
+	}
+    //************************************************************
      public function guardar_cc() {
 
         $datos_cc = $_POST;
@@ -115,14 +179,14 @@ class  componente21 extends CI_Controller {
 			$this->load->model('componente2/comp21_model');
 			$this->comp21_model->insertar_cc($datos_cc,$ruta1,$ruta2);				
 			
-			$informacion['titulo'] = 'CCC';
+			$informacion['titulo'] = 'CC';
 			$informacion['user_id'] = $this->tank_auth->get_user_id();
 			$informacion['username'] = $this->tank_auth->get_username();
 			$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username()); 
-			$informacion['aviso'] = '<p style="color:blue">Se ha realizado el registro correctamete.</p>';         
+			$informacion['aviso'] = '<p style="color:blue">Se ha realizado el registro correctamete del CC.</p>';         
 			$this->load->view('plantilla/header', $informacion);
 			$this->load->view('plantilla/menu', $informacion);
-			$this->load->view('componente2/ccc_view');
+			$this->load->view('componente2/cc_view');
 			$this->load->view('plantilla/footer', $informacion);
 			
 	}
@@ -140,7 +204,7 @@ class  componente21 extends CI_Controller {
 			$informacion['user_id'] = $this->tank_auth->get_user_id();
 			$informacion['username'] = $this->tank_auth->get_username();
 			$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username()); 
-			$informacion['aviso'] = '<p style="color:blue">Se ha realziado el registro correctamete.</p>';         
+			$informacion['aviso'] = '<p style="color:blue">Se ha realizado el registro correctamete.</p>';         
 			$this->load->view('plantilla/header', $informacion);
 			$this->load->view('plantilla/menu', $informacion);
 			$this->load->view('componente2/ccc_view');
@@ -241,7 +305,7 @@ class  componente21 extends CI_Controller {
         );
         
         /*Reporte*/
-        $this->phpexcel->getActiveSheet()->setCellValue('D2', 'Comites de Contraloria Ciudadana por Area Geografica');
+        $this->phpexcel->getActiveSheet()->setCellValue('D2', 'Resumen General por Area Geografica');
         $this->phpexcel->getActiveSheet()->mergeCells('D2:J2');
         $this->phpexcel->getActiveSheet()->getStyle('D2:J2')->applyFromArray($estTitulos);
         $this->phpexcel->getActiveSheet()->getColumnDimension('A')->setWidth(18);
@@ -252,12 +316,13 @@ class  componente21 extends CI_Controller {
         $this->phpexcel->getActiveSheet()->getStyle('A3:A3')->applyFromArray($estSubTitulos);
         
         $this->phpexcel->getActiveSheet()->setCellValue('B4', 'Departamento');
-        $this->phpexcel->getActiveSheet()->setCellValue('C4', 'Cantidad');
-        $this->phpexcel->getActiveSheet()->setCellValue('D4', '%');
-        $this->phpexcel->getActiveSheet()->getStyle('B4:D4')->applyFromArray($estEncabezado);
+        $this->phpexcel->getActiveSheet()->setCellValue('C4', 'ETM');
+        $this->phpexcel->getActiveSheet()->setCellValue('D4', 'CCC');
+        $this->phpexcel->getActiveSheet()->setCellValue('E4', 'CM');
+        $this->phpexcel->getActiveSheet()->getStyle('B4:E4')->applyFromArray($estEncabezado);
         
         $this->load->model('componente2/comp21_model');
-        $consulta = $this->comp21_model->ccc_por_depto();
+        $consulta = $this->comp21_model->etm_por_depto();
         $i=5;
         foreach ($consulta as $row) {
 			$this->phpexcel->getActiveSheet()->setCellValue("B$i", $row->depto);//imprime los deptos
@@ -266,26 +331,64 @@ class  componente21 extends CI_Controller {
 		}
 		$i--;
         $this->phpexcel->getActiveSheet()->getStyle("B5:D$i")->applyFromArray($estCells);
+        /*CCC por Departamento*/
+        $consulta = $this->comp21_model->ccc_por_depto();
+        $i=5;
+        foreach ($consulta as $row) {
+		$this->phpexcel->getActiveSheet()->setCellValue("D$i", $row->cant);//imprime la cant de CCC del depto
+            $i++;
+		}
+		$i--;
+        $this->phpexcel->getActiveSheet()->getStyle("B5:E$i")->applyFromArray($estCells);
         
+        
+        
+        $consulta2 = $this->comp21_model->comi_por_depto();
+        $i2=5;
+        foreach ($consulta2 as $row) {
+		$this->phpexcel->getActiveSheet()->setCellValue("E$i2", $row->cant);//imprime la cant de CCC del depto
+            $i2++;
+		}
+        
+        /*Termina por departamentos*/
 				/*CCC por Region*/
 		$i=$i+4;
 		$this->phpexcel->getActiveSheet()->setCellValue('A20', 'Por Region');
         $this->phpexcel->getActiveSheet()->getStyle('A20:A20')->applyFromArray($estSubTitulos);
         
         $this->phpexcel->getActiveSheet()->setCellValue('B21', 'Region');
-        $this->phpexcel->getActiveSheet()->setCellValue('C21', 'Cantidad');
-        $this->phpexcel->getActiveSheet()->setCellValue('D21', '%');
-        $this->phpexcel->getActiveSheet()->getStyle('B21:D21')->applyFromArray($estEncabezado);
+        $this->phpexcel->getActiveSheet()->setCellValue('C21', 'ETM');
+        $this->phpexcel->getActiveSheet()->setCellValue('D21', 'CCC');
+        $this->phpexcel->getActiveSheet()->setCellValue('E21', 'CM');
+        $this->phpexcel->getActiveSheet()->getStyle('B21:E21')->applyFromArray($estEncabezado);
         
-        $consulta = $this->comp21_model->ccc_por_region();
+        $consulta = $this->comp21_model->etm_por_region();
         foreach ($consulta as $row) {
 			$this->phpexcel->getActiveSheet()->setCellValue("B$i", $row->reg);//imprime la region
             $this->phpexcel->getActiveSheet()->setCellValue("C$i", $row->suma);//imprime las cant de CCC de la region
             $i++;
 		}
 		$i--;
-        $this->phpexcel->getActiveSheet()->getStyle("B22:D$i")->applyFromArray($estCells);
+        $this->phpexcel->getActiveSheet()->getStyle("C22:D$i")->applyFromArray($estCells);
         
+        $consulta1 = $this->comp21_model->ccc_por_region();
+        $ii=22;
+        foreach ($consulta1 as $row) {
+		$this->phpexcel->getActiveSheet()->setCellValue("D$ii", $row->suma);//imprime la cant de CCC del depto
+            $ii++;
+		}
+		$ii--;
+        $this->phpexcel->getActiveSheet()->getStyle("B5:E$ii")->applyFromArray($estCells);
+        
+        
+        
+        
+        $consulta3 = $this->comp21_model->comi_por_region();
+        $i3=22;
+        foreach ($consulta3 as $row) {
+		$this->phpexcel->getActiveSheet()->setCellValue("E$i3", $row->suma);//imprime la cant de CCC del depto
+            $i3++;
+		}
         /*Finalizacion y Descarga*/
         $filename = "RepteGral_CCC_Area_" . date("d-m-y") . ".xls"; //GUARDANDO CON ESTE NOMBRE
         header('Content-Type: application/vnd.ms-excel');
@@ -356,8 +459,10 @@ class  componente21 extends CI_Controller {
         
         $this->phpexcel->getActiveSheet()->setCellValue('A4', 'Departamento');
         $this->phpexcel->getActiveSheet()->setCellValue('B4', 'Municipio');
-        $this->phpexcel->getActiveSheet()->setCellValue('C4', 'Cantidad');
-        $this->phpexcel->getActiveSheet()->getStyle('A4:C4')->applyFromArray($estSubTitulos);
+        $this->phpexcel->getActiveSheet()->setCellValue('C4', 'ETM');
+        $this->phpexcel->getActiveSheet()->setCellValue('d4', 'CCC');
+        $this->phpexcel->getActiveSheet()->setCellValue('e4', 'CM');
+        $this->phpexcel->getActiveSheet()->getStyle('A4:e4')->applyFromArray($estSubTitulos);
         
         $this->load->model('componente2/comp21_model');
         $deptos = $this->comp21_model->get_deptos();
@@ -367,9 +472,14 @@ class  componente21 extends CI_Controller {
 			$this->phpexcel->getActiveSheet()->setCellValue("A$i", $row->dep_nombre);//imprime el depto
             $munic = $this->comp21_model->muni_depto($row->dep_id);
             foreach($munic as $mun){
-				$ccc_muni = $this->comp21_model->ccc_por_muni($mun->mun_id);
+				$etm_muni = $this->comp21_model->etm_por_muni($mun->mun_id);
+                                $ccc_muni = $this->comp21_model->ccc_por_muni($mun->mun_id);
+                                $cm_muni = $this->comp21_model->cm_por_muni($mun->mun_id);
+                                
 				$this->phpexcel->getActiveSheet()->setCellValue("B$i", $mun->mun_nombre);//imprime el municipio
-				$this->phpexcel->getActiveSheet()->setCellValue("C$i", $ccc_muni->cant);//imprime la cant de ccc del municipio
+				$this->phpexcel->getActiveSheet()->setCellValue("C$i", $etm_muni->cant);//imprime la cant de ccc del municipio
+                                $this->phpexcel->getActiveSheet()->setCellValue("d$i", $ccc_muni->cant);
+                                $this->phpexcel->getActiveSheet()->setCellValue("e$i", $cm_muni->cant);
 				$i++;
 			}
 			$final=$i-1;
@@ -377,7 +487,7 @@ class  componente21 extends CI_Controller {
             //$i++;
 		}
 		$i--;
-        $this->phpexcel->getActiveSheet()->getStyle("A5:C$i")->applyFromArray($estCells);
+        $this->phpexcel->getActiveSheet()->getStyle("A5:e$i")->applyFromArray($estCells);
         
         /*Finalizacion y Descarga*/
         $filename = "RepteGral_CCC_Muni_" . date("d-m-y") . ".xls"; //GUARDANDO CON ESTE NOMBRE

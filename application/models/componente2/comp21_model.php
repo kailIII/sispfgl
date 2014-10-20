@@ -50,14 +50,60 @@ Class comp21_model extends CI_Model{
 		//$this->db->update('gestionperiodos', $data);
 	}
 	
+	public function insertar_etm($new_etm) {
+		
+		$data_etm = array(
+		  'mun_id' => $new_etm['mun_id'],
+          'fecha_conformacion' => $new_etm['fecha_conformacion'],
+                    'fecha_induccion'=> $new_etm['fecha_ind_etm'],
+                    'fecha_capacitacion'=> $new_etm['fecha_cap_etm'],
+          'lugar_conformacion' => $new_etm['lugar_convocatoria'],
+                    'fase' => $new_etm['fase_etm'],
+		  'total_hombres' => $new_etm['total_hombres_etm'],
+		  'total_mujeres' => $new_etm['total_mujeres_etm'],
+                    'tipo_etm'=> $new_etm['etm'],
+		  
+        );
+        
+        $this->db->insert('etm', $data_etm);
+        $query = $this->db->query("select currval('etm_etm_id_seq') as id;");
+		$row = $query->row();
+		$id= $row->id;
+              
+        	}
+                
+public function insertar_comi($new_comi) {
+		
+		$data_comi = array(
+		  'mun_id' => $new_comi['mun_id'],
+          'fecha_constitucion' => $new_comi['fecha_conformacion'],
+                    'lugar_constitucion'=> $new_comi['lugar_convocatoria'],
+                    'total_hombres'=> $new_comi['total_hombres_cm'],
+                    'total_mujeres'=> $new_comi['total_mujeres_cm']
+          	  
+        );
+        
+        $this->db->insert('comision_mant', $data_comi);
+        $query = $this->db->query("select currval('comision_mant_cm_id_seq') as id;");
+		$row = $query->row();
+		$id= $row->id;
+              
+        	}
 	
+        
 	public function insertar_ccc($new_ccc) {
 		
 		$data_ccc = array(
 		  'mun_id' => $new_ccc['mun_id'],
-          'fecha_conformacion' => $new_ccc['fecha_conformacion'],
-          'lugar_conformacion' => $new_ccc['lugar_convocatoria'],
-          'fase' => $new_ccc['fase_ccc']
+                  'lugar_conformacion' => $new_ccc['lugar_convocatoria'],
+                  'fase' => $new_ccc['fase_ccc'],
+                  'razon' => $new_ccc['ccc'],
+                  'fecha_capacitacion' => $new_ccc['fecha_cap_ccc'],
+                  'fecha_conformacion' => $new_ccc['fecha_con_ccc'],
+                  'total_hombres' => $new_ccc['total_hombres_ccc'],
+                    'total_mujeres' => $new_ccc['total_mujeres_ccc']
+          
+          
         );
         
         $this->db->insert('ccc', $data_ccc);
@@ -131,7 +177,93 @@ Class comp21_model extends CI_Model{
 									order by D.dep_nombre;");
 		return $query->result();
 	}
+public function ccc_por_region(){
+	$query = $this->db->query("select R.reg_nombre reg,sum(cant) suma
+				from (select D.dep_nombre as depto, D.reg_id regid, count(Mun.ccc_id) cant
+					from (select dep_id, C.mun_id, ccc_id
+						from ccc C, municipio M 
+						where C.mun_id=M.mun_id) as Mun
+						right outer join departamento D on (Mun.dep_id=D.dep_id)
+						group by D.dep_nombre,D.reg_id
+						order by D.dep_nombre) as cccdepto
+					right outer join region R on (cccdepto.regid=R.reg_id)
+					group by R.reg_nombre
+					order by R.reg_nombre;");
+		return $query->result();
+	}
 	
+public function etm_por_depto(){
+		$query = $this->db->query("select D.dep_nombre as depto, count(Mun.etm_id) cant
+									from (select dep_id, C.mun_id, etm_id
+											from etm C, municipio M 
+											where C.mun_id=M.mun_id) as Mun
+									right outer join departamento D 
+									on (Mun.dep_id=D.dep_id)
+									group by D.dep_nombre
+									order by D.dep_nombre;");
+		return $query->result();
+	}
+        
+        
+public function etm_por_region(){
+	$query = $this->db->query("select R.reg_nombre reg,sum(cant) suma
+	   			   from (select D.dep_nombre as depto, D.reg_id regid, count(Mun.etm_id) cant
+					 from (select dep_id, C.mun_id, etm_id
+					       from etm C, municipio M 
+					        where C.mun_id=M.mun_id) as Mun
+											right outer join departamento D 
+											on (Mun.dep_id=D.dep_id)
+											group by D.dep_nombre,D.reg_id
+											order by D.dep_nombre) as cccdepto
+									right outer join region R
+									on (cccdepto.regid=R.reg_id)
+									group by R.reg_nombre
+									order by R.reg_nombre;");
+		return $query->result();
+	}
+
+ public function etm_por_muni($mun_id){
+		$query = $this->db->query("select count(etm_id) as cant
+									from etm
+									where mun_id=".$mun_id.";");
+		return $query->row();
+	}       
+        
+public function comi_por_depto(){
+    $query = $this->db->query("select D.dep_nombre as depto, count(Mun.cm_id) cant
+from (select dep_id, C.mun_id, cm_id
+      from comision_mant C, municipio M 
+      where C.mun_id=M.mun_id) as Mun
+      right outer join departamento D
+      on (Mun.dep_id=D.dep_id)
+group by D.dep_nombre
+order by D.dep_nombre;");
+		return $query->result();
+	}
+public function comi_por_region(){
+	$query = $this->db->query("select R.reg_nombre reg,sum(cant) suma
+from (select D.dep_nombre as depto, D.reg_id regid, count(Mun.cm_id) cant
+	from (select dep_id, C.mun_id, cm_id
+	      from comision_mant C, municipio M
+	      where C.mun_id=M.mun_id) as Mun
+	      right outer join departamento D
+	      on (Mun.dep_id=D.dep_id)
+	      group by D.dep_nombre,D.reg_id
+	      order by D.dep_nombre) as cccdepto
+	      right outer join region R
+	      on (cccdepto.regid=R.reg_id)
+group by R.reg_nombre
+order by R.reg_nombre;");
+		return $query->result();
+	}
+        
+  public function cm_por_muni($mun_id){
+		$query = $this->db->query("select count(cm_id) as cant
+									from comision_mant
+									where mun_id=".$mun_id.";");
+		return $query->row();
+	}             
+        
 	public function cc_por_depto(){
 		$query = $this->db->query("select D.dep_nombre as depto, count(Mun.cc_id) cant
 									from (select dep_id, C.mun_id, cc_id
@@ -160,23 +292,8 @@ Class comp21_model extends CI_Model{
 		return $query->result();
 	}
 	
-	public function ccc_por_region(){
-		$query = $this->db->query("select R.reg_nombre reg,sum(cant) suma
-									from (select D.dep_nombre as depto, D.reg_id regid, count(Mun.ccc_id) cant
-											from (select dep_id, C.mun_id, ccc_id
-													from ccc C, municipio M 
-													where C.mun_id=M.mun_id) as Mun
-											right outer join departamento D 
-											on (Mun.dep_id=D.dep_id)
-											group by D.dep_nombre,D.reg_id
-											order by D.dep_nombre) as cccdepto
-									right outer join region R
-									on (cccdepto.regid=R.reg_id)
-									group by R.reg_nombre
-									order by R.reg_nombre;");
-		return $query->result();
-	}
 	
+        
 	public function cc_por_region(){
 		$query = $this->db->query("select R.reg_nombre reg,sum(cant) suma
 									from (select D.dep_nombre as depto, D.reg_id regid, count(Mun.cc_id) cant

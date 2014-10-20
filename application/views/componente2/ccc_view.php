@@ -1,28 +1,6 @@
 <script type="text/javascript">        
    $(document).ready(function(){
-	   $( "#fecha_conformacion" ).datepicker({
-           showOn: 'both',
-           buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-           buttonImageOnly: true, 
-           dateFormat: 'yy/mm/dd',
-           minDate: (new Date(2013, 0, 1))
-       });
-       
-       $( "#fecha_ind_etm" ).datepicker({
-           showOn: 'both',
-           buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-           buttonImageOnly: true, 
-           dateFormat: 'yy/mm/dd',
-           minDate: (new Date(2013, 0, 1))
-       });
-       
-       $( "#fecha_cap_etm" ).datepicker({
-           showOn: 'both',
-           buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-           buttonImageOnly: true, 
-           dateFormat: 'yy/mm/dd',
-           minDate: (new Date(2013, 0, 1))
-       });
+	    
        
        $( "#fecha_con_ccc" ).datepicker({
            showOn: 'both',
@@ -40,13 +18,6 @@
            minDate: (new Date(2013, 0, 1))
        });
        
-       $( "#fecha_con_cm" ).datepicker({
-           showOn: 'both',
-           buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-           buttonImageOnly: true, 
-           dateFormat: 'yy/mm/dd',
-           minDate: (new Date(2013, 0, 1))
-       });
        
        $('.mensaje').dialog({
             autoOpen: false,
@@ -75,43 +46,6 @@
 
         
          /*suma de totales*/
-        $('#total_mujeres_etm').change(function(){   
-            var m = $('#total_mujeres_etm').val();
-            var h = $('#total_hombres_etm').val();
-            var total = 0;
-            if(!isNumber(m) || m % 1 != 0 || m<0){
-					$('#mensaje5').dialog('open');
-					$('#total_mujeres_etm').val("");
-					return false;
-			}
-			else{
-				if(h=="")
-					total=parseFloat(m);
-				else
-					total=parseFloat(m)+parseFloat(h);
-				$('#total_etm').val(""+total);
-			}
-			             
-        });
-        
-        $('#total_hombres_etm').change(function(){   
-            var m = $('#total_mujeres_etm').val();
-            var h = $('#total_hombres_etm').val();
-            var total = 0;
-            if(!isNumber(h) || h % 1 != 0 || h<0){
-					$('#mensaje6').dialog('open');
-					$('#total_hombres_etm').val("");
-					return false;
-			}
-			else{
-				if(m=="")
-					total=parseFloat(h);
-				else
-					total=parseFloat(m)+parseFloat(h);
-				$('#total_etm').val(""+total);
-			}
-			             
-        });
         
         $('#total_mujeres_ccc').change(function(){   
             var m = $('#total_mujeres_ccc').val();
@@ -151,87 +85,7 @@
 			             
         });
         
-        $('#total_mujeres_cm').change(function(){   
-            var m = $('#total_mujeres_cm').val();
-            var h = $('#total_hombres_cm').val();
-            var total = 0;
-            if(!isNumber(m) || m % 1 != 0 || m<0){
-					$('#mensaje5').dialog('open');
-					$('#total_mujeres_cm').val("");
-					return false;
-			}
-			else{
-				if(h=="")
-					total=parseFloat(m);
-				else
-					total=parseFloat(m)+parseFloat(h);
-				$('#total_cm').val(""+total);
-			}
-			             
-        });
-        
-        $('#total_hombres_cm').change(function(){   
-            var m = $('#total_mujeres_cm').val();
-            var h = $('#total_hombres_cm').val();
-            var total = 0;
-            if(!isNumber(h) || h % 1 != 0 || h<0){
-					$('#mensaje6').dialog('open');
-					$('#total_hombres_cm').val("");
-					return false;
-			}
-			else{
-				if(m=="")
-					total=parseFloat(h);
-				else
-					total=parseFloat(m)+parseFloat(h);
-				$('#total_cm').val(""+total);
-			}
-			             
-        });
-        
-         $("#agregar_etm_asis").button().click(function() {
-			
-			 var records=$('#etm_asis').jqGrid('getGridParam','records');
-			 
-			 var nombre_asis = $('#nombre_etm_asis').val();
-			 var resp_asis = $('#resp_asis_etm').val();
-			 var sexo_asis = $('#sexo_etm_asis').val();
-			 		 
-			 if ( nombre_asis!="" && resp_asis!="" && sexo_asis!="") {
-				 				
-				 var newrow = {id:""+records, nombre_asis:""+nombre_asis, resp_asis:""+resp_asis, sexo_asis:""+sexo_asis};
-				 
-				$("#etm_asis").addRowData(""+records, newrow);
-		
-					//sumar totales hombres y mujeres
-					var m = $('#total_mujeres_etm').val();
-						if (m=='') m=0;
-					var h = $('#total_hombres_etm').val();
-						if (h=='') h=0;
-					var total = 0;
-					if(sexo_asis=='F'){
-						total=parseFloat(m)+1;
-						var suma=total+parseFloat(h);
-						$('#total_mujeres_etm').val(""+total);
-						$('#total_etm').val(""+suma);
-					}
-					else{
-						total=parseFloat(h)+1;
-						var suma=total+parseFloat(m);
-						$('#total_hombres_etm').val(""+total);
-						$('#total_etm').val(""+suma);
-					}
-					///////////////
-				
-				$('#nombre_etm_asis').val("");
-				$('#resp_asis_etm').val("");
-				$('#sexo_etm_asis').val("");
-				
-			 }
-			 else $('#mensaje2').dialog('open');
-        });
-        
-        $("#agregar_ccc_asis").button().click(function() {
+       $("#agregar_ccc_asis").button().click(function() {
 			
 			 var records=$('#ccc_asis').jqGrid('getGridParam','records');
 			 
@@ -274,53 +128,13 @@
 			 else $('#mensaje2').dialog('open');
         });
         
-        $("#agregar_cm_asis").button().click(function() {
-			
-			 var records=$('#cm_asis').jqGrid('getGridParam','records');
-			 
-			 var nombre_asis = $('#nombre_cm_asis').val();
-			 var resp_asis = 'N/A'; //antes: $('#resp_asis_cm').val();
-			 var sexo_asis = $('#sexo_cm_asis').val();
-			 		 
-			 if ( nombre_asis!="" && resp_asis!="" && sexo_asis!="") {
-				 				
-				 var newrow = {id:""+records, nombre_asis:""+nombre_asis, resp_asis:""+resp_asis, sexo_asis:""+sexo_asis};
-				 
-				$("#cm_asis").addRowData(""+records, newrow);
-				
-				//sumar totales hombres y mujeres
-					var m = $('#total_mujeres_cm').val();
-						if (m=='') m=0;
-					var h = $('#total_hombres_cm').val();
-						if (h=='') h=0;
-					var total = 0;
-					if(sexo_asis=='F'){
-						total=parseFloat(m)+1;
-						var suma=total+parseFloat(h);
-						$('#total_mujeres_cm').val(""+total);
-						$('#total_cm').val(""+suma);
-					}
-					else{
-						total=parseFloat(h)+1;
-						var suma=total+parseFloat(m);
-						$('#total_hombres_cm').val(""+total);
-						$('#total_cm').val(""+suma);
-					}
-					///////////////
-				
-				$('#nombre_cm_asis').val("");
-				$('#resp_asis_cm').val("");
-				$('#sexo_cm_asis').val("");
-				
-			 }
-			 else $('#mensaje2').dialog('open');
-        });
         
         $("#agregar_proy").button().click(function() {
 			
 			 var records=$('#Proyectos').jqGrid('getGridParam','records');
 			 
 			 var nombre_proy = $('#nombre_proy').val();
+                         var tipo_proy = $('#tipo_proy').val();
 			 var com_beneficiadas = $('#com_beneficiadas').val();
 			 var pob_beneficiada = $('#pob_beneficiada').val();
 			 
@@ -348,11 +162,12 @@
 			 		 
 			 if ( nombre_proy!="" && com_beneficiadas!="" && pob_beneficiada!="") {
 				 				
-				 var newrow = {id:""+records, nombre_proy:""+nombre_proy, com_beneficiadas:""+com_beneficiadas, pob_beneficiada:""+pob_beneficiada, posee_ap:""+posee_ap, monto_ap:""+monto_ap};
+				 var newrow = {id:""+records, nombre_proy:""+nombre_proy, tipo_proy:""+tipo_proy, com_beneficiadas:""+com_beneficiadas, pob_beneficiada:""+pob_beneficiada, posee_ap:""+posee_ap, monto_ap:""+monto_ap};
 				 
 				$("#Proyectos").addRowData(""+records, newrow);
 				
 				$('#nombre_proy').val("");
+                                $('#tipo_proy').val("");
 				$('#com_beneficiadas').val("");
 				$('#pob_beneficiada').val("");
 				$('#monto_ap').val("");
@@ -385,50 +200,7 @@
         
         /*botones*/
         
-        
        
-             
-       var tabla=$("#etm_asis");
-        tabla.jqGrid({
-            //url:'<?php echo base_url('componente2/componente24a/cargar_capacitaciones') ?>',
-            //editurl: '<?php echo base_url('componente3/componente3/guardar_divu') ?>',
-            datatype:'clientSide',
-            altRows:true,
-            height: "100%",
-            hidegrid: false,
-            colNames:['id','Nombre','Responsabilidad','Sexo'],
-            colModel:[
-                {name:'id',index:'id', width:40,editable:false,editoptions:{size:15} },
-                {name:'nombre_asis',index:'nombre_asis',width:300,editable:true,
-                    editoptions:{size:25,maxlength:100}, 
-                    formoptions:{label: "Nombre",elmprefix:"(*)"},
-                    editrules:{required:true} 
-                },
-                {name:'resp_asis',index:'resp_asis',width:300,editable:true,
-                    editoptions:{size:25,maxlength:20}, 
-                    formoptions:{label: "Responsabilidad",elmprefix:"(*)"},
-                    editrules:{required:true} 
-                },
-                {name:'sexo_asis',index:'sexo_asis',editable:true,width:150,
-                    editoptions:{ size:25,maxlength:20 }, 
-                    formoptions:{ label: "Sexo",elmprefix:"(*)"},
-                    editrules:{required:true}
-                }
-            ],
-            multiselect: false,
-            caption: "Personal ETM",
-            rowNum:10,
-            rowList:[10,20,30],
-            loadonce:true,
-            pager: jQuery('#pagerAsisETM'),
-            viewrecords: true
-        }).jqGrid('navGrid','#pagerAsisETM',
-        {edit:false,add:false,del:false,search:false,refresh:false,
-            beforeRefresh: function() {
-                tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
-        }
-    ).hideCol('id');
-    
     var tabla2=$("#ccc_asis");
         tabla2.jqGrid({
             //url:'<?php echo base_url('componente2/componente24a/cargar_capacitaciones') ?>',
@@ -457,7 +229,7 @@
                 }
             ],
             multiselect: false,
-            caption: "Personal CCC",
+            caption: "Integrantes CCC",
             rowNum:10,
             rowList:[10,20,30],
             loadonce:true,
@@ -470,46 +242,6 @@
         }
     ).hideCol('id');
     
-    var tabla3=$("#cm_asis");
-        tabla3.jqGrid({
-            //url:'<?php echo base_url('componente2/componente24a/cargar_capacitaciones') ?>',
-            //editurl: '<?php echo base_url('componente3/componente3/guardar_divu') ?>',
-            datatype:'clientSide',
-            altRows:true,
-            height: "100%",
-            hidegrid: false,
-            colNames:['id','Nombre','Responsabilidad','Sexo'],
-            colModel:[
-                {name:'id',index:'id', width:40,editable:false,editoptions:{size:15} },
-                {name:'nombre_asis',index:'nombre_asis',width:300,editable:true,
-                    editoptions:{size:25,maxlength:100}, 
-                    formoptions:{label: "Nombre",elmprefix:"(*)"},
-                    editrules:{required:true} 
-                },
-                {name:'resp_asis',index:'resp_asis',width:300,editable:true,
-                    editoptions:{size:25,maxlength:20}, 
-                    formoptions:{label: "Responsabilidad",elmprefix:"(*)"},
-                    editrules:{required:true} 
-                },
-                {name:'sexo_asis',index:'sexo_asis',editable:true,width:150,
-                    editoptions:{ size:25,maxlength:20 }, 
-                    formoptions:{ label: "Sexo",elmprefix:"(*)"},
-                    editrules:{required:true}
-                }
-            ],
-            multiselect: false,
-            caption: "Personal CM",
-            rowNum:10,
-            rowList:[10,20,30],
-            loadonce:true,
-            pager: jQuery('#pagerAsisCM'),
-            viewrecords: true
-        }).jqGrid('navGrid','#pagerAsisCM',
-        {edit:false,add:false,del:false,search:false,refresh:false,
-            beforeRefresh: function() {
-                tabla3.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
-        }
-    ).hideCol('id');
     
     var tabla4=$("#Proyectos");
         tabla4.jqGrid({
@@ -519,15 +251,23 @@
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','Nombre del Proyecto','Comunidades Beneficiadas','Poblacion Beneficiada','Asignacion Presupuestaria','Monto'],
+            colNames:['id','Nombre del Proyecto','Tipo de Proyecto','Comunidades Beneficiadas','Poblacion Beneficiada','Asignacion Presupuestaria','Monto'],
             colModel:[
                 {name:'id',index:'id', width:40,editable:false,editoptions:{size:15} },
+                
                 {name:'nombre_proy',index:'nombre_proy',width:200,editable:true,
                     editoptions:{size:25,maxlength:100}, 
                     formoptions:{label: "Nombre del Proyecto",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
-                {name:'com_beneficiadas',index:'com_beneficiadas',editable:true,width:230,
+                
+                {name:'tipo_proy',index:'tipo_proy',width:150,editable:true,
+                    editoptions:{size:25,maxlength:100}, 
+                    formoptions:{label: "Tipo de Proyecto",elmprefix:"(*)"},
+                    editrules:{required:true} 
+                },
+                
+                {name:'com_beneficiadas',index:'com_beneficiadas',editable:true,width:150,
                     editoptions:{ size:25,maxlength:20 }, 
                     formoptions:{ label: "Comunidades Beneficiadas",elmprefix:"(*)"},
                     editrules:{required:true}
@@ -542,7 +282,7 @@
                     formoptions:{ label: "Asignacion Presupuestaria",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
-                {name:'monto_ap',index:'monto_ap',width:120,editable:true,
+                {name:'monto_ap',index:'monto_ap',width:100,editable:true,
                     editoptions:{size:25,maxlength:100}, 
                     formoptions:{ label: "Monto",elmprefix:"(*)"},
                     editrules:{required:true} 
@@ -573,6 +313,7 @@
 				var rowId = $("#Proyectos").getRowData(i); 
 						  //put all rows for your grid
 				$('<input type="hidden" />').attr('name', 'nombre_proy'+i).attr('value',rowId['nombre_proy']).appendTo('#divpost');
+                                $('<input type="hidden" />').attr('name', 'tipo_proy'+i).attr('value',rowId['tipo_proy']).appendTo('#divpost');
 				$('<input type="hidden" />').attr('name', 'com_beneficiadas'+i).attr('value',rowId['com_beneficiadas']).appendTo('#divpost');
 				$('<input type="hidden" />').attr('name', 'pob_beneficiada'+i).attr('value',rowId['pob_beneficiada']).appendTo('#divpost');	
 			}
@@ -642,7 +383,7 @@
 ?>
 <?php if(isset($aviso))
 	echo $aviso;?>
-<h1>Comit&eacute; de Contralor&iacute;a Ciudadana</h1>
+<h1>Comite de Contraluria Ciudadana</h1>
 <br/>
 <?php $attributes = array('id' => 'myform');
 echo form_open('componente2/componente21/guardar_ccc',$attributes);?>
@@ -656,74 +397,29 @@ echo form_open('componente2/componente21/guardar_ccc',$attributes);?>
     </select>
     <br/><br/>
     
-    <label>Fecha de Conformaci&oacute;n: </label>
-	<input readonly="readonly"  type="text" name="fecha_conformacion" id="fecha_conformacion"  size="4">
-	
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Lugar de Conformaci&oacute;n: </label>
-	<input type="text" name="lugar_convocatoria" id="lugar_convocatoria"  size="8">
+    <label>Lugar de Conformaci&oacute;n: </label>
+	<input type="text" name="lugar_convocatoria" id="lugar_convocatoria"  size="20">
 	
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<label>Fase: </label>
 		<select name="fase_ccc" size="1" id="fase_ccc">
-			<option value="Preinscripcion"<?php echo set_select('fase_ccc', 'Preinscripcion'); ?>>Preinscripci&oacute;n</option>
+			<option value="Preinscripcion"<?php echo set_select('fase_ccc', 'Preinscripcion'); ?>>Formulaci&oacute;n</option>
 			<option value="Ejecucion"<?php echo set_select('fase_ccc', 'Ejecucion'); ?>>Ejecuci&oacute;n</option>
-			<option value="Cierre"<?php echo set_select('fase_ccc', 'Cierre'); ?>>Cierre</option>
+			
+                        <option value="Cierre"<?php echo set_select('fase_ccc', 'Cierre'); ?>>Cierre</option>
 			<option value="Mantenimiento"<?php echo set_select('fase_ccc', 'Mantenimiento'); ?>>Mantenimiento</option>
 	</select>
-	<br/><br/><br/>
-	<hr color="green" size=1 width="700"><br/>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Nuevo ETM: </label>
 	<br/>
-	<input type="radio" name="etm" id="etm" value="Nombramiento" <?php echo set_radio('etm', 'Nombramiento'); ?> />Nombramiento
-	
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Fecha de Inducci&oacute;n: </label>
-	<input readonly="readonly"  type="text" name="fecha_ind_etm" id="fecha_ind_etm"  size="4">
-	
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Fecha de Capacitaci&oacute;n: </label>
-	<input readonly="readonly"  type="text" name="fecha_cap_etm" id="fecha_cap_etm"  size="4">
-	
-	<br/><input type="radio" name="etm" id="etm" value="Cambio de Gobierno" <?php echo set_radio('etm', 'Por Cambio de Gobierno'); ?> />Por Cambio de Gobierno
-	<br/><br/>
-	
-	<label>Nombre: </label>
-		<input type="text" name="nombre_etm_asis" id="nombre_etm_asis"  size="17" align="left">
-		
-		<select name="sexo_etm_asis" size="1" id="sexo_etm_asis">
-			<option value="F"<?php echo set_select('sexo_etm_asis', 'F'); ?>>Femenino</option>
-			<option value="M"<?php echo set_select('sexo_etm_asis', 'M'); ?>>Masculino</option>
-		</select>
-		
-		<!--<label>Procedencia: </label>
-		<select name="sector_asis" size="1" id="sector_asis">
-			<option value="Gobierno Municipal">Gobierno Municipal</option>
-		</select>-->
-		
-		<label>Responsabilidad: </label>
-		<select name="resp_asis_etm" size="1" id="resp_asis_etm">
-			<option value="Logistica"<?php echo set_select('resp_asis_etm', 'Logistica'); ?>>Logistica</option>
-			<option value="Sistematizacion"<?php echo set_select('resp_asis_etm', 'Sistematizacion'); ?>>Sistematizacion</option>
-			<option value="Coordinador"<?php echo set_select('resp_asis_etm', 'Coordinador'); ?>>Coordinador</option>
-			<option value="Documentador"<?php echo set_select('resp_asis_etm', 'Documentador'); ?>>Documentador</option>
-		</select>
-				
-		<input type="button" value="Agregar" name="agregar_etm_asis" id="agregar_etm_asis" align="left"><br/>
-		
-		<br/>
-		
-		<table id="etm_asis"></table>
-		<div id="pagerAsisETM"></div>
-	
-		<br/>
 		<hr color="green" size=1 width="700"><br/>
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Nuevo CCC: </label>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Raz&oacuten: </label>
 		<br/>
 		<input type="radio" name="ccc" id="ccc" value="Nuevo Nombramiento" <?php echo set_radio('ccc', 'Por Nombramiento'); ?> />Por Nombramiento
 		
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Fecha de Conformaci&oacute;n: </label>
-		<input readonly="readonly"  type="text" name="fecha_con_ccc" id="fecha_con_ccc"  size="4">
+		<input readonly="readonly"  type="text" name="fecha_con_ccc" id="fecha_con_ccc"  size="8">
 		
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Fecha de Capacitaci&oacute;n: </label>
-		<input readonly="readonly"  type="text" name="fecha_cap_ccc" id="fecha_cap_ccc"  size="4">
+		<input readonly="readonly"  type="text" name="fecha_cap_ccc" id="fecha_cap_ccc"  size="8">
 		
 		<br/><input type="radio" name="ccc" id="ccc" value="Restructuracion" <?php echo set_radio('ccc', 'Por Reestructuracion'); ?> />Por Reestructuraci&oacute;n
 		<br/><br/><br/>
@@ -756,45 +452,18 @@ echo form_open('componente2/componente21/guardar_ccc',$attributes);?>
 		<br/>
 		
 		<hr color="green" size=1 width="700"><br/>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Comisi&oacute;n Mantenimiento: </label>
-		<br/>
-		<!--<input type="radio" name="cm" id="cm" value="Nuevo Nombramiento" <?php echo set_radio('cm', 'Nuevo Nombramiento'); ?> />Nuevo Nombramiento-->
-		
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Fecha de Conformaci&oacute;n: </label>
-		<input readonly="readonly"  type="text" name="fecha_con_cm" id="fecha_con_cm"  size="4">
-		
-		<!--<br/><input type="radio" name="cm" id="cm" value="Cambio de GL" <?php echo set_radio('cm', 'Cambio de GL'); ?> />Por Cambio de GL-->
-		<br/><br/>
-		
-		<label>Nombre: </label>
-		<input type="text" name="nombre_cm_asis" id="nombre_cm_asis"  size="17" align="left">
-		
-		<select name="sexo_cm_asis" size="1" id="sexo_cm_asis">
-			<option value="F"<?php echo set_select('sexo_cm_asis', 'F'); ?>>Femenino</option>
-			<option value="M"<?php echo set_select('sexo_cm_asis', 'M'); ?>>Masculino</option>
-		</select>
-		
-		<!--<label>Responsabilidad: </label>
-		<select name="resp_asis_cm" size="1" id="resp_asis_cm">
-			<option value="Presidente"<?php echo set_select('resp_asis_cm', 'Presidente'); ?>>Presidente</option>
-			<option value="Secretario"<?php echo set_select('resp_asis_cm', 'Secretario'); ?>>Secretario</option>
-			<option value="Contralor Financiero"<?php echo set_select('resp_asis_cm', 'Contralor Financiero'); ?>>Contralor Financiero</option>
-			<option value="Vigilante Ambiental y Social"<?php echo set_select('resp_asis_cm', 'Vigilante Ambiental y Social'); ?>>Vigilante Ambiental y Social</option>
-			<option value="Procurador de Genero"<?php echo set_select('resp_asis_cm', 'Procurador de Genero'); ?>>Procurador de Genero</option>
-			<option value="Contralor Comunitario"<?php echo set_select('resp_asis_cm', 'Contralor Comunitario'); ?>>Contralor Comunitario</option>
-		</select>-->
-				
-		<input type="button" value="Agregar" name="agregar_cm_asis" id="agregar_cm_asis" align="left"><br/>
-		
-		<br/>
-		
-		<table id="cm_asis"></table>
-		<div id="pagerAsisCM"></div>
-	
-		<br/><br/>
-		<hr color="green" size=1 width="700"><br/>
 		<label>Nombre de Subproyecto a seguimiento: </label>
-		<input type="text" name="nombre_proy" id="nombre_proy"  size="10"><br/>
+		<input type="text" name="nombre_proy" id="nombre_proy"  size="45">
+                <br/>
+                <label>Tipología del Proyecto</label>
+                <select name="tipo_proy_ccc" size="1" id="resp_asis_ccc">
+			<option value="Sistemas de Agua Potable y Saneamiento"<?php echo set_select('tipo_proy_ccc', 'Sistemas de Agua Potable y Saneamiento'); ?>>Sistemas de Agua Potable y Saneamiento</option>
+			<option value="Gestión Integral de Desechos Sólidos"<?php echo set_select('tipo_proy_ccc', 'Gestión Integral de Desechos Sólidos'); ?>>Gestión Integral de Desechos Sólidos</option>
+			<option value="Caminos Vecinales"<?php echo set_select('tipo_proy_ccc', 'Caminos Vecinales'); ?>>Caminos Vecinales</option>
+			<option value="Calles Urbanas"<?php echo set_select('tipo_proy_ccc', 'Calles Urbanas'); ?>>Calles Urbanas</option>
+			<option value="Electrificación"<?php echo set_select('tipo_proy_ccc', 'Electrificación'); ?>>Electrificación</option>
+			<option value="Prevención de la Violencia"<?php echo set_select('tipo_proy_ccc', 'Prevención de la Violencia'); ?>>Prevención de la Violencia</option>
+		</select><br/>
 		
 		<label>Nombres Comunidades: </label>
 		<input type="text" name="com_beneficiadas" id="com_beneficiadas"  size="21">
@@ -818,53 +487,21 @@ echo form_open('componente2/componente21/guardar_ccc',$attributes);?>
 		<div id="pagerProyectos"></div>
 		<br/><br/>
 		<hr color="green" size=1 width="700"><br/>
-		<div style="float:left;height:200px;width:300px;">
-			&nbsp;&nbsp;&nbsp;&nbsp;<label>Conformaci&oacute;n del ETM: </label>
-			<br/><br/>
-			
-			<label>Total de Mujeres: &nbsp;</label>
-			<input type="text" readonly="readonly" name="total_mujeres_etm" id="total_mujeres_etm"  size="1" ><br/><br/>
-			
-			<label>Total de Hombres: </label>
-			<input type="text" readonly="readonly" name="total_hombres_etm" id="total_hombres_etm"  size="1" ><br/><br/>
-			
-			<label>Total: </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<input readonly="readonly" type="text" name="total_etm" id="total_etm"  size="1"><br/><br/>
-		</div>
-		<div style="float:left;height:200px;width:300px;">
+		
+		<div style="float:left;height:200px;width:500px;">
 			&nbsp;&nbsp;&nbsp;&nbsp;<label>Conformaci&oacute;n de CCC: </label>
 			<br/><br/>
 			
 			<label>Total de Mujeres: &nbsp;</label>
-			<input type="text" readonly="readonly" name="total_mujeres_ccc" id="total_mujeres_ccc"  size="1" ><br/><br/>
+			<input type="text" readonly="readonly" name="total_mujeres_ccc" id="total_mujeres_ccc" value="0" size="3" >&nbsp;&nbsp;&nbsp
 			
 			<label>Total de Hombres: </label>
-			<input type="text" readonly="readonly" name="total_hombres_ccc" id="total_hombres_ccc"  size="1" ><br/><br/>
+			<input type="text" readonly="readonly" name="total_hombres_ccc" id="total_hombres_ccc" value="0"  size="3" >&nbsp;&nbsp;&nbsp
 			
-			<label>Total: </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<input readonly="readonly" type="text" name="total_ccc" id="total_ccc"  size="1"><br/><br/>
-		</div>
-		<div style="float:left;height:200px;width:300px;">
-			&nbsp;&nbsp;&nbsp;&nbsp;<label>Comisi&oacute;n de Mantenimiento: </label>
-			<br/><br/>
-			
-			<label>Total de Mujeres: &nbsp;</label>
-			<input type="text" readonly="readonly" name="total_mujeres_cm" id="total_mujeres_cm"  size="1" ><br/><br/>
-			
-			<label>Total de Hombres: </label>
-			<input type="text" readonly="readonly" name="total_hombres_cm" id="total_hombres_cm"  size="1" ><br/><br/>
-			
-			<label>Total: </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<input readonly="readonly" type="text" name="total_cm" id="total_cm"  size="1"><br/><br/>
-		</div>
-	<!--<div style="float:left;height:200px;width:330px;">
-		
-	</div>
-	
-	<div style="float:left;height:200px;">
-		
-	</div>-->
-	
+			<label>Total: </label>&nbsp;&nbsp;&nbsp
+			<input readonly="readonly" type="text" name="total_ccc" id="total_ccc"  value="0" size="3"><br/><br/>
+		</div><br/>
+		<br/><br/><br/>
 	<input type="submit" id="guardar" name="guardar" value="Guardar" align="right">
 	<div id="divpost" ></div>
 	

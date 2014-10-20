@@ -60,7 +60,7 @@
                     edittype:"textarea",editoptions:{rows:"4",cols:"50"},width:'450', 
                     formoptions:{label: "Nombre",elmprefix:"(*)"},
                     editrules:{required:true} 
-                }/*,
+                },/*
                 {name:'etapa1',index:'etapa1',editable:false,
                     edittype:"checkbox",width:60,
                     editoptions: { value:"SI:NO" }
@@ -170,7 +170,7 @@
 <h2 class="demoHeaders" align="Center">Proyectos PEP</h2>
 <p>En las siguientes pestañas se muestran los proyectos PEP que actualmente estan 
     desarrollandose en el Programa de Fortalecimiento de Gobiernos Locales. Estos proyectos
-    estan dividos por las 5 regiones que conforman El Salvador.</p>
+    estan dividos por las 4 regiones que conforman El Salvador.</p>
 <p>Seleccione la Región para poder ver los proyectos.</p>
 <center>
     <select id='selRegion'>
