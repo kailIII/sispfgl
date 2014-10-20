@@ -2,51 +2,12 @@
     $(document).ready(function(){
         /*ZONA DE BOTONES*/
         $("#guardar").button().click(function() {
-            /* fecha1= $('#ela_pro_fentrega_idem').datepicker("getDate");
-            fecha2=$( "#ela_pro_fentrega_uep" ).datepicker("getDate");
-            fecha3=$( "#ela_pro_fconformacion" ).datepicker("getDate");
-            if(fecha1==null){
-                $( "#ela_pro_fentrega_uep" ).val('');
-                $( "#ela_pro_fconformacion" ).val('');*/
+//            fecha1= $('#ela_pro_fentrega_idem').datepicker("getDate");
+//            fecha2=$( "#ela_pro_fentrega_uep" ).datepicker("getDate");
+//            fecha3=$( "#ela_pro_fconformacion" ).datepicker("getDate");
+//            
+            
             $.ajax({
-                type: "POST",
-                url: '<?php echo base_url('componente2/comp25/guardarElaboracionProyecto') ?>',
-                data: $("#elaboracionProyectoForm").serialize(), // serializes the form's elements.
-                success: function(data)
-                {
-                    $('#efectivo').dialog('open');
-                }
-            });
-            return false;
-            /* }else{
-                if(fecha2==null){
-                    $("#ela_pro_fconformacion" ).val('');
-                    $.ajax({
-                        type: "POST",
-                        url: '<?php echo base_url('componente2/comp25/guardarElaboracionProyecto') ?>',
-                        data: $("#elaboracionProyectoForm").serialize(), // serializes the form's elements.
-                        success: function(data)
-                        {
-                            $('#efectivo').dialog('open');
-                        }
-                    });
-                    return false;
-                }else{
-                    if(fecha1< fecha2){
-                        if(fecha3==null){
-                            $.ajax({
-                                type: "POST",
-                                url: '<?php echo base_url('componente2/comp25/guardarElaboracionProyecto') ?>',
-                                data: $("#elaboracionProyectoForm").serialize(), // serializes the form's elements.
-                                success: function(data)
-                                {
-                                    $('#efectivo').dialog('open');
-                                }
-                            });
-                            return false;
-                        }else{
-                            if(fecha2 < fecha3){
-                                $.ajax({
                                     type: "POST",
                                     url: '<?php echo base_url('componente2/comp25/guardarElaboracionProyecto') ?>',
                                     data: $("#elaboracionProyectoForm").serialize(), // serializes the form's elements.
@@ -56,17 +17,69 @@
                                     }
                                 });
                                 return false;
-                            }else{
-                                $('#fechaValidacion').dialog('open');
-                                return false
-                            }
-                        }
-                    }else{
-                        $('#fechaValidacion').dialog('open');
-                        return false
-                    }
-                }
-            }  */
+            
+//            if(fecha1==null){
+//                $( "#ela_pro_fentrega_uep" ).val('');
+//                $( "#ela_pro_fconformacion" ).val('');
+//            $.ajax({
+//                type: "POST",
+//                url: '<?php echo base_url('componente2/comp25/guardarElaboracionProyecto') ?>',
+//                data: $("#elaboracionProyectoForm").serialize(), // serializes the form's elements.
+//                success: function(data)
+//                {
+//                    $('#efectivo').dialog('open');
+//                }
+//            });
+//            return false;
+//             }else{
+//                if(fecha2==null){
+//                    $("#ela_pro_fconformacion" ).val('');
+//                    $.ajax({
+//                        type: "POST",
+//                        url: '<?php echo base_url('componente2/comp25/guardarElaboracionProyecto') ?>',
+//                        data: $("#elaboracionProyectoForm").serialize(), // serializes the form's elements.
+//                        success: function(data)
+//                        {
+//                            $('#efectivo').dialog('open');
+//                        }
+//                    });
+//                    return false;
+//                }else{
+//                    if(fecha1< fecha2){
+//                        if(fecha3==null){
+//                            $.ajax({
+//                                type: "POST",
+//                                url: '<?php echo base_url('componente2/comp25/guardarElaboracionProyecto') ?>',
+//                                data: $("#elaboracionProyectoForm").serialize(), // serializes the form's elements.
+//                                success: function(data)
+//                                {
+//                                    $('#efectivo').dialog('open');
+//                                }
+//                            });
+//                            return false;
+//                        }else{
+//                            if(fecha2 < fecha3){
+//                                $.ajax({
+//                                    type: "POST",
+//                                    url: '<?php echo base_url('componente2/comp25/guardarElaboracionProyecto') ?>',
+//                                    data: $("#elaboracionProyectoForm").serialize(), // serializes the form's elements.
+//                                    success: function(data)
+//                                    {
+//                                        $('#efectivo').dialog('open');
+//                                    }
+//                                });
+//                                return false;
+//                            }else{
+//                                $('#fechaValidacion').dialog('open');
+//                                return false
+//                            }
+//                        }
+//                    }else{
+//                        $('#fechaValidacion').dialog('open');
+//                        return false
+//                    }
+//                }
+//            }  
         });
         $("#cancelar").button().click(function() {
             document.location.href='<?php echo base_url(); ?>';
@@ -114,6 +127,7 @@
                             }
                             $('#ela_pro_fconformacion').val(registro['cell'][5]);
                             $('#ela_pro_fecha2').val(registro['cell'][6]);
+                            $('#ela_pro_observacion').val(registro['cell'][7]);
                             $('#recibidoMunicipalidad').setGridParam({
                                 url:'<?php echo base_url('componente2/comp25/recibidoMunicipalidad') ?>/'+registro['cell'][0],
                                 editurl:'<?php echo base_url('componente2/comp25/guardarRecibidoMunicipalidad') ?>/'+registro['cell'][0],

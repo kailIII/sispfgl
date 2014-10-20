@@ -463,7 +463,7 @@
                 {name: 'pla_con_descripcion', index: 'pla_con_descripcion',
                     editable: true, width: 400, edittype: "textarea",
                     editoptions: {rows: "4", cols: "50"},
-                    formoptions: {label: "Descripción"}
+                    formoptions: {label: "Descripción:"}
                 },
                 {name: 'pla_con_fdocumento', index: 'pla_con_fdocumento', width: 200, editable: true,
                     editoptions: {
@@ -477,7 +477,7 @@
                             })
                         }
                     },
-                    formoptions: {label: "Fecha Documento", elmprefix: "(*)"},
+                    formoptions: {label: "Fecha Documento:", elmprefix: "(*)"},
                     editrules: {required: true}
                 }
             ],
@@ -502,7 +502,7 @@
                 $('#mensaje').dialog('open');
             }
         }, //EDITAR
-        {closeAfterAdd: true, addCaption: "Agregar Plan de contingencia", width: 700,
+        {closeAfterAdd: true, addCaption: "Agregar Plan de contingencia proteccion civil", width: 700,
             align: 'center', reloadAfterSubmit: true,
             processData: "Cargando...", afterSubmit: despuesAgregarEditar,
             bottominfo: "Campos marcados con (*) son obligatorios",
