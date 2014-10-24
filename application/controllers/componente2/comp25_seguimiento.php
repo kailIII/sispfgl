@@ -105,6 +105,8 @@ class comp25_seguimiento extends CI_Controller {
             $nombreRuta = 'No hay listado para descargar';
         else
             $nombreRuta = 'Descargar ' . end(explode("/", $seg[0]->seg_ruta_archivo));
+        
+        
         $rows[0]['id'] = $seg[0]->seg_id;
         $rows[0]['cell'] = array($seg[0]->seg_id,
             $seg_forden_preparacion,

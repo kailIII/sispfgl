@@ -227,7 +227,7 @@
         <table id="notas"></table>
         <div id="pagerNotas"></div>
     </center>
-    <p>Conclusión General:<br/><textarea name="rub_observacion_general" cols="48" rows="5"></textarea></p>
+    <p>Conclusión General:<br/><textarea id="rub_observacion_general" name="rub_observacion_general" cols="48" rows="5"></textarea></p>
     <?php //if (strcmp($rol, 'gdrc') == 0) { ?>
         <center>
             <input type="submit" id="guardar" value="Guardar" />

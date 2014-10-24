@@ -375,12 +375,31 @@
                                 $('#seg_forden_seguimiento').val(registro['cell'][10]);
                                 $('#seg_comentario').val(registro['cell'][11]);
                                 $('#seg_ruta_archivo').val(registro['cell'][12]);
+                                
                                 $('#vinietaD').val(registro['cell'][13]);
+                                
+                             
+                               
+var download_path = '/sispfgl/'+registro['cell'][12];
+
+if (download_path == null) {
+$('#btn_descargar').hide();
+}else
+$('#btn_subir').button();
+$('#btn_descargar').button().click(function(e) {
+if (download_path != '') {
+e.preventDefault();  //stop the browser from following
+window.location.href = download_path;
+            }
+        });
+                               
+                                
                                 $('#equipoTecnico').setGridParam({
                                     url: '<?php echo base_url('componente2/comp25/cargarParticipantesSeg') ?>/seg_id/' + registro['cell'][0],
                                     editurl: '<?php echo base_url('componente2/comp23_E1/gestionParticipantes') ?>/seguimiento/seg_id/' + registro['cell'][0],
                                     datatype: 'json'
                                 }).trigger('reloadGrid');
+                                //var button2 = $('#btn_subir'), interval;
                                 new AjaxUpload('#btn_subir', {
                                     action: "<?php echo base_url('componente2/comp23_E1/subirArchivo'); ?>"+"/seguimiento/" +  registro['cell'][0] + "/seg_id",
                                     onSubmit: function(file, ext) {
@@ -399,6 +418,7 @@
                                             ext = (response.substring(response.lastIndexOf("."))).toLowerCase();
                                             nombre = response.substring(response.lastIndexOf("/")).toLowerCase().replace('/', '');
                                             $('#vinietaD').val('Descargar ' + nombre);
+                                            
                                             $('#seg_ruta_archivo').val(response);//GUARDA LA RUTA DEL ARCHIVO
                                             if (ext == '.pdf') {
                                                 $('#btn_descargar').attr({
@@ -496,9 +516,17 @@
         });
 
  
-        $('#btn_descargar').click(function() {
-            $.get($(this).attr('href'));
-        });
+//            $('#btn_descargar').click(function() {
+//                //$('#seg_ruta_archivo').val(response);
+//                $.get($(this).attr('href'));
+//                //$.get($('#seg_ruta_archivo').attr('href'));
+//            });
+////             $('#btn_descargar').attr({
+////                   'href': '<?php echo base_url(); ?>' + response,
+//                   'target': '_blank'
+//                   });
+
+           
     });
 </script>
 <center>
@@ -667,8 +695,8 @@
                 <td><input class="letraazul" type="text" id="vinieta" readonly="readonly" value="Subir listado de participantes" size="30" style="border: none"/></td>
                 </tr>
                 <tr>
-                <td><a id="btn_descargar"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/> </a></td>
-                <td><input class="letraazul" type="text" id="vinietaD" readonly="readonly" size="30" style="border: none"/></td>
+                <td><a id="btn_descargar" name="btn_descargar" value="<?php echo set_value('seg_ruta_archiv') ?>" ><img src='<?php echo base_url('resource/imagenes/download.png'); ?>' /> </a></td>
+                <td><input class="letraazul" type="text" id="vinietaD" readonly="readonly"  size="30" style="border: none"/></td>
                 </tr>
             </table>
         </td>

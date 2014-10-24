@@ -127,7 +127,7 @@
                             }
                             $('#ela_pro_fconformacion').val(registro['cell'][5]);
                             $('#ela_pro_fecha2').val(registro['cell'][6]);
-                            $('#ela_pro_observacion').val(registro['cell'][7]);
+                            $('#ela_pro_observacion').val(registro['cell'][6]);
                             $('#recibidoMunicipalidad').setGridParam({
                                 url:'<?php echo base_url('componente2/comp25/recibidoMunicipalidad') ?>/'+registro['cell'][0],
                                 editurl:'<?php echo base_url('componente2/comp25/guardarRecibidoMunicipalidad') ?>/'+registro['cell'][0],

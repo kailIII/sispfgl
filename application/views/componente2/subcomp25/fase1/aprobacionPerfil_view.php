@@ -354,16 +354,104 @@
                                 $('#per_pro_observacion').val(registro['cell'][16]);
                                 $('#per_pro_per_ruta_archivo').val(registro['cell'][17]);
                                 $('#per_pro_perD').val(registro['cell'][18]);
+                                
+                                
+                                
+var download_path1 = '/sispfgl/'+registro['cell'][17];
+
+if (download_path1 == '') {
+$('#btn_per_descargar').hide();
+}else
+$('#btn_subir').button();
+$('#btn_per_descargar').button().click(function(e) {
+if (download_path1 != '') {
+e.preventDefault();  //stop the browser from following
+window.location.href = download_path1;
+            }
+        });
+                                
+                                
                                 $('#per_pro_tdr_ruta_archivo').val(registro['cell'][19]);
                                 $('#per_pro_tdrD').val(registro['cell'][20]);
+
+var download_path2 = '/sispfgl/'+registro['cell'][19];
+
+if (download_path2 == '') {
+$('#btn_tdr_descargar').hide();
+}else
+$('#btn_subir').button();
+$('#btn_tdr_descargar').button().click(function(e) {
+if (download_path2 != '') {
+e.preventDefault();  //stop the browser from following
+window.location.href = download_path2;
+            }
+        });                                
+                                
+                                
                                 $('#per_pro_esp_ruta_archivo').val(registro['cell'][21]);
                                 $('#per_pro_espD').val(registro['cell'][22]);
+                                
+var download_path3 = '/sispfgl/'+registro['cell'][21];
+
+if (download_path3 == '') {
+$('#btn_esp_descargar').hide();
+}else
+$('#btn_subir').button();
+$('#btn_esp_descargar').button().click(function(e) {
+if (download_path3 != '') {
+e.preventDefault();  //stop the browser from following
+window.location.href = download_path3;
+            }
+        });                                
+                                
                                 $('#per_pro_car_ruta_archivo').val(registro['cell'][23]);
                                 $('#per_pro_carD').val(registro['cell'][24]);
+
+var download_path4 = '/sispfgl/'+registro['cell'][23];
+
+if (download_path4 == '') {
+$('#btn_per_descargar').hide();
+}else
+$('#btn_subir').button();
+$('#btn_per_descargar').button().click(function(e) {
+if (download_path4 != '') {
+e.preventDefault();  //stop the browser from following
+window.location.href = download_path4;
+            }
+        });
+                                
                                 $('#per_pro_acu_ruta_archivo').val(registro['cell'][25]);
                                 $('#per_pro_acuD').val(registro['cell'][26]);
+
+var download_path5 = '/sispfgl/'+registro['cell'][25];
+
+if (download_path5 == '') {
+$('#btn_acu_descargar').hide();
+}else
+$('#btn_subir').button();
+$('#btn_acu_descargar').button().click(function(e) {
+if (download_path5 != '') {
+e.preventDefault();  //stop the browser from following
+window.location.href = download_path5;
+            }
+        });                                
+                                
                                 $('#per_pro_doc_ruta_archivo').val(registro['cell'][27]);
                                 $('#per_pro_docD').val(registro['cell'][28]);
+                                
+var download_path6 = '/sispfgl/'+registro['cell'][27];
+
+if (download_path6 == '') {
+$('#btn_doc_descargar').hide();
+}else
+$('#btn_subir').button();
+$('#btn_doc_descargar').button().click(function(e) {
+if (download_path6 != '') {
+e.preventDefault();  //stop the browser from following
+window.location.href = download_path6;
+            }
+        });                                
+                                
                                 var button1 = $('#btn_per_subir'), interval;
                                 new AjaxUpload('#btn_per_subir', {
                                     action: '<?php echo base_url('componente2/procesoAdministrativo/subirArchivo2') . '/perfil_proyecto/'; ?>' + registro['cell'][0] + '/per_pro_id/per_pro_per_',
