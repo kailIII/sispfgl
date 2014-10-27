@@ -12,7 +12,7 @@ Class comp24 extends CI_Model {
         return date('Y-m-d', mktime(0, 0, 0, $t[1], $t[0], $t[2]));
     }
 
-    public function select_data($tabla, $where = null, $out = 'json') {
+    public function select_data($tabla, $where = null) {
 
         return $data = $this->db->get_where($tabla, $where);
         //return json_encode($data->result());

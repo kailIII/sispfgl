@@ -36,12 +36,10 @@ $this->load->view('plantilla/menu', $menu);
         });
         $('#selDepto').change(function() {
             $.ajax({url: '<?php echo base_url('componente2/comp24_E0/getMunicipios') ?>/' + $('#selDepto').val()
-            }).done(function(data) {
-                $('#mun_id').children().remove();
-                $('#mun_id').html(data);
-            });
+            }).done(function(data) {$('#mun_id').children().remove();$('#mun_id').html(data);});
         });
-        /**/
+     
+       
         
         /*PARA EL DATEPICKER*/
         $("#f_emision").datepicker({
@@ -49,10 +47,10 @@ $this->load->view('plantilla/menu', $menu);
             maxDate: '+1D',
             buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
             buttonImageOnly: true,
-            dateFormat: 'dd/mm/yy',
-            onClose: function(selectedDate) {
-                $("#f_recepcion").datepicker("option", "minDate", selectedDate);
-            }
+            dateFormat: 'dd/mm/yy'
+          /*  onClose: function(selectedDate) {
+                $("#f_emision").datepicker("option", "minDate", selectedDate);
+            }*/
         });
         $("#f_recepcion").datepicker({
             showOn: 'both',
@@ -101,12 +99,12 @@ if (isset($mun_id) && $mun_id > 0) {
     <div id="rpt-border"></div>
     <div class="campo">
         <label>Fecha de emisión de solicitud:</label>
-        <input id="f_emision" name="f_emision" type="text" readonly="readonly" value="<?php echo set_value('f_emision') ?>"/>
+        <input id="f_emision" name="f_emision" type="text"  value="<?php echo set_value('f_emision') ?>"/>
 <?php echo form_error('f_emision'); ?>
     </div>
     <div class="campo">
         <label>Fecha de recepción de solicitud:</label>
-        <input id="f_recepcion" name="f_recepcion" type="text" readonly="readonly" value="<?php echo set_value('f_recepcion') ?>"/>
+        <input id="f_recepcion" name="f_recepcion" type="text"  value="<?php echo set_value('f_recepcion') ?>"/>
 <?php echo form_error('f_recepcion'); ?>
     </div>
 

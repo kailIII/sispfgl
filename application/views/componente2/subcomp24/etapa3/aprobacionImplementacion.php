@@ -150,7 +150,7 @@ $(document).ready(function(){
                 <?php echo form_error('seg_fecha_emision'); ?>
             </div>
             <div class="campo">
-                <label style="width: 400px;">Fecha de recepción de acuero municipal:</label>
+                <label style="width: 400px;">Fecha de recepción de acuerdo municipal:</label>
                 <input id="seg_fecha_recepcion" name="seg_fecha_recepcion" type="text" readonly="readonly" value="<?php echo set_value('seg_fecha_recepcion') ?>"/>
                 <?php echo form_error('seg_fecha_recepcion'); ?>
             </div>

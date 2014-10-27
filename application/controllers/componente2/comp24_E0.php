@@ -1029,17 +1029,26 @@ class Comp24_E0 extends CI_Controller {
         $tabla = 'empleados';
         $campo = 'emp_mun_id';
         $index = $this->input->post('id');
-
+        
+               
+        
+        $emp_n = $this->input->post('emp_nivel');
+        if ($emp_n){
+           $emp_n = 0; 
+        }
+        
+        
+        
         $data = array(
             $campo => $id,
             'emp_nombre' => $this->input->post('emp_nombre'),
             'emp_apellidos' => $this->input->post('emp_apellidos'),
-            'emp_sexo' => $this->input->post('emp_sexo'),
-            'emp_cargo' => $this->input->post('emp_cargo'),
-            'emp_nivel' => $this->input->post('emp_nivel'),
-            'emp_edad' => $this->input->post('emp_edad'),
-            'emp_titulo' => $this->input->post('emp_titulo'),
-            'emp_experiencia' => $this->input->post('emp_experiencia')
+            'emp_sexo' => $this->input->post('emp_sexo',true),
+            'emp_edad' => $this->input->post('emp_edad',true),
+            'emp_cargo' => $this->input->post('emp_cargo',true),
+            'emp_nivel' => $this->input->post('emp_nivel',true),
+            'emp_titulo' => $this->input->post('emp_titulo',true),
+            'emp_experiencia' => $this->input->post('emp_experiencia',true)
         );
 
         switch ($this->input->post('oper')) {

@@ -335,7 +335,7 @@ class Comp24_E3 extends CI_Controller {
         
         $d = $this->comp24->select_data('empleados',array('emp_mun_id'=>$id));
         
-        echo $this->librerias->json_out($d,'emp_id',array('emp_id','emp_mun_id','emp_nombre','emp_apellidos','emp_edad','emp_cargo','emp_sexo'));
+        echo $this->librerias->json_out($d,'emp_id',array('emp_id','emp_mun_id','emp_nombre','emp_apellidos','emp_edad','emp_cargo','emp_telefono','emp_sexo'));
     }
     
     public function gestionEmpleados($id){
@@ -351,10 +351,11 @@ class Comp24_E3 extends CI_Controller {
             'emp_apellidos' => $this->input->post('emp_apellidos'),
             'emp_sexo'      => $this->input->post('emp_sexo'),
             'emp_cargo'     => $this->input->post('emp_cargo'),
-            'emp_nivel'     => $this->input->post('emp_nivel'),
             'emp_edad'      => $this->input->post('emp_edad'),
+            'emp_nivel'     => $this->input->post('emp_nivel'),
             'emp_titulo'    => $this->input->post('emp_titulo'),
-            'emp_experiencia'   => $this->input->post('emp_experiencia')
+            'emp_experiencia'   => $this->input->post('emp_experiencia'),
+            'emp_telefono'  => $this->input->post('emp_telefono')
         );
         
         switch ($this->input->post('oper')){ 
@@ -392,8 +393,8 @@ class Comp24_E3 extends CI_Controller {
             'par_nombre'    => $this->input->post('par_nombre'),
             'par_apellidos' => $this->input->post('par_apellidos'),
             'par_sexo'      => $this->input->post('par_sexo'),
-            'par_cargo'     => $this->input->post('par_cargo'),
             'par_edad'      => $this->input->post('par_edad'),
+            'par_cargo'     => $this->input->post('par_cargo'),            
             'par_telefono'  => $this->input->post('par_telefono')
         );
         

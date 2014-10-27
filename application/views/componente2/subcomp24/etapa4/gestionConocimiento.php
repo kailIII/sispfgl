@@ -69,7 +69,7 @@ $(document).ready(function(){
                 editrules:{required:true} },
             {name:'par_cargo',index:'par_cargo', width:123,editable:true,editoptions:{size:30},
                 edittype:'text',editoptions:{size:20,maxlength:50},
-                editrules:{required:true} },
+                editrules:{required:false} },
             {name:'par_telefono',index:'par_telefono', width:80,editable:true,editoptions:{size:8},align:'center',
                 edittype:'text',editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}
                 }

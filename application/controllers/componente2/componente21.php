@@ -17,7 +17,7 @@ class  componente21 extends CI_Controller {
     
     public function cc() {
 
-        $informacion['titulo'] = 'CC';
+        $informacion['titulo'] = 'Consulta Ciudadana';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
@@ -41,7 +41,7 @@ class  componente21 extends CI_Controller {
     
     public function ccc() {
 
-        $informacion['titulo'] = 'CCC';
+        $informacion['titulo'] = 'Comite Contraluria Ciudadana';
         $informacion['user_id'] = $this->tank_auth->get_user_id();
         $informacion['username'] = $this->tank_auth->get_username();
         $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
@@ -50,7 +50,31 @@ class  componente21 extends CI_Controller {
         $this->load->view('componente2/ccc_view');
         $this->load->view('plantilla/footer', $informacion);
     }
+    ///************************************************************
+    public function etm() {
+
+        $informacion['titulo'] = 'Equipo Tecnico Municipal';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/etm_view');
+        $this->load->view('plantilla/footer', $informacion);
+    }
     
+    public function comi() {
+
+        $informacion['titulo'] = 'Comision de Mantenimiento';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/comi_view');
+        $this->load->view('plantilla/footer', $informacion);
+    }
+    //************************************************************
      public function guardar_cc() {
 
         $datos_cc = $_POST;
@@ -140,7 +164,7 @@ class  componente21 extends CI_Controller {
 			$informacion['user_id'] = $this->tank_auth->get_user_id();
 			$informacion['username'] = $this->tank_auth->get_username();
 			$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username()); 
-			$informacion['aviso'] = '<p style="color:blue">Se ha realziado el registro correctamete.</p>';         
+			$informacion['aviso'] = '<p style="color:blue">Se ha realizado el registro correctamete.</p>';         
 			$this->load->view('plantilla/header', $informacion);
 			$this->load->view('plantilla/menu', $informacion);
 			$this->load->view('componente2/ccc_view');

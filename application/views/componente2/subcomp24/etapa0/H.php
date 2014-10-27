@@ -51,7 +51,7 @@ $(document).ready(function(){
         datatype:'json',
         altRows:true,
         gridview: true,
-        height: 400,
+        height: 300,
         hidegrid: false,
         colNames:['id','Padre','Nombres','Apellidos','Sexo','Edad','Cargo','Nivel de Escolaridad','Titulo','Años de Experiencia'],
         colModel:[
@@ -68,10 +68,10 @@ $(document).ready(function(){
                 editrules:{required:true} },
             {name:'emp_edad',index:'emp_edad', width:50,editable:true,align:'center',
                 edittype:'text',editoptions:{size:5,maxlength:2},
-                editrules:{number:true,minValue:18,maxValue:100} },
+                editrules:{required:true,number:true,minValue:18,maxValue:100} },
             {name:'emp_cargo',index:'emp_cargo', width:123,editable:true,editoptions:{size:30},
                 edittype:'text',editoptions:{size:20,maxlength:50},
-                editrules:{required:true} },
+                editrules:{required:false} },
             {name:'emp_nivel',index:'emp_nivel', width:123,editable:true,editoptions:{size:30},
                 edittype:'text',editoptions:{size:20,maxlength:50},
                 editrules:{} },
@@ -80,7 +80,7 @@ $(document).ready(function(){
                 },
             {name:'emp_experiencia',index:'emp_experiencia', width:90,editable:true,align:'center',
                 edittype:'text',editoptions:{size:5,maxlength:2},
-                editrules:{number:true,minValue:1,maxValue:100} }
+                editrules:{required:true, number:true,minValue:0,maxValue:100} }
         ],
         multiselect: false,
         caption: "Empleados municipales a nivel de jefatura",

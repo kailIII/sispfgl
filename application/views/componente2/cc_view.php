@@ -361,7 +361,7 @@ echo form_open_multipart('componente2/componente21/guardar_cc',$attributes);?>
 		&nbsp;&nbsp;&nbsp;&nbsp;<label>Archivos: </label>
 		<br/><br/>
 		
-		<label>Acta Final: </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<label>Acta de CC: </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type="file" id="acta_final" name="acta_final" size="20" /><br/><br/>
 		
 		<label>Listado de Asistencia: </label>

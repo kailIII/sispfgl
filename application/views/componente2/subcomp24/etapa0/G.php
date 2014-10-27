@@ -99,7 +99,7 @@ $(document).ready(function(){
             <div class="campo">
                 <label>Tipologia</label>
                 <select id='per_mun_tipologia'>
-                    <option value='0'>--Seleccione--</option>
+                    <option value='2'>--Seleccione--</option>
                     <?php
                     for($i=1;$i<5;$i++){
                         echo "<option value='$i'";

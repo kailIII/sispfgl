@@ -3,14 +3,6 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="6">
         <file>
-            <url>application/controllers/reportes.php</url>
-            <bookmark id="6">
-                <name/>
-                <line>1448</line>
-                <key/>
-            </bookmark>
-        </file>
-        <file>
             <url>application/views/componente2/subcomp25/fase1/revisionInformacion_view.php</url>
             <bookmark id="2">
                 <name/>
@@ -35,6 +27,14 @@
             <bookmark id="4">
                 <name/>
                 <line>894</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>application/controllers/reportes.php</url>
+            <bookmark id="6">
+                <name/>
+                <line>1448</line>
                 <key/>
             </bookmark>
         </file>
