@@ -231,7 +231,7 @@
     </table>
     <br/>
 
-    <p><strong>Observaciones:</strong><br/><textarea name="rub_observacion" cols="48" rows="5"></textarea></p>
+    <p><strong>Observaciones:</strong><br/><textarea id="rub_observacion" name="rub_observacion" cols="48" rows="5"></textarea></p>
     <?php //if (strcmp($rol, 'gdrc') == 0) {?>
     <center>
         <input type="submit" id="guardar" value="Guardar" />

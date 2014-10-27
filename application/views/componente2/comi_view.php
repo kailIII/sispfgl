@@ -9,6 +9,7 @@
        });
        
        
+<<<<<<< HEAD
        $( "#fecha_con_cm" ).datepicker({
            showOn: 'both',
            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
@@ -16,6 +17,9 @@
            dateFormat: 'yy/mm/dd',
            minDate: (new Date(2013, 0, 1))
        });
+=======
+      
+>>>>>>> 8435cef9aface6857774d885123de48b944745d0
        
        $('.mensaje').dialog({
             autoOpen: false,
@@ -27,6 +31,7 @@
             }
         });
         
+<<<<<<< HEAD
         $('#si_posee').change(function(){
 			if($('#si_posee').is(':checked'))
 				$('#monto_ap').prop('disabled', false);
@@ -43,6 +48,9 @@
 		});
 
         
+=======
+       
+>>>>>>> 8435cef9aface6857774d885123de48b944745d0
          /*suma de totales*/
         
         $('#total_mujeres_cm').change(function(){   
@@ -89,7 +97,11 @@
 			 var records=$('#cm_asis').jqGrid('getGridParam','records');
 			 
 			 var nombre_asis = $('#nombre_cm_asis').val();
+<<<<<<< HEAD
 			 var resp_asis = 'N/A'; //antes: $('#resp_asis_cm').val();
+=======
+			 var resp_asis = $('#resp_asis_cm').val(); //antes: ;'N/A'
+>>>>>>> 8435cef9aface6857774d885123de48b944745d0
 			 var sexo_asis = $('#sexo_cm_asis').val();
 			 		 
 			 if ( nombre_asis!="" && resp_asis!="" && sexo_asis!="") {
@@ -197,6 +209,7 @@
 			if($('#selMun').val()!='' && $('#lugar_convocatoria').val()!='' && $('#fecha_conformacion').val()!='')
 			{
 				
+<<<<<<< HEAD
 			var numberOfRecords = $("#Proyectos").getGridParam("records");
 			for(i=0;i<numberOfRecords;i++)
 			{
@@ -232,6 +245,10 @@
 			}
 			$('<input type="hidden" />').attr('name', 'cant_ccc_asis').attr('value',numberOfRecords).appendTo('#divpost');
 
+=======
+						
+			
+>>>>>>> 8435cef9aface6857774d885123de48b944745d0
 			var numberOfRecords = $("#cm_asis").getGridParam("records");
 			for(i=0;i<numberOfRecords;i++)
 			{
@@ -275,7 +292,11 @@
 <h1>Comisi&oacute;n de  Mantenimiento</h1>
 <br/>
 <?php $attributes = array('id' => 'myform');
+<<<<<<< HEAD
 echo form_open('componente2/componente21/guardar_ccc',$attributes);?>
+=======
+echo form_open('componente2/componente21/guardar_comi',$attributes);?>
+>>>>>>> 8435cef9aface6857774d885123de48b944745d0
 	
 	<label>Departamento: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 	<?php echo form_dropdown_from_db('dep_id','selDepto' ,"SELECT dep_id,dep_nombre FROM departamento");?>

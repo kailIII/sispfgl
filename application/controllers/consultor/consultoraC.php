@@ -62,6 +62,46 @@ class ConsultoraC extends CI_Controller {
         echo $jsonresponse;
     }
 
+    
+     public function cargarConsultores() {
+        $this->load->model('consultor/consultor', 'con');
+        $this->load->model('proyectoPep/proyecto_pep', 'propep');
+        $consultores = $this->con->obtenerConsultores();
+        $numfilas = count($consultores);
+
+    // verficando    
+       $i = 0;
+       foreach ($consultores as $aux) {
+            $rows[$i]['id'] = $aux->con_id;
+            $rows[$i]['cell'] = array($aux->con_id,
+                $aux->con_nombre. ' '. $aux->con_apellido,
+                $aux->pro_pep_nombre
+                //$aux->mun_nombre
+            );
+            $i++;
+      }  
+        
+
+        if ($numfilas != 0) {
+            array_multisort($rows, SORT_ASC);
+        } else {
+            $rows = array();
+        }
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+        
+        
+    }
+
     public function registrarConsultora() {
         $this->load->model('consultor/consultora', 'consul');
         $ultimoCodigo = $this->consul->ultimoCodigo();
@@ -188,44 +228,7 @@ class ConsultoraC extends CI_Controller {
         $this->load->view('plantilla/footer', $informacion);
     }
 
-    public function cargarConsultores() {
-        $this->load->model('consultor/consultor', 'con');
-        $this->load->model('proyectoPep/proyecto_pep', 'propep');
-        $consultores = $this->con->obtenerConsultores();
-        $numfilas = count($consultores);
-
-        $i = 0;
-        foreach ($consultores as $aux) {
-            $rows[$i]['id'] = $aux->con_id;
-            $proyectoPep = $this->propep->obtenerNombreProyectos($aux->pro_pep_id);
-            foreach ($proyectoPep as $pro_pep) {
-                $rows[$i]['cell'] = array($aux->con_id,
-                    $aux->con_nombre . ' ' . $aux->con_apellido,
-                    $pro_pep->pro_pep_nombre,
-                    $pro_pep->mun_nombre
-                );
-            }
-            $i++;
-        }
-
-        if ($numfilas != 0) {
-            array_multisort($rows, SORT_ASC);
-        } else {
-            $rows = array();
-        }
-
-        $datos = json_encode($rows);
-        $pages = floor($numfilas / 10) + 1;
-
-        $jsonresponse = '{
-               "page":"1",
-               "total":"' . $pages . '",
-               "records":"' . $numfilas . '", 
-               "rows":' . $datos . '}';
-
-        echo $jsonresponse;
-    }
-
+   
     public function registrarCoordinador() {
 
         /* REGLAS DE VALIDACIÒN */

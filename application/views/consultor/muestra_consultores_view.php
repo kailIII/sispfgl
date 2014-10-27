@@ -8,17 +8,17 @@
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','Nombre Coordinador','Proyecto PEP asignado','Municipio'],
+            //colNames:['id','Nombre Coordinador','Proyecto PEP asignado','Municipio'],
+            colNames:['con_id','Nombre de Consutor','Nombre del PEP', ],
             colModel:[
                 {name:'id',index:'id', editable:false,editoptions:{size:15} },
-                {name:'con_nombre',index:'con_nombre',editable:true,
-                    edittype:"textarea",editoptions:{rows:"4",cols:"50"},width:'200'
+                
+                {name:'con_apellido',index:'con_apellido',editable:true,
+                    edittype:"textarea",editoptions:{rows:"4",cols:"50"},width:'250'
                 },
-                {name:'pro_pep_id',index:'pro_pep_id',editable:true,
+                
+                {name:'pro_pep_nombre',index:'pro_pep_nombre',editable:true,
                     edittype:"textarea",editoptions:{rows:"4",cols:"50"},width:'400'
-                },
-                {name:'mun_id',index:'mun_id',editable:true,
-                    edittype:"textarea",editoptions:{rows:"4",cols:"50"},width:'200'
                 }
             ],
             multiselect: false,

@@ -11,7 +11,11 @@ class Consultor extends CI_Model {
     private $tabla = 'consultor';
 
     public function obtenerConsultores() {
-        $consulta = $this->db->get($this->tabla);
+        $this->db->order_by('con_id');
+        $sql="select consultor.con_id, con_nombre, con_apellido, pro_pep_nombre from consultor 
+            join proyecto_pep on proyecto_pep.con_id=consultor.con_id;";
+        //$consulta = $this->db->get($this->tabla);
+        $consulta = $this->db->query($sql);
         return $consulta->result();
     }
 

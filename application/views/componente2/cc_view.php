@@ -348,10 +348,10 @@ echo form_open_multipart('componente2/componente21/guardar_cc',$attributes);?>
 		<br/><br/>
 		
 		<label>Total de Mujeres: &nbsp;</label>
-		<input type="text" name="total_mujeres" id="total_mujeres"  size="1" ><br/><br/>
+		<input type="text" name="total_mujeres" id="total_mujeres"  size="3" ><br/><br/>
 		
 		<label>Total de Hombres: </label>
-		<input type="text" name="total_hombres" id="total_hombres"  size="1" ><br/><br/>
+		<input type="text" name="total_hombres" id="total_hombres"  size="3" ><br/><br/>
 		
 		<label>Total: </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<input readonly="readonly" type="text" name="total" id="total"  size="1"><br/><br/>

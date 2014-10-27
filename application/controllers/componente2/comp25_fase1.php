@@ -800,6 +800,7 @@ class Comp25_fase1 extends CI_Controller {
         $per_pro_car_ruta_archivo = $this->input->post("per_pro_car_ruta_archivo");
         $per_pro_acu_ruta_archivo = $this->input->post("per_pro_acu_ruta_archivo");
         $per_pro_per_ruta_archivo = $this->input->post("per_pro_per_ruta_archivo");
+        $per_pro_doc_ruta_archivo = $this->input->post("per_pro_doc_ruta_archivo");
         $this->perPro->actualizarPerfilProyecto($per_pro_id, $per_pro_fentrega_isdem, $per_pro_fentrega_uep, $per_pro_fnota_autorizacion
                 , $per_pro_fentrega_u_i, $per_pro_ftdr, $per_pro_fespecificacion
                 , $per_pro_fcarpeta_reducida, $per_pro_frecibe_municipio, $per_pro_femision_acuerdo
@@ -807,6 +808,7 @@ class Comp25_fase1 extends CI_Controller {
                 , $per_pro_consultor_individual, $per_pro_firma, $per_pro_ong
                 , $per_pro_observacion, $per_pro_tdr_ruta_archivo, $per_pro_esp_ruta_archivo
                 , $per_pro_car_ruta_archivo, $per_pro_acu_ruta_archivo, $per_pro_per_ruta_archivo
+                , $per_pro_doc_ruta_archivo
         );
     }
 

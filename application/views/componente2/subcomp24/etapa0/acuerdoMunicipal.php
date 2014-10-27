@@ -166,10 +166,7 @@ $this->load->view('plantilla/menu', $menu);
          /**/
 
         /**/
-        var download_path = '<?php $t = set_value('acu_mun_archivo_acuerdo');
-if ($t != '') {
-    echo base_url($t);
-} ?>';
+        var download_path = '<?php $t = set_value('acu_mun_archivo_acuerdo');if ($t != '') {echo base_url($t);} ?>';
         if (download_path == '') {
             $('#btn_download').hide();
         }
