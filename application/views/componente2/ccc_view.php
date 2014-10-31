@@ -493,6 +493,15 @@ echo form_open('componente2/componente21/guardar_ccc',$attributes);?>
 			<br/><br/>
 			
 			<label>Total de Mujeres: &nbsp;</label>
+<<<<<<< HEAD
+			<input type="text" readonly="readonly" name="total_mujeres_ccc" id="total_mujeres_ccc"  size="3" >&nbsp;&nbsp;&nbsp
+			
+			<label>Total de Hombres: </label>
+			<input type="text" readonly="readonly" name="total_hombres_ccc" id="total_hombres_ccc"  size="3" >&nbsp;&nbsp;&nbsp
+			
+			<label>Total: </label>&nbsp;&nbsp;&nbsp
+			<input readonly="readonly" type="text" name="total_ccc" id="total_ccc"  size="3"><br/><br/>
+=======
 			<input type="text" readonly="readonly" name="total_mujeres_ccc" id="total_mujeres_ccc" value="0" size="3" >&nbsp;&nbsp;&nbsp
 			
 			<label>Total de Hombres: </label>
@@ -500,6 +509,7 @@ echo form_open('componente2/componente21/guardar_ccc',$attributes);?>
 			
 			<label>Total: </label>&nbsp;&nbsp;&nbsp
 			<input readonly="readonly" type="text" name="total_ccc" id="total_ccc"  value="0" size="3"><br/><br/>
+>>>>>>> 8435cef9aface6857774d885123de48b944745d0
 		</div><br/>
 		<br/><br/><br/>
 	<input type="submit" id="guardar" name="guardar" value="Guardar" align="right">

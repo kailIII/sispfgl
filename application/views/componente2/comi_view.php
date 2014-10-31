@@ -9,7 +9,17 @@
        });
        
        
+<<<<<<< HEAD
+       $( "#fecha_con_cm" ).datepicker({
+           showOn: 'both',
+           buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+           buttonImageOnly: true, 
+           dateFormat: 'yy/mm/dd',
+           minDate: (new Date(2013, 0, 1))
+       });
+=======
       
+>>>>>>> 8435cef9aface6857774d885123de48b944745d0
        
        $('.mensaje').dialog({
             autoOpen: false,
@@ -21,7 +31,26 @@
             }
         });
         
+<<<<<<< HEAD
+        $('#si_posee').change(function(){
+			if($('#si_posee').is(':checked'))
+				$('#monto_ap').prop('disabled', false);
+		});
+		
+		 $('#no_posee').change(function(){
+			if($('#no_posee').is(':checked'))
+				$('#monto_ap').prop('disabled', true);
+		});
+		
+		$('#no_aplica').change(function(){
+			if($('#no_aplica').is(':checked'))
+				$('#monto_ap').prop('disabled', true);
+		});
+
+        
+=======
        
+>>>>>>> 8435cef9aface6857774d885123de48b944745d0
          /*suma de totales*/
         
         $('#total_mujeres_cm').change(function(){   
@@ -68,7 +97,11 @@
 			 var records=$('#cm_asis').jqGrid('getGridParam','records');
 			 
 			 var nombre_asis = $('#nombre_cm_asis').val();
+<<<<<<< HEAD
+			 var resp_asis = 'N/A'; //antes: $('#resp_asis_cm').val();
+=======
 			 var resp_asis = $('#resp_asis_cm').val(); //antes: ;'N/A'
+>>>>>>> 8435cef9aface6857774d885123de48b944745d0
 			 var sexo_asis = $('#sexo_cm_asis').val();
 			 		 
 			 if ( nombre_asis!="" && resp_asis!="" && sexo_asis!="") {
@@ -176,8 +209,46 @@
 			if($('#selMun').val()!='' && $('#lugar_convocatoria').val()!='' && $('#fecha_conformacion').val()!='')
 			{
 				
+<<<<<<< HEAD
+			var numberOfRecords = $("#Proyectos").getGridParam("records");
+			for(i=0;i<numberOfRecords;i++)
+			{
+				var rowId = $("#Proyectos").getRowData(i); 
+						  //put all rows for your grid
+				$('<input type="hidden" />').attr('name', 'nombre_proy'+i).attr('value',rowId['nombre_proy']).appendTo('#divpost');
+				$('<input type="hidden" />').attr('name', 'com_beneficiadas'+i).attr('value',rowId['com_beneficiadas']).appendTo('#divpost');
+				$('<input type="hidden" />').attr('name', 'pob_beneficiada'+i).attr('value',rowId['pob_beneficiada']).appendTo('#divpost');	
+			}
+			$('<input type="hidden" />').attr('name', 'cant_proy').attr('value',numberOfRecords).appendTo('#divpost');
+			
+			
+			
+			var numberOfRecords = $("#etm_asis").getGridParam("records");
+			for(i=0;i<numberOfRecords;i++)
+			{
+				var rowId = $("#etm_asis").getRowData(i);
+						  //put all rows for your grid
+				$('<input type="hidden" />').attr('name', 'nombre_etm_asis'+i).attr('value',rowId['nombre_asis']).appendTo('#divpost');
+				$('<input type="hidden" />').attr('name', 'sexo_etm_asis'+i).attr('value',rowId['sexo_asis']).appendTo('#divpost');
+				$('<input type="hidden" />').attr('name', 'resp_asis_etm'+i).attr('value',rowId['resp_asis']).appendTo('#divpost');	
+			}
+			$('<input type="hidden" />').attr('name', 'cant_etm_asis').attr('value',numberOfRecords).appendTo('#divpost');
+
+			var numberOfRecords = $("#ccc_asis").getGridParam("records");
+			for(i=0;i<numberOfRecords;i++)
+			{
+				var rowId = $("#ccc_asis").getRowData(i);
+						  //put all rows for your grid
+				$('<input type="hidden" />').attr('name', 'nombre_ccc_asis'+i).attr('value',rowId['nombre_asis']).appendTo('#divpost');
+				$('<input type="hidden" />').attr('name', 'sexo_ccc_asis'+i).attr('value',rowId['sexo_asis']).appendTo('#divpost');
+				$('<input type="hidden" />').attr('name', 'resp_asis_ccc'+i).attr('value',rowId['resp_asis']).appendTo('#divpost');	
+			}
+			$('<input type="hidden" />').attr('name', 'cant_ccc_asis').attr('value',numberOfRecords).appendTo('#divpost');
+
+=======
 						
 			
+>>>>>>> 8435cef9aface6857774d885123de48b944745d0
 			var numberOfRecords = $("#cm_asis").getGridParam("records");
 			for(i=0;i<numberOfRecords;i++)
 			{
@@ -221,7 +292,11 @@
 <h1>Comisi&oacute;n de  Mantenimiento</h1>
 <br/>
 <?php $attributes = array('id' => 'myform');
+<<<<<<< HEAD
+echo form_open('componente2/componente21/guardar_ccc',$attributes);?>
+=======
 echo form_open('componente2/componente21/guardar_comi',$attributes);?>
+>>>>>>> 8435cef9aface6857774d885123de48b944745d0
 	
 	<label>Departamento: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 	<?php echo form_dropdown_from_db('dep_id','selDepto' ,"SELECT dep_id,dep_nombre FROM departamento");?>

@@ -62,6 +62,9 @@ class  componente21 extends CI_Controller {
         $this->load->view('componente2/etm_view');
         $this->load->view('plantilla/footer', $informacion);
     }
+<<<<<<< HEAD
+    
+=======
     public function guardar_etm() {
 
         $datos_etm = $_POST;
@@ -83,6 +86,7 @@ class  componente21 extends CI_Controller {
 	}
     
     ///***************************************************************************
+>>>>>>> 8435cef9aface6857774d885123de48b944745d0
     public function comi() {
 
         $informacion['titulo'] = 'Comision de Mantenimiento';
@@ -94,6 +98,8 @@ class  componente21 extends CI_Controller {
         $this->load->view('componente2/comi_view');
         $this->load->view('plantilla/footer', $informacion);
     }
+<<<<<<< HEAD
+=======
     
     public function guardar_comi() {
 
@@ -114,6 +120,7 @@ class  componente21 extends CI_Controller {
 			$this->load->view('plantilla/footer', $informacion);
 		
 	}
+>>>>>>> 8435cef9aface6857774d885123de48b944745d0
     //************************************************************
      public function guardar_cc() {
 

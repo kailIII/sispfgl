@@ -250,7 +250,11 @@
 <h1>Equipo T&eacute;cnico Municipal</h1>
 <br/>
 <?php $attributes = array('id' => 'myform');
+<<<<<<< HEAD
+echo form_open('componente2/componente21/guardar_ccc',$attributes);?>
+=======
 echo form_open('componente2/componente21/guardar_etm',$attributes);?>
+>>>>>>> 8435cef9aface6857774d885123de48b944745d0
 	
 	<label>Departamento: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 	<?php echo form_dropdown_from_db('dep_id','selDepto' ,"SELECT dep_id,dep_nombre FROM departamento");?>
@@ -269,11 +273,19 @@ echo form_open('componente2/componente21/guardar_etm',$attributes);?>
 	
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<label>Fase: </label>
+<<<<<<< HEAD
+		<select name="fase_ccc" size="1" id="fase_ccc">
+			<option value="Preinscripcion"<?php echo set_select('fase_ccc', 'Preinscripcion'); ?>>Formulaci&oacute;n</option>
+			<option value="Ejecucion"<?php echo set_select('fase_ccc', 'Ejecucion'); ?>>Ejecuci&oacute;n</option>
+			<option value="Cierre"<?php echo set_select('fase_ccc', 'Cierre'); ?>>Cierre</option>
+			<option value="Mantenimiento"<?php echo set_select('fase_ccc', 'Mantenimiento'); ?>>Mantenimiento</option>
+=======
 		<select name="fase_etm" size="1" id="fase_ccc">
 			<option value="Preinscripcion"<?php echo set_select('fase_etm', 'Preinscripcion'); ?>>Formulaci&oacute;n</option>
 			<option value="Ejecucion"<?php echo set_select('fase_etm', 'Ejecucion'); ?>>Ejecuci&oacute;n</option>
 			<option value="Cierre"<?php echo set_select('fase_etm', 'Cierre'); ?>>Cierre</option>
 			<option value="Mantenimiento"<?php echo set_select('fase_etm', 'Mantenimiento'); ?>>Mantenimiento</option>
+>>>>>>> 8435cef9aface6857774d885123de48b944745d0
 	</select>
 	<br/><br/><br/>
 	<hr color="green" size=1 width="700"><br/>
@@ -326,6 +338,15 @@ echo form_open('componente2/componente21/guardar_etm',$attributes);?>
 			<br/><br/>
 			
 			<label>Total de Mujeres: &nbsp;</label>
+<<<<<<< HEAD
+			<input type="text" readonly="readonly" name="total_mujeres_etm" id="total_mujeres_etm"  size="1" >
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<label>Total de Hombres: </label>
+			<input type="text" readonly="readonly" name="total_hombres_etm" id="total_hombres_etm"  size="1" >
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label>Total: </label>
+			<input readonly="readonly" type="text" name="total_etm" id="total_etm"  size="1">
+=======
 			<input type="text" readonly="readonly" name="total_mujeres_etm" id="total_mujeres_etm" value="0" size="3" >
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<label>Total de Hombres: </label>
@@ -333,6 +354,7 @@ echo form_open('componente2/componente21/guardar_etm',$attributes);?>
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <label>Total: </label>
 			<input readonly="readonly" type="text" name="total_etm" id="total_etm" value="0" size="3">
+>>>>>>> 8435cef9aface6857774d885123de48b944745d0
 		</div></br></br></br></br></br>
 		
 	<!--<div style="float:left;height:200px;width:330px;">
