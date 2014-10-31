@@ -28,8 +28,7 @@ class Perfil_proyecto extends CI_Model {
     , $per_pro_fcarpeta_reducida, $per_pro_frecibe_municipio, $per_pro_femision_acuerdo
     , $per_pro_fcertificacion, $per_pro_frecibe, $per_pro_fencio_fisdl
     , $per_pro_consultor_individual, $per_pro_firma, $per_pro_ong
-    , $per_pro_observacion, $per_pro_tdr_ruta_archivo, $per_pro_esp_ruta_archivo
-    , $per_pro_car_ruta_archivo, $per_pro_acu_ruta_archivo, $per_pro_per_ruta_archivo,$per_pro_doc_ruta_archivo
+    , $per_pro_observacion
     ) {
         $datos = array(
             'per_pro_fentrega_isdem' => $per_pro_fentrega_isdem,
@@ -47,13 +46,7 @@ class Perfil_proyecto extends CI_Model {
             'per_pro_consultor_individual' => $per_pro_consultor_individual,
             'per_pro_firma' => $per_pro_firma,
             'per_pro_ong' => $per_pro_ong,
-            'per_pro_observacion' => $per_pro_observacion,
-            'per_pro_tdr_ruta_archivo' => $per_pro_tdr_ruta_archivo,
-            'per_pro_esp_ruta_archivo' => $per_pro_esp_ruta_archivo,
-            'per_pro_car_ruta_archivo' => $per_pro_car_ruta_archivo,
-            'per_pro_acu_ruta_archivo' => $per_pro_acu_ruta_archivo,
-            'per_pro_per_ruta_archivo' => $per_pro_per_ruta_archivo,
-            'per_pro_doc_ruta_archivo' => $per_pro_doc_ruta_archivo
+            'per_pro_observacion' => $per_pro_observacion
         );
         $this->db->where('per_pro_id', $per_pro_id);
         $this->db->update($this->tabla, $datos);

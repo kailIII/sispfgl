@@ -134,7 +134,7 @@
                     });
                     return false;
                 } else {
-                    if (fecha1 < fecha2) {
+                    if (fecha1 < fecha2 || true) {
                         if (fecha3 == null) {
                             $('#seg_fsocializacion').val('');
                             $("#seg_facta_aprobacion_d").val('');
@@ -154,7 +154,7 @@
                             });
                             return false;
                         } else {
-                            if (fecha2 < fecha3) {
+                            if (fecha2 < fecha3 || true) {
                                 if (fecha4 == null) {
                                     $("#seg_facta_aprobacion_d").val('');
                                     $("#seg_forden_planificacion").val('');
@@ -173,7 +173,7 @@
                                     });
                                     return false;
                                 } else {
-                                    if (fecha3 < fecha4) {
+                                    if (fecha3 < fecha4 || true) {
                                         if (fecha5 == null) {
                                             $("#seg_forden_planificacion").val('');
                                             $('#seg_facta_aprobacion_p').val('');
@@ -191,7 +191,7 @@
                                             });
                                             return false;
                                         } else {
-                                            if (fecha4 < fecha5) {
+                                            if (fecha4 < fecha5 || true) {
                                                 if (fecha6 == null) {
                                                     $('#seg_facta_aprobacion_p').val('');
                                                     $('#seg_facuerdo_municipal').val('');
@@ -208,7 +208,7 @@
                                                     });
                                                     return false;
                                                 } else {
-                                                    if (fecha5 < fecha6) {
+                                                    if (fecha5 < fecha6 || true) {
                                                         if (fecha7 == null) {
                                                             $('#seg_facuerdo_municipal').val('');
                                                             $('#seg_fpresentacion_publica').val('');
@@ -224,7 +224,7 @@
                                                             });
                                                             return false;
                                                         } else {
-                                                            if (fecha6 < fecha7) {
+                                                            if (fecha6 < fecha7 || true) {
                                                                 if (fecha8 == null) {
                                                                     $('#seg_fpresentacion_publica').val('');
                                                                     $('#seg_forden_seguimiento').val('');
@@ -382,16 +382,17 @@
                                
 var download_path = '/sispfgl/'+registro['cell'][12];
 
-if (download_path == null) {
+if (download_path == '/sispfgl/null') {
 $('#btn_descargar').hide();
-}else
+}else{
 $('#btn_subir').button();
+$('#btn_descargar').show();
 $('#btn_descargar').button().click(function(e) {
 if (download_path != '') {
 e.preventDefault();  //stop the browser from following
 window.location.href = download_path;
             }
-        });
+        });}
                                
                                 
                                 $('#equipoTecnico').setGridParam({
@@ -695,7 +696,7 @@ window.location.href = download_path;
                 <td><input class="letraazul" type="text" id="vinieta" readonly="readonly" value="Subir listado de participantes" size="30" style="border: none"/></td>
                 </tr>
                 <tr>
-                <td><a id="btn_descargar" name="btn_descargar" value="<?php echo set_value('seg_ruta_archiv') ?>" ><img src='<?php echo base_url('resource/imagenes/download.png'); ?>' /> </a></td>
+                <td><a id="btn_descargar" name="btn_descargar" value="<?php echo set_value('seg_ruta_archivo') ?>" ><img src='<?php echo base_url('resource/imagenes/download.png'); ?>' /> </a></td>
                 <td><input class="letraazul" type="text" id="vinietaD" readonly="readonly"  size="30" style="border: none"/></td>
                 </tr>
             </table>

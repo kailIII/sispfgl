@@ -456,7 +456,7 @@
                     formoptions: {label: "No.", elmprefix: "(*)"}
                 },
                 {name: 'pla_con_nombre', index: 'pla_con_nombre', width: 200, editable: true,
-                    editoptions: {size: 25, maxlength: 50},
+                    editoptions: {size: 25, maxlength: 250},
                     formoptions: {label: "Nombre del plan:", elmprefix: "(*)"},
                     editrules: {required: true}
                 },
@@ -538,7 +538,7 @@
                     formoptions: {label: "No.", elmprefix: "(*)"}
                 },
                 {name: 'pla_con_nombre', index: 'pla_con_nombre', width: 200, editable: true,
-                    editoptions: {size: 25, maxlength: 50},
+                    editoptions: {size: 25, maxlength: 250},
                     formoptions: {label: "Nombre del plan:", elmprefix: "(*)"},
                     editrules: {required: true}
                 },
