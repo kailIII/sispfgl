@@ -391,14 +391,14 @@ echo form_open_multipart('componente2/componente21/guardar_cc',$attributes);?>
     <p>La cantidad de mujeres no es valida.</p>
 </div>
 <div id="mensaje6" class="mensaje" title="Aviso">
-    <p>La cantidad de hombres no es valida.</p>
+    <p>La cantidad de hombres no es valida.-</p>
 </div>
 <div id="mensaje7" class="mensaje" title="Aviso">
-    <p>La hora instroducida no es valida. Por favor utilice el formato [hh:mm], donde hh=horas y mm=minutos (dentro del rango valido).</p>
+    <p>La hora instroducida no es valida. Por favor utilice el formato [hh:mm], donde hh=horas y mm=minutos (dentro del rango valido).-</p>
 </div>
 <div id="mensaje8" class="mensaje" title="Aviso">
-    <p>El monto ingresado no es valido.</p>
+    <p>El monto ingresado no es valido.-</p>
 </div>
 <div id="mensaje9" class="mensaje" title="Aviso">
-    <p>Se requiere un numero.</p>
+    <p>Se requiere un numero.-</p>
 </div>

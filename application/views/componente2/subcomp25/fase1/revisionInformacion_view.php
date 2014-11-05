@@ -134,6 +134,7 @@
                                         $('input:radio[name=rev_inf_gestion_prospectiva]')[1].checked = true;
                                 }
                                 $('#rev_inf_ogestion_prospectiva').val(registro['cell'][10]);
+                                
                                 if (registro['cell'][11] != null) {
                                     if (registro['cell'][11] == "t") {
                                         $('input:checkbox[name=rev_inf_plan_comunal]').attr("checked", "checked");
@@ -148,13 +149,14 @@
                                 if (registro['cell'][12] != null) {
                                     if (registro['cell'][12] == "t"){
                                         $('input:checkbox[name=rev_inf_mapa]').attr("checked", "checked");
-                                        $("#mapa").show();
+                                        $("#mapas").show();
                                     }
                                     else{
                                         $('input:checkbox[name=rev_inf_mapa]').attr("checked", false);
-                                        $("#mapa").hide();
+                                        $("#mapas").hide();
                                     }
                                 }
+                                
                                 if (registro['cell'][13] != null) {
                                     if (registro['cell'][13] == "t")
                                         $('input:checkbox[name=rev_inf_presentoa]').attr("checked", "checked");
@@ -163,8 +165,8 @@
                                 }
                                 $('#rev_inf_conclusion').val(registro['cell'][14]);
                                 $("#mapa").setGridParam({
-                                    url: '<?php echo base_url('componente2/comp25_fase1/cargarMapas') ?>/' + registro['cell'][0],
-                                    editurl: '<?php echo base_url('componente2/comp25_fase1/guardarMapas') ?>/' + registro['cell'][0],
+                                    url: '<?php echo base_url('componente2/comp25_fase1/cargarMapas') ?>/4/' + registro['cell'][0],
+                                    editurl: '<?php echo base_url('componente2/comp25_fase1/guardarMapas') ?>/4/' + registro['cell'][0],
                                     datatype: 'json'
                                 }).trigger('reloadGrid');
                                 $('#planContingencial1').setGridParam({
@@ -344,21 +346,24 @@
             else
                 $('#plan2').hide();
         });
-        $('#plan3').hide();
+       
+       $('#plan3').hide();
         $('input:checkbox[name=rev_inf_plan_comunal]').click(function() {
             if ($('input:checkbox[name=rev_inf_plan_comunal]').is(':checked'))
                 $('#plan3').show();
             else
                 $('#plan3').hide();
         });
-        $('#mapas').hide();
+       
+       $('#mapas').hide();
         $('input:checkbox[name=rev_inf_mapa]').click(function() {
             if ($('input:checkbox[name=rev_inf_mapa]').is(':checked'))
                 $('#mapas').show();
             else
                 $('#mapas').hide();
         });
-        $('#prev_inf_dpresentob_eo').hide();
+       
+       $('#prev_inf_dpresentob_eo').hide();
         $('input:checkbox[name=rev_inf_presentob_eo]').click(function() {
             if ($('input:checkbox[name=rev_inf_presentob_eo]').is(':checked'))
                 $('#prev_inf_dpresentob_eo').show();
@@ -689,8 +694,8 @@
         }
         var tabla4 = $("#mapa");
         tabla4.jqGrid({
-            url: '<?php echo base_url('componente2/comp25_fase1/cargarMapas') ?>/' + $('#rev_inf_id').val(),
-            editurl: '<?php echo base_url('componente2/comp25_fase1/guardarMapas') ?>/' + $('#rev_inf_id').val(),
+            url: '<?php echo base_url('componente2/comp25_fase1/cargarMapas') ?>/4/' + $('#rev_inf_id').val(),
+            editurl: '<?php echo base_url('componente2/comp25_fase1/guardarMapas') ?>/4/' + $('#rev_inf_id').val(),
             datatype: 'json',
             altRows: true,
             height: "100%",
@@ -728,23 +733,23 @@
                 tabla.jqGrid('setGridParam', {datatype: 'json', loadonce: true}).trigger('reloadGrid');
             }
         }, //OPCIONES
-        {closeAfterEdit: true, editCaption: "Editando el plan de contingencia", width: 700,
+        {closeAfterEdit: true, editCaption: "Editando el mapa", width: 700,
             align: 'center', reloadAfterSubmit: true,
-            processData: "Cargando...", afterSubmit: despuesAgregarEditar,
+            processData: "Cargando...", afterSubmit: despuesAgregarEditar4,
             bottominfo: "Campos marcados con (*) son obligatorios",
             onclickSubmit: function(rp_ge, postdata) {
                 $('#mensaje').dialog('open');
             }
         }, //EDITAR
-        {closeAfterAdd: true, addCaption: "Agregar Plan de contingencia", width: 700,
+        {closeAfterAdd: true, addCaption: "Agregar un mapa", width: 700,
             align: 'center', reloadAfterSubmit: true,
-            processData: "Cargando...", afterSubmit: despuesAgregarEditar,
+            processData: "Cargando...", afterSubmit: despuesAgregarEditar4,
             bottominfo: "Campos marcados con (*) son obligatorios",
             onclickSubmit: function(rp_ge, postdata) {
                 $('#mensaje').dialog('open');
             }
         }, //AGREGAR
-        {msg: "¿Desea Eliminar a este plan de contingencia?", caption: "Eliminando....",
+        {msg: "¿Desea Eliminar a este mapa?", caption: "Eliminando....",
             align: 'center', reloadAfterSubmit: true, processData: "Cargando...", width: 300,
             onclickSubmit: function(rp_ge, postdata) {
                 $('#mensaje').dialog('open');
@@ -883,7 +888,7 @@
             </div>
 
             <p>
-                <input type="checkbox" name="rev_inf_mapa">Mapas
+                <input type="checkbox" name="rev_inf_mapa"/>Mapas
             </p>
             <div id="mapas">
                 <table id="mapa"></table>

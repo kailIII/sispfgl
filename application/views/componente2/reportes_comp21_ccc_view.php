@@ -32,9 +32,9 @@
 </center>
 <b><label>Seleccione el reporte que desea generar:</label></b>
 <form id="formulario" method="post" action="">
-    <input type="radio" name="tipo" value="1"> General por Departamento y Region </input>
+    <input type="radio" name="tipo" value="1"> General por Departamento y Region.- </input>
     <br/>
-    <input type="radio" name="tipo" value="2"> General por Muicipio </input>
+    <input type="radio" name="tipo" value="2"> General por Muicipio.- </input>
     <br/>
     <br/>
     <input type="submit" id="reporte" value="Generar Reporte" />

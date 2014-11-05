@@ -493,7 +493,7 @@ echo form_open('componente2/componente21/guardar_ccc',$attributes);?>
 			<br/><br/>
 			
 			<label>Total de Mujeres: &nbsp;</label>
-<<<<<<< HEAD
+
 			<input type="text" readonly="readonly" name="total_mujeres_ccc" id="total_mujeres_ccc"  size="3" >&nbsp;&nbsp;&nbsp
 			
 			<label>Total de Hombres: </label>
@@ -501,7 +501,7 @@ echo form_open('componente2/componente21/guardar_ccc',$attributes);?>
 			
 			<label>Total: </label>&nbsp;&nbsp;&nbsp
 			<input readonly="readonly" type="text" name="total_ccc" id="total_ccc"  size="3"><br/><br/>
-=======
+
 			<input type="text" readonly="readonly" name="total_mujeres_ccc" id="total_mujeres_ccc" value="0" size="3" >&nbsp;&nbsp;&nbsp
 			
 			<label>Total de Hombres: </label>
@@ -509,7 +509,7 @@ echo form_open('componente2/componente21/guardar_ccc',$attributes);?>
 			
 			<label>Total: </label>&nbsp;&nbsp;&nbsp
 			<input readonly="readonly" type="text" name="total_ccc" id="total_ccc"  value="0" size="3"><br/><br/>
->>>>>>> 8435cef9aface6857774d885123de48b944745d0
+
 		</div><br/>
 		<br/><br/><br/>
 	<input type="submit" id="guardar" name="guardar" value="Guardar" align="right">
@@ -520,23 +520,23 @@ echo form_open('componente2/componente21/guardar_ccc',$attributes);?>
     <p>Ok.</p>
 </div>
 <div id="mensaje1" class="mensaje" title="Aviso">
-    <p>Debe Seleccionar una fila para realizar esta acci&oacute;n.</p>
+    <p>Debe Seleccionar una fila para realizar esta acci&oacute;n.-</p>
 </div>
 <div id="mensaje2" class="mensaje" title="Aviso">
-    <p>Debe completar los datos de la actividad para continuar.</p>
+    <p>Debe completar los datos de la actividad para continuar.-</p>
 </div>
 <div id="mensaje3" class="mensaje" title="Aviso">
     <p>No ha ingresado ninguna actividad.</p>
 </div>
 <div id="mensaje4" class="mensaje" title="Aviso">
-    <p>Debe completar los datos de la persona para continuar.</p>
+    <p>Debe completar los datos de la persona para continuar.-</p>
 </div>
 <div id="mensaje5" class="mensaje" title="Aviso">
-    <p>La cantidad de mujeres no es valida.</p>
+    <p>La cantidad de mujeres no es valida.-</p>
 </div>
 <div id="mensaje6" class="mensaje" title="Aviso">
-    <p>La cantidad de hombres no es valida.</p>
+    <p>La cantidad de hombres no es valida.-</p>
 </div>
 <div id="mensaje7" class="mensaje" title="Aviso">
-    <p>Especifique el Monto del Subproyecto a seguimiento.</p>
+    <p>Especifique el Monto del Subproyecto a seguimiento.-</p>
 </div>

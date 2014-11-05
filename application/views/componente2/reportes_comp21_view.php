@@ -41,7 +41,7 @@
     <br/>
     <br/>
     <center>
-		<h1>Reportes Componente 2.1 CCC</h1>
+		<h1>Reportes Componente 2.1</h1>
 	</center>
 	<b><label>Seleccione el reporte que desea generar:</label></b>
 	<input type="radio" name="tipo" value="5"> Reporte General de Concultas Ciudadanas</input>

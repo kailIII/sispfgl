@@ -33,7 +33,7 @@
 <b><label>Seleccione el reporte que desea generar:</label></b>
 <form id="formulario" method="post" action="">
     
-    <input type="radio" name="tipo" value="1"> Reporte General Consultas Ciudadanas </input>
+    <input type="radio" name="tipo" value="1"> Reporte General Consultas Ciudadanas.- </input>
     <br/>
     
     
