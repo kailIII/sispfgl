@@ -58,6 +58,24 @@ Class comp24 extends CI_Model {
 
         return $this->db->insert('acuerdo_municipal2', $data_new);
     }
+ public function insert_solicitud_asistencia_tecnica($municipio, $f_solicitud, $f_emision,
+                                                     $f_envio, $f_inicio,$archivo1,$archivo2,
+                                                     $archivo3,$observaciones,$consultor) {
+        $data_new = array(
+            'mun_id' => $municipio,
+            'asi_tec_fecha_solicitud' => $this->changeDate($f_solicitud),
+            'asi_tec_fecha_emision' => $this->changeDate($f_emision),
+            'asi_tec_fecha_envio' => $this->changeDate($f_envio),
+            'asi_tec_fecha_inicio' => $this->changeDate($f_inicio),
+            'asi_tec_archivo' => $archivo1,
+            'asi_tec_archivo' => $archivo2,
+            'asi_tec_archivo' => $archivo3,
+            'asi_tec_observaciones' => $observaciones,
+            'asi_tec_consultor' => $consultor
+            );
+
+        return $this->db->insert('asistencia_tecnica', $data_new);
+    }
 
     public function getDepto($mun_id) {
         $sql = 'SELECT departamento.dep_nombre 

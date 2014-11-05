@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="6">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="7">
         <file>
             <url>application/views/componente2/subcomp25/fase1/revisionInformacion_view.php</url>
             <bookmark id="2">
@@ -27,6 +27,14 @@
             <bookmark id="4">
                 <name/>
                 <line>894</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>application/views/componente2/subcomp24/etapa0/G.php</url>
+            <bookmark id="7">
+                <name/>
+                <line>159</line>
                 <key/>
             </bookmark>
         </file>

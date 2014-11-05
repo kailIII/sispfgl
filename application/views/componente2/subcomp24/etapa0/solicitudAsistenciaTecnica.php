@@ -15,8 +15,8 @@ $(document).ready(function(){
     /*BASICO*/
     function formularioHide(){$('#listaContainer').show();$('#formulario').hide()}
     function formularioShow(){$('#listaContainer').hide();$('#formulario').show()}
-    $("#guardar").button();btn_consultor_add
-    $("#btn_consultor_add").button();
+    $("#guardar").button();
+    /*$("#btn_consultor_add").button();*/
     $("#btn_delete").button();
     $("#btn_acuerdo_nuevo").button().click(function(){$('#frm').submit();});
     $("#btn_seleccionar").button().click(function(){document.location.href='<?php echo current_url(); ?>/' + jQuery("#lista").jqGrid('getGridParam','selrow');});
@@ -211,8 +211,7 @@ $(document).ready(function(){
         <p><img src="<?php echo base_url('resource/imagenes/correct.png'); ?>" class="imagenError" />Almacenado Correctamente</p>
     </center>
 </div>
-<div id="from_consultor_nuevo" title="Crear Consultor">
-</div>
+
 
 <?php echo form_open('',array('id'=>'frm')) ?>
 
@@ -252,31 +251,28 @@ $(document).ready(function(){
             </div>
             <div class="campo">
                 <label>Fecha de solicitud de asistencia al ISDEM:</label>
-                <input id="asi_tec_fecha_solicitud" name="asi_tec_fecha_solicitud" type="text" readonly="readonly" value="<?php echo set_value('asi_tec_fecha_solicitud') ?>"/>
+                <input id="asi_tec_fecha_solicitud" name="asi_tec_fecha_solicitud" type="text"  value="<?php echo set_value('asi_tec_fecha_solicitud') ?>"/>
                 <?php echo form_error('asi_tec_fecha_solicitud'); ?>
             </div>
             <div class="campo">
                 <label>Fecha de emisión de acuerdo municipal:</label>
-                <input id="asi_tec_fecha_emision" name="asi_tec_fecha_emision" type="text" readonly="readonly" value="<?php echo set_value('asi_tec_fecha_emision') ?>"/>
+                <input id="asi_tec_fecha_emision" name="asi_tec_fecha_emision" type="text"  value="<?php echo set_value('asi_tec_fecha_emision') ?>"/>
                 <?php echo form_error('asi_tec_fecha_emision'); ?>
             </div>
             <div class="campo">
                 <label>Fecha de envió de acuerdo municipal al FISDL:</label>
-                <input id="asi_tec_fecha_envio" name="asi_tec_fecha_envio" type="text" readonly="readonly" value="<?php echo set_value('asi_tec_fecha_envio') ?>"/>
+                <input id="asi_tec_fecha_envio" name="asi_tec_fecha_envio" type="text"  value="<?php echo set_value('asi_tec_fecha_envio') ?>"/>
                 <?php echo form_error('asi_tec_fecha_envio'); ?>
             </div>
             <div class="campo">
                 <label>Fecha de orden de inicio:</label>
-                <input id="asi_tec_fecha_inicio" name="asi_tec_fecha_inicio" type="text" readonly="readonly" value="<?php echo set_value('asi_tec_fecha_inicio') ?>"/>
+                <input id="asi_tec_fecha_inicio" name="asi_tec_fecha_inicio" type="text"  value="<?php echo set_value('asi_tec_fecha_inicio') ?>"/>
                 <?php echo form_error('asi_tec_fecha_inicio'); ?>
             </div>
             <div class="campo">
                 <label>Consultor:</label>
-                <select id="asi_tec_onsultor" name="asi_tec_onsultor">
-                	<?php echo $consultores; ?>
-                </select>
-                <div id="btn_consultor_add">+</div>
-                <?php echo form_error('asi_tec_onsultor'); ?>
+                <input id="asi_tec_consultor" name="asi_tec_consultor" type="text" value="<?php echo set_value('asi_tec_consultor') ?>"/>
+                	<?php echo form_error('asi_tec_consultor'); ?>
             </div>
             <div class="campo" style="display: inline-block;">
                 <label>Cargar archivo:</label>
@@ -299,8 +295,8 @@ $(document).ready(function(){
             </div>
             <div class="campo">
                 <label>Observaciones:</label>
-                <textarea id="acu_mun_observaciones" name="acu_mun_observaciones" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('acu_mun_observaciones')?></textarea>
-                <?php echo form_error('acu_mun_observaciones'); ?>
+                <textarea id="asi_tec_observaciones" name="asi_tec_observaciones" cols="30" rows="5" wrap="virtual" maxlength="500"><?php echo set_value('asi_tec_observaciones')?></textarea>
+                <?php echo form_error('asi_tec_observaciones'); ?>
             </div>
             <div id="actions" style="position: relative;top: 20px">
                 <input type="submit" id="guardar" value="Guardar" />

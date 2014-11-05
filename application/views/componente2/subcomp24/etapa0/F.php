@@ -131,7 +131,7 @@ $(document).ready(function(){
                     <div class="igual">=</div>
                     <div class="col">
                         <div class="row">
-                            <span>Ingresos Corrientes Precibidos</span>
+                            <span>Ingresos Corrientes Percibidos</span>
                             <input class="txtInput" id="ind_des_grupo1_ingcorpre" name="ind_des_grupo1_ingcorpre" value="<?php echo set_value('ind_des_grupo1_ingcorpre');?>" />
                             <?php echo form_error('ind_des_grupo1_ingcorpre'); ?>
                         </div>
@@ -474,7 +474,7 @@ $(document).ready(function(){
         </div>
         <div class="campo">
             <label>Observaciones:</label>
-            <textarea id="ind_des_observaciones" name="ind_des_observaciones" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('ind_des_observaciones') ?></textarea>
+            <textarea id="ind_des_observaciones" name="ind_des_observaciones" cols="30" rows="5" wrap="virtual" maxlength="500"><?php echo set_value('ind_des_observaciones') ?></textarea>
             <?php echo form_error('ind_des_observaciones'); ?>
         </div>
         <div id="actions" style="position: relative;top: 20px">

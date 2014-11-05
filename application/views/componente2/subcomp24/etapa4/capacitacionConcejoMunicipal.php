@@ -9,20 +9,21 @@
 $this->load->view('plantilla/header', $titulo);
 $this->load->view('plantilla/menu', $menu);
 
+
+
 ?>
-<style type="text/css">
-#rpt_frm_bdy .tabla{
-    margin-left: 100px;
-}
-</style>
+
 <script type="text/javascript">        
 $(document).ready(function(){
     /*BASICO*/
     function formularioHide(){$('#listaContainer').show();$('#formulario').hide()}
     function formularioShow(){$('#listaContainer').hide();$('#formulario').show()}
     $("#guardar").button();
-    $("#btn_acuerdo_nuevo").button().click(function(){$('#frm').submit();});
-    $("#btn_seleccionar").button().click(function(){document.location.href='<?php echo current_url(); ?>/' + jQuery("#lista").jqGrid('getGridParam','selrow');});
+   /*  $("#btn_acuerdo_nuevo").button().click(function(){ 
+                <?php echo "formularioShow();"?>; 
+                $('#formulario').submit();});*/
+    /*$("#btn_seleccionar").button().click(function(){$('#frm').submit();});*/
+    /*$("#btn_seleccionar").button().click(function(){document.location.href='<?php echo current_url(); ?>/' + jQuery("#lista").jqGrid('getGridParam','selrow');});*/
     $("#cancelar").button().click(function() {document.location.href='<?php echo base_url(); ?>';});
     $('.mensaje').dialog({autoOpen: false,width: 300,
         buttons: {"Ok": function() {$(this).dialog("close");}}
@@ -32,6 +33,8 @@ $(document).ready(function(){
         }).done(function(data){$('#mun_id').children().remove();$('#mun_id').html(data);});           
     });
     /**/
+     /**/
+  
     $('#mun_id').change(function(){
         jqLista.jqGrid('clearGridData')
             .jqGrid('setGridParam', { 
@@ -39,8 +42,10 @@ $(document).ready(function(){
                 datatype: 'json', 
                 page:1 })
             .trigger('reloadGrid');
+            
     });
     
+ 
     /**/
     $( "#cap_fecha" ).datepicker({
         showOn: 'both',
@@ -61,7 +66,7 @@ $(document).ready(function(){
         colNames:['id','Padre','Nombres','Apellidos','Sexo','Edad','Cargo','Telefono'],
         colModel:[
             {name:'par_id',index:'par_id', width:30,editable:false,editoptions:{size:15},hidden:true },
-            {name:'cap_id',index:'cap_id', width:30,editable:false,editoptions:{size:15},hidden:true },
+            {name:'cap_id',index:'cap_id', width:30,editable:false,editoptions:{size:15},hidden:true },    
             {name:'par_nombre',index:'par_nombre', width:123,editable:true,
                 edittype:'text',editoptions:{size:20,maxlength:50},
                 editrules:{required:true} },
@@ -73,14 +78,15 @@ $(document).ready(function(){
                 editrules:{required:true} },
             {name:'par_edad',index:'par_edad', width:50,editable:true,align:'center',
                 edittype:'text',editoptions:{size:5,maxlength:2},
-                editrules:{number:true,minValue:18,maxValue:100} },
+                editrules:{required:true,number:true,minValue:0,maxValue:100} },
             {name:'par_cargo',index:'par_cargo', width:123,editable:true,editoptions:{size:30},
                 edittype:'text',editoptions:{size:20,maxlength:50},
-                editrules:{required:true} },
+                editrules:{required:false} },
             {name:'par_telefono',index:'par_telefono', width:80,editable:true,editoptions:{size:8},align:'center',
                 edittype:'text',editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}
                 }
-        ],
+           
+        ],    
         multiselect: false,
         caption: "Participantes Miembros del Concejo Municipal",
         rowNum:20,
@@ -102,45 +108,48 @@ $(document).ready(function(){
         }
     });
     $("#concejo").jqGrid('navGrid','#pagerConcejo',
-        {edit:true,add:true,del:true,search:true,refresh:false,
+        {edit:true,add:true,del:true,search:true,refresh:true,
         beforeRefresh: function() {
             tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
         }
     );
+    /*function despuesAgregarEditar() {
+            tabla.jqGrid('setGridParam', {datatype: 'json', loadonce: true}).trigger('reloadGrid');
+            return[true, '']; //no */
     
+    /*$acu_mun_id=$cap_id;*/
     $("#comision").jqGrid({
-        url:'<?php echo base_url('componente2/comp24_E4/loadComision') . '/' . $cap_id; ?>',
-        editurl:'<?php echo base_url('componente2/comp24_E4/gestionComision') . '/' . $cap_id; ?>',
-        datatype:'json',
-        altRows:true,
-        gridview: true,
-        hidegrid: false,
-        colNames:['id','Padre','Nombres','Apellidos','Sexo','Edad','Cargo','Telefono','Participa'],
+        url:'<?php echo base_url('componente2/comp24_E4/loadFinanciera') . '/' . $cap_id; ?>',
+        editurl:'<?php echo base_url('componente2/comp24_E4/gestionFinanciera') . '/' . $cap_id; ?>',
+        datatype: 'json',
+            altRows: true,
+            gridview: true,
+            hidegrid: false,
+            colNames:['Padre','Nombres','Apellidos','Sexo','Edad','Cargo','Telefono','id'],
         colModel:[
-            {name:'mie_id',index:'mie_id', width:30,editable:false,editoptions:{size:15},hidden:true },
-            {name:'cap_id',index:'cap_id', width:30,editable:false,editoptions:{size:15},hidden:true },
-            {name:'mie_nombre',index:'mie_nombre', width:123,editable:false,
+            
+            {name:'cap_id',index:'cap_id', width:30,editable:false,editoptions:{size:15},hidden:true },    
+            {name:'par_nombre',index:'par_nombre', width:123,editable:true,
                 edittype:'text',editoptions:{size:20,maxlength:50},
                 editrules:{required:true} },
-            {name:'mie_apellidos',index:'mie_apellidos', width:123,editable:false,
+            {name:'par_apellidos',index:'par_apellidos', width:123,editable:true,
                 edittypr:'text',editoptions:{size:20,maxlength:50},
                 editrules:{required:true} },
-            {name:'mie_sexo',index:'mie_sexo', width:90,editable:false,
+            {name:'par_sexo',index:'par_sexo', width:90,editable:true,
                 edittype:'select',formatter:'select',editoptions:{value:'M:Masculino;F:Femenino'},
                 editrules:{required:true} },
-            {name:'mie_edad',index:'mie_edad', width:50,editable:false,align:'center',
+            {name:'par_edad',index:'par_edad', width:50,editable:true,align:'center',
                 edittype:'text',editoptions:{size:5,maxlength:2},
-                editrules:{number:true,minValue:18,maxValue:100} },
-            {name:'mie_cargo',index:'mie_cargo', width:123,editable:false,editoptions:{size:30},
+                editrules:{required:true,number:true,minValue:0,maxValue:100} },
+            {name:'par_cargo',index:'par_cargo', width:123,editable:true,editoptions:{size:30},
                 edittype:'text',editoptions:{size:20,maxlength:50},
-                editrules:{required:true} },
-            {name:'mie_telefono',index:'mie_telefono', width:80,editable:true,editoptions:{size:8},align:'center',
+                editrules:{required:false} },
+            {name:'par_telefono',index:'par_telefono', width:80,editable:true,editoptions:{size:8},align:'center',
                 edittype:'text',editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}
-                },
-            {name:'participa',index:'participa', width:80,editable:true,align:'center',
-                formatter:'checkbox',formatoptions:{disabled:false},
-                edittype:'checkbox'}
-        ],
+                },{name:'par_id',index:'par_id', width:30,editable:false,editoptions:{size:15},hidden:true }
+           
+        ],    
+            
         multiselect: false,
         caption: "Participantes Miembros de la Comision Financiera",
         rowNum:20,
@@ -159,12 +168,14 @@ $(document).ready(function(){
         }
     });
     $("#comision").jqGrid('navGrid','#pagerComision',
-        {edit:false,add:false,del:false,search:true,refresh:false,
+        {edit:true,add:true,del:true,search:true,refresh:true,
         beforeRefresh: function() {
             tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
         }
     );
-    
+    /*function despuesAgregarEditar() {
+            tabla.jqGrid('setGridParam', {datatype: 'json', loadonce: true}).trigger('reloadGrid');
+            return[true, '']; //no */
     $("#otros").jqGrid({
         url:'<?php echo base_url('componente2/comp24_E4/loadOtros') . '/' . $cap_id; ?>',
         editurl:'<?php echo base_url('componente2/comp24_E4/gestionOtros') . '/' . $cap_id; ?>',
@@ -175,22 +186,22 @@ $(document).ready(function(){
         colNames:['id','Padre','Nombres','Apellidos','Sexo','Edad','Cargo','Telefono'],
         colModel:[
             {name:'par_id',index:'par_id', width:30,editable:false,editoptions:{size:15},hidden:true },
-            {name:'acu_mun_id',index:'acu_mun_id', width:30,editable:false,editoptions:{size:15},hidden:true },
-            {name:'par_nombre',index:'par_nombre', width:123,editable:true,
+            {name:'acu_mun_id',index:'acu_mun_id',width:30,editable:false,editoptions:{size:15},hidden:true },
+            {name:'par_nombre',index:'par_nombre',width:123,editable:true,
                 edittype:'text',editoptions:{size:20,maxlength:50},
                 editrules:{required:true} },
             {name:'par_apellidos',index:'par_apellidos', width:123,editable:true,
-                edittypr:'text',editoptions:{size:20,maxlength:50},
+                edittype:'text',editoptions:{size:20,maxlength:50},
                 editrules:{required:true} },
             {name:'par_sexo',index:'par_sexo', width:90,editable:true,
                 edittype:'select',formatter:'select',editoptions:{value:'M:Masculino;F:Femenino'},
                 editrules:{required:true} },
             {name:'par_edad',index:'par_edad', width:50,editable:true,align:'center',
                 edittype:'text',editoptions:{size:5,maxlength:2},
-                editrules:{number:true,minValue:18,maxValue:100} },
+                editrules:{required:true, number:true,minValue:0,maxValue:100} },
             {name:'par_cargo',index:'par_cargo', width:123,editable:true,editoptions:{size:30},
                 edittype:'text',editoptions:{size:20,maxlength:50},
-                editrules:{required:true} },
+                editrules:{required:false} },
             {name:'par_telefono',index:'par_telefono', width:80,editable:true,editoptions:{size:8},align:'center',
                 edittype:'text',editoptions:{size:10,maxlength:9,dataInit:function(el){$(el).mask("9999-9999",{placeholder:" "});}}
                 }
@@ -216,22 +227,28 @@ $(document).ready(function(){
         }
     });
     $("#otros").jqGrid('navGrid','#pagerOtros',
-        {edit:false,add:false,del:false,search:true,refresh:false,
+        {edit:false,add:false,del:false,search:true,refresh:true,
         beforeRefresh: function() {
             tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
         }
     );
     $("#otros").jqGrid('inlineNav',"#pagerOtros",{editParams:{keys:true}});
+    /*function despuesAgregarEditar() {
+            tabla.jqGrid('setGridParam', {datatype: 'json', loadonce: true}).trigger('reloadGrid');
+            return[true, '']; //no */
+     
     
     var jqLista = $('#lista');
     jqLista.jqGrid({
        	url: '<?php echo base_url('componente2/comp24_E4/getCapacitaciones/'); ?>/' + $('#mun_id').val(),
     	datatype: "json",
-        width: 300,
-       	colNames:['Id','Fecha'],
+        width: 400,
+       	colNames:['Id','Municipio','Fecha','Tema'],
        	colModel:[
        		{name:'id',index:'id', width:55},
-       		{name:'fecha',index:'fecha', width:90}		
+                {name:'Municipio',index:'Municipio', width:55},
+                {name:'fecha',index:'fecha', width:90},
+                {name:'Tema',index:'Tema', width:150},		
        	],
        	rowNum:10,
        	rowList:[10,20,30],
@@ -241,20 +258,29 @@ $(document).ready(function(){
         sortorder: "desc",
         caption:"Seguimiento a Evaluaciones",
         ondblClickRow: function(rowid, iRow, iCol, e){
-            window.location.href='<?php echo current_url(); ?>/' + rowid;
+        window.location.href='<?php echo current_url(); ?>/' + rowid;
         }
     });
+    
+    
+      
+    
     <?php
+    /*(isset($acu_mun_id) && $acu_mun_id > 0)*/
     //echo '//'.$this->session->keep_flashdata('message');
-    if($this->session->flashdata('message')=='Ok'){
+    if (($this->session->flashdata('message')=='Ok')){
         echo "$('#efectivo').dialog('open');";
     }
-    if(isset($cap_id) && $cap_id > 0){
-        echo "formularioShow();";
+    if (isset( $cap_id) && $cap_id > 0 ){
+       echo "formularioShow();";
     }else{
+        
         echo "formularioHide();";
+        
     }
     ?>
+
+
 
 });
 </script>
@@ -265,12 +291,13 @@ $(document).ready(function(){
     </center>
 </div>
 
-<?php echo form_open('',array('id'=>'frm')) ?>
 
+<?php echo form_open('',array('id'=>'frm')) ?>
     <h2 class="h2Titulos"> Gestión del Conocimiento</h2>
     <h2 class="h2Titulos">Capacitación al Concejo Municipal y Comisión Financiera</h2>
     <br/>
     <div id="rpt_frm_bdy">
+    
         <div id="listaContainer">
             <div class="campo">
                 <label>Departamento</label>
@@ -288,18 +315,19 @@ $(document).ready(function(){
                 <table id="lista"></table>
                 <div id="pagerLista"></div>
                 <div id="btn_seleccionar">Seleccionar</div>
-                <div id="btn_acuerdo_nuevo">Crear Nuevo</div>
+                <div id="btn_acuerdo_nuevo">Nueva Capacitacion</div>
             </div>
         </div>
         <div id="formulario" style="display: none;">
-            <div class="campo">
+           <div class="campo">
                 <label>Departamento:</label>
-                <input id="depto" name="depto" type="text" readonly="readonly" value="<?php echo set_value('depto') ?>" />
+                <input id="depto" name="depto" type="text" readonly="readonly" value="<?php echo set_value('depto') ?>"/>
             </div>
             <div class="campo">
                 <label>Muncicipio:</label>
                 <input id="muni" name="muni" type="text" readonly="readonly" value="<?php echo set_value('muni') ?>" />
             </div>
+            
             <div class="campo">
                 <label>Fecha de Presentación:</label>
                 <input id="cap_fecha" name="cap_fecha" type="text" readonly="readonly" value="<?php echo set_value('cap_fecha') ?>"/>
@@ -351,7 +379,7 @@ $(document).ready(function(){
             </div>
             <div class="campo">
                 <label>Observaciones y/o Recomendaciones</label>
-                <textarea id="cap_observaciones" name="cap_observaciones" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('cap_observaciones')?></textarea>
+                <textarea id="cap_observaciones" name="cap_observaciones" cols="30" rows="5" wrap="virtual" maxlength="500"><?php echo set_value('cap_observaciones')?></textarea>
                 <?php echo form_error('cap_observaciones'); ?>
             </div>
             <div id="actions" style="position: relative;top: 20px">
@@ -360,6 +388,6 @@ $(document).ready(function(){
             </div>
             <input type="hidden" value="modificado" name="mod" id="mod" />
         </div>
-    </div>
+<    </div>
 <?php echo form_close();
 $this->load->view('plantilla/footer'); ?>

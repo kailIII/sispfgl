@@ -170,7 +170,7 @@ $(document).ready(function(){
                 <div style="width: 50%; display: inline-block;">
                     <div class="campoUp">
                         <label style="text-align: left;">Observaciones:</label>
-                        <textarea id="seg_observaciones" name="seg_observaciones" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('seg_observaciones')?></textarea>
+                        <textarea id="seg_observaciones" name="seg_observaciones" cols="30" rows="5" wrap="virtual" maxlength="500"><?php echo set_value('seg_observaciones')?></textarea>
                         <?php echo form_error('seg_observaciones'); ?>
                     </div>
                 </div>

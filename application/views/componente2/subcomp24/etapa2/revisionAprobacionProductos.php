@@ -149,21 +149,21 @@ $(document).ready(function(){
         <fieldset style="width: 450px; display: inline-block; vertical-align: top;">
             <legend>Productos</legend>
             <div class="campo">
-                <label style="text-align: left;">Informe de etapa PRFM</label>
-                <span>Si</span><input type="radio" name="rea_pro_is_informe_etapa" value="t" <?php echo set_radio('rea_pro_is_informe_etapa', 't'); ?>/>
-                <span>No</span><input type="radio" name="rea_pro_is_informe_etapa" value="f" <?php echo set_radio('rea_pro_is_informe_etapa', 'f', TRUE); ?>/>
+                <label style="text-align: left;">Informe final PRFM</label>
+                <span>Si</span><input type="radio" name="rea_pro_is_informe_etapa" checked="tue" value="t" <?php echo set_radio('rea_pro_is_informe_etapa', 't'); ?>/>
+                <span>No</span><input type="radio" name="rea_pro_is_informe_etapa" value="f" <?php echo set_radio('rea_pro_is_informe_etapa', 'f'); ?>/>
                 <?php echo form_error('rea_pro_is_informe_etapa'); ?>
             </div>
             <div class="campo">
-                <label style="text-align: left;">Borrador PRFM</label>
-                <span>Si</span><input type="radio" name="rea_pro_is_borrador" value="t" <?php echo set_radio('rea_pro_is_borrador', 't'); ?>/>
-                <span>No</span><input type="radio" name="rea_pro_is_borrador" value="f" <?php echo set_radio('rea_pro_is_borrador', 'f', TRUE); ?>/>
+                <label style="text-align: left;">Plan de Rescate Financiero Municipal</label>
+                <span>Si</span><input type="radio" name="rea_pro_is_borrador" value="t" checked="tue" <?php echo set_radio('rea_pro_is_borrador', 't'); ?>/>
+                <span>No</span><input type="radio" name="rea_pro_is_borrador" value="f" <?php echo set_radio('rea_pro_is_borrador', 'f'); ?>/>
                 <?php echo form_error('rea_pro_is_borrador'); ?>
             </div>
             <div class="campo">
-                <label style="text-align: left;">Visto bueno de la municipalidad</label>
-                <span>Si</span><input type="radio" name="rea_pro_is_visto_bueno" value="t" <?php echo set_radio('rea_pro_is_visto_bueno', 't'); ?>/>
-                <span>No</span><input type="radio" name="rea_pro_is_visto_bueno" value="f" <?php echo set_radio('rea_pro_is_visto_bueno', 'f', TRUE); ?>/>
+                <label style="text-align: left;">Aprobación de la municipalidad</label>
+                <span>Si</span><input type="radio" name="rea_pro_is_visto_bueno" value="t" checked="tue" <?php echo set_radio('rea_pro_is_visto_bueno', 't'); ?>/>
+                <span>No</span><input type="radio" name="rea_pro_is_visto_bueno" value="f" <?php echo set_radio('rea_pro_is_visto_bueno', 'f'); ?>/>
                 <?php echo form_error('rea_pro_is_visto_bueno'); ?>
             </div>
         </fieldset>
@@ -199,7 +199,7 @@ $(document).ready(function(){
         
         <div class="campo">
             <label>Observaciones</label>
-            <textarea id="rea_pro_observaciones" name="rea_pro_observaciones" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('rea_pro_observaciones') ?></textarea>
+            <textarea id="rea_pro_observaciones" name="rea_pro_observaciones" cols="30" rows="5" wrap="virtual" maxlength="500"><?php echo set_value('rea_pro_observaciones') ?></textarea>
         </div>
         
         <div id="actions" style="position: relative;top: 20px">

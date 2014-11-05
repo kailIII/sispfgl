@@ -157,7 +157,7 @@ $(document).ready(function(){
             </div>
             <div class="campo">
                 <label>Observaciones:</label>
-                <textarea id="per_mun_observaciones" name="per_mun_observaciones" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('per_mun_observaciones')?></textarea>
+                <textarea id="per_mun_observaciones" name="per_mun_observaciones" cols="30" rows="5" wrap="virtual" maxlength="500"><?php echo set_value('per_mun_observaciones')?></textarea>
                 <?php echo form_error('per_mun_observaciones'); ?>
             </div>       
             <div id="actions" style="position: relative;top: 20px">
