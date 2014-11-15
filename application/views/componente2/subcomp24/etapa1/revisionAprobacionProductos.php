@@ -141,7 +141,7 @@ $(document).ready(function(){
 <?php echo form_open() ?>
 
     <h2 class="h2Titulos"> Diagnóstico</h2>
-    <h2 class="h2Titulos">Revisión y Aprobación de Productos</h2>
+    <h2 class="h2Titulos">Revisión y Aprobación de Productos.</h2>
     <br/>
     <div id="rpt_frm_bdy">
         <div id="listaContainer">
@@ -181,7 +181,7 @@ $(document).ready(function(){
             <div class="campo">
                 <label style="text-align: left; margin-left: 40px; width: 280px;">Perfil del municipio</label>
                 <span>Si</span><input type="radio" name="rea_pro_is_perfil" value="t" checked="TRUE" <?php echo set_radio('rea_pro_is_perfil', 't'); ?>/>
-                <span>No</span><input type="radio" name="rea_pro_is_perfil" value="t" <?php echo set_radio('rea_pro_is_perfil', 'f'); ?>/>
+                <span>No</span><input type="radio" name="rea_pro_is_perfil" value="f" <?php echo set_radio('rea_pro_is_perfil', 'f'); ?>/>
                 <?php echo form_error('rea_pro_is_perfil'); ?>
             </div>
             <div class="campo">

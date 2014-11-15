@@ -30,7 +30,7 @@ class Comp24_E1 extends CI_Controller {
 
     public function revisionAprobacionProductos($id = false) {
         if (!$this->tank_auth->is_logged_in())
-            redirect('/auth');                // logged in
+            redirect('/auth');                
         $tabla = 'revapro_productos';
         $campo = 'rea_pro_id';
         $prefix = 'rea_pro_';
@@ -63,12 +63,12 @@ class Comp24_E1 extends CI_Controller {
             array('field' => $prefix . 'fecha_presentacionD', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
             array('field' => $prefix . 'fecha_aprobacionD', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
             array('field' => $prefix . 'fecha_vistobueno', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix . 'is_plan_trabajo', 'label' => 'Fecha', 'rules' => 'trim|required|xss_clean'),
-            array('field' => $prefix . 'is_perfil', 'label' => 'Fecha', 'rules' => 'trim|required|xss_clean'),
-            array('field' => $prefix . 'is_ind_endeudamiento', 'label' => 'Fecha', 'rules' => 'trim|required|xss_clean'),
-            array('field' => $prefix . 'is_ind_comp', 'label' => 'Fecha', 'rules' => 'trim|required|xss_clean'),
-            array('field' => $prefix . 'is_informe_diag', 'label' => 'Fecha', 'rules' => 'trim|required|xss_clean'),
-            array('field' => $prefix . 'is_visto_bueno', 'label' => 'Fecha', 'rules' => 'trim|required|xss_clean'),
+            array('field' => $prefix . 'is_plan_trabajo', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'is_perfil', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'is_ind_endeudamiento', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'is_ind_comp', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'is_informe_diag', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'is_visto_bueno', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
             array('field' => $prefix . 'archivo_acta', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
             array('field' => $prefix . 'observaciones', 'label' => 'Fecha', 'rules' => 'trim|xss_clean')
         );
@@ -106,7 +106,7 @@ class Comp24_E1 extends CI_Controller {
             }
         }
 
-        $this->load->view($this->ruta . 'revisionAprobacionProductos', array('titulo' => 'Solicitud de Ayuda',
+        $this->load->view($this->ruta . 'revisionAprobacionProductos', array('titulo' => 'Revision Aprobacion',
             'user_uid' => $this->tank_auth->get_user_id(),
             'username' => $this->tank_auth->get_username(),
             'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),

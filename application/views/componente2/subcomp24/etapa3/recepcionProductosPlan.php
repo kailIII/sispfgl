@@ -16,7 +16,6 @@ $(document).ready(function(){
     function formularioHide(){$('#listaContainer').show();$('#formulario').hide()}
     function formularioShow(){$('#listaContainer').hide();$('#formulario').show()}
     $("#guardar").button();
-    $("#btn_acuerdo_nuevo").button().click(function(){$('#frm').submit();});
     $("#btn_seleccionar").button().click(function(){document.location.href='<?php echo current_url(); ?>/' + jQuery("#lista").jqGrid('getGridParam','selrow');});
     $("#cancelar").button().click(function() {document.location.href='<?php echo base_url(); ?>';});
     $('.mensaje').dialog({autoOpen: false,width: 300,
@@ -26,89 +25,66 @@ $(document).ready(function(){
         $.ajax({url: '<?php echo base_url('componente2/comp24_E0/getMunicipios') ?>/'+$('#selDepto').val()
         }).done(function(data){$('#mun_id').children().remove();$('#mun_id').html(data);});           
     });
-    /**/
     $('#mun_id').change(function(){
-        window.location.href = '<?php echo current_url(); ?>/' + $('#mun_id').val();
-        $('#Mensajito').hide();
-        $("#guardar").show();              
+        window.location.href = '<?php echo current_url(); ?>/' + $('#mun_id').val();           
     });
     
-    /*PARA EL DATEPICKER*/
-    $( "#seg_fecha_recepcion" ).datepicker({
-        showOn:         'both',
-        maxDate:        '+1D',
-        buttonImage:    '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-        buttonImageOnly: true, 
-        dateFormat: 'dd/mm/yy',
-        onClose: function( selectedDate ) {
-            $( "#seg_fecha_vistobueno" ).datepicker( "option", "minDate", selectedDate );
+     
+    
+    /*GRID*/
+    
+    $("#miembros").jqGrid({
+        url: '<?php echo base_url('componente2/comp24_E3/getRecepcionProductos') . '/' . $acu_mun_id; ?>',
+        editurl:'<?php echo base_url('componente2/comp24_E3/gestionRecepcionProductos').'/' . $acu_mun_id; ?>',
+        datatype:'json',
+        altRows:true,
+        gridview: true,
+        hidegrid: false,
+        colNames:['No.','Padre','Nombre del Producto','Descripción','Observación'],
+        colModel:[
+            {name:'rec_pro_id',index:'rec_pro_id', width:30,editable:false,editoptions:{size:15},hidden:false },
+            {name:'mun_id',index:'mun_id', width:30,editable:false,editoptions:{size:15},hidden:true },
+            {name:'rec_pro_nombre_producto',index:'rec_pro_nombre_producto', width:200,editable:true,
+                edittype:'text',editoptions:{size:50,maxlength:100},
+                editrules:{required:true} },
+            {name:'rec_pro_descripcion_producto',index:'rec_pro_descripcion_producto', width:250,editable:true,
+                edittypr:'text',editoptions:{size:50,maxlength:100},
+                editrules:{} },
+            {name:'rec_pro_observaciones',index:'rec_pro_observaciones', width:400,editable:true,editoptions:{size:100},
+                edittype:'text',editoptions:{size:100,maxlength:500},
+                editrules:{} },
+        ],
+        multiselect: false,
+        caption: "Productos del Plan",
+        rowNum:20,
+        rowList:[20,50],
+        loadonce:true,
+        pager: $('#pagerMiembros'),
+        viewrecords: true,
+        ondblClickRow: function(rowid,iRow,iCol,e){
+             $('#miembros').jqGrid('editRow',rowid,true); }
+    
+    });
+    $("#miembros").jqGrid('navGrid','#pagerMiembros',
+        {edit:false,add:false,del:false,search:true,refresh:false,
+        beforeRefresh: function() {
+            tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
         }
-    });
-    $( "#seg_fecha_vistobueno" ).datepicker({
-        showOn:         'both',
-        maxDate:        '+1D',
-        buttonImage:    '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-        buttonImageOnly: true, 
-        dateFormat: 'dd/mm/yy',
-        onClose: function( selectedDate ) {
-            $( "#seg_fecha_aprobacion" ).datepicker( "option", "minDate", selectedDate );
-        }
-    });
-    $( "#seg_fecha_aprobacion" ).datepicker({
-        showOn: 'both',
-        maxDate:    '+1D',
-        buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-        buttonImageOnly: true, 
-        dateFormat: 'dd/mm/yy'
-    });
-    /*FIN DEL DATEPICKER*/
-
-    /**/
-    var download_path = '<?php $t=set_value('seg_archivo_acuerdo'); if($t!=''){echo base_url($t);}?>';
-    if(download_path==''){$('#btn_download').hide();}
-    $('#btn_upload').button();
-    $('#btn_download').button().click(function(e){
-        if(download_path != ''){
-            e.preventDefault();  //stop the browser from following
-            window.location.href = download_path;
-        }
-    });
-    new AjaxUpload('#btn_upload', {
-        action: '<?php echo base_url('componente2/comp24_E0/uploadFile') . '/seguimiento_receppro/seg_archivo_acuerdo/seg_id/' . $seg_id; ?>',
-        onSubmit : function(file , ext){
-            if (! (ext && /^(pdf|doc|docx)$/.test(ext))){
-                $('#vineta').html('<span class="error">Extension no Permitida</span>');
-                return false;
-            } else {
-                $('#vineta').html('Subiendo....');
-                this.disable();
+    );
+    $("#miembros").jqGrid('inlineNav',"#pagerMiembros",{editParams:{keys:true}});
+    
+    
+      <?php
+            //Muestra los dialogos.
+            if ($this->session->flashdata('message') == 'Ok') {
+                echo "$('#efectivo').dialog('open');";
             }
-        },
-        onComplete: function(file, response,ext){
-            if(response!='error'){
-                $('#vineta').html('Ok');                    
-                this.enable();
-                download_path = response;
-                 $('#btn_download').show();
-            }else{
-                $('#vineta').html('<span class="error">Error</span>');
-                this.enable();			
-             
-            }/**/
-        }	
-    });
-
-    <?php
-    //echo '//'.$this->session->keep_flashdata('message');
-    if($this->session->flashdata('message')=='Ok'){
-        echo "$('#efectivo').dialog('open');";
-    }
-    if(isset($seg_id) && $seg_id > 0){
-        echo "formularioShow();";
-    }else{
-        echo "formularioHide();";
-    }
-    ?>
+            if (isset($acu_mun_id) && $acu_mun_id > 0) {
+                echo "formularioShow();";
+            } else {
+                echo "formularioHide();";
+            }
+       ?>
 });
 </script>
 
@@ -118,11 +94,10 @@ $(document).ready(function(){
     </center>
 </div>
 
-
-<?php echo form_open() ?>
+<?php echo form_open('',array('id'=>'frm')) ?>
 
     <h2 class="h2Titulos"> Seguimiento</h2>
-    <h2 class="h2Titulos">Recepción del Producto de la ejecución del plan</h2>
+    <h2 class="h2Titulos">Recepción de Productos del Plan</h2>
     <br/>
     <div id="rpt_frm_bdy">
         <div id="listaContainer">
@@ -137,6 +112,12 @@ $(document).ready(function(){
                 </select>
                 <?php echo form_error('mun_id'); ?>
             </div>
+            <div id="rpt-border"></div>
+            <div style="margin-left: 300px;display: none;">
+                <table id="lista"></table>
+                <div id="pagerLista"></div>
+                <div id="btn_acuerdo_nuevo">Crear Nuevo</div>
+            </div>
         </div>
         <div id="formulario" style="display: none;">
             <div class="campo">
@@ -144,53 +125,29 @@ $(document).ready(function(){
                 <input id="depto" name="depto" type="text" readonly="readonly" value="<?php echo set_value('depto') ?>" />
             </div>
             <div class="campo">
-                <label>Municipio:</label>
+                <label>Muncicipio:</label>
                 <input id="muni" name="muni" type="text" readonly="readonly" value="<?php echo set_value('muni') ?>" />
             </div>
-            <div id="rpt-border"></div>
-        
-        
-            <div class="campo">
-                <label>Fecha de recepción del producto:</label>
-                <input id="seg_fecha_recepcion" name="seg_fecha_recepcion" type="text" readonly="readonly" value="<?php echo set_value('seg_fecha_recepcion') ?>"/>
-                <?php echo form_error('seg_fecha_recepcion'); ?>
-            </div>
-            <div class="campo">
-                <label>Fecha de visto bueno:</label>
-                <input id="seg_fecha_vistobueno" name="seg_fecha_vistobueno" type="text" readonly="readonly" value="<?php echo set_value('seg_fecha_vistobueno') ?>"/>
-                <?php echo form_error('seg_fecha_vistobueno'); ?>
-            </div>
-            <div class="campo">
-                <label>Fecha de aprobación:</label>
-                <input id="seg_fecha_aprobacion" name="seg_fecha_aprobacion" type="text" readonly="readonly" value="<?php echo set_value('seg_fecha_aprobacion') ?>"/>
-                <?php echo form_error('seg_fecha_aprobacion'); ?>
-            </div>
-            
+                <div class="tabla">
+                    <label></label>
+                    <table id="miembros"></table>
+                    <div id="pagerMiembros"></div>
+                </div>
             <div style="width: 100%;">
                 <div style="width: 50%; display: inline-block;">
                     <div class="campoUp">
-                        <label style="text-align: left;">Observaciones:</label>
-                        <textarea id="seg_observaciones" name="seg_observaciones" cols="30" rows="5" wrap="virtual" maxlength="500"><?php echo set_value('seg_observaciones')?></textarea>
-                        <?php echo form_error('seg_observaciones'); ?>
+                        <label style="text-align: left;">Observaciones y/o Recomendaciones</label>
+                        <textarea id="rec_pro_observaciones" name="rec_pro_observaciones" cols="30" rows="5" wrap="virtual" maxlength="500"><?php echo set_value('rec_pro_observaciones')?></textarea>
+                        <?php echo form_error('rec_pro_observaciones'); ?>
                     </div>
                 </div>
-                <div class="campoUp" style="display: inline-block;">
-                    <label>Cargar archivo:</label>
-                    <div id="fileUpload" style="margin-left: 20px;">
-                        <div id="btn_upload" style="display: inline-block;">Subir Acuerdo</div>
-                        <a id="btn_download" href="#" style="display: inline-block;">Descargar</a>
-                        <div id="vineta" style="display: inline-block;"></div>
-                        <div class="uploadText" style="width: 300px;">Para actualizar un archivo basta con subir nuevamente el archivo y este se reemplaza automáticamente. Solo se permiten archivos con extensión pdf, doc, docx</div>
-                    </div>
-                </div>
-            </div> 
-            
+            </div>
             <div id="actions" style="position: relative;top: 20px">
                 <input type="submit" id="guardar" value="Guardar" />
                 <input type="button" id="cancelar" value="Cancelar" />
             </div>
             <input type="hidden" value="modificado" name="mod" id="mod" />
-        </div
+        </div>
     </div>
 <?php echo form_close();
 $this->load->view('plantilla/footer'); ?>

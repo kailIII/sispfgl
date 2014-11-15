@@ -1155,7 +1155,7 @@ class Comp24_E0 extends CI_Controller {
             redirect('/auth');                // logged in
 
         $data = $this->comp24->select_data('manuales_administrativos', array('mun_id' => $mun_id));
-        echo $this->librerias->json_out($data, 'man_adm_id', array('man_adm_id', 'man_adm_nombre'));
+        echo $this->librerias->json_out($data, 'mun_id', array('mun_id'));
     }
 
     function _show_message($path, $message) {
@@ -1163,6 +1163,119 @@ class Comp24_E0 extends CI_Controller {
         redirect('/componente2/comp24_E0' + $path);
     }
 
+     public function manualesAdministrativos($id = false) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');                // logged in
+        $tabla = 'manuales_administrativos';
+        $campo = 'mun_id';
+        $prefix = 'man_adm_';
+        
+        if ($id && !isset($_POST['mod'])) {
+            if (!($tmp = $this->comp24->get_by_id($tabla, $campo, $id))) {
+                $this->comp24->insert_row($tabla, array($campo => $id, 'mun_id' => $id));
+                $tmp = $this->comp24->get_by_id($tabla, $campo, $id);
+            }
+            $_POST = get_object_vars($tmp);
+         /*   $_POST[$prefix . 'numero1'] = $this->librerias->parse_output('date', $_POST[$prefix . 'numero1']);
+            $_POST[$prefix . 'numero2'] = $this->librerias->parse_output('date', $_POST[$prefix . 'numero2']);*/
+           
+        }
+
+        if (isset($_POST['mun_id']) && $_POST['mun_id'] > 0) {
+            $_POST['depto'] = $this->comp24->getDepto($_POST['mun_id'])->dep_nombre;
+            $_POST['muni'] = $this->comp24->get_by_Id('municipio', 'mun_id', $_POST['mun_id'])->mun_nombre;
+        }
+
+        $config = array(
+            array('field' => 'depto', 'label' => 'Municipio', 'rules' => 'trim|xss_clean'),
+            array('field' => 'muni', 'label' => 'Municipio', 'rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'elaboracion', 'label' => 'elaboracion', 'rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'numero1', 'label' => 'numero1','rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'numero2', 'label' => 'numero2','rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'numero3', 'label' => 'numero3','rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'numero4', 'label' => 'numero4','rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'numero5', 'label' => 'numero5','rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'numero6', 'label' => 'numero6','rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'numero7', 'label' => 'numero7','rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'numero8', 'label' => 'numero8','rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'observaciones', 'label' => 'observaciones', 'rules' => 'trim|xss_clean'),
+            array('field' => 'mod', 'label' => 'Mod', 'rules' => 'required|xss_clean')
+        );
+
+        $this->form_validation->set_rules($config);
+
+        $data['errors'] = array();
+        $mensaje = false;
+
+        if ($this->form_validation->run()) {
+            $datos = array(
+                $prefix . 'elaboracion' => $this->librerias->parse_input('date', $this->form_validation->set_value($prefix . 'elaboracion')),
+                $prefix . 'numero1' => $this->form_validation->set_value($prefix . 'numero1'),
+                $prefix . 'numero2' => $this->form_validation->set_value($prefix . 'numero2'),
+                $prefix . 'numero3' => $this->form_validation->set_value($prefix . 'numero3'),
+                $prefix . 'numero4' => $this->form_validation->set_value($prefix . 'numero4'),
+                $prefix . 'numero5' => $this->form_validation->set_value($prefix . 'numero5'),
+                $prefix . 'numero6' => $this->form_validation->set_value($prefix . 'numero6'),
+                $prefix . 'numero7' => $this->form_validation->set_value($prefix . 'numero7'),
+                $prefix . 'numero8' => $this->form_validation->set_value($prefix . 'numero8'),
+                $prefix . 'observaciones' => $this->form_validation->set_value($prefix . 'observaciones'),
+                
+                ); 
+            if ($id > 0) {
+               /* if ($man_adm_numero1 == "")
+                    $man_adm_numero1 = null;
+                if ($man_adm_numero2 == "")
+                    $man_adm_numero2 = null;*/
+                
+                if (!is_null($data = $this->comp24->update_row($tabla, $campo, $id, $datos))) {
+                    $this->session->set_flashdata('message', 'Ok');
+                    $t = explode('/' . $id, current_url());
+                    redirect($t[0]);
+                }
+            } else {
+                /*if ($man_adm_numero1 == "")
+                    $man_adm_numero1 = null;
+                if ($man_adm_numero2 == "")
+                    $man_adm_numero2 = null;*/
+                
+                if (!is_null($data = $this->comp24->insert_manuales_administrativos(
+                                $this->form_validation->set_value('mun_id'), 
+                                $this->form_validation->set_value($prefix . 'elaboracion'),
+                                $this->form_validation->set_value($prefix .'numero1'), 
+                                $this->form_validation->set_value($prefix .'numero2'),
+                                $this->form_validation->set_value($prefix .'numero3'),
+                                $this->form_validation->set_value($prefix .'numero4'),
+                                $this->form_validation->set_value($prefix .'numero5'),
+                                $this->form_validation->set_value($prefix .'numero6'),
+                                $this->form_validation->set_value($prefix .'numero7'),
+                                $this->form_validation->set_value($prefix .'numero8'),
+                                $this->form_validation->set_value($prefix .'observaciones')
+                                
+                        ))) {
+                    $this->session->set_flashdata('message', 'Ok');
+                    $t = explode('/0', current_url());
+                    redirect($t[0]);
+                } else {
+                    $errors = $this->tank_auth->get_error_message();
+                    foreach ($errors as $k => $v)
+                        $data['errors'][$k] = $this->lang->line($v);
+                }
+            }
+        } else if (($mun = $this->input->post('mun_id')) != 0 && $id == false) {
+            //
+            redirect(current_url() . '/' . $this->setNewId($tabla, $campo, array('mun_id' => $mun)));
+        }
+
+        $this->load->view($this->ruta . 'manualesAdministrativos', array('titulo' => 'Manuales Administrativos',
+            'user_uid' => $this->tank_auth->get_user_id(),
+            'username' => $this->tank_auth->get_username(),
+            'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
+            'departamentos' => $this->comp24->getDepartamentos(),
+           /* 'consultores' => $this->getConsultores(),*/
+            $campo => $id
+        ));
+    }
 }
+
 
 ?>
