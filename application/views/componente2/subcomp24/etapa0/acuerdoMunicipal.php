@@ -288,7 +288,7 @@ $this->load->view('plantilla/menu', $menu);
             <div style="width: 50%; display: inline-block;">
                 <div class="campoUp">
                     <label style="text-align: left;">Observaciones:</label>
-                    <textarea id="acu_mun_observaciones" name="acu_mun_observaciones" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('acu_mun_observaciones') ?></textarea>
+                    <textarea id="acu_mun_observaciones" name="acu_mun_observaciones" cols="30" rows="5" wrap="virtual" maxlength="500"><?php echo set_value('acu_mun_observaciones') ?></textarea>
 <?php echo form_error('acu_mun_observaciones'); ?>
                 </div>
             </div>

@@ -186,7 +186,7 @@ $(document).ready(function(){
 <?php echo form_open() ?>
 
     <h2 class="h2Titulos"> Seguimiento</h2>
-    <h2 class="h2Titulos">Elaboración de perfil y TDR's para la actividad del plan</h2>
+    <h2 class="h2Titulos">Elaboración de Perfil y TDR's para la Implementación del plan</h2>
     <br/>
     <div id="rpt_frm_bdy">
         <div id="listaContainer">
@@ -237,7 +237,7 @@ $(document).ready(function(){
             </div>
             <div class="campo">
                 <label>Descripcion:</label>
-                <textarea id="seg_descripcion" name="seg_descripcion" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('seg_descripcion')?></textarea>
+                <textarea id="seg_descripcion" name="seg_descripcion" cols="30" rows="5" wrap="virtual" maxlength="500"><?php echo set_value('seg_descripcion')?></textarea>
                 <?php echo form_error('seg_descripcion'); ?>
             </div>
             <div class="campo" style="display: inline-block;">
@@ -261,7 +261,7 @@ $(document).ready(function(){
             </div>
             <div class="campo">
                 <label>Observaciones:</label>
-                <textarea id="seg_observaciones" name="seg_observaciones" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('seg_observaciones')?></textarea>
+                <textarea id="seg_observaciones" name="seg_observaciones" cols="30" rows="5" wrap="virtual" maxlength="500"><?php echo set_value('seg_observaciones')?></textarea>
                 <?php echo form_error('seg_observaciones'); ?>
             </div>
             

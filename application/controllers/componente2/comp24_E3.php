@@ -175,11 +175,11 @@ class Comp24_E3 extends CI_Controller {
     /**
      * Alias para llamar a la funcion C
      */
-    public function recepcionProductosPlan($id = false){
+   public function recepcionProductosPlan($id = false){
 	   if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
-        $tabla = 'seguimiento_receppro';
-        $campo = 'seg_id';
-        $prefix = 'seg_';
+        $tabla = 'recepcion_productos';
+        $campo = 'acu_mun_id';
+        $prefix = 'rec_pro_';
         
         if($id && !isset($_POST['mod'])){
             if(!$tmp = $this->comp24->get_by_id($tabla, $campo, $id)){
@@ -187,9 +187,9 @@ class Comp24_E3 extends CI_Controller {
                 $tmp = $this->comp24->get_by_id($tabla, $campo, $id);
             }
             $_POST = get_object_vars($tmp);
-            $_POST[$prefix.'fecha_recepcion'] = $this->librerias->parse_output('date',$_POST[$prefix.'fecha_recepcion']);
+            /*$_POST[$prefix.'fecha_recepcion'] = $this->librerias->parse_output('date',$_POST[$prefix.'fecha_recepcion']);
             $_POST[$prefix.'fecha_vistobueno'] = $this->librerias->parse_output('date',$_POST[$prefix.'fecha_vistobueno']);
-            $_POST[$prefix.'fecha_aprobacion'] = $this->librerias->parse_output('date',$_POST[$prefix.'fecha_aprobacion']);
+            $_POST[$prefix.'fecha_aprobacion'] = $this->librerias->parse_output('date',$_POST[$prefix.'fecha_aprobacion']);*/
             $_POST['depto']                   = $this->comp24->getDepto($_POST['mun_id'])->dep_nombre;
             $_POST['muni']                   = $this->comp24->get_by_Id('municipio','mun_id',$_POST['mun_id'])->mun_nombre;
         }
@@ -201,12 +201,10 @@ class Comp24_E3 extends CI_Controller {
             array('field' => 'depto', 'label' => 'Municipio', 'rules' => 'trim|xss_clean'),
             array('field' => 'muni', 'label' => 'Municipio', 'rules' => 'trim|xss_clean'),
             array('field' => 'mod', 'label' => 'Mod', 'rules' => 'required|xss_clean' ),
+            array('field' => 'acu_mun_id', 'label' => 'Recepcion', 'rules' => 'trim|xss_clean'),
             array('field' => 'mun_id', 'label' => 'Municipio', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix.'fecha_vistobueno'             , 'label' => 'Fecha', 'rules' => 'trim|required|xss_clean'),
-            array('field' => $prefix.'fecha_recepcion'             , 'label' => 'Fecha', 'rules' => 'trim|required|xss_clean'),
-            array('field' => $prefix.'fecha_aprobacion'             , 'label' => 'Fecha', 'rules' => 'trim|required|xss_clean'),
-            array('field' => $prefix.'archivo_acuerdo'       , 'label' => 'Periodo', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix.'observaciones'     , 'label' => 'Fecha', 'rules' => 'trim|xss_clean')
+            array('field' => 'rec_pro1_observaciones'             , 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
+            
         );
              
         $this->form_validation->set_rules($config);
@@ -217,10 +215,10 @@ class Comp24_E3 extends CI_Controller {
         if ($this->form_validation->run())
         {
             $datos = array(
-                $prefix.'fecha_vistobueno'   =>  $this->comp24->changeDate($this->form_validation->set_value($prefix.'fecha_vistobueno')),
-                $prefix.'fecha_recepcion' =>  $this->comp24->changeDate($this->form_validation->set_value($prefix.'fecha_recepcion')),
-                $prefix.'fecha_aprobacion'     =>  $this->comp24->changeDate($this->form_validation->set_value($prefix.'fecha_aprobacion')),
-                $prefix.'observaciones'    =>  $this->form_validation->set_value($prefix.'observaciones')
+                $prefix.'id'   =>  $this->form_validation->set_value($prefix.'id'),
+                'mun_id'   =>  $this->form_validation->set_value('mun_id'),
+                 'rec_pro1_observaciones'     =>  $this->form_validation->set_value('rec_pro1_observaciones'),
+                
             );
             
             if(!is_null($data = $this->comp24->update_row($tabla,$campo,$id,$datos)))
@@ -237,7 +235,7 @@ class Comp24_E3 extends CI_Controller {
         }
        
        $this->load->view($this->ruta.'recepcionProductosPlan',
-            array('titulo' => 'Solicitud de Ayuda',
+            array('titulo' => 'Productos',
                     'user_uid' => $this->tank_auth->get_user_id(),
                     'username' => $this->tank_auth->get_username(),
                     'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
@@ -245,7 +243,45 @@ class Comp24_E3 extends CI_Controller {
                     $campo=>$id
                     ));
     }
+    public function getRecepcionProductos($id){
+        if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
+        
+        $d = $this->comp24->select_data('recepcion_productos2',array('mun_id'=>$id));
+        
+        echo $this->librerias->json_out($d,'mun_id',array('rec_pro_id','mun_id','rec_pro_nombre_producto',
+                                                          'rec_pro_descripcion_producto','rec_pro_observaciones'));
+    }
     
+     public function gestionRecepcionProductos($id){
+        if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
+        
+        $tabla = 'recepcion_productos2';
+        $campo = 'mun_id';
+        $index = $this->input->post('rec_pro_id');
+        
+        $data = array(
+            'rec_pro_id' => $this->input->post('rec_pro_id'),
+             $campo          => $id,
+            'rec_pro_nombre_producto'    => $this->input->post('rec_pro_nombre_producto'),
+            'rec_pro_descripcion_producto' => $this->input->post('rec_pro_descripcion_producto'),
+            'rec_pro_observaciones'      => $this->input->post('rec_pro_observaciones'),
+            
+        );
+        
+        switch ($this->input->post('oper')){ 
+        	case 'add':
+                $this->comp24->insert_row($tabla, $data);
+        	break;
+        
+        	case 'edit':
+                $this->comp24->update_row($tabla, $campo, $index, $data);
+        	break;
+        
+        	case 'del':
+                $r = $this->comp24->db_row_delete($tabla, $campo, $index);
+        	break;
+        }
+    }
         /**
      * Alias para llamar a la funcion 
      */

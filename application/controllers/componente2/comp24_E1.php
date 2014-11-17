@@ -30,7 +30,7 @@ class Comp24_E1 extends CI_Controller {
 
     public function revisionAprobacionProductos($id = false) {
         if (!$this->tank_auth->is_logged_in())
-            redirect('/auth');                // logged in
+            redirect('/auth');                
         $tabla = 'revapro_productos';
         $campo = 'rea_pro_id';
         $prefix = 'rea_pro_';
@@ -42,8 +42,10 @@ class Comp24_E1 extends CI_Controller {
             }
             $_POST = get_object_vars($tmp);
             $_POST[$prefix . 'fecha_presentacion'] = $this->librerias->parse_output('date', $_POST[$prefix . 'fecha_presentacion']);
-            $_POST[$prefix . 'fecha_vistobueno'] = $this->librerias->parse_output('date', $_POST[$prefix . 'fecha_vistobueno']);
             $_POST[$prefix . 'fecha_aprobacion'] = $this->librerias->parse_output('date', $_POST[$prefix . 'fecha_aprobacion']);
+            $_POST[$prefix . 'fecha_presentacionD'] = $this->librerias->parse_output('date', $_POST[$prefix . 'fecha_presentacionD']);
+            $_POST[$prefix . 'fecha_aprobacionD'] = $this->librerias->parse_output('date', $_POST[$prefix . 'fecha_aprobacionD']);
+            $_POST[$prefix . 'fecha_vistobueno'] = $this->librerias->parse_output('date', $_POST[$prefix . 'fecha_vistobueno']);
             $_POST['depto'] = $this->comp24->getDepto($_POST['mun_id'])->dep_nombre;
             $_POST['muni'] = $this->comp24->get_by_Id('municipio', 'mun_id', $_POST['mun_id'])->mun_nombre;
         }
@@ -56,15 +58,17 @@ class Comp24_E1 extends CI_Controller {
             array('field' => 'muni', 'label' => 'Municipio', 'rules' => 'trim|xss_clean'),
             array('field' => 'mod', 'label' => 'Mod', 'rules' => 'required|xss_clean'),
             array('field' => 'mun_id', 'label' => 'Municipio', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix . 'fecha_presentacion', 'label' => 'Fecha', 'rules' => 'trim|required|xss_clean'),
-            array('field' => $prefix . 'fecha_vistobueno', 'label' => 'Fecha', 'rules' => 'trim|required|xss_clean'),
-            array('field' => $prefix . 'fecha_aprobacion', 'label' => 'Fecha', 'rules' => 'trim|required|xss_clean'),
-            array('field' => $prefix . 'is_plan_trabajo', 'label' => 'Fecha', 'rules' => 'trim|required|xss_clean'),
-            array('field' => $prefix . 'is_perfil', 'label' => 'Fecha', 'rules' => 'trim|required|xss_clean'),
-            array('field' => $prefix . 'is_ind_endeudamiento', 'label' => 'Fecha', 'rules' => 'trim|required|xss_clean'),
-            array('field' => $prefix . 'is_ind_comp', 'label' => 'Fecha', 'rules' => 'trim|required|xss_clean'),
-            array('field' => $prefix . 'is_informe_diag', 'label' => 'Fecha', 'rules' => 'trim|required|xss_clean'),
-            array('field' => $prefix . 'is_visto_bueno', 'label' => 'Fecha', 'rules' => 'trim|required|xss_clean'),
+            array('field' => $prefix . 'fecha_presentacion', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'fecha_aprobacion', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'fecha_presentacionD', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'fecha_aprobacionD', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'fecha_vistobueno', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'is_plan_trabajo', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'is_perfil', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'is_ind_endeudamiento', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'is_ind_comp', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'is_informe_diag', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'is_visto_bueno', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
             array('field' => $prefix . 'archivo_acta', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
             array('field' => $prefix . 'observaciones', 'label' => 'Fecha', 'rules' => 'trim|xss_clean')
         );
@@ -77,8 +81,10 @@ class Comp24_E1 extends CI_Controller {
         if ($this->form_validation->run()) {
             $datos = array(
                 $prefix . 'fecha_presentacion' => $this->comp24->changeDate($this->form_validation->set_value($prefix . 'fecha_presentacion')),
-                $prefix . 'fecha_vistobueno' => $this->comp24->changeDate($this->form_validation->set_value($prefix . 'fecha_vistobueno')),
                 $prefix . 'fecha_aprobacion' => $this->comp24->changeDate($this->form_validation->set_value($prefix . 'fecha_aprobacion')),
+                $prefix . 'fecha_presentacionD' => $this->comp24->changeDate($this->form_validation->set_value($prefix . 'fecha_presentacionD')),
+                $prefix . 'fecha_aprobacionD' => $this->comp24->changeDate($this->form_validation->set_value($prefix . 'fecha_aprobacionD')),
+                $prefix . 'fecha_vistobueno' => $this->comp24->changeDate($this->form_validation->set_value($prefix . 'fecha_vistobueno')),
                 $prefix . 'is_plan_trabajo' => $this->form_validation->set_value($prefix . 'is_plan_trabajo'),
                 $prefix . 'is_perfil' => $this->form_validation->set_value($prefix . 'is_perfil'),
                 $prefix . 'is_ind_endeudamiento' => $this->form_validation->set_value($prefix . 'is_ind_endeudamiento'),
@@ -100,7 +106,7 @@ class Comp24_E1 extends CI_Controller {
             }
         }
 
-        $this->load->view($this->ruta . 'revisionAprobacionProductos', array('titulo' => 'Solicitud de Ayuda',
+        $this->load->view($this->ruta . 'revisionAprobacionProductos', array('titulo' => 'Revision Aprobacion',
             'user_uid' => $this->tank_auth->get_user_id(),
             'username' => $this->tank_auth->get_username(),
             'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),

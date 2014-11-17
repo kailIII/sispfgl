@@ -16,8 +16,11 @@ $(document).ready(function(){
     function formularioHide(){$('#listaContainer').show();$('#formulario').hide()}
     function formularioShow(){$('#listaContainer').hide();$('#formulario').show()}
     $("#guardar").button();
-    $("#btn_acuerdo_nuevo").button().click(function(){$('#frm').submit();});
-    $("#btn_seleccionar").button().click(function(){document.location.href='<?php echo current_url(); ?>/' + jQuery("#lista").jqGrid('getGridParam','selrow');});
+  /*  $("#btn_acuerdo_nuevo").button().click(function(){ 
+                <?php echo "formularioShow();"?>; 
+                $('#formulario').submit();});*/
+            
+    /*$("#btn_seleccionar").button().click(function(){document.location.href='<?php echo current_url(); ?>/' + jQuery("#lista").jqGrid('getGridParam','selrow');});*/
     $("#cancelar").button().click(function() {document.location.href='<?php echo base_url(); ?>';});
     $('.mensaje').dialog({autoOpen: false,width: 300,
         buttons: {"Ok": function() {$(this).dialog("close");}}
@@ -28,7 +31,7 @@ $(document).ready(function(){
     });
     /**/
     $('#mun_id').change(function(){
-        jqLista.jqGrid('clearGridData')
+        $('#lista').jqGrid('clearGridData')
             .jqGrid('setGridParam', { 
                 url: '<?php echo base_url('componente2/comp24_E4/loadGescon'); ?>/' + $('#mun_id').val(), 
                 datatype: 'json', 
@@ -64,8 +67,8 @@ $(document).ready(function(){
             {name:'par_apellidos',index:'par_apellidos', width:123,editable:true,
                 edittypr:'text',editoptions:{size:20,maxlength:50},
                 editrules:{required:true} },
-            {name:'par_institucion',index:'par_institucion', width:123,editable:true,editoptions:{size:30},
-                edittype:'text',editoptions:{size:20,maxlength:50},
+            {name:'par_institucion',index:'par_institucion', width:300,editable:true,editoptions:{size:50},
+                edittype:'text',editoptions:{size:55,maxlength:50},
                 editrules:{required:true} },
             {name:'par_cargo',index:'par_cargo', width:123,editable:true,editoptions:{size:30},
                 edittype:'text',editoptions:{size:20,maxlength:50},
@@ -85,42 +88,54 @@ $(document).ready(function(){
              $('#miembros').jqGrid('editRow',rowid,true); 
         }
     });
+    
     $("#miembros").jqGrid('navGrid','#pagerMiembros',
-        {edit:false,add:false,del:false,search:true,refresh:false,
+        {edit:false,add:false,del:false,search:true,refresh:true,
         beforeRefresh: function() {
             tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
-        }
-    );
+        });
     $("#miembros").jqGrid('inlineNav',"#pagerMiembros",{editParams:{keys:true}});
     
-    var jqLista = $('#lista');
-    jqLista.jqGrid({
+    $('#lista').jqGrid({
        	url: '<?php echo base_url('componente2/comp24_E4/loadGescon/'); ?>/' + $('#mun_id').val(),
+        editurl:'<?php echo base_url('componente2/comp24_E4/gestionConocimiento1') ; ?>/'+ $('#gescon_id').val(),
     	datatype: "json",
-        width: 300,
-       	colNames:['Id','Fecha'],
+        width: 500,
+        altRows:true,
+        gridview: true,
+        hidegrid: false,
+       	colNames:['Id','Municipio','Fecha','Tematica','Observaciones'],
        	colModel:[
-       		{name:'id',index:'id', width:55},
-       		{name:'fecha',index:'fecha', width:90}		
+       		{name:'gescon_id',index:'gescon_id', width:55},
+                {name:'mun_id',index:'mun_id', width:90},
+       		{name:'gescon_fecha',index:'gescon_fecha', width:90},
+		{name:'gescon_tematica',index:'gescon_tematica', width:90},
+                {name:'gescon_observaciones',index:'gescon_observaciones', width:90}
+                
        	],
-       	rowNum:10,
-       	rowList:[10,20,30],
-       	pager: '#pagerLista',
-       	sortname: 'id',
+        multiselect: false,
+        caption: "Reuniones",
+        rowNum:10,
+        rowList:[10,20,50],
+        loadonce:true,
+        pager: $('#pagerLista'),
         viewrecords: true,
-        sortorder: "desc",
-        caption:"Reuniones",
+             	
         ondblClickRow: function(rowid, iRow, iCol, e){
             window.location.href='<?php echo current_url(); ?>/' + rowid;
-        }
-    });
+            }});
+        
+       
+        
+            
     <?php
     //echo '//'.$this->session->keep_flashdata('message');
     if($this->session->flashdata('message')=='Ok'){
         echo "$('#efectivo').dialog('open');";
     }
     if(isset($gescon_id) && $gescon_id > 0){
-        echo "formularioShow();";
+            echo "formularioShow();";
+   
     }else{
         echo "formularioHide();";
     }
@@ -135,15 +150,18 @@ $(document).ready(function(){
     </center>
 </div>
 
+     
 <?php echo form_open('',array('id'=>'frm')) ?>
 
     <h2 class="h2Titulos"> Gestión del Conocimiento</h2>
+ <h2 class="h2Titulos">Cambiar Gestion de Conocimientos</h2>
     <br/>
     <div id="rpt_frm_bdy">
         <div id="listaContainer">
             <div class="campo">
                 <label>Departamento</label>
                 <?php echo form_dropdown('selDepto',$departamentos,'','id="selDepto"'); ?>
+              
             </div>
             <div class="campo">
                 <label>Municipio</label>
@@ -156,13 +174,11 @@ $(document).ready(function(){
             <div style="margin-left: 300px;">
                 <table id="lista"></table>
                 <div id="pagerLista"></div>
-                <div id="btn_seleccionar">Seleccionar</div>
-                <div id="btn_acuerdo_nuevo">Crear Nuevo</div>
             </div>
         </div>
         <?php echo form_close(); echo form_open(); ?>
         <div id="formulario" style="display: none;">
-            <div class="campo">
+           <div class="campo">
                 <label>Departamento:</label>
                 <input id="depto" name="depto" type="text" readonly="readonly" value="<?php echo set_value('depto') ?>" />
             </div>
@@ -187,7 +203,7 @@ $(document).ready(function(){
             </div>
             <div class="campo">
                 <label>Observaciones</label>
-                <textarea id="gescon_observaciones" name="gescon_observaciones" rows="5" wrap="virtual"><?php echo set_value('gescon_observaciones')?></textarea>
+                <textarea id="gescon_observaciones" name="gescon_observaciones" rows="5" wrap="virtual" maxlength="500"> <?php echo set_value('gescon_observaciones')?></textarea>
                 <?php echo form_error('gescon_observaciones'); ?>
             </div>
             <div id="actions" style="position: relative;top: 20px">

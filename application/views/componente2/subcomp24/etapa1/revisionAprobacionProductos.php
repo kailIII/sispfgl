@@ -41,6 +41,35 @@ $(document).ready(function(){
         buttonImageOnly: true, 
         dateFormat: 'dd/mm/yy',
         onClose: function( selectedDate ) {
+            $( "#rea_pro_fecha_aprobacion" ).datepicker( "option", "minDate", selectedDate );
+        }
+    });
+     $( "#rea_pro_fecha_aprobacion" ).datepicker({
+        showOn: 'both',
+        maxDate:    '+1D',
+        buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+        buttonImageOnly: true, 
+        dateFormat: 'dd/mm/yy',
+        onClose: function( selectedDate ) {
+            $( "#rea_pro_fecha_presentacionD" ).datepicker( "option", "minDate", selectedDate );}
+    });
+    $( "#rea_pro_fecha_presentacionD" ).datepicker({
+        showOn:         'both',
+        maxDate:        '+1D',
+        buttonImage:    '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+        buttonImageOnly: true, 
+        dateFormat: 'dd/mm/yy',
+        onClose: function( selectedDate ) {
+            $( "#rea_pro_fecha_aprobacionD" ).datepicker( "option", "minDate", selectedDate );
+        }
+    });
+     $( "#rea_pro_fecha_aprobacionD" ).datepicker({
+        showOn: 'both',
+        maxDate:    '+1D',
+        buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+        buttonImageOnly: true, 
+        dateFormat: 'dd/mm/yy',
+        onClose: function( selectedDate ) {
             $( "#rea_pro_fecha_vistobueno" ).datepicker( "option", "minDate", selectedDate );
         }
     });
@@ -49,17 +78,8 @@ $(document).ready(function(){
         maxDate:        '+1D',
         buttonImage:    '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
         buttonImageOnly: true, 
-        dateFormat: 'dd/mm/yy',
-        onClose: function( selectedDate ) {
-            $( "#rea_pro_fecha_aprobacion" ).datepicker( "option", "minDate", selectedDate );
-        }
-    });
-    $( "#rea_pro_fecha_aprobacion" ).datepicker({
-        showOn: 'both',
-        maxDate:    '+1D',
-        buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-        buttonImageOnly: true, 
         dateFormat: 'dd/mm/yy'
+        
     });
     /*FIN DEL DATEPICKER*/
     
@@ -121,7 +141,7 @@ $(document).ready(function(){
 <?php echo form_open() ?>
 
     <h2 class="h2Titulos"> Diagnóstico</h2>
-    <h2 class="h2Titulos">Revisión y Aprobación de Productos</h2>
+    <h2 class="h2Titulos">Revisión y Aprobación de Productos.</h2>
     <br/>
     <div id="rpt_frm_bdy">
         <div id="listaContainer">
@@ -151,41 +171,41 @@ $(document).ready(function(){
             <legend>Productos</legend>
             <div class="campo">
                 <label style="text-align: left;">Plan de Trabajo</label>
-                <span>Si</span><input type="radio" name="rea_pro_is_plan_trabajo" value="t" <?php echo set_radio('rea_pro_is_plan_trabajo', 't'); ?>/>
-                <span>No</span><input type="radio" name="rea_pro_is_plan_trabajo" value="f" <?php echo set_radio('rea_pro_is_plan_trabajo', 'f', TRUE); ?>/>
+                <span>Si</span><input type="radio" name="rea_pro_is_plan_trabajo" value="t" checked="TRUE" <?php echo set_radio('rea_pro_is_plan_trabajo', 't'); ?>/>
+                <span>No</span><input type="radio" name="rea_pro_is_plan_trabajo" value="f" <?php echo set_radio('rea_pro_is_plan_trabajo', 'f'); ?>/>
                 <?php echo form_error('rea_pro_is_plan_trabajo'); ?>
             </div>
             <div class="campo">
-                <label style="text-align: left;">El Borrador del diagnóstico contiene</label>
+                <label style="text-align: left;">El diagnóstico contiene</label>
             </div>
             <div class="campo">
                 <label style="text-align: left; margin-left: 40px; width: 280px;">Perfil del municipio</label>
-                <span>Si</span><input type="radio" name="rea_pro_is_perfil" value="t" <?php echo set_radio('rea_pro_is_perfil', 't'); ?>/>
-                <span>No</span><input type="radio" name="rea_pro_is_perfil" value="f" <?php echo set_radio('rea_pro_is_perfil', 'f', TRUE); ?>/>
+                <span>Si</span><input type="radio" name="rea_pro_is_perfil" value="t" checked="TRUE" <?php echo set_radio('rea_pro_is_perfil', 't'); ?>/>
+                <span>No</span><input type="radio" name="rea_pro_is_perfil" value="f" <?php echo set_radio('rea_pro_is_perfil', 'f'); ?>/>
                 <?php echo form_error('rea_pro_is_perfil'); ?>
             </div>
             <div class="campo">
                 <label style="text-align: left; margin-left: 40px; width: 280px;">Indicadores de analisis de endeudamiento</label>
-                <span>Si</span><input type="radio" name="rea_pro_is_ind_endeudamiento" value="t" <?php echo set_radio('rea_pro_is_ind_endeudamiento', 't'); ?>/>
-                <span>No</span><input type="radio" name="rea_pro_is_ind_endeudamiento" value="f" <?php echo set_radio('rea_pro_is_ind_endeudamiento', 'f', TRUE); ?>/>
+                <span>Si</span><input type="radio" name="rea_pro_is_ind_endeudamiento" value="t" checked="TRUE" <?php echo set_radio('rea_pro_is_ind_endeudamiento', 't'); ?>/>
+                <span>No</span><input type="radio" name="rea_pro_is_ind_endeudamiento" value="f" <?php echo set_radio('rea_pro_is_ind_endeudamiento', 'f'); ?>/>
                 <?php echo form_error('rea_pro_is_ind_endeudamiento'); ?>
             </div>
             <div class="campo">
-                <label style="text-align: left; margin-left: 40px; width: 280px;">Indicadores del Comportamineto de ingresos</label>
-                <span>Si</span><input type="radio" name="rea_pro_is_ind_comp" value="t" <?php echo set_radio('rea_pro_is_ind_comp', 't'); ?>/>
-                <span>No</span><input type="radio" name="rea_pro_is_ind_comp" value="f" <?php echo set_radio('rea_pro_is_ind_comp', 'f', TRUE); ?>/>
+                <label style="text-align: left; margin-left: 40px; width: 280px;">Indicadores del Comportamiento de ingresos</label>
+                <span>Si</span><input type="radio" name="rea_pro_is_ind_comp" value="t" checked="TRUE" <?php echo set_radio('rea_pro_is_ind_comp', 't'); ?>/>
+                <span>No</span><input type="radio" name="rea_pro_is_ind_comp" value="f" <?php echo set_radio('rea_pro_is_ind_comp', 'f'); ?>/>
                 <?php echo form_error('rea_pro_is_ind_comp'); ?>
             </div>
             <div class="campo">
                 <label style="text-align: left;">Informe de la etapa de diagnóstico</label>
-                <span>Si</span><input type="radio" name="rea_pro_is_informe_diag" value="t" <?php echo set_radio('rea_pro_is_informe_diag', 't'); ?>/>
-                <span>No</span><input type="radio" name="rea_pro_is_informe_diag" value="f" <?php echo set_radio('rea_pro_is_informe_diag', 'f', TRUE); ?>/>
+                <span>Si</span><input type="radio" name="rea_pro_is_informe_diag" value="t" checked="TRUE" <?php echo set_radio('rea_pro_is_informe_diag', 't'); ?>/>
+                <span>No</span><input type="radio" name="rea_pro_is_informe_diag" value="f" <?php echo set_radio('rea_pro_is_informe_diag', 'f'); ?>/>
                 <?php echo form_error('rea_pro_is_informe_diag'); ?>
             </div>
             <div class="campo">
                 <label style="text-align: left;">Visto bueno de la municipalidad</label>
-                <span>Si</span><input type="radio" name="rea_pro_is_visto_bueno" value="t" <?php echo set_radio('rea_pro_is_visto_bueno', 't'); ?>/>
-                <span>No</span><input type="radio" name="rea_pro_is_visto_bueno" value="f" <?php echo set_radio('rea_pro_is_visto_bueno', 'f', TRUE); ?>/>
+                <span>Si</span><input type="radio" name="rea_pro_is_visto_bueno" value="t" checked="TRUE" <?php echo set_radio('rea_pro_is_visto_bueno', 't'); ?>/>
+                <span>No</span><input type="radio" name="rea_pro_is_visto_bueno" value="f" <?php echo set_radio('rea_pro_is_visto_bueno', 'f'); ?>/>
                 <?php echo form_error('rea_pro_is_visto_bueno'); ?>
             </div>
         </fieldset>
@@ -193,19 +213,29 @@ $(document).ready(function(){
         <!-- Lado Izquierdo -->
         <div style="display: inline-block; vertical-align: top;">
             <div class="campoUp">
-                <label>Fecha de presentación de producto</label>
+                <label>Fecha de presentación de plan</label>
                 <input id="rea_pro_fecha_presentacion" name="rea_pro_fecha_presentacion" type="text" readonly="readonly" value="<?php echo set_value('rea_pro_fecha_presentacion') ?>"/>
                 <?php echo form_error('rea_pro_fecha_presentacion'); ?>
+            </div>
+            <div class="campoUp">
+                <label>Fecha de aprobación de plan</label>
+                <input id="rea_pro_fecha_aprobacion" name="rea_pro_fecha_aprobacion" type="text" readonly="readonly" value="<?php echo set_value('rea_pro_fecha_aprobacion') ?>"/>
+                <?php echo form_error('rea_pro_fecha_aprobacion'); ?>
+            </div>
+            <div class="campoUp">
+                <label>Fecha de presentación de diagnóstico</label>
+                <input id="rea_pro_fecha_presentacionD" name="rea_pro_fecha_presentacionD" type="text" readonly="readonly" value="<?php echo set_value('rea_pro_fecha_presentacionD') ?>"/>
+                <?php echo form_error('rea_pro_fecha_presentacionD'); ?>
+            </div>
+            <div class="campoUp">
+                <label>Fecha de aprobación de diagnóstico</label>
+                <input id="rea_pro_fecha_aprobacionD" name="rea_pro_fecha_aprobacionD" type="text" readonly="readonly" value="<?php echo set_value('rea_pro_fecha_aprobacionD') ?>"/>
+                <?php echo form_error('rea_pro_fecha_aprobacionD'); ?>
             </div>
             <div class="campoUp">
                 <label>Fecha de visto bueno</label>
                 <input id="rea_pro_fecha_vistobueno" name="rea_pro_fecha_vistobueno" type="text" readonly="readonly" value="<?php echo set_value('rea_pro_fecha_vistobueno') ?>"/>
                 <?php echo form_error('rea_pro_fecha_vistobueno'); ?>
-            </div>
-            <div class="campoUp">
-                <label>Fecha de aprobación concejo Municipal</label>
-                <input id="rea_pro_fecha_aprobacion" name="rea_pro_fecha_aprobacion" type="text" readonly="readonly" value="<?php echo set_value('rea_pro_fecha_aprobacion') ?>"/>
-                <?php echo form_error('rea_pro_fecha_aprobacion'); ?>
             </div>
             <div class="campoUp">
                 <label>Cargar archivo:</label>
@@ -220,7 +250,7 @@ $(document).ready(function(){
         
         <div class="campo">
             <label>Observaciones</label>
-            <textarea id="rea_pro_observaciones" name="rea_pro_observaciones" cols="30" rows="5" wrap="virtual" maxlength="100"><?php echo set_value('rea_pro_observaciones') ?></textarea>
+            <textarea id="rea_pro_observaciones" name="rea_pro_observaciones" cols="30" rows="5" wrap="virtual" maxlength="500"><?php echo set_value('rea_pro_observaciones') ?></textarea>
         </div>
         
         <div id="actions" style="position: relative;top: 20px">

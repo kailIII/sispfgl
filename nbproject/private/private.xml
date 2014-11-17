@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+<<<<<<< HEAD
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="6">
         <file>
@@ -26,4 +27,7 @@
             <file>file:/home/karencita/sispfgl/application/views/reporte/index_pep_view.php</file>
         </group>
     </open-files>
+=======
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+>>>>>>> 645bdfb27188b84647c5660babb3b1a05d478813
 </project-private>

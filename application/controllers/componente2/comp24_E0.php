@@ -394,7 +394,7 @@ class Comp24_E0 extends CI_Controller {
         $tabla = 'asistencia_tecnica';
         $campo = 'asi_tec_id';
         $prefix = 'asi_tec_';
-
+        
         if ($id && !isset($_POST['mod'])) {
             if (!($tmp = $this->comp24->get_by_id($tabla, $campo, $id))) {
                 $this->comp24->insert_row($tabla, array($campo => $id, 'mun_id' => $id));
@@ -405,6 +405,8 @@ class Comp24_E0 extends CI_Controller {
             $_POST[$prefix . 'fecha_emision'] = $this->librerias->parse_output('date', $_POST[$prefix . 'fecha_emision']);
             $_POST[$prefix . 'fecha_envio'] = $this->librerias->parse_output('date', $_POST[$prefix . 'fecha_envio']);
             $_POST[$prefix . 'fecha_inicio'] = $this->librerias->parse_output('date', $_POST[$prefix . 'fecha_inicio']);
+         /*   $_POST[$prefix . 'consultor'] = $this->form_validation->set_value($_POST[$prefix . 'consultor']);
+            $_POST[$prefix . 'observaciones'] = $this->form_validation->set_value($_POST[$prefix . 'observaciones']);*/
         }
 
         if (isset($_POST['mun_id']) && $_POST['mun_id'] > 0) {
@@ -415,15 +417,15 @@ class Comp24_E0 extends CI_Controller {
         $config = array(
             array('field' => 'depto', 'label' => 'Municipio', 'rules' => 'trim|xss_clean'),
             array('field' => 'muni', 'label' => 'Municipio', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix . 'fecha_solicitud', 'label' => 'Fecha', 'rules' => 'trim|required|xss_clean'),
+            array('field' => $prefix . 'fecha_solicitud', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
             array('field' => $prefix . 'fecha_emision', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
             array('field' => $prefix . 'fecha_envio', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
             array('field' => $prefix . 'fecha_inicio', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix . 'consultor', 'label' => 'Consultor', 'rules' => 'trim|xss_clean|is_natural_no_zero'),
             array('field' => $prefix . 'archivo_perfil', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
             array('field' => $prefix . 'archivo_trd', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
             array('field' => $prefix . 'archivo_acuerdo', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
             array('field' => $prefix . 'observaciones', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'consultor', 'label' => 'Consultor', 'rules' => 'trim|xss_clean'),
             array('field' => 'mod', 'label' => 'Mod', 'rules' => 'required|xss_clean')
         );
 
@@ -438,10 +440,9 @@ class Comp24_E0 extends CI_Controller {
                 $prefix . 'fecha_emision' => $this->librerias->parse_input('date', $this->form_validation->set_value($prefix . 'fecha_emision')),
                 $prefix . 'fecha_envio' => $this->librerias->parse_input('date', $this->form_validation->set_value($prefix . 'fecha_envio')),
                 $prefix . 'fecha_inicio' => $this->librerias->parse_input('date', $this->form_validation->set_value($prefix . 'fecha_inicio')),
-                $prefix . 'consultor' => $this->form_validation->set_value($prefix . 'consultor'),
-                $prefix . 'observaciones' => $this->form_validation->set_value($prefix . 'observaciones')
-            );
-
+                $prefix . 'observaciones' => $this->form_validation->set_value($prefix . 'observaciones'),
+                $prefix . 'consultor' => $this->form_validation->set_value($prefix . 'consultor')
+                ); 
             if ($id > 0) {
                 if (!is_null($data = $this->comp24->update_row($tabla, $campo, $id, $datos))) {
                     $this->session->set_flashdata('message', 'Ok');
@@ -449,8 +450,17 @@ class Comp24_E0 extends CI_Controller {
                     redirect($t[0]);
                 }
             } else {
-                if (!is_null($data = $this->comp24->insert_acuerdo_municipal(
-                                $this->form_validation->set_value('mun_id'), $this->form_validation->set_value('acu_mun_fecha_acuerdo'), $this->form_validation->set_value('acu_mun_fecha_recepcion'), $this->form_validation->set_value('acu_mun_fecha_conformacion'), $this->form_validation->set_value('acu_mun_observaciones')
+                if (!is_null($data = $this->comp24->insert_solicitud_asistencia_tecnica(
+                                $this->form_validation->set_value('mun_id'), 
+                                $this->form_validation->set_value('asi_tec_fecha_solicitud'), 
+                                $this->form_validation->set_value('asi_tec_fecha_emision'), 
+                                $this->form_validation->set_value('asi_tec_fecha_envio'),
+                                $this->form_validation->set_value('asi_tec_fecha_inicio'),
+                                $this->form_validation->set_value('asi_tec_archivo_perfil'), 
+                                $this->form_validation->set_value('asi_tec_archivo_tdr'),
+                                $this->form_validation->set_value('asi_tec_archivo_acuerdo'),
+                                $this->form_validation->set_value('asi_tec_observaciones'),
+                                $this->form_validation->set_value('asi_tec_consultor')
                         ))) {
                     $this->session->set_flashdata('message', 'Ok');
                     $t = explode('/0', current_url());
@@ -471,7 +481,7 @@ class Comp24_E0 extends CI_Controller {
             'username' => $this->tank_auth->get_username(),
             'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
             'departamentos' => $this->comp24->getDepartamentos(),
-            'consultores' => $this->getConsultores(),
+           /* 'consultores' => $this->getConsultores(),*/
             $campo => $id
         ));
     }
@@ -481,7 +491,11 @@ class Comp24_E0 extends CI_Controller {
             redirect('/auth');                // logged in
 
         $data = $this->comp24->select_data('asistencia_tecnica', array('mun_id' => $mun_id));
-        echo $this->librerias->json_out($data, 'asi_tec_id', array('asi_tec_id', 'asi_tec_fecha_solicitud'));
+        echo $this->librerias->json_out($data, 'asi_tec_id', array('asi_tec_id'));
+                /*, 
+               'asi_tec_fecha_solicitud','asi_tec_fecha_emision',
+               'asi_tec_fecha_envio','asi_tec_fecha_inicio',
+               'asi_tec_observaciones','asi_tec_consultor'));*/
     }
 
     public function asiTec_loadMiembros($id) {
@@ -1141,7 +1155,7 @@ class Comp24_E0 extends CI_Controller {
             redirect('/auth');                // logged in
 
         $data = $this->comp24->select_data('manuales_administrativos', array('mun_id' => $mun_id));
-        echo $this->librerias->json_out($data, 'man_adm_id', array('man_adm_id', 'man_adm_nombre'));
+        echo $this->librerias->json_out($data, 'mun_id', array('mun_id'));
     }
 
     function _show_message($path, $message) {
@@ -1149,6 +1163,119 @@ class Comp24_E0 extends CI_Controller {
         redirect('/componente2/comp24_E0' + $path);
     }
 
+     public function manualesAdministrativos($id = false) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');                // logged in
+        $tabla = 'manuales_administrativos';
+        $campo = 'mun_id';
+        $prefix = 'man_adm_';
+        
+        if ($id && !isset($_POST['mod'])) {
+            if (!($tmp = $this->comp24->get_by_id($tabla, $campo, $id))) {
+                $this->comp24->insert_row($tabla, array($campo => $id, 'mun_id' => $id));
+                $tmp = $this->comp24->get_by_id($tabla, $campo, $id);
+            }
+            $_POST = get_object_vars($tmp);
+         /*   $_POST[$prefix . 'numero1'] = $this->librerias->parse_output('date', $_POST[$prefix . 'numero1']);
+            $_POST[$prefix . 'numero2'] = $this->librerias->parse_output('date', $_POST[$prefix . 'numero2']);*/
+           
+        }
+
+        if (isset($_POST['mun_id']) && $_POST['mun_id'] > 0) {
+            $_POST['depto'] = $this->comp24->getDepto($_POST['mun_id'])->dep_nombre;
+            $_POST['muni'] = $this->comp24->get_by_Id('municipio', 'mun_id', $_POST['mun_id'])->mun_nombre;
+        }
+
+        $config = array(
+            array('field' => 'depto', 'label' => 'Municipio', 'rules' => 'trim|xss_clean'),
+            array('field' => 'muni', 'label' => 'Municipio', 'rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'elaboracion', 'label' => 'elaboracion', 'rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'numero1', 'label' => 'numero1','rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'numero2', 'label' => 'numero2','rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'numero3', 'label' => 'numero3','rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'numero4', 'label' => 'numero4','rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'numero5', 'label' => 'numero5','rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'numero6', 'label' => 'numero6','rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'numero7', 'label' => 'numero7','rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'numero8', 'label' => 'numero8','rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'observaciones', 'label' => 'observaciones', 'rules' => 'trim|xss_clean'),
+            array('field' => 'mod', 'label' => 'Mod', 'rules' => 'required|xss_clean')
+        );
+
+        $this->form_validation->set_rules($config);
+
+        $data['errors'] = array();
+        $mensaje = false;
+
+        if ($this->form_validation->run()) {
+            $datos = array(
+                $prefix . 'elaboracion' => $this->librerias->parse_input('date', $this->form_validation->set_value($prefix . 'elaboracion')),
+                $prefix . 'numero1' => $this->form_validation->set_value($prefix . 'numero1'),
+                $prefix . 'numero2' => $this->form_validation->set_value($prefix . 'numero2'),
+                $prefix . 'numero3' => $this->form_validation->set_value($prefix . 'numero3'),
+                $prefix . 'numero4' => $this->form_validation->set_value($prefix . 'numero4'),
+                $prefix . 'numero5' => $this->form_validation->set_value($prefix . 'numero5'),
+                $prefix . 'numero6' => $this->form_validation->set_value($prefix . 'numero6'),
+                $prefix . 'numero7' => $this->form_validation->set_value($prefix . 'numero7'),
+                $prefix . 'numero8' => $this->form_validation->set_value($prefix . 'numero8'),
+                $prefix . 'observaciones' => $this->form_validation->set_value($prefix . 'observaciones'),
+                
+                ); 
+            if ($id > 0) {
+               /* if ($man_adm_numero1 == "")
+                    $man_adm_numero1 = null;
+                if ($man_adm_numero2 == "")
+                    $man_adm_numero2 = null;*/
+                
+                if (!is_null($data = $this->comp24->update_row($tabla, $campo, $id, $datos))) {
+                    $this->session->set_flashdata('message', 'Ok');
+                    $t = explode('/' . $id, current_url());
+                    redirect($t[0]);
+                }
+            } else {
+                /*if ($man_adm_numero1 == "")
+                    $man_adm_numero1 = null;
+                if ($man_adm_numero2 == "")
+                    $man_adm_numero2 = null;*/
+                
+                if (!is_null($data = $this->comp24->insert_manuales_administrativos(
+                                $this->form_validation->set_value('mun_id'), 
+                                $this->form_validation->set_value($prefix . 'elaboracion'),
+                                $this->form_validation->set_value($prefix .'numero1'), 
+                                $this->form_validation->set_value($prefix .'numero2'),
+                                $this->form_validation->set_value($prefix .'numero3'),
+                                $this->form_validation->set_value($prefix .'numero4'),
+                                $this->form_validation->set_value($prefix .'numero5'),
+                                $this->form_validation->set_value($prefix .'numero6'),
+                                $this->form_validation->set_value($prefix .'numero7'),
+                                $this->form_validation->set_value($prefix .'numero8'),
+                                $this->form_validation->set_value($prefix .'observaciones')
+                                
+                        ))) {
+                    $this->session->set_flashdata('message', 'Ok');
+                    $t = explode('/0', current_url());
+                    redirect($t[0]);
+                } else {
+                    $errors = $this->tank_auth->get_error_message();
+                    foreach ($errors as $k => $v)
+                        $data['errors'][$k] = $this->lang->line($v);
+                }
+            }
+        } else if (($mun = $this->input->post('mun_id')) != 0 && $id == false) {
+            //
+            redirect(current_url() . '/' . $this->setNewId($tabla, $campo, array('mun_id' => $mun)));
+        }
+
+        $this->load->view($this->ruta . 'manualesAdministrativos', array('titulo' => 'Manuales Administrativos',
+            'user_uid' => $this->tank_auth->get_user_id(),
+            'username' => $this->tank_auth->get_username(),
+            'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
+            'departamentos' => $this->comp24->getDepartamentos(),
+           /* 'consultores' => $this->getConsultores(),*/
+            $campo => $id
+        ));
+    }
 }
+
 
 ?>
