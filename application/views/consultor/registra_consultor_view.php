@@ -204,18 +204,7 @@ $cons_id = array(
         </tr>
         <tr>
             
-            <tr>
-        <td width="50px"></td>
-        <td class="letraazul">Nombre usuario del consultor</td>
-        <td><select id='selConsultoras'>
-                <option value='0'>--Seleccione un usuario consultor--</option>
-                <?php foreach ($consultoras as $consultora) { ?>
-                    <option value='<?php echo $consultora->cons_id; ?>'><?php echo $consultora->cons_nombre; ?></option>
-                <?php } ?>
-            </select></td>
-        <td></td>
-        <td width="50px"></td>
-        </tr>
+      
             
             
         <td width="50px"></td>

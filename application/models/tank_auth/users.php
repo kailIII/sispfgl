@@ -445,7 +445,7 @@ class Users extends CI_Model {
         $this->db->from($this->table_name);
         $this->db->join('rol', "rol.rol_id=$this->table_name.rol_id");
         $this->db->where('activated', 1);
-        $this->db->where('rol.rol_id', 3);
+      //  $this->db->where('rol.rol_id', 3);
         $this->db->order_by("$this->table_name.rol_id");
         $query = $this->db->get();
         return $query->result();

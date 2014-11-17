@@ -51,6 +51,30 @@ class  componente21 extends CI_Controller {
         $this->load->view('plantilla/footer', $informacion);
     }
 ///////////////////////////////////////////////
+public function cargar_cc($mun_id) {
+          $data=array();
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
+        $sql="select * from  cc where mun_id=?";
+        $query = $this->db->query($sql,array($mun_id));
+        
+       foreach ($query->result() as $row)
+   {
+      $data['cc_id']= $row->cc_id;
+      $data ['total_mujeres']= $row->total_mujeres;
+      $data ['total_hombres']= $row->total_hombres;
+      $data ['cc_lugar']= $row->cc_lugar;
+      $data ['acta_final']= $row->acta_final;
+      $data ['listado_asistencia']= $row->listado_asistencia;
+      $data ['cc_fecha']= $row->cc_fecha;
+      $data ['anexo8']= $row->anexo8;
+     
+   }
+      
+   echo json_encode($data);
+  }     
+
+///////////////////////////////////////////////
  public function cargarGeneralCcc($mun_id) {
           $data=array();
         if (!$this->tank_auth->is_logged_in())
@@ -215,6 +239,46 @@ class  componente21 extends CI_Controller {
         echo $jsonresponse;
     }
   
+    public function cargar_cc_asis3($ccc_id) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
+      
+        $this->load->model('componente2/comp21_model');
+        $notas = $this->comp21_model->obtenerCcAsis3($ccc_id);
+        $numfilas = count($notas);
+         if ($numfilas != 0) {
+            $i = 0;
+            foreach ($notas as $aux) {
+                $rows[$i]['id'] = $aux->id_proy_cc;
+                $rows[$i]['cell'] = array($aux->id_proy_cc,
+                    $aux->cc_id,
+                    $aux->nombre_proy,
+                    $aux->tipo_proy,
+                    $aux->ubicacion,
+                    $aux->comunidades
+                    
+                );
+                $i++;
+            }
+         
+            array_multisort($rows, SORT_ASC);
+        } else {
+           $rows = array();
+        }
+
+          
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+    
    public function modificar_ccc_asis1($ccc_id) {
         if (!$this->tank_auth->is_logged_in())
             redirect('/auth');
@@ -285,6 +349,29 @@ class  componente21 extends CI_Controller {
                 break;
             case 'del':
                 $this->comp21_model->eliminarAsistenciaccc3($id_proyecto);
+                break;
+        }
+    } 
+      public function modificar_cc_asis3($cc_id) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
+        $this->load->model('componente2/comp21_model');
+        $id_proy_cc = $this->input->post("id");
+        $nombre_proy = $this->input->post("nombre_proy");
+        $tipo_proy = $this->input->post("tipo_proy");
+        $ubicacion = $this->input->post("ubicacion");
+        $comunidades = $this->input->post("comunidades");
+        
+        $operacion = $this->input->post("oper");
+        switch ($operacion) {
+            case 'add':
+                $this->comp21_model->agregarAsitenciacc3($cc_id,$nombre_proy,$tipo_proy,$ubicacion,$comunidades);
+                break;
+            case 'edit':
+                $this->comp21_model->actualizarAsistenciacc3($id_proy_cc,$nombre_proy,$tipo_proy,$ubicacion,$comunidades);
+                break;
+            case 'del':
+                $this->comp21_model->eliminarAsistenciacc3($id_proy_cc);
                 break;
         }
     } 
@@ -523,82 +610,49 @@ class  componente21 extends CI_Controller {
 
     //************************************************************
      public function guardar_cc() {
-
-        $datos_cc = $_POST;
-		unset($datos_cc['guardar']);
-		
-		//configuracion del archivo adjunto a subir
-		$config['upload_path'] = 'documentos/cc/';
-		$config['allowed_types'] = 'doc|docx|pdf|rtf';
-		$config['max_size']	= '2048';
-		
-		$this->load->library('upload', $config);
-		
-		if ($datos_cc['acta']=='si')
-		{
-			
-			if ( ! $this->upload->do_upload('acta_final'))//retorna falso si hubo un error y entonces entra al if
-			{
-				$error_upload = $this->upload->display_errors('<p style="color:red">Error: ', '</p>');
-				$informacion['titulo'] = 'CC';
-				$informacion['user_id'] = $this->tank_auth->get_user_id();
-				$informacion['username'] = $this->tank_auth->get_username();
-				$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username()); 
-				$informacion['aviso'] = $error_upload; 
-				$this->load->view('plantilla/header', $informacion);
-				$this->load->view('plantilla/menu', $informacion);
-				$this->load->view('componente2/cc_view');
-				$this->load->view('plantilla/footer', $informacion);
-			}
-			else
-			{			
-				$datos_arch1 = $this->upload->data();
-				$ruta1=$config['upload_path'].$datos_arch1['file_name'];
-			}
-		
-		}
-		else $ruta1=null;
-		
-		if($datos_cc['lista']=='si'){
-			
-			if ( ! $this->upload->do_upload('lista_asis'))//retorna falso si hubo un error y entonces entra al if
-			{
-				$error_upload = $this->upload->display_errors('<p style="color:red">Error: ', '</p>');
-				$informacion['titulo'] = 'CC';
-				$informacion['user_id'] = $this->tank_auth->get_user_id();
-				$informacion['username'] = $this->tank_auth->get_username();
-				$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username()); 
-				$informacion['aviso'] = $error_upload; 
-				$this->load->view('plantilla/header', $informacion);
-				$this->load->view('plantilla/menu', $informacion);
-				$this->load->view('componente2/cc_view');
-				$this->load->view('plantilla/footer', $informacion);
-			}
-			else
-			{			
-				$datos_arch2 = $this->upload->data();
-				$ruta2=$config['upload_path'].$datos_arch2['file_name'];
-			}
-			
-		}
-		else $ruta2=null;
-			
-			$this->load->model('componente2/comp21_model');
-			$this->comp21_model->insertar_cc($datos_cc,$ruta1,$ruta2);				
-			
-			$informacion['titulo'] = 'CC';
-			$informacion['user_id'] = $this->tank_auth->get_user_id();
-			$informacion['username'] = $this->tank_auth->get_username();
-			$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username()); 
-			$informacion['aviso'] = '<p style="color:blue">Se ha realizado el registro correctamete del CC.</p>';         
-			$this->load->view('plantilla/header', $informacion);
-			$this->load->view('plantilla/menu', $informacion);
-			$this->load->view('componente2/cc_view');
-			$this->load->view('plantilla/footer', $informacion);
+if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
+        $mun_id = $this->input->post("mun_id");
+        $total_mujeres = $this->input->post("total_mujeres");
+        $total_hombres = $this->input->post("total_hombres");
+        $cc_lugar = $this->input->post("cc_lugar");
+        $cc_id=$this->input->post("cc_id");
+        $listado_asistencia=$this->input->post("listado_asistencia");
+        $acta_final=$this->input->post("acta_final");
+        $anexo8=$this->input->post("anexo8");
+        $cc_fecha=$this->input->post("cc_fecha");
+       
+        if ($listado_asistencia == "")$listado_asistencia = null;
+        if ($anexo8 == "") $anexo8 = null;
+        if ($acta_final == "") $acta_final = null;
+        
+        $data = array(
+         'mun_id'=>$mun_id,
+         'total_mujeres'=>$total_mujeres,
+         'total_hombres'=>$total_hombres,
+         'cc_lugar'=>$cc_lugar,
+         'listado_asistencia'=>$listado_asistencia,
+         'acta_final'=>$acta_final,
+         'anexo8'=>$anexo8,
+         'cc_fecha'=>$cc_fecha,
+     );
+     if($cc_id) {$this->db->where('cc_id', $cc_id);
+                $this->db->update('cc', $data); }
+     else $this->db->insert('cc', $data);
+     
+     $informacion['titulo'] = 'Consulta Ciudadana';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/cc_view');
+        $this->load->view('plantilla/footer', $informacion);
+        
 			
 	}
 	
-	
+//******************************************	
 	public function guardar_ccc() {
 
         $datos_ccc = $_POST;
