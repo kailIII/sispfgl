@@ -11,8 +11,8 @@ if (!defined('BASEPATH'))
 
 class  componente21 extends CI_Controller {
 	
-	public function index() {
-
+	public function __construct() {
+        parent::__construct();
     }
     
     public function cc() {
@@ -50,7 +50,425 @@ class  componente21 extends CI_Controller {
         $this->load->view('componente2/ccc_view');
         $this->load->view('plantilla/footer', $informacion);
     }
-    ///************************************************************
+///////////////////////////////////////////////
+ public function cargarGeneralCcc($mun_id) {
+          $data=array();
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
+        $sql="select * from  ccc where mun_id=?";
+        $query = $this->db->query($sql,array($mun_id));
+        
+       foreach ($query->result() as $row)
+   {
+      $data['ccc_id']= $row->ccc_id;
+      $data ['total_mujeres']= $row->total_mujeres;
+      $data ['total_hombres']= $row->total_hombres;
+      $data ['mun_id']= $row->mun_id;
+      $data ['lugar_conformacion']= $row->lugar_conformacion;
+     
+   }
+      
+   echo json_encode($data);
+  }   
+ public function guardarGeneralCcc(){
+      if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
+      $mun_id = $this->input->post("mun_id");
+        $total_mujeres = $this->input->post("total_mujeres");
+        $total_hombres = $this->input->post("total_hombres");
+        $lugar_conformacion = $this->input->post("lugar_conformacion");
+        $ccc_id=$this->input->post("ccc_id");
+       
+                
+     $data = array(
+         'mun_id'=>$mun_id,
+         'total_mujeres'=>$total_mujeres,
+         'total_hombres'=>$total_hombres,
+         'lugar_conformacion'=>$lugar_conformacion,
+     );
+     if($ccc_id) {$this->db->where('ccc_id', $ccc_id);
+                $this->db->update('ccc', $data); }
+     else $this->db->insert('ccc', $data);
+     
+     $informacion['titulo'] = 'Comite Contraluria Ciudadana';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/ccc_view');
+        $this->load->view('plantilla/footer', $informacion);
+  }
+ public function cargar_ccc_asis1($ccc_id) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
+      
+        $this->load->model('componente2/comp21_model');
+        $notas = $this->comp21_model->obtenerCccAsis1($ccc_id);
+        $numfilas = count($notas);
+         if ($numfilas != 0) {
+            $i = 0;
+            foreach ($notas as $aux) {
+                $rows[$i]['id'] = $aux->id_motivo_fecha;
+                $rows[$i]['cell'] = array($aux->id_motivo_fecha,
+                    $aux->motivo_fecha,
+                    date('d-m-Y', strtotime($aux->fecha_conformacion)),
+                    date('d-m-Y', strtotime($aux->fecha_induccion)),
+                    date('d-m-Y', strtotime($aux->fecha_capacitacion))
+                    
+                );
+                $i++;
+            }
+         
+            array_multisort($rows, SORT_ASC);
+        } else {
+           $rows = array();
+        }
+
+          
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+   public function cargar_ccc_asis2($ccc_id) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
+      
+        $this->load->model('componente2/comp21_model');
+        $notas = $this->comp21_model->obtenerCccAsis2($ccc_id);
+        $numfilas = count($notas);
+         if ($numfilas != 0) {
+            $i = 0;
+            foreach ($notas as $aux) {
+                $rows[$i]['id'] = $aux->asis_ccc_id;
+                $rows[$i]['cell'] = array($aux->asis_ccc_id,
+                    $aux->nombre_asis,
+                    $aux->responsabilidad,
+                    $aux->sexo
+                    
+                    
+                );
+                $i++;
+            }
+         
+            array_multisort($rows, SORT_ASC);
+        } else {
+           $rows = array();
+        }
+
+          
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+  public function cargar_ccc_asis3($ccc_id) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
+      
+        $this->load->model('componente2/comp21_model');
+        $notas = $this->comp21_model->obtenerCccAsis3($ccc_id);
+        $numfilas = count($notas);
+         if ($numfilas != 0) {
+            $i = 0;
+            foreach ($notas as $aux) {
+                $rows[$i]['id'] = $aux->id_proyecto;
+                $rows[$i]['cell'] = array($aux->id_proyecto,
+                    $aux->id_ccc,
+                    $aux->nombre_proyecto,
+                    $aux->tipo_proyecto,
+                    $aux->num_comunidades,
+                    $aux->comunidades
+                    
+                );
+                $i++;
+            }
+         
+            array_multisort($rows, SORT_ASC);
+        } else {
+           $rows = array();
+        }
+
+          
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+  
+   public function modificar_ccc_asis1($ccc_id) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
+        $this->load->model('componente2/comp21_model');
+        //$etm_id = $this->input->post("etm_id");
+        $motivo_fecha = $this->input->post("motivo_fecha");
+        $fecha_conformacion = $this->input->post("fecha_conformacion");
+        $fecha_induccion = $this->input->post("fecha_induccion");
+        $fecha_capacitacion = $this->input->post("fecha_capacitacion");
+        $id_motivo_fecha = $this->input->post("id");
+
+        $operacion = $this->input->post("oper");
+        switch ($operacion) {
+            case 'add':
+                $this->comp21_model->agregarAsitencia1($ccc_id,$motivo_fecha,$fecha_capacitacion,$fecha_conformacion,$fecha_induccion);
+                break;
+            case 'edit':
+                $this->comp21_model->actualizarAsistencia1($id_motivo_fecha,$motivo_fecha,$fecha_capacitacion,$fecha_conformacion,$fecha_induccion);
+                break;
+            case 'del':
+                $this->comp21_model->eliminarAsistencia1($id_motivo_fecha);
+                break;
+        }
+    } 
+   public function modificar_ccc_asis2($ccc_id) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
+        $this->load->model('componente2/comp21_model');
+        //$etm_id = $this->input->post("etm_id");
+        $asis_ccc_id = $this->input->post("id");
+        $nombre_asis = $this->input->post("nombre_asis");
+        $responsabilidad = $this->input->post("responsabilidad");
+        $sexo = $this->input->post("sexo");
+        
+        $operacion = $this->input->post("oper");
+        switch ($operacion) {
+            case 'add':
+                $this->comp21_model->agregarAsitenciaccc2($ccc_id,$nombre_asis,$responsabilidad,$sexo);
+                break;
+            case 'edit':
+                $this->comp21_model->actualizarAsistenciaccc2($asis_ccc_id,$nombre_asis,$responsabilidad,$sexo);
+                break;
+            case 'del':
+                $this->comp21_model->eliminarAsistenciaccc2($asis_ccc_id);
+                break;
+        }
+    } 
+    
+    public function modificar_ccc_asis3($ccc_id) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
+        $this->load->model('componente2/comp21_model');
+        //$etm_id = $this->input->post("etm_id");
+        $id_proyecto = $this->input->post("id");
+//        $id_ccc = $this->input->post("id_ccc");
+        $nombre_proyecto = $this->input->post("nombre_proyecto");
+        $tipo_proyecto = $this->input->post("tipo_proyecto");
+        $num_comunidades = $this->input->post("num_comunidades");
+        $comunidades = $this->input->post("comunidades");
+        
+        $operacion = $this->input->post("oper");
+        switch ($operacion) {
+            case 'add':
+                $this->comp21_model->agregarAsitenciaccc3($ccc_id,$nombre_proyecto,$tipo_proyecto,$num_comunidades,$comunidades);
+                break;
+            case 'edit':
+                $this->comp21_model->actualizarAsistenciaccc3($id_proyecto,$nombre_proyecto,$tipo_proyecto,$num_comunidades,$comunidades);
+                break;
+            case 'del':
+                $this->comp21_model->eliminarAsistenciaccc3($id_proyecto);
+                break;
+        }
+    } 
+///////////////////////////////////////////////
+    
+    public function cargarGeneralEtm($mun_id) {
+          $data=array();
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
+        $sql="select * from  etm where mun_id=?";
+        $query = $this->db->query($sql,array($mun_id));
+        
+       foreach ($query->result() as $row)
+   {
+      $data['etm_id']= $row->etm_id;
+      $data ['total_mujeres']= $row->total_mujeres;
+      $data ['total_hombres']= $row->total_hombres;
+      $data ['mun_id']= $row->mun_id;
+      $data ['lugar_conformacion']= $row->lugar_conformacion;
+     
+   }
+      
+   echo json_encode($data);
+  }
+  public function guardarGeneralEtm(){
+      if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
+      $mun_id = $this->input->post("mun_id");
+        $total_mujeres = $this->input->post("total_mujeres");
+        $total_hombres = $this->input->post("total_hombres");
+        $lugar_conformacion = $this->input->post("lugar_conformacion");
+        $etm_id=$this->input->post("etm_id");
+       
+                
+     $data = array(
+      'mun_id'=>$mun_id,
+         'total_mujeres'=>$total_mujeres,
+         'total_hombres'=>$total_hombres,
+         'lugar_conformacion'=>$lugar_conformacion,
+     );
+     if($etm_id) {$this->db->where('etm_id', $etm_id);
+                $this->db->update('etm', $data); }
+     else $this->db->insert('etm', $data);
+     
+     $informacion['titulo'] = 'Equipo Tecnico Municipal';
+        $informacion['user_id'] = $this->tank_auth->get_user_id();
+        $informacion['username'] = $this->tank_auth->get_username();
+        $informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username());         
+        $this->load->view('plantilla/header', $informacion);
+        $this->load->view('plantilla/menu', $informacion);
+        $this->load->view('componente2/etm_view');
+        $this->load->view('plantilla/footer', $informacion);
+  }
+  
+   public function cargar_etm_asis($etm_id) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
+      
+        $this->load->model('componente2/comp21_model');
+        $notas = $this->comp21_model->obtenerEtmAsis($etm_id);
+        $numfilas = count($notas);
+         if ($numfilas != 0) {
+            $i = 0;
+            foreach ($notas as $aux) {
+                $rows[$i]['id'] = $aux->id_motivo_fecha;
+                $rows[$i]['cell'] = array($aux->id_motivo_fecha,
+                    $aux->motivo_fecha,
+                    date('d-m-Y', strtotime($aux->fecha_conformacion)),
+                    date('d-m-Y', strtotime($aux->fecha_induccion)),
+                    date('d-m-Y', strtotime($aux->fecha_capacitacion))
+                    
+                );
+                $i++;
+            }
+         
+            array_multisort($rows, SORT_ASC);
+        } else {
+           $rows = array();
+        }
+
+          
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+  
+    public function modificar_etm_asis($etm_id) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
+        $this->load->model('componente2/comp21_model');
+        //$etm_id = $this->input->post("etm_id");
+        $motivo_fecha = $this->input->post("motivo_fecha");
+        $fecha_conformacion = $this->input->post("fecha_conformacion");
+        $fecha_induccion = $this->input->post("fecha_induccion");
+        $fecha_capacitacion = $this->input->post("fecha_capacitacion");
+        $id_motivo_fecha = $this->input->post("id");
+
+        $operacion = $this->input->post("oper");
+        switch ($operacion) {
+            case 'add':
+                $this->comp21_model->agregarAsitencia($etm_id,$motivo_fecha,$fecha_capacitacion,$fecha_conformacion,$fecha_induccion);
+                break;
+            case 'edit':
+                $this->comp21_model->actualizarAsistencia($id_motivo_fecha,$motivo_fecha,$fecha_capacitacion,$fecha_conformacion,$fecha_induccion);
+                break;
+            case 'del':
+                $this->comp21_model->eliminarAsistencia($id_motivo_fecha);
+                break;
+        }
+    }
+//¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡
+
+       public function cargar_etm_asis2($etm_id) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
+      
+        $this->load->model('componente2/comp21_model');
+        $notas = $this->comp21_model->obtenerEtmAsis2($etm_id);
+        $numfilas = count($notas);
+         if ($numfilas != 0) {
+            $i = 0;
+            foreach ($notas as $aux) {
+                $rows[$i]['id'] = $aux->asis_etm_id;
+                $rows[$i]['cell'] = array($aux->asis_etm_id,
+                    $aux->nombre_asis,
+                    $aux->responsabilidad,
+                    $aux->sexo
+                    
+                );
+                $i++;
+            }
+         
+            array_multisort($rows, SORT_ASC);
+        } else {
+           $rows = array();
+        }
+
+          
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
+  
+    public function modificar_etm_asis2($etm_id) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');
+        $this->load->model('componente2/comp21_model');
+        //$etm_id = $this->input->post("etm_id");
+        $asis_etm_id = $this->input->post("id");
+        $nombre_asis = $this->input->post("nombre_asis");
+        $responsabilidad = $this->input->post("responsabilidad");
+        $sexo = $this->input->post("sexo");
+        
+        $operacion = $this->input->post("oper");
+        switch ($operacion) {
+            case 'add':
+                $this->comp21_model->agregarAsitencia2($etm_id,$nombre_asis,$responsabilidad,$sexo);
+                break;
+            case 'edit':
+                $this->comp21_model->actualizarAsistencia2($asis_etm_id,$nombre_asis,$responsabilidad,$sexo);
+                break;
+            case 'del':
+                $this->comp21_model->eliminarAsistencia2($asis_etm_id);
+                break;
+        }
+    }
+    
+    
+    
+    //**************************************************************
     public function etm() {
 
         $informacion['titulo'] = 'Equipo Tecnico Municipal';
@@ -65,26 +483,8 @@ class  componente21 extends CI_Controller {
 
     
 
-    public function guardar_etm() {
-
-        $datos_etm = $_POST;
-		unset($datos_etm['guardar']);
-		
-		$this->load->model('componente2/comp21_model');
-		$this->comp21_model->insertar_etm($datos_etm);
-		
-		$informacion['titulo'] = 'Equipo Tecnico Municipal';
-			$informacion['user_id'] = $this->tank_auth->get_user_id();
-			$informacion['username'] = $this->tank_auth->get_username();
-			$informacion['menu'] = $this->librerias->creaMenu($this->tank_auth->get_username()); 
-			$informacion['aviso'] = '<p style="color:blue">Se ha realizado el registro correctamete del ETM.</p>';         
-			$this->load->view('plantilla/header', $informacion);
-			$this->load->view('plantilla/menu', $informacion);
-			$this->load->view('componente2/etm_view');
-			$this->load->view('plantilla/footer', $informacion);
-		
-	}
-    
+     
+      
     ///***************************************************************************/
 
     public function comi() {

@@ -948,12 +948,12 @@
             <p id="prev_inf_dpresentof">Descripción:<br/><textarea name="rev_inf_dpresentof" cols="48" rows="5"></textarea></p>
 
             <input id="rev_inf_id2" name="rev_inf_id2" value="" type="text" size="100" readonly="readonly" style="visibility: hidden"/>
-            <?php if (strcmp($rol, 'gdrc') == 0) { ?>
+            <?php //if (strcmp($rol, 'gdrc') == 0) { ?>
                 <center>
                     <p><input type="submit" id="guardar2" value="Guardar" />
                     </p>
                 </center>
-            <?php } ?>
+            <?php  ?>
         </form>
     </div>
 

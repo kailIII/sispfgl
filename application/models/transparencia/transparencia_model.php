@@ -21,6 +21,35 @@ public function get_ccc($id_mun) {
         return $query->result();
     }
     
+    
+public function get_etm($id_mun) {
+		$this->db->where('mun_id', $id_mun);
+        $query = $this->db->get('etm');
+        return $query->result();
+ }
+public function actualizar_etm($id_mun) {
+		$this->db->where('etm_id', $id_mun);
+        $query = $this->db->update('etm');
+        return $query->result();
+    
+    }
+public function insertar_etm($datos_etm){
+	$data_etm = array(
+	  'etm_id' => $datos_etm['etm_id'],
+          'total_hombres' => $datos_etm['total_hombres'],
+          'total_mujeres' => $datos_etm['total_mujeres'],
+          'mun_id'=>$datos_etm['mun_id'],
+	  'lugar_convocatoria' => $datos_etm['lugar_convocatoria']
+        );
+        
+        $this->db->insert('etm', $data_obs);
+} 
+public function eliminar_etm($id){
+		$this->db->where('etm_id', $id);
+		$this->db->delete('etm');
+}
+    
+ 
 public function get_coment_cc($id){
 		$this->db->where('cc_id', $id);
         $query = $this->db->get('comentario_publico_cc');

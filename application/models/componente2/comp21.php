@@ -7,7 +7,16 @@
  */
 Class componente3_model extends CI_Model{
 	
-	public function get_dsat_id(){
+// Funciones para el ETM
+    
+        
+    
+    
+    
+    
+    
+    
+    public function get_dsat_id(){
 		$query = $this->db->query("select nextval('dsat_seq') as id;");
 		$row = $query->row();
 		return $row->id;

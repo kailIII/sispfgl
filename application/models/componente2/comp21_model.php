@@ -7,8 +7,175 @@
  */
 Class comp21_model extends CI_Model{
 	
-	
-	
+	private $tabla1 = 'etm_fechas';
+        private $tabla2 = 'ccc_fechas';
+        private $tabla3 = 'etm_fechas';
+    
+      public function obtenerEtmAsis($etm_id) {
+        $this->db->where('etm_id', $etm_id);
+        $this->db->from($this->tabla1);
+        $this->db->order_by('id_motivo_fecha');
+        $consulta = $this->db->get();
+        return $consulta->result();
+       }
+       public function obtenerCccAsis1($ccc_id) {
+        $this->db->where('ccc_id', $ccc_id);
+        $this->db->from($this->tabla2);
+        $this->db->order_by('id_motivo_fecha');
+        $consulta = $this->db->get();
+        return $consulta->result();
+       }
+        public function obtenerCccAsis2($ccc_id) {
+        $this->db->where('ccc_con_id', $ccc_id);
+        $this->db->from('asis_ccc');
+        $this->db->order_by('asis_ccc_id');
+        $consulta = $this->db->get();
+        return $consulta->result();
+       }
+        public function obtenerCccAsis3($ccc_id) {
+        $this->db->where('id_ccc', $ccc_id);
+        $this->db->from('proyecto_ccc');
+        $this->db->order_by('id_proyecto');
+        $consulta = $this->db->get();
+        return $consulta->result();
+       }
+    public function agregarAsitencia($etm_id,$motivo_fecha,$fecha_capacitacion,$fecha_conformacion,$fecha_induccion) {
+        $datos = array(
+            'etm_id' => $etm_id,
+            'fecha_conformacion' => $fecha_conformacion,
+            'fecha_induccion'=> $fecha_induccion,
+            'fecha_capacitacion' => $fecha_capacitacion,
+            'motivo_fecha' => $motivo_fecha
+                    
+        );
+        
+        $this->db->insert('etm_fechas', $datos);
+       
+    }
+    
+    public function agregarAsitencia1($ccc_id,$motivo_fecha,$fecha_capacitacion,$fecha_conformacion,$fecha_induccion) {
+        $datos = array(
+            'ccc_id' => $ccc_id,
+            'fecha_conformacion' => $fecha_conformacion,
+            'fecha_induccion'=> $fecha_induccion,
+            'fecha_capacitacion' => $fecha_capacitacion,
+            'motivo_fecha' => $motivo_fecha
+                    
+        );
+        
+        $this->db->insert('ccc_fechas', $datos);
+       
+    }
+    
+    
+    public function actualizarAsistencia($id_motivo_fecha,$motivo_fecha,$fecha_capacitacion,$fecha_conformacion,$fecha_induccion) {
+        $datos = array(
+            'motivo_fecha' => $motivo_fecha,
+            'fecha_capacitacion' => $fecha_capacitacion,
+            'fecha_conformacion' => $fecha_conformacion,
+//            'etm_id' => $etm_id,
+            'fecha_induccion' => $fecha_induccion
+        );
+        $this->db->where('id_motivo_fecha',$id_motivo_fecha);
+        $this->db->update($this->tabla1, $datos);
+    }
+    public function actualizarAsistencia1($id_motivo_fecha,$motivo_fecha,$fecha_capacitacion,$fecha_conformacion,$fecha_induccion) {
+        $datos = array(
+            'motivo_fecha' => $motivo_fecha,
+            'fecha_capacitacion' => $fecha_capacitacion,
+            'fecha_conformacion' => $fecha_conformacion,
+//            'etm_id' => $etm_id,
+            'fecha_induccion' => $fecha_induccion
+        );
+        $this->db->where('id_motivo_fecha',$id_motivo_fecha);
+        $this->db->update('ccc_fechas', $datos);
+    }
+    
+    public function eliminarAsistencia($id_motivo_fecha) {
+        $this->db->where('id_motivo_fecha',$id_motivo_fecha);
+        $this->db->delete($this->tabla1);
+    } 
+    public function eliminarAsistencia1($id_motivo_fecha) {
+        $this->db->where('id_motivo_fecha',$id_motivo_fecha);
+        $this->db->delete('ccc_fechas');
+    } 
+    /////
+    
+    public function obtenerEtmAsis2($etm_id) {
+        $this->db->where('etm_id', $etm_id);
+        $this->db->from('asis_etm');
+        $this->db->order_by('asis_etm_id');
+        $consulta = $this->db->get();
+        return $consulta->result();
+       }
+    public function agregarAsitenciaccc2($ccc_id,$nombre_asis,$responsabilidad,$sexo) {
+        $datos = array(
+            'ccc_con_id' => $ccc_id,
+            'nombre_asis' => $nombre_asis,
+            'responsabilidad'=> $responsabilidad,
+            'sexo' => $sexo
+                    
+        );
+        
+        $this->db->insert('asis_ccc', $datos);
+       
+    }
+    public function actualizarAsistenciaccc2($asis_ccc_id,$nombre_asis,$responsabilidad,$sexo) {
+        $datos = array(
+            'nombre_asis' => $nombre_asis,
+            'responsabilidad' => $responsabilidad,
+            'sexo' => $sexo,
+            );
+        $this->db->where('asis_ccc_id',$asis_ccc_id);
+        $this->db->update('asis_ccc', $datos);
+    }
+    public function eliminarAsistenciaccc2($asis_ccc_id) {
+        $this->db->where('asis_ccc_id',$asis_ccc_id);
+        $this->db->delete('asis_ccc');
+    } 
+    
+    public function actualizarAsistencia2($asis_etm_id,$nombre_asis,$responsabilidad,$sexo) {
+        $datos = array(
+            'nombre_asis' => $nombre_asis,
+            'responsabilidad' => $responsabilidad,
+            'sexo' => $sexo,
+            );
+        $this->db->where('asis_etm_id',$asis_etm_id);
+        $this->db->update('asis_etm', $datos);
+    }
+    
+    public function eliminarAsistencia2($asis_etm_id) {
+        $this->db->where('asis_etm_id',$asis_etm_id);
+        $this->db->delete('asis_etm');
+    } 
+    
+   public function agregarAsitenciaccc3($id_ccc,$nombre_proyecto,$tipo_proyecto,$num_comunidades,$comunidades){
+        $datos = array(
+            'id_ccc' => $id_ccc,
+            'nombre_proyecto' => $nombre_proyecto,
+            'tipo_proyecto'=> $tipo_proyecto,
+            'num_comunidades' => $num_comunidades,
+            'comunidades' => $comunidades
+                    
+        );
+        
+        $this->db->insert('proyecto_ccc', $datos);
+       
+    }
+    public function actualizarAsistenciaccc3($id_proyecto,$nombre_proyecto,$tipo_proyecto,$num_comunidades,$comunidades) {
+        $datos = array(
+            'nombre_proyecto' => $nombre_proyecto,
+            'tipo_proyecto' => $tipo_proyecto,
+            'num_comunidades' => $num_comunidades,
+            'comunidades' => $comunidades
+            );
+        $this->db->where('id_proyecto',$id_proyecto);
+        $this->db->update('proyecto_ccc', $datos);
+    }
+public function eliminarAsistenciaccc3($id_proyecto) {
+        $this->db->where('id_proyecto',$id_proyecto);
+        $this->db->delete('proyecto_ccc');
+    } 	
 	public function insertar_cc($new_cc,$new_arch1,$new_arch2) {
 		
 		$data_cc = array(
@@ -54,15 +221,10 @@ Class comp21_model extends CI_Model{
 		
 		$data_etm = array(
 		  'mun_id' => $new_etm['mun_id'],
-          'fecha_conformacion' => $new_etm['fecha_conformacion'],
-                    'fecha_induccion'=> $new_etm['fecha_ind_etm'],
-                    'fecha_capacitacion'=> $new_etm['fecha_cap_etm'],
-          'lugar_conformacion' => $new_etm['lugar_convocatoria'],
-                    'fase' => $new_etm['fase_etm'],
-		  'total_hombres' => $new_etm['total_hombres_etm'],
+                    'lugar_conformacion' => $new_etm['lugar_convocatoria'],
+            'total_hombres' => $new_etm['total_hombres_etm'],
 		  'total_mujeres' => $new_etm['total_mujeres_etm'],
-                    'tipo_etm'=> $new_etm['etm'],
-		  
+         		  
         );
         
         $this->db->insert('etm', $data_etm);
@@ -71,7 +233,13 @@ Class comp21_model extends CI_Model{
 		$id= $row->id;
               
         	}
+        // Recuperar los datos del etm        
                 
+                
+                
+                
+                
+// fin de recuperacion de los datos del ETM                
 public function insertar_comi($new_comi) {
 		
 		$data_comi = array(
