@@ -545,6 +545,7 @@ class Comp25_fase1 extends CI_Controller {
     public function cargarNota($rub_id) {
         if (!$this->tank_auth->is_logged_in())
             redirect('/auth');
+        
         $this->load->model('fase1-sub25/nota');
         $notas = $this->nota->obtenerNotas($rub_id);
         $numfilas = count($notas);

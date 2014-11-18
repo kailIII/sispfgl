@@ -266,6 +266,7 @@ class ConsultoraC extends CI_Controller {
             $con_telefono = $this->input->post("con_telefono");
             $con_email = $this->input->post("con_email");
             $proyectoPep = $this->input->post("proyectoPep");
+            $users=$this->input->post("users");
             $cons_id = $this->input->post("cons_id");
 
 

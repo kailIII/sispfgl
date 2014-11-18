@@ -1,30 +1,20 @@
 <script type="text/javascript">        
    $(document).ready(function(){
-	 $( "#fecha_conformacion" ).datepicker({
-           showOn: 'both',
-           buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-           buttonImageOnly: true, 
-           dateFormat: 'yy/mm/dd',
-           minDate: (new Date(2013, 0, 1))
-       });   
-       
-       $( "#fecha_ind_etm" ).datepicker({
-           showOn: 'both',
-           buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-           buttonImageOnly: true, 
-           dateFormat: 'yy/mm/dd',
-           minDate: (new Date(2013, 0, 1))
-       });
-       
-       $( "#fecha_cap_etm" ).datepicker({
-           showOn: 'both',
-           buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-           buttonImageOnly: true, 
-           dateFormat: 'yy/mm/dd',
-           minDate: (new Date(2013, 0, 1))
-       });
+       $("#guardar").button().click(function() {
+            $.ajax({
+                type: "POST",
+                url: '<?php echo base_url('componente2/componente21/guardarGeneralEtm') ?>',
+                data: $("#generalesEtm").serialize(), // serializes the form's elements.
+                success: function(data)
+                {
+                    $('#efectivo').dialog('open');
+                }
+            });
+            return false;
+        });
        
        
+            
        $('.mensaje').dialog({
             autoOpen: false,
             width: 300,
@@ -35,22 +25,7 @@
             }
         });
         
-        $('#si_posee').change(function(){
-			if($('#si_posee').is(':checked'))
-				$('#monto_ap').prop('disabled', false);
-		});
-		
-		 $('#no_posee').change(function(){
-			if($('#no_posee').is(':checked'))
-				$('#monto_ap').prop('disabled', true);
-		});
-		
-		$('#no_aplica').change(function(){
-			if($('#no_aplica').is(':checked'))
-				$('#monto_ap').prop('disabled', true);
-		});
-
-        
+       
          /*suma de totales*/
         $('#total_mujeres_etm').change(function(){   
             var m = $('#total_mujeres_etm').val();
@@ -90,149 +65,231 @@
 			             
         });
         
-       
-         $("#agregar_etm_asis").button().click(function() {
-			
-			 var records=$('#etm_asis').jqGrid('getGridParam','records');
-			 
-			 var nombre_asis = $('#nombre_etm_asis').val();
-			 var resp_asis = $('#resp_asis_etm').val();
-			 var sexo_asis = $('#sexo_etm_asis').val();
-			 		 
-			 if ( nombre_asis!="" && resp_asis!="" && sexo_asis!="") {
-				 				
-				 var newrow = {id:""+records, nombre_asis:""+nombre_asis, resp_asis:""+resp_asis, sexo_asis:""+sexo_asis};
-				 
-				$("#etm_asis").addRowData(""+records, newrow);
-		
-					//sumar totales hombres y mujeres
-					var m = $('#total_mujeres_etm').val();
-						if (m=='') m=0;
-					var h = $('#total_hombres_etm').val();
-						if (h=='') h=0;
-					var total = 0;
-					if(sexo_asis=='F'){
-						total=parseFloat(m)+1;
-						var suma=total+parseFloat(h);
-						$('#total_mujeres_etm').val(""+total);
-						$('#total_etm').val(""+suma);
-					}
-					else{
-						total=parseFloat(h)+1;
-						var suma=total+parseFloat(m);
-						$('#total_hombres_etm').val(""+total);
-						$('#total_etm').val(""+suma);
-					}
-					///////////////
-				
-				$('#nombre_etm_asis').val("");
-				$('#resp_asis_etm').val("");
-				$('#sexo_etm_asis').val("");
-				
-			 }
-			 else $('#mensaje2').dialog('open');
-        });
-        
-        
-               
-		
-		/*CARGAR MUNICIPIOS*/
-        $('#selDepto').change(function(){   
-            $('#selMun').children().remove();
+      
+       	/*CARGAR MUNICIPIOS*/
+        $('#selDepto').change(function(){
+          
+            $('#mun_id').children().remove();
             $.getJSON('<?php echo base_url('componente3/componente3/cargarMunicipios');?>'+'?dep_id='+$('#selDepto').val(), 
+            
             function(data) {
                 var i=0;
+               // document.write($('#mun_id').val());
                 $.each(data, function(key, val) {
                     if(key=='rows'){
-                        $('#selMun').append('<option value="0">--Seleccione Municipio--</option>');
+                        $('#mun_id').append('<option value="0">--Seleccione Municipio--</option>');
                         $.each(val, function(id, registro){
-                            $('#selMun').append('<option value="'+registro['cell'][0]+'">'+registro['cell'][1]+'</option>');
+                            $('#mun_id').append('<option value="'+registro['cell'][0]+'">'+registro['cell'][1]+'</option>');
                         });                    
                     }
                 });
             });              
         });
         
-        /*botones*/
-        
-        
-       
-             
-       var tabla=$("#etm_asis");
+        $('#mun_id').change(function() {
+        $("#lugar_conformacion").val('');
+        $("#total_mujeres").val('');
+        $("#total_hombres").val('');
+        var id_mun=$('#mun_id').val();
+//        $('input[type="submit"]').attr('disabled','disabled')
+        if(id_mun !=0){
+        $.getJSON('<?php echo base_url('componente2/componente21/cargarGeneralEtm') . "/" ?>' + id_mun,
+        function(data) {
+              $("#lugar_conformacion").val(data.lugar_conformacion);
+              $("#total_mujeres").val(data.total_mujeres);
+              $("#total_hombres").val(data.total_hombres);
+              $("#etm_id").val(data.etm_id);
+              $("#etm_fechas").setGridParam({
+                  url:'<?php echo base_url('componente2/componente21/cargar_etm_asis')."/" ?>'+$('#etm_id').val(),
+                  editurl:'<?php echo base_url('componente2/componente21/modificar_etm_asis')."/" ?>'+$('#etm_id').val(),
+                  datatype:'json'
+                  }).trigger('reloadGrid');
+               $("#etm_asis").setGridParam({
+                  url:'<?php echo base_url('componente2/componente21/cargar_etm_asis2')."/" ?>'+$('#etm_id').val(),
+                  editurl:'<?php echo base_url('componente2/componente21/modificar_etm_asis2')."/" ?>'+$('#etm_id').val(),
+                  datatype:'json'
+                  }).trigger('reloadGrid');
+             })               
+          }
+          
+ });
+                    
+        var tabla=$("#etm_fechas");
         tabla.jqGrid({
-            //url:'<?php echo base_url('componente2/componente24a/cargar_capacitaciones') ?>',
-            //editurl: '<?php echo base_url('componente3/componente3/guardar_divu') ?>',
-            datatype:'clientSide',
+            url:'<?php echo base_url('componente2/componente21/cargar_etm_asis')."/" ?>'+$('#etm_id').val(),
+            editurl:'<?php echo base_url('componente2/componente21/modificar_etm_asis')."/" ?>'+$('#etm_id').val(),
+//            datatype:'clientSide',
+            altRows:true,
+            height: "100%",
+            hidegrid: false,
+            colNames:['id','Causa','F. Confor.','F. Inducc.','F. Capaci.'],
+            colModel:[
+                {name:'id_motivo_fecha',index:'id_motivo_fecha', width:30,editable:false,editoptions:{size:15} },
+                {name:'motivo_fecha',index:'motivo_fecha',width:100,editable:true,
+                    edittype:"select",editoptions:{value:"Nombramiento:Nombramiento;Cambio de Gobierno:Cambio de Gobierno"} 
+                },
+                {name: 'fecha_conformacion', index: 'fecha_conformacion', width: 80, editable: true,
+                    editoptions: {
+                        size: 10, maxlengh: 10,
+                        dataInit: function(element) {
+                            $(element).datepicker({
+                                showOn: 'both',
+                                buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+                                buttonImageOnly: true,
+                                dateFormat: 'dd-mm-yy'
+                            })
+                        }
+                    },
+                    formoptions: {label: "Fecha Conformacion"},
+                    editrules: {required: true}
+                },
+                 {name: 'fecha_induccion', index: 'fecha_induccion', width: 80, editable: true,
+                    editoptions: {
+                        size: 10, maxlengh: 10,
+                        dataInit: function(element) {
+                            $(element).datepicker({
+                                showOn: 'both',
+                                buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+                                buttonImageOnly: true,
+                                dateFormat: 'dd-mm-yy'
+                            })
+                        }
+                    },
+                    formoptions: {label: "Fecha de Inducción:"},
+                    editrules: {required: true}
+                },
+                 {name: 'fecha_capacitacion', index: 'fecha_capacitacion', width: 80, editable: true,
+                    editoptions: {
+                        size: 10, maxlengh: 10,
+                        dataInit: function(element) {
+                            $(element).datepicker({
+                                showOn: 'both',
+                                buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
+                                buttonImageOnly: true,
+                                dateFormat: 'dd-mm-yy'
+                            })
+                        }
+                    },
+                    formoptions: {label: "Fecha de Capacitación:"},
+                    editrules: {required: true}
+                }
+                
+                
+            ],
+            
+            multiselect: false,
+            //caption: "Fuentes de Información Primarias",
+            rowNum: 10,
+            rowList: [10, 20, 30],
+            loadonce: true,
+            pager: jQuery('#pageretm_fechas'),
+            viewrecords: true
+        }).jqGrid('navGrid', '#pageretm_fechas',
+        {edit: true, add: true, del: true, search: false, refresh: false,
+            beforeRefresh: function() {
+                tabla.jqGrid('setGridParam', {datatype: 'json', loadonce: true}).trigger('reloadGrid');
+            }
+        }, //OPCIONES
+        {closeAfterEdit: true, editCaption: "Editando las fechas de ETM", width: 700,
+            align: 'center', reloadAfterSubmit: true,
+            processData: "Cargando...", afterSubmit: despuesAgregarEditar1,
+            bottominfo: "Campos marcados con (*) son obligatorios",
+            onclickSubmit: function(rp_ge, postdata) {
+                $('#mensaje').dialog('open');
+            }
+        }, //EDITAR
+        {closeAfterAdd: true, addCaption: "Agregando Nuevas fechas del ETM", width: 700,
+            align: 'center', reloadAfterSubmit: true,
+            processData: "Cargando...", afterSubmit: despuesAgregarEditar1,
+            bottominfo: "Campos marcados con (*) son obligatorios",
+            onclickSubmit: function(rp_ge, postdata) {
+                $('#mensaje').dialog('open');
+            }
+        }, //AGREGAR
+        {msg: "¿Desea Eliminar estas fechas?", caption: "Eliminando....",
+            align: 'center', reloadAfterSubmit: true, processData: "Cargando...", width: 300,
+            onclickSubmit: function(rp_ge, postdata) {
+                $('#mensaje').dialog('open');
+            }
+        }//ELIMINAR
+    ).hideCol('id').hideCol('id');
+        /* Funcion para regargar los JQGRID luego de agregar y editar*/
+        function despuesAgregarEditar1() {
+            tabla.jqGrid('setGridParam', {datatype: 'json', loadonce: true}).trigger('reloadGrid');
+            return[true, '']; //no error
+        }
+        
+        
+        
+        
+        
+             /* Aqui se almancenan las personas que conforman el ETM*/
+       var tabla1=$("#etm_asis");
+        tabla1.jqGrid({
+            url:'<?php echo base_url('componente2/componente21/cargar_etm_asis2') ?>'+$('#etm_id').val(),
+            editurl: '<?php echo base_url('componente2/componente21/modificar_etm_asis2') ?>'+$('#etm_id').val(),
+            //datatype:'clientSide',
             altRows:true,
             height: "100%",
             hidegrid: false,
             colNames:['id','Nombre','Responsabilidad','Sexo'],
             colModel:[
-                {name:'id',index:'id', width:40,editable:false,editoptions:{size:15} },
+                {name:'asis_etm_id',index:'asis_etm_id', width:40,editable:false,editoptions:{size:15} },
                 {name:'nombre_asis',index:'nombre_asis',width:300,editable:true,
                     editoptions:{size:25,maxlength:100}, 
                     formoptions:{label: "Nombre",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
-                {name:'resp_asis',index:'resp_asis',width:300,editable:true,
-                    editoptions:{size:25,maxlength:20}, 
-                    formoptions:{label: "Responsabilidad",elmprefix:"(*)"},
-                    editrules:{required:true} 
+                {name:'responsabilidad',index:'responsabilidad',width:300,editable:true,
+                    edittype:"select",editoptions:{value:"Logistica:Logistica; Sistematizacion:Sistematizacion;Coordinador:Coordinador;Documentador:Documentador"} 
                 },
-                {name:'sexo_asis',index:'sexo_asis',editable:true,width:150,
-                    editoptions:{ size:25,maxlength:20 }, 
-                    formoptions:{ label: "Sexo",elmprefix:"(*)"},
-                    editrules:{required:true}
-                }
+                {name:'sexo',index:'sexo', width:90, editable: true,edittype:"select",editoptions:{value:"Masculino:Masculino; Femenino:Femenino"}}
+                
             ],
+            
             multiselect: false,
-            caption: "Integrantes ETM",
-            rowNum:10,
-            rowList:[10,20,30],
-            loadonce:true,
-            pager: jQuery('#pagerAsisETM'),
+            //caption: "Fuentes de Información Primarias",
+            rowNum: 10,
+            rowList: [10, 20, 30],
+            loadonce: true,
+            pager: jQuery('#pageretm_asis'),
             viewrecords: true
-        }).jqGrid('navGrid','#pagerAsisETM',
-        {edit:false,add:false,del:false,search:false,refresh:false,
+        }).jqGrid('navGrid', '#pageretm_asis',
+        {edit: true, add: true, del: true, search: false, refresh: false,
             beforeRefresh: function() {
-                tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');}
-        }
-    ).hideCol('id');
-        
-    
-     $('#myform').submit(function() {
-		 
-			if($('#selMun').val()!='' && $('#lugar_convocatoria').val()!='' && $('#fecha_conformacion').val()!='')
-			{
-				
-			
-			var numberOfRecords = $("#etm_asis").getGridParam("records");
-			for(i=0;i<numberOfRecords;i++)
-			{
-				var rowId = $("#etm_asis").getRowData(i);
-						  //put all rows for your grid
-				$('<input type="hidden" />').attr('name', 'nombre_etm_asis'+i).attr('value',rowId['nombre_asis']).appendTo('#divpost');
-				$('<input type="hidden" />').attr('name', 'sexo_etm_asis'+i).attr('value',rowId['sexo_asis']).appendTo('#divpost');
-				$('<input type="hidden" />').attr('name', 'resp_asis_etm'+i).attr('value',rowId['resp_asis']).appendTo('#divpost');	
-			}
-			$('<input type="hidden" />').attr('name', 'cant_etm_asis').attr('value',numberOfRecords).appendTo('#divpost');
-
-			
-			return true;
-		}
-		else{ 
-			
-			$('#mensaje2').dialog('open');
-			return false;
-			}
-			
-		});
-		
-		
+                tabla1.jqGrid('setGridParam', {datatype: 'json', loadonce: true}).trigger('reloadGrid');
+            }
+        }, //OPCIONES
+        {closeAfterEdit: true, editCaption: "Editando las personas del ETM", width: 700,
+            align: 'center', reloadAfterSubmit: true,
+            processData: "Cargando...", afterSubmit: despuesAgregarEditar,
+            bottominfo: "Campos marcados con (*) son obligatorios",
+            onclickSubmit: function(rp_ge, postdata) {
+                $('#mensaje').dialog('open');
+            }
+        }, //EDITAR
+        {closeAfterAdd: true, addCaption: "Agregar personas al ETM", width: 700,
+            align: 'center', reloadAfterSubmit: true,
+            processData: "Cargando...", afterSubmit: despuesAgregarEditar,
+            bottominfo: "Campos marcados con (*) son obligatorios",
+            onclickSubmit: function(rp_ge, postdata) {
+                $('#mensaje').dialog('open');
+            }
+        }, //AGREGAR
+        {msg: "¿Desea Eliminar a esta persona?", caption: "Eliminando....",
+            align: 'center', reloadAfterSubmit: true, processData: "Cargando...", width: 300,
+            onclickSubmit: function(rp_ge, postdata) {
+                $('#mensaje').dialog('open');
+            }
+        }//ELIMINAR
+    ).hideCol('id').hideCol('id');
+        /* Funcion para regargar los JQGRID luego de agregar y editar*/
         function despuesAgregarEditar() {
-            tabla.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');
-            return[true,'']; //no error
+            tabla1.jqGrid('setGridParam', {datatype: 'json', loadonce: true}).trigger('reloadGrid');
+            return[true, '']; //no error
         }
+            
+          
         
          function isNumber(n) {
 			return !isNaN(parseFloat(n)) && isFinite(n);
@@ -249,121 +306,45 @@
 	echo $aviso;?>
 <h1>Equipo T&eacute;cnico Municipal</h1>
 <br/>
-<?php $attributes = array('id' => 'myform');
+<?php $attributes = array('id' => 'generalesEtm');
 
-echo form_open('componente2/componente21/guardar_etm',$attributes);?>
+echo form_open('componente2/componente21/guardarGeneralEtm',$attributes);?>
 
 	
 	<label>Departamento: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
 	<?php echo form_dropdown_from_db('dep_id','selDepto' ,"SELECT dep_id,dep_nombre FROM departamento");?>
 		
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Nombre del Municipio: </label>&nbsp;
-	<select id='selMun' name='mun_id'>
+	<select id='mun_id' name='mun_id'>
                 <option value='0'>--Seleccione--</option>
     </select>
     <br/><br/>
     
-    <label>Fecha de Conformaci&oacute;n: </label>
-	<input readonly="readonly"  type="text" name="fecha_conformacion" id="fecha_conformacion"  size="8">
-	
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Lugar de Conformaci&oacute;n: </label>
-	<input type="text" name="lugar_convocatoria" id="lugar_convocatoria"  size="20">
-	
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<label>Fase: </label>
-
-		<select name="fase_ccc" size="1" id="fase_ccc">
-			<option value="Preinscripcion"<?php echo set_select('fase_ccc', 'Preinscripcion'); ?>>Formulaci&oacute;n</option>
-			<option value="Ejecucion"<?php echo set_select('fase_ccc', 'Ejecucion'); ?>>Ejecuci&oacute;n</option>
-			<option value="Cierre"<?php echo set_select('fase_ccc', 'Cierre'); ?>>Cierre</option>
-			<option value="Mantenimiento"<?php echo set_select('fase_ccc', 'Mantenimiento'); ?>>Mantenimiento</option>
-
-		<select name="fase_etm" size="1" id="fase_ccc">
-			<option value="Preinscripcion"<?php echo set_select('fase_etm', 'Preinscripcion'); ?>>Formulaci&oacute;n</option>
-			<option value="Ejecucion"<?php echo set_select('fase_etm', 'Ejecucion'); ?>>Ejecuci&oacute;n</option>
-			<option value="Cierre"<?php echo set_select('fase_etm', 'Cierre'); ?>>Cierre</option>
-			<option value="Mantenimiento"<?php echo set_select('fase_etm', 'Mantenimiento'); ?>>Mantenimiento</option>
-
-	</select>
-	<br/><br/><br/>
-	<hr color="green" size=1 width="700"><br/>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><b>Equipo Tecnico Municipal:</b></br> </label>
-	<br/>
-	<input type="radio" name="etm" id="etm" value="Nombramiento" <?php echo set_radio('etm', 'Nombramiento'); ?> />Nombramiento
-	
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Fecha de Inducci&oacute;n: </label>
-	<input readonly="readonly"  type="text" name="fecha_ind_etm" id="fecha_ind_etm"  size="8">
-	
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>Fecha de Capacitaci&oacute;n: </label>
-	<input readonly="readonly"  type="text" name="fecha_cap_etm" id="fecha_cap_etm"  size="8">
-	
-	<br/><input type="radio" name="etm" id="etm" value="Cambio de Gobierno" <?php echo set_radio('etm', 'Por Cambio de Gobierno'); ?> />Por Cambio de Gobierno
+    <form id="generalesEtm" method="post">
+	<p>Lugar de Convocatoria:<br/><input type="text "id="lugar_conformacion" name="lugar_conformacion" size="120" maxlength="250" ></p>
+	<p>Total de Mujeres Asistentes:<input type="text" name="total_mujeres" id="total_mujeres" size="5" maxlength="5" ></p>
+        <p>Total de Hombres Asistentes: <input type="text" name="total_hombres" id="total_hombres" size="5" maxlength="5" >
+        <input type="hidden" id="modifica" name="modifica" value="Modificar" align="left" disabled >
+        <input type="submit" id="guarda" name="guarda" value="Guardar" align="left" >
+        <input type="hidden" name="etm_id" id="etm_id" value="0" size="5" maxlength="5" >
+        	<br/><br/><br/>
+  
 	<br/><br/>
-	
-	<label>Nombre: </label>
-		<input type="text" name="nombre_etm_asis" id="nombre_etm_asis"  size="17" align="left">
-		
-		<select name="sexo_etm_asis" size="1" id="sexo_etm_asis">
-			<option value="F"<?php echo set_select('sexo_etm_asis', 'F'); ?>>Femenino</option>
-			<option value="M"<?php echo set_select('sexo_etm_asis', 'M'); ?>>Masculino</option>
-		</select>
-		
-		<!--<label>Procedencia: </label>
-		<select name="sector_asis" size="1" id="sector_asis">
-			<option value="Gobierno Municipal">Gobierno Municipal</option>
-		</select>-->
-		
-		<label>Responsabilidad: </label>
-		<select name="resp_asis_etm" size="1" id="resp_asis_etm">
-			<option value="Logistica"<?php echo set_select('resp_asis_etm', 'Logistica'); ?>>Logistica</option>
-			<option value="Sistematizacion"<?php echo set_select('resp_asis_etm', 'Sistematizacion'); ?>>Sistematizacion</option>
-			<option value="Coordinador"<?php echo set_select('resp_asis_etm', 'Coordinador'); ?>>Coordinador</option>
-			<option value="Documentador"<?php echo set_select('resp_asis_etm', 'Documentador'); ?>>Documentador</option>
-		</select>
-				
-		<input type="button" value="Agregar" name="agregar_etm_asis" id="agregar_etm_asis" align="left"><br/>
-		
-		<br/>
-		
+<div id="etmfechas">	
+                <table id="etm_fechas"></table>
+		<div id="pageretm_fechas"></div>
+                </div>
+        <br/><br/>
+          </form>
 		<table id="etm_asis"></table>
-		<div id="pagerAsisETM"></div>
+		<div id="pageretm_asis"></div>
 	
 		<br/>
 		<hr color="green" size=1 width="700"><br/>
 		
-		<div style="float:left;height:200px;width:500px;">
-			&nbsp;&nbsp;&nbsp;&nbsp;<label>Conformaci&oacute;n del ETM: </label>
-			<br/><br/>
-			
-			<label>Total de Mujeres: &nbsp;</label>
-
-			<input type="text" readonly="readonly" name="total_mujeres_etm" id="total_mujeres_etm"  size="1" >
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<label>Total de Hombres: </label>
-			<input type="text" readonly="readonly" name="total_hombres_etm" id="total_hombres_etm"  size="1" >
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <label>Total: </label>
-			<input readonly="readonly" type="text" name="total_etm" id="total_etm"  size="1">
-
-			<input type="text" readonly="readonly" name="total_mujeres_etm" id="total_mujeres_etm" value="0" size="3" >
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<label>Total de Hombres: </label>
-			<input type="text" readonly="readonly" name="total_hombres_etm" id="total_hombres_etm" value="0"  size="3" >
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <label>Total: </label>
-			<input readonly="readonly" type="text" name="total_etm" id="total_etm" value="0" size="3">
-
-		</div></br></br></br></br></br>
+		</br></br></br></br></br>
 		
-	<!--<div style="float:left;height:200px;width:330px;">
-		
-	</div>
-	
-	<div style="float:left;height:200px;">
-		
-	</div>-->
-       
-	<input type="submit" id="guardar" name="guardar" value="Guardar" align="left">
+	       
 	<div id="divpost" ></div>
 	
 <?php echo form_close();?>

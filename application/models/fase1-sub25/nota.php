@@ -26,6 +26,7 @@ class Nota extends CI_Model {
         );
         $this->db->insert($this->tabla, $datos);
     }
+    
     public function actualizarNota($not_id,$not_correlativo, $not_fnota, $not_observacion) {
         $datos = array(
             'not_correlativo' => $not_correlativo,

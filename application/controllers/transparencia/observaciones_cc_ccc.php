@@ -217,10 +217,8 @@ class  observaciones_cc_ccc extends CI_Controller {
 		$this->load->model('transparencia/transparencia_model');
         $ccc = $this->transparencia_model->get_ccc($id_mun);
         $numfilas = count($ccc);
-
         $i = 0;
         foreach ($ccc as $aux) {
-            
             $rows[$i]['id'] = $aux->ccc_id;
             $rows[$i]['cell'] = array($aux->ccc_id,
                 $this->transparencia_model->get_mun_nombre($aux->mun_id),
@@ -229,12 +227,44 @@ class  observaciones_cc_ccc extends CI_Controller {
             );
             $i++;
         }
-
         if ($numfilas != 0) {
             array_multisort($rows, SORT_ASC);
         } else {
             $rows[0]['id'] = 0;
             $rows[0]['cell'] = array('0', 'No hay Registros', ' ', ' ');
+        }
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 10) + 1;
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+	}
+        
+                
+        public function cargar_etm($id_mun){
+		$this->load->model('transparencia/transparencia_model');
+        $etm = $this->transparencia_model->get_etm($id_mun);
+        $numfilas = count($etm);
+        $i = 0;
+        foreach ($etm as $aux) {   
+            $rows[$i]['id'] = $aux->etm_id;
+            $rows[$i]['cell'] = array($aux->etm_id,
+                $aux->lugar_conformacion,
+                $aux->total_hombres,
+                $aux->total_mujeres
+            );
+            $i++;
+	}
+
+        if ($numfilas != 0) {
+            array_multisort($rows, SORT_ASC);
+        } else {
+            $rows[0]['id'] = 0;
+            $rows[0]['cell'] = array('0', ' ', 'No hay ETM.', ' ');
         }
 
         $datos = json_encode($rows);
@@ -248,6 +278,10 @@ class  observaciones_cc_ccc extends CI_Controller {
 
         echo $jsonresponse;
 	}
+        
+        
+       
+        
 	
 	public function cargar_comentarios_cc($id){
 		$this->load->model('transparencia/transparencia_model');

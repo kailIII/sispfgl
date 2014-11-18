@@ -74,6 +74,8 @@
         $("#cc_lugar").val('');
         $("#total_mujeres").val('');
         $("#total_hombres").val('');
+        $("#listado_asistencia").val('');
+        $("#acta_final").val('');
         $("#cc_fecha").val('');
         $('input:checkbox').removeAttr('checked');
         $("#cc_id").val('');
@@ -87,24 +89,18 @@
               $("#total_hombres").val(data.total_hombres);
               $("#cc_id").val(data.cc_id);
               $("#cc_fecha").val(data.cc_fecha);
-                                    
+              $("#acta_final").val(data.acta_final);
+              $("#listado_asistencia").val(data.listado_asistencia);
+             
               if (data.anexo8 )
                 $('input:checkbox[name=anexo8]').attr("checked", "checked");
               else
                 $('input:checkbox[name=anexo8]').attr("checked", false);
-            if (data.listado_asistencia )
-                $('input:checkbox[name=listado_asistencia]').attr("checked", "checked");
-              else
-                $('input:checkbox[name=listado_asistencia]').attr("checked", false);
-            if (data.acta_final)
-                $('input:checkbox[name=acta_final]').attr("checked", "checked");
-              else
-                $('input:checkbox[name=acta_final]').attr("checked", false);
                                 
               
-              $("#proyectos").setGridParam({
-                  url:'<?php echo base_url('componente2/componente21/cargar_cc_asis3')."/" ?>'+$('#cc_id').val(),
-                  editurl: '<?php echo base_url('componente2/componente21/modificar_cc_asis3')."/" ?>'+$('#cc_id').val(),
+              $("#Proyectos").setGridParam({
+                  url:'<?php echo base_url('componente2/componente21/cargar_etm_asis')."/" ?>'+$('#cc_id').val(),
+                  editurl:'<?php echo base_url('componente2/componente21/modificar_etm_asis')."/" ?>'+$('#cc_id').val(),
                   datatype:'json'
                   }).trigger('reloadGrid');
                
@@ -156,80 +152,79 @@
        
        /*Grid Capacitaciones*/
        
-       var tabla3=$("#proyectos");
-        tabla3.jqGrid({
-            url:'<?php echo base_url('componente2/componente21/cargar_cc_asis3')."/" ?>'+$('#cc_id').val(),
-            editurl: '<?php echo base_url('componente2/componente21/modificar_cc_asis3')."/" ?>'+$('#cc_id').val(),
-            //datatype:'clientSide',
+       var tabla1=$("#Proyectos");
+        tabla1.jqGrid({
+            //url:'<?php echo base_url('componente2/componente24a/cargar_capacitaciones') ?>',
+            //editurl: '<?php echo base_url('componente3/componente3/guardar_divu') ?>',
+            datatype:'clientSide',
             altRows:true,
             height: "100%",
             hidegrid: false,
-            colNames:['id','id cc','Nombre proyecto','Tipo proyecto','Comunidades','Ubicacion'],
+            colNames:['id','Nombre del Proyecto','Comunidades Beneficiadas','Ubicación','Tipo Proyecto'],
             colModel:[
-                {name:'id_proyecto',index:'id_proyecto', width:20,editable:false,editoptions:{size:15} },
-                {name:'id_ccc',index:'id_ccc', width:20,editable:false,editoptions:{size:15} },
-                {name:'nombre_proy',index:'nombre_proy',width:300,editable:true,
-                    editoptions:{size:125,maxlength:500}, 
-                    formoptions:{label: "Nombre de Proyecto",elmprefix:"(*)"},
+                {name:'id',index:'id', width:40,editable:false,editoptions:{size:15} },
+                {name:'nombre_proy',index:'nombre_proy',width:200,editable:true,
+                    editoptions:{size:50,maxlength:250}, 
+                    formoptions:{label: "Nombre del Proyecto",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
-                {name:'tipo_proy',index:'tipo_proy',width:150,editable:true,
-                    edittype:"select",editoptions:{value:"Sistemas de agua potable y saneamiento:Sistemas de agua potable y saneamiento; Gestión integral de desechos solidos:Gestión integral de desechos solidos;Caminos vecinales y calles urbanas:Caminos vecinales y calles urbanas;Electrificación:Electrificación;Prevención de la violencia:Prevención de la violencia "} 
+                {name:'com_beneficiadas',index:'com_beneficiadas',editable:true,width:230,
+                    editoptions:{ size:50,maxlength:250 }, 
+                    formoptions:{ label: "Comunidades Beneficiadas",elmprefix:"(*)"},
+                    editrules:{required:true}
                 },
-                {name:'comunidades',index:'comunidades',width:150,editable:true,
-                    editoptions:{size:125,maxlength:750}, 
-                    formoptions:{label: "Nombre Comunidades",elmprefix:"(*)"},
+                {name:'ubicacion',index:'ubicacion',width:140,editable:true,
+                    editoptions:{size:50,maxlength:250}, 
+                    formoptions:{ label: "Poblacion Beneficiada",elmprefix:"(*)"},
                     editrules:{required:true} 
                 },
-                {name:'ubicacion',index:'ubicacion',width:150,editable:true,
-                    editoptions:{size:125,maxlength:750}, 
-                    formoptions:{label: "Ubicación Proyecto",elmprefix:"(*)"},
-                    editrules:{required:true} 
-                },
-                
+                {name:'tipo_proy',index:'tipo_proy',editable:true,width:90,
+                    editoptions:{ size:25,maxlength:20 }, 
+                    formoptions:{ label: "Tipo Proyecto",elmprefix:"(*)"},
+                    editrules:{required:true}
+                }
             ],
-            
             multiselect: false,
-            //caption: "Fuentes de Información Primarias",
-            rowNum: 10,
-            rowList: [10, 20, 30],
-            loadonce: true,
-            pager: jQuery('#pagerproyectos'),
+            caption: "Proyectos",
+            rowNum:10,
+            rowList:[10,20,30],
+            loadonce:true,
+            pager: jQuery('#pagerProyectos'),
             viewrecords: true
-        }).jqGrid('navGrid', '#pagerproyectos',
-        {edit: true, add: true, del: true, search: false, refresh: false,
-            beforeRefresh: function() {
-                tabla3.jqGrid('setGridParam', {datatype: 'json', loadonce: true}).trigger('reloadGrid');
+        }).jqGrid('navGrid','#pagerProyectos',
+        {edit:true,add:true,del:true,search:false,refresh:false, beforeRefresh: function() {
+                tabla1.jqGrid('setGridParam', {datatype: 'json', loadonce: true}).trigger('reloadGrid');
             }
         }, //OPCIONES
-        {closeAfterEdit: true, editCaption: "Editando los proyectos CC", width: 700,
+        {closeAfterEdit: true, editCaption: "Editando las personas del ETM", width: 700,
             align: 'center', reloadAfterSubmit: true,
-            processData: "Cargando...", afterSubmit: despuesAgregarEditar3,
+            processData: "Cargando...", afterSubmit: despuesAgregarEditar,
             bottominfo: "Campos marcados con (*) son obligatorios",
             onclickSubmit: function(rp_ge, postdata) {
                 $('#mensaje').dialog('open');
             }
         }, //EDITAR
-        {closeAfterAdd: true, addCaption: "Agregar proyectos CC", width: 700,
+        {closeAfterAdd: true, addCaption: "Agregar personas al ETM", width: 700,
             align: 'center', reloadAfterSubmit: true,
-            processData: "Cargando...", afterSubmit: despuesAgregarEditar3,
+            processData: "Cargando...", afterSubmit: despuesAgregarEditar,
             bottominfo: "Campos marcados con (*) son obligatorios",
             onclickSubmit: function(rp_ge, postdata) {
                 $('#mensaje').dialog('open');
             }
         }, //AGREGAR
-        {msg: "¿Desea Eliminar este proyecto?", caption: "Eliminando....",
+        {msg: "¿Desea Eliminar a esta persona?", caption: "Eliminando....",
             align: 'center', reloadAfterSubmit: true, processData: "Cargando...", width: 300,
             onclickSubmit: function(rp_ge, postdata) {
                 $('#mensaje').dialog('open');
             }
         }//ELIMINAR
     ).hideCol('id').hideCol('id');
-  	
-        function despuesAgregarEditar3() {
-            tabla3.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');
+    
+        function despuesAgregarEditar() {
+            tabla1.jqGrid('setGridParam',{datatype:'json',loadonce:true}).trigger('reloadGrid');
             return[true,'']; //no error
         }
+        
          function isNumber(n) {
 			return !isNaN(parseFloat(n)) && isFinite(n);
 		}
@@ -269,25 +264,58 @@ echo form_open_multipart('componente2/componente21/guardar_cc',$attributes);?>
 	<label>Fecha de Realización: </label>
 	<input readonly="readonly"  type="text" name="cc_fecha" id="cc_fecha"  size="8">
 	<input type="checkbox" name="anexo8" id="anexo8"/>Posee el anexo 8
-        <input type="checkbox" name="listado_asistencia" id="listado_asistencia"/>Posee el listado de asistencia
-        <input type="checkbox" name="acta_fina" id="acta_final"/> Esta el Acta de CC<br/>
-        <label>Total de Mujeres: &nbsp;</label>
-		<input type="text" name="total_mujeres" id="total_mujeres"  size="5" >
+	
+	<br/><br/>
+	
+	<table id="Proyectos"></table>
+	<div id="pagerProyectos"></div>
+	<br/><br/>
+	
+	<div style="float:left;height:200px;width:330px;">
+		&nbsp;&nbsp;&nbsp;&nbsp;<label>Registro de Asistencia a la CC: </label>
+		<br/><br/>
+		
+		<label>Total de Mujeres: &nbsp;</label>
+		<input type="text" name="total_mujeres" id="total_mujeres"  size="3" ><br/><br/>
 		
 		<label>Total de Hombres: </label>
-		<input type="text" name="total_hombres" id="total_hombres"  size="5" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <input type="submit" id="guarda" name="guarda" value="Guardar" align="right">  <br/><br/>
-                  <input type="hidden" name="cc_id" id="cc_id" value="0" size="5" maxlength="5" >
+		<input type="text" name="total_hombres" id="total_hombres"  size="3" ><br/><br/>
+		
+		<label>Total: </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input readonly="readonly" type="text" name="total" id="total"  size="1"><br/><br/>
+	</div>
 	
-	<br/><br/>
-	
-	<table id="proyectos"></table>
-	<div id="pagerproyectos"></div>
-	<br/><br/>
-	
-	
-	
-	
+	<div style="float:left;height:200px;">
+		&nbsp;&nbsp;&nbsp;&nbsp;<label>Archivos: </label>
+		
+        <table>
+        <tr>
+        <td><div id="btn_per_subir"></div></td>
+        <td><input class="letraazul" type="text" id="per_pro_per" readonly="readonly" value="Subir Acta de CC" size="30" readonly="readonly" style="border: none"/></td>
+        <td class="tdEspacio"></td>
+        <td><div id="btn_tdr_subir"></div></td>
+        <td><input class="letraazul" type="text" id="per_pro_tdr" readonly="readonly" value="Subir Listado Asistencia" size="30" readonly="readonly" style="border: none"/></td>
+        </tr>
+        <tr>
+                     
+        <td><a id="btn_per_descargar" name="btn_per_descargar" target="_blank" value="<?php echo set_value ('per_pro_per_ruta_archivo')?>" > <img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/></a></td>
+        <td><input class="letraazul" type="text" id="per_pro_perD" readonly="readonly" value="No hay acta CC para descargar" size="30" style="border: none"/></td>
+        <td class="tdEspacio"></td>
+        <td><a id="btn_tdr_descargar" value="<?php echo set_value ('per_pro_tdr_ruta_archivo')?>"><img src='<?php echo base_url('resource/imagenes/download.png'); ?>'/></a></td>
+        <td><input class="letraazul" type="text" id="per_pro_tdrD" readonly="readonly" value="No hay Listado Asistencia para descargar" size="30" style="border: none"/></td>
+        </tr>
+                
+                </table>        
+                
+		<label>Acta de CC: </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="file" id="acta_final" name="acta_final" size="20" /><br/><br/>
+		
+		<label>Listado de Asistencia: </label>
+		<input type="file" id="listado_asisistencia" name="listado_asisistencia" size="20" /><br/><br/>
+		
+		<input type="submit" id="guarda" name="guarda" value="Guardar" align="right">
+                <input type="hidden" name="cc_id" id="cc_id" value="0" size="5" maxlength="5" >
+	</div>
 	
 	<div id="divpost" ></div>
 <?php echo form_close();?>

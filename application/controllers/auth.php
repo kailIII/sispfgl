@@ -81,7 +81,35 @@ class Auth extends CI_Controller {
 
         echo $jsonresponse;
     }
+public function cargarUsuariosJsonConsultor() {
+        $this->load->model('tank_auth/users');
+        $usuarios = $this->users->obtenerUsuariosconsultores();
+        $numfilas = count($usuarios);
 
+        $i = 0;
+        $rows = array();
+        foreach ($usuarios as $aux) {
+            $rows[$i]['id'] = $aux->id;
+            $rows[$i]['cell'] = array($aux->id,
+                $aux->username,
+                $aux->email,
+                $aux->rol_nombre
+            );
+            $i++;
+        }
+        array_multisort($rows, SORT_ASC);
+
+        $datos = json_encode($rows);
+        $pages = floor($numfilas / 20) + 1;
+
+        $jsonresponse = '{
+               "page":"1",
+               "total":"' . $pages . '",
+               "records":"' . $numfilas . '", 
+               "rows":' . $datos . '}';
+
+        echo $jsonresponse;
+    }
     public function eliminarUsuario($id) {
         $this->load->model('tank_auth/users');
         $this->users->eliminarUsuario($id);

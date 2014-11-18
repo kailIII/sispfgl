@@ -32,6 +32,11 @@ $proyectoPep = array(
     'id' => 'proyectoPep',
     'style'=> 'visibility:hidden'
 );
+$users = array(
+    'name' => 'users',
+    'id' => 'users',
+    'style'=> 'visibility:hidden'
+);
 $cons_id = array(
     'name' => 'cons_id',
     'id' => 'cons_id',
@@ -104,6 +109,16 @@ $cons_id = array(
                 datatype:'json'
             }).trigger("reloadGrid"); 
         });
+        
+        
+        /* Carga las claves de los usuarios con rol de consultor */
+         $('#seluser').change(function(){
+            $('#prousers').setGridParam({
+                url:'<?php echo base_url('auth/cargarUsuariosJsonConsultor') ?>',
+                datatype:'json'
+            }).trigger("reloadGrid"); 
+        });
+        
         var tabla=$("#proPep");
         tabla.jqGrid({
             url:'<?php echo base_url('componente2/proyectoPep/cargarProyectosPorMunicipio') ?>',
@@ -188,6 +203,10 @@ $cons_id = array(
         <td width="50px"></td>
         </tr>
         <tr>
+            
+      
+            
+            
         <td width="50px"></td>
         <td class="letraazul">Consultora</td>
         <td><select id='selConsultoras'>
