@@ -1,6 +1,7 @@
 <?php
+ 
 
-/**
+/*
  * 
  * 
  * @author Alexis Beltran
@@ -34,7 +35,7 @@ $(document).ready(function(){
     /*GRID*/
     
     $("#miembros").jqGrid({
-        url: '<?php echo base_url('componente2/comp24_E3/getRecepcionProductos') . '/' . $acu_mun_id; ?>',
+        url: '<?php echo base_url('componente2/comp24_E3/recepcion_loadProductos') . '/' . $acu_mun_id; ?>',
         editurl:'<?php echo base_url('componente2/comp24_E3/gestionRecepcionProductos').'/' . $acu_mun_id; ?>',
         datatype:'json',
         altRows:true,
@@ -42,7 +43,7 @@ $(document).ready(function(){
         hidegrid: false,
         colNames:['No.','Padre','Nombre del Producto','Descripción','Observación'],
         colModel:[
-            {name:'rec_pro_id',index:'rec_pro_id', width:30,editable:false,editoptions:{size:15},hidden:false },
+            {name:'rec_pro_id',index:'rec_pro_id', width:30,editable:false,editoptions:{size:15},hidden:true },
             {name:'mun_id',index:'mun_id', width:30,editable:false,editoptions:{size:15},hidden:true },
             {name:'rec_pro_nombre_producto',index:'rec_pro_nombre_producto', width:200,editable:true,
                 edittype:'text',editoptions:{size:50,maxlength:100},
@@ -73,6 +74,7 @@ $(document).ready(function(){
     );
     $("#miembros").jqGrid('inlineNav',"#pagerMiembros",{editParams:{keys:true}});
     
+  /*  '<?php echo base_url('componente2/comp24_E3/getRecepcionProductos/'); ?>/' + $('#mun_id').val(),*/
     
       <?php
             //Muestra los dialogos.
@@ -137,8 +139,8 @@ $(document).ready(function(){
                 <div style="width: 50%; display: inline-block;">
                     <div class="campoUp">
                         <label style="text-align: left;">Observaciones y/o Recomendaciones</label>
-                        <textarea id="rec_pro_observaciones" name="rec_pro_observaciones" cols="30" rows="5" wrap="virtual" maxlength="500"><?php echo set_value('rec_pro_observaciones')?></textarea>
-                        <?php echo form_error('rec_pro_observaciones'); ?>
+                        <textarea id="rec_pro1_observaciones" name="rec_pro1_observaciones" cols="30" rows="5" wrap="virtual" maxlength="500"><?php echo set_value('rec_pro1_observaciones')?></textarea>
+                        <?php echo form_error('rec_pro1_observaciones'); ?>
                     </div>
                 </div>
             </div>

@@ -58,6 +58,18 @@ Class comp24 extends CI_Model {
 
         return $this->db->insert('acuerdo_municipal2', $data_new);
     }
+    
+    public function insert_recepcionProductosPlan($municipio1, $f_observaciones) {
+        $data_new = array(
+            'acu_mun_id'=> $municipio1,
+            'mun_id' => $municipio1,
+            'rec_pro1_observaciones' => $f_observaciones
+          );
+
+        return $this->db->insert('recepcion_productos', $data_new);
+    }
+    
+    
  public function insert_solicitud_asistencia_tecnica($municipio, $f_solicitud, $f_emision,
                                                      $f_envio, $f_inicio,$archivo1,$archivo2,
                                                      $archivo3,$observaciones,$consultor) {

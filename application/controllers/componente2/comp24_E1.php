@@ -4,7 +4,7 @@
  * Contendrá todos los metodos utilizados para definir las pantallas de la Etapa 1
  * Del Componente 2.4
  *
- * @author Alexis Beltran
+ * Rodrigo Vasquez
  */
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');

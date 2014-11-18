@@ -1,8 +1,9 @@
 <?php
+
 /**
  * 
  * 
- * @author Alexis Beltran
+ * Rodrigo Vasquez
  */
 $this->load->view('plantilla/header', $titulo);
 $this->load->view('plantilla/menu', $menu);
