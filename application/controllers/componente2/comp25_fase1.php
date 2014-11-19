@@ -292,8 +292,7 @@ class Comp25_fase1 extends CI_Controller {
                 $rows[$i]['cell'] = array($aux->pla_con_id,
                     $aux->pla_con_numero,
                     $aux->pla_con_nombre,
-                    $aux->pla_con_descripcion,
-                    $aux->pla_con_fdocumento
+                    date('d-m-Y', strtotime($aux->pla_con_fdocumento))
                 );
                 $i++;
             }

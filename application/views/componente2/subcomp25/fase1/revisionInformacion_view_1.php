@@ -629,7 +629,7 @@
                     formoptions: {label: "Nombre del plan:", elmprefix: "(*)"},
                     editrules: {required: true}
                 },
-                {name: 'pla_con_fdocumento', index: 'pla_con_fdocumento', width: 100, editable: true,
+                {name: 'pla_con_fdocumento', index: 'pla_con_fdocumento', width: 200, editable: true,
                     editoptions: {
                         size: 10, maxlengh: 10,
                         dataInit: function(element) {

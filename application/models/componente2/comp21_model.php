@@ -124,7 +124,22 @@ Class comp21_model extends CI_Model{
                     
         );
         
+        
         $this->db->insert('asis_ccc', $datos);
+       
+    }
+    
+        public function agregarAsitencia2($etm_id,$nombre_asis,$responsabilidad,$sexo) {
+        $datos = array(
+            'etm_id' => $etm_id,
+            'nombre_asis' => $nombre_asis,
+            'responsabilidad'=> $responsabilidad,
+            'sexo' => $sexo
+                    
+        );
+        
+        
+        $this->db->insert('asis_etm', $datos);
        
     }
     public function actualizarAsistenciaccc2($asis_ccc_id,$nombre_asis,$responsabilidad,$sexo) {
