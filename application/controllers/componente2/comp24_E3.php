@@ -4,7 +4,7 @@
  * Contendrá todos los metodos utilizados para definir las pantallas de la Etapa 3
  * Del Componente 2.4
  *
- * @author Alexis Beltran
+ * Rodrigo Vasquez
  */
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
@@ -200,10 +200,10 @@ class Comp24_E3 extends CI_Controller {
         $config = array(
             array('field' => 'depto', 'label' => 'Municipio', 'rules' => 'trim|xss_clean'),
             array('field' => 'muni', 'label' => 'Municipio', 'rules' => 'trim|xss_clean'),
-            array('field' => 'mod', 'label' => 'Mod', 'rules' => 'required|xss_clean' ),
-            array('field' => 'acu_mun_id', 'label' => 'Recepcion', 'rules' => 'trim|xss_clean'),
+          /*  array('field' => 'acu_mun_id', 'label' => 'Recepcion', 'rules' => 'trim|xss_clean'),*/
             array('field' => 'mun_id', 'label' => 'Municipio', 'rules' => 'trim|xss_clean'),
             array('field' => 'rec_pro1_observaciones'             , 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
+            array('field' => 'mod', 'label' => 'Mod', 'rules' => 'required|xss_clean' )
             
         );
              
@@ -215,13 +215,51 @@ class Comp24_E3 extends CI_Controller {
         if ($this->form_validation->run())
         {
             $datos = array(
-                $prefix.'id'   =>  $this->form_validation->set_value($prefix.'id'),
-                'mun_id'   =>  $this->form_validation->set_value('mun_id'),
-                 'rec_pro1_observaciones'     =>  $this->form_validation->set_value('rec_pro1_observaciones'),
+              /*  $prefix.'id'   =>  $this->form_validation->set_value($prefix.'id'),*/
+               /* 'acu_mun_id'   =>  $this->form_validation->set_value('acu_mun_id'),*/
+            /*    'mun_id'   =>  $this->form_validation->set_value('acu_mun_id'),*/
+         /*       'mun_id'   =>  $this->form_validation->set_value('mun_id'),*/
+                'rec_pro1_observaciones'     =>  $this->form_validation->set_value('rec_pro1_observaciones'),
                 
             );
+            if ($id > '0') {
+                if (!is_null($data = $this->comp24->update_row($tabla, $campo, (int) $id, $datos))) {
+                    $this->session->set_flashdata('message', 'Ok');
+                    $t = explode('/' . $id, current_url());
+                    redirect($t[0]);
+                }
+            } else {
+                if (!is_null($data = $this->comp24->insert_recepcionProductosPlan(
+                             /*   $this->form_validation->set_value('acu_mun_id'), */
+                                $this->form_validation->set_value('mun_id'),   
+                                $this->form_validation->set_value('rec_pro1_observaciones')
+                        ))) {
+                    $this->session->set_flashdata('message', 'Ok');
+                    $t = explode('/0', current_url());
+                    redirect($t[0]);
+                } else {
+                    $errors = $this->tank_auth->get_error_message();
+                    foreach ($errors as $k => $v)
+                        $data['errors'][$k] = $this->lang->line($v);
+                }
+            }
+        } else if (($mun = $this->input->post('mun_id')) != '0' && $id == false) {
+            //
+            redirect(current_url() . '/' . $this->setNewId($tabla, $campo, array('mun_id' => $mun)));
+        }
+
+        $this->load->view($this->ruta . 'recepcionProductosPlan', array('titulo' => 'recepcionProductos',
+            'user_uid' => $this->tank_auth->get_user_id(),
+            'username' => $this->tank_auth->get_username(),
+            'menu' => $this->librerias->creaMenu($this->tank_auth->get_username()),
+            'departamentos' => $this->comp24->getDepartamentos(),
+            $campo => $id
+        ));
+    } 
             
-            if(!is_null($data = $this->comp24->update_row($tabla,$campo,$id,$datos)))
+            
+            
+            /*if(!is_null($data = $this->comp24->update_row($tabla,$campo,$id,$datos)))
                 {
                     $this->session->set_flashdata('message', 'Ok');
                     $t = explode('/' . $id,current_url());
@@ -242,43 +280,48 @@ class Comp24_E3 extends CI_Controller {
                     'departamentos' => $this->comp24->getDepartamentos(),
                     $campo=>$id
                     ));
-    }
-    public function getRecepcionProductos($id){
+    }*/
+            
+       
+            
+    public function getRecepcionProductos($mun_id){
         if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
         
-        $d = $this->comp24->select_data('recepcion_productos2',array('mun_id'=>$id));
+        $d = $this->comp24->select_data('recepcion_productos',array('acu_mun_id'=>$mun_id));
+        echo $this->librerias->json_out($d, 'acu_mun_id', array('acu_mun_id','mun_id','rec_pro1_observaciones'));
+  
         
-        echo $this->librerias->json_out($d,'mun_id',array('rec_pro_id','mun_id','rec_pro_nombre_producto',
-                                                          'rec_pro_descripcion_producto','rec_pro_observaciones'));
+    }
+      public function recepcion_loadProductos($id) {
+        if (!$this->tank_auth->is_logged_in())
+            redirect('/auth');                // logged in
+
+        $d = $this->comp24->select_data('recepcion_productos2', array('mun_id' => $id));
+
+        echo $this->librerias->json_out($d, 'rec_pro_id');
     }
     
      public function gestionRecepcionProductos($id){
         if (!$this->tank_auth->is_logged_in()) redirect('/auth');                // logged in
         
         $tabla = 'recepcion_productos2';
-        $campo = 'mun_id';
-        $index = $this->input->post('rec_pro_id');
+        $campo = 'rec_pro_id';
+        $index = $this->input->post('id');
         
         $data = array(
-            'rec_pro_id' => $this->input->post('rec_pro_id'),
-             $campo          => $id,
+            'mun_id' => $id,
             'rec_pro_nombre_producto'    => $this->input->post('rec_pro_nombre_producto'),
             'rec_pro_descripcion_producto' => $this->input->post('rec_pro_descripcion_producto'),
-            'rec_pro_observaciones'      => $this->input->post('rec_pro_observaciones'),
-            
-        );
+            'rec_pro_observaciones'      => $this->input->post('rec_pro_observaciones'));
         
         switch ($this->input->post('oper')){ 
-        	case 'add':
-                $this->comp24->insert_row($tabla, $data);
+        	case 'add':$this->comp24->insert_row($tabla, $data);
         	break;
         
-        	case 'edit':
-                $this->comp24->update_row($tabla, $campo, $index, $data);
+        	case 'edit':$this->comp24->update_row($tabla, $campo, $index, $data);
         	break;
         
-        	case 'del':
-                $r = $this->comp24->db_row_delete($tabla, $campo, $index);
+        	case 'del':$this->comp24->db_row_delete($tabla, $campo, $index);
         	break;
         }
     }
