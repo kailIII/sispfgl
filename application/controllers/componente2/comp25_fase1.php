@@ -292,7 +292,8 @@ class Comp25_fase1 extends CI_Controller {
                 $rows[$i]['cell'] = array($aux->pla_con_id,
                     $aux->pla_con_numero,
                     $aux->pla_con_nombre,
-                    date('d-m-Y', strtotime($aux->pla_con_fdocumento))
+                    $aux->pla_con_descripcion,
+                    $aux->pla_con_fdocumento
                 );
                 $i++;
             }
@@ -322,8 +323,8 @@ class Comp25_fase1 extends CI_Controller {
         $pla_con_nombre = $this->input->post("pla_con_nombre");
         $pla_con_descripcion = $this->input->post("pla_con_descripcion");
         $pla_con_fdocumento = $this->input->post("pla_con_fdocumento");
-        if ($pla_con_fdocumento == "")
-            $pla_con_fdocumento = null;
+//        if ($pla_con_fdocumento == "")
+//            $pla_con_fdocumento = null;
 
         $operacion = $this->input->post("oper");
         switch ($operacion) {
