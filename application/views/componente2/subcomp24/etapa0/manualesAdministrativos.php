@@ -138,7 +138,7 @@ $(document).ready(function(){
             </div>
             <div class="campo" style="position:relative">
                 <label style="text-align: right;">Manual Organizativo y de Funciones </label>
-                <span>Si</span><input type="radio" name="man_adm_numero1" value="t"  <?php echo set_radio('man_adm_numero1', 't'); ?>/>
+                <span>Si</span><input type="radio" name="man_adm_numero1" value="t" <?php echo set_radio('man_adm_numero1', 't'); ?>/>
                 <span>No</span><input type="radio" name="man_adm_numero1" value="f" <?php echo set_radio('man_adm_numero1', 'f'); ?>/>
                 <?php echo form_error('man_adm_numero1'); ?>
             </div>
@@ -151,19 +151,19 @@ $(document).ready(function(){
             </div>   
             <div class="campo">
                 <label style="text-align: right;">Manual de Evaluación del Desempeño</label>
-                <span>Si</span><input type="radio" name="man_adm_numero3" value="t"  <?php echo set_radio('man_adm_numero3', 't'); ?>/>
+                <span>Si</span><input type="radio" name="man_adm_numero3" value="t" <?php echo set_radio('man_adm_numero3', 't'); ?>/>
                 <span>No</span><input type="radio" name="man_adm_numero3" value="f" <?php echo set_radio('man_adm_numero3', 'f'); ?>/>
                 <?php echo form_error('man_adm_numero3'); ?>
             </div>   
             <div class="campo">
                 <label style="text-align: right;">Manual del Sistema Retributivo (de Ascensos y Salarios)</label>
-                <span>Si</span><input type="radio" name="man_adm_numero4" value="t"  <?php echo set_radio('man_adm_numero4', 't'); ?>/>
+                <span>Si</span><input type="radio" name="man_adm_numero4" value="t" <?php echo set_radio('man_adm_numero4', 't'); ?>/>
                 <span>No</span><input type="radio" name="man_adm_numero4" value="f" <?php echo set_radio('man_adm_numero4', 'f'); ?>/>
                 <?php echo form_error('man_adm_numero4'); ?>
             </div>   
             <div class="campo">
                 <label style="text-align: right;">Manual de Capacitación</label>
-                <span>Si</span><input type="radio" name="man_adm_numero5" value="t"  <?php echo set_radio('man_adm_numero5', 't'); ?>/>
+                <span>Si</span><input type="radio" name="man_adm_numero5" value="t" <?php echo set_radio('man_adm_numero5', 't'); ?>/>
                 <span>No</span><input type="radio" name="man_adm_numero5" value="f" <?php echo set_radio('man_adm_numero5', 'f'); ?>/>
                 <?php echo form_error('man_adm_numero5'); ?>
             </div>   <div class="campo">

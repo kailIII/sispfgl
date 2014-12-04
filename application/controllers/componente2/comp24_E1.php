@@ -43,8 +43,8 @@ class Comp24_E1 extends CI_Controller {
             $_POST = get_object_vars($tmp);
             $_POST[$prefix . 'fecha_presentacion'] = $this->librerias->parse_output('date', $_POST[$prefix . 'fecha_presentacion']);
             $_POST[$prefix . 'fecha_aprobacion'] = $this->librerias->parse_output('date', $_POST[$prefix . 'fecha_aprobacion']);
-            $_POST[$prefix . 'fecha_presentacionD'] = $this->librerias->parse_output('date', $_POST[$prefix . 'fecha_presentacionD']);
-            $_POST[$prefix . 'fecha_aprobacionD'] = $this->librerias->parse_output('date', $_POST[$prefix . 'fecha_aprobacionD']);
+            $_POST[$prefix . 'fecha_presentaciond'] = $this->librerias->parse_output('date', $_POST[$prefix . 'fecha_presentaciond']);
+            $_POST[$prefix . 'fecha_aprobaciond'] = $this->librerias->parse_output('date', $_POST[$prefix . 'fecha_aprobaciond']);
             $_POST[$prefix . 'fecha_vistobueno'] = $this->librerias->parse_output('date', $_POST[$prefix . 'fecha_vistobueno']);
             $_POST['depto'] = $this->comp24->getDepto($_POST['mun_id'])->dep_nombre;
             $_POST['muni'] = $this->comp24->get_by_Id('municipio', 'mun_id', $_POST['mun_id'])->mun_nombre;
@@ -60,8 +60,8 @@ class Comp24_E1 extends CI_Controller {
             array('field' => 'mun_id', 'label' => 'Municipio', 'rules' => 'trim|xss_clean'),
             array('field' => $prefix . 'fecha_presentacion', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
             array('field' => $prefix . 'fecha_aprobacion', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix . 'fecha_presentacionD', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
-            array('field' => $prefix . 'fecha_aprobacionD', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'fecha_presentaciond', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
+            array('field' => $prefix . 'fecha_aprobaciond', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
             array('field' => $prefix . 'fecha_vistobueno', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
             array('field' => $prefix . 'is_plan_trabajo', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
             array('field' => $prefix . 'is_perfil', 'label' => 'Fecha', 'rules' => 'trim|xss_clean'),
@@ -82,8 +82,8 @@ class Comp24_E1 extends CI_Controller {
             $datos = array(
                 $prefix . 'fecha_presentacion' => $this->comp24->changeDate($this->form_validation->set_value($prefix . 'fecha_presentacion')),
                 $prefix . 'fecha_aprobacion' => $this->comp24->changeDate($this->form_validation->set_value($prefix . 'fecha_aprobacion')),
-                $prefix . 'fecha_presentacionD' => $this->comp24->changeDate($this->form_validation->set_value($prefix . 'fecha_presentacionD')),
-                $prefix . 'fecha_aprobacionD' => $this->comp24->changeDate($this->form_validation->set_value($prefix . 'fecha_aprobacionD')),
+                $prefix . 'fecha_presentaciond' => $this->comp24->changeDate($this->form_validation->set_value($prefix . 'fecha_presentaciond')),
+                $prefix . 'fecha_aprobaciond' => $this->comp24->changeDate($this->form_validation->set_value($prefix . 'fecha_aprobaciond')),
                 $prefix . 'fecha_vistobueno' => $this->comp24->changeDate($this->form_validation->set_value($prefix . 'fecha_vistobueno')),
                 $prefix . 'is_plan_trabajo' => $this->form_validation->set_value($prefix . 'is_plan_trabajo'),
                 $prefix . 'is_perfil' => $this->form_validation->set_value($prefix . 'is_perfil'),

@@ -1196,8 +1196,6 @@ class Comp24_E0 extends CI_Controller {
             array('field' => $prefix . 'numero4', 'label' => 'numero4','rules' => 'trim|xss_clean'),
             array('field' => $prefix . 'numero5', 'label' => 'numero5','rules' => 'trim|xss_clean'),
             array('field' => $prefix . 'numero6', 'label' => 'numero6','rules' => 'trim|xss_clean'),
-            array('field' => $prefix . 'numero7', 'label' => 'numero7','rules' => 'trim|xss_clean'),
-            array('field' => $prefix . 'numero8', 'label' => 'numero8','rules' => 'trim|xss_clean'),
             array('field' => $prefix . 'observaciones', 'label' => 'observaciones', 'rules' => 'trim|xss_clean'),
             array('field' => 'mod', 'label' => 'Mod', 'rules' => 'required|xss_clean')
         );
@@ -1216,8 +1214,6 @@ class Comp24_E0 extends CI_Controller {
                 $prefix . 'numero4' => $this->form_validation->set_value($prefix . 'numero4'),
                 $prefix . 'numero5' => $this->form_validation->set_value($prefix . 'numero5'),
                 $prefix . 'numero6' => $this->form_validation->set_value($prefix . 'numero6'),
-                $prefix . 'numero7' => $this->form_validation->set_value($prefix . 'numero7'),
-                $prefix . 'numero8' => $this->form_validation->set_value($prefix . 'numero8'),
                 $prefix . 'observaciones' => $this->form_validation->set_value($prefix . 'observaciones'),
                 
                 ); 
@@ -1247,8 +1243,6 @@ class Comp24_E0 extends CI_Controller {
                                 $this->form_validation->set_value($prefix .'numero4'),
                                 $this->form_validation->set_value($prefix .'numero5'),
                                 $this->form_validation->set_value($prefix .'numero6'),
-                                $this->form_validation->set_value($prefix .'numero7'),
-                                $this->form_validation->set_value($prefix .'numero8'),
                                 $this->form_validation->set_value($prefix .'observaciones')
                                 
                         ))) {

@@ -90,7 +90,7 @@ Class comp24 extends CI_Model {
     }
    public function insert_manuales_administrativos($municipio, $elaboracion,
                   $numero1,$numero2,$numero3,$numero4,
-                  $numero5,$numero6,$numero7,$numero8,$observaciones) {
+                  $numero5,$numero6,$observaciones) {
         $data_new = array(
             'mun_id' => $municipio,
             'man_adm_elboracion' => $this->changeDate($elaboracion),
@@ -100,12 +100,10 @@ Class comp24 extends CI_Model {
             'man_adm_numero4' => $numero4,
             'man_adm_numero5' => $numero5,
             'man_adm_numero6' => $numero6,
-            'man_adm_numero7' => $numero7,
-            'man_adm_numero8' => $numero8,
             'man_adm_observaciones' => $observaciones
             
         );
-        return $this->db->insert('manuales_administativos', $data_new);
+        return $this->db->insert('manuales_administrativos', $data_new);
     }
     public function getDepto($mun_id) {
         $sql = 'SELECT departamento.dep_nombre 

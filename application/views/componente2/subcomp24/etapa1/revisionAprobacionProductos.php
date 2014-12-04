@@ -52,19 +52,19 @@ $(document).ready(function(){
         buttonImageOnly: true, 
         dateFormat: 'dd/mm/yy',
         onClose: function( selectedDate ) {
-            $( "#rea_pro_fecha_presentacionD" ).datepicker( "option", "minDate", selectedDate );}
+            $( "#rea_pro_fecha_presentaciond" ).datepicker( "option", "minDate", selectedDate );}
     });
-    $( "#rea_pro_fecha_presentacionD" ).datepicker({
+    $( "#rea_pro_fecha_presentaciond" ).datepicker({
         showOn:         'both',
         maxDate:        '+1D',
         buttonImage:    '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
         buttonImageOnly: true, 
         dateFormat: 'dd/mm/yy',
         onClose: function( selectedDate ) {
-            $( "#rea_pro_fecha_aprobacionD" ).datepicker( "option", "minDate", selectedDate );
+            $( "#rea_pro_fecha_aprobaciond" ).datepicker( "option", "minDate", selectedDate );
         }
     });
-     $( "#rea_pro_fecha_aprobacionD" ).datepicker({
+     $( "#rea_pro_fecha_aprobaciond" ).datepicker({
         showOn: 'both',
         maxDate:    '+1D',
         buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
@@ -225,13 +225,13 @@ $(document).ready(function(){
             </div>
             <div class="campoUp">
                 <label>Fecha de presentación de diagnóstico</label>
-                <input id="rea_pro_fecha_presentacionD" name="rea_pro_fecha_presentacionD" type="text" readonly="readonly" value="<?php echo set_value('rea_pro_fecha_presentacionD') ?>"/>
-                <?php echo form_error('rea_pro_fecha_presentacionD'); ?>
+                <input id="rea_pro_fecha_presentaciond" name="rea_pro_fecha_presentaciond" type="text" readonly="readonly" value="<?php echo set_value('rea_pro_fecha_presentaciond') ?>"/>
+                <?php echo form_error('rea_pro_fecha_presentaciond'); ?>
             </div>
             <div class="campoUp">
                 <label>Fecha de aprobación de diagnóstico</label>
-                <input id="rea_pro_fecha_aprobacionD" name="rea_pro_fecha_aprobacionD" type="text" readonly="readonly" value="<?php echo set_value('rea_pro_fecha_aprobacionD') ?>"/>
-                <?php echo form_error('rea_pro_fecha_aprobacionD'); ?>
+                <input id="rea_pro_fecha_aprobaciond" name="rea_pro_fecha_aprobaciond" type="text" readonly="readonly" value="<?php echo set_value('rea_pro_fecha_aprobaciond') ?>"/>
+                <?php echo form_error('rea_pro_fecha_aprobaciond'); ?>
             </div>
             <div class="campoUp">
                 <label>Fecha de visto bueno</label>
