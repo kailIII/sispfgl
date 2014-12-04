@@ -617,7 +617,7 @@
             altRows: true,
             height: "100%",
             hidegrid: false,
-            colNames: ['id', 'No.', 'Nombre del plan', 'pla_con_fdocumento','Fecha Documento'],
+            colNames: ['id', 'No.', 'Nombre del plan', 'Fecha Documento'],
             colModel: [
                 {name: 'pla_con_id', index: 'pla_con_id', width: 40, editable: false, editoptions: {size: 15}},
                 {name: 'pla_con_numero', index: 'pla_con_numero', width: 40, editable: false,
@@ -629,12 +629,7 @@
                     formoptions: {label: "Nombre del plan:", elmprefix: "(*)"},
                     editrules: {required: true}
                 },
-                {name: 'pla_con_descripcion', index: 'pla_con_descripcion',
-                    editable: true, width: 400, edittype: "textarea",
-                    editoptions: {rows: "4", cols: "50"},
-                    formoptions: {label: "Descripción"}
-                },
-                {name: 'pla_con_fdocumento', index: 'pla_con_fdocumento', width: 100, editable: true,
+                {name: 'pla_con_fdocumento', index: 'pla_con_fdocumento', width: 200, editable: true,
                     editoptions: {
                         size: 10, maxlengh: 10,
                         dataInit: function(element) {
@@ -685,7 +680,7 @@
                 $('#mensaje').dialog('open');
             }
         }//ELIMINAR
-    ).hideCol('pla_con_id').hideCol('pla_con_numero').hideCol('pla_con_descripcion');
+    ).hideCol('pla_con_id').hideCol('pla_con_numero');
         /* Funcion para regargar los JQGRID luego de agregar y editar*/
         function despuesAgregarEditar3() {
             tabla3.jqGrid('setGridParam', {datatype: 'json', loadonce: true}).trigger('reloadGrid');

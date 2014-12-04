@@ -239,12 +239,12 @@ public function cargar_cc($mun_id) {
         echo $jsonresponse;
     }
   
-    public function cargar_cc_asis3($ccc_id) {
+    public function cargar_cc_asis3($cc_id) {
         if (!$this->tank_auth->is_logged_in())
             redirect('/auth');
       
         $this->load->model('componente2/comp21_model');
-        $notas = $this->comp21_model->obtenerCcAsis3($ccc_id);
+        $notas = $this->comp21_model->obtenerCcAsis3($cc_id);
         $numfilas = count($notas);
          if ($numfilas != 0) {
             $i = 0;
@@ -622,9 +622,9 @@ if (!$this->tank_auth->is_logged_in())
         $anexo8=$this->input->post("anexo8");
         $cc_fecha=$this->input->post("cc_fecha");
        
-        if ($listado_asistencia == "")$listado_asistencia = null;
-        if ($anexo8 == "") $anexo8 = null;
-        if ($acta_final == "") $acta_final = null;
+        if ($listado_asistencia == ""){ $listado_asistencia = null;}
+        if ($anexo8 == "") {$anexo8 = null;}
+        if ($acta_final == "") {$acta_final = null;}
         
         $data = array(
          'mun_id'=>$mun_id,

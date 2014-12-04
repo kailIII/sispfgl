@@ -17,7 +17,7 @@
        
        
        
-	   $( "#fecha_convocatoria" ).datepicker({
+	   $( "#cc_fecha" ).datepicker({
            showOn: 'both',
            buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
            buttonImageOnly: true, 
@@ -25,21 +25,7 @@
            minDate: (new Date(2013, 0, 1))
        });
        
-       $( "#fecha_con" ).datepicker({
-           showOn: 'both',
-           buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-           buttonImageOnly: true, 
-           dateFormat: 'yy/mm/dd',
-           minDate: (new Date(2013, 0, 1))
-       });
-       
-       $( "#fecha_equi" ).datepicker({
-           showOn: 'both',
-           buttonImage: '<?php echo site_url('resource/imagenes/calendario.png'); ?>',
-           buttonImageOnly: true, 
-           dateFormat: 'yy/mm/dd',
-           minDate: (new Date(2013, 0, 1))
-       });
+      
        
        $('.mensaje').dialog({
             autoOpen: false,
@@ -270,7 +256,7 @@ echo form_open_multipart('componente2/componente21/guardar_cc',$attributes);?>
 	<input readonly="readonly"  type="text" name="cc_fecha" id="cc_fecha"  size="8">
 	<input type="checkbox" name="anexo8" id="anexo8"/>Posee el anexo 8
         <input type="checkbox" name="listado_asistencia" id="listado_asistencia"/>Posee el listado de asistencia
-        <input type="checkbox" name="acta_fina" id="acta_final"/> Esta el Acta de CC<br/>
+        <input type="checkbox" name="acta_final" id="acta_final"/> Esta el Acta de CC<br/>
         <label>Total de Mujeres: &nbsp;</label>
 		<input type="text" name="total_mujeres" id="total_mujeres"  size="5" >
 		
